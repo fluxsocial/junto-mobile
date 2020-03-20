@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +28,8 @@ class Packs extends StatefulWidget {
 
 class PacksState extends State<Packs> {
   String _userAddress;
-  UserData _userProfile;
+
   GroupRepo _groupRepo;
-  NotificationRepo _notificationProvider;
 
   Future<UserGroupsResponse> userGroups;
   Future<NotificationResultsModel> userGroupRequests;
@@ -53,20 +51,14 @@ class PacksState extends State<Packs> {
 
     setState(() {
       _groupRepo = Provider.of<GroupRepo>(context, listen: false);
-      _notificationProvider =
-          Provider.of<NotificationRepo>(context, listen: false);
     });
-
-    refreshGroupsAndRequests();
   }
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+
     setState(() {
       _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
     });
   }
 
@@ -77,30 +69,6 @@ class PacksState extends State<Packs> {
       print(error);
       return null;
     }
-  }
-
-  Future<NotificationResultsModel> getGroupNotifications() async {
-    try {
-      return _notificationProvider.getNotifications(
-        const NotificationQuery(
-          connectionRequests: false,
-          groupJoinRequests: true,
-          paginationPosition: 0,
-        ),
-      );
-    } catch (error) {
-      print(error.message);
-      return null;
-    }
-  }
-
-  Future<void> refreshGroupsAndRequests() async {
-    await getUserInformation();
-
-    setState(() {
-      userGroups = getUserGroups();
-      userGroupRequests = getGroupNotifications();
-    });
   }
 
   @override
@@ -188,58 +156,81 @@ class PacksState extends State<Packs> {
                 MyPacks(
                   selectedGroup: widget.changeGroup,
                 ),
-                Column(
-                  children: <Widget>[
-                    if (_userAddress != null)
-                      FutureBuilder<NotificationResultsModel>(
-                        future: userGroupRequests,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<NotificationResultsModel> snapshot) {
-                          if (snapshot.hasError) {
-                            print(snapshot.error);
-                            return Expanded(
-                              child: Center(
-                                child: Transform.translate(
-                                  offset: const Offset(0.0, -50),
-                                  child: const Text(
-                                      'Hmm, something is up with our server'),
-                                ),
-                              ),
-                            );
-                          }
-                          if (snapshot.hasData) {
-                            return Expanded(
-                                child: ListView(
-                              padding: const EdgeInsets.all(0),
-                              children: <Widget>[
-                                for (Group packRequest
-                                    in snapshot.data.groupJoinNotifications)
-                                  if (packRequest.groupType == 'Pack')
-                                    PackRequest(
-                                      userProfile: _userProfile,
-                                      pack: packRequest,
-                                      refreshGroups: refreshGroupsAndRequests,
-                                    )
-                              ],
-                            ));
-                          }
-                          return Expanded(
-                            child: Center(
-                              child: Transform.translate(
-                                offset: const Offset(0.0, -50),
-                                child: JuntoProgressIndicator(),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                  ],
-                ),
+                PackRequests(),
               ],
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+class PackRequests extends StatefulWidget {
+  @override
+  _PackRequestsState createState() => _PackRequestsState();
+}
+
+class _PackRequestsState extends State<PackRequests> {
+  UserData _userProfile;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
+  }
+
+  Widget _loader() {
+    return Expanded(
+      child: Center(
+        child: Transform.translate(
+          offset: const Offset(0.0, -50),
+          child: JuntoProgressIndicator(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        BlocBuilder<GroupBloc, GroupBlocState>(
+          builder: (BuildContext context, GroupBlocState state) {
+            if (state is GroupLoading) {
+              return _loader();
+            }
+            if (state is GroupLoaded) {
+              return Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.all(0),
+                  children: <Widget>[
+                    for (Group packRequest
+                        in state.notifications.groupJoinNotifications)
+                      if (packRequest.groupType == 'Pack')
+                        PackRequest(
+                          userProfile: _userProfile,
+                          pack: packRequest,
+                          refreshGroups: () {},
+                        )
+                  ],
+                ),
+              );
+            }
+            if (state is GroupError) {
+              return Expanded(
+                child: Center(
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -50),
+                    child: const Text('Hmm, something is up with our server'),
+                  ),
+                ),
+              );
+            }
+            return _loader();
+          },
+        ),
+      ],
     );
   }
 }

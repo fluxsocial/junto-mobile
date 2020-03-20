@@ -11,8 +11,10 @@ part 'group_event.dart';
 part 'group_state.dart';
 
 class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
-  GroupBloc(this.groupRepo, this.userDataProvider);
+  GroupBloc(this.groupRepo, this.userDataProvider, this.notificationRepo);
+
   final GroupRepo groupRepo;
+  final NotificationRepo notificationRepo;
   final UserDataProvider userDataProvider;
 
   @override
@@ -25,14 +27,20 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
     if (event is FetchMyPack) {
       yield* _mapFetchPacksToState(event);
     }
-    if (event is FetchPacksMembers) {}
   }
 
   Stream<GroupBlocState> _mapFetchPacksToState(FetchMyPack event) async* {
+    final String uid = userDataProvider.userProfile.user.address;
+    final NotificationQuery params = NotificationQuery(
+      connectionRequests: false,
+      groupJoinRequests: true,
+      paginationPosition: 0,
+    );
     try {
       yield GroupLoading();
-      final groups = await groupRepo.getUserGroups(event.userAddress);
-      yield GroupLoaded(groups);
+      final groups = await groupRepo.getUserGroups(uid);
+      final users = await notificationRepo.getNotifications(params);
+      yield GroupLoaded(groups, users);
     } on JuntoException catch (error) {
       yield GroupError(error.message);
     } catch (e, s) {

@@ -174,15 +174,11 @@ class JuntoGroupsState extends State<JuntoGroups>
           ),
       ),
       BlocProvider<GroupBloc>(
-        create: (ctx) => GroupBloc(
-          Provider.of<GroupRepo>(ctx, listen: false),
-          Provider.of<UserDataProvider>(ctx, listen: false),
-        )..add(
-            FetchMyPack(
-                Provider.of<UserDataProvider>(ctx, listen: false).userAddress),
-          ),
-      ),
-      //TODO: use proper fetch call for Groups
+          create: (ctx) => GroupBloc(
+                Provider.of<GroupRepo>(ctx, listen: false),
+                Provider.of<UserDataProvider>(ctx, listen: false),
+                Provider.of<NotificationRepo>(ctx, listen: false),
+              )..add(FetchMyPack())),
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
           Provider.of<SearchRepo>(ctx, listen: false),
