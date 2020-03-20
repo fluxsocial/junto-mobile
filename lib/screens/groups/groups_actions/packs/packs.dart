@@ -211,7 +211,9 @@ class _PackRequestsState extends State<PackRequests> {
                         PackRequest(
                           userProfile: _userProfile,
                           pack: packRequest,
-                          refreshGroups: () {},
+                          refreshGroups: () async {
+                            context.bloc<GroupBloc>().add(FetchMyPack());
+                          },
                         )
                   ],
                 ),
