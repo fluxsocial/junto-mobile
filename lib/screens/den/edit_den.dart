@@ -445,7 +445,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                         child: TextField(
                           controller: _genderController,
                           decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: 'Gender'),
+                              border: InputBorder.none,
+                              hintText: 'Gender Pronouns'),
                           maxLines: null,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
