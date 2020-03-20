@@ -85,6 +85,7 @@ class PackOpenState extends State<PackOpen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
+              width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.symmetric(
                 vertical: 15,
                 horizontal: 10,
