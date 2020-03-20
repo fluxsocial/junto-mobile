@@ -52,7 +52,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
 
   Stream<CollectiveState> _mapRefreshToState(RefreshCollective event) async* {
     try {
-      yield CollectiveLoading();
+      // we are not emitting LoadingState here as we are using RefreshIndicator to show loading state
 
       _updateParams(true, _previousParams);
       final expressions = await _fetchExpressions();
