@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
@@ -163,31 +164,34 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                for (String channel in _channels)
-                  GestureDetector(
-                    onDoubleTap: () {
-                      setState(() {
-                        _channels.removeAt(
-                          _channels.indexOf(channel),
-                        );
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 15),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10),
-                      color: Theme.of(context).dividerColor,
-                      child: Text(
-                        channel,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).primaryColor),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[
+                  for (String channel in _channels)
+                    GestureDetector(
+                      onDoubleTap: () {
+                        setState(() {
+                          _channels.removeAt(
+                            _channels.indexOf(channel),
+                          );
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        color: Theme.of(context).dividerColor,
+                        child: Text(
+                          channel,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).primaryColor),
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             Text(
@@ -207,68 +211,70 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      child: Container(
-        height: MediaQuery.of(context).size.height * .6,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          // borderRadius: const BorderRadius.only(
-          //   topLeft: Radius.circular(10),
-          //   topRight: Radius.circular(10),
-          // ),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildSearchField(),
-                Expanded(
-                  child: FutureBuilder<QueryResults<Channel>>(
-                      future: _searchRepo.searchChannel(query),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<QueryResults<Channel>> snapshot,
-                      ) {
-                        if (snapshot.hasData && !snapshot.hasError) {
-                          return ListView.builder(
-                            itemCount: snapshot.data.results.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final Channel item = snapshot.data.results[index];
-                              return InkWell(
-                                onTap: () => _addItem(item.name),
-                                child: ChannelPreview(
-                                  channel: item,
-                                ),
-                              );
-                            },
-                          );
-                        }
-                        if (snapshot.hasData && snapshot.data.results.isEmpty) {
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          height: MediaQuery.of(context).size.height * .6,
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+          ),
+          child: Stack(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildSearchField(),
+                  Expanded(
+                    child: FutureBuilder<QueryResults<Channel>>(
+                        future: _searchRepo.searchChannel(query),
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<QueryResults<Channel>> snapshot,
+                        ) {
+                          if (snapshot.hasData && !snapshot.hasError) {
+                            return ListView.builder(
+                              itemCount: snapshot.data.results.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final Channel item =
+                                    snapshot.data.results[index];
+                                return InkWell(
+                                  onTap: () => _addItem(item.name),
+                                  child: ChannelPreview(
+                                    channel: item,
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                          if (snapshot.hasData &&
+                              snapshot.data.results.isEmpty) {
+                            return Container(
+                              child: const Center(
+                                child: Text('Add new channel +'),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasError) {
+                            return Container(
+                              child: Center(
+                                child: Text(snapshot.error.toString()),
+                              ),
+                            );
+                          }
                           return Container(
                             child: const Center(
-                              child: Text('Add new channel +'),
+                              child: CircularProgressIndicator(),
                             ),
                           );
-                        }
-                        if (snapshot.hasError) {
-                          return Container(
-                            child: Center(
-                              child: Text(snapshot.error.toString()),
-                            ),
-                          );
-                        }
-                        return Container(
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }),
-                ),
-              ],
-            ),
-            if (_channels.isNotEmpty) _buildBottomSelection(),
-          ],
+                        }),
+                  ),
+                ],
+              ),
+              if (_channels.isNotEmpty) _buildBottomSelection(),
+            ],
+          ),
         ),
       ),
     );

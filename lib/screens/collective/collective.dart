@@ -42,7 +42,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  final ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
   bool _actionsVisible = false;
 
   @override
@@ -73,8 +72,11 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   void _scrollToTop() {
     if (_collectiveController.hasClients) {
-      _collectiveController.animateTo(0.0,
-          duration: kTabScrollDuration, curve: Curves.decelerate);
+      _collectiveController.animateTo(
+        0.0,
+        duration: kTabScrollDuration,
+        curve: Curves.decelerate,
+      );
     }
   }
 
@@ -114,7 +116,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
                   opacity: _actionsVisible ? 0.0 : 1.0,
                   child: ExpressionFeed(
                     collectiveController: _collectiveController,
-                    appbarTitle: _appbarTitle,
                   ),
                 ),
                 AnimatedOpacity(
@@ -142,7 +143,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
           () => Navigator.of(context).pushReplacement(Welcome.route()),
         )..add(
             FetchCollective(
-              ExpressionQueryParams(ExpressionContextType.Collective, '0'),
+              ExpressionQueryParams(
+                contextType: ExpressionContextType.Collective,
+              ),
             ),
           ),
       ),
@@ -159,8 +162,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
           (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
             FetchCollective(
               ExpressionQueryParams(
-                ExpressionContextType.Collective,
-                '0',
                 channels: value != null ? [value.name] : null,
               ),
             ),
@@ -172,50 +173,42 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(BuildContext context, PerspectiveModel perspective) {
-    //TODO(dominik): implement switching via bloc
+    final bloc = context.bloc<CollectiveBloc>();
     if (perspective.name == 'JUNTO') {
-      _appbarTitle.value = 'JUNTO';
-      context.bloc<CollectiveBloc>().add(
-            FetchCollective(
-              ExpressionQueryParams(
-                ExpressionContextType.Collective,
-                '0',
-              ),
-            ),
-          );
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.Collective,
+            name: perspective.name,
+          ),
+        ),
+      );
     } else if (perspective.name == 'Connections') {
-      _appbarTitle.value = 'Connections';
-      context.bloc<CollectiveBloc>().add(
-            FetchCollective(
-              ExpressionQueryParams(
-                ExpressionContextType.ConnectPerspective,
-                '0',
-                dos: '0',
-                context: perspective.address,
-              ),
-            ),
-          );
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.ConnectPerspective,
+            dos: '0',
+            context: perspective.address,
+            name: perspective.name,
+          ),
+        ),
+      );
     } else {
-      setState(() {
-        //TODO this may be wrong
-        if (perspective.name.contains("'s Follow Perspective")) {
-          _appbarTitle.value = 'Subscriptions';
-        } else {
-          _appbarTitle.value = perspective.name;
-        }
-      });
-
-      context.bloc<CollectiveBloc>().add(
-            FetchCollective(
-              ExpressionQueryParams(
-                ExpressionContextType.FollowPerspective,
-                '0',
-                dos: null,
-                context: perspective.address,
-              ),
-            ),
-          );
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.FollowPerspective,
+            dos: null,
+            context: perspective.address,
+            name: perspective.name.contains("'s Follow Perspective")
+                ? 'Subscriptions'
+                : perspective.name,
+          ),
+        ),
+      );
     }
+    context.bloc<ChannelFilteringBloc>().add(FilterClear());
     setState(() {
       _actionsVisible = false;
     });

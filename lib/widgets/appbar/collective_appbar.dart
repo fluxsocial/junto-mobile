@@ -57,7 +57,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                           ),
                           const SizedBox(width: 7.5),
                           Text(
-                            appbarTitle,
+                            appbarTitle ?? 'JUNTO',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
@@ -102,7 +102,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () => data
-                                .switchColumnLayout(ExpressionFeedLayout.two),
+                                ?.switchColumnLayout(ExpressionFeedLayout.two),
                             child: Container(
                               color: Colors.transparent,
                               alignment: Alignment.centerRight,
@@ -110,14 +110,14 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               child: Icon(
                                 CustomIcons.twocolumn,
                                 size: 20,
-                                color: data.twoColumnView
+                                color: data?.twoColumnView == true
                                     ? Theme.of(context).primaryColorDark
                                     : Theme.of(context).primaryColorLight,
                               ),
                             ),
                           ),
                           GestureDetector(
-                            onTap: () => data.switchColumnLayout(
+                            onTap: () => data?.switchColumnLayout(
                                 ExpressionFeedLayout.single),
                             child: Container(
                               color: Colors.transparent,
@@ -126,7 +126,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               child: Icon(
                                 CustomIcons.singlecolumn,
                                 size: 20,
-                                color: data.twoColumnView
+                                color: data?.twoColumnView == true
                                     ? Theme.of(context).primaryColorLight
                                     : Theme.of(context).primaryColorDark,
                               ),

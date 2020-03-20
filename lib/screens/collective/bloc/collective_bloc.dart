@@ -18,7 +18,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   final ExpressionRepo expressionRepository;
   final VoidCallback onUnauthorized;
   Map<String, String> _params;
-  ExpressionQueryParams _previousParams;
+  ExpressionQueryParams _previousParameters;
   int _currentPage = 0;
   String _lastTimeStamp;
 
@@ -27,9 +27,13 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     Stream<CollectiveEvent> events,
     Stream<CollectiveState> Function(CollectiveEvent event) next,
   ) {
-    final debounceStream =
-        events.debounceTime(const Duration(milliseconds: 1000));
-    return super.transformEvents(debounceStream, next);
+    final nonDebounceStream = events.where((event) => event is FetchCollective);
+    final debounceStream = events
+        .where((event) =>
+            event is RefreshCollective || event is FetchMoreCollective)
+        .debounceTime(const Duration(milliseconds: 1000));
+    return super.transformEvents(
+        MergeStream([nonDebounceStream, debounceStream]), next);
   }
 
   @override
@@ -52,12 +56,18 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
 
   Stream<CollectiveState> _mapRefreshToState(RefreshCollective event) async* {
     try {
-      // we are not emitting LoadingState here as we are using RefreshIndicator to show loading state
+      if (state is CollectivePopulated) {
+        // we are not emitting LoadingState here as we are using RefreshIndicator to show loading state
 
-      _updateParams(true, _previousParams);
-      final expressions = await _fetchExpressions();
+        _updateParams(true, _previousParameters);
+        final expressions = await _fetchExpressions();
 
-      yield CollectivePopulated(expressions.results);
+        yield CollectivePopulated(
+          expressions.results,
+          false,
+          (state as CollectivePopulated).name,
+        );
+      }
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {
@@ -70,12 +80,13 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   Stream<CollectiveState> _mapFetchCollectiveToState(
       FetchCollective event) async* {
     try {
+      final name = getCurrentName(event);
       yield CollectiveLoading();
 
       _updateParams(true, event.param);
       final expressions = await _fetchExpressions();
 
-      yield CollectivePopulated(expressions.results);
+      yield CollectivePopulated(expressions.results, false, name);
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {
@@ -85,20 +96,36 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     }
   }
 
+  String getCurrentName(FetchCollective event) {
+    String name = event.param.name;
+    if (name == null && state is CollectivePopulated) {
+      name = (state as CollectivePopulated)?.name;
+    }
+    return name;
+  }
+
   Stream<CollectiveState> _mapFetchMoreCollectiveToState(
     FetchMoreCollective event,
   ) async* {
     try {
       if (_params != null && state is CollectivePopulated) {
         final currentState = state as CollectivePopulated;
-        yield CollectivePopulated(currentState.results, true);
+        yield CollectivePopulated(
+          currentState.results,
+          true,
+          currentState.name,
+        );
 
         _updateParams(false, null);
         final expressions = await _fetchExpressions();
 
         final currentResult = currentState.results;
         currentResult.addAll(expressions.results);
-        yield CollectivePopulated(currentResult, false);
+        yield CollectivePopulated(
+          currentResult,
+          false,
+          currentState.name,
+        );
       }
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
@@ -118,22 +145,35 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     return expressions;
   }
 
-  void _updateParams(bool clean, ExpressionQueryParams param) {
+  void _updateParams(bool clean, ExpressionQueryParams currentParameters) {
     if (clean) {
       //refreshing or fetching from zero
+      final currentContextType = currentParameters.contextType ??
+          _previousParameters?.contextType ??
+          ExpressionContextType.Collective;
+
+      final currentChannels = currentParameters.channels ?? [];
+
+      final currentContext =
+          currentParameters.context ?? _previousParameters?.context;
+
       _lastTimeStamp = null;
       _currentPage = 0;
-      _previousParams = param;
-      _params = <String, String>{
-        'context_type': ExpressionContextTypeEnumMap[param.contextType],
-        'pagination_position': '$_currentPage',
-        if (param?.channels?.isNotEmpty == true)
-          'channels[0]': param.channels[0]
-      };
+      _previousParameters = ExpressionQueryParams(
+        contextType: currentContextType,
+        dos: currentParameters.dos,
+        paginationPosition: currentParameters.paginationPosition,
+        context: currentContext,
+        channels: currentChannels,
+      );
 
-      if (param.context != null) {
-        _params['context'] = param.context;
-      }
+      _params = <String, String>{
+        'context_type': ExpressionContextTypeEnumMap[currentContextType],
+        'pagination_position': '$_currentPage',
+        if (currentChannels.isNotEmpty == true)
+          'channels[0]': currentChannels[0],
+        if (currentContext != null) 'context': currentContext,
+      };
     } else {
       // scrolling down
       _params['last_timestamp'] = _lastTimeStamp;

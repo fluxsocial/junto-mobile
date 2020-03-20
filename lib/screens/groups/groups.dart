@@ -167,7 +167,9 @@ class JuntoGroupsState extends State<JuntoGroups>
           () => Navigator.of(context).pushReplacement(Welcome.route()),
         )..add(
             FetchCollective(
-              ExpressionQueryParams(ExpressionContextType.Collective, '0'),
+              ExpressionQueryParams(
+                contextType: ExpressionContextType.Collective,
+              ),
             ),
           ),
       ),
@@ -178,8 +180,7 @@ class JuntoGroupsState extends State<JuntoGroups>
             (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
                   FetchCollective(
                     ExpressionQueryParams(
-                      ExpressionContextType.Collective,
-                      '0',
+                      contextType: ExpressionContextType.Collective,
                       channels: [value.name],
                     ),
                   ),

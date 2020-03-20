@@ -21,15 +21,15 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh> {
   Widget build(BuildContext context) {
     return NotificationListener(
       onNotification: _onScrollNotification,
-      child: BlocListener<CollectiveBloc, CollectiveState>(
-        listener: _blocListener,
-        child: RefreshIndicator(
-          onRefresh: () {
-            refreshCompleter = Completer();
-            context.bloc<CollectiveBloc>().add(RefreshCollective());
-            return refreshCompleter.future;
-          },
-          displacement: MediaQuery.of(context).size.height / 4,
+      child: RefreshIndicator(
+        onRefresh: () {
+          refreshCompleter = Completer();
+          context.bloc<CollectiveBloc>().add(RefreshCollective());
+          return refreshCompleter.future;
+        },
+        displacement: MediaQuery.of(context).size.height / 4,
+        child: BlocListener<CollectiveBloc, CollectiveState>(
+          listener: _blocListener,
           child: widget.child,
         ),
       ),
@@ -37,7 +37,8 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh> {
   }
 
   void _blocListener(BuildContext context, CollectiveState state) {
-    if (state is CollectivePopulated) {
+    if (state is CollectivePopulated &&
+        refreshCompleter?.isCompleted == false) {
       refreshCompleter?.complete();
     }
     if (state is CollectiveError) {

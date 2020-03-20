@@ -13,23 +13,14 @@ enum ExpressionFeedLayout { single, two }
 /// Homepage feed containing a List of expression for the given perspective.
 /// The following parameters must be supplied:
 ///  - [collectiveController]
-///  - [appbarTitle]
-class ExpressionFeed extends StatefulWidget {
+class ExpressionFeed extends StatelessWidget {
   const ExpressionFeed({
     Key key,
     @required this.collectiveController,
-    @required this.appbarTitle,
   })  : assert(collectiveController != null),
-        assert(appbarTitle != null),
         super(key: key);
   final ScrollController collectiveController;
-  final ValueNotifier<String> appbarTitle;
 
-  @override
-  _ExpressionFeedState createState() => _ExpressionFeedState();
-}
-
-class _ExpressionFeedState extends State<ExpressionFeed> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CollectiveBloc, CollectiveState>(
@@ -40,10 +31,10 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
         }
         return ExpressionScrollRefresh(
           child: CustomScrollView(
-            controller: widget.collectiveController,
+            controller: collectiveController,
             slivers: <Widget>[
               AppBarWrapper(
-                title: widget.appbarTitle.value,
+                title: state is CollectivePopulated ? state.name : 'JUNTO',
               ),
               if (state is CollectivePopulated) CollectivePopulatedList(state),
               if (state is CollectivePopulated && state.loadingMore == true)

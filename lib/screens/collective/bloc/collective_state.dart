@@ -6,9 +6,11 @@ abstract class CollectiveState {}
 class CollectiveInitial extends CollectiveState {}
 
 class CollectivePopulated extends CollectiveState {
-  CollectivePopulated(this.results, [this.loadingMore = false]);
+  CollectivePopulated(this.results,
+      [this.loadingMore = false, this.name = 'JUNTO']);
   final List<ExpressionResponse> results;
   final bool loadingMore;
+  final String name;
 }
 
 class CollectiveLoading extends CollectiveState {}
