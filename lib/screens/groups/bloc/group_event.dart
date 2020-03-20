@@ -4,8 +4,8 @@ abstract class GroupBlocEvent {
   const GroupBlocEvent();
 }
 
-class FetchPacks extends GroupBlocEvent {
-  FetchPacks(this.userAddress);
+class FetchMyPack extends GroupBlocEvent {
+  FetchMyPack(this.userAddress);
   final String userAddress;
 }
 

@@ -13,7 +13,7 @@ part 'group_state.dart';
 class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
   GroupBloc(this.groupRepo, this.userDataProvider);
   final GroupRepo groupRepo;
-final UserDataProvider userDataProvider;
+  final UserDataProvider userDataProvider;
 
   @override
   GroupBlocState get initialState => GroupBlocInitial();
@@ -22,13 +22,13 @@ final UserDataProvider userDataProvider;
   Stream<GroupBlocState> mapEventToState(
     GroupBlocEvent event,
   ) async* {
-    if (event is FetchPacks) {
-      _mapFetchPacksToState(event);
+    if (event is FetchMyPack) {
+      yield* _mapFetchPacksToState(event);
     }
     if (event is FetchPacksMembers) {}
   }
 
-  Stream<GroupBlocState> _mapFetchPacksToState(FetchPacks event) async* {
+  Stream<GroupBlocState> _mapFetchPacksToState(FetchMyPack event) async* {
     try {
       yield GroupLoading();
       final groups = await groupRepo.getUserGroups(event.userAddress);

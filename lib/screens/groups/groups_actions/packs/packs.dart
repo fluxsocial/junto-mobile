@@ -3,8 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
+import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
@@ -16,7 +19,7 @@ class Packs extends StatefulWidget {
   const Packs({this.userProfile, this.changeGroup});
 
   final UserData userProfile;
-  final Function changeGroup;
+  final ValueChanged<Group> changeGroup;
 
   @override
   State<StatefulWidget> createState() {
@@ -24,7 +27,7 @@ class Packs extends StatefulWidget {
   }
 }
 
-class PacksState extends State<Packs> with ListDistinct {
+class PacksState extends State<Packs> {
   String _userAddress;
   UserData _userProfile;
   GroupRepo _groupRepo;
@@ -182,64 +185,8 @@ class PacksState extends State<Packs> with ListDistinct {
                 });
               },
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    if (_userAddress != null)
-                      FutureBuilder<UserGroupsResponse>(
-                        future: userGroups,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<UserGroupsResponse> snapshot) {
-                          if (snapshot.hasError) {
-                            print(snapshot.error);
-                            return Expanded(
-                              child: Center(
-                                child: Transform.translate(
-                                  offset: const Offset(0.0, -50),
-                                  child: const Text(
-                                      'Hmm, something is up with our server'),
-                                ),
-                              ),
-                            );
-                          }
-                          if (snapshot.hasData) {
-                            final List<Group> ownedGroups = snapshot.data.owned;
-                            final List<Group> associatedGroups =
-                                snapshot.data.associated;
-
-                            final List<Group> userPacks = distinct<Group>(
-                                    ownedGroups, associatedGroups)
-                                .where(
-                                    (Group group) => group.groupType == 'Pack')
-                                .toList();
-
-                            return Expanded(
-                                child: ListView(
-                              padding: const EdgeInsets.all(0),
-                              children: <Widget>[
-                                for (Group group in userPacks)
-                                  GestureDetector(
-                                    onTap: () {
-                                      widget.changeGroup(group);
-                                    },
-                                    child: PackPreview(
-                                      group: group,
-                                      userProfile: _userProfile,
-                                    ),
-                                  )
-                              ],
-                            ));
-                          }
-                          return Expanded(
-                            child: Center(
-                              child: Transform.translate(
-                                offset: const Offset(0.0, -50),
-                                child: JuntoProgressIndicator(),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                  ],
+                MyPacks(
+                  selectedGroup: widget.changeGroup,
                 ),
                 Column(
                   children: <Widget>[
@@ -293,6 +240,89 @@ class PacksState extends State<Packs> with ListDistinct {
           )
         ],
       ),
+    );
+  }
+}
+
+class MyPacks extends StatefulWidget {
+  const MyPacks({
+    Key key,
+    @required this.selectedGroup,
+  }) : super(key: key);
+  final ValueChanged<Group> selectedGroup;
+
+  @override
+  _MyPacksState createState() => _MyPacksState();
+}
+
+class _MyPacksState extends State<MyPacks> with ListDistinct {
+  UserData _userProfile;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
+  }
+
+  Widget _loader() {
+    return Expanded(
+      child: Center(
+        child: Transform.translate(
+          offset: const Offset(0.0, -50),
+          child: JuntoProgressIndicator(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        BlocBuilder<GroupBloc, GroupBlocState>(
+          builder: (context, state) {
+            print(state);
+            if (state is GroupLoading) {
+              return _loader();
+            }
+            if (state is GroupLoaded) {
+              final List<Group> ownedGroups = state.groups.owned;
+              final List<Group> associatedGroups = state.groups.associated;
+
+              final List<Group> userPacks =
+                  distinct<Group>(ownedGroups, associatedGroups)
+                      .where((Group group) => group.groupType == 'Pack')
+                      .toList();
+
+              return Expanded(
+                  child: ListView(
+                padding: const EdgeInsets.all(0),
+                children: <Widget>[
+                  for (Group group in userPacks)
+                    GestureDetector(
+                      onTap: () => widget.selectedGroup(group),
+                      child: PackPreview(
+                        group: group,
+                        userProfile: _userProfile,
+                      ),
+                    )
+                ],
+              ));
+            }
+            if (state is GroupError) {
+              return Expanded(
+                child: Center(
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -50),
+                    child: const Text('Hmm, something is up with our server'),
+                  ),
+                ),
+              );
+            }
+            return SizedBox();
+          },
+        ),
+      ],
     );
   }
 }
