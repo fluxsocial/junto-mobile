@@ -23,14 +23,14 @@ class ExpressionFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectiveBloc, CollectiveState>(
-      builder: (BuildContext context, CollectiveState state) {
-        if (state is CollectiveError) {
-          //TODO(Nash): Add illustration for error state.
-          return CollectiveErrorLabel();
-        }
-        return ExpressionScrollRefresh(
-          child: CustomScrollView(
+    return ExpressionScrollRefresh(
+      child: BlocBuilder<CollectiveBloc, CollectiveState>(
+        builder: (BuildContext context, CollectiveState state) {
+          if (state is CollectiveError) {
+            //TODO(Nash): Add illustration for error state.
+            return CollectiveErrorLabel();
+          }
+          return CustomScrollView(
             controller: collectiveController,
             slivers: <Widget>[
               AppBarWrapper(
@@ -42,9 +42,9 @@ class ExpressionFeed extends StatelessWidget {
               if (state is CollectiveLoading)
                 const ExpressionProgressIndicator(),
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

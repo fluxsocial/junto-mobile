@@ -18,12 +18,17 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh> {
   Completer<void> refreshCompleter;
 
   @override
+  void initState() {
+    super.initState();
+    refreshCompleter = Completer<void>();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return NotificationListener(
       onNotification: _onScrollNotification,
       child: RefreshIndicator(
         onRefresh: () {
-          refreshCompleter = Completer();
           context.bloc<CollectiveBloc>().add(RefreshCollective());
           return refreshCompleter.future;
         },
@@ -40,6 +45,7 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh> {
     if (state is CollectivePopulated &&
         refreshCompleter?.isCompleted == false) {
       refreshCompleter?.complete();
+      refreshCompleter = Completer();
     }
     if (state is CollectiveError) {
       refreshCompleter?.completeError('Error during fetching');

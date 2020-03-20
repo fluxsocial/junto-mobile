@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   image_picker: 0.6.3+4
   shared_preferences: 0.5.6+2
   cupertino_icons: 0.1.3
