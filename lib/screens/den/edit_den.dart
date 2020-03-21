@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -180,48 +181,17 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   }
 
   Widget _displayCurrentProfilePicture() {
-    if (_userData != null &&
-        _userData.user.profilePicture.isNotEmpty &&
-        imageFile == null) {
-      return ClipOval(
-        child: CachedNetworkImage(
-            imageUrl: _userData.user.profilePicture[0],
-            height: 45,
-            width: 45,
-            fit: BoxFit.cover,
-            placeholder: (BuildContext context, String _) {
-              return Container(
-                alignment: Alignment.center,
-                height: 45.0,
-                width: 45.0,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.3, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primary,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Icon(
-                  CustomIcons.spheres,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 17,
-                ),
-              );
-            }),
+    if (_userData != null && imageFile == null) {
+      return MemberAvatar(
+        diameter: 60,
+        profilePicture: _userData.user.profilePicture,
       );
-    } else if (_userData != null &&
-        _userData.user.profilePicture.isNotEmpty &&
-        imageFile != null) {
+    } else {
       return ClipOval(
         child: Container(
           alignment: Alignment.center,
-          height: 45.0,
-          width: 45.0,
+          height: 60.0,
+          width: 60.0,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.bottomLeft,
@@ -236,29 +206,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
           child: Image.file(imageFile),
         ),
       );
-    } else
-      return Container(
-        alignment: Alignment.center,
-        height: 45.0,
-        width: 45.0,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            stops: const <double>[0.3, 0.9],
-            colors: <Color>[
-              Theme.of(context).colorScheme.secondary,
-              Theme.of(context).colorScheme.primary
-            ],
-          ),
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: Image.asset(
-          'assets/images/junto-mobile__logo.png',
-          color: Colors.white,
-          height: 15,
-        ),
-      );
+    }
   }
 
   @override
@@ -333,6 +281,16 @@ class JuntoEditDenState extends State<JuntoEditDen> {
               child: ListView(
                 children: <Widget>[
                   GestureDetector(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * .2,
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.asset(
+                        'assets/images/junto-mobile__themes--rainbow.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
                     onTap: () {
                       _onPickPressed();
                     },
@@ -342,8 +300,9 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                              color: Theme.of(context).dividerColor,
-                              width: .75),
+                            color: Theme.of(context).dividerColor,
+                            width: .75,
+                          ),
                         ),
                       ),
                       child: Row(children: <Widget>[
@@ -354,127 +313,109 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       ]),
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                                width: .75),
-                          ),
-                        ),
-                        child: TextField(
-                          controller: _nameController,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Full Name',
-                          ),
-                          maxLines: null,
-                          style: Theme.of(context).textTheme.bodyText1,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: .75,
                         ),
                       ),
-                    ],
+                    ),
+                    child: TextField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Full Name',
+                      ),
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                                width: .75),
-                          ),
-                        ),
-                        child: TextField(
-                          controller: _bioController,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Short/Long Bio',
-                          ),
-                          maxLines: null,
-                          style: Theme.of(context).textTheme.bodyText1,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: .75,
                         ),
                       ),
-                    ],
+                    ),
+                    child: TextField(
+                      controller: _locationController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Location',
+                      ),
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                                width: .75),
-                          ),
-                        ),
-                        child: TextField(
-                          controller: _locationController,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Location',
-                          ),
-                          maxLines: null,
-                          style: Theme.of(context).textTheme.bodyText1,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: .75,
                         ),
                       ),
-                    ],
+                    ),
+                    child: TextField(
+                      controller: _genderController,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Gender Pronouns'),
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                                width: .75),
-                          ),
-                        ),
-                        child: TextField(
-                          controller: _genderController,
-                          decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Gender Pronouns'),
-                          maxLines: null,
-                          style: Theme.of(context).textTheme.bodyText1,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: .75,
                         ),
                       ),
-                    ],
+                    ),
+                    child: TextField(
+                      controller: _websiteController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Website',
+                      ),
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 10),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                                width: .75),
-                          ),
-                        ),
-                        child: TextField(
-                          controller: _websiteController,
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: 'Website'),
-                          maxLines: null,
-                          style: Theme.of(context).textTheme.bodyText1,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: .75,
                         ),
                       ),
-                    ],
+                    ),
+                    child: TextField(
+                      controller: _bioController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Short/Long Bio',
+                      ),
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
                 ],
               ),

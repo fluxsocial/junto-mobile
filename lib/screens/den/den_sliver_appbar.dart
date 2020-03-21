@@ -60,7 +60,9 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
               child: Column(
@@ -132,7 +134,9 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
       ),
       expandedHeight: _flexibleHeightSpace == null
           ? 1000
-          : _flexibleHeightSpace + MediaQuery.of(context).size.height * .2 + .75,
+          : _flexibleHeightSpace +
+              MediaQuery.of(context).size.height * .2 +
+              .75,
       forceElevated: false,
     );
   }
