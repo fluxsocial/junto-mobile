@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 
 class CreateLongform extends StatefulWidget {
@@ -103,10 +102,7 @@ class CreateLongformState extends State<CreateLongform> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Write a title (optional)',
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      .copyWith(color: Colors.black54),
+                  hintStyle: Theme.of(context).textTheme.headline6,
                 ),
                 cursorColor: JuntoPalette.juntoGrey,
                 cursorWidth: 2,
