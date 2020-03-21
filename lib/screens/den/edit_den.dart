@@ -30,9 +30,9 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   UserData _userData;
 
   List<File> profilePictures = <File>[];
-  File backgroundPhoto;
-
   File profilePictureFile;
+
+  String backgroundPhotoKey;
   File backgroundPhotoFile;
 
   TextEditingController _nameController;
@@ -131,6 +131,21 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     JuntoLoader.showLoader(context);
 
     Map<String, dynamic> _newProfileBody;
+
+    _newProfileBody = <String, dynamic>{
+      'name': _nameController.value.text,
+      'location': _locationController.value.text == ''
+          ? <String>[]
+          : <String>[_locationController.value.text],
+      'bio': _bioController?.value?.text,
+      'website': _websiteController.value.text == ''
+          ? <String>[]
+          : <String>[_websiteController.value.text],
+      'gender': _genderController.value.text == ''
+          ? <String>[]
+          : <String>[_genderController.value.text],
+    };
+
     // check if user uploaded profile pictures
     if (profilePictures != null && profilePictures.isNotEmpty) {
       // instantiate list to store photo keys retrieve from /s3
@@ -160,36 +175,29 @@ class JuntoEditDenState extends State<JuntoEditDen> {
           <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
       ];
 
-      _newProfileBody = _newProfileBody = <String, dynamic>{
-        'profile_picture': _profilePictureKeys,
-        'name': _nameController.value.text,
-        'location': _locationController.value.text == ''
-            ? <String>[]
-            : <String>[_locationController.value.text],
-        'bio': _bioController.value.text,
-        'website': _websiteController.value.text == ''
-            ? <String>[]
-            : <String>[_websiteController.value.text],
-        'gender': _genderController.value.text == ''
-            ? <String>[]
-            : <String>[_genderController.value.text],
-      };
-    } else {
-      _newProfileBody = <String, dynamic>{
-        'name': _nameController.value.text,
-        'location': _locationController.value.text == ''
-            ? <String>[]
-            : <String>[_locationController.value.text],
-        'bio': _bioController?.value?.text,
-        'website': _websiteController.value.text == ''
-            ? <String>[]
-            : <String>[_websiteController.value.text],
-        'gender': _genderController.value.text == ''
-            ? <String>[]
-            : <String>[_genderController.value.text],
-      };
+      _newProfileBody['profile_picture'] = _profilePictureKeys;
     }
 
+    // check if user uploaded background photo
+    if (backgroundPhotoFile != null) {
+      // instantiate list to store photo keys retrieve from /s3
+      try {
+        final String key =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto(
+          true,
+          '.png',
+          backgroundPhotoFile,
+        );
+        setState(() {
+          backgroundPhotoKey = key;
+        });
+      } catch (error) {
+        print(error);
+        JuntoLoader.hide();
+      }
+      _newProfileBody['background_photo'] = backgroundPhotoKey;
+    }
     // update user
     try {
       await Provider.of<UserRepo>(context, listen: false).updateUser(
