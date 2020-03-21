@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -19,6 +17,7 @@ import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_text_field.dart'
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_appbar.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_header_space.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_profile_picture.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_background_photo.dart';
 
 class JuntoEditDen extends StatefulWidget {
   @override
@@ -218,47 +217,6 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     }
   }
 
-  Widget _displayCurrentBackgroundPhoto() {
-    return GestureDetector(
-      onTap: () {
-        _onPickPressed('background');
-      },
-      child: Stack(
-        children: <Widget>[
-          if (backgroundPhotoFile == null)
-            Container(
-              height: MediaQuery.of(context).size.height * .2,
-              width: MediaQuery.of(context).size.width,
-              child: Image.asset(
-                'assets/images/junto-mobile__themes--rainbow.png',
-                fit: BoxFit.cover,
-              ),
-            )
-          else
-            Container(
-              height: MediaQuery.of(context).size.height * .2,
-              width: MediaQuery.of(context).size.width,
-              child: Image.file(
-                backgroundPhotoFile,
-                fit: BoxFit.cover,
-              ),
-            ),
-          Container(
-            height: MediaQuery.of(context).size.height * .2,
-            width: MediaQuery.of(context).size.width,
-            alignment: Alignment.center,
-            color: Colors.black38,
-            child: Icon(
-              CustomIcons.camera,
-              size: 24,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -276,7 +234,10 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                     children: <Widget>[
                       Column(
                         children: <Widget>[
-                          _displayCurrentBackgroundPhoto(),
+                          EditDenBackgroundPhoto(
+                            backgroundPhotoFile: backgroundPhotoFile,
+                            onPickPressed: _onPickPressed,
+                          ),
                           EditDenHeaderSpace(),
                           EditDenTextField(
                             controller: _nameController,
