@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
@@ -16,22 +17,15 @@ class SignUpPhotos extends StatefulWidget {
 
 class SignUpPhotosState extends State<SignUpPhotos> {
   File profilePictureOne;
-  File profilePictureTwo;
 
   List<File> returnDetails() {
-    return <File>[profilePictureOne, profilePictureTwo];
+    return <File>[profilePictureOne];
   }
 
-  Widget _buildPhotoSelector({int profilePictureNumber, File profilePicture}) {
+  Widget _buildPhotoSelector({File profilePicture}) {
     return GestureDetector(
       onTap: () async {
-        if (profilePictureNumber == 1) {
-          await _onPickPressed(profilePictureNumber);
-        } else if (profilePictureNumber == 2 && profilePictureOne != null) {
-          await _onPickPressed(profilePictureNumber);
-        } else {
-          return;
-        }
+        await _onPickPressed();
       },
       child: Container(
         color: Colors.transparent,
@@ -39,38 +33,63 @@ class SignUpPhotosState extends State<SignUpPhotos> {
           children: <Widget>[
             Container(
               alignment: Alignment.center,
-              height: 240,
-              width: 240,
+              height: MediaQuery.of(context).size.width - 40,
+              width: MediaQuery.of(context).size.width - 40,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 2),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 3,
+                ),
                 borderRadius: BorderRadius.circular(5),
               ),
               child: profilePicture == null
-                  ? const Text(
-                      '+',
-                      style: TextStyle(color: Colors.white, fontSize: 60),
+                  ? Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 60,
                     )
                   : Image.file(
                       profilePicture,
                       fit: BoxFit.fitHeight,
                     ),
             ),
+            if (profilePictureOne != null)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    profilePictureOne = null;
+                  });
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  child: Text(
+                    'REMOVE PHOTO',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      letterSpacing: 1.7,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 
-  Future<void> _onPickPressed(int profilePictureNumber) async {
+  Future<void> _onPickPressed() async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      if (profilePictureNumber == 1) {
-        setState(() => profilePictureOne = null);
-      } else if (profilePictureNumber == 2) {
-        setState(() => profilePictureTwo = null);
-      }
+    if (image == null && profilePictureOne == null) {
+      setState(() => profilePictureOne = null);
+      return;
+    } else if (image == null && profilePictureOne != null) {
       return;
     }
+
     final File cropped = await ImageCroppingDialog.show(
       context,
       image,
@@ -80,18 +99,11 @@ class SignUpPhotosState extends State<SignUpPhotos> {
     );
     Navigator.of(context).focusScopeNode.unfocus();
     if (cropped == null) {
-      if (profilePictureNumber == 1) {
-        setState(() => profilePictureOne = null);
-      } else if (profilePictureNumber == 2) {
-        setState(() => profilePictureTwo = null);
-      }
+      setState(() => profilePictureOne = null);
+
       return;
     }
-    if (profilePictureNumber == 1) {
-      setState(() => profilePictureOne = cropped);
-    } else if (profilePictureNumber == 2) {
-      setState(() => profilePictureTwo = cropped);
-    }
+    setState(() => profilePictureOne = cropped);
   }
 
   @override
@@ -105,12 +117,12 @@ class SignUpPhotosState extends State<SignUpPhotos> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SignUpPageTitle(title: 'Add a profile picture'),
-              const SizedBox(height: 140),
+              SizedBox(height: MediaQuery.of(context).size.height * .1),
               Expanded(
                 child: Center(
                   child: _buildPhotoSelector(
-                      profilePictureNumber: 1,
-                      profilePicture: profilePictureOne),
+                    profilePicture: profilePictureOne,
+                  ),
                 ),
               ),
             ]),

@@ -14,10 +14,11 @@ class JuntoName extends StatelessWidget {
       child: Text(
         'JUNTO',
         style: TextStyle(
-            color: Theme.of(context).primaryColorDark,
-            fontWeight: FontWeight.w400,
-            fontSize: 28,
-            letterSpacing: 1.8),
+          color: Theme.of(context).primaryColor,
+          fontWeight: FontWeight.w400,
+          fontSize: 28,
+          letterSpacing: 1.8,
+        ),
         textAlign: TextAlign.center,
       ),
     );

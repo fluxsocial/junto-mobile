@@ -28,10 +28,7 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
       yield* _mapFetchToState(event);
     }
     if (event is RemovePerspective) {
-      //
-    }
-    if (event is EditPerspective) {
-      //
+      // TODO: move logic of removing perspectives to bloc
     }
   }
 
@@ -40,12 +37,6 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
       return await userRepository.getUserPerspective(address);
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
-      // showDialog(
-      //   context: context,
-      //   builder: (BuildContext context) => SingleActionDialog(
-      //     dialogText: error.message,
-      //   ),
-      // );
       return null;
     }
   }

@@ -42,7 +42,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  final ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
   bool _actionsVisible = false;
 
   @override
@@ -63,16 +62,21 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void _addPostFrameCallbackToHideFabOnScroll() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
-      if (_collectiveController.hasClients)
+      if (_collectiveController.hasClients) {
         _collectiveController.position.isScrollingNotifier.addListener(
           _onScrollingHasChanged,
         );
+      }
     });
   }
 
   void _scrollToTop() {
     if (_collectiveController.hasClients) {
-      _collectiveController.animateTo(0.0, duration: kTabScrollDuration, curve: Curves.decelerate);
+      _collectiveController.animateTo(
+        0.0,
+        duration: kTabScrollDuration,
+        curve: Curves.decelerate,
+      );
     }
   }
 
@@ -112,7 +116,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
                   opacity: _actionsVisible ? 0.0 : 1.0,
                   child: ExpressionFeed(
                     collectiveController: _collectiveController,
-                    appbarTitle: _appbarTitle,
                   ),
                 ),
                 AnimatedOpacity(
@@ -120,7 +123,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
                   opacity: _actionsVisible ? 1.0 : 0.0,
                   child: Visibility(
                     visible: _actionsVisible,
-                    child: const JuntoCollectiveActions(),
+                    child:
+                        JuntoCollectiveActions(onChanged: _changePerspective),
                   ),
                 ),
               ],
@@ -139,7 +143,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
           () => Navigator.of(context).pushReplacement(Welcome.route()),
         )..add(
             FetchCollective(
-              ExpressionQueryParams(ExpressionContextType.Collective, '0'),
+              ExpressionQueryParams(
+                contextType: ExpressionContextType.Collective,
+              ),
             ),
           ),
       ),
@@ -156,8 +162,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
           (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
             FetchCollective(
               ExpressionQueryParams(
-                ExpressionContextType.Collective,
-                '0',
                 channels: value != null ? [value.name] : null,
               ),
             ),
@@ -168,36 +172,43 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   // Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(PerspectiveModel perspective) {
-    //TODO(dominik): implement switching via bloc
-    // if (perspective.name == 'JUNTO') {
-    //   _appbarTitle.value = 'JUNTO';
-    //   _expressionCompleter.value = getCollectiveExpressions(
-    //       contextType: 'Collective', paginationPos: 0, channels: _channels);
-    // } else if (perspective.name == 'Connections') {
-    //   _appbarTitle.value = 'Connections';
-    //   _expressionCompleter.value = getCollectiveExpressions(
-    //     paginationPos: 0,
-    //     contextType: 'ConnectPerspective',
-    //     dos: 0,
-    //   );
-    // } else {
-    //   setState(() {
-    //     if (perspective.name ==
-    //         _userProfile.user.name + "'s Follow Perspective") {
-    //       _appbarTitle.value = 'Subscriptions';
-    //     } else {
-    //       _appbarTitle.value = perspective.name;
-    //     }
-    //   });
-    //   _expressionCompleter.value = getCollectiveExpressions(
-    //     paginationPos: 0,
-    //     contextString: perspective.address,
-    //     contextType: 'FollowPerspective',
-    //     dos: null,
-    //     channels: _channels,
-    //   );
-    // }
+  void _changePerspective(BuildContext context, PerspectiveModel perspective) {
+    final bloc = context.bloc<CollectiveBloc>();
+    if (perspective.name == 'JUNTO') {
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.Collective,
+            name: perspective.name,
+          ),
+        ),
+      );
+    } else if (perspective.name == 'Connections') {
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.ConnectPerspective,
+            dos: '0',
+            context: perspective.address,
+            name: perspective.name,
+          ),
+        ),
+      );
+    } else {
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.FollowPerspective,
+            dos: null,
+            context: perspective.address,
+            name: perspective.name.contains("'s Follow Perspective")
+                ? 'Subscriptions'
+                : perspective.name,
+          ),
+        ),
+      );
+    }
+    context.bloc<ChannelFilteringBloc>().add(FilterClear());
     setState(() {
       _actionsVisible = false;
     });

@@ -15,4 +15,8 @@ class FilterSelected extends ChannelFilteringEvent {
   final ExpressionContextType contextType;
 }
 
+/// Clear and refetch
 class FilterReset extends ChannelFilteringEvent {}
+
+/// Clear without refetching
+class FilterClear extends ChannelFilteringEvent {}

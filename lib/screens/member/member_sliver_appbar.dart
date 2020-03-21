@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 
 class MemberDenAppbar extends StatefulWidget {
   const MemberDenAppbar(
@@ -101,7 +102,10 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  MemberBackgroundPlaceholder(theme: _currentTheme),
+                  _memberProfile.user.backgroundPhoto.isNotEmpty ||
+                          _memberProfile.user.backgroundPhoto != ''
+                      ? MemberBackgroundPhoto(profile: _memberProfile)
+                      : MemberBackgroundPlaceholder(theme: _currentTheme),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),
@@ -151,6 +155,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                           ),
                         ),
                         AboutItem(
+                          isWebsite: true,
                           item: widget.profile.website,
                           icon: Image.asset(
                             'assets/images/junto-mobile__link.png',

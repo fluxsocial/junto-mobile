@@ -52,6 +52,9 @@ class ChannelFilteringBloc
     if (event is FilterReset) {
       yield* _mapFilterResetToState(event);
     }
+    if (event is FilterClear) {
+      yield* _mapFilterClearToState(event);
+    }
   }
 
   Stream<ChannelFilteringState> _mapFilterUpdatedToState(
@@ -79,6 +82,11 @@ class ChannelFilteringBloc
   Stream<ChannelFilteringState> _mapFilterResetToState(
       FilterReset event) async* {
     onFilterApplied(null);
+    yield const ChannelsPopulatedState([], null);
+  }
+
+  Stream<ChannelFilteringState> _mapFilterClearToState(
+      FilterClear event) async* {
     yield const ChannelsPopulatedState([], null);
   }
 }

@@ -102,10 +102,7 @@ class CreateLongformState extends State<CreateLongform> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Write a title (optional)',
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      .copyWith(color: Colors.black54),
+                  hintStyle: Theme.of(context).textTheme.headline6,
                 ),
                 cursorColor: JuntoPalette.juntoGrey,
                 cursorWidth: 2,

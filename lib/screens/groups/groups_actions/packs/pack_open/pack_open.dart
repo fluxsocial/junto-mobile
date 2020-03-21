@@ -71,23 +71,25 @@ class PackOpenState extends State<PackOpen> {
             ),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: DefaultTabController(
-          length: _tabs.length,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
-                ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                      width: .75,
-                    ),
+
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: DefaultTabController(
+        length: _tabs.length,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 10,
+              ),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
                   ),
                 ),
                 child: TabBar(

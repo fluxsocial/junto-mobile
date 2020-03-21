@@ -4,16 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
+import 'package:provider/provider.dart';
 
 class JuntoPerspectives extends StatefulWidget {
+  const JuntoPerspectives({this.onChanged});
+
+  final Function(BuildContext, PerspectiveModel) onChanged;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoPerspectivesState();
@@ -28,6 +35,16 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 
   @override
   Widget build(BuildContext context) {
+    const juntoPerspective = const PerspectiveModel(
+      address: null,
+      name: 'JUNTO',
+      about: null,
+      creator: null,
+      createdAt: null,
+      isDefault: true,
+      userCount: null,
+      users: null,
+    );
     return Container(
       height: MediaQuery.of(context).size.height - 150,
       child: Column(
@@ -73,19 +90,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               padding: const EdgeInsets.all(0),
               children: <Widget>[
                 PerspectiveItem(
-                  perspective: const PerspectiveModel(
-                    address: null,
-                    name: 'JUNTO',
-                    about: null,
-                    creator: null,
-                    createdAt: null,
-                    isDefault: true,
-                    userCount: null,
-                    users: null,
-                  ),
-                  onTap: () {},
+                  perspective: juntoPerspective,
+                  onTap: () => widget.onChanged(context, juntoPerspective),
                 ),
-                const PerspectivesList(),
+                PerspectivesList(onChanged: widget.onChanged),
               ],
             ),
           )
@@ -98,7 +106,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 class PerspectivesList extends StatelessWidget {
   const PerspectivesList({
     Key key,
+    this.onChanged,
   }) : super(key: key);
+
+  final Function(BuildContext, PerspectiveModel) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +139,7 @@ class PerspectivesList extends StatelessWidget {
                   if (perspective.isDefault == true) {
                     return PerspectiveItem(
                       perspective: perspective,
-                      onTap: () {},
+                      onTap: () => onChanged(context, perspective),
                     );
                   } else {
                     return const SizedBox();
@@ -147,9 +158,10 @@ class PerspectivesList extends StatelessWidget {
                       return GestureDetector(
                         child: PerspectiveItem(
                           perspective: perspective,
-                          onTap: () => context.bloc<CollectiveBloc>().add(
-                                ChangePerspective(perspective),
-                              ),
+                          onTap: () => onChanged(context, perspective),
+                          // context.bloc<CollectiveBloc>().add(
+                          //       ChangePerspective(perspective),
+                          //     ),
                         ),
                       );
                     } else {
@@ -168,8 +180,11 @@ class PerspectivesList extends StatelessWidget {
 }
 
 class PerspectiveItem extends StatelessWidget {
-  const PerspectiveItem({Key key, this.perspective, this.onTap})
-      : super(key: key);
+  const PerspectiveItem({
+    Key key,
+    @required this.perspective,
+    @required this.onTap,
+  }) : super(key: key);
   final PerspectiveModel perspective;
   final VoidCallback onTap;
 
@@ -196,17 +211,15 @@ class PerspectiveItem extends StatelessWidget {
             iconWidget: Icon(Icons.edit,
                 size: 15, color: Theme.of(context).primaryColor),
             onTap: () {
-              //TODO fixme
-              // Navigator.push(
-              //   context,
-              //   CupertinoPageRoute<dynamic>(
-              //     builder: (BuildContext context) => EditPerspective(
-              //       perspective: perspective,
-              //       //TODO: refresh Perspectives
-              //       // refreshPerspectives: _refreshPerspectives,
-              //     ),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                CupertinoPageRoute<dynamic>(
+                  builder: (BuildContext context) => EditPerspective(
+                    perspective: perspective,
+                    refreshPerspectives: () => _refreshPerspectives(context),
+                  ),
+                ),
+              );
             },
           ),
           IconSlideAction(
@@ -219,7 +232,7 @@ class PerspectiveItem extends StatelessWidget {
                     confirmationText:
                         'Are you sure you want to delete this perspective?',
                     confirm: () {
-                      _deletePerspective(perspective);
+                      _deletePerspective(context, perspective);
                     },
                   ),
                 );
@@ -297,28 +310,30 @@ class PerspectiveItem extends StatelessWidget {
     );
   }
 
-  Future<void> _deletePerspective(perspective) async {
-    // print(perspective);
-    // try {
-    //   JuntoLoader.showLoader(context);
-    //   await Provider.of<UserRepo>(context, listen: false)
-    //       .deletePerspective(perspective.address);
-    //   _refreshPerspectives();
-    //   JuntoLoader.hide();
-    //   Navigator.pop(context);
-    // } catch (error) {
-    //   print(error);
-    //   JuntoLoader.hide();
+  Future<void> _deletePerspective(
+      BuildContext context, PerspectiveModel perspective) async {
+    print(perspective);
+    try {
+      //TODO(dominik): replace with bloc
+      JuntoLoader.showLoader(context);
+      await Provider.of<UserRepo>(context, listen: false)
+          .deletePerspective(perspective.address);
+      context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+      JuntoLoader.hide();
+      Navigator.pop(context);
+    } catch (error) {
+      print(error);
+      JuntoLoader.hide();
+    }
   }
 
-  Future<void> _refreshPerspectives() async {
+  Future<void> _refreshPerspectives(BuildContext context) async {
     try {
-      // Provider.of<UserDataProvider>(context, listen: false)
-      //     .refreshPerspectives();
+      context.bloc<PerspectivesBloc>().add(FetchPerspectives());
     } on JuntoException catch (error) {
-      //TODO fixme
+      //TODO replace with bloc
       showDialog(
-        // context: context,
+        context: context,
         builder: (BuildContext context) => SingleActionDialog(
           dialogText: error.message,
         ),

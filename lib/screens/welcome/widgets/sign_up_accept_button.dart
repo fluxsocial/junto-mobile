@@ -12,7 +12,8 @@ class AcceptButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-        width: 200,
+        margin: const EdgeInsets.symmetric(horizontal: 40),
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.centerLeft,

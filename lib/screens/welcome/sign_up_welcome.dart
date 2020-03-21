@@ -15,20 +15,17 @@ class SignUpAgreements extends StatelessWidget {
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: Container(
-          margin: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * .15,
+          padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * .1,
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const <Widget>[
               JuntoLogo(),
               JuntoName(),
               JuntoHorizontalSeparator(),
-              Flexible(
-                child: Scrollbar(
-                  child: SingleChildScrollView(
-                    child: JuntoRules(),
-                  ),
-                ),
+              Expanded(
+                child: JuntoRules(),
               ),
               AcceptButton(),
             ],

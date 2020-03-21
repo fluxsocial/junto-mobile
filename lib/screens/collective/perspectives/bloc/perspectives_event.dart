@@ -8,4 +8,4 @@ class CreatePerspective extends PerspectivesEvent {}
 
 class RemovePerspective extends PerspectivesEvent {}
 
-class EditPerspective extends PerspectivesEvent {}
+// class EditPerspective extends PerspectivesEvent {}

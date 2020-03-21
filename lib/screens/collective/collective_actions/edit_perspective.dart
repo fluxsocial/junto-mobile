@@ -14,7 +14,7 @@ class EditPerspective extends StatefulWidget {
   const EditPerspective({this.perspective, this.refreshPerspectives});
 
   final PerspectiveModel perspective;
-  final Function refreshPerspectives;
+  final VoidCallback refreshPerspectives;
 
   @override
   State<StatefulWidget> createState() {
@@ -239,12 +239,15 @@ class EditPerspectiveState extends State<EditPerspective> {
                     child: Container(
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 15),
+                          horizontal: 10,
+                          vertical: 15,
+                        ),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                                width: .5),
+                              color: Theme.of(context).dividerColor,
+                              width: .5,
+                            ),
                           ),
                         ),
                         child: Row(
@@ -312,7 +315,7 @@ class EditPerspectiveState extends State<EditPerspective> {
       {String name, TextEditingController controller}) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),

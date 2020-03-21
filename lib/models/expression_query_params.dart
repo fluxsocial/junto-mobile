@@ -1,11 +1,6 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'expression_query_params.freezed.dart';
-part 'expression_query_params.g.dart';
-
 enum ExpressionContextType {
   Dos,
-  FellowPerspective,
+  FollowPerspective,
   Collective,
   Group,
   ConnectPerspective
@@ -16,24 +11,28 @@ enum ExpressionContextType {
 /// ?context_type=(Dos, FollowPerspective(pass uuid in context), ConnectPerspective(pass uuid in context), Collective, Group(pass uuid in context) ) &
 /// ?pagination_position=int &
 /// ?last_timestamp = ISO8601 timestamp (rfc3339) (optional)
-@freezed
-abstract class ExpressionQueryParams with _$ExpressionQueryParams {
-  factory ExpressionQueryParams(
-    ExpressionContextType contextType,
-    String paginationPosition, {
-    String dos,
-    String context,
-    @JsonKey(toJson: ListToString.toJson) List<String> channels,
-  }) = _ExpressionQueryParams;
+class ExpressionQueryParams {
+  final ExpressionContextType contextType;
+  final String paginationPosition;
+  final String dos;
+  final String context;
+  final List<String> channels;
+  final String name;
 
-  factory ExpressionQueryParams.fromJson(Map<String, dynamic> json) =>
-      _$ExpressionQueryParamsFromJson(json);
+  ExpressionQueryParams({
+    this.contextType,
+    this.paginationPosition = '0',
+    this.dos,
+    this.context,
+    this.channels,
+    this.name,
+  });
 }
 
 class ListToString {
   static String toJson(List<String> value) {
     if (value != null) {
-    final list = value.join('", "');
+      final list = value.join('", "');
       return '["$list"]';
     } else {
       return null;

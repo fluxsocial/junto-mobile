@@ -10,9 +10,10 @@ class JuntoLogo extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 25),
       child: Image.asset(
-          'assets/images/junto-mobile__outlinelogo--gradient.png',
-          height: 69,
-          color: Theme.of(context).primaryColor),
+        'assets/images/junto-mobile__outlinelogo--gradient.png',
+        height: 69,
+        color: Theme.of(context).primaryColor,
+      ),
     );
   }
 }

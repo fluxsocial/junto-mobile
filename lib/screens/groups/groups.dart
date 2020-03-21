@@ -91,6 +91,8 @@ class JuntoGroupsState extends State<JuntoGroups>
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 25),
                 child: BottomNav(
+                    address: widget.initialGroup,
+                    expressionContext: ExpressionContext.Group,
                     actionsVisible: actionsVisible,
                     onLeftButtonTap: () {
                       if (actionsVisible) {
@@ -169,7 +171,9 @@ class JuntoGroupsState extends State<JuntoGroups>
           () => Navigator.of(context).pushReplacement(Welcome.route()),
         )..add(
             FetchCollective(
-              ExpressionQueryParams(ExpressionContextType.Collective, '0'),
+              ExpressionQueryParams(
+                contextType: ExpressionContextType.Collective,
+              ),
             ),
           ),
       ),
@@ -181,17 +185,18 @@ class JuntoGroupsState extends State<JuntoGroups>
               )..add(FetchMyPack())),
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
-          Provider.of<SearchRepo>(ctx, listen: false),
-          (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
-            FetchCollective(
-              ExpressionQueryParams(
-                ExpressionContextType.Collective,
-                '0',
-                channels: [value.name],
-              ),
-            ),
-          ),
+
+            Provider.of<SearchRepo>(ctx, listen: false),
+            (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
+                  FetchCollective(
+                    ExpressionQueryParams(
+                      contextType: ExpressionContextType.Collective,
+                      channels: [value.name],
+                    ),
+                  ),
+                ),
         ),
+
       ),
     ];
   }
