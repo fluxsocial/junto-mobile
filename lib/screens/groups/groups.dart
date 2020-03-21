@@ -128,7 +128,6 @@ class JuntoGroupsState extends State<JuntoGroups>
                     visible: actionsVisible,
                     child: JuntoGroupsActions(
                       changeGroup: _changeGroup,
-                      spheresVisible: spheresVisible,
                     ),
                   ),
                 ),
