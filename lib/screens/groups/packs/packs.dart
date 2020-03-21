@@ -7,9 +7,9 @@ import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/groups_actions.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
+import 'package:junto_beta_mobile/screens/groups/packs/packs_list.dart';
+import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -23,18 +23,18 @@ import 'package:provider/provider.dart';
 
 // This screen displays groups a member belongs to. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
-class JuntoGroups extends StatefulWidget {
-  const JuntoGroups({@required this.initialGroup});
+class JuntoPacks extends StatefulWidget {
+  const JuntoPacks({@required this.initialGroup});
 
   final String initialGroup;
 
   @override
   State<StatefulWidget> createState() {
-    return JuntoGroupsState();
+    return JuntoPacksState();
   }
 }
 
-class JuntoGroupsState extends State<JuntoGroups>
+class JuntoPacksState extends State<JuntoPacks>
     with HideFab, ListDistinct, TickerProviderStateMixin {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
@@ -126,8 +126,8 @@ class JuntoGroupsState extends State<JuntoGroups>
                   opacity: actionsVisible ? 1.0 : 0.0,
                   child: Visibility(
                     visible: actionsVisible,
-                    child: JuntoGroupsActions(
-                      changeGroup: _changeGroup,
+                    child: PacksList(
+                      selectedGroup: _changeGroup,
                     ),
                   ),
                 ),

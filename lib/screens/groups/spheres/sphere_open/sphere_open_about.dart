@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_members/sphere_open_members.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_members/sphere_open_members.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class SphereOpenAbout extends StatelessWidget {
