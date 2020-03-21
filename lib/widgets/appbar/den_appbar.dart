@@ -44,8 +44,10 @@ class _DenAppbarState extends State<DenAppbar> {
                     color: Theme.of(context).primaryColor,
                   ),
                   const SizedBox(width: 7.5),
-                  Text(widget.heading,
-                      style: Theme.of(context).textTheme.subtitle1),
+                  Text(
+                    widget.heading,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
                 ],
               ),
             ),
