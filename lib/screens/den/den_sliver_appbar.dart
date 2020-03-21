@@ -119,6 +119,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                         ),
                         AboutItem(
                           item: widget.profile.user.website,
+                          isWebsite: true,
                           icon: Image.asset(
                             'assets/images/junto-mobile__link.png',
                             height: 15,
