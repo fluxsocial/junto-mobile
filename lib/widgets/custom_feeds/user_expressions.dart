@@ -77,6 +77,7 @@ class _UserExpressionsState extends State<UserExpressions> {
   @override
   Widget build(BuildContext context) {
     // public expressions of user
+    //TODO(dominik/Nash): replace FB with bloc
     return FutureBuilder<List<ExpressionResponse>>(
       future: getExpressions(),
       builder: (

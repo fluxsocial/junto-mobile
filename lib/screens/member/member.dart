@@ -167,11 +167,12 @@ class _JuntoMemberState extends State<JuntoMember>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: JuntoFilterDrawer(
-        //TODO
-        leftDrawer: FilterDrawerContent(ExpressionContextType.Collective),
-        rightMenu: JuntoDrawer(),
-        scaffold: Stack(
+      //TODO(dominik/Nash): revert filter drawer
+      // and use bloc to fetch member expressions
+      body: Container(
+        // leftDrawer: FilterDrawerContent(ExpressionContextType.Collective),
+        // rightMenu: JuntoDrawer(),
+        child: Stack(
           children: <Widget>[
             Scaffold(
               key: scaffoldKey,
