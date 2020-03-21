@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
-import 'package:junto_beta_mobile/screens/groups/groups.dart';
+import 'package:junto_beta_mobile/screens/groups//packs/packs.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,7 +76,7 @@ class JuntoLotusState extends State<JuntoLotus> {
     if (screen == Screen.collective) {
       child = JuntoCollective();
     } else if (screen == Screen.groups) {
-      child = JuntoGroups(initialGroup: _userProfile.pack.address);
+      child = JuntoPacks(initialGroup: _userProfile.pack.address);
     } else if (screen == Screen.create) {
       child = JuntoCreate(
         channels: const <String>[],

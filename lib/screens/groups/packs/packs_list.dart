@@ -11,32 +11,36 @@ import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dar
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-class Packs extends StatefulWidget {
-  const Packs({this.userProfile, this.selectedGroup});
+class PacksList extends StatefulWidget {
+  const PacksList({this.selectedGroup});
 
-  final UserData userProfile;
   final ValueChanged<Group> selectedGroup;
 
   @override
   State<StatefulWidget> createState() {
-    return PacksState();
+    return PacksListState();
   }
 }
 
-class PacksState extends State<Packs> {
-  PageController packsPageController;
+class PacksListState extends State<PacksList> {
+  PageController packsListController;
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    packsPageController = PageController(initialPage: 0);
+    packsListController = PageController(initialPage: 0);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height - 150,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
+      color: Theme.of(context).backgroundColor,
+      height: MediaQuery.of(context).size.height - 90,
+      // height: MediaQuery.of(context).size.height - 150,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -62,7 +66,7 @@ class PacksState extends State<Packs> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    packsPageController.animateToPage(
+                    packsListController.animateToPage(
                       0,
                       duration: const Duration(milliseconds: 200),
                       curve: Curves.easeIn,
@@ -85,7 +89,7 @@ class PacksState extends State<Packs> {
                 const SizedBox(width: 20),
                 GestureDetector(
                   onTap: () {
-                    packsPageController.animateToPage(1,
+                    packsListController.animateToPage(1,
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.easeIn);
                   },
@@ -108,7 +112,7 @@ class PacksState extends State<Packs> {
           ),
           Expanded(
             child: PageView(
-              controller: packsPageController,
+              controller: packsListController,
               onPageChanged: (int index) {
                 setState(() {
                   _currentIndex = index;
