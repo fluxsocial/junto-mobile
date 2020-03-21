@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_members.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/packs_bloc/pack_bloc.dart';
-import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:provider/provider.dart';
@@ -26,17 +25,9 @@ class PackOpen extends StatefulWidget {
 }
 
 class PackOpenState extends State<PackOpen> {
-  UserData _userProfile;
   final List<String> _tabs = <String>['Pack', 'Private', 'Members'];
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _userProfile =
-        Provider.of<UserDataProvider>(context, listen: false).userProfile;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +42,6 @@ class PackOpenState extends State<PackOpen> {
           preferredSize: const Size.fromHeight(45),
           child: PackOpenAppbar(
             pack: widget.pack,
-            userProfile: _userProfile,
           ),
         ),
         floatingActionButton: ValueListenableBuilder<bool>(
@@ -78,6 +68,7 @@ class PackOpenState extends State<PackOpen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
+                width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,
                   horizontal: 10,
@@ -98,43 +89,70 @@ class PackOpenState extends State<PackOpen> {
                   labelStyle: Theme.of(context).textTheme.subtitle1,
                   indicatorWeight: 0.0001,
                   tabs: <Widget>[
-                    for (String name in _tabs)
-                      Container(
-                        color: Colors.transparent,
-                        margin: const EdgeInsets.only(right: 20),
-                        child: Text(
-                          name.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
+                    for (String name in _tabs) PackName(name: name),
                   ],
                 ),
               ),
-              Expanded(
-                child: TabBarView(
-                  children: <Widget>[
-                    GroupExpressions(
-                      key: const PageStorageKey<String>('public-pack'),
-                      group: widget.pack,
-                      privacy: 'Public',
-                    ),
-                    GroupExpressions(
-                      key: const PageStorageKey<String>('private-pack'),
-                      group: widget.pack,
-                      privacy: 'Private',
-                    ),
-                    PackOpenMembers(
-                      key: UniqueKey(),
-                      packAddress: widget.pack.address,
-                    )
-                  ],
-                ),
-              ),
+              PackTabs(group: widget.pack),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class PackTabs extends StatelessWidget {
+  const PackTabs({
+    Key key,
+    @required this.group,
+  }) : super(key: key);
+
+  final Group group;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: TabBarView(
+        children: <Widget>[
+          GroupExpressions(
+            key: const PageStorageKey<String>('public-pack'),
+            group: group,
+            privacy: 'Public',
+          ),
+          GroupExpressions(
+            key: const PageStorageKey<String>('private-pack'),
+            group: group,
+            privacy: 'Private',
+          ),
+          PackOpenMembers(
+            key: UniqueKey(),
+            packAddress: group.address,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class PackName extends StatelessWidget {
+  const PackName({
+    Key key,
+    @required this.name,
+  }) : super(key: key);
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.transparent,
+      margin: const EdgeInsets.only(right: 20),
+      child: Text(
+        name.toUpperCase(),
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

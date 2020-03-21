@@ -408,7 +408,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               context: context,
               builder: (BuildContext context) {
                 return SphereSelectModal(
-                    spheres: userSpheres, onSelect: selectGroup);
+                  spheres: userSpheres,
+                  onSelect: selectGroup,
+                );
               },
             );
           }
@@ -419,8 +421,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             });
           }
         }
-
-        _setExpressionContextDescription();
       },
       child: Container(
         height: 50,
