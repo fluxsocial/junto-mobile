@@ -87,6 +87,8 @@ class JuntoGroupsState extends State<JuntoGroups>
             child: Padding(
               padding: const EdgeInsets.only(bottom: 25),
               child: BottomNav(
+                  address: widget.initialGroup,
+                  expressionContext: ExpressionContext.Group,
                   actionsVisible: actionsVisible,
                   onLeftButtonTap: () {
                     if (actionsVisible) {
