@@ -10,8 +10,9 @@ part 'pack_event.dart';
 part 'pack_state.dart';
 
 class PackBloc extends Bloc<PackEvent, PackState> {
-  PackBloc(this.expressionRepo, this.groupAddress);
+  PackBloc(this.expressionRepo, this.groupRepo, this.groupAddress);
   final ExpressionRepo expressionRepo;
+  final GroupRepo groupRepo;
   final String groupAddress;
 
   Map<String, String> _params;
@@ -40,7 +41,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
           await expressionRepo.getPackExpressions(
         _params,
       );
-
+      final memebers = await groupRepo.getGroupMembers(groupAddress);
       List<ExpressionResponse> _public = results.results
           .where((element) => element.privacy == 'Public')
           .toList();
@@ -57,7 +58,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
         lastTimestamp: results.lastTimestamp,
       );
 
-      yield PacksLoaded(publicQueryResults, privateQueryResults);
+      yield PacksLoaded(publicQueryResults, privateQueryResults, memebers);
     } on JuntoException catch (error) {
       yield PacksError(error.message);
     } catch (e, s) {

@@ -29,7 +29,7 @@ class PackOpenState extends State<PackOpen> {
   UserData _userProfile;
   final List<String> _tabs = <String>['Pack', 'Private', 'Members'];
 
-  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true); 
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
   void didChangeDependencies() {
@@ -43,6 +43,7 @@ class PackOpenState extends State<PackOpen> {
     return BlocProvider(
       create: (context) => PackBloc(
         Provider.of<ExpressionRepo>(context, listen: false),
+        Provider.of<GroupRepo>(context, listen: false),
         widget.pack.address,
       )..add(FetchPacks(widget.pack.address)),
       child: Scaffold(

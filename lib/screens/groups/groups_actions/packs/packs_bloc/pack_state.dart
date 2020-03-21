@@ -8,9 +8,14 @@ class PackInitial extends PackState {}
 class PacksLoading extends PackState {}
 
 class PacksLoaded extends PackState {
-  PacksLoaded(this.publicExpressions, this.privateExpressions);
+  PacksLoaded(
+    this.publicExpressions,
+    this.privateExpressions,
+    this.groupMemebers,
+  );
   final QueryResults<ExpressionResponse> publicExpressions;
   final QueryResults<ExpressionResponse> privateExpressions;
+  final List<Users> groupMemebers;
 }
 
 class PacksError extends PackState {
