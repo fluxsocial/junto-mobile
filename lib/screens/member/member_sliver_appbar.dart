@@ -155,6 +155,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                           ),
                         ),
                         AboutItem(
+                          isWebsite: true,
                           item: widget.profile.website,
                           icon: Image.asset(
                             'assets/images/junto-mobile__link.png',
