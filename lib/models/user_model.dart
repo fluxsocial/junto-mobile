@@ -71,6 +71,7 @@ class UserProfile {
     @required this.bio,
     @required this.location,
     @required this.profilePicture,
+    @required this.backgroundPhoto,
     @required this.verified,
     @required this.username,
     @required this.website,
@@ -87,6 +88,7 @@ class UserProfile {
       profilePicture: map['profile_picture'] != null
           ? List<String>.from(map['profile_picture'])
           : null,
+      backgroundPhoto: map['background_photo'],
       verified: map['verified'] as bool,
       username: map['username'] as String,
       website:
@@ -110,6 +112,9 @@ class UserProfile {
   /// Url of the author's profile image
   final List<String> profilePicture;
 
+  // URL of background photo
+  final String backgroundPhoto;
+
   /// Whether the given user account has been verified
   final bool verified;
 
@@ -132,6 +137,7 @@ class UserProfile {
           bio == other.bio &&
           location == other.location &&
           profilePicture == other.profilePicture &&
+          backgroundPhoto == other.backgroundPhoto &&
           verified == other.verified &&
           username == other.username &&
           website == other.website &&
@@ -144,6 +150,7 @@ class UserProfile {
       bio.hashCode ^
       location.hashCode ^
       profilePicture.hashCode ^
+      backgroundPhoto.hashCode ^
       verified.hashCode ^
       username.hashCode ^
       website.hashCode ^
@@ -157,6 +164,7 @@ class UserProfile {
         ' bio: $bio,'
         ' location: $location,'
         ' profilePicture: $profilePicture,'
+        ' backgroundPhoto: $backgroundPhoto'
         ' verified: $verified,'
         ' username: $username,'
         ' website: $website,'
@@ -171,6 +179,7 @@ class UserProfile {
     String bio,
     List<String> location,
     List<String> profilePicture,
+    String backgroundPhoto,
     bool verified,
     String username,
     List<String> website,
@@ -182,6 +191,7 @@ class UserProfile {
       bio: bio ?? this.bio,
       location: location ?? this.location,
       profilePicture: profilePicture ?? this.profilePicture,
+      backgroundPhoto: backgroundPhoto ?? this.backgroundPhoto,
       verified: verified ?? this.verified,
       username: username ?? this.username,
       website: website ?? this.website,
@@ -196,6 +206,7 @@ class UserProfile {
       'bio': bio,
       'location': location,
       'profile_picture': profilePicture,
+      'background_photo': backgroundPhoto,
       'verified': verified,
       'username': username,
       'website': website,
@@ -241,6 +252,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
       @required this.bio,
       @required this.location,
       @required this.profileImage,
+      @required this.backgroundPhoto,
       @required this.gender,
       @required this.website,
       @required this.verificationCode});
@@ -254,6 +266,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String bio;
   final List<String> location;
   final List<String> profileImage;
+  final String backgroundPhoto;
   final List<String> gender;
   final List<String> website;
   final int verificationCode;
@@ -267,6 +280,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
       'name': name,
       'bio': bio,
       'profileImage': profileImage,
+      'backgroundPhoto': backgroundPhoto,
       'gender': gender,
       'website': website,
       'location': location
