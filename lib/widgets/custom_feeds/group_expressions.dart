@@ -113,7 +113,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
         if (state is PacksError) {
           return JuntoErrorWidget(errorMessage: state.message ?? '');
         }
-        return SizedBox();
+        return JuntoLoader();
       },
     );
   }

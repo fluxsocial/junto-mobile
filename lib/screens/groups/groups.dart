@@ -12,6 +12,7 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
@@ -41,10 +42,11 @@ class JuntoGroupsState extends State<JuntoGroups>
   bool actionsVisible = false;
   Widget _currentGroup;
   bool spheresVisible = false;
+  bool isLoading = true;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     getUserInformation();
   }
 
@@ -58,6 +60,7 @@ class JuntoGroupsState extends State<JuntoGroups>
           key: ValueKey<String>(group.address),
           pack: group,
         );
+        isLoading = false;
       });
     } else if (group.groupType == 'Sphere') {
       setState(() {
@@ -111,11 +114,13 @@ class JuntoGroupsState extends State<JuntoGroups>
                 FloatingActionButtonLocation.centerDocked,
             body: Stack(
               children: <Widget>[
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: actionsVisible ? 0.0 : 1.0,
-                  child: _currentGroup,
-                ),
+                if (isLoading) JuntoLoader(),
+                if (!isLoading)
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: actionsVisible ? 0.0 : 1.0,
+                    child: _currentGroup,
+                  ),
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 300),
                   opacity: actionsVisible ? 1.0 : 0.0,
@@ -185,18 +190,16 @@ class JuntoGroupsState extends State<JuntoGroups>
               )..add(FetchMyPack())),
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
-
-            Provider.of<SearchRepo>(ctx, listen: false),
-            (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
-                  FetchCollective(
-                    ExpressionQueryParams(
-                      contextType: ExpressionContextType.Collective,
-                      channels: [value.name],
-                    ),
-                  ),
-                ),
+          Provider.of<SearchRepo>(ctx, listen: false),
+          (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
+            FetchCollective(
+              ExpressionQueryParams(
+                contextType: ExpressionContextType.Collective,
+                channels: [value.name],
+              ),
+            ),
+          ),
         ),
-
       ),
     ];
   }
