@@ -211,7 +211,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       );
       _postCreateAction();
     } catch (error) {
-      JuntoLoader.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
