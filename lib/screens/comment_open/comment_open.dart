@@ -29,7 +29,7 @@ class CommentOpen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: Text(
-                    'in response to ' + parent.creator.name,
+                    'in response to ${parent.creator.name}',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColorLight,

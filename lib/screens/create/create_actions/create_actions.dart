@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -358,7 +359,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               context: context,
               builder: (BuildContext context) {
                 return SphereSelectModal(
-                    spheres: userSpheres, onSelect: selectGroup);
+                  spheres: userSpheres,
+                  onSelect: selectGroup,
+                );
               },
             );
           }
@@ -369,7 +372,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             });
           }
         }
-
       },
       child: Container(
         height: 50,
