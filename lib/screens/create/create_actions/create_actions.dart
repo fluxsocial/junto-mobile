@@ -13,6 +13,8 @@ import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -55,12 +57,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   String _userAddress;
   UserData _userProfile;
 
-  String _currentExpressionContext;
+  //
+  String _currentExpressionContext = 'Collective';
   ExpressionContext _expressionContext;
-  String _currentExpressionContextDescription;
+  String _currentExpressionContextDescription = 'shared to the public of Junto';
 
   String _address;
   ExpressionModel _expression;
+  String _groupHandle = 'shared to a specific group';
   final ValueNotifier<List<String>> _channels = ValueNotifier<List<String>>(
     <String>[],
   );
@@ -79,13 +83,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     _channelController = TextEditingController();
     _address = widget.address;
     _expressionContext = widget.expressionContext;
-    if (widget.expressionContext == ExpressionContext.Collective) {
-      _currentExpressionContext = 'Collective';
-      _currentExpressionContextDescription = 'shared to the public of Junto';
-    } else if (widget.expressionContext == ExpressionContext.Group) {
-      _currentExpressionContext = 'My Pack';
-      _currentExpressionContextDescription = 'shared to just your pack members';
-    }
+
     getUserInformation();
   }
 
@@ -114,12 +112,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   void _postCreateAction() {
     Widget child;
-    if (_expressionContext == ExpressionContext.Collective) {
+    if (_currentExpressionContext == 'Collective') {
       child = JuntoCollective();
-    } else if (_expressionContext == ExpressionContext.Group) {
+    } else if (_currentExpressionContext == 'My Pack') {
+      child = JuntoGroups(initialGroup: _address);
+    } else if (_currentExpressionContext == 'Sphere') {
       child = JuntoGroups(initialGroup: _address);
     } else {
-      child = JuntoCollective();
+      child = JuntoDen();
     }
     Navigator.of(context).pushAndRemoveUntil(
       FadeRoute<void>(child: child),
@@ -131,6 +131,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   Future<void> _createExpression() async {
+    // set expression context
+    _setExpressionContext();
+
     try {
       if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context);
@@ -186,6 +189,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           context: _expressionContext,
           channels: channel,
         );
+        print(_expression.expressionData);
       }
       JuntoLoader.showLoader(context);
       await Provider.of<ExpressionRepo>(context, listen: false)
@@ -209,11 +213,39 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     } catch (error) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Something went wrong',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
         ),
       );
     }
+  }
+
+  void _setExpressionContext() {
+    if (_currentExpressionContext == 'Collective') {
+      setState(() {
+        _expressionContext = ExpressionContext.Collective;
+      });
+    } else if (_currentExpressionContext == 'Sphere') {
+      setState(() {
+        _expressionContext = ExpressionContext.Group;
+      });
+    } else if (_currentExpressionContext == 'My Pack') {
+      setState(() {
+        _expressionContext = ExpressionContext.Group;
+      });
+    } else if (_currentExpressionContext == 'Den') {
+      setState(() {
+        _expressionContext = ExpressionContext.Group;
+      });
+    }
+  }
+
+  void selectGroup(String groupAddress, String groupHandle) {
+    setState(() {
+      _address = groupAddress;
+      _groupHandle = 'shared to s/' + groupHandle;
+    });
+    Navigator.pop(context);
   }
 
   @override
@@ -233,14 +265,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 15),
-                Text(
-                  _currentExpressionContext,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Text(
-                  _currentExpressionContextDescription,
-                  style: Theme.of(context).textTheme.caption,
-                ),
+                Text(_currentExpressionContext,
+                    style: Theme.of(context).textTheme.headline6),
+                Text(_currentExpressionContextDescription,
+                    style: Theme.of(context).textTheme.caption),
               ],
             ),
           ),
@@ -298,7 +326,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     if (expressionContext == 'Collective') {
       _setExpressionContextDescription = () {
         setState(() {
-          _expressionContext = ExpressionContext.Collective;
           _currentExpressionContextDescription =
               'shared to the public of Junto';
           _address = null;
@@ -306,31 +333,54 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       };
       _expressionContextIcon = Transform.translate(
         offset: const Offset(-10, 0),
-        child: Icon(
-          CustomIcons.collective,
-          color: _currentExpressionContext == expressionContext
-              ? Colors.white
-              : Theme.of(context).primaryColor,
-          size: 10,
-        ),
+        child: Icon(CustomIcons.collective,
+            color: _currentExpressionContext == expressionContext
+                ? Colors.white
+                : Theme.of(context).primaryColor,
+            size: 10),
       );
     } else if (expressionContext == 'My Pack') {
       _setExpressionContextDescription = () {
         setState(() {
-          _expressionContext = ExpressionContext.Group;
           _currentExpressionContextDescription =
               'shared to just your pack members';
           _address = _userProfile.pack.address;
         });
       };
-      _expressionContextIcon = Icon(
-        CustomIcons.packs,
-        color: _currentExpressionContext == expressionContext
-            ? Colors.white
-            : Theme.of(context).primaryColor,
-        size: 17,
-      );
+      _expressionContextIcon = Icon(CustomIcons.packs,
+          color: _currentExpressionContext == expressionContext
+              ? Colors.white
+              : Theme.of(context).primaryColor,
+          size: 17);
+    } else if (expressionContext == 'Den') {
+      _setExpressionContextDescription = () {
+        setState(() {
+          _currentExpressionContextDescription = 'shared with just yourself';
+
+          _address = _userProfile.privateDen.address;
+          print(_address);
+        });
+      };
+      _expressionContextIcon = Icon(CustomIcons.den,
+          color: _currentExpressionContext == expressionContext
+              ? Colors.white
+              : Theme.of(context).primaryColor,
+          size: 17);
+    } else if (expressionContext == 'Sphere') {
+      _setExpressionContextDescription = () {
+        setState(() {
+          _currentExpressionContextDescription = _groupHandle;
+          _address = null;
+        });
+        print(_address);
+      };
+      _expressionContextIcon = Icon(CustomIcons.spheres,
+          color: _currentExpressionContext == expressionContext
+              ? Colors.white
+              : Theme.of(context).primaryColor,
+          size: 17);
     }
+
     return GestureDetector(
       onTap: () async {
         // set current expression context
@@ -370,6 +420,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           }
         }
 
+        _setExpressionContextDescription();
       },
       child: Container(
         height: 50,
@@ -392,10 +443,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           ),
           border: _currentExpressionContext == expressionContext
               ? null
-              : Border.all(
-                  color: Theme.of(context).primaryColor,
-                  width: 1.5,
-                ),
+              : Border.all(color: Theme.of(context).primaryColor, width: 1.5),
         ),
         alignment: Alignment.center,
         child: _expressionContextIcon,
