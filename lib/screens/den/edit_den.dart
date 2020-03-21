@@ -181,32 +181,48 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   }
 
   Widget _displayCurrentProfilePicture() {
-    if (_userData != null && imageFile == null) {
-      return MemberAvatar(
-        diameter: 60,
-        profilePicture: _userData.user.profilePicture,
-      );
-    } else {
-      return ClipOval(
-        child: Container(
-          alignment: Alignment.center,
-          height: 60.0,
-          width: 60.0,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              stops: const <double>[0.3, 0.9],
-              colors: <Color>[
-                Theme.of(context).colorScheme.secondary,
-                Theme.of(context).colorScheme.primary
-              ],
+    return Stack(
+      children: <Widget>[
+        if (_userData != null && imageFile == null)
+          MemberAvatar(
+            diameter: 60,
+            profilePicture: _userData.user.profilePicture,
+          )
+        else if (imageFile != null)
+          ClipOval(
+            child: Container(
+              alignment: Alignment.center,
+              height: 60.0,
+              width: 60.0,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  stops: const <double>[0.3, 0.9],
+                  colors: <Color>[
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary
+                  ],
+                ),
+              ),
+              child: Image.file(imageFile),
             ),
           ),
-          child: Image.file(imageFile),
+        ClipOval(
+          child: Container(
+            alignment: Alignment.center,
+            height: 60.0,
+            width: 60.0,
+            color: Colors.black38,
+            child: Icon(
+              CustomIcons.camera,
+              size: 20,
+              color: Colors.white,
+            ),
+          ),
         ),
-      );
-    }
+      ],
+    );
   }
 
   @override
@@ -280,142 +296,168 @@ class JuntoEditDenState extends State<JuntoEditDen> {
             Expanded(
               child: ListView(
                 children: <Widget>[
-                  GestureDetector(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * .2,
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.asset(
-                        'assets/images/junto-mobile__themes--rainbow.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _onPickPressed();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 10),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                            width: .75,
+                  Stack(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          GestureDetector(
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .2,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Image.asset(
+                                    'assets/images/junto-mobile__themes--rainbow.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .2,
+                                  width: MediaQuery.of(context).size.width,
+                                  alignment: Alignment.center,
+                                  color: Colors.black38,
+                                  child: Icon(
+                                    CustomIcons.camera,
+                                    size: 24,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                          Container(
+                            height: 60,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75,
+                                ),
+                              ),
+                            ),
+                            child: TextField(
+                              controller: _nameController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Full Name',
+                              ),
+                              maxLines: null,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75,
+                                ),
+                              ),
+                            ),
+                            child: TextField(
+                              controller: _locationController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Location',
+                              ),
+                              maxLines: null,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75,
+                                ),
+                              ),
+                            ),
+                            child: TextField(
+                              controller: _genderController,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Gender Pronouns'),
+                              maxLines: null,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75,
+                                ),
+                              ),
+                            ),
+                            child: TextField(
+                              controller: _websiteController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Website',
+                              ),
+                              maxLines: null,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75,
+                                ),
+                              ),
+                            ),
+                            child: TextField(
+                              controller: _bioController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Short/Long Bio',
+                              ),
+                              maxLines: null,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * .2 - 30,
+                        left: 10,
+                        child: GestureDetector(
+                          onTap: () {
+                            _onPickPressed();
+                          },
+                          child: _displayCurrentProfilePicture(),
                         ),
                       ),
-                      child: Row(children: <Widget>[
-                        _displayCurrentProfilePicture(),
-                        const SizedBox(width: 10),
-                        Text('Change profile picture',
-                            style: Theme.of(context).textTheme.bodyText1)
-                      ]),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: .75,
-                        ),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Full Name',
-                      ),
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: .75,
-                        ),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _locationController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Location',
-                      ),
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: .75,
-                        ),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _genderController,
-                      decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Gender Pronouns'),
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: .75,
-                        ),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _websiteController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Website',
-                      ),
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: .75,
-                        ),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _bioController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Short/Long Bio',
-                      ),
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
+                    ],
                   ),
                 ],
               ),
