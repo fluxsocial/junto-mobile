@@ -19,8 +19,9 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
       preferredSize: const Size.fromHeight(45),
       child: AppBar(
         automaticallyImplyLeading: false,
-        brightness: Brightness.light,
-        iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
+        ),
         elevation: 0,
         titleSpacing: 0,
         title: Container(
@@ -32,21 +33,30 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Icon(expressionType.icon(), size: 24),
+                  Icon(
+                    expressionType.icon(),
+                    size: 20,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   const SizedBox(width: 7.5),
                   Text(
                     expressionType.appBarName(),
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme.of(context).textTheme.subtitle1,
                   )
                 ],
               ),
               InkWell(
                 onTap: onNext,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-                  child:
-                      Text('next', style: Theme.of(context).textTheme.caption),
+                  padding: const EdgeInsets.only(
+                    left: 8.0,
+                    top: 8.0,
+                    bottom: 8.0,
+                  ),
+                  child: Text(
+                    'next',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
               )
             ],
