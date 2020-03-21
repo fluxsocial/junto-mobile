@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 
 class EditDenAppbar extends StatelessWidget {
   const EditDenAppbar({this.updateUser});
@@ -10,8 +9,9 @@ class EditDenAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      brightness: Brightness.light,
-      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+      iconTheme: IconThemeData(
+        color: Theme.of(context).primaryColor,
+      ),
       elevation: 0,
       titleSpacing: 0,
       title: Container(
