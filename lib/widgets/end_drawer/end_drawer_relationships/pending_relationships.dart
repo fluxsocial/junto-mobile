@@ -165,9 +165,9 @@ class PendingRelationshipsState extends State<PendingRelationships> {
                 print(snapshot.error);
                 return const TabBarView(
                   children: <Widget>[
-                    FutureBuilderErrorWidget(
+                    JuntoErrorWidget(
                         errorMessage: 'Hmm, something went wrong'),
-                    FutureBuilderErrorWidget(
+                    JuntoErrorWidget(
                         errorMessage: 'Hmm, something went wrong'),
                   ],
                 );
