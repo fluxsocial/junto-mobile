@@ -47,6 +47,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
 
   @override
   Widget build(BuildContext context) {
+    final photo = widget.profile.user.backgroundPhoto;
     return SliverAppBar(
       automaticallyImplyLeading: false,
       primary: false,
@@ -69,10 +70,10 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  widget.profile.user.backgroundPhoto.isNotEmpty ||
-                          widget.profile.user.backgroundPhoto != ''
-                      ? MemberBackgroundPhoto(profile: widget.profile)
-                      : MemberBackgroundPlaceholder(theme: widget.currentTheme),
+                  if (photo != null && (photo.isNotEmpty || photo != ''))
+                    MemberBackgroundPhoto(profile: widget.profile),
+                  if (photo == null && (photo.isEmpty || photo == ''))
+                    MemberBackgroundPlaceholder(theme: widget.currentTheme),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),

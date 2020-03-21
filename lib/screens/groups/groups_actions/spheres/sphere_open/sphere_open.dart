@@ -111,9 +111,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 GroupExpressions(
                   key: ValueKey<String>(widget.group.address),
                   group: widget.group,
-                  userAddress: _userAddress,
-                  expressionsPrivacy: 'Public',
-                  shouldRefresh: shouldRefresh,
+                  privacy: 'Public',
                 )
             ],
           ),

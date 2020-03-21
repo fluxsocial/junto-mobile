@@ -60,7 +60,7 @@ class EventOpen extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width * .7,
-                        child: Text(eventTitle,
+                        child: SelectableText(eventTitle,
                             style: Theme.of(context).textTheme.headline4),
                       ),
                     ],
@@ -92,7 +92,7 @@ class EventOpen extends StatelessWidget {
                                     color: Theme.of(context).primaryColor,
                                     size: 20),
                                 const SizedBox(width: 5),
-                                Text(eventLocation,
+                                SelectableText(eventLocation,
                                     style: Theme.of(context).textTheme.caption),
                               ],
                             ),
@@ -104,7 +104,7 @@ class EventOpen extends StatelessWidget {
                               left: 10,
                               right: 10,
                             ),
-                            child: Text(eventDescription,
+                            child: SelectableText(eventDescription,
                                 style: Theme.of(context).textTheme.caption),
                           )
                         : const SizedBox()

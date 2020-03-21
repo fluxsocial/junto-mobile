@@ -77,6 +77,7 @@ class _UserExpressionsState extends State<UserExpressions> {
   @override
   Widget build(BuildContext context) {
     // public expressions of user
+    //TODO(dominik/Nash): replace FB with bloc
     return FutureBuilder<List<ExpressionResponse>>(
       future: getExpressions(),
       builder: (
@@ -112,12 +113,10 @@ class _UserExpressionsState extends State<UserExpressions> {
                               : CrossFadeState.showSecond,
                           duration: const Duration(milliseconds: 200),
                           firstChild: TwoColumnListView(
-                            userAddress: widget.userProfile.address,
                             data: snapshot.data,
                             privacyLayer: 'Public',
                           ),
                           secondChild: SingleColumnListView(
-                            userAddress: widget.userProfile.address,
                             data: snapshot.data,
                             privacyLayer: 'Public',
                           ),

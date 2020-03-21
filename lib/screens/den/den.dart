@@ -1,20 +1,21 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
-import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -113,16 +114,29 @@ class JuntoDenState extends State<JuntoDen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: JuntoFilterDrawer(
-        // TO DO: implement filter by channel
-        leftDrawer: FilterDrawerContent(
-          filterByChannel: null,
-          channels: [],
-          resetChannels: () {},
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ChannelFilteringBloc>(
+          create: (ctx) => ChannelFilteringBloc(
+            Provider.of<SearchRepo>(ctx, listen: false),
+            //TODO pass call to the bloc
+            (_) {},
+          ),
         ),
-        rightMenu: JuntoDrawer(),
-        scaffold: Scaffold(
+        //TODO(dominik): use expression bloc to fetch den's expressions
+        // BlocProvider<CollectiveBloc>(
+        //   create: (ctx) => CollectiveBloc(
+        //     Provider.of<ExpressionRepo>(ctx, listen: false),
+        //   )..add(CollectiveFetch('Collective')),
+        // ),
+      ],
+      child: Scaffold(
+        //TODO(dominik/Nash): revert and use bloc for fetching
+        // body: JuntoFilterDrawer(
+        // leftDrawer:
+        //     const FilterDrawerContent(ExpressionContextType.Collective),
+        // rightMenu: JuntoDrawer(),
+        body: Scaffold(
           appBar: _constructAppBar(),
           floatingActionButton: ValueListenableBuilder<bool>(
             valueListenable: _isVisible,
@@ -158,6 +172,7 @@ class JuntoDenState extends State<JuntoDen>
               FloatingActionButtonLocation.centerDocked,
           body: _buildBody(),
         ),
+        // ),
       ),
     );
   }

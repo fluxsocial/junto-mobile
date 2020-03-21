@@ -261,13 +261,13 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                 print(snapshot.error);
                 return const TabBarView(
                   children: <Widget>[
-                    FutureBuilderErrorWidget(
+                    JuntoErrorWidget(
                         errorMessage: 'Hmm, something went wrong'),
-                    FutureBuilderErrorWidget(
+                    JuntoErrorWidget(
                         errorMessage: 'Hmm, something went wrong'),
-                    FutureBuilderErrorWidget(
+                    JuntoErrorWidget(
                         errorMessage: 'Hmm, something went wrong'),
-                    FutureBuilderErrorWidget(
+                    JuntoErrorWidget(
                         errorMessage: 'Hmm, something went wrong'),
                   ],
                 );

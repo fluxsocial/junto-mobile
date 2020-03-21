@@ -53,7 +53,9 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 builder: (BuildContext context) => ExpressionActionItems(
-                    expression: expression, userAddress: userAddress),
+                  expression: expression,
+                  userAddress: userAddress,
+                ),
               );
             },
             child: Container(

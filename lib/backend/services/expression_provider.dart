@@ -4,6 +4,7 @@ import 'dart:typed_data' show Uint8List;
 
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -165,7 +166,7 @@ class ExpressionServiceCentralized implements ExpressionService {
 
   @override
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
-      Map<String, String> params) async {
+      Map<String, dynamic> params) async {
     final http.Response response = await client.get(
       '/expressions',
       queryParams: params,

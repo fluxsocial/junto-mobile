@@ -1,22 +1,22 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -40,36 +40,16 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final GlobalKey<JuntoFilterDrawerState> _filterDrawerKey =
       GlobalKey<JuntoFilterDrawerState>();
 
-  // Completer which controls expressions querying.
-  final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
-      _expressionCompleter =
-      ValueNotifier<Future<QueryResults<ExpressionResponse>>>(null);
-
-  ExpressionRepo _expressionProvider;
-
-  String _userAddress;
-  UserData _userProfile;
-
-  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  final ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
-  final List<String> _channels = <String>[];
   bool _actionsVisible = false;
-  bool twoColumnView = true;
 
   @override
   void initState() {
     super.initState();
+
     _collectiveController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _collectiveController.addListener(_onScrollingHasChanged);
-      if (_collectiveController.hasClients)
-        _collectiveController.position.isScrollingNotifier.addListener(
-          _onScrollingHasChanged,
-        );
-    });
-    _addPostFrameCallback();
-    getUserInformation();
+    _addPostFrameCallbackToHideFabOnScroll();
   }
 
   @override
@@ -79,201 +59,156 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    refreshData();
-  }
-
-  void _addPostFrameCallback() {
+  void _addPostFrameCallbackToHideFabOnScroll() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
-      if (_collectiveController.hasClients)
+      if (_collectiveController.hasClients) {
         _collectiveController.position.isScrollingNotifier.addListener(
           _onScrollingHasChanged,
         );
+      }
     });
   }
 
-  Future<void> refreshData() async {
-    _expressionProvider = Provider.of<ExpressionRepo>(context, listen: false);
-    _expressionCompleter.value = getCollectiveExpressions(
-      contextType: 'Collective',
-      paginationPos: 0,
-    );
+  void _scrollToTop() {
+    if (_collectiveController.hasClients) {
+      _collectiveController.animateTo(
+        0.0,
+        duration: kTabScrollDuration,
+        curve: Curves.decelerate,
+      );
+    }
   }
 
   void _onScrollingHasChanged() {
-    super.hideFabOnScroll(_collectiveController, _isVisible);
-  }
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      prefs.getString('user_data'),
-    );
-
-    setState(() {
-      _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
-      if (prefs.getBool('two-column-view') != null) {
-        twoColumnView = prefs.getBool('two-column-view');
-      }
-    });
-  }
-
-  Future<QueryResults<ExpressionResponse>> getCollectiveExpressions({
-    int dos,
-    String contextType,
-    String contextString,
-    List<String> channels,
-    int paginationPos = 0,
-  }) async {
-    Map<String, dynamic> _params;
-    if (contextType == 'Dos' && dos != -1) {
-      _params = <String, String>{
-        'context_type': contextType,
-        'pagination_position': paginationPos.toString(),
-        'dos': dos.toString(),
-      };
-    } else if (contextType == 'ConnectPerspective') {
-      _params = <String, String>{
-        'context_type': contextType,
-        'context': _userProfile.connectionPerspective.address,
-        'pagination_position': paginationPos.toString(),
-        if (_channels.isNotEmpty) 'channels[0]': _channels[0]
-      };
-    } else {
-      _params = <String, String>{
-        'context_type': contextType,
-        'context': contextString,
-        'pagination_position': paginationPos.toString(),
-        if (_channels.isNotEmpty) 'channels[0]': _channels[0]
-      };
-    }
-    try {
-      return await _expressionProvider.getCollectiveExpressions(_params);
-    } on JuntoException catch (error) {
-      if (error.errorCode == 401) {
-        Navigator.of(context).pushReplacement(Welcome.route());
-      }
-      return null;
-    }
-  }
-
-  void _resetChannels() {
-    setState(() {
-      _channels.clear();
-    });
-    _expressionCompleter.value = getCollectiveExpressions(
-        contextType: 'Collective', paginationPos: 0, channels: _channels);
-    Navigator.pop(context);
+    super.hideFabOnScroll(_collectiveController, _isFabVisible);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: JuntoFilterDrawer(
-        key: _filterDrawerKey,
-        leftDrawer: FilterDrawerContent(
-          filterByChannel: _filterByChannel,
-          channels: _channels,
-          resetChannels: _resetChannels,
-        ),
-        rightMenu: JuntoDrawer(),
-        scaffold: Scaffold(
-          key: _juntoCollectiveKey,
-          floatingActionButton: CollectiveActionButton(
-            userProfile: _userProfile,
-            isVisible: _isVisible,
-            actionsVisible: _actionsVisible,
-            onTap: () {
-              setState(() {
-                if (_actionsVisible) {
-                  _actionsVisible = false;
-                } else {
-                  _actionsVisible = true;
-                }
-              });
-            },
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: Stack(
-            children: <Widget>[
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: _actionsVisible ? 0.0 : 1.0,
-                child: ExpressionFeed(
-                  refreshData: refreshData,
-                  expressionCompleter: _expressionCompleter,
-                  collectiveController: _collectiveController,
-                  appbarTitle: _appbarTitle,
-                ),
-              ),
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: _actionsVisible ? 1.0 : 0.0,
-                child: Visibility(
-                  visible: _actionsVisible,
-                  child: JuntoCollectiveActions(
-                    userProfile: _userProfile,
-                    changePerspective: _changePerspective,
+    return MultiBlocProvider(
+      providers: _getBlocProviders(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: JuntoFilterDrawer(
+          key: _filterDrawerKey,
+          leftDrawer:
+              const FilterDrawerContent(ExpressionContextType.Collective),
+          rightMenu: JuntoDrawer(),
+          scaffold: Scaffold(
+            key: _juntoCollectiveKey,
+            floatingActionButton: CollectiveActionButton(
+              isVisible: _isFabVisible,
+              actionsVisible: _actionsVisible,
+              onUpTap: _scrollToTop,
+              onTap: () {
+                setState(() {
+                  _actionsVisible = !_actionsVisible;
+                });
+              },
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: Stack(
+              children: <Widget>[
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: _actionsVisible ? 0.0 : 1.0,
+                  child: ExpressionFeed(
+                    collectiveController: _collectiveController,
                   ),
                 ),
-              ),
-            ],
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: _actionsVisible ? 1.0 : 0.0,
+                  child: Visibility(
+                    visible: _actionsVisible,
+                    child:
+                        JuntoCollectiveActions(onChanged: _changePerspective),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _filterByChannel(Channel channel) {
-    setState(() {
-      if (_channels.isEmpty) {
-        _channels.add(channel.name);
-      } else {
-        _channels.first = channel.name;
-      }
-    });
-    _expressionCompleter.value = getCollectiveExpressions(
-      contextType: 'Collective',
-      paginationPos: 0,
-      channels: _channels,
-    );
+  List<BlocProvider> _getBlocProviders() {
+    return [
+      BlocProvider<CollectiveBloc>(
+        create: (ctx) => CollectiveBloc(
+          Provider.of<ExpressionRepo>(ctx, listen: false),
+          () => Navigator.of(context).pushReplacement(Welcome.route()),
+        )..add(
+            FetchCollective(
+              ExpressionQueryParams(
+                contextType: ExpressionContextType.Collective,
+              ),
+            ),
+          ),
+      ),
+      BlocProvider<PerspectivesBloc>(
+        create: (ctx) => PerspectivesBloc(
+          Provider.of<UserRepo>(ctx, listen: false),
+          Provider.of<UserDataProvider>(ctx, listen: false),
+        )..add(FetchPerspectives()),
+        lazy: false,
+      ),
+      BlocProvider<ChannelFilteringBloc>(
+        create: (ctx) => ChannelFilteringBloc(
+          Provider.of<SearchRepo>(ctx, listen: false),
+          (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
+            FetchCollective(
+              ExpressionQueryParams(
+                channels: value != null ? [value.name] : null,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ];
   }
 
-// Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(PerspectiveModel perspective) {
+  // Switch between perspectives; used in perspectives side drawer.
+  void _changePerspective(BuildContext context, PerspectiveModel perspective) {
+    final bloc = context.bloc<CollectiveBloc>();
     if (perspective.name == 'JUNTO') {
-      _appbarTitle.value = 'JUNTO';
-      _expressionCompleter.value = getCollectiveExpressions(
-          contextType: 'Collective', paginationPos: 0, channels: _channels);
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.Collective,
+            name: perspective.name,
+          ),
+        ),
+      );
     } else if (perspective.name == 'Connections') {
-      _appbarTitle.value = 'Connections';
-      _expressionCompleter.value = getCollectiveExpressions(
-        paginationPos: 0,
-        contextType: 'ConnectPerspective',
-        dos: 0,
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.ConnectPerspective,
+            dos: '0',
+            context: perspective.address,
+            name: perspective.name,
+          ),
+        ),
       );
     } else {
-      setState(() {
-        if (perspective.name ==
-            _userProfile.user.name + "'s Follow Perspective") {
-          _appbarTitle.value = 'Subscriptions';
-        } else {
-          _appbarTitle.value = perspective.name;
-        }
-      });
-      _expressionCompleter.value = getCollectiveExpressions(
-        paginationPos: 0,
-        contextString: perspective.address,
-        contextType: 'FollowPerspective',
-        dos: null,
-        channels: _channels,
+      bloc.add(
+        FetchCollective(
+          ExpressionQueryParams(
+            contextType: ExpressionContextType.FollowPerspective,
+            dos: null,
+            context: perspective.address,
+            name: perspective.name.contains("'s Follow Perspective")
+                ? 'Subscriptions'
+                : perspective.name,
+          ),
+        ),
       );
     }
+    context.bloc<ChannelFilteringBloc>().add(FilterClear());
     setState(() {
       _actionsVisible = false;
     });

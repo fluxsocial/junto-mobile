@@ -14,7 +14,7 @@ class EditPerspective extends StatefulWidget {
   const EditPerspective({this.perspective, this.refreshPerspectives});
 
   final PerspectiveModel perspective;
-  final Function refreshPerspectives;
+  final VoidCallback refreshPerspectives;
 
   @override
   State<StatefulWidget> createState() {
