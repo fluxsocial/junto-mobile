@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
@@ -13,7 +10,6 @@ import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_preview.dar
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Packs extends StatefulWidget {
   const Packs({this.userProfile, this.selectedGroup});
@@ -28,48 +24,13 @@ class Packs extends StatefulWidget {
 }
 
 class PacksState extends State<Packs> {
-  String _userAddress;
-
-  GroupRepo _groupRepo;
-
-  Future<UserGroupsResponse> userGroups;
-  Future<NotificationResultsModel> userGroupRequests;
-
   PageController packsPageController;
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-
-    getUserInformation();
     packsPageController = PageController(initialPage: 0);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    setState(() {
-      _groupRepo = Provider.of<GroupRepo>(context, listen: false);
-    });
-  }
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      _userAddress = prefs.getString('user_id');
-    });
-  }
-
-  Future<UserGroupsResponse> getUserGroups() async {
-    try {
-      return _groupRepo.getUserGroups(_userAddress);
-    } catch (error) {
-      print(error);
-      return null;
-    }
   }
 
   @override
