@@ -22,20 +22,21 @@ class LongformOpen extends StatelessWidget {
               ? Container(
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.only(bottom: 5),
-                  child: Text(
+                  child: SelectableText(
                     longformTitle,
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColor),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 )
               : const SizedBox(),
           longformBody != ''
               ? Container(
                   width: MediaQuery.of(context).size.width,
-                  child: Text(
+                  child: SelectableText(
                     longformBody,
                     textAlign: TextAlign.start,
                     style: TextStyle(
