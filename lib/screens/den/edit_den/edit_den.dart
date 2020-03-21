@@ -20,6 +20,9 @@ import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_profile_picture.
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_background_photo.dart';
 
 class JuntoEditDen extends StatefulWidget {
+  JuntoEditDen({this.currentTheme});
+
+  String currentTheme;
   @override
   State<StatefulWidget> createState() {
     return JuntoEditDenState();
@@ -237,6 +240,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           EditDenBackgroundPhoto(
                             backgroundPhotoFile: backgroundPhotoFile,
                             onPickPressed: _onPickPressed,
+                            currentTheme: widget.currentTheme,
                           ),
                           EditDenHeaderSpace(),
                           EditDenTextField(

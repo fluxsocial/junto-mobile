@@ -93,7 +93,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 ),
                               ),
                             ),
-                            EditDenButton(),
+                            EditDenButton(currentTheme: widget.currentTheme),
                           ],
                         ),
                         if (widget.profile.user.gender.isNotEmpty ||
