@@ -33,37 +33,6 @@ class _GroupExpressionsState extends State<GroupExpressions> {
     getUserInformation();
   }
 
-
-  /// Fetches the pack's expression and aches the result
-  Future<QueryResults<ExpressionResponse>> _getGroupExpressions() async {
-    if (widget.shouldRefresh.value) {
-      final Map<String, String> _params = <String, String>{
-        'context': widget.group.address,
-        'context_type': 'Group',
-        'pagination_position': '0',
-      };
-      widget.shouldRefresh.value = false;
-      final QueryResults<ExpressionResponse> results =
-          await Provider.of<ExpressionRepo>(
-        context,
-        listen: false,
-      ).getPackExpressions(
-        _params,
-      );
-      print(results.results);
-      // Rebuild UI with results
-      setState(() {});
-      return results;
-    } else {
-      return Provider.of<ExpressionRepo>(context).cachedResults;
-    }
-  }
-
-  Future<void> _onRefresh() async {
-    widget.shouldRefresh.value = true;
-    _getGroupExpressions();
-  }
-
   Future<void> _switchColumnView(String columnType) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
