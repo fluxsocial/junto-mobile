@@ -103,6 +103,7 @@ class WelcomeState extends State<Welcome> {
       location: <String>[location],
       username: username,
       profileImage: <String>[],
+      backgroundPhoto: '',
       website: <String>[website],
       gender: <String>[gender],
       verificationCode: verificationCode,

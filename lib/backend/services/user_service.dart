@@ -353,6 +353,7 @@ class UserServiceCentralized implements UserService {
           username: result['user']['username'],
           name: result['user']['name'],
           profilePicture: <String>[],
+          backgroundPhoto: result['user']['background_photo'],
           gender: List<String>.from(result['user']['gender']),
           location: List<String>.from(result['user']['location']),
           verified: true,
