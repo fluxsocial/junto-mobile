@@ -13,11 +13,12 @@ class DenBackgroundPhoto extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: profile.user.backgroundPhoto,
       width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * .2,
       placeholder: (BuildContext context, String _) {
         return Container(
           color: Theme.of(context).dividerColor,
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width / 3 * 2,
+          height: MediaQuery.of(context).size.height * .2,
         );
       },
       fit: BoxFit.cover,

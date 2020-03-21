@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_button.dart';
+import 'package:junto_beta_mobile/screens/den/den_background_photo.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
@@ -68,7 +69,10 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  MemberBackgroundPlaceholder(theme: widget.currentTheme),
+                  widget.profile.user.backgroundPhoto.isNotEmpty ||
+                          widget.profile.user.backgroundPhoto != ''
+                      ? DenBackgroundPhoto(profile: widget.profile)
+                      : MemberBackgroundPlaceholder(theme: widget.currentTheme),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),

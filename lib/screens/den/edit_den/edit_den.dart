@@ -238,6 +238,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       Column(
                         children: <Widget>[
                           EditDenBackgroundPhoto(
+                            profile: _userData,
                             backgroundPhotoFile: backgroundPhotoFile,
                             onPickPressed: _onPickPressed,
                             currentTheme: widget.currentTheme,
