@@ -34,8 +34,8 @@ class CreateLongformState extends State<CreateLongform> {
   /// by the user.
   LongFormExpression createExpression() {
     return LongFormExpression(
-      body: _bodyController.value.text,
-      title: _titleController.value.text,
+      body: _bodyController.value.text.trim(),
+      title: _titleController.value.text.trim(),
     );
   }
 

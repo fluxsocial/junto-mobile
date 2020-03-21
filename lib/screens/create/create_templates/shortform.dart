@@ -30,7 +30,7 @@ class CreateShortformState extends State<CreateShortform> {
   /// by the user.
   ShortFormExpression createExpression() {
     return ShortFormExpression(
-      body: _bodyController.value.text,
+      body: _bodyController.value.text.trim(),
       background: <dynamic>[gradientOne, gradientTwo],
     );
   }
