@@ -11,10 +11,14 @@ class BottomNav extends StatelessWidget {
   const BottomNav({
     this.onLeftButtonTap,
     @required this.actionsVisible,
+    this.address,
+    this.expressionContext = ExpressionContext.Collective,
   });
 
   final VoidCallback onLeftButtonTap;
   final bool actionsVisible;
+  final String address;
+  final ExpressionContext expressionContext;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +64,9 @@ class BottomNav extends StatelessWidget {
                 Navigator.push(
                   context,
                   FadeRoute<void>(
-                    child: const JuntoLotus(
-                      address: null,
-                      expressionContext: ExpressionContext.Collective,
+                    child: JuntoLotus(
+                      address: address,
+                      expressionContext: expressionContext,
                     ),
                   ),
                 );
