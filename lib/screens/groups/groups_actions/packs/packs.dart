@@ -251,7 +251,7 @@ class _MyPacksState extends State<MyPacks> with ListDistinct {
               ));
             }
             if (state is GroupError) {
-              FutureBuilderErrorWidget(
+              JuntoErrorWidget(
                 errorMessage: state.groupError,
               );
             }
