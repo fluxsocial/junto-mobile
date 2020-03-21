@@ -127,7 +127,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         return route.isFirst;
       },
     );
-    BlocProvider.of<CollectiveBloc>(context).add(RefreshCollective());
   }
 
   Future<void> _createExpression() async {
@@ -210,13 +209,15 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         message: 'Expression Created!',
       );
       _postCreateAction();
-    } catch (error) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText: error.message,
-        ),
-      );
+    } catch (e, s) {
+      print(e);
+      print(s);
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext context) => SingleActionDialog(
+      //     dialogText: error.message,
+      //   ),
+      // );
     }
   }
 

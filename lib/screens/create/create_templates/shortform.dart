@@ -37,7 +37,7 @@ class CreateShortformState extends State<CreateShortform> {
 
   bool validate() {
     return _bodyController.value.text != null &&
-        _bodyController.value.text.isNotEmpty;
+        _bodyController.value.text.trim().isNotEmpty;
   }
 
   @override

@@ -40,16 +40,18 @@ class CreateLongformState extends State<CreateLongform> {
   }
 
   bool validate() {
+    final body = _bodyController.value.text.trim();
+    final title = _titleController.value.text.trim();
     // Body cannot be empty if the title is also empty
-    if (_titleController.value.text.isEmpty) {
-      return _bodyController.value.text.isNotEmpty;
+    if (title.isEmpty) {
+      return body.isNotEmpty;
     }
     // Body can be empty if the title is not empty
-    if (_titleController.value.text.isNotEmpty) {
+    if (title.isNotEmpty) {
       return true;
     }
     // Title can be empty if the title is not empty
-    if (_bodyController.value.text.isNotEmpty) {
+    if (body.isNotEmpty) {
       return true;
     }
     return false;

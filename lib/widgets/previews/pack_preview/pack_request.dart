@@ -78,7 +78,7 @@ class PackRequest extends StatelessWidget {
                         Text(
                           pack.address == userProfile.pack.address
                               ? 'My Pack'
-                              : pack.creator['name'] + "'s Pack",
+                              : '${pack.creator['name']?.trim()}\'s Pack',
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
