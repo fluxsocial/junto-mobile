@@ -88,10 +88,15 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   Future<void> _onPickPressed(String photoType) async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image == null) {
-      setState(() {
-        profilePictureFile = null;
-        backgroundPhotoFile = null;
-      });
+      if (photoType == 'profile' && profilePictureFile == null) {
+        setState(() {
+          profilePictureFile = null;
+        });
+      } else if (photoType == 'background' && backgroundPhotoFile == null) {
+        setState(() {
+          backgroundPhotoFile = null;
+        });
+      }
       return;
     }
     final File cropped =
@@ -99,10 +104,15 @@ class JuntoEditDenState extends State<JuntoEditDen> {
       photoType == 'profile' ? '1:1' : '3:2',
     ]);
     if (cropped == null) {
-      setState(() {
-        profilePictureFile = null;
-        backgroundPhotoFile = null;
-      });
+      if (photoType == 'profile' && profilePictureFile == null) {
+        setState(() {
+          profilePictureFile = null;
+        });
+      } else if (photoType == 'background' && backgroundPhotoFile == null) {
+        setState(() {
+          backgroundPhotoFile = null;
+        });
+      }
       return;
     }
 
@@ -112,7 +122,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
         profilePictures = <File>[];
         profilePictures.add(profilePictureFile);
       } else if (photoType == 'background') {
-        backgroundPhoto = cropped;
+        backgroundPhotoFile = cropped;
       }
     });
   }
@@ -259,14 +269,24 @@ class JuntoEditDenState extends State<JuntoEditDen> {
       },
       child: Stack(
         children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height * .2,
-            width: MediaQuery.of(context).size.width,
-            child: Image.asset(
-              'assets/images/junto-mobile__themes--rainbow.png',
-              fit: BoxFit.cover,
+          if (backgroundPhotoFile == null)
+            Container(
+              height: MediaQuery.of(context).size.height * .2,
+              width: MediaQuery.of(context).size.width,
+              child: Image.asset(
+                'assets/images/junto-mobile__themes--rainbow.png',
+                fit: BoxFit.cover,
+              ),
+            )
+          else
+            Container(
+              height: MediaQuery.of(context).size.height * .2,
+              width: MediaQuery.of(context).size.width,
+              child: Image.file(
+                backgroundPhotoFile,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
           Container(
             height: MediaQuery.of(context).size.height * .2,
             width: MediaQuery.of(context).size.width,
