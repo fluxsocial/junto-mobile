@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class DenBackgroundPhoto extends StatelessWidget {
-  const DenBackgroundPhoto({this.profile});
+class MemberBackgroundPhoto extends StatelessWidget {
+  const MemberBackgroundPhoto({this.profile});
 
   final UserData profile;
 
