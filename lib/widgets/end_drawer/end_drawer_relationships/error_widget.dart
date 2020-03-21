@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FutureBuilderErrorWidget extends StatelessWidget {
-  const FutureBuilderErrorWidget({this.errorMessage});
+class JuntoErrorWidget extends StatelessWidget {
+  const JuntoErrorWidget({this.errorMessage});
   final String errorMessage;
   @override
   Widget build(BuildContext context) {

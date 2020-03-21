@@ -108,7 +108,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<UserGroupsResponse> getUserGroups() async {
     return _memoizer.runOnce(
-      () => Provider.of<UserRepo>(context).getUserGroups(_userAddress),
+      () => Provider.of<GroupRepo>(context).getUserGroups(_userAddress),
     );
   }
 
@@ -207,7 +207,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       );
       _postCreateAction();
     } catch (error) {
-      JuntoLoader.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) => const SingleActionDialog(
@@ -338,7 +337,39 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         setState(() {
           _currentExpressionContext = expressionContext;
         });
-        _setExpressionContextDescription();
+
+        // if the context is a sphere, get the user's list of spheres and open
+        // the SphereSelectModal
+        if (expressionContext == 'Sphere') {
+          JuntoLoader.showLoader(context);
+          final UserGroupsResponse _userGroups =
+              await Provider.of<GroupRepo>(context, listen: false)
+                  .getUserGroups(_userAddress);
+          JuntoLoader.hide();
+          final List<Group> ownedGroups = _userGroups.owned;
+          final List<Group> associatedGroups = _userGroups.associated;
+          final List<Group> userSpheres =
+              distinct<Group>(ownedGroups, associatedGroups)
+                  .where((Group group) => group.groupType == 'Sphere')
+                  .toList();
+          if (userSpheres.isNotEmpty) {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return SphereSelectModal(
+                    spheres: userSpheres, onSelect: selectGroup);
+              },
+            );
+          }
+          if (userSpheres.isEmpty) {
+            showFeedback(context, message: 'You are not apart of any spheres');
+            setState(() {
+              _currentExpressionContext = 'Collective';
+            });
+          }
+        }
+
       },
       child: Container(
         height: 50,

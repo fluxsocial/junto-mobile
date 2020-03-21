@@ -53,7 +53,7 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
               if (!snapshot)
                 Packs(
                   userProfile: widget.userProfile,
-                  changeGroup: widget.changeGroup,
+                  selectedGroup: widget.changeGroup,
                 ),
               Positioned(
                 bottom: 0,

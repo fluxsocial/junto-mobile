@@ -6,10 +6,12 @@ import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/groups_actions.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
@@ -175,9 +177,15 @@ class JuntoGroupsState extends State<JuntoGroups>
             ),
           ),
       ),
-      //TODO: use proper fetch call for Groups
+      BlocProvider<GroupBloc>(
+          create: (ctx) => GroupBloc(
+                Provider.of<GroupRepo>(ctx, listen: false),
+                Provider.of<UserDataProvider>(ctx, listen: false),
+                Provider.of<NotificationRepo>(ctx, listen: false),
+              )..add(FetchMyPack())),
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
+
             Provider.of<SearchRepo>(ctx, listen: false),
             (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
                   FetchCollective(
@@ -186,7 +194,9 @@ class JuntoGroupsState extends State<JuntoGroups>
                       channels: [value.name],
                     ),
                   ),
-                )),
+                ),
+        ),
+
       ),
     ];
   }

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:provider/provider.dart';
 
 class PackRequest extends StatelessWidget {
   const PackRequest({
@@ -22,28 +23,26 @@ class PackRequest extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        // TODO:Nash - can you take a look?
+        JuntoLoader.showLoader(context);
+        try {
+          final UserData packOwnerUserData =
+              await Provider.of<UserRepo>(context, listen: false).getUser(
+            pack.creator['address'],
+          );
 
-        // JuntoLoader.showLoader(context);
-        // try {
-        //   final UserData packOwnerUserData =
-        //       await Provider.of<UserRepo>(context, listen: false)
-        //           .getUser(pack.creator['address']);
-        //   print('hello');
-        //   JuntoLoader.hide();
-        //   Navigator.push(
-        //     context,
-        //     CupertinoPageRoute<dynamic>(
-        //       builder: (BuildContext context) => JuntoMember(
-        //         profile: packOwnerUserData.user,
-        //       ),
-        //     ),
-        //   );
-        // } catch (error) {
-        //   print(error);
-        //   print('yo');
-        //   JuntoLoader.hide();
-        // }
+          JuntoLoader.hide();
+          Navigator.push(
+            context,
+            CupertinoPageRoute<dynamic>(
+              builder: (BuildContext context) => JuntoMember(
+                profile: packOwnerUserData.user,
+              ),
+            ),
+          );
+        } catch (error) {
+          print(error);
+          JuntoLoader.hide();
+        }
       },
       child: Container(
         color: Theme.of(context).colorScheme.background,
