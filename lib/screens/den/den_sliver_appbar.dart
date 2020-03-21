@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den_button.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_button.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar(
@@ -60,13 +61,18 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  MemberBackgroundPlaceholder(theme: widget.currentTheme),
+                  widget.profile.user.backgroundPhoto.isNotEmpty ||
+                          widget.profile.user.backgroundPhoto != ''
+                      ? MemberBackgroundPhoto(profile: widget.profile)
+                      : MemberBackgroundPlaceholder(theme: widget.currentTheme),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),
@@ -91,7 +97,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 ),
                               ),
                             ),
-                            EditDenButton(),
+                            EditDenButton(currentTheme: widget.currentTheme),
                           ],
                         ),
                         if (widget.profile.user.gender.isNotEmpty ||
@@ -113,6 +119,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                         ),
                         AboutItem(
                           item: widget.profile.user.website,
+                          isWebsite: true,
                           icon: Image.asset(
                             'assets/images/junto-mobile__link.png',
                             height: 15,
@@ -132,7 +139,9 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
       ),
       expandedHeight: _flexibleHeightSpace == null
           ? 1000
-          : _flexibleHeightSpace + MediaQuery.of(context).size.height * .2 + .75,
+          : _flexibleHeightSpace +
+              MediaQuery.of(context).size.height * .2 +
+              .75,
       forceElevated: false,
     );
   }
