@@ -30,8 +30,10 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   UserData _userData;
 
   List<File> profilePictures = <File>[];
+  File backgroundPhoto;
 
-  File imageFile;
+  File profilePictureFile;
+  File backgroundPhotoFile;
 
   TextEditingController _nameController;
   TextEditingController _bioController;
@@ -83,24 +85,35 @@ class JuntoEditDenState extends State<JuntoEditDen> {
         _userData.user.website.isNotEmpty ? _userData.user.website[0] : '';
   }
 
-  Future<void> _onPickPressed() async {
+  Future<void> _onPickPressed(String photoType) async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image == null) {
-      setState(() => imageFile = null);
+      setState(() {
+        profilePictureFile = null;
+        backgroundPhotoFile = null;
+      });
       return;
     }
     final File cropped =
         await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
-      '1:1',
+      photoType == 'profile' ? '1:1' : '3:2',
     ]);
     if (cropped == null) {
-      setState(() => imageFile = null);
+      setState(() {
+        profilePictureFile = null;
+        backgroundPhotoFile = null;
+      });
       return;
     }
+
     setState(() {
-      imageFile = cropped;
-      profilePictures = <File>[];
-      profilePictures.add(imageFile);
+      if (photoType == 'profile') {
+        profilePictureFile = cropped;
+        profilePictures = <File>[];
+        profilePictures.add(profilePictureFile);
+      } else if (photoType == 'background') {
+        backgroundPhoto = cropped;
+      }
     });
   }
 
@@ -174,54 +187,114 @@ class JuntoEditDenState extends State<JuntoEditDen> {
         _userAddress,
       );
       JuntoLoader.hide();
-      Navigator.of(context).pushReplacement(FadeRoute<void>(child: JuntoDen()));
+      Navigator.of(context).pushReplacement(
+        FadeRoute<void>(
+          child: JuntoDen(),
+        ),
+      );
     } catch (error) {
+      print(error.message);
       JuntoLoader.hide();
     }
   }
 
   Widget _displayCurrentProfilePicture() {
-    return Stack(
-      children: <Widget>[
-        if (_userData != null && imageFile == null)
-          MemberAvatar(
-            diameter: 60,
-            profilePicture: _userData.user.profilePicture,
-          )
-        else if (imageFile != null)
-          ClipOval(
-            child: Container(
-              alignment: Alignment.center,
-              height: 60.0,
-              width: 60.0,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  stops: const <double>[0.3, 0.9],
-                  colors: <Color>[
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.primary
-                  ],
+    return Positioned(
+      top: MediaQuery.of(context).size.height * .2 - 30,
+      left: 10,
+      child: GestureDetector(
+        onTap: () {
+          _onPickPressed('profile');
+        },
+        child: Stack(
+          children: <Widget>[
+            if (_userData != null && profilePictureFile == null)
+              MemberAvatar(
+                diameter: 60,
+                profilePicture: _userData.user.profilePicture,
+              )
+            else if (profilePictureFile != null)
+              ClipOval(
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 60.0,
+                  width: 60.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: const <double>[0.3, 0.9],
+                      colors: <Color>[
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary
+                      ],
+                    ),
+                  ),
+                  child: Image.file(profilePictureFile),
                 ),
               ),
-              child: Image.file(imageFile),
+            ClipOval(
+              child: Container(
+                alignment: Alignment.center,
+                height: 60.0,
+                width: 60.0,
+                color: Colors.black38,
+                child: Icon(
+                  CustomIcons.camera,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _displayCurrentBackgroundPhoto() {
+    return GestureDetector(
+      onTap: () {
+        _onPickPressed('background');
+      },
+      child: Stack(
+        children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.height * .2,
+            width: MediaQuery.of(context).size.width,
+            child: Image.asset(
+              'assets/images/junto-mobile__themes--rainbow.png',
+              fit: BoxFit.cover,
             ),
           ),
-        ClipOval(
-          child: Container(
+          Container(
+            height: MediaQuery.of(context).size.height * .2,
+            width: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
-            height: 60.0,
-            width: 60.0,
             color: Colors.black38,
             child: Icon(
               CustomIcons.camera,
-              size: 20,
+              size: 24,
               color: Colors.white,
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _headerSpace() {
+    return Container(
+      height: 60,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: .75,
+          ),
         ),
-      ],
+      ),
     );
   }
 
@@ -269,8 +342,10 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                     color: Colors.transparent,
                     width: 42,
                     height: 42,
-                    child: Text('Save',
-                        style: Theme.of(context).textTheme.bodyText1),
+                    child: Text(
+                      'Save',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
                 )
               ],
@@ -283,7 +358,9 @@ class JuntoEditDenState extends State<JuntoEditDen> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
             ),
@@ -300,45 +377,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                     children: <Widget>[
                       Column(
                         children: <Widget>[
-                          GestureDetector(
-                            child: Stack(
-                              children: <Widget>[
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .2,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Image.asset(
-                                    'assets/images/junto-mobile__themes--rainbow.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .2,
-                                  width: MediaQuery.of(context).size.width,
-                                  alignment: Alignment.center,
-                                  color: Colors.black38,
-                                  child: Icon(
-                                    CustomIcons.camera,
-                                    size: 24,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 60,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Theme.of(context).dividerColor,
-                                  width: .75,
-                                ),
-                              ),
-                            ),
-                          ),
+                          _displayCurrentBackgroundPhoto(),
+                          _headerSpace(),
                           Container(
                             padding: const EdgeInsets.symmetric(
                               vertical: 10,
@@ -447,16 +487,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           ),
                         ],
                       ),
-                      Positioned(
-                        top: MediaQuery.of(context).size.height * .2 - 30,
-                        left: 10,
-                        child: GestureDetector(
-                          onTap: () {
-                            _onPickPressed();
-                          },
-                          child: _displayCurrentProfilePicture(),
-                        ),
-                      ),
+                      _displayCurrentProfilePicture(),
                     ],
                   ),
                 ],
