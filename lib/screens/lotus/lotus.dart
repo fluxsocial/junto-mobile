@@ -59,7 +59,6 @@ class JuntoLotusState extends State<JuntoLotus> {
     final Map<String, dynamic> decodedUserData = jsonDecode(
       prefs.getString('user_data'),
     );
-
     print(
       prefs.getString('current-theme'),
     );
