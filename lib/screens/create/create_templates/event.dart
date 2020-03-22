@@ -128,6 +128,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
+      expressionType: ExpressionType.event,
       onNext: _onNext,
       child: Expanded(
         child: Form(

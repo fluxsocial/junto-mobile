@@ -145,6 +145,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
+      expressionType: ExpressionType.photo,
       onNext: _onNext,
       showBottomNav: _showBottomNav,
       child: Expanded(

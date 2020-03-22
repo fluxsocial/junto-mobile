@@ -111,6 +111,7 @@ class CreateShortformState extends State<CreateShortform> {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
+      expressionType: ExpressionType.shortform,
       onNext: _onNext,
       child: Expanded(
         child: Column(

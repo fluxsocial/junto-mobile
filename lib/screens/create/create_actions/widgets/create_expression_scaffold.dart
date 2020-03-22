@@ -9,17 +9,19 @@ class CreateExpressionScaffold extends StatelessWidget {
     this.child,
     this.onNext,
     this.showBottomNav = true,
+    @required this.expressionType,
   }) : super(key: key);
 
   final Widget child;
   final VoidCallback onNext;
   final bool showBottomNav;
+  final ExpressionType expressionType;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CreateAppBar(
-        expressionType: ExpressionType.dynamic,
+        expressionType: expressionType,
         onNext: onNext,
       ),
       resizeToAvoidBottomPadding: false,
