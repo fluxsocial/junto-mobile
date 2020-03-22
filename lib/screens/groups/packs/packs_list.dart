@@ -40,7 +40,6 @@ class PacksListState extends State<PacksList> {
       ),
       color: Theme.of(context).backgroundColor,
       height: MediaQuery.of(context).size.height - 90,
-      // height: MediaQuery.of(context).size.height - 150,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

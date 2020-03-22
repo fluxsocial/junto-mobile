@@ -8,7 +8,8 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
-import 'package:junto_beta_mobile/screens/groups//packs/packs.dart';
+import 'package:junto_beta_mobile/screens/groups/packs/packs.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,8 +76,10 @@ class JuntoLotusState extends State<JuntoLotus> {
     Widget child;
     if (screen == Screen.collective) {
       child = JuntoCollective();
-    } else if (screen == Screen.groups) {
+    } else if (screen == Screen.packs) {
       child = JuntoPacks(initialGroup: _userProfile.pack.address);
+    } else if (screen == Screen.groups) {
+      child = SpheresTemp();
     } else if (screen == Screen.create) {
       child = JuntoCreate(
         channels: const <String>[],
@@ -140,8 +143,8 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _willPop,
+    return GestureDetector(
+      onHorizontalDragEnd: (dx) => Navigator.pop(context),
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -163,49 +166,6 @@ class JuntoLotusState extends State<JuntoLotus> {
                     height: 80,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            _navigateTo(Screen.create);
-                          },
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            color: Colors.transparent,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: 27,
-                                  child: const Icon(
-                                    CustomIcons.create,
-                                    size: 20,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                  'CREATE',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 1.4),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 80,
-                    color: Colors.transparent,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
@@ -240,6 +200,16 @@ class JuntoLotusState extends State<JuntoLotus> {
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 80,
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
                         GestureDetector(
                           onTap: () {
                             _navigateTo(Screen.groups);
@@ -253,13 +223,44 @@ class JuntoLotusState extends State<JuntoLotus> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: const <Widget>[
                                 Icon(
-                                  CustomIcons.groups,
-                                  size: 17,
+                                  CustomIcons.spheres,
+                                  size: 20,
                                   color: Colors.white,
                                 ),
                                 SizedBox(height: 10),
                                 Text(
                                   'GROUPS',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.4,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _navigateTo(Screen.packs);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            color: Colors.transparent,
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const <Widget>[
+                                Icon(
+                                  CustomIcons.packs,
+                                  size: 20,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'PACKS',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -280,15 +281,35 @@ class JuntoLotusState extends State<JuntoLotus> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         GestureDetector(
-                          onTap: _handleLotusPress,
+                          onTap: () {
+                            _navigateTo(Screen.create);
+                          },
                           child: Container(
                             height: 80,
                             width: 80,
                             color: Colors.transparent,
-                            child: Icon(
-                              CustomIcons.lotus,
-                              size: 33,
-                              color: Colors.white,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: 27,
+                                  child: const Icon(
+                                    CustomIcons.create,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  'CREATE',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.4),
+                                )
+                              ],
                             ),
                           ),
                         )
