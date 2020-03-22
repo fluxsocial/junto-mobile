@@ -183,11 +183,11 @@ class JuntoLotusState extends State<JuntoLotus> {
                                   width: 45,
                                   child: const Icon(
                                     CustomIcons.collective,
-                                    size: 15,
+                                    size: 13,
                                     color: Colors.white,
                                   ),
                                 ),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 12),
                                 const Text(
                                   'COLLECTIVE',
                                   style: TextStyle(
@@ -221,13 +221,13 @@ class JuntoLotusState extends State<JuntoLotus> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Icon(
                                   CustomIcons.spheres,
-                                  size: 20,
+                                  size: 22,
                                   color: Colors.white,
                                 ),
-                                SizedBox(height: 10),
+                                SizedBox(height: 8),
                                 Text(
                                   'GROUPS',
                                   style: TextStyle(
