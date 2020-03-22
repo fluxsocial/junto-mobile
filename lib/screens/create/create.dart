@@ -36,12 +36,6 @@ class JuntoCreate extends StatelessWidget {
                 expressionContext: expressionContext, address: address),
             expression);
         break;
-      case ExpressionType.event:
-        _push(
-            context,
-            CreateEvent(expressionContext: expressionContext, address: address),
-            expression);
-        break;
       case ExpressionType.shortform:
         _push(
             context,
@@ -87,24 +81,13 @@ class JuntoCreate extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       _selectExpressionIcon(ExpressionType.dynamic),
                       _selectExpressionIcon(ExpressionType.shortform),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
                       _selectExpressionIcon(ExpressionType.photo),
-                      _selectExpressionIcon(ExpressionType.event),
                     ],
                   ),
                 ),

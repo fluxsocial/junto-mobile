@@ -156,7 +156,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                           hintText: 'Name of event',
                           hintStyle: Theme.of(context).textTheme.headline6,
                         ),
-                        cursorColor: JuntoPalette.juntoGrey,
+                        cursorColor: Theme.of(context).primaryColor,
                         cursorWidth: 2,
                         maxLines: null,
                         maxLength: 140,
