@@ -94,46 +94,65 @@ class CreateLongformState extends State<CreateLongform> {
     return CreateExpressionScaffold(
       expressionType: ExpressionType.dynamic,
       onNext: _onNext,
-      child: Flexible(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Expanded(
+        child: Column(
           children: <Widget>[
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
                 controller: _titleController,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Write a title (optional)',
-                  hintStyle: Theme.of(context).textTheme.headline6,
+                  hintText: 'Title',
+                  hintStyle: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Theme.of(context).primaryColorLight,
+                      ),
                 ),
-                cursorColor: JuntoPalette.juntoGrey,
+                cursorColor: Theme.of(context).primaryColor,
                 cursorWidth: 2,
                 maxLines: null,
+                maxLength: 140,
                 style: Theme.of(context).textTheme.headline6,
                 keyboardAppearance: Theme.of(context).brightness,
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.text,
               ),
             ),
-            Container(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height * .7,
-              ),
-              child: TextField(
-                controller: _bodyController,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Start typing...',
-                ),
-                cursorColor: Theme.of(context).primaryColorLight,
-                cursorWidth: 2,
-                maxLines: null,
-                style: Theme.of(context).textTheme.caption,
-                keyboardAppearance: Theme.of(context).brightness,
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.text,
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                children: <Widget>[
+                  Container(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height * .7,
+                    ),
+                    child: TextField(
+                      controller: _bodyController,
+                      textInputAction: TextInputAction.done,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Share your story...',
+                      ),
+                      cursorColor: Theme.of(context).primaryColorLight,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                            fontSize: 17,
+                          ),
+                      keyboardAppearance: Theme.of(context).brightness,
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.text,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
