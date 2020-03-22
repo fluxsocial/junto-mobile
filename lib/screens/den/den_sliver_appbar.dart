@@ -72,7 +72,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                 children: <Widget>[
                   if (photo != null && (photo.isNotEmpty || photo != ''))
                     MemberBackgroundPhoto(profile: widget.profile),
-                  if (photo == null && (photo.isEmpty || photo == ''))
+                  if (photo == null || photo.isEmpty)
                     MemberBackgroundPlaceholder(theme: widget.currentTheme),
                   Container(
                     key: _keyFlexibleSpace,
