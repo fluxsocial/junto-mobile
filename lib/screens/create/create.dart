@@ -47,7 +47,10 @@ class JuntoCreate extends StatelessWidget {
       case ExpressionType.photo:
         _push(
             context,
-            CreatePhoto(expressionContext: expressionContext, address: address),
+            CreatePhoto(
+              expressionContext: expressionContext,
+              address: address,
+            ),
             expression);
         break;
       default:

@@ -117,7 +117,10 @@ class CreateShortformState extends State<CreateShortform> {
         child: Column(
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
               child: Row(
                 children: <Widget>[
                   _gradientSelector('8E8098', '307FAA'),
