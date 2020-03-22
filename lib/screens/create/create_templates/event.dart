@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
