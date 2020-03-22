@@ -134,11 +134,12 @@ class CreateShortformState extends State<CreateShortform> {
                   children: <Widget>[
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 25.0,
+                        vertical: 50.0,
                         horizontal: 25.0,
                       ),
-                      alignment: Alignment.center,
-                      height: MediaQuery.of(context).size.width,
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.width,
+                      ),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -167,10 +168,9 @@ class CreateShortformState extends State<CreateShortform> {
                             null,
                         decoration: InputDecoration(
                           hintMaxLines: 25,
-                          hintText: 'Tap here to start typing',
                           hintStyle: TextStyle(
                             color: Colors.white.withOpacity(0.5),
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.w700,
                           ),
                           border: InputBorder.none,
