@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/screens/create/create.dart';
 
 class CreateBottomNav extends StatelessWidget {
   const CreateBottomNav({

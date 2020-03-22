@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
 
-class JuntoCreate extends StatelessWidget {
+class JuntoCreate extends StatefulWidget {
   const JuntoCreate({
     @required this.channels,
     @required this.address,
@@ -22,34 +22,47 @@ class JuntoCreate extends StatelessWidget {
   final ExpressionContext expressionContext;
   final String expressionCenterBackground;
 
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoCreateState();
+  }
+}
+
+class JuntoCreateState extends State<JuntoCreate> {
+  dynamic source;
+
   void _navigateTo(BuildContext context, ExpressionType expression) {
     switch (expression) {
       case ExpressionType.dynamic:
         _push(
             context,
             CreateLongform(
-                expressionContext: expressionContext, address: address),
+                expressionContext: widget.expressionContext,
+                address: widget.address),
             expression);
         break;
       case ExpressionType.event:
         _push(
             context,
-            CreateEvent(expressionContext: expressionContext, address: address),
+            CreateEvent(
+                expressionContext: widget.expressionContext,
+                address: widget.address),
             expression);
         break;
       case ExpressionType.shortform:
         _push(
             context,
             CreateShortform(
-                expressionContext: expressionContext, address: address),
+                expressionContext: widget.expressionContext,
+                address: widget.address),
             expression);
         break;
       case ExpressionType.photo:
         _push(
             context,
             CreatePhoto(
-              expressionContext: expressionContext,
-              address: address,
+              expressionContext: widget.expressionContext,
+              address: widget.address,
             ),
             expression);
         break;
@@ -57,13 +70,18 @@ class JuntoCreate extends StatelessWidget {
     }
   }
 
-  void _push(BuildContext context, Widget form, ExpressionType expression) {
-    Navigator.push(
+  void _push(
+      BuildContext context, Widget form, ExpressionType expression) async {
+    final ExpressionType expressionType = await Navigator.push(
       context,
-      FadeRoute<void>(
+      FadeRoute<ExpressionType>(
         child: form,
       ),
     );
+    setState(() {
+      source = expressionType;
+    });
+    print(source);
   }
 
   Widget _expressionCenter(BuildContext context) {
@@ -71,7 +89,7 @@ class JuntoCreate extends StatelessWidget {
       children: <Widget>[
         Positioned.fill(
           child: Image.asset(
-            expressionCenterBackground,
+            widget.expressionCenterBackground,
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
@@ -95,7 +113,10 @@ class JuntoCreate extends StatelessWidget {
                     ],
                   ),
                 ),
-                const HomeIcon(),
+                HomeIcon(
+                  source: source,
+                  navigateTo: _navigateTo,
+                ),
               ],
             ),
           ),
