@@ -276,6 +276,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                   ),
                   Container(
                     height: 80,
+                    margin: const EdgeInsets.only(bottom: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
