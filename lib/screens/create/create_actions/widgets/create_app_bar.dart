@@ -24,30 +24,19 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         titleSpacing: 0,
         title: Container(
-          padding: const EdgeInsets.symmetric(
-              horizontal: JuntoStyles.horizontalPadding),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  // Icon(
-                  //   expressionType.icon(),
-                  //   size: 20,
-                  //   color: Theme.of(context).primaryColor,
-                  // ),
-                  // const SizedBox(width: 7.5),
-                  Text(
-                    expressionType.appBarName().toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      letterSpacing: 1.7,
-                    ),
-                  )
-                ],
+              Text(
+                expressionType.appBarName().toUpperCase(),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  letterSpacing: 1.7,
+                ),
               ),
               InkWell(
                 onTap: onNext,
