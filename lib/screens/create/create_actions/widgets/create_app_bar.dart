@@ -32,15 +32,20 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Icon(
-                    expressionType.icon(),
-                    size: 20,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  const SizedBox(width: 7.5),
+                  // Icon(
+                  //   expressionType.icon(),
+                  //   size: 20,
+                  //   color: Theme.of(context).primaryColor,
+                  // ),
+                  // const SizedBox(width: 7.5),
                   Text(
-                    expressionType.appBarName(),
-                    style: Theme.of(context).textTheme.subtitle1,
+                    expressionType.appBarName().toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColor,
+                      letterSpacing: 1.7,
+                    ),
                   )
                 ],
               ),
