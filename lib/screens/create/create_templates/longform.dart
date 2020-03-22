@@ -92,6 +92,7 @@ class CreateLongformState extends State<CreateLongform> {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
+      expressionType: ExpressionType.dynamic,
       onNext: _onNext,
       child: Flexible(
         child: ListView(
