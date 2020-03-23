@@ -20,6 +20,10 @@ class AuthRepo {
     return _isLoggedIn;
   }
 
+  Future<Map<String, bool>> validateUser(String username, String email) async {
+    return _authService.validateUser(username, email);
+  }
+
   Future<String> verifyEmail(String email) async {
     return _authService.verifyEmail(email);
   }

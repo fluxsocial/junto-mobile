@@ -47,6 +47,24 @@ class AuthenticationServiceCentralized implements AuthenticationService {
   }
 
   @override
+  Future<Map<String, bool>> validateUser(String username, String email) async {
+    final Map<String, String> _body = <String, String>{
+      'email': email,
+      'username': username
+    };
+    logger.logDebug(_body.toString());
+    final http.Response response =
+        await client.postWithoutEncoding('/users/validate', body: _body);
+    logger.logDebug(response.body);
+    final Map<String, dynamic> parseData = JuntoHttp.handleResponse(response);
+    if (parseData['message'] != null) {
+      return parseData['message'];
+    } else {
+      throw JuntoException(parseData['error'], response.statusCode);
+    }
+  }
+
+  @override
   Future<String> verifyEmail(String email) async {
     final Map<String, String> _body = <String, String>{'email': email};
     logger.logDebug(_body.toString());
