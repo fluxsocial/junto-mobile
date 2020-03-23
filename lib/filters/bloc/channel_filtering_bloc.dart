@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -62,13 +63,12 @@ class ChannelFilteringBloc
     try {
       if (event.term.isNotEmpty && event.term.length > 1) {
         final result = await searchRepository.searchChannel(event.term);
-        debugPrint(
+        logger.logDebug(
             'Channels available for query ${event.term} ${result.results.length}');
         yield ChannelsPopulatedState(result.results, state.selectedChannel);
       }
     } catch (e, s) {
-      debugPrint(e);
-      debugPrint(s.toString());
+      logger.logException(e, s, 'Error during updating the filter');
       yield const ChannelsErrorState();
     }
   }

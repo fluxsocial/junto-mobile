@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
@@ -33,7 +34,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       '/search/users',
       queryParams: _queryParam,
     );
-    print(_serverResponse.statusCode);
+    logger.logDebug(_serverResponse.statusCode.toString());
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );
@@ -93,7 +94,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       '/search/spheres',
       queryParams: _queryParam,
     );
-    print(_serverResponse.statusCode);
+    logger.logDebug(_serverResponse.statusCode.toString());
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );

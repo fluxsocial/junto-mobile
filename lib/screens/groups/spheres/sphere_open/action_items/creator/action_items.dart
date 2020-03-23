@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -21,8 +22,8 @@ class OwnerActionItems extends StatelessWidget {
     try {
       Provider.of<GroupRepo>(context, listen: false)
           .deleteGroup(sphere.address);
-    } catch (error) {
-      print(error);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
     Navigator.pop(context);
   }

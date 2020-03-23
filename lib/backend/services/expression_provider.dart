@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -27,8 +28,8 @@ class ExpressionServiceCentralized implements ExpressionService {
     final Map<String, dynamic> _postBody = expression.toMap();
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
-    print(_serverResponse.body);
-    print(_serverResponse.statusCode);
+    logger.logDebug(_serverResponse.body);
+    logger.logDebug(_serverResponse.statusCode.toString());
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final ExpressionResponse response = ExpressionResponse.fromMap(parseData);
@@ -46,8 +47,8 @@ class ExpressionServiceCentralized implements ExpressionService {
     // denote file type and get url, headers, and key of s3 bucket
     final http.Response _serverResponse =
         await client.postWithoutEncoding(_serverUrl, body: fileType);
-    print(_serverResponse.body);
-    print(_serverResponse.statusCode);
+    logger.logDebug(_serverResponse.body);
+    logger.logDebug(_serverResponse.statusCode.toString());
 
     // parse response
     final Map<String, dynamic> parseData =
