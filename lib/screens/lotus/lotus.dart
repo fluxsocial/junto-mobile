@@ -1,18 +1,14 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatefulWidget {
   const JuntoLotus({
@@ -31,47 +27,24 @@ class JuntoLotus extends StatefulWidget {
 
 class JuntoLotusState extends State<JuntoLotus> {
   static Route<dynamic> route() {
-    return MaterialPageRoute<dynamic>(
-      builder: (BuildContext context) {
-        return const JuntoLotus(
-          address: null,
-          expressionContext: ExpressionContext.Collective,
-        );
-      },
-      settings: const RouteSettings(name: 'JuntoLotus'),
+    return FadeRoute<void>(
+      child: const JuntoLotus(
+        address: null,
+        expressionContext: ExpressionContext.Collective,
+      ),
+      name: 'JuntoLotus',
     );
   }
 
-  UserData _userProfile;
-  String _currentTheme;
   String backgroundImageAsset;
   bool backButtonTappedOnce = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    getUserInformation();
-  }
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      prefs.getString('user_data'),
-    );
-    print(
-      prefs.getString('current-theme'),
-    );
-    setState(() {
-      _userProfile = UserData.fromMap(decodedUserData);
-      _currentTheme = prefs.getString('current-theme');
-    });
-  }
 
   /// Pushes new page onto the stack
   /// Allows to go back from the new page
   /// This way Lotus is always in the root of the app
   void _navigateTo(Screen screen) {
+    final _userProfile =
+        Provider.of<UserDataProvider>(context, listen: false).userProfile;
     Widget child;
     if (screen == Screen.collective) {
       child = JuntoCollective();
@@ -95,6 +68,8 @@ class JuntoLotusState extends State<JuntoLotus> {
   }
 
   ImageProvider _setBackground() {
+    final _currentTheme =
+        Provider.of<JuntoThemesProvider>(context, listen: false).getTheme();
     setState(
       () {
         if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
@@ -116,17 +91,6 @@ class JuntoLotusState extends State<JuntoLotus> {
     return AssetImage(
       backgroundImageAsset,
     );
-  }
-
-  Future<bool> _willPop() async {
-    if (backButtonTappedOnce) {
-      return true;
-    }
-    // we prevent closing of the app when user taps back button
-    // and show small message about that
-    showFeedback(context, message: 'Press back again to exit');
-    backButtonTappedOnce = true;
-    return false;
   }
 
   @override
