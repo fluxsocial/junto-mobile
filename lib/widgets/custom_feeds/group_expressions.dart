@@ -20,13 +20,16 @@ class GroupExpressions extends StatefulWidget {
   /// Group
   final Group group;
   final String privacy;
+
   @override
   _GroupExpressionsState createState() => _GroupExpressionsState();
 }
 
 class _GroupExpressionsState extends State<GroupExpressions> {
   bool twoColumnView = true;
+
   bool get isPrivate => widget.privacy != 'Public';
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +61,20 @@ class _GroupExpressionsState extends State<GroupExpressions> {
     }
   }
 
+  void _fetchMore() {
+    context.bloc<PackBloc>().add(FetchMorePacks());
+  }
+
+  bool _handleScrollNotification(ScrollNotification scrollNotification) {
+    final metrics = scrollNotification.metrics;
+    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
+    if (scrollPercent.roundToDouble() == 60.0) {
+      _fetchMore();
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PackBloc, PackState>(
@@ -77,28 +94,31 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                 switchColumnView: _switchColumnView,
               ),
               Expanded(
-                child: Container(
-                  color: Theme.of(context).colorScheme.background,
-                  child: AnimatedCrossFade(
-                    crossFadeState: twoColumnView
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
-                    duration: const Duration(
-                      milliseconds: 200,
-                    ),
-                    firstChild: TwoColumnListView(
-                      data: _results,
-                      privacyLayer: widget.privacy,
-                    ),
-                    secondChild: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _results.length,
-                      itemBuilder: (context, index) {
-                        return SingleColumnExpressionPreview(
-                          key: ValueKey<String>(_results[index].address),
-                          expression: _results[index],
-                        );
-                      },
+                child: NotificationListener(
+                  onNotification: _handleScrollNotification,
+                  child: Container(
+                    color: Theme.of(context).colorScheme.background,
+                    child: AnimatedCrossFade(
+                      crossFadeState: twoColumnView
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
+                      duration: const Duration(
+                        milliseconds: 200,
+                      ),
+                      firstChild: TwoColumnListView(
+                        data: _results,
+                        privacyLayer: widget.privacy,
+                      ),
+                      secondChild: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _results.length,
+                        itemBuilder: (context, index) {
+                          return SingleColumnExpressionPreview(
+                            key: ValueKey<String>(_results[index].address),
+                            expression: _results[index],
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
