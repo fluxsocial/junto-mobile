@@ -18,7 +18,7 @@ class PhotoOpen extends StatelessWidget {
               : Container(
                   width: MediaQuery.of(context).size.width,
                   child: Hero(
-                    tag: 'photo_preview-' + photoExpression.address,
+                    tag: 'photo_preview-${photoExpression.address}',
                     child: CachedNetworkImage(
                       imageUrl: photoExpression.expressionData.image,
                       placeholder: (BuildContext context, String _) {
