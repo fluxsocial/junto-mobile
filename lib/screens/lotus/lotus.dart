@@ -93,10 +93,22 @@ class JuntoLotusState extends State<JuntoLotus> {
     );
   }
 
+  void _handleLotusPress() {
+    final Route<dynamic> route = ModalRoute.of(context);
+    if (!route.isFirst) {
+      Navigator.of(context).maybePop();
+      return;
+    }
+    Navigator.of(context)
+        .push(FadeRoute<void>(child: JuntoCollective(), name: 'collective'));
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
     return GestureDetector(
-      onHorizontalDragEnd: (dx) => Navigator.maybePop(context),
+      onHorizontalDragEnd: (dx) => _handleLotusPress,
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -106,7 +118,7 @@ class JuntoLotusState extends State<JuntoLotus> {
             ),
           ),
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.only(bottom: media.padding.bottom + 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
