@@ -341,7 +341,6 @@ class WelcomeState extends State<Welcome> {
                   .validateUser(username: username);
           final bool usernameIsAvailable =
               validateUserResponse['valid_username'];
-          print(usernameIsAvailable);
           if (!usernameIsAvailable) {
             showDialog(
               context: context,

@@ -33,13 +33,19 @@ class SignUpThemes extends StatelessWidget {
       },
       child: Container(
         color: Colors.transparent,
-        margin: const EdgeInsets.only(right: 32, left: 32),
+        margin: const EdgeInsets.only(
+          right: 32,
+          left: 32,
+        ),
         child: Column(
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
-                border: Border.all(color: Colors.white, width: 3),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 3,
+                ),
               ),
               child: ClipOval(
                 child: Image.asset(
@@ -51,12 +57,15 @@ class SignUpThemes extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            Text(theme,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2)),
+            Text(
+              theme,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+              ),
+            ),
           ],
         ),
       ),
@@ -101,7 +110,8 @@ class SignUpThemes extends StatelessWidget {
                     fontWeight: FontWeight.w700),
               ),
             ),
-            Expanded(
+            Container(
+              height: 140,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
