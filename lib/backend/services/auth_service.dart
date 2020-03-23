@@ -56,7 +56,6 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     if (email != null && email != '') {
       _body['email'] = email;
     }
-    logger.logDebug(_body.toString());
     final http.Response response =
         await client.postWithoutEncoding('/users/validate', body: _body);
     final parseData = JuntoHttp.handleResponse(response);
