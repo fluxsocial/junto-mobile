@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 
 class BlocProviders extends StatelessWidget {
   final Widget child;
@@ -16,6 +20,24 @@ class BlocProviders extends StatelessWidget {
           create: (ctx) => PerspectivesBloc(
             ctx.repository<UserRepo>(),
             ctx.repository<UserDataProvider>(),
+          ),
+        ),
+        BlocProvider<CollectiveBloc>(
+          create: (ctx) => CollectiveBloc(
+            RepositoryProvider.of<ExpressionRepo>(ctx),
+            () => Navigator.of(context).pushReplacement(Welcome.route()),
+          ),
+        ),
+        BlocProvider<ChannelFilteringBloc>(
+          create: (ctx) => ChannelFilteringBloc(
+            RepositoryProvider.of<SearchRepo>(ctx),
+            (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
+              FetchCollective(
+                ExpressionQueryParams(
+                  channels: value != null ? [value.name] : null,
+                ),
+              ),
+            ),
           ),
         ),
       ],

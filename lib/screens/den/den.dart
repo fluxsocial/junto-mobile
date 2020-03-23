@@ -119,64 +119,46 @@ class JuntoDenState extends State<JuntoDen>
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ChannelFilteringBloc>(
-          create: (ctx) => ChannelFilteringBloc(
-            Provider.of<SearchRepo>(ctx, listen: false),
-            //TODO pass call to the bloc
-            (_) {},
-          ),
-        ),
-        //TODO(dominik): use expression bloc to fetch den's expressions
-        // BlocProvider<CollectiveBloc>(
-        //   create: (ctx) => CollectiveBloc(
-        //     Provider.of<ExpressionRepo>(ctx, listen: false),
-        //   )..add(CollectiveFetch('Collective')),
-        // ),
-      ],
-      child: Scaffold(
-        //TODO(dominik/Nash): revert and use bloc for fetching
-        body: JuntoFilterDrawer(
-          leftDrawer:
-              const FilterDrawerContent(ExpressionContextType.Collective),
-          rightMenu: JuntoDrawer(),
-          scaffold: Scaffold(
-            appBar: _constructAppBar(),
-            floatingActionButton: ValueListenableBuilder<bool>(
-              valueListenable: _isVisible,
-              builder: (
-                BuildContext context,
-                bool visible,
-                Widget child,
-              ) {
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: visible ? 1.0 : 0.0,
-                  child: child,
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 25),
-                child: BottomNav(
-                  actionsVisible: false,
-                  onLeftButtonTap: () {
-                    // open about page
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) =>
-                            AboutMember(profile: _userProfile),
-                      ),
-                    );
-                  },
-                ),
+    return Scaffold(
+      //TODO(dominik/Nash): revert and use bloc for fetching
+      body: JuntoFilterDrawer(
+        leftDrawer: const FilterDrawerContent(ExpressionContextType.Collective),
+        rightMenu: JuntoDrawer(),
+        scaffold: Scaffold(
+          appBar: _constructAppBar(),
+          floatingActionButton: ValueListenableBuilder<bool>(
+            valueListenable: _isVisible,
+            builder: (
+              BuildContext context,
+              bool visible,
+              Widget child,
+            ) {
+              return AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: visible ? 1.0 : 0.0,
+                child: child,
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: BottomNav(
+                actionsVisible: false,
+                onLeftButtonTap: () {
+                  // open about page
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          AboutMember(profile: _userProfile),
+                    ),
+                  );
+                },
               ),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: _buildBody(),
           ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: _buildBody(),
         ),
       ),
     );

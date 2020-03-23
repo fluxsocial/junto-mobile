@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/on_perspectives_changed.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_item.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -12,7 +13,6 @@ class PerspectivesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final perspectivesBloc = context.bloc<PerspectivesBloc>();
     return BlocBuilder<PerspectivesBloc, PerspectivesState>(
       builder: (context, state) {
         if (state is PerspectivesError) {
@@ -39,8 +39,7 @@ class PerspectivesList extends StatelessWidget {
                   if (perspective.isDefault == true) {
                     return PerspectiveItem(
                       perspective: perspective,
-                      onTap: () =>
-                          perspectivesBloc.add(ChangePerspective(perspective)),
+                      onTap: () => onPerspectivesChanged(perspective, context),
                     );
                   } else {
                     return const SizedBox();
@@ -59,8 +58,8 @@ class PerspectivesList extends StatelessWidget {
                       return GestureDetector(
                         child: PerspectiveItem(
                           perspective: perspective,
-                          onTap: () => perspectivesBloc
-                              .add(ChangePerspective(perspective)),
+                          onTap: () =>
+                              onPerspectivesChanged(perspective, context),
                         ),
                       );
                     } else {

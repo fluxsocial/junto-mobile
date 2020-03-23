@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/on_perspectives_changed.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_item.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives_header.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
@@ -13,7 +12,6 @@ class JuntoPerspectives extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final perspectivesBloc = context.bloc<PerspectivesBloc>();
     const juntoPerspective = const PerspectiveModel(
       address: null,
       name: 'JUNTO',
@@ -53,8 +51,8 @@ class JuntoPerspectives extends StatelessWidget {
                 children: <Widget>[
                   PerspectiveItem(
                     perspective: juntoPerspective,
-                    onTap: () => perspectivesBloc
-                        .add(ChangePerspective(juntoPerspective)),
+                    onTap: () =>
+                        onPerspectivesChanged(juntoPerspective, context),
                   ),
                   PerspectivesList(),
                 ],

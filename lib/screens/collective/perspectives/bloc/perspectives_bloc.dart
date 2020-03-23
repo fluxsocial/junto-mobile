@@ -1,13 +1,9 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
-import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
@@ -15,7 +11,10 @@ part 'perspectives_event.dart';
 part 'perspectives_state.dart';
 
 class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
-  PerspectivesBloc(this.userRepository, this.userDataProvider);
+  PerspectivesBloc(
+    this.userRepository,
+    this.userDataProvider,
+  );
 
   final UserRepo userRepository;
   final UserDataProvider userDataProvider;
@@ -37,10 +36,7 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
       yield* _mapCreateToState(event);
     }
     if (event is EditPerspective) {
-      //TODO
-    }
-    if (event is ChangePerspective) {
-      //TODO
+      //TODO: implement edit perspective
     }
   }
 
@@ -103,44 +99,5 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
       logger.logException(e, s, 'Error during creating perspective');
       yield PerspectivesError();
     }
-  }
-
-  void change(PerspectiveModel perspective, CollectiveBloc bloc,
-      ChannelFilteringBloc filteringBloc) {
-    if (perspective.name == 'JUNTO') {
-      bloc.add(
-        FetchCollective(
-          ExpressionQueryParams(
-            contextType: ExpressionContextType.Collective,
-            name: perspective.name,
-          ),
-        ),
-      );
-    } else if (perspective.name == 'Connections') {
-      bloc.add(
-        FetchCollective(
-          ExpressionQueryParams(
-            contextType: ExpressionContextType.ConnectPerspective,
-            dos: '0',
-            context: perspective.address,
-            name: perspective.name,
-          ),
-        ),
-      );
-    } else {
-      bloc.add(
-        FetchCollective(
-          ExpressionQueryParams(
-            contextType: ExpressionContextType.FollowPerspective,
-            dos: null,
-            context: perspective.address,
-            name: perspective.name.contains("'s Follow Perspective")
-                ? 'Subscriptions'
-                : perspective.name,
-          ),
-        ),
-      );
-    }
-    filteringBloc.add(FilterClear());
   }
 }

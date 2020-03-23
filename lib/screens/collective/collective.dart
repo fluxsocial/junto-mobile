@@ -49,6 +49,13 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
     _collectiveController = ScrollController();
     context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+    context.bloc<CollectiveBloc>().add(
+          FetchCollective(
+            ExpressionQueryParams(
+              contextType: ExpressionContextType.Collective,
+            ),
+          ),
+        );
     _addPostFrameCallbackToHideFabOnScroll();
   }
 
@@ -86,66 +93,33 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: _getBlocProviders(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: JuntoFilterDrawer(
-          key: _filterDrawerKey,
-          leftDrawer:
-              const FilterDrawerContent(ExpressionContextType.Collective),
-          rightMenu: JuntoDrawer(),
-          scaffold: Scaffold(
-            key: _juntoCollectiveKey,
-            floatingActionButton: CollectiveActionButton(
-              isVisible: _isFabVisible,
-              onUpTap: _scrollToTop,
-              actionsVisible: false,
-              onTap: () {
-                context.bloc<PerspectivesBloc>().add(FetchPerspectives());
-                Navigator.push(
-                  context,
-                  FadeRoute(
-                    child: JuntoPerspectives(),
-                  ),
-                );
-              },
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: ExpressionFeed(collectiveController: _collectiveController),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: JuntoFilterDrawer(
+        key: _filterDrawerKey,
+        leftDrawer: const FilterDrawerContent(ExpressionContextType.Collective),
+        rightMenu: JuntoDrawer(),
+        scaffold: Scaffold(
+          key: _juntoCollectiveKey,
+          floatingActionButton: CollectiveActionButton(
+            isVisible: _isFabVisible,
+            onUpTap: _scrollToTop,
+            actionsVisible: false,
+            onTap: () {
+              context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+              Navigator.push(
+                context,
+                FadeRoute(
+                  child: JuntoPerspectives(),
+                ),
+              );
+            },
           ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: ExpressionFeed(collectiveController: _collectiveController),
         ),
       ),
     );
-  }
-
-  List<BlocProvider> _getBlocProviders() {
-    return [
-      BlocProvider<CollectiveBloc>(
-        create: (ctx) => CollectiveBloc(
-          Provider.of<ExpressionRepo>(ctx, listen: false),
-          () => Navigator.of(context).pushReplacement(Welcome.route()),
-        )..add(
-            FetchCollective(
-              ExpressionQueryParams(
-                contextType: ExpressionContextType.Collective,
-              ),
-            ),
-          ),
-      ),
-      BlocProvider<ChannelFilteringBloc>(
-        create: (ctx) => ChannelFilteringBloc(
-          Provider.of<SearchRepo>(ctx, listen: false),
-          (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
-            FetchCollective(
-              ExpressionQueryParams(
-                channels: value != null ? [value.name] : null,
-              ),
-            ),
-          ),
-        ),
-      ),
-    ];
   }
 }
