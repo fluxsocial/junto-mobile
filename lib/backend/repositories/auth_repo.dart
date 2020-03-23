@@ -16,12 +16,13 @@ class AuthRepo {
 
   Future<bool> isLoggedIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isLoggedIn = prefs.getBool('isLoggedIn');
+    _isLoggedIn = prefs.getBool('isLoggedIn ');
     return _isLoggedIn;
   }
 
-  Future<Map<String, bool>> validateUser(String username, String email) async {
-    return _authService.validateUser(username, email);
+  Future<Map<String, dynamic>> validateUser(
+      {String username, String email}) async {
+    return _authService.validateUser(username: username, email: email);
   }
 
   Future<String> verifyEmail(String email) async {
