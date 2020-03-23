@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/utils/form-validation.dart';
+import 'package:junto_beta_mobile/utils/form_validation.dart';
 
 class PerspectiveTextField extends StatelessWidget {
   const PerspectiveTextField({

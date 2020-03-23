@@ -274,7 +274,7 @@ class __AddEventMembersState extends State<_AddEventMembers>
         }
         if (snapshot.hasData &&
             snapshot.data.results.isEmpty &&
-            !snapshot.hasError)
+            !snapshot.hasError) {
           return Expanded(
             child: Container(
               child: const Center(
@@ -282,9 +282,10 @@ class __AddEventMembersState extends State<_AddEventMembers>
               ),
             ),
           );
+        }
         if (snapshot.hasData &&
             snapshot.data.results.isNotEmpty &&
-            !snapshot.hasError)
+            !snapshot.hasError) {
           return Expanded(
             child: ListView.builder(
                 itemCount: snapshot.data.results.length,
@@ -323,6 +324,7 @@ class __AddEventMembersState extends State<_AddEventMembers>
                   );
                 }),
           );
+        }
         return Expanded(
           child: Container(
             child: const Center(

@@ -51,9 +51,7 @@ class MemberPreviewDeselect extends StatelessWidget {
                     ],
                   ),
                   GestureDetector(
-                    onTap: () {
-                      onDeselect();
-                    },
+                    onTap: onDeselect,
                     child: Container(
                       height: 28,
                       width: 28,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
@@ -181,7 +182,8 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
       _repo.updateGroup(updatedGroup);
       JuntoLoader.hide();
       Navigator.pop(context);
-    } on JuntoException catch (error) {
+    } on JuntoException catch (e, s) {
+      logger.logException(e, s);
       JuntoLoader.hide();
       showDialog(
         context: context,
