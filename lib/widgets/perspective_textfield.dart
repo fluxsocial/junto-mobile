@@ -14,10 +14,8 @@ class PerspectiveTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Container(
-      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: TextFormField(
-        key: UniqueKey(),
         validator: Validator.validateNonEmpty,
         controller: controller,
         keyboardAppearance: theme.brightness,
@@ -41,7 +39,12 @@ class PerspectiveTextField extends StatelessWidget {
           color: Theme.of(context).primaryColor,
         ),
         maxLength: 80,
-        textInputAction: TextInputAction.done,
+        textInputAction: TextInputAction.next,
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.sentences,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context).nextFocus();
+        },
       ),
     );
   }
