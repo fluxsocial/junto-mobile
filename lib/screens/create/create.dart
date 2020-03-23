@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
@@ -81,7 +82,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     setState(() {
       source = expressionType;
     });
-    print(source);
+    logger.logDebug(source);
   }
 
   Widget _expressionCenter(BuildContext context) {

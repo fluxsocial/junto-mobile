@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -17,8 +18,8 @@ class PackOpenActionItems extends StatelessWidget {
         pack.address,
         userProfile.user.address,
       );
-    } catch (error) {
-      print(error);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
     Navigator.pop(context);
   }

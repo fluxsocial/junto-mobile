@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -14,6 +15,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
 
   @override
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
+    logger.logInfo('Logging in user');
     final http.Response response = await client.postWithoutEncoding(
       '/auth',
       body: <String, String>{
@@ -25,6 +27,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       final String authorization = response.headers['authorization'];
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('auth', authorization);
+      logger.logInfo('User logged in');
+
       return UserData.fromMap(JuntoHttp.handleResponse(response));
     } else {
       final Map<String, dynamic> errorResponse =
@@ -39,15 +43,16 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
     await prefs.remove('auth');
+    logger.logInfo('User logged out');
   }
 
   @override
   Future<String> verifyEmail(String email) async {
     final Map<String, String> _body = <String, String>{'email': email};
-    print(_body);
+    logger.logDebug(_body.toString());
     final http.Response response =
         await client.postWithoutEncoding('/auth/register', body: _body);
-    print(response.body);
+    logger.logDebug(response.body);
     final Map<String, dynamic> parseData = JuntoHttp.handleResponse(response);
     if (parseData['message'] != null) {
       return parseData['message'];
@@ -79,7 +84,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       '/users',
       body: _body,
     );
-    print(response.body);
+    logger.logDebug(response.body);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);

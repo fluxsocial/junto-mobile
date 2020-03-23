@@ -53,9 +53,7 @@ class FilterDrawerTextField extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              textEditingController.clear();
-            },
+            onTap: textEditingController.clear,
             child: Container(
               padding: const EdgeInsets.only(left: 15),
               child: Icon(

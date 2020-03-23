@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -71,8 +72,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {
-      print(e);
-      print(s.toString());
+      logger.logException(e, s, 'Error during refreshing the collective');
       yield CollectiveError();
     }
   }
@@ -90,8 +90,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {
-      print(e);
-      print(s.toString());
+      logger.logException(e, s, 'Error during fetching the collective');
       yield CollectiveError();
     }
   }
@@ -132,8 +131,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {
-      print(e);
-      print(s.toString());
+      logger.logException(e, s, 'Error during fetching more of the collective');
       yield CollectiveError();
     }
   }
@@ -141,7 +139,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   Future<QueryResults<ExpressionResponse>> _fetchExpressions() async {
     final expressions =
         await expressionRepository.getCollectiveExpressions(_params);
-    print(
+    logger.logDebug(
         'Fetched ${expressions.results.length} expressions from API, last_timestamp: ${expressions.lastTimestamp}');
     _lastTimeStamp = expressions.lastTimestamp;
     return expressions;
@@ -185,9 +183,10 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   }
 
   void handleJuntoException(JuntoException e, StackTrace s) {
-    print('Error during fetching expression ${e.message}: ${e.errorCode}: $s');
+    logger.logError(
+        'Error during fetching expression ${e.message}: ${e.errorCode}: $s');
     if (e.errorCode == 401) {
-      print('Unauthorized, popping to the welcome screen');
+      logger.logWarning('Unauthorized, popping to the welcome screen');
       onUnauthorized();
     }
   }

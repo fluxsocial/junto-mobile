@@ -40,9 +40,7 @@ class EditDenAppbar extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                updateUser();
-              },
+              onTap: updateUser,
               child: Container(
                 padding: const EdgeInsets.only(right: 10),
                 alignment: Alignment.centerRight,

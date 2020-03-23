@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
@@ -49,14 +50,14 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserData> getUser(String userAddress) async {
-    print(userAddress);
+    logger.logDebug(userAddress);
     final http.Response _serverResponse =
         await client.get('/users/$userAddress');
 
     final Map<String, dynamic> _resultMap =
         JuntoHttp.handleResponse(_serverResponse);
     final UserData _userData = UserData.fromMap(_resultMap);
-    print(_userData);
+    logger.logDebug(_userData.toString());
     return _userData;
   }
 
@@ -236,7 +237,7 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.delete(
       '/users/$userAddress/connect',
     );
-    print(_serverResponse.statusCode);
+    logger.logDebug(_serverResponse.statusCode.toString());
     JuntoHttp.handleResponse(_serverResponse);
   }
 

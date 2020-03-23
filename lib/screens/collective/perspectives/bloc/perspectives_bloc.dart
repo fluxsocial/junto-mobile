@@ -1,18 +1,20 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
-import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 part 'perspectives_event.dart';
 part 'perspectives_state.dart';
 
 class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
-  PerspectivesBloc(this.userRepository, this.userDataProvider);
+  PerspectivesBloc(
+    this.userRepository,
+    this.userDataProvider,
+  );
 
   final UserRepo userRepository;
   final UserDataProvider userDataProvider;
@@ -28,29 +30,73 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
       yield* _mapFetchToState(event);
     }
     if (event is RemovePerspective) {
-      // TODO: move logic of removing perspectives to bloc
+      yield* _mapRemoveToState(event);
+    }
+    if (event is CreatePerspective) {
+      yield* _mapCreateToState(event);
+    }
+    if (event is EditPerspective) {
+      //TODO: implement edit perspective
+    }
+  }
+
+  Stream<PerspectivesState> _mapFetchToState(FetchPerspectives event) async* {
+    try {
+      //TODO: maybe add loading state
+      logger.logInfo('Fetching perspectives');
+      final address = userDataProvider.userAddress;
+      final persp = await _fetchUserPerspectives(address);
+      if (persp != null) {
+        yield PerspectivesFetched(persp);
+        logger.logInfo('Perspectives fetched: ${persp.length}');
+      } else {
+        logger.logError('Error during fetching perspectives');
+        yield PerspectivesError();
+      }
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during fetching perspectives');
+      yield PerspectivesError();
     }
   }
 
   Future<List<PerspectiveModel>> _fetchUserPerspectives(String address) async {
     try {
       return await userRepository.getUserPerspective(address);
-    } on JuntoException catch (error) {
-      debugPrint('error fethcing perspectives ${error.errorCode}');
+    } on JuntoException catch (e, s) {
+      logger.logException(e, s, 'Error fethcing perspectives ${e.errorCode}');
       return null;
     }
   }
 
-  Stream<PerspectivesState> _mapFetchToState(FetchPerspectives event) async* {
+  Stream<PerspectivesState> _mapRemoveToState(RemovePerspective event) async* {
     try {
-      final address = userDataProvider.userAddress;
-      final persp = await _fetchUserPerspectives(address);
-      if (persp != null) {
-        yield PerspectivesFetched(persp);
+      await userRepository.deletePerspective(event.perspective.address);
+      logger.logInfo('Perspective ${event.perspective.name} removed');
+      add(FetchPerspectives());
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during removing perspective');
+    }
+  }
+
+  Stream<PerspectivesState> _mapCreateToState(CreatePerspective event) async* {
+    try {
+      yield PerspectivesLoading();
+      final model = await userRepository.createPerspective(
+        Perspective(
+          name: event.name,
+          about: event.description,
+          members: event.members,
+        ),
+      );
+      if (model != null) {
+        logger.logInfo('Perspective ${event.name} created');
+        add(FetchPerspectives());
       } else {
+        logger.logWarning('Perspective not created');
         yield PerspectivesError();
       }
-    } catch (e) {
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during creating perspective');
       yield PerspectivesError();
     }
   }
