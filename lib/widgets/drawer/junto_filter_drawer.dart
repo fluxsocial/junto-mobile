@@ -168,16 +168,18 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
       case AnimationStatus.dismissed:
         if (_previouslyOpened != opened) {
           _previouslyOpened = opened;
-          if (widget.innerDrawerCallback != null)
+          if (widget.innerDrawerCallback != null) {
             widget.innerDrawerCallback(opened);
+          }
         }
         _ensureHistoryEntry();
         break;
       case AnimationStatus.completed:
         if (_previouslyOpened != opened) {
           _previouslyOpened = opened;
-          if (widget.innerDrawerCallback != null)
+          if (widget.innerDrawerCallback != null) {
             widget.innerDrawerCallback(opened);
+          }
         }
         _historyEntry?.remove();
         _historyEntry = null;
@@ -205,10 +207,11 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   void _updateWidth() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final RenderBox box = _drawerKey.currentContext?.findRenderObject();
-      if (box != null && box.size != null)
+      if (box != null && box.size != null) {
         setState(() {
           _initWidth = box.size.width;
         });
+      }
     });
   }
 
@@ -217,11 +220,13 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   void _move(DragUpdateDetails details) {
     double delta = details.primaryDelta / _width;
 
-    if (delta > 0 && _controller.value == 1 && widget.leftDrawer != null)
+    if (delta > 0 && _controller.value == 1 && widget.leftDrawer != null) {
       _position = DrawerPosition.start;
-    else if (delta < 0 && _controller.value == 1 && widget.rightMenu != null)
+    } else if (delta < 0 &&
+        _controller.value == 1 &&
+        widget.rightMenu != null) {
       _position = DrawerPosition.end;
-
+    }
     final double left =
         widget.offset != null ? widget.offset.left : widget.leftDrawer;
     final double right =
@@ -230,11 +235,11 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     double offset = _position == DrawerPosition.start ? left : right;
 
     double ee = 1;
-    if (offset <= 0.2)
+    if (offset <= 0.2) {
       ee = 1.7;
-    else if (offset <= 0.4)
+    } else if (offset <= 0.4) {
       ee = 1.2;
-    else if (offset <= 0.6) {
+    } else if (offset <= 0.6) {
       ee = 1.05;
     }
 
@@ -257,8 +262,9 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     }
 
     final bool opened = _controller.value < 0.5;
-    if (opened != _previouslyOpened && widget.innerDrawerCallback != null)
+    if (opened != _previouslyOpened && widget.innerDrawerCallback != null) {
       widget.innerDrawerCallback(opened);
+    }
     _previouslyOpened = opened;
   }
 
@@ -419,7 +425,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     final Container container = Container(
       color: Colors.transparent,
     );
-    if (_controller.status == AnimationStatus.dismissed)
+    if (_controller.status == AnimationStatus.dismissed) {
       return BlockSemantics(
         child: GestureDetector(
           // On Android, the back button is used to dismiss a modal.
@@ -431,6 +437,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
           ),
         ),
       );
+    }
     return null;
   }
 
@@ -455,11 +462,11 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     );
 
     final Widget invC = _invisibleCover();
-    if (invC != null)
+    if (invC != null) {
       container = Stack(
         children: <Widget>[container, invC],
       );
-
+    }
     // Vertical translate
     if (widget.offset != null &&
         (widget.offset.top > 0 || widget.offset.bottom > 0)) {

@@ -43,9 +43,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           GestureDetector(
-            onTap: () {
-              openPerspectivesDrawer();
-            },
+            onTap: openPerspectivesDrawer,
             child: Container(
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.only(left: 10),

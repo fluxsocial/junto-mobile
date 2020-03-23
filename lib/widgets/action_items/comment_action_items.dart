@@ -126,7 +126,7 @@ class CommentActionItems extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
           title: Row(
             children: <Widget>[
-              Text('View @' + comment.creator.username + "'s den",
+              Text("View @${comment.creator.username}'s den",
                   style: Theme.of(context).textTheme.headline5),
             ],
           ),

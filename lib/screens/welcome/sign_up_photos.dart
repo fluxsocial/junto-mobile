@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 

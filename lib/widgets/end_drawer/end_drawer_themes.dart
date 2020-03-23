@@ -45,8 +45,7 @@ class JuntoThemesState extends State<JuntoThemes> {
             _currentTheme = theme;
           });
           Provider.of<JuntoThemesProvider>(context, listen: false)
-              .setTheme(_nightMode ? theme + '-night' : theme);
-
+              .setTheme(_nightMode ? '$theme-night' : theme);
           widget.refreshData();
         },
         child: ClipRRect(
@@ -54,7 +53,7 @@ class JuntoThemesState extends State<JuntoThemes> {
           child: Stack(
             children: <Widget>[
               Image.asset(
-                'assets/images/junto-mobile__themes--' + theme + '.png',
+                'assets/images/junto-mobile__themes--$theme.png',
                 height: MediaQuery.of(context).size.height * .15,
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
@@ -175,9 +174,8 @@ class JuntoThemesState extends State<JuntoThemes> {
                             await SharedPreferences.getInstance();
 
                         if (value) {
-                          theme = _currentTheme + '-night';
+                          theme = '${_currentTheme}-night';
                         } else if (!value) {
-                          print('yoo');
                           theme = _currentTheme;
                           if (theme.contains('-night')) {
                             theme = theme.replaceRange(
