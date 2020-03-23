@@ -129,21 +129,10 @@ class JuntoLotusState extends State<JuntoLotus> {
     return false;
   }
 
-  void _handleLotusPress() {
-    final Route<dynamic> route = ModalRoute.of(context);
-    if (!route.isFirst) {
-      Navigator.of(context).pop();
-      return;
-    }
-    Navigator.of(context)
-        .push(FadeRoute<void>(child: JuntoCollective(), name: 'collective'));
-    return;
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onHorizontalDragEnd: (dx) => Navigator.pop(context),
+      onHorizontalDragEnd: (dx) => Navigator.maybePop(context),
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
