@@ -31,7 +31,7 @@ abstract class SearchService {
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationService {
   // verifies the email of a user
-  Future<Map<String, bool>> validateUser(String username, String email);
+  Future<Map<String, dynamic>> validateUser({String username, String email});
 
   // verifies the email of a user
   Future<String> verifyEmail(String email);

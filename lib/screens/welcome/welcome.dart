@@ -335,6 +335,22 @@ class WelcomeState extends State<Welcome> {
       } else if (_currentIndex == 2) {
         if (username == null || username.isEmpty || username.length > 22) {
           return;
+        } else {
+          final Map<String, dynamic> validateUserResponse =
+              await Provider.of<AuthRepo>(context, listen: false)
+                  .validateUser(username: username);
+          final bool usernameIsAvailable =
+              validateUserResponse['valid_username'];
+          print(usernameIsAvailable);
+          if (!usernameIsAvailable) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => SingleActionDialog(
+                dialogText: 'Sorry, that username is taken.',
+              ),
+            );
+            return;
+          }
         }
       } else if (_currentIndex == 4) {
         final AboutPageModel _aboutPageModel =

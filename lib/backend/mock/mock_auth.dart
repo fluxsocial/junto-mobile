@@ -15,7 +15,8 @@ class MockAuth implements AuthenticationService {
   }
 
   @override
-  Future<Map<String, bool>> validateUser(String username, String email) async {
+  Future<Map<String, dynamic>> validateUser(
+      {String username, String email}) async {
     return {};
   }
 
