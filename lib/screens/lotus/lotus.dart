@@ -142,8 +142,9 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
     return GestureDetector(
-      onHorizontalDragEnd: (dx) => Navigator.pop(context),
+      onHorizontalDragEnd: (dx) => _handleLotusPress,
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -153,7 +154,7 @@ class JuntoLotusState extends State<JuntoLotus> {
             ),
           ),
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.only(bottom: media.padding.bottom + 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
