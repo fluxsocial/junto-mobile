@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:junto_beta_mobile/app/providers/bloc_providers.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -9,7 +10,6 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
-import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -51,13 +51,12 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<AppRepo>.value(value: backend.appRepo),
       ],
       child: ChangeNotifierProvider<UserDataProvider>(
-        create: (ctx) => UserDataProvider(
-          ctx.repository<UserRepo>(),
-          ctx.repository<AppRepo>(),
-        ),
+        create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
         lazy: false,
-        child: MaterialAppWithTheme(
-          loggedIn: widget.loggedIn,
+        child: BlocProviders(
+          child: MaterialAppWithTheme(
+            loggedIn: widget.loggedIn,
+          ),
         ),
       ),
     );

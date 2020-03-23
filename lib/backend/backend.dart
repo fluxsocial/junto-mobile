@@ -23,6 +23,7 @@ import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 export 'package:junto_beta_mobile/backend/repositories.dart';
 export 'package:junto_beta_mobile/backend/services.dart';
+export 'package:junto_beta_mobile/backend/user_data_provider.dart';
 
 class Backend {
   const Backend._(
