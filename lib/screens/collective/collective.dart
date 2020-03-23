@@ -6,17 +6,18 @@ import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
-import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+
+import 'collective_actions/perspectives.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -42,13 +43,13 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  bool _actionsVisible = false;
 
   @override
   void initState() {
     super.initState();
 
     _collectiveController = ScrollController();
+    context.bloc<PerspectivesBloc>().add(FetchPerspectives());
     _addPostFrameCallbackToHideFabOnScroll();
   }
 
@@ -99,36 +100,19 @@ class JuntoCollectiveState extends State<JuntoCollective>
             key: _juntoCollectiveKey,
             floatingActionButton: CollectiveActionButton(
               isVisible: _isFabVisible,
-              actionsVisible: _actionsVisible,
               onUpTap: _scrollToTop,
               onTap: () {
-                setState(() {
-                  _actionsVisible = !_actionsVisible;
-                });
+                Navigator.push(
+                  context,
+                  FadeRoute(
+                    child: JuntoPerspectives(),
+                  ),
+                );
               },
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            body: Stack(
-              children: <Widget>[
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: _actionsVisible ? 0.0 : 1.0,
-                  child: ExpressionFeed(
-                    collectiveController: _collectiveController,
-                  ),
-                ),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: _actionsVisible ? 1.0 : 0.0,
-                  child: Visibility(
-                    visible: _actionsVisible,
-                    child:
-                        JuntoCollectiveActions(onChanged: _changePerspective),
-                  ),
-                ),
-              ],
-            ),
+            body: ExpressionFeed(collectiveController: _collectiveController),
           ),
         ),
       ),
@@ -149,13 +133,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
             ),
           ),
       ),
-      BlocProvider<PerspectivesBloc>(
-        create: (ctx) => PerspectivesBloc(
-          Provider.of<UserRepo>(ctx, listen: false),
-          Provider.of<UserDataProvider>(ctx, listen: false),
-        )..add(FetchPerspectives()),
-        lazy: false,
-      ),
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
           Provider.of<SearchRepo>(ctx, listen: false),
@@ -169,48 +146,5 @@ class JuntoCollectiveState extends State<JuntoCollective>
         ),
       ),
     ];
-  }
-
-  // Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(BuildContext context, PerspectiveModel perspective) {
-    final bloc = context.bloc<CollectiveBloc>();
-    if (perspective.name == 'JUNTO') {
-      bloc.add(
-        FetchCollective(
-          ExpressionQueryParams(
-            contextType: ExpressionContextType.Collective,
-            name: perspective.name,
-          ),
-        ),
-      );
-    } else if (perspective.name == 'Connections') {
-      bloc.add(
-        FetchCollective(
-          ExpressionQueryParams(
-            contextType: ExpressionContextType.ConnectPerspective,
-            dos: '0',
-            context: perspective.address,
-            name: perspective.name,
-          ),
-        ),
-      );
-    } else {
-      bloc.add(
-        FetchCollective(
-          ExpressionQueryParams(
-            contextType: ExpressionContextType.FollowPerspective,
-            dos: null,
-            context: perspective.address,
-            name: perspective.name.contains("'s Follow Perspective")
-                ? 'Subscriptions'
-                : perspective.name,
-          ),
-        ),
-      );
-    }
-    context.bloc<ChannelFilteringBloc>().add(FilterClear());
-    setState(() {
-      _actionsVisible = false;
-    });
   }
 }

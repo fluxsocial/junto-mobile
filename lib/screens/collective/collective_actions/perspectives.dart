@@ -17,9 +17,7 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
 import 'package:provider/provider.dart';
 
 class JuntoPerspectives extends StatefulWidget {
-  const JuntoPerspectives({this.onChanged});
-
-  final Function(BuildContext, PerspectiveModel) onChanged;
+  const JuntoPerspectives();
 
   @override
   State<StatefulWidget> createState() {
@@ -29,12 +27,8 @@ class JuntoPerspectives extends StatefulWidget {
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final perspectivesBloc = context.bloc<PerspectivesBloc>();
     const juntoPerspective = const PerspectiveModel(
       address: null,
       name: 'JUNTO',
@@ -45,59 +39,62 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
       userCount: null,
       users: null,
     );
-    return Container(
-      height: MediaQuery.of(context).size.height - 150,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            height: 100,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            color: Theme.of(context).backgroundColor,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Perspectives',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext ctx) => CreatePerspectivePage(
-                          refreshPerspectives: () => context
-                              .bloc<PerspectivesBloc>()
-                              .add(FetchPerspectives()),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.add,
-                    size: 24,
-                    color: Theme.of(context).primaryColor,
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              height: 100,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              color: Theme.of(context).backgroundColor,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Perspectives',
+                    style: Theme.of(context).textTheme.headline4,
                   ),
-                )
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext ctx) => CreatePerspectivePage(
+                            refreshPerspectives: () => context
+                                .bloc<PerspectivesBloc>()
+                                .add(FetchPerspectives()),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 24,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(0),
-              children: <Widget>[
-                PerspectiveItem(
-                  perspective: juntoPerspective,
-                  onTap: () => widget.onChanged(context, juntoPerspective),
-                ),
-                PerspectivesList(onChanged: widget.onChanged),
-              ],
-            ),
-          )
-        ],
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(0),
+                children: <Widget>[
+                  PerspectiveItem(
+                    perspective: juntoPerspective,
+                    onTap: () => perspectivesBloc
+                        .add(ChangePerspective(juntoPerspective)),
+                  ),
+                  PerspectivesList(),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -106,18 +103,13 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 class PerspectivesList extends StatelessWidget {
   const PerspectivesList({
     Key key,
-    this.onChanged,
   }) : super(key: key);
-
-  final Function(BuildContext, PerspectiveModel) onChanged;
 
   @override
   Widget build(BuildContext context) {
+    final perspectivesBloc = context.bloc<PerspectivesBloc>();
     return BlocBuilder<PerspectivesBloc, PerspectivesState>(
-      builder: (
-        BuildContext context,
-        PerspectivesState state,
-      ) {
+      builder: (context, state) {
         if (state is PerspectivesError) {
           return Container(
             child: const Text(
@@ -139,7 +131,8 @@ class PerspectivesList extends StatelessWidget {
                   if (perspective.isDefault == true) {
                     return PerspectiveItem(
                       perspective: perspective,
-                      onTap: () => onChanged(context, perspective),
+                      onTap: () =>
+                          perspectivesBloc.add(ChangePerspective(perspective)),
                     );
                   } else {
                     return const SizedBox();
@@ -158,10 +151,8 @@ class PerspectivesList extends StatelessWidget {
                       return GestureDetector(
                         child: PerspectiveItem(
                           perspective: perspective,
-                          onTap: () => onChanged(context, perspective),
-                          // context.bloc<CollectiveBloc>().add(
-                          //       ChangePerspective(perspective),
-                          //     ),
+                          onTap: () => perspectivesBloc
+                              .add(ChangePerspective(perspective)),
                         ),
                       );
                     } else {
