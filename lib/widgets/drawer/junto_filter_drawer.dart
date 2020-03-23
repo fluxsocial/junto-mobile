@@ -419,7 +419,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     final Container container = Container(
       color: Colors.transparent,
     );
-    if (_controller.status == AnimationStatus.dismissed)
+    if (_controller.status == AnimationStatus.dismissed) {
       return BlockSemantics(
         child: GestureDetector(
           // On Android, the back button is used to dismiss a modal.
@@ -431,6 +431,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
           ),
         ),
       );
+    }
     return null;
   }
 
