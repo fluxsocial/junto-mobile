@@ -72,133 +72,135 @@ class JuntoDrawerState extends State<JuntoDrawer> {
           height: MediaQuery.of(context).size.height,
           child: Image.asset(_displayBackground(), fit: BoxFit.cover),
         ),
-        Padding(
+        Container(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).size.height * .2,
             left: 32,
             bottom: MediaQuery.of(context).size.height * .2,
             right: 32,
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                JuntoDrawerItem(
-                  icon: _userProfile != null
-                      ? Container(
-                          margin: const EdgeInsets.only(right: 32),
-                          child: MemberAvatar(
-                            profilePicture: _userProfile.user.profilePicture,
-                            diameter: 28,
-                          ),
-                        )
-                      : const SizedBox(),
-                  title: 'My Den',
-                  onTap: () {
-                    Navigator.of(context).push(
-                      FadeRoute<void>(
-                        child: JuntoDen(),
-                      ),
-                    );
-                  },
-                ),
-                JuntoDrawerItem(
-                  icon: Container(
-                    width: 60,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: 24,
-                    ),
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  JuntoDrawerItem(
+                    icon: _userProfile != null
+                        ? Container(
+                            margin: const EdgeInsets.only(right: 32),
+                            child: MemberAvatar(
+                              profilePicture: _userProfile.user.profilePicture,
+                              diameter: 28,
+                            ),
+                          )
+                        : const SizedBox(),
+                    title: 'My Den',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        FadeRoute<void>(
+                          child: JuntoDen(),
+                        ),
+                      );
+                    },
                   ),
-                  title: 'Search',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<Widget>(
-                        builder: (BuildContext context) => const GlobalSearch(),
-                      ),
-                    );
-                  },
-                ),
-                JuntoDrawerItem(
-                  icon: Container(
-                    width: 60,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      CustomIcons.infinity,
-                      color: Colors.white,
-                      size: 9,
-                    ),
-                  ),
-                  title: 'Relations',
-                  onTap: () async {
-                    // open relationships
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) {
-                          return JuntoRelationships(
-                              _userAddress, _userFollowPerspectiveId);
-                        },
-                      ),
-                    );
-                  },
-                ),
-                JuntoDrawerItem(
-                  icon: Container(
+                  JuntoDrawerItem(
+                    icon: Container(
                       width: 60,
                       alignment: Alignment.centerLeft,
                       child: Icon(
-                        Icons.favorite,
+                        Icons.search,
                         color: Colors.white,
                         size: 24,
-                      )),
-                  title: 'Themes',
-                  onTap: () async {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<Widget>(
-                        builder: (BuildContext context) {
-                          return JuntoThemes(
-                            refreshData: getUserInformation,
-                            currentTheme: _currentTheme,
-                            nightMode: _nightMode,
-                          );
-                        },
                       ),
-                    );
-                  },
-                ),
-                Spacer(),
-                JuntoDrawerItem(
-                  icon: Container(
-                    width: 60,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                      size: 24,
                     ),
+                    title: 'Search',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<Widget>(
+                          builder: (BuildContext context) =>
+                              const GlobalSearch(),
+                        ),
+                      );
+                    },
                   ),
-                  title: 'Log Out',
-                  onTap: () async {
-                    await Provider.of<AuthRepo>(
-                      context,
-                      listen: false,
-                    ).logoutUser();
-                    Navigator.of(context).pushReplacement(
-                      FadeRoute<void>(
-                        child: Welcome(),
+                  JuntoDrawerItem(
+                    icon: Container(
+                      width: 60,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        CustomIcons.infinity,
+                        color: Colors.white,
+                        size: 9,
                       ),
-                    );
-                  },
+                    ),
+                    title: 'Relations',
+                    onTap: () async {
+                      // open relationships
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext context) {
+                            return JuntoRelationships(
+                                _userAddress, _userFollowPerspectiveId);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  JuntoDrawerItem(
+                    icon: Container(
+                        width: 60,
+                        alignment: Alignment.centerLeft,
+                        child: Icon(
+                          Icons.favorite,
+                          color: Colors.white,
+                          size: 24,
+                        )),
+                    title: 'Themes',
+                    onTap: () async {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<Widget>(
+                          builder: (BuildContext context) {
+                            return JuntoThemes(
+                              refreshData: getUserInformation,
+                              currentTheme: _currentTheme,
+                              nightMode: _nightMode,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              JuntoDrawerItem(
+                icon: Container(
+                  width: 60,
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
-              ],
-            ),
+                title: 'Log Out',
+                onTap: () async {
+                  await Provider.of<AuthRepo>(
+                    context,
+                    listen: false,
+                  ).logoutUser();
+                  Navigator.of(context).pushReplacement(
+                    FadeRoute<void>(
+                      child: Welcome(),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ],
@@ -220,9 +222,8 @@ class JuntoDrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-    borderRadius: BorderRadius.circular(12.0),
       child: Container(
         color: Colors.transparent,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
