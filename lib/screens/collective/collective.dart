@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
@@ -101,7 +100,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
             floatingActionButton: CollectiveActionButton(
               isVisible: _isFabVisible,
               onUpTap: _scrollToTop,
+              actionsVisible: false,
               onTap: () {
+                context.bloc<PerspectivesBloc>().add(FetchPerspectives());
                 Navigator.push(
                   context,
                   FadeRoute(
