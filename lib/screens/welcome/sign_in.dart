@@ -67,7 +67,8 @@ class _SignInState extends State<SignIn> {
       JuntoLoader.hide();
       BlocProvider.of<PerspectivesBloc>(context).add(FetchPerspectives());
       Navigator.of(context).pushReplacement(JuntoLotusState.route());
-    } catch (error) {
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during sign in');
       JuntoLoader.hide();
       showDialog(
         context: context,
