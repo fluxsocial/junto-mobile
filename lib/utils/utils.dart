@@ -86,7 +86,7 @@ mixin MemberValidation {
 mixin DateParser {
   String transformMinute(int minute) {
     if (minute < 10) {
-      return '0' + minute.toString();
+      return '0 $minute.toString()}';
     } else {
       return minute.toString();
     }

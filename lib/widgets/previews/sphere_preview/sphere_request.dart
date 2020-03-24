@@ -66,7 +66,7 @@ class SphereRequest extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          's/' + sphere.groupData.sphereHandle,
+                          's/ ${sphere.groupData.sphereHandle}',
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.subtitle1,
                         ),

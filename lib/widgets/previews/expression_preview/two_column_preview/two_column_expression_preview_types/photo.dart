@@ -19,7 +19,7 @@ class PhotoPreview extends StatelessWidget {
         height: MediaQuery.of(context).size.height * .4,
         width: MediaQuery.of(context).size.width,
         child: Hero(
-          tag: 'two_column_photo_preview-' + expression.address,
+          tag: 'two_column_photo_preview- ${expression.address}',
           child: RepaintBoundary(
             child: CachedNetworkImage(
               imageUrl: expression.expressionData.image,

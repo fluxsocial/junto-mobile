@@ -141,7 +141,7 @@ class ExpressionActionItems extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
           title: Row(
             children: <Widget>[
-              Text('View @' + expression.creator.username + "'s den",
+              Text("View @${expression.creator.username}'s den",
                   style: Theme.of(context).textTheme.headline5),
             ],
           ),
@@ -298,10 +298,11 @@ class __AddEventMembersState extends State<_AddEventMembers>
                       List<UserProfile> value,
                       Widget child,
                     ) {
-                      if (!value.contains(item))
+                      if (!value.contains(item)) {
                         return MemberPreview(
                           profile: item,
                         );
+                      }
                       return Stack(
                         children: <Widget>[
                           MemberPreview(

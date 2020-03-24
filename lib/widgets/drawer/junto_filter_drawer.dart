@@ -227,7 +227,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         widget.rightMenu != null) {
       _position = DrawerPosition.end;
     }
-
     final double left =
         widget.offset != null ? widget.offset.left : widget.leftDrawer;
     final double right =

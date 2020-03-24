@@ -17,7 +17,7 @@ class PendingRelationships extends StatefulWidget {
     this.refreshActions,
   });
 
-  Function refreshActions;
+  final Function refreshActions;
 
   @override
   State<StatefulWidget> createState() {
@@ -139,11 +139,6 @@ class PendingRelationshipsState extends State<PendingRelationships> {
                 // get list of connections
                 final List<UserProfile> _connectionRequests =
                     snapshot.data['pending_connections']['results'];
-
-                // get list of following
-                final List<UserProfile> _packRequests =
-                    snapshot.data['pending_group_join_requests']['results'];
-
                 return TabBarView(
                   children: <Widget>[
                     // connection requsts

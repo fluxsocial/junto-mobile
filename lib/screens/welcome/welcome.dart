@@ -305,9 +305,7 @@ class WelcomeState extends State<Welcome> {
                 SignUpArrows(
                   welcomeController: _welcomeController,
                   currentIndex: _currentIndex,
-                  onTap: () {
-                    _nextSignUpPage();
-                  },
+                  onTap: _nextSignUpPage,
                 ),
               if (_currentIndex != 0)
                 Positioned(

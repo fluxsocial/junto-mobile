@@ -24,7 +24,7 @@ class AboutItem extends StatelessWidget {
                       if (!item[0].startsWith('https://') ||
                           !item[0].startsWith('http:') ||
                           !item[0].startsWith('https:')) {
-                        url = 'https://' + item[0];
+                        url = 'https://${item[0]}';
                       }
                       if (await canLaunch(url)) {
                         await launch(url);
