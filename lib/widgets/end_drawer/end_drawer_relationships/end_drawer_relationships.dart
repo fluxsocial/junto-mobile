@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
 import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatefulWidget {
@@ -243,15 +244,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     ),
 
                     // connections
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _connectionsMembers
-                          .map(
-                            (dynamic connection) =>
-                                MemberPreview(profile: connection),
-                          )
-                          .toList(),
-                    ),
+                    Connections(),
 
                     // todo: waiting on API - return pack members
                     const SizedBox()
@@ -261,14 +254,10 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                 print(snapshot.error);
                 return const TabBarView(
                   children: <Widget>[
-                    JuntoErrorWidget(
-                        errorMessage: 'Hmm, something went wrong'),
-                    JuntoErrorWidget(
-                        errorMessage: 'Hmm, something went wrong'),
-                    JuntoErrorWidget(
-                        errorMessage: 'Hmm, something went wrong'),
-                    JuntoErrorWidget(
-                        errorMessage: 'Hmm, something went wrong'),
+                    JuntoErrorWidget(errorMessage: 'Hmm, something went wrong'),
+                    JuntoErrorWidget(errorMessage: 'Hmm, something went wrong'),
+                    JuntoErrorWidget(errorMessage: 'Hmm, something went wrong'),
+                    JuntoErrorWidget(errorMessage: 'Hmm, something went wrong'),
                   ],
                 );
               }
