@@ -1,0 +1,57 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:provider/provider.dart';
+
+class PackMembers extends StatefulWidget {
+  const PackMembers({this.userAddress});
+
+  final String userAddress;
+
+  @override
+  State<StatefulWidget> createState() {
+    return PackMembersState();
+  }
+}
+
+class PackMembersState extends State<PackMembers> {
+  Future<List<Users>> getPackMembers() async {
+    final userData =
+        await Provider.of<UserRepo>(context).getUser(widget.userAddress);
+    return await Provider.of<GroupRepo>(context, listen: false)
+        .getGroupMembers(userData.pack.address);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Users>>(
+      future: getPackMembers(),
+      builder: (BuildContext context, AsyncSnapshot<List<Users>> snapshot) {
+        if (snapshot.hasData) {
+          final List<Users> packMembers = snapshot.data;
+          return ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            children: packMembers
+                .map(
+                  (dynamic packMember) =>
+                      MemberPreview(profile: packMember.user),
+                )
+                .toList(),
+          );
+        } else if (snapshot.hasError) {
+          print(snapshot.error);
+          return JuntoErrorWidget(errorMessage: 'Hmm, something went wrong');
+        }
+        return Center(
+          child: JuntoProgressIndicator(),
+        );
+      },
+    );
+  }
+}
