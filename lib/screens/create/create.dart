@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
@@ -15,13 +16,11 @@ class JuntoCreate extends StatefulWidget {
     @required this.channels,
     @required this.address,
     @required this.expressionContext,
-    @required this.expressionCenterBackground,
   });
 
   final List<String> channels;
   final String address;
   final ExpressionContext expressionContext;
-  final String expressionCenterBackground;
 
   @override
   State<StatefulWidget> createState() {
@@ -88,14 +87,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   Widget _expressionCenter(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Positioned.fill(
-          child: Image.asset(
-            widget.expressionCenterBackground,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
-        ),
+        Positioned.fill(child: BackgroundTheme()),
         Positioned(
           bottom: 0,
           left: 0,
