@@ -57,6 +57,11 @@ class _SignInState extends State<SignIn> {
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
     try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final bool nightMode = await prefs.getBool('night-mode');
+      if (nightMode == null) {
+        await prefs.setBool('night-mode', false);
+      }
       await Provider.of<AuthRepo>(context, listen: false)
           .loginUser(loginDetails);
       JuntoLoader.hide();

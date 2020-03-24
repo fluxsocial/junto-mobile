@@ -438,6 +438,11 @@ class WelcomeState extends State<Welcome> {
         _currentTheme = theme;
       }
     });
+
+    final bool nightMode = await prefs.getBool('night-mode');
+    if (nightMode == null) {
+      await prefs.setBool('night-mode', false);
+    }
   }
 
   void onPageChanged(int index) {
