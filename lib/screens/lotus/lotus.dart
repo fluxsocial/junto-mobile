@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:junto_beta_mobile/app/themes.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -38,6 +38,7 @@ class JuntoLotusState extends State<JuntoLotus> {
   }
 
   bool backButtonTappedOnce = false;
+  ThemeData _currentTheme;
 
   /// Pushes new page onto the stack
   /// Allows to go back from the new page
@@ -78,6 +79,14 @@ class JuntoLotusState extends State<JuntoLotus> {
     return;
   }
 
+  Future<void> getTheme() async {
+    final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
+        .getTheme();
+    setState(() {
+      _currentTheme = theme;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -85,7 +94,7 @@ class JuntoLotusState extends State<JuntoLotus> {
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            BackgroundTheme(),
+            BackgroundTheme(currentTheme: _currentTheme),
             Container(
               height: MediaQuery.of(context).size.height,
               padding: const EdgeInsets.only(bottom: 10),
