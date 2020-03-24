@@ -1,12 +1,12 @@
-import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
@@ -27,10 +27,6 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  UserRepo _userProvider;
-  AsyncMemoizer<List<ExpressionResponse>> memoizer =
-      AsyncMemoizer<List<ExpressionResponse>>();
-
   bool twoColumnView = true;
 
   Future<void> getUserInformation() async {
@@ -41,17 +37,6 @@ class _UserExpressionsState extends State<UserExpressions> {
         twoColumnView = prefs.getBool('two-column-view');
       }
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _userProvider = Provider.of<UserRepo>(context);
-  }
-
-  Future<List<ExpressionResponse>> getExpressions() {
-    return memoizer.runOnce(
-        () => _userProvider.getUsersExpressions(widget.userProfile.address));
   }
 
   Future<void> _switchColumnView(String columnType) async {
@@ -74,25 +59,19 @@ class _UserExpressionsState extends State<UserExpressions> {
     getUserInformation();
   }
 
+  void _loadMore() {
+    context.bloc<DenBloc>().add(LoadMoreDen());
+  }
+
   @override
   Widget build(BuildContext context) {
-    // public expressions of user
-    //TODO(dominik/Nash): replace FB with bloc
-    return FutureBuilder<List<ExpressionResponse>>(
-      future: getExpressions(),
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<List<ExpressionResponse>> snapshot,
-      ) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Transform.translate(
-              offset: const Offset(0.0, -50),
-              child: const Text('Hmm, something is up with our server'),
-            ),
-          );
+    return BlocBuilder<DenBloc, DenState>(
+      builder: (BuildContext context, DenState state) {
+        if (state is DenLoadingState) {
+          return JuntoProgressIndicator();
         }
-        if (snapshot.hasData) {
+        if (state is DenLoadedState) {
+          final results = state.expressions;
           return Container(
             color: Theme.of(context).colorScheme.background,
             child: ListView(
@@ -100,39 +79,54 @@ class _UserExpressionsState extends State<UserExpressions> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    if (snapshot.data.isNotEmpty)
-                      FilterColumnRow(
-                        twoColumnView: twoColumnView,
-                        switchColumnView: _switchColumnView,
-                      ),
+                    FilterColumnRow(
+                      twoColumnView: twoColumnView,
+                      switchColumnView: _switchColumnView,
+                    ),
                     Container(
-                        color: Theme.of(context).colorScheme.background,
-                        child: AnimatedCrossFade(
-                          crossFadeState: twoColumnView
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                          duration: const Duration(milliseconds: 200),
-                          firstChild: TwoColumnListView(
-                            data: snapshot.data,
-                            privacyLayer: 'Public',
-                          ),
-                          secondChild: SingleColumnListView(
-                            data: snapshot.data,
-                            privacyLayer: 'Public',
-                          ),
-                        )),
+                      color: Theme.of(context).colorScheme.background,
+                      child: AnimatedCrossFade(
+                        crossFadeState: twoColumnView
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: const Duration(milliseconds: 200),
+                        firstChild: TwoColumnListView(
+                          data: results,
+                          privacyLayer: 'Public',
+                        ),
+                        secondChild: SingleColumnListView(
+                          data: results,
+                          privacyLayer: 'Public',
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: FlatButton(
+                          onPressed: _loadMore,
+                          child: Text('Load More'),
+                        ),
+                      ),
+                    )
                   ],
                 )
               ],
             ),
           );
         }
-        return Center(
-          child: Transform.translate(
-            offset: const Offset(0.0, -50),
-            child: JuntoProgressIndicator(),
-          ),
-        );
+        if (state is DenEmptyState) {
+          // TODO(Eric): Update with empty state graphic
+          return Center(
+            child: Text('Get Started by creating an expression'),
+          );
+        }
+        if (state is DenErrorState) {
+          return JuntoErrorWidget(
+            errorMessage: state.message,
+          );
+        }
+        return SizedBox();
       },
     );
   }
