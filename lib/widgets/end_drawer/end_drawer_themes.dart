@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoThemes extends StatefulWidget {
+  const JuntoThemes({this.refreshTheme});
+  final Function refreshTheme;
   @override
   State<StatefulWidget> createState() {
     return JuntoThemesState();
@@ -120,6 +122,7 @@ class JuntoThemesState extends State<JuntoThemes> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
+                    widget.refreshTheme();
                     Navigator.pop(context);
                   },
                   child: Container(

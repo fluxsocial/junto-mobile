@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/en
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,12 +28,14 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   String _userAddress;
   UserData _userProfile;
   String _userFollowPerspectiveId;
+  ThemeData _currentTheme;
 
   @override
   void initState() {
     super.initState();
 
     getUserInformation();
+    getTheme();
   }
 
   Future<void> getUserInformation() async {
@@ -47,11 +50,21 @@ class JuntoDrawerState extends State<JuntoDrawer> {
     });
   }
 
+  Future<void> getTheme() async {
+    final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
+        .getTheme();
+    setState(() {
+      _currentTheme = theme;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        BackgroundTheme(),
+        BackgroundTheme(
+          currentTheme: _currentTheme,
+        ),
         Container(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).size.height * .2,
@@ -142,11 +155,11 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                     ),
                     title: 'Themes',
                     onTap: () async {
-                      Navigator.push(
+                      await Navigator.push(
                         context,
-                        CupertinoPageRoute<Widget>(
+                        CupertinoPageRoute<dynamic>(
                           builder: (BuildContext context) {
-                            return JuntoThemes();
+                            return JuntoThemes(refreshTheme: getTheme);
                           },
                         ),
                       );
