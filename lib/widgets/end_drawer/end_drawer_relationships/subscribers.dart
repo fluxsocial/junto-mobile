@@ -9,25 +9,16 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:provider/provider.dart';
 
-class Subscribers extends StatefulWidget {
-  const Subscribers();
-
-  @override
-  State<StatefulWidget> createState() {
-    return SubscribersState();
-  }
-}
-
-class SubscribersState extends State<Subscribers> {
-  Future<dynamic> getUserRelations() async {
-    final dynamic userRelations =
-        await Provider.of<UserRepo>(context, listen: false).userRelations();
-
-    return userRelations;
-  }
-
+class Subscribers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future<dynamic> getUserRelations() async {
+      final dynamic userRelations =
+          await Provider.of<UserRepo>(context, listen: false).userRelations();
+
+      return userRelations;
+    }
+
     return FutureBuilder<dynamic>(
       future: getUserRelations(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
