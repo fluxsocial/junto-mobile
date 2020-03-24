@@ -88,6 +88,12 @@ class JuntoLotusState extends State<JuntoLotus> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getTheme();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragEnd: (dx) => Navigator.pop(context),
