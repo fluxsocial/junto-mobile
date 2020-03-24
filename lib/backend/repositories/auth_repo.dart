@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +17,7 @@ class AuthRepo {
 
   Future<bool> isLoggedIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isLoggedIn = prefs.getBool('isLoggedIn ');
+    _isLoggedIn = prefs.getBool('isLoggedIn');
     return _isLoggedIn;
   }
 
@@ -26,11 +27,13 @@ class AuthRepo {
   }
 
   Future<String> verifyEmail(String email) async {
+    logger.logDebug('Veryfing e-mail');
     return _authService.verifyEmail(email);
   }
 
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
+    logger.logDebug('Registering user');
     final UserData _data = await _authService.registerUser(details);
     await _authService.loginUser(
       UserAuthLoginDetails(email: details.email, password: details.password),
@@ -65,7 +68,8 @@ class AuthRepo {
         ..setString('user_data', _userMapToString);
 
       return _user;
-    } catch (error) {
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during user login');
       rethrow;
     }
   }

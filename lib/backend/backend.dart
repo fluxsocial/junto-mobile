@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_auth.dart';
@@ -38,28 +39,33 @@ class Backend {
       this.appRepo});
 
   static Future<Backend> init() async {
-    final ThemeData currentTheme = await JuntoThemesProvider.loadDefault();
-    final JuntoHttp client = JuntoHttp(httpClient: IOClient());
-    final AuthenticationService authService =
-        AuthenticationServiceCentralized(client);
-    final UserService userService = UserServiceCentralized(client);
-    final ExpressionService expressionService =
-        ExpressionServiceCentralized(client);
-    final GroupService groupService = GroupServiceCentralized(client);
-    final SearchService searchService = SearchServiceCentralized(client);
-    final NotificationService notificationService =
-        NotificationServiceImpl(client);
-    return Backend._(
-      searchRepo: SearchRepo(searchService),
-      authRepo: AuthRepo(authService),
-      userRepo: UserRepo(userService, notificationService),
-      collectiveProvider: CollectiveProviderCentralized(client),
-      groupsProvider: GroupRepo(groupService, userService),
-      expressionRepo: ExpressionRepo(expressionService),
-      currentTheme: currentTheme,
-      notificationRepo: NotificationRepo(notificationService),
-      appRepo: AppRepo(),
-    );
+    try {
+      logger.logDebug('Initializing backend');
+      final ThemeData currentTheme = await JuntoThemesProvider.loadDefault();
+      final JuntoHttp client = JuntoHttp(httpClient: IOClient());
+      final AuthenticationService authService =
+          AuthenticationServiceCentralized(client);
+      final UserService userService = UserServiceCentralized(client);
+      final ExpressionService expressionService =
+          ExpressionServiceCentralized(client);
+      final GroupService groupService = GroupServiceCentralized(client);
+      final SearchService searchService = SearchServiceCentralized(client);
+      final NotificationService notificationService =
+          NotificationServiceImpl(client);
+      return Backend._(
+        searchRepo: SearchRepo(searchService),
+        authRepo: AuthRepo(authService),
+        userRepo: UserRepo(userService, notificationService),
+        collectiveProvider: CollectiveProviderCentralized(client),
+        groupsProvider: GroupRepo(groupService, userService),
+        expressionRepo: ExpressionRepo(expressionService),
+        currentTheme: currentTheme,
+        notificationRepo: NotificationRepo(notificationService),
+        appRepo: AppRepo(),
+      );
+    } catch (e, s) {
+      logger.logException(e, s);
+    }
   }
 
   static Future<Backend> mocked() async {
@@ -69,14 +75,15 @@ class Backend {
     final GroupService groupService = MockSphere();
     final SearchService searchService = MockSearch();
     return Backend._(
-        authRepo: AuthRepo(authService),
-        userRepo: UserRepo(userService, null),
-        collectiveProvider: null,
-        groupsProvider: GroupRepo(groupService, userService),
-        expressionRepo: ExpressionRepo(expressionService),
-        searchRepo: SearchRepo(searchService),
-        currentTheme: JuntoThemes().aqueous,
-        appRepo: AppRepo());
+      authRepo: AuthRepo(authService),
+      userRepo: UserRepo(userService, null),
+      collectiveProvider: null,
+      groupsProvider: GroupRepo(groupService, userService),
+      expressionRepo: ExpressionRepo(expressionService),
+      searchRepo: SearchRepo(searchService),
+      currentTheme: JuntoThemes().aqueous,
+      appRepo: AppRepo(),
+    );
   }
 
   final SearchRepo searchRepo;
