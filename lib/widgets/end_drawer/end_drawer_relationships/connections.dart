@@ -19,15 +19,7 @@ class Connections extends StatefulWidget {
 }
 
 class ConnectionsState extends State<Connections> {
-  Future<dynamic> _userRelations;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _userRelations = getUserRelationships();
-  }
-
-  Future<dynamic> getUserRelationships() async {
+  Future<dynamic> getUserRelations() async {
     final dynamic userRelations =
         await Provider.of<UserRepo>(context, listen: false).userRelations();
 
@@ -37,9 +29,11 @@ class ConnectionsState extends State<Connections> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-      future: _userRelations,
+      future: getUserRelations(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
+          print('getting connections');
+
           // get list of connections
           final List<UserProfile> _connectionsMembers =
               snapshot.data['connections']['results'];
