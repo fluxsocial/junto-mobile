@@ -6,14 +6,12 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending_relationships.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pack_members.dart';
 import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatefulWidget {
@@ -215,8 +213,8 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
               // connections
               Connections(),
 
-              // todo: waiting on API - return pack members
-              const SizedBox()
+              // pack members
+              PackMembers(userAddress: widget.userAddress),
             ],
           ),
         ),

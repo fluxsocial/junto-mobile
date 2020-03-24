@@ -84,7 +84,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<List<Users>> _getMembers() async {
-    return Provider.of<GroupRepo>(context, listen: false)
+    return await Provider.of<GroupRepo>(context, listen: false)
         .getGroupMembers(widget.group.address);
   }
 
