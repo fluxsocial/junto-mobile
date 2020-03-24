@@ -128,22 +128,31 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<List<ExpressionResponse>> getUsersExpressions(
+  Future<QueryResults<ExpressionResponse>> getUsersExpressions(
     String userAddress,
+    int paginationPos,
+    String lastTimestamp,
   ) async {
-    final http.Response response = await client
-        .get('/users/$userAddress/expressions', queryParams: <String, String>{
+    final parms = <String, String>{
       'root_expressions': 'true',
       'sub_expressions': 'false',
-      'pagination_position': '0'
-    });
+      'pagination_position': '$paginationPos',
+    };
+    if (lastTimestamp != null && lastTimestamp.isNotEmpty) {
+      parms.putIfAbsent('last_timestamp', () => lastTimestamp);
+    }
+    final http.Response response =
+        await client.get('/users/$userAddress/expressions', queryParams: parms);
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    return <ExpressionResponse>[
-      for (dynamic data in _responseMap['root_expressions']['results'])
-        ExpressionResponse.fromMap(data)
-    ];
+    return QueryResults(
+      lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
+      results: <ExpressionResponse>[
+        for (dynamic data in _responseMap['root_expressions']['results'])
+          ExpressionResponse.fromMap(data)
+      ],
+    );
   }
 
   @override
