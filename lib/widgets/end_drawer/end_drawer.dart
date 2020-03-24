@@ -12,6 +12,7 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,8 +27,6 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   String _userAddress;
   UserData _userProfile;
   String _userFollowPerspectiveId;
-  String _currentTheme = 'rainbow';
-  bool _nightMode;
 
   @override
   void initState() {
@@ -45,32 +44,14 @@ class JuntoDrawerState extends State<JuntoDrawer> {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
       _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
-      _currentTheme = prefs.getString('current-theme');
-      _nightMode = prefs.getBool('night-mode');
     });
-  }
-
-  String _displayBackground() {
-    if (_currentTheme == 'rainbow' || _currentTheme == 'rainbow-night') {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
-    } else if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
-      return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
-      return 'assets/images/junto-mobile__themes--royal.png';
-    } else {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Image.asset(_displayBackground(), fit: BoxFit.cover),
-        ),
+        BackgroundTheme(),
         Container(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).size.height * .2,
@@ -166,8 +147,6 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                           builder: (BuildContext context) {
                             return JuntoThemes(
                               refreshData: getUserInformation,
-                              currentTheme: _currentTheme,
-                              nightMode: _nightMode,
                             );
                           },
                         ),

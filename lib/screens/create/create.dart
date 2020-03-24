@@ -87,7 +87,9 @@ class JuntoCreateState extends State<JuntoCreate> {
   Widget _expressionCenter(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Positioned.fill(child: BackgroundTheme()),
+        Positioned.fill(
+          child: BackgroundTheme(),
+        ),
         Positioned(
           bottom: 0,
           left: 0,

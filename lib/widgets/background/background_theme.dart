@@ -57,9 +57,12 @@ class BackgroundThemeState extends State<BackgroundTheme> {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      setBackground(),
-      fit: BoxFit.cover,
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Image.asset(
+        setBackground(),
+        fit: BoxFit.cover,
+      ),
     );
   }
 }
