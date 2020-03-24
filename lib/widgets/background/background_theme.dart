@@ -16,10 +16,10 @@ class BackgroundThemeState extends State<BackgroundTheme> {
   @override
   void initState() {
     super.initState();
-    _getTheme();
+    getTheme();
   }
 
-  Future<void> _getTheme() async {
+  Future<void> getTheme() async {
     final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
         .getTheme();
     setState(() {
@@ -59,6 +59,7 @@ class BackgroundThemeState extends State<BackgroundTheme> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: Image.asset(
         setBackground(),
         fit: BoxFit.cover,

@@ -132,22 +132,21 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                   JuntoDrawerItem(
                     icon: Container(
-                        width: 60,
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          Icons.favorite,
-                          color: Colors.white,
-                          size: 24,
-                        )),
+                      width: 60,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
                     title: 'Themes',
                     onTap: () async {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<Widget>(
                           builder: (BuildContext context) {
-                            return JuntoThemes(
-                              refreshData: getUserInformation,
-                            );
+                            return JuntoThemes();
                           },
                         ),
                       );

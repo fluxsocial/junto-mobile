@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoThemes extends StatefulWidget {
-  const JuntoThemes({this.refreshData, this.currentTheme, this.nightMode});
-
-  final Function refreshData;
-  final String currentTheme;
-  final bool nightMode;
-
   @override
   State<StatefulWidget> createState() {
     return JuntoThemesState();
@@ -18,19 +13,50 @@ class JuntoThemes extends StatefulWidget {
 }
 
 class JuntoThemesState extends State<JuntoThemes> {
-  bool _nightMode;
   String _currentTheme;
+  bool _nightMode = false;
 
   @override
   void initState() {
-    print(widget.nightMode);
     super.initState();
-    _currentTheme = widget.currentTheme;
-    if (widget.nightMode == null) {
-      _nightMode = false;
-    } else {
-      _nightMode = widget.nightMode;
+    getThemeInfo();
+  }
+
+  Future<void> getThemeInfo() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final bool nightMode = await prefs.getBool('night-mode');
+    final String theme = await prefs.getString('current-theme');
+    if (nightMode != null) {
+      setState(() {
+        _nightMode = nightMode;
+        _currentTheme = theme;
+      });
     }
+  }
+
+  Future<void> setTheme(String theme) async {
+    print(theme);
+    setState(() {
+      if (_nightMode) {
+        if (!_currentTheme.contains('-night')) {
+          _currentTheme = '$theme-night';
+        } else {
+          _currentTheme = theme;
+        }
+      } else if (!_nightMode) {
+        if (_currentTheme.contains('-night')) {
+          _currentTheme =
+              _currentTheme.replaceRange(theme.length - 6, theme.length, '');
+        } else {
+          _currentTheme = theme;
+        }
+      }
+    });
+    print(_currentTheme);
+
+    await Provider.of<JuntoThemesProvider>(context, listen: false)
+        .setTheme(_currentTheme);
   }
 
   Widget _themeSelector(BuildContext context, String theme) {
@@ -41,20 +67,18 @@ class JuntoThemesState extends State<JuntoThemes> {
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          setState(() {
-            _currentTheme = theme;
-          });
-          Provider.of<JuntoThemesProvider>(context, listen: false)
-              .setTheme(_nightMode ? theme + '-night' : theme);
-
-          widget.refreshData();
+          if (_nightMode) {
+            setTheme('$theme-night');
+          } else {
+            setTheme(theme);
+          }
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Stack(
             children: <Widget>[
               Image.asset(
-                'assets/images/junto-mobile__themes--' + theme + '.png',
+                'assets/images/junto-mobile__themes--$theme.png',
                 height: MediaQuery.of(context).size.height * .15,
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
@@ -166,29 +190,13 @@ class JuntoThemesState extends State<JuntoThemes> {
                     child: Switch.adaptive(
                       value: _nightMode,
                       onChanged: (bool value) async {
-                        setState(() {
-                          print(value);
-                          _nightMode = value;
-                        });
-                        String theme;
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-
-                        if (value) {
-                          theme = _currentTheme + '-night';
-                        } else if (!value) {
-                          print('yoo');
-                          theme = _currentTheme;
-                          if (theme.contains('-night')) {
-                            theme = theme.replaceRange(
-                                theme.length - 6, theme.length, '');
-                          }
-                        }
-                        Provider.of<JuntoThemesProvider>(context, listen: false)
-                            .setTheme(theme);
                         prefs.setBool('night-mode', value);
-
-                        widget.refreshData();
+                        setState(() {
+                          _nightMode = value;
+                        });
+                        setTheme(_currentTheme);
                       },
                       activeColor: Theme.of(context).dividerColor,
                     ),
