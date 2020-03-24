@@ -27,11 +27,13 @@ class AuthRepo {
   }
 
   Future<String> verifyEmail(String email) async {
+    logger.logDebug('Veryfing e-mail');
     return _authService.verifyEmail(email);
   }
 
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
+    logger.logDebug('Registering user');
     final UserData _data = await _authService.registerUser(details);
     await _authService.loginUser(
       UserAuthLoginDetails(email: details.email, password: details.password),
