@@ -74,7 +74,6 @@ class JuntoThemesState extends State<JuntoThemes> {
           });
           Provider.of<JuntoThemesProvider>(context, listen: false)
               .setTheme(_nightMode ? '$theme-night' : theme);
-          widget.refreshData();
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
@@ -196,19 +195,6 @@ class JuntoThemesState extends State<JuntoThemes> {
                       onChanged: (bool value) async {
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
-
-                        if (value) {
-                          theme = '${_currentTheme}-night';
-                        } else if (!value) {
-                          theme = _currentTheme;
-                          if (theme.contains('-night')) {
-                            theme = theme.replaceRange(
-                                theme.length - 6, theme.length, '');
-                          }
-                        }
-                        Provider.of<JuntoThemesProvider>(context, listen: false)
-                            .setTheme(theme);
-
                         prefs.setBool('night-mode', value);
                         setState(() {
                           _nightMode = value;
