@@ -11,6 +11,8 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
 import 'package:provider/provider.dart';
 
@@ -202,82 +204,20 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
               ),
             ];
           },
-          body: FutureBuilder<dynamic>(
-            future: _userRelations,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                // get list of connections
-                final List<UserProfile> _connectionsMembers =
-                    snapshot.data['connections']['results'];
+          body: TabBarView(
+            children: <Widget>[
+              // subscriptions
+              Subscriptions(),
 
-                // get list of following
-                final List<UserProfile> _subscriptionMembers =
-                    snapshot.data['following']['results'];
+              // subscribers
+              Subscribers(),
 
-                final List<UserProfile> _subscriberMembers =
-                    snapshot.data['followers']['results'];
+              // connections
+              Connections(),
 
-                print(snapshot.data['pending_connections']['results']);
-
-                return TabBarView(
-                  children: <Widget>[
-                    // subscriptions
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _subscriptionMembers
-                          .map(
-                            (dynamic subscription) =>
-                                MemberPreview(profile: subscription),
-                          )
-                          .toList(),
-                    ),
-
-                    // subscribers
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _subscriberMembers
-                          .map(
-                            (dynamic subscriber) =>
-                                MemberPreview(profile: subscriber),
-                          )
-                          .toList(),
-                    ),
-
-                    // connections
-                    Connections(),
-
-                    // todo: waiting on API - return pack members
-                    const SizedBox()
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                print(snapshot.error);
-                return const TabBarView(
-                  children: <Widget>[
-                    JuntoErrorWidget(errorMessage: 'Hmm, something went wrong'),
-                    JuntoErrorWidget(errorMessage: 'Hmm, something went wrong'),
-                    JuntoErrorWidget(errorMessage: 'Hmm, something went wrong'),
-                    JuntoErrorWidget(errorMessage: 'Hmm, something went wrong'),
-                  ],
-                );
-              }
-              return TabBarView(
-                children: <Widget>[
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  ),
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  ),
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  ),
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  ),
-                ],
-              );
-            },
+              // todo: waiting on API - return pack members
+              const SizedBox()
+            ],
           ),
         ),
       ),
