@@ -85,10 +85,7 @@ class JuntoLotusState extends State<JuntoLotus> {
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            Container(
-              child: BackgroundTheme(),
-              height: MediaQuery.of(context).size.height,
-            ),
+            BackgroundTheme(),
             Container(
               height: MediaQuery.of(context).size.height,
               padding: const EdgeInsets.only(bottom: 10),
