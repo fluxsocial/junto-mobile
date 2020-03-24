@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
@@ -43,6 +46,7 @@ class _SignInState extends State<SignIn> {
   /// Makes a call to [SharedPreferences] then replaces the current route
   /// with [JuntoCollective].
   Future<void> _handleSignIn(BuildContext context) async {
+    logger.logInfo('User tapped sign in');
     final String email = _emailController.value.text;
     final String password = _passwordController.value.text;
     if (email.isEmpty || password.isEmpty) {
@@ -53,18 +57,18 @@ class _SignInState extends State<SignIn> {
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
     try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final bool nightMode = await prefs.getBool('night-mode');
+      if (nightMode == null) {
+        await prefs.setBool('night-mode', false);
+      }
       await Provider.of<AuthRepo>(context, listen: false)
           .loginUser(loginDetails);
       JuntoLoader.hide();
-      Navigator.of(context).pushReplacement(
-        FadeRoute<void>(
-          child: const JuntoLotus(
-            address: null,
-            expressionContext: ExpressionContext.Collective,
-          ),
-        ),
-      );
-    } catch (error) {
+      BlocProvider.of<PerspectivesBloc>(context).add(FetchPerspectives());
+      Navigator.of(context).pushReplacement(JuntoLotusState.route());
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during sign in');
       JuntoLoader.hide();
       showDialog(
         context: context,

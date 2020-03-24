@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
@@ -14,13 +16,11 @@ class JuntoCreate extends StatefulWidget {
     @required this.channels,
     @required this.address,
     @required this.expressionContext,
-    @required this.expressionCenterBackground,
   });
 
   final List<String> channels;
   final String address;
   final ExpressionContext expressionContext;
-  final String expressionCenterBackground;
 
   @override
   State<StatefulWidget> createState() {
@@ -81,19 +81,14 @@ class JuntoCreateState extends State<JuntoCreate> {
     setState(() {
       source = expressionType;
     });
-    print(source);
+    logger.logDebug(source);
   }
 
   Widget _expressionCenter(BuildContext context) {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: Image.asset(
-            widget.expressionCenterBackground,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
+          child: BackgroundTheme(),
         ),
         Positioned(
           bottom: 0,

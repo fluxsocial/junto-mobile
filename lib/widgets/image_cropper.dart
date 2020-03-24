@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart' as pp;
 
@@ -293,7 +294,7 @@ class ImageCropperState extends State<ImageCropper>
     double posX = _position.dx;
     double posY = _position.dy;
 
-    print('box $box rect $rect');
+    logger.logDebug('box $box rect $rect');
 
     if (_scale == 1.0 || rect.width < box.width || rect.height < box.height) {
       scale = math.max(

@@ -15,6 +15,12 @@ class MockAuth implements AuthenticationService {
   }
 
   @override
+  Future<Map<String, dynamic>> validateUser(
+      {String username, String email}) async {
+    return {};
+  }
+
+  @override
   Future<String> verifyEmail(String email) async {
     return 'You registration is nearly complete. Please check your email for a verification code sent by juntofoundation@gmail.com';
   }

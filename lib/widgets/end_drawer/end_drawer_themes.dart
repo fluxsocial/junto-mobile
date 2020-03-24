@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoThemes extends StatefulWidget {
-  const JuntoThemes({this.refreshData, this.currentTheme, this.nightMode});
-
-  final Function refreshData;
-  final String currentTheme;
-  final bool nightMode;
-
+  const JuntoThemes({this.refreshTheme});
+  final Function refreshTheme;
   @override
   State<StatefulWidget> createState() {
     return JuntoThemesState();
@@ -18,19 +15,50 @@ class JuntoThemes extends StatefulWidget {
 }
 
 class JuntoThemesState extends State<JuntoThemes> {
-  bool _nightMode;
   String _currentTheme;
+  bool _nightMode = false;
 
   @override
   void initState() {
-    print(widget.nightMode);
     super.initState();
-    _currentTheme = widget.currentTheme;
-    if (widget.nightMode == null) {
-      _nightMode = false;
-    } else {
-      _nightMode = widget.nightMode;
+    getThemeInfo();
+  }
+
+  Future<void> getThemeInfo() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final bool nightMode = await prefs.getBool('night-mode');
+    final String theme = await prefs.getString('current-theme');
+    if (nightMode != null) {
+      setState(() {
+        _nightMode = nightMode;
+        _currentTheme = theme;
+      });
     }
+  }
+
+  Future<void> setTheme(String theme) async {
+    print(theme);
+    setState(() {
+      if (_nightMode) {
+        if (!_currentTheme.contains('-night')) {
+          _currentTheme = '$theme-night';
+        } else {
+          _currentTheme = theme;
+        }
+      } else if (!_nightMode) {
+        if (_currentTheme.contains('-night')) {
+          _currentTheme =
+              _currentTheme.replaceRange(theme.length - 6, theme.length, '');
+        } else {
+          _currentTheme = theme;
+        }
+      }
+    });
+    print(_currentTheme);
+
+    await Provider.of<JuntoThemesProvider>(context, listen: false)
+        .setTheme(_currentTheme);
   }
 
   Widget _themeSelector(BuildContext context, String theme) {
@@ -95,6 +123,7 @@ class JuntoThemesState extends State<JuntoThemes> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
+                    widget.refreshTheme();
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -165,11 +194,6 @@ class JuntoThemesState extends State<JuntoThemes> {
                     child: Switch.adaptive(
                       value: _nightMode,
                       onChanged: (bool value) async {
-                        setState(() {
-                          print(value);
-                          _nightMode = value;
-                        });
-                        String theme;
                         final SharedPreferences prefs =
                             await SharedPreferences.getInstance();
 
@@ -184,9 +208,12 @@ class JuntoThemesState extends State<JuntoThemes> {
                         }
                         Provider.of<JuntoThemesProvider>(context, listen: false)
                             .setTheme(theme);
-                        prefs.setBool('night-mode', value);
 
-                        widget.refreshData();
+                        prefs.setBool('night-mode', value);
+                        setState(() {
+                          _nightMode = value;
+                        });
+                        setTheme(_currentTheme);
                       },
                       activeColor: Theme.of(context).dividerColor,
                     ),

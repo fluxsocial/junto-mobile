@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -165,8 +166,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
               image,
             );
             _photoKeys.add(key);
-          } catch (error) {
-            print(error);
+          } catch (e, s) {
+            logger.logException(e, e);
             JuntoLoader.hide();
           }
         }
@@ -196,8 +197,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
         setState(() {
           backgroundPhotoKey = key;
         });
-      } catch (error) {
-        print(error);
+      } catch (e, s) {
+        logger.logException(e, s);
         JuntoLoader.hide();
       }
       _newProfileBody['background_photo'] = backgroundPhotoKey;
@@ -214,8 +215,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
           child: JuntoDen(),
         ),
       );
-    } catch (error) {
-      print(error.message);
+    } catch (e, s) {
+      logger.logException(e, s);
       JuntoLoader.hide();
     }
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
@@ -47,8 +48,9 @@ class _SpheresSearchState extends State<SpheresSearch> {
   Future<QueryResults<Group>> searchSphere(String searchText) async {
     try {
       return await _searchRepo.searchSphere(searchText, handle: true);
-    } catch (error) {
-      print(error);
+    } catch (e, s) {
+      logger.logException(e, s);
+
       return null;
     }
   }
@@ -143,7 +145,6 @@ class _SpheresSearchState extends State<SpheresSearch> {
                   builder: (BuildContext context,
                       AsyncSnapshot<QueryResults<Group>> snapshot) {
                     if (snapshot.hasData) {
-                      print(snapshot.data);
                       return ListView(
                         children: <Widget>[
                           for (Group group in snapshot.data.results)

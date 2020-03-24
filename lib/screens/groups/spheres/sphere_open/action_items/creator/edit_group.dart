@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -102,7 +102,8 @@ class _EditGroupState extends State<EditGroup> {
       _repo.updateGroup(updatedGroup);
       JuntoLoader.hide();
       Navigator.pop(context);
-    } on JuntoException catch (error) {
+    } on JuntoException catch (e, s) {
+      logger.logException(e, s);
       JuntoLoader.hide();
       showDialog(
         context: context,
@@ -151,8 +152,9 @@ class _EditGroupState extends State<EditGroup> {
           ),
         ),
       );
-    } else
+    } else {
       return const GroupAvatarPlaceholder(diameter: 45);
+    }
   }
 
   @override
@@ -243,9 +245,7 @@ class _EditGroupState extends State<EditGroup> {
                 child: ListView(
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {
-                        _onPickPressed();
-                      },
+                      onTap: _onPickPressed,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 10),

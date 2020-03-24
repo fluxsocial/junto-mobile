@@ -56,11 +56,12 @@ class _GlobalSearchState extends State<GlobalSearch> {
     debounceTimer = Timer(
       const Duration(milliseconds: 600),
       () async {
-        if (mounted)
+        if (mounted) {
           setState(() {
             _searchFuture =
                 _searchRepo.searchMembers(query, username: !_fullName);
           });
+        }
       },
     );
   }

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 part 'group_event.dart';
@@ -51,8 +51,7 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
     } on JuntoException catch (error) {
       yield GroupError(error.message);
     } catch (e, s) {
-      print(e);
-      print(s.toString());
+      logger.logException(e, s);
       yield GroupError();
     }
   }

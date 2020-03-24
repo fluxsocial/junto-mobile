@@ -279,8 +279,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                       ),
                                   ],
                                 );
-                              } else
+                              } else {
                                 return const SizedBox(height: 25);
+                              }
                             }
                             return Transform.translate(
                               offset: const Offset(0.0, 50.0),

@@ -11,13 +11,11 @@ class FilterDrawerButton extends StatelessWidget {
     return Semantics(
       button: true,
       hint: 'Toggle filters drawer',
-      child: Material(
-        child: IconButton(
-          onPressed: () => JuntoFilterDrawer.of(context).toggle(),
-          icon: Container(
-            child: Image.asset('assets/images/junto-mobile__filter.png',
-                height: 17, color: Theme.of(context).primaryColor),
-          ),
+      child: GestureDetector(
+        onTap: () => JuntoFilterDrawer.of(context).toggle(),
+        child: Container(
+          child: Image.asset('assets/images/junto-mobile__filter.png',
+              height: 17, color: Theme.of(context).primaryColor),
         ),
       ),
     );

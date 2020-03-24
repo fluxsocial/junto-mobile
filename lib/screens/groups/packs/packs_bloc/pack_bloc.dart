@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -93,8 +94,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     } on JuntoException catch (error) {
       yield PacksError(error.message);
     } catch (e, s) {
-      print(e);
-      print(s.toString());
+      logger.logException(e, s);
       yield PacksError();
     }
   }

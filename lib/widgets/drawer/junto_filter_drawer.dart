@@ -467,6 +467,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         children: <Widget>[container, invC],
       );
     }
+
     // Vertical translate
     if (widget.offset != null &&
         (widget.offset.top > 0 || widget.offset.bottom > 0)) {

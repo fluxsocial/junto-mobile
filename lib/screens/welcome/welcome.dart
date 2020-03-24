@@ -333,6 +333,21 @@ class WelcomeState extends State<Welcome> {
       } else if (_currentIndex == 2) {
         if (username == null || username.isEmpty || username.length > 22) {
           return;
+        } else {
+          final Map<String, dynamic> validateUserResponse =
+              await Provider.of<AuthRepo>(context, listen: false)
+                  .validateUser(username: username);
+          final bool usernameIsAvailable =
+              validateUserResponse['valid_username'];
+          if (!usernameIsAvailable) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => SingleActionDialog(
+                dialogText: 'Sorry, that username is taken.',
+              ),
+            );
+            return;
+          }
         }
       } else if (_currentIndex == 4) {
         final AboutPageModel _aboutPageModel =
@@ -421,6 +436,11 @@ class WelcomeState extends State<Welcome> {
         _currentTheme = theme;
       }
     });
+
+    final bool nightMode = await prefs.getBool('night-mode');
+    if (nightMode == null) {
+      await prefs.setBool('night-mode', false);
+    }
   }
 
   void onPageChanged(int index) {
