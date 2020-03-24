@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
@@ -119,46 +118,52 @@ class JuntoDenState extends State<JuntoDen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //TODO(dominik/Nash): revert and use bloc for fetching
-      body: JuntoFilterDrawer(
-        leftDrawer: const FilterDrawerContent(ExpressionContextType.Collective),
-        rightMenu: JuntoDrawer(),
-        scaffold: Scaffold(
-          appBar: _constructAppBar(),
-          floatingActionButton: ValueListenableBuilder<bool>(
-            valueListenable: _isVisible,
-            builder: (
-              BuildContext context,
-              bool visible,
-              Widget child,
-            ) {
-              return AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: visible ? 1.0 : 0.0,
-                child: child,
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 25),
-              child: BottomNav(
-                actionsVisible: false,
-                onLeftButtonTap: () {
-                  // open about page
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<dynamic>(
-                      builder: (BuildContext context) =>
-                          AboutMember(profile: _userProfile),
-                    ),
-                  );
-                },
+    return BlocProvider(
+      create: (context) => DenBloc(
+          Provider.of<UserRepo>(context, listen: false),
+          Provider.of<UserDataProvider>(context, listen: false))
+        ..add(LoadDen()),
+      child: Scaffold(
+        body: JuntoFilterDrawer(
+          leftDrawer:
+              const FilterDrawerContent(ExpressionContextType.Collective),
+          rightMenu: JuntoDrawer(),
+          scaffold: Scaffold(
+            appBar: _constructAppBar(),
+            floatingActionButton: ValueListenableBuilder<bool>(
+              valueListenable: _isVisible,
+              builder: (
+                BuildContext context,
+                bool visible,
+                Widget child,
+              ) {
+                return AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: visible ? 1.0 : 0.0,
+                  child: child,
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: BottomNav(
+                  actionsVisible: false,
+                  onLeftButtonTap: () {
+                    // open about page
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
+                            AboutMember(profile: _userProfile),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: _buildBody(),
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: _buildBody(),
         ),
       ),
     );
