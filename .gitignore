@@ -88,3 +88,4 @@ ios/Flutter/Flutter.podspec
 *.http
 ios/Runner.xcodeproj/project.pbxproj
 fvm
+macos/Flutter/GeneratedPluginRegistrant.swift
