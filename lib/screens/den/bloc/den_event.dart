@@ -6,3 +6,5 @@ abstract class DenEvent {}
 class LoadDen extends DenEvent {}
 
 class LoadMoreDen extends DenEvent {}
+
+class RefreshDen extends DenEvent {}

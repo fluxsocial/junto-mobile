@@ -72,46 +72,53 @@ class _UserExpressionsState extends State<UserExpressions> {
         }
         if (state is DenLoadedState) {
           final results = state.expressions;
-          return Container(
-            color: Theme.of(context).colorScheme.background,
-            child: ListView(
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    FilterColumnRow(
-                      twoColumnView: twoColumnView,
-                      switchColumnView: _switchColumnView,
-                    ),
-                    Container(
-                      color: Theme.of(context).colorScheme.background,
-                      child: AnimatedCrossFade(
-                        crossFadeState: twoColumnView
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
-                        duration: const Duration(milliseconds: 200),
-                        firstChild: TwoColumnListView(
-                          data: results,
-                          privacyLayer: 'Public',
-                        ),
-                        secondChild: SingleColumnListView(
-                          data: results,
-                          privacyLayer: 'Public',
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.bloc<DenBloc>().add(RefreshDen());
+            },
+            child: Container(
+              color: Theme.of(context).colorScheme.background,
+              child: ListView(
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      FilterColumnRow(
+                        twoColumnView: twoColumnView,
+                        switchColumnView: _switchColumnView,
+                      ),
+                      Container(
+                        color: Theme.of(context).colorScheme.background,
+                        child: AnimatedCrossFade(
+                          crossFadeState: twoColumnView
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          duration: const Duration(milliseconds: 200),
+                          firstChild: TwoColumnListView(
+                            data: results,
+                            privacyLayer: 'Public',
+                            scrollChanged: (_) => _loadMore,
+                          ),
+                          secondChild: SingleColumnListView(
+                            data: results,
+                            scrollChanged: (_) => _loadMore,
+                            privacyLayer: 'Public',
+                          ),
                         ),
                       ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: FlatButton(
-                          onPressed: _loadMore,
-                          child: Text('Load More'),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: FlatButton(
+                            onPressed: _loadMore,
+                            child: Text('Load More'),
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                )
-              ],
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         }

@@ -30,6 +30,9 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     if (event is LoadMoreDen) {
       yield* _fetchMoreUserDenExpressions(event);
     }
+    if (event is RefreshDen) {
+      yield* _refreshUserDenExpressions(event);
+    }
   }
 
   Stream<DenState> _fetchUserDenExpressions(event) async* {
@@ -37,7 +40,6 @@ class DenBloc extends Bloc<DenEvent, DenState> {
       yield DenLoadingState();
       final userExpressions = await fetchExpressions();
       currentTimeStamp = userExpressions.lastTimestamp;
-      print(currentTimeStamp);
       if (userExpressions.results.isEmpty) {
         yield DenEmptyState();
       } else {
@@ -59,6 +61,21 @@ class DenBloc extends Bloc<DenEvent, DenState> {
           data.expressions.addAll(userExpressions.results);
         }
         yield DenLoadedState(data.expressions);
+      }
+    } on JuntoException catch (e) {
+      yield DenErrorState(e.message);
+    }
+  }
+
+  Stream<DenState> _refreshUserDenExpressions(event) async* {
+    try {
+      yield DenLoadingState();
+      final userExpressions = await fetchExpressions();
+      currentTimeStamp = userExpressions.lastTimestamp;
+      if (userExpressions.results.isEmpty) {
+        yield DenEmptyState();
+      } else {
+        yield DenLoadedState(userExpressions.results);
       }
     } on JuntoException catch (e) {
       yield DenErrorState(e.message);
