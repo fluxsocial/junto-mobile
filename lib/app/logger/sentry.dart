@@ -1,16 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
 
 final SentryClient _sentry = SentryClient(dsn: kSentryDSN);
 
 bool get isInDebugMode {
-  bool inDebugMode = false;
-  assert(inDebugMode = true);
-  return inDebugMode;
+  return !kReleaseMode;
 }
 
 Future<void> reportError(dynamic error, dynamic stackTrace) async {
@@ -23,9 +24,22 @@ Future<void> reportError(dynamic error, dynamic stackTrace) async {
 
   logger.logInfo('Reporting to Sentry.io...');
 
-  final SentryResponse response = await _sentry.captureException(
-    exception: error,
-    stackTrace: stackTrace,
+  final systemVersion = Platform.operatingSystemVersion;
+  final version = await PackageInfo.fromPlatform();
+  final response = await _sentry.capture(
+    event: Event(
+      release: version.buildNumber,
+      message: error.toString(),
+      environment: Platform.isAndroid ? 'Android' : 'iOS',
+      stackTrace: stackTrace,
+      exception: error,
+      tags: {
+        'packageName': version.packageName,
+        'version': version.version,
+        'build': version.buildNumber,
+        'systemVersion': systemVersion,
+      },
+    ),
   );
 
   if (response.isSuccessful) {
