@@ -150,10 +150,8 @@ class JuntoPacksState extends State<JuntoPacks>
     if (value.metrics.axis == Axis.vertical) {
       if (value.scrollDelta > 10) {
         _isVisible.value = false;
-        print('down');
       } else if (value.scrollDelta < 0) {
         _isVisible.value = true;
-        print('up');
       }
     }
     return false;
