@@ -303,13 +303,13 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         });
       };
       _expressionContextIcon = Transform.translate(
-        offset: const Offset(-10, 0),
+        offset: const Offset(0, 0),
         child: Icon(
-          CustomIcons.collective,
+          CustomIcons.newcollective,
           color: _currentExpressionContext == expressionContext
               ? Colors.white
               : Theme.of(context).primaryColor,
-          size: 10,
+          size: 38,
         ),
       );
     } else if (expressionContext == 'My Pack') {
