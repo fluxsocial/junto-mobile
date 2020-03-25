@@ -6,9 +6,12 @@ class PerspectiveTextField extends StatelessWidget {
     Key key,
     @required this.name,
     @required this.controller,
+    this.textInputActionType,
   }) : super(key: key);
+
   final String name;
   final TextEditingController controller;
+  final TextInputAction textInputActionType;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +42,15 @@ class PerspectiveTextField extends StatelessWidget {
           color: Theme.of(context).primaryColor,
         ),
         maxLength: 80,
-        textInputAction: TextInputAction.next,
+        textInputAction: textInputActionType,
         keyboardType: TextInputType.text,
         textCapitalization: TextCapitalization.sentences,
         onFieldSubmitted: (_) {
-          FocusScope.of(context).nextFocus();
+          if (textInputActionType == TextInputAction.next) {
+            FocusScope.of(context).nextFocus();
+          } else {
+            FocusScope.of(context).unfocus();
+          }
         },
       ),
     );

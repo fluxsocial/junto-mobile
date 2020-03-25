@@ -246,6 +246,7 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.delete(
       '/users/$userAddress/connect',
     );
+    print(_serverResponse.statusCode);
     logger.logDebug(_serverResponse.statusCode.toString());
     JuntoHttp.handleResponse(_serverResponse);
   }
