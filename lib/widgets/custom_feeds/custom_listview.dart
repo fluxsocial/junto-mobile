@@ -20,7 +20,9 @@ class TwoColumnListView extends StatelessWidget {
     final metrics = scrollNotification.metrics;
     double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
     if (scrollPercent.roundToDouble() == 60.0) {
-      scrollChanged(scrollNotification);
+      if (scrollChanged != null) {
+        scrollChanged(scrollNotification);
+      }
       return true;
     }
     return false;
