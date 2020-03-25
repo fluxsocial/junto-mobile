@@ -19,7 +19,6 @@ class PerspectiveTextField extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: TextFormField(
-        validator: Validator.validateNonEmpty,
         controller: controller,
         keyboardAppearance: theme.brightness,
         decoration: InputDecoration(
