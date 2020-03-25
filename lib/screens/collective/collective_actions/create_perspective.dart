@@ -181,11 +181,13 @@ class PerspectivesPageView extends StatelessWidget {
                         PerspectiveTextField(
                           name: 'Name Perspective',
                           controller: nameController,
+                          textInputActionType: TextInputAction.next,
                         ),
                         const SizedBox(height: 10),
                         PerspectiveTextField(
                           name: 'About',
                           controller: aboutController,
+                          textInputActionType: TextInputAction.done,
                         ),
                       ],
                     ),
