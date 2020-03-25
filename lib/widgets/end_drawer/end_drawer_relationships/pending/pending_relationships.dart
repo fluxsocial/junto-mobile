@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -47,7 +46,10 @@ class PendingRelationshipsState extends State<PendingRelationships> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      Navigator.pop(context);
+                      widget.refreshActions();
+                    },
                     child: Container(
                       padding: const EdgeInsets.only(left: 10),
                       width: 42,
