@@ -44,6 +44,14 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.initState();
 
     _collectiveController = ScrollController();
+    initializeBloc();
+    addPostFrameCallbackToHideFabOnScroll(
+      _collectiveController,
+      _onScrollingHasChanged,
+    );
+  }
+
+  void initializeBloc() {
     context.bloc<PerspectivesBloc>().add(FetchPerspectives());
     context.bloc<CollectiveBloc>().add(
           FetchCollective(
@@ -52,7 +60,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
             ),
           ),
         );
-    _addPostFrameCallbackToHideFabOnScroll();
   }
 
   @override
@@ -60,17 +67,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     _collectiveController.removeListener(_onScrollingHasChanged);
     _collectiveController.dispose();
     super.dispose();
-  }
-
-  void _addPostFrameCallbackToHideFabOnScroll() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _collectiveController.addListener(_onScrollingHasChanged);
-      if (_collectiveController.hasClients) {
-        _collectiveController.position.isScrollingNotifier.addListener(
-          _onScrollingHasChanged,
-        );
-      }
-    });
   }
 
   void _scrollToTop() {

@@ -19,4 +19,16 @@ mixin HideFab {
       isVisible.value = true;
     }
   }
+
+  void addPostFrameCallbackToHideFabOnScroll(
+      ScrollController _scrollController, VoidCallback _onScrollingHasChanged) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.addListener(_onScrollingHasChanged);
+      if (_scrollController.hasClients) {
+        _scrollController.position.isScrollingNotifier.addListener(
+          _onScrollingHasChanged,
+        );
+      }
+    });
+  }
 }
