@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
@@ -44,7 +43,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
     _userRelations = getUserRelationships();
   }
 
-  Future<dynamic> getUserRelationships() async {
+  Future<void> getUserRelationships() async {
     final dynamic userRelations =
         await Provider.of<UserRepo>(context, listen: false).userRelations();
     setState(() {
@@ -52,14 +51,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
           userRelations['pending_connections']['results'];
       pendingPackRequests =
           userRelations['pending_group_join_requests']['results'];
-    });
-
-    return userRelations;
-  }
-
-  void _refreshActions(bool action) {
-    setState(() {
-      _userRelations = getUserRelationships();
     });
   }
 
@@ -85,8 +76,9 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
           automaticallyImplyLeading: false,
-          brightness: Brightness.light,
-          iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColor,
+          ),
           elevation: 0,
           titleSpacing: 0,
           title: Container(
@@ -115,7 +107,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                       CupertinoPageRoute<dynamic>(
                         builder: (BuildContext context) => PendingRelationships(
                           userAddress: widget.userAddress,
-                          refreshActions: _refreshActions,
                         ),
                       ),
                     );
