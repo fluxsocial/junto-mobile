@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
-  AuthRepo(this._authService);
+  AuthRepo(this._authService, this._userRepo);
 
   final AuthenticationService _authService;
+  final UserRepo _userRepo;
 
   String _authKey;
   bool _isLoggedIn;
@@ -18,6 +20,16 @@ class AuthRepo {
   Future<bool> isLoggedIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _isLoggedIn = prefs.getBool('isLoggedIn');
+    // Let's check if user is actually logged in
+    if (_isLoggedIn) {
+      try {
+        final id = prefs.getString('user_id');
+        final _ = await _userRepo.getUser(id);
+      } catch (e) {
+        logger.logException(e);
+        return false;
+      }
+    }
     return _isLoggedIn;
   }
 
