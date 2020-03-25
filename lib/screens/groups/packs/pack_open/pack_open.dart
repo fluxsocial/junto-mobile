@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_members.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/packs_bloc/pack_bloc.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +27,6 @@ class PackOpen extends StatefulWidget {
 class PackOpenState extends State<PackOpen> {
   final List<String> _tabs = <String>['Pack', 'Private', 'Members'];
 
-  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -43,23 +40,6 @@ class PackOpenState extends State<PackOpen> {
           preferredSize: const Size.fromHeight(45),
           child: PackOpenAppbar(
             pack: widget.pack,
-          ),
-        ),
-        floatingActionButton: ValueListenableBuilder<bool>(
-          valueListenable: _isVisible,
-          builder: (BuildContext context, bool visible, Widget child) {
-            return AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: visible ? 1.0 : 0.0,
-              child: child,
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 25),
-            child: BottomNav(
-              actionsVisible: false,
-              onLeftButtonTap: () {},
-            ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -118,10 +98,13 @@ class PackTabs extends StatelessWidget {
         onNotification: (value) {
           if (value.overscroll < 0 && value.metrics.axis == Axis.horizontal) {
             JuntoFilterDrawer.of(context).toggle();
+            return true;
           } else if (value.overscroll > 0 &&
               value.metrics.axis == Axis.horizontal) {
             JuntoFilterDrawer.of(context).toggleRightMenu();
+            return true;
           }
+          return false;
         },
         child: TabBarView(
           children: <Widget>[

@@ -78,69 +78,85 @@ class JuntoPacksState extends State<JuntoPacks>
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: _getBlocProviders(),
-      child: Scaffold(
-        body: JuntoFilterDrawer(
-          key: _filterDrawerKey,
-          leftDrawer: const FilterDrawerContent(ExpressionContextType.Group),
-          rightMenu: JuntoDrawer(),
-          scaffold: Scaffold(
-            floatingActionButton: ValueListenableBuilder<bool>(
-              valueListenable: _isVisible,
-              builder: (BuildContext context, bool visible, Widget child) {
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: visible ? 1.0 : 0.0,
-                  child: child,
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 25),
-                child: BottomNav(
-                    address: widget.initialGroup,
-                    expressionContext: ExpressionContext.Group,
-                    actionsVisible: actionsVisible,
-                    onLeftButtonTap: () {
-                      if (actionsVisible) {
-                        setState(() {
-                          actionsVisible = false;
-                        });
-                      } else {
-                        setState(() {
-                          actionsVisible = true;
-                        });
-                      }
-                    }),
+    return NotificationListener<ScrollUpdateNotification>(
+      onNotification: _hideOrShowFab,
+      child: MultiBlocProvider(
+        providers: _getBlocProviders(),
+        child: Scaffold(
+          body: JuntoFilterDrawer(
+            key: _filterDrawerKey,
+            leftDrawer: const FilterDrawerContent(ExpressionContextType.Group),
+            rightMenu: JuntoDrawer(),
+            scaffold: Scaffold(
+              floatingActionButton: ValueListenableBuilder<bool>(
+                valueListenable: _isVisible,
+                builder: (BuildContext context, bool visible, Widget child) {
+                  return AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: visible ? 1.0 : 0.0,
+                    child: child,
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: BottomNav(
+                      address: widget.initialGroup,
+                      expressionContext: ExpressionContext.Group,
+                      actionsVisible: actionsVisible,
+                      onLeftButtonTap: () {
+                        if (actionsVisible) {
+                          setState(() {
+                            actionsVisible = false;
+                          });
+                        } else {
+                          setState(() {
+                            actionsVisible = true;
+                          });
+                        }
+                      }),
+                ),
               ),
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: Stack(
-              children: <Widget>[
-                if (isLoading) JuntoLoader(),
-                if (!isLoading)
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              body: Stack(
+                children: <Widget>[
+                  if (isLoading) JuntoLoader(),
+                  if (!isLoading)
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: actionsVisible ? 0.0 : 1.0,
+                      child: _currentGroup,
+                    ),
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 300),
-                    opacity: actionsVisible ? 0.0 : 1.0,
-                    child: _currentGroup,
-                  ),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: actionsVisible ? 1.0 : 0.0,
-                  child: Visibility(
-                    visible: actionsVisible,
-                    child: PacksList(
-                      selectedGroup: _changeGroup,
+                    opacity: actionsVisible ? 1.0 : 0.0,
+                    child: Visibility(
+                      visible: actionsVisible,
+                      child: PacksList(
+                        selectedGroup: _changeGroup,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  bool _hideOrShowFab(value) {
+    if (value.metrics.axis == Axis.vertical) {
+      if (value.scrollDelta > 10) {
+        _isVisible.value = false;
+        print('down');
+      } else if (value.scrollDelta < 0) {
+        _isVisible.value = true;
+        print('up');
+      }
+    }
+    return false;
   }
 
   void _changeGroup(Group group) {
@@ -172,34 +188,19 @@ class JuntoPacksState extends State<JuntoPacks>
 
   List<BlocProvider> _getBlocProviders() {
     return [
-      //TODO: use proper context for groups
-      BlocProvider<CollectiveBloc>(
-        create: (ctx) =>
-            CollectiveBloc(Provider.of<ExpressionRepo>(ctx, listen: false))
-              ..add(
-                FetchCollective(
-                  ExpressionQueryParams(
-                    contextType: ExpressionContextType.Collective,
-                  ),
-                ),
-              ),
-      ),
       BlocProvider<GroupBloc>(
-          create: (ctx) => GroupBloc(
-                Provider.of<GroupRepo>(ctx, listen: false),
-                Provider.of<UserDataProvider>(ctx, listen: false),
-                Provider.of<NotificationRepo>(ctx, listen: false),
-              )..add(FetchMyPack())),
+        create: (ctx) => GroupBloc(
+          Provider.of<GroupRepo>(ctx, listen: false),
+          Provider.of<UserDataProvider>(ctx, listen: false),
+          Provider.of<NotificationRepo>(ctx, listen: false),
+        )..add(FetchMyPack()),
+        lazy: false,
+      ),
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
           Provider.of<SearchRepo>(ctx, listen: false),
           (value) => BlocProvider.of<GroupBloc>(ctx).add(
-            FetchMyPack(
-                // ExpressionQueryParams(
-                //   contextType: ExpressionContextType.Collective,
-                //   channels: [value.name],
-                // ),
-                ),
+            FetchMyPack(),
           ),
         ),
       ),
