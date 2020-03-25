@@ -96,7 +96,7 @@ class JuntoLotusState extends State<JuntoLotus> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onHorizontalDragEnd: (dx) => Navigator.pop(context),
+      onHorizontalDragEnd: _onDrag,
       child: Scaffold(
         body: Stack(
           children: <Widget>[
@@ -275,5 +275,11 @@ class JuntoLotusState extends State<JuntoLotus> {
         ),
       ),
     );
+  }
+
+  void _onDrag(dx) {
+    if (Navigator.of(context).canPop()){
+      Navigator.of(context).maybePop();
+    }
   }
 }
