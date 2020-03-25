@@ -132,8 +132,10 @@ class UserRepo {
   }
 
   Future<Map<String, dynamic>> updateUser(
-          Map<String, dynamic> user, String userAddress) =>
-      _userService.updateUser(user, userAddress);
+      Map<String, dynamic> user, String userAddress) {
+    assert(userAddress != null);
+    return _userService.updateUser(user, userAddress);
+  }
 
   Future<List<UserProfile>> getFollowers(String userAddress) =>
       _userService.getFollowers(userAddress);
