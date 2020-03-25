@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective_add_members.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -233,10 +234,16 @@ class EditPerspectiveState extends State<EditPerspective> {
               Container(
                 child: ListView(
                   children: <Widget>[
-                    _buildPerspectiveTextField(
-                        name: 'Name', controller: _nameController),
-                    _buildPerspectiveTextField(
-                        name: 'About', controller: _aboutController),
+                    PerspectiveTextField(
+                      name: 'Name',
+                      controller: _nameController,
+                      textInputActionType: TextInputAction.next,
+                    ),
+                    PerspectiveTextField(
+                      name: 'About',
+                      controller: _aboutController,
+                      textInputActionType: TextInputAction.done,
+                    ),
                     GestureDetector(
                       onTap: () {
                         _pageController.nextPage(
@@ -261,7 +268,7 @@ class EditPerspectiveState extends State<EditPerspective> {
                           child: Row(
                             children: <Widget>[
                               Text(
-                                'Manage members',
+                                'Manage Members',
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w600,
@@ -321,7 +328,9 @@ class EditPerspectiveState extends State<EditPerspective> {
   }
 
   Widget _buildPerspectiveTextField(
-      {String name, TextEditingController controller}) {
+      {String name,
+      TextEditingController controller,
+      TextInputAction textInputAction}) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
