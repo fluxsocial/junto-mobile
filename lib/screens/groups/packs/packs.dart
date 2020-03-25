@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
@@ -11,7 +12,6 @@ import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/packs_list.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
@@ -51,24 +51,28 @@ class JuntoPacksState extends State<JuntoPacks>
   }
 
   Future<void> getUserInformation() async {
-    final Group group = await Provider.of<GroupRepo>(context, listen: false)
-        .getGroup(widget.initialGroup);
+    try {
+      final Group group = await Provider.of<GroupRepo>(context, listen: false)
+          .getGroup(widget.initialGroup);
 
-    if (group.groupType == 'Pack') {
-      setState(() {
-        _currentGroup = PackOpen(
-          key: ValueKey<String>(group.address),
-          pack: group,
-        );
-        isLoading = false;
-      });
-    } else if (group.groupType == 'Sphere') {
-      setState(() {
-        _currentGroup = SphereOpen(
-          key: ValueKey<String>(group.address),
-          group: group,
-        );
-      });
+      if (group.groupType == 'Pack') {
+        setState(() {
+          _currentGroup = PackOpen(
+            key: ValueKey<String>(group.address),
+            pack: group,
+          );
+          isLoading = false;
+        });
+      } else if (group.groupType == 'Sphere') {
+        setState(() {
+          _currentGroup = SphereOpen(
+            key: ValueKey<String>(group.address),
+            group: group,
+          );
+        });
+      }
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 
@@ -170,16 +174,15 @@ class JuntoPacksState extends State<JuntoPacks>
     return [
       //TODO: use proper context for groups
       BlocProvider<CollectiveBloc>(
-        create: (ctx) => CollectiveBloc(
-          Provider.of<ExpressionRepo>(ctx, listen: false),
-          () => Navigator.of(context).pushReplacement(Welcome.route()),
-        )..add(
-            FetchCollective(
-              ExpressionQueryParams(
-                contextType: ExpressionContextType.Collective,
+        create: (ctx) =>
+            CollectiveBloc(Provider.of<ExpressionRepo>(ctx, listen: false))
+              ..add(
+                FetchCollective(
+                  ExpressionQueryParams(
+                    contextType: ExpressionContextType.Collective,
+                  ),
+                ),
               ),
-            ),
-          ),
       ),
       BlocProvider<GroupBloc>(
           create: (ctx) => GroupBloc(
