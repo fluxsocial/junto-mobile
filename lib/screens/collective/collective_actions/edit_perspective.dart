@@ -266,6 +266,7 @@ class EditPerspectiveState extends State<EditPerspective> {
                             ),
                           ),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
                                 'Manage Members',
@@ -276,7 +277,11 @@ class EditPerspectiveState extends State<EditPerspective> {
                                 ),
                               ),
                               const SizedBox(width: 5),
-                              // Icon(Icons.keyboard_arrow_right, size: 17, color: Theme.of(context).primaryColor)
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                size: 17,
+                                color: Theme.of(context).primaryColor,
+                              )
                             ],
                           )),
                     )
@@ -324,56 +329,6 @@ class EditPerspectiveState extends State<EditPerspective> {
               )
             ],
           )),
-    );
-  }
-
-  Widget _buildPerspectiveTextField(
-      {String name,
-      TextEditingController controller,
-      TextInputAction textInputAction}) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
-        ),
-      ),
-      child: TextField(
-        controller: controller,
-        buildCounter: (
-          BuildContext context, {
-          int currentLength,
-          int maxLength,
-          bool isFocused,
-        }) =>
-            null,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(0),
-          border: InputBorder.none,
-          hintText: name,
-          hintStyle: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).primaryColorLight,
-          ),
-        ),
-        cursorColor: Theme.of(context).primaryColorDark,
-        cursorWidth: 2,
-        maxLines: 1,
-        style: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).primaryColor,
-        ),
-        maxLength: 80,
-        textInputAction: TextInputAction.next,
-        textCapitalization: TextCapitalization.sentences,
-        onSubmitted: (_) {
-          FocusScope.of(context).nextFocus();
-        },
-        keyboardAppearance: Theme.of(context).brightness,
-      ),
     );
   }
 }
