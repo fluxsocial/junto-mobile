@@ -193,13 +193,13 @@ class JuntoPacksState extends State<JuntoPacks>
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
           Provider.of<SearchRepo>(ctx, listen: false),
-          (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
-            FetchCollective(
-              ExpressionQueryParams(
-                contextType: ExpressionContextType.Collective,
-                channels: [value.name],
-              ),
-            ),
+          (value) => BlocProvider.of<GroupBloc>(ctx).add(
+            FetchMyPack(
+                // ExpressionQueryParams(
+                //   contextType: ExpressionContextType.Collective,
+                //   channels: [value.name],
+                // ),
+                ),
           ),
         ),
       ),
