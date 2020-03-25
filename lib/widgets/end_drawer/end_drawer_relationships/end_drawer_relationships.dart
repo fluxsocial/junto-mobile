@@ -7,7 +7,7 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending_relationships.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending/pending_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
@@ -114,6 +114,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                       context,
                       CupertinoPageRoute<dynamic>(
                         builder: (BuildContext context) => PendingRelationships(
+                          userAddress: widget.userAddress,
                           refreshActions: _refreshActions,
                         ),
                       ),
