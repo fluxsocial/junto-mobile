@@ -201,9 +201,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     }
     // update user
     try {
-      await Provider.of<UserRepo>(context, listen: false).updateUser(
+      final _user =
+          await Provider.of<UserRepo>(context, listen: false).updateUser(
         _newProfileBody,
         _userAddress,
+      );
+      Provider.of<UserDataProvider>(context, listen: false).updateUserProfile(
+        UserProfile.fromMap(_user),
       );
       JuntoLoader.hide();
       Navigator.of(context).pushReplacement(
