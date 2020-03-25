@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -137,90 +139,98 @@ class _JuntoMemberState extends State<JuntoMember>
   Widget build(BuildContext context) {
     return NotificationListener<ScrollUpdateNotification>(
       onNotification: (value) => hideOrShowFab(value, _isVisible),
-      child: Scaffold(
-        //TODO(dominik/Nash): revert filter drawer
-        // and use bloc to fetch member expressions
-        body: Container(
-          // leftDrawer: FilterDrawerContent(ExpressionContextType.Collective),
-          // rightMenu: JuntoDrawer(),
-          child: Stack(
-            children: <Widget>[
-              Scaffold(
-                key: scaffoldKey,
-                appBar: PreferredSize(
-                  preferredSize: const Size.fromHeight(45),
-                  child: MemberAppbar(widget.profile.username),
-                ),
-                floatingActionButton: ValueListenableBuilder<bool>(
-                  valueListenable: _isVisible,
-                  builder: (
-                    BuildContext context,
-                    bool visible,
-                    Widget child,
-                  ) {
-                    return AnimatedOpacity(
-                      duration: const Duration(milliseconds: 300),
-                      opacity: visible ? 1.0 : 0.0,
-                      child: child,
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: BottomNav(
-                      actionsVisible: false,
-                      onLeftButtonTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => AboutMember(
-                              profile: _memberProfile,
+      child: BlocProvider(
+        create: (context) => DenBloc(
+          Provider.of<UserRepo>(context, listen: false),
+          Provider.of<UserDataProvider>(context, listen: false),
+        )..add(
+            LoadDen(),
+          ),
+        child: Scaffold(
+          //TODO(dominik/Nash): revert filter drawer
+          // and use bloc to fetch member expressions
+          body: Container(
+            // leftDrawer: FilterDrawerContent(ExpressionContextType.Collective),
+            // rightMenu: JuntoDrawer(),
+            child: Stack(
+              children: <Widget>[
+                Scaffold(
+                  key: scaffoldKey,
+                  appBar: PreferredSize(
+                    preferredSize: const Size.fromHeight(45),
+                    child: MemberAppbar(widget.profile.username),
+                  ),
+                  floatingActionButton: ValueListenableBuilder<bool>(
+                    valueListenable: _isVisible,
+                    builder: (
+                      BuildContext context,
+                      bool visible,
+                      Widget child,
+                    ) {
+                      return AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: visible ? 1.0 : 0.0,
+                        child: child,
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 25),
+                      child: BottomNav(
+                        actionsVisible: false,
+                        onLeftButtonTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute<dynamic>(
+                              builder: (BuildContext context) => AboutMember(
+                                profile: _memberProfile,
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerDocked,
+                  body: NestedScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                        MemberDenAppbar(
+                          profile: widget.profile,
+                          isConnected: isConnected,
+                          toggleMemberRelationships: toggleMemberRelationships,
+                        ),
+                      ];
+                    },
+                    body: UserExpressions(
+                      privacy: 'Public',
+                      userProfile: widget.profile,
                     ),
                   ),
                 ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                body: NestedScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      MemberDenAppbar(
-                        profile: widget.profile,
-                        isConnected: isConnected,
-                        toggleMemberRelationships: toggleMemberRelationships,
-                      ),
-                    ];
-                  },
-                  body: UserExpressions(
-                    privacy: 'Public',
-                    userProfile: widget.profile,
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: memberRelationshipsVisible ? 1.0 : 0.0,
+                  child: Visibility(
+                    visible: memberRelationshipsVisible,
+                    child: MemberRelationships(
+                      isFollowing: isFollowing,
+                      isConnected: isConnected,
+                      hasPendingConnection: hasPendingConnection,
+                      hasPendingPackRequest: hasPendingPackRequest,
+                      isPackMember: isPackMember,
+                      userProvider: userProvider,
+                      memberProfile: widget.profile,
+                      userProfile: _userProfile,
+                      toggleMemberRelationships: toggleMemberRelationships,
+                      refreshRelations: refreshRelations,
+                    ),
                   ),
                 ),
-              ),
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 200),
-                opacity: memberRelationshipsVisible ? 1.0 : 0.0,
-                child: Visibility(
-                  visible: memberRelationshipsVisible,
-                  child: MemberRelationships(
-                    isFollowing: isFollowing,
-                    isConnected: isConnected,
-                    hasPendingConnection: hasPendingConnection,
-                    hasPendingPackRequest: hasPendingPackRequest,
-                    isPackMember: isPackMember,
-                    userProvider: userProvider,
-                    memberProfile: widget.profile,
-                    userProfile: _userProfile,
-                    toggleMemberRelationships: toggleMemberRelationships,
-                    refreshRelations: refreshRelations,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
