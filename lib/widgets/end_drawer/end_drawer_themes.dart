@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
-import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -201,7 +200,7 @@ class JuntoThemesState extends State<JuntoThemes> {
                         });
                         setTheme(_currentTheme);
                       },
-                      activeColor: Theme.of(context).dividerColor,
+                      activeColor: Theme.of(context).primaryColor,
                     ),
                   )
                 ]),
