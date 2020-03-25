@@ -23,13 +23,13 @@ class PrintLogger extends Logger {
   @override
   void logDebug(String message) {
     final meta = getMethodName();
-    debugPrint('$meta: $message');
+    debugPrint('[DEBUG] $meta: $message');
   }
 
   @override
   void logError(String message) {
     final meta = getMethodName();
-    debugPrint('$meta: $message');
+    debugPrint('[ERROR] $meta: $message');
   }
 
   @override
@@ -63,7 +63,7 @@ class PrintLogger extends Logger {
   @override
   void logWarning(String message) {
     final meta = getMethodName();
-    debugPrint('$meta: $message');
+    debugPrint('[WARNING] $meta: $message');
   }
 }
 
