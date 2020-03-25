@@ -302,15 +302,12 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           _address = null;
         });
       };
-      _expressionContextIcon = Transform.translate(
-        offset: const Offset(0, 0),
-        child: Icon(
-          CustomIcons.newcollective,
-          color: _currentExpressionContext == expressionContext
-              ? Colors.white
-              : Theme.of(context).primaryColor,
-          size: 38,
-        ),
+      _expressionContextIcon = Icon(
+        CustomIcons.newcollective,
+        color: _currentExpressionContext == expressionContext
+            ? Colors.white
+            : Theme.of(context).primaryColor,
+        size: 33,
       );
     } else if (expressionContext == 'My Pack') {
       _setExpressionContextDescription = () {
@@ -322,11 +319,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         });
       };
       _expressionContextIcon = Icon(
-        CustomIcons.packs,
+        CustomIcons.newpacks,
         color: _currentExpressionContext == expressionContext
             ? Colors.white
             : Theme.of(context).primaryColor,
-        size: 17,
+        size: 28,
       );
     }
     return GestureDetector(

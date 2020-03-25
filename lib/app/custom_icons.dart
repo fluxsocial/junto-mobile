@@ -46,8 +46,8 @@ class CustomIcons {
   static const IconData newcreate = IconData(0xe908, fontFamily: 'j_home_two');
   static const IconData newdoubleuparrow =
       IconData(0xe909, fontFamily: 'j_home_two');
-  static const IconData newflower = IconData(0xe90d, fontFamily: 'j_home_two');
-  static const IconData newconnect = IconData(0xe904, fontFamily: 'j_home_two');
+  static const IconData newflower = IconData(0xe90c, fontFamily: 'j_home_two');
+  static const IconData newconnect = IconData(0xe90d, fontFamily: 'j_home_two');
   static const IconData newmoon = IconData(0xe910, fontFamily: 'j_home_two');
   static const IconData newpacks = IconData(0xe911, fontFamily: 'j_home_two');
   static const IconData newcollective =

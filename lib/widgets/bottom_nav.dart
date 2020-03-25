@@ -49,9 +49,9 @@ class BottomNav extends StatelessWidget {
                 alignment: Alignment.center,
                 child: RotatedBox(
                   quarterTurns: actionsVisible ? 2 : 0,
-                  child: Image.asset(
-                    'assets/images/junto-mobile__double-up-arrow.png',
-                    height: 14,
+                  child: Icon(
+                    CustomIcons.newdoubleuparrow,
+                    size: 33,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
@@ -80,8 +80,8 @@ class BottomNav extends StatelessWidget {
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Icon(
-                  CustomIcons.lotus,
-                  size: 28,
+                  CustomIcons.newflower,
+                  size: 33,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
