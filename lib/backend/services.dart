@@ -196,8 +196,10 @@ abstract class UserService {
   Future<List<ExpressionResponse>> getUsersResonations(String userAddress);
 
   /// Placeholder for now, currently under development server-side.
-  Future<List<ExpressionResponse>> getUsersExpressions(
+  Future<QueryResults<ExpressionResponse>> getUsersExpressions(
     String userAddress,
+    int paginationPos,
+    String lastTimestamp,
   );
 
   /// Reads the cached user from the device.

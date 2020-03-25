@@ -35,11 +35,17 @@ class UserRepo {
     return _userService.getUsersResonations(userAddress);
   }
 
-  Future<List<ExpressionResponse>> getUsersExpressions(
+  Future<QueryResults<ExpressionResponse>> getUsersExpressions(
     String userAddress,
+    int paginationPos,
+    String lastTimestamp,
   ) {
     assert(userAddress != null && userAddress.isNotEmpty);
-    return _userService.getUsersExpressions(userAddress);
+    return _userService.getUsersExpressions(
+      userAddress,
+      paginationPos,
+      lastTimestamp,
+    );
   }
 
   Future<UserData> readLocalUser() {
