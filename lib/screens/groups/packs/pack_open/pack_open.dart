@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,9 +116,10 @@ class PackTabs extends StatelessWidget {
     return Expanded(
       child: NotificationListener<OverscrollNotification>(
         onNotification: (value) {
-          if (value.overscroll < 0) {
+          if (value.overscroll < 0 && value.metrics.axis == Axis.horizontal) {
             JuntoFilterDrawer.of(context).toggle();
-          } else if (value.overscroll > 0) {
+          } else if (value.overscroll > 0 &&
+              value.metrics.axis == Axis.horizontal) {
             JuntoFilterDrawer.of(context).toggleRightMenu();
           }
         },
