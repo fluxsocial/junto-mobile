@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:junto_beta_mobile/app/logger/sentry.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:stack_trace/stack_trace.dart';
 
@@ -15,9 +16,10 @@ abstract class Logger {
 
 class PrintLogger extends Logger {
   String getMethodName() {
-    final className = Trace.current().frames[2].member.split(".")[0];
-    final methodName = Trace.current().frames[2].member.split(".")[1];
-    return '$className($methodName)';
+    final frames = Trace.current().frames;
+    final frame = frames[3].member;
+
+    return '[$frame]';
   }
 
   @override
@@ -52,6 +54,8 @@ class PrintLogger extends Logger {
     if (stackTrace != null) {
       debugPrint(stackTrace.toString());
     }
+
+    reportError(ex, stackTrace);
   }
 
   @override
