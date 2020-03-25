@@ -21,10 +21,18 @@ class CreateShortform extends StatefulWidget {
 }
 
 class CreateShortformState extends State<CreateShortform> {
+  final FocusNode _focus = FocusNode();
+  bool _showBottomNav = true;
   String gradientOne;
   String gradientTwo;
 
   TextEditingController _bodyController;
+
+  void toggleBottomNav() {
+    setState(() {
+      _showBottomNav = !_showBottomNav;
+    });
+  }
 
   /// Creates a [ShortFormExpression] from the given data entered
   /// by the user.
@@ -46,6 +54,7 @@ class CreateShortformState extends State<CreateShortform> {
     gradientOne = '8E8098';
     gradientTwo = '307FAA';
     _bodyController = TextEditingController();
+    _focus.addListener(toggleBottomNav);
   }
 
   @override
@@ -113,6 +122,7 @@ class CreateShortformState extends State<CreateShortform> {
     return CreateExpressionScaffold(
       expressionType: ExpressionType.shortform,
       onNext: _onNext,
+      showBottomNav: _showBottomNav,
       child: Expanded(
         child: Column(
           children: <Widget>[
@@ -159,9 +169,9 @@ class CreateShortformState extends State<CreateShortform> {
                           ],
                         ),
                       ),
-                      child: TextFormField(
-                        autofocus: true,
-                        validator: Validator.validateNonEmpty,
+                      child: TextField(
+                        focusNode: _focus,
+                        autofocus: false,
                         controller: _bodyController,
                         buildCounter: (
                           BuildContext context, {
