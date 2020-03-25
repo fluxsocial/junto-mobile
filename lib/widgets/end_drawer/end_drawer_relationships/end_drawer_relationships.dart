@@ -26,7 +26,6 @@ class JuntoRelationships extends StatefulWidget {
 }
 
 class JuntoRelationshipsState extends State<JuntoRelationships> {
-  Future<dynamic> _userRelations;
   List<UserProfile> pendingConnectionRequests;
   List<UserProfile> pendingPackRequests;
 
@@ -36,12 +35,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
     'CONNECTIONS',
     'PACK',
   ];
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _userRelations = getUserRelationships();
-  }
 
   Future<void> getUserRelationships() async {
     final dynamic userRelations =
@@ -67,6 +60,12 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
         ),
       ),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getUserRelationships();
   }
 
   @override
@@ -107,6 +106,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                       CupertinoPageRoute<dynamic>(
                         builder: (BuildContext context) => PendingRelationships(
                           userAddress: widget.userAddress,
+                          refreshActions: getUserRelationships,
                         ),
                       ),
                     );

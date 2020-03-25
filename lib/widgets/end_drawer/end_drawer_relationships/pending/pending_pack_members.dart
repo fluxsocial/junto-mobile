@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
 
 class PendingPackMembers extends StatelessWidget {
+  const PendingPackMembers();
   @override
   Widget build(BuildContext context) {
     Widget _loader() {
@@ -42,7 +43,7 @@ class PendingPackMembers extends StatelessWidget {
                             userProfile: user.userProfile,
                             pack: packRequest,
                             refreshGroups: () async {
-                              context.bloc<GroupBloc>().add(
+                              await context.bloc<GroupBloc>().add(
                                     FetchMyPack(),
                                   );
                             },

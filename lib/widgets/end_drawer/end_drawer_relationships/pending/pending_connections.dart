@@ -10,11 +10,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/er
 import 'package:provider/provider.dart';
 
 class PendingConnections extends StatefulWidget {
-  PendingConnections({
-    this.refreshActions,
-  });
-
-  final Function refreshActions;
+  PendingConnections();
 
   @override
   State<StatefulWidget> createState() {
@@ -39,7 +35,6 @@ class PendingConnectionsState extends State<PendingConnections> {
     setState(() {
       _userRelations = getUserRelationships();
     });
-    widget.refreshActions();
   }
 
   @override
