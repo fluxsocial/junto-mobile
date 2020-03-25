@@ -61,7 +61,12 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                   position: Tween<Offset>(
                     begin: const Offset(1, 0),
                     end: Offset.zero,
-                  ).animate(animation),
+                  ).animate(
+                    CurvedAnimation(
+                      curve: Curves.easeInOut,
+                      parent: animation,
+                    ),
+                  ),
                   child: child,
                 );
               },
