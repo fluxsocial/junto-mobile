@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 
 class BlocProviders extends StatelessWidget {
   final Widget child;
@@ -23,10 +22,8 @@ class BlocProviders extends StatelessWidget {
           ),
         ),
         BlocProvider<CollectiveBloc>(
-          create: (ctx) => CollectiveBloc(
-            RepositoryProvider.of<ExpressionRepo>(ctx),
-            () => Navigator.of(ctx).pushReplacement(Welcome.route()),
-          ),
+          create: (ctx) =>
+              CollectiveBloc(RepositoryProvider.of<ExpressionRepo>(ctx)),
         ),
         BlocProvider<ChannelFilteringBloc>(
           create: (ctx) => ChannelFilteringBloc(

@@ -14,10 +14,9 @@ part 'collective_event.dart';
 part 'collective_state.dart';
 
 class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
-  CollectiveBloc(this.expressionRepository, this.onUnauthorized);
+  CollectiveBloc(this.expressionRepository);
 
   final ExpressionRepo expressionRepository;
-  final VoidCallback onUnauthorized;
   Map<String, String> _params;
   ExpressionQueryParams _previousParameters;
   int _currentPage = 0;
@@ -186,8 +185,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     logger.logError(
         'Error during fetching expression ${e.message}: ${e.errorCode}: $s');
     if (e.errorCode == 401) {
-      logger.logWarning('Unauthorized, popping to the welcome screen');
-      onUnauthorized();
+      logger.logError('Unauthorized, should be handled on lotus screen');
     }
   }
 
