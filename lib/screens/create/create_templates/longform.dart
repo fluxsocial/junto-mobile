@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
@@ -19,14 +20,25 @@ class CreateLongform extends StatefulWidget {
 }
 
 class CreateLongformState extends State<CreateLongform> {
+  final FocusNode _titleFocus = FocusNode();
+  final FocusNode _bodyFocus = FocusNode();
+  bool _showBottomNav = true;
   TextEditingController _titleController;
   TextEditingController _bodyController;
+
+  void toggleBottomNav() {
+    setState(() {
+      _showBottomNav = !_showBottomNav;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController();
     _bodyController = TextEditingController();
+    _titleFocus.addListener(toggleBottomNav);
+    _bodyFocus.addListener(toggleBottomNav);
   }
 
   /// Creates a [LongFormExpression] from the given data entered
@@ -91,6 +103,7 @@ class CreateLongformState extends State<CreateLongform> {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
+      showBottomNav: _showBottomNav,
       expressionType: ExpressionType.dynamic,
       onNext: _onNext,
       child: Expanded(
@@ -99,6 +112,7 @@ class CreateLongformState extends State<CreateLongform> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
+                focusNode: _titleFocus,
                 buildCounter: (
                   BuildContext context, {
                   int currentLength,
@@ -134,8 +148,9 @@ class CreateLongformState extends State<CreateLongform> {
                       minHeight: MediaQuery.of(context).size.height * .7,
                     ),
                     child: TextField(
+                      focusNode: _bodyFocus,
                       controller: _bodyController,
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.newline,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Share your story...',
@@ -154,6 +169,42 @@ class CreateLongformState extends State<CreateLongform> {
                 ],
               ),
             ),
+            !_showBottomNav
+                ? GestureDetector(
+                    onTap: () {
+                      _titleFocus.unfocus();
+                      _bodyFocus.unfocus();
+                    },
+                    onVerticalDragEnd: (dx) {
+                      _titleFocus.unfocus();
+                      _bodyFocus.unfocus();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 15,
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: Theme.of(context).dividerColor,
+                            width: .75,
+                          ),
+                        ),
+                      ),
+                      alignment: Alignment.centerRight,
+                      child: RotatedBox(
+                        quarterTurns: 3,
+                        child: Icon(
+                          CustomIcons.back,
+                          size: 15,
+                          color: Theme.of(context).primaryColorLight,
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox()
           ],
         ),
       ),
