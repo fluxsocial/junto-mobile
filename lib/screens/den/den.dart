@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +14,6 @@ import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,11 +54,7 @@ class JuntoDenState extends State<JuntoDen>
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
-
     setState(() {
-      _userProfile = UserData.fromMap(decodedUserData);
       _currentTheme = prefs.getString('current-theme');
     });
   }
@@ -78,29 +71,27 @@ class JuntoDenState extends State<JuntoDen>
   }
 
   Widget _buildBody() {
-    if (_userProfile != null) {
-      return NestedScrollView(
-        controller: _denController,
-        physics: const ClampingScrollPhysics(),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            JuntoDenSliverAppbar(
-              profile: _userProfile,
-              currentTheme: _currentTheme,
-            ),
-          ];
-        },
-        body: SafeArea(
-            child: UserExpressions(
-          privacy: 'Public',
-          userProfile: _userProfile.user,
-        )),
-      );
-    } else {
-      return Center(
-        child: JuntoProgressIndicator(),
-      );
-    }
+    return Consumer<UserDataProvider>(
+      builder: (BuildContext context, UserDataProvider value, Widget child) {
+        return NestedScrollView(
+          controller: _denController,
+          physics: const ClampingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              JuntoDenSliverAppbar(
+                profile: value.userProfile,
+                currentTheme: _currentTheme,
+              ),
+            ];
+          },
+          body: SafeArea(
+              child: UserExpressions(
+            privacy: 'Public',
+            userProfile: value.userProfile.user,
+          )),
+        );
+      },
+    );
   }
 
   @override
