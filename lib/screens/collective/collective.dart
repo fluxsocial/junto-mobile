@@ -45,10 +45,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
     _collectiveController = ScrollController();
     initializeBloc();
-    addPostFrameCallbackToHideFabOnScroll(
-      _collectiveController,
-      _onScrollingHasChanged,
-    );
   }
 
   void initializeBloc() {
@@ -64,7 +60,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   @override
   void dispose() {
-    _collectiveController.removeListener(_onScrollingHasChanged);
     _collectiveController.dispose();
     super.dispose();
   }
@@ -79,10 +74,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     }
   }
 
-  void _onScrollingHasChanged() {
-    super.hideFabOnScroll(_collectiveController, _isFabVisible);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,25 +82,28 @@ class JuntoCollectiveState extends State<JuntoCollective>
         key: _filterDrawerKey,
         leftDrawer: const FilterDrawerContent(ExpressionContextType.Collective),
         rightMenu: JuntoDrawer(),
-        scaffold: Scaffold(
-          key: _juntoCollectiveKey,
-          floatingActionButton: CollectiveActionButton(
-            isVisible: _isFabVisible,
-            onUpTap: _scrollToTop,
-            actionsVisible: false,
-            onTap: () {
-              context.bloc<PerspectivesBloc>().add(FetchPerspectives());
-              Navigator.push(
-                context,
-                FadeRoute(
-                  child: JuntoPerspectives(),
-                ),
-              );
-            },
+        scaffold: NotificationListener<ScrollUpdateNotification>(
+          onNotification: (value) => hideOrShowFab(value, _isFabVisible),
+          child: Scaffold(
+            key: _juntoCollectiveKey,
+            floatingActionButton: CollectiveActionButton(
+              isVisible: _isFabVisible,
+              onUpTap: _scrollToTop,
+              actionsVisible: false,
+              onTap: () {
+                context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+                Navigator.push(
+                  context,
+                  FadeRoute(
+                    child: JuntoPerspectives(),
+                  ),
+                );
+              },
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: ExpressionFeed(collectiveController: _collectiveController),
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: ExpressionFeed(collectiveController: _collectiveController),
         ),
       ),
     );

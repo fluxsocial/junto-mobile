@@ -79,7 +79,7 @@ class JuntoPacksState extends State<JuntoPacks>
   @override
   Widget build(BuildContext context) {
     return NotificationListener<ScrollUpdateNotification>(
-      onNotification: _hideOrShowFab,
+      onNotification: (value) => hideOrShowFab(value, _isVisible),
       child: MultiBlocProvider(
         providers: _getBlocProviders(),
         child: Scaffold(
@@ -144,17 +144,6 @@ class JuntoPacksState extends State<JuntoPacks>
         ),
       ),
     );
-  }
-
-  bool _hideOrShowFab(value) {
-    if (value.metrics.axis == Axis.vertical) {
-      if (value.scrollDelta > 10) {
-        _isVisible.value = false;
-      } else if (value.scrollDelta < 0) {
-        _isVisible.value = true;
-      }
-    }
-    return false;
   }
 
   void _changeGroup(Group group) {
