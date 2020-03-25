@@ -18,6 +18,14 @@ class PerspectiveTextField extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: .75,
+          ),
+        ),
+      ),
       child: TextFormField(
         controller: controller,
         keyboardAppearance: theme.brightness,
@@ -28,7 +36,7 @@ class PerspectiveTextField extends StatelessWidget {
           hintText: name,
           hintStyle: TextStyle(
             fontSize: 17,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
             color: Theme.of(context).primaryColorLight,
           ),
         ),

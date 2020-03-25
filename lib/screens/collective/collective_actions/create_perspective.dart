@@ -178,13 +178,11 @@ class PerspectivesPageView extends StatelessWidget {
                     key: formKey,
                     child: ListView(
                       children: <Widget>[
-                        const SizedBox(height: 10),
                         PerspectiveTextField(
                           name: 'Perspective Name',
                           controller: nameController,
                           textInputActionType: TextInputAction.next,
                         ),
-                        const SizedBox(height: 10),
                         PerspectiveTextField(
                           name: 'About',
                           controller: aboutController,
