@@ -81,7 +81,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     setState(() {
       source = expressionType;
     });
-    logger.logDebug(source);
+    logger.logDebug(source.toString());
   }
 
   Widget _expressionCenter(BuildContext context) {
