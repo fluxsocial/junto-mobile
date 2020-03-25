@@ -49,7 +49,8 @@ class CreatePerspectivePageState extends State<CreatePerspectivePage> {
 // Checks the name and about fields before moving on to the next page.
   void _canCreatePerspective() {
     FocusScope.of(context).unfocus();
-    if (_formKey.currentState.validate()) {
+    if (_aboutController.value.text.isNotEmpty ||
+        _nameController.value.text.isNotEmpty) {
       _pageController.nextPage(
         curve: Curves.easeIn,
         duration: const Duration(milliseconds: 300),
@@ -179,7 +180,7 @@ class PerspectivesPageView extends StatelessWidget {
                       children: <Widget>[
                         const SizedBox(height: 10),
                         PerspectiveTextField(
-                          name: 'Name Perspective',
+                          name: 'Perspective Name',
                           controller: nameController,
                           textInputActionType: TextInputAction.next,
                         ),
