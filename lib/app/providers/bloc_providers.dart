@@ -25,7 +25,7 @@ class BlocProviders extends StatelessWidget {
         BlocProvider<CollectiveBloc>(
           create: (ctx) => CollectiveBloc(
             RepositoryProvider.of<ExpressionRepo>(ctx),
-            () => Navigator.of(context).pushReplacement(Welcome.route()),
+            () => Navigator.of(ctx).pushReplacement(Welcome.route()),
           ),
         ),
         BlocProvider<ChannelFilteringBloc>(
