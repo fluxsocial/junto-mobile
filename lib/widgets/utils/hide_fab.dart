@@ -2,33 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 mixin HideFab {
-  void hideFabOnScroll(
-      ScrollController controller, ValueNotifier<bool> isVisible) {
-    if (controller.position.isScrollingNotifier.value) {
-      if (controller.position.userScrollDirection == ScrollDirection.reverse) {
+  bool hideOrShowFab(ScrollUpdateNotification value, ValueNotifier isVisible) {
+    if (value.metrics.axis == Axis.vertical) {
+      if (value.scrollDelta > 10 && value.metrics.pixels > 0) {
         isVisible.value = false;
-      }
-      if (controller.position.userScrollDirection == ScrollDirection.forward) {
+      } else if (value.scrollDelta <= 0) {
         isVisible.value = true;
       }
-
-      if (controller.position.userScrollDirection == ScrollDirection.idle) {
-        isVisible.value = true;
-      }
-    } else {
-      isVisible.value = true;
     }
-  }
-
-  void addPostFrameCallbackToHideFabOnScroll(
-      ScrollController _scrollController, VoidCallback _onScrollingHasChanged) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.addListener(_onScrollingHasChanged);
-      if (_scrollController.hasClients) {
-        _scrollController.position.isScrollingNotifier.addListener(
-          _onScrollingHasChanged,
-        );
-      }
-    });
+    return false;
   }
 }

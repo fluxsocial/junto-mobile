@@ -41,14 +41,6 @@ class JuntoDenState extends State<JuntoDen>
   void initState() {
     super.initState();
     _denController = ScrollController();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _denController.addListener(_onScrollingHasChanged);
-      if (_denController.hasClients)
-        _denController.position.isScrollingNotifier.addListener(
-          _onScrollingHasChanged,
-        );
-    });
   }
 
   @override
@@ -60,12 +52,7 @@ class JuntoDenState extends State<JuntoDen>
   @override
   void dispose() {
     super.dispose();
-    _denController.removeListener(_onScrollingHasChanged);
     _denController.dispose();
-  }
-
-  void _onScrollingHasChanged() {
-    super.hideFabOnScroll(_denController, _isVisible);
   }
 
   Future<void> getUserInformation() async {
@@ -118,51 +105,54 @@ class JuntoDenState extends State<JuntoDen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DenBloc(
-          Provider.of<UserRepo>(context, listen: false),
-          Provider.of<UserDataProvider>(context, listen: false))
-        ..add(LoadDen()),
-      child: Scaffold(
-        body: JuntoFilterDrawer(
-          leftDrawer:
-              const FilterDrawerContent(ExpressionContextType.Collective),
-          rightMenu: JuntoDrawer(),
-          scaffold: Scaffold(
-            appBar: _constructAppBar(),
-            floatingActionButton: ValueListenableBuilder<bool>(
-              valueListenable: _isVisible,
-              builder: (
-                BuildContext context,
-                bool visible,
-                Widget child,
-              ) {
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: visible ? 1.0 : 0.0,
-                  child: child,
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 25),
-                child: BottomNav(
-                  actionsVisible: false,
-                  onLeftButtonTap: () {
-                    // open about page
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) =>
-                            AboutMember(profile: _userProfile),
-                      ),
-                    );
-                  },
+    return NotificationListener<ScrollUpdateNotification>(
+      onNotification: (value) => hideOrShowFab(value, _isVisible),
+      child: BlocProvider(
+        create: (context) => DenBloc(
+            Provider.of<UserRepo>(context, listen: false),
+            Provider.of<UserDataProvider>(context, listen: false))
+          ..add(LoadDen()),
+        child: Scaffold(
+          body: JuntoFilterDrawer(
+            leftDrawer:
+                const FilterDrawerContent(ExpressionContextType.Collective),
+            rightMenu: JuntoDrawer(),
+            scaffold: Scaffold(
+              appBar: _constructAppBar(),
+              floatingActionButton: ValueListenableBuilder<bool>(
+                valueListenable: _isVisible,
+                builder: (
+                  BuildContext context,
+                  bool visible,
+                  Widget child,
+                ) {
+                  return AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: visible ? 1.0 : 0.0,
+                    child: child,
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: BottomNav(
+                    actionsVisible: false,
+                    onLeftButtonTap: () {
+                      // open about page
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext context) =>
+                              AboutMember(profile: _userProfile),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              body: _buildBody(),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: _buildBody(),
           ),
         ),
       ),
