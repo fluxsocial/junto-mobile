@@ -129,21 +129,21 @@ class JuntoLotusState extends State<JuntoLotus> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Container(
-                                      width: 45,
+                                      height: 40,
                                       child: const Icon(
-                                        CustomIcons.collective,
-                                        size: 13,
+                                        CustomIcons.newcollective,
+                                        size: 45,
                                         color: Colors.white,
                                       ),
                                     ),
-                                    const SizedBox(height: 12),
                                     const Text(
                                       'COLLECTIVE',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 1.4),
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 1.4,
+                                      ),
                                     )
                                   ],
                                 ),
@@ -171,12 +171,14 @@ class JuntoLotusState extends State<JuntoLotus> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    Icon(
-                                      CustomIcons.spheres,
-                                      size: 22,
-                                      color: Colors.white,
+                                    Container(
+                                      height: 45,
+                                      child: Icon(
+                                        CustomIcons.newcircles,
+                                        size: 38,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    SizedBox(height: 8),
                                     Text(
                                       'GROUPS',
                                       style: TextStyle(
@@ -201,13 +203,15 @@ class JuntoLotusState extends State<JuntoLotus> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const <Widget>[
-                                    Icon(
-                                      CustomIcons.packs,
-                                      size: 20,
-                                      color: Colors.white,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 45,
+                                      child: Icon(
+                                        CustomIcons.newpacks,
+                                        size: 38,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    SizedBox(height: 10),
                                     Text(
                                       'PACKS',
                                       style: TextStyle(
@@ -243,21 +247,21 @@ class JuntoLotusState extends State<JuntoLotus> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Container(
-                                      width: 27,
-                                      child: const Icon(
-                                        CustomIcons.create,
-                                        size: 20,
+                                      height: 45,
+                                      child: Icon(
+                                        CustomIcons.newcreate,
+                                        size: 38,
                                         color: Colors.white,
                                       ),
                                     ),
-                                    const SizedBox(height: 10),
                                     const Text(
                                       'CREATE',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 1.4),
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 1.4,
+                                      ),
                                     )
                                   ],
                                 ),
@@ -278,7 +282,7 @@ class JuntoLotusState extends State<JuntoLotus> {
   }
 
   void _onDrag(dx) {
-    if (Navigator.of(context).canPop()){
+    if (Navigator.of(context).canPop()) {
       Navigator.of(context).maybePop();
     }
   }
