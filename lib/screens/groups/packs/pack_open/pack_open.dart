@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open_appba
 import 'package:junto_beta_mobile/screens/groups/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:provider/provider.dart';
 
 class PackOpen extends StatefulWidget {
@@ -102,7 +104,7 @@ class PackOpenState extends State<PackOpen> {
   }
 }
 
-class PackTabs extends StatelessWidget {
+class PackTabs extends StatefulWidget {
   const PackTabs({
     Key key,
     @required this.group,
@@ -111,25 +113,72 @@ class PackTabs extends StatelessWidget {
   final Group group;
 
   @override
+  _PackTabsState createState() => _PackTabsState();
+}
+
+class _PackTabsState extends State<PackTabs> {
+  bool _swipeLeftEnabled = false;
+  bool _swipeRightEnabled = false;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    final controller = DefaultTabController.of(context);
+    controller.addListener(() {
+      setState(() {
+        print('controller list');
+        // _swipeLeftEnabled = controller.index == 0;
+        // _swipeRightEnabled = controller.index == 2;
+      });
+    });
+  }
+
+  void _leftDrawer(bool value) {
+    setState(() {
+      print(value);
+      _swipeLeftEnabled = value;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: TabBarView(
-        children: <Widget>[
-          GroupExpressions(
-            key: const PageStorageKey<String>('public-pack'),
-            group: group,
-            privacy: 'Public',
-          ),
-          GroupExpressions(
-            key: const PageStorageKey<String>('private-pack'),
-            group: group,
-            privacy: 'Private',
-          ),
-          PackOpenMembers(
-            key: UniqueKey(),
-            packAddress: group.address,
-          )
-        ],
+      child: NotificationListener<OverscrollNotification>(
+        onNotification: (value) {
+          if (value.overscroll < 0) {
+            JuntoFilterDrawer.of(context).toggle();
+            // _leftDrawer(true);
+          } else if (value.overscroll > 0) {
+            JuntoFilterDrawer.of(context).toggleRightMenu();
+            // _leftDrawer(false);
+          }
+          // Future.delayed(Duration(milliseconds: 1200)).then((value) {
+          //   _leftDrawer(false);
+          // });
+          // value.dispatch(context);
+        },
+        child: TabBarView(
+          physics: _swipeLeftEnabled
+              ? NeverScrollableScrollPhysics()
+              : PageScrollPhysics(),
+          children: <Widget>[
+            GroupExpressions(
+              key: const PageStorageKey<String>('public-pack'),
+              group: widget.group,
+              privacy: 'Public',
+            ),
+            GroupExpressions(
+              key: const PageStorageKey<String>('private-pack'),
+              group: widget.group,
+              privacy: 'Private',
+            ),
+            PackOpenMembers(
+              key: UniqueKey(),
+              packAddress: widget.group.address,
+            )
+          ],
+        ),
       ),
     );
   }
