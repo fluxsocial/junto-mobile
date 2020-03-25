@@ -31,6 +31,7 @@ class EditDenTextField extends StatelessWidget {
         ),
         maxLines: null,
         style: Theme.of(context).textTheme.caption,
+        textInputAction: TextInputAction.done,
       ),
     );
   }
