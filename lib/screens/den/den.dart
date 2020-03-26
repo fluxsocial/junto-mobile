@@ -111,7 +111,7 @@ class JuntoDenState extends State<JuntoDen>
         create: (context) => DenBloc(
             Provider.of<UserRepo>(context, listen: false),
             Provider.of<UserDataProvider>(context, listen: false))
-          ..add(LoadDen()),
+          ..add(LoadDen(_userProfile.user.address)),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: JuntoFilterDrawer(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
@@ -54,13 +55,8 @@ class _UserExpressionsState extends State<UserExpressions> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getUserInformation();
-  }
-
   void _loadMore() {
+    logger.logDebug('Callll');
     context.bloc<DenBloc>().add(LoadMoreDen());
   }
 
@@ -107,26 +103,6 @@ class _UserExpressionsState extends State<UserExpressions> {
                           ),
                         ),
                       ),
-                      // To Do: Make pagination automatically happen on scroll down
-                      
-                      // Center(
-                      //   child: Padding(
-                      //     padding: const EdgeInsets.only(
-                      //       bottom: 75,
-                      //       top: 25,
-                      //     ),
-                      //     child: FlatButton(
-                      //       onPressed: _loadMore,
-                      //       child: Text(
-                      //         'GET 50 MORE EXPRESSIONS',
-                      //         style: TextStyle(
-                      //             fontSize: 12,
-                      //             fontWeight: FontWeight.w700,
-                      //             color: Theme.of(context).primaryColorLight),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // )
                     ],
                   )
                 ],
