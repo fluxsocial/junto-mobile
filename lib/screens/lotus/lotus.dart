@@ -58,6 +58,7 @@ class JuntoLotusState extends State<JuntoLotus> {
         channels: const <String>[],
         address: widget.address,
         expressionContext: widget.expressionContext,
+        currentTheme: _currentTheme,
       );
     }
     backButtonTappedOnce = false;

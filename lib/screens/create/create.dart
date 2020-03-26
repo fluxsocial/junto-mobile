@@ -16,11 +16,13 @@ class JuntoCreate extends StatefulWidget {
     @required this.channels,
     @required this.address,
     @required this.expressionContext,
+    @required this.currentTheme,
   });
 
   final List<String> channels;
   final String address;
   final ExpressionContext expressionContext;
+  final ThemeData currentTheme;
 
   @override
   State<StatefulWidget> createState() {
@@ -88,7 +90,9 @@ class JuntoCreateState extends State<JuntoCreate> {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: BackgroundTheme(),
+          child: BackgroundTheme(
+            currentTheme: widget.currentTheme,
+          ),
         ),
         Positioned(
           bottom: 0,
