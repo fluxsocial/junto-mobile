@@ -4,20 +4,18 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
 import 'package:junto_beta_mobile/screens/member/member_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
-import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
@@ -144,7 +142,7 @@ class _JuntoMemberState extends State<JuntoMember>
           Provider.of<UserRepo>(context, listen: false),
           Provider.of<UserDataProvider>(context, listen: false),
         )..add(
-            LoadDen(),
+            LoadDen(widget.profile.address),
           ),
         child: Scaffold(
           //TODO(dominik/Nash): revert filter drawer
@@ -173,6 +171,7 @@ class _JuntoMemberState extends State<JuntoMember>
                       ];
                     },
                     body: UserExpressions(
+                      key: UniqueKey(),
                       privacy: 'Public',
                       userProfile: widget.profile,
                     ),
