@@ -83,6 +83,7 @@ class JuntoPacksState extends State<JuntoPacks>
       child: MultiBlocProvider(
         providers: _getBlocProviders(),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: JuntoFilterDrawer(
             key: _filterDrawerKey,
             leftDrawer: const FilterDrawerContent(ExpressionContextType.Group),
