@@ -23,9 +23,10 @@ class GetMoreExpressionsButton extends StatelessWidget {
         child: Text(
           'GET 50 MORE EXPRESSIONS',
           style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: Theme.of(context).primaryColorLight),
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: Theme.of(context).primaryColorLight,
+          ),
         ),
       ),
     );
