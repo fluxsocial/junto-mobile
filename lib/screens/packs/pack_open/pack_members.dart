@@ -20,7 +20,7 @@ class PackOpenMembers extends StatelessWidget {
     BuildContext context,
   ) {
     final metrics = notification.metrics;
-    double scrollPercent = (metricxs.pixels / metrics.maxScrollExtent) * 100;
+    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
     if (scrollPercent.roundToDouble() == 60.0) {
       context.bloc<PackBloc>().add(FetchMorePacksMembers());
       return true;
