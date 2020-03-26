@@ -13,7 +13,6 @@ class PerspectivesAppbar extends StatelessWidget {
       automaticallyImplyLeading: false,
       elevation: 0,
       backgroundColor: Theme.of(context).backgroundColor,
-      // backgroundColor: Colors.orange,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

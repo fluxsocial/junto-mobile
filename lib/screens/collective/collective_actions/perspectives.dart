@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_item.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives_header.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 
 class JuntoPerspectives extends StatelessWidget {
   const JuntoPerspectives();
