@@ -59,7 +59,8 @@ class CreatePerspectivePageState extends State<CreatePerspectivePage> {
       showDialog(
         context: context,
         builder: (BuildContext context) => const SingleActionDialog(
-            dialogText: 'Please fill in all the fields.'),
+          dialogText: 'Please fill in all the fields.',
+        ),
       );
     }
   }
@@ -84,7 +85,7 @@ class CreatePerspectivePageState extends State<CreatePerspectivePage> {
             context: context,
             builder: (BuildContext context) => ConfirmDialog(
               buildContext: context,
-              confirmationText: 'Couldn\t create the perspective',
+              confirmationText: 'Could not create perspective',
               confirm: () => Navigator.pop(context),
             ),
           );
@@ -210,6 +211,7 @@ class PerspectivesPageView extends StatelessWidget {
                   },
                   addUser: (UserProfile user) {
                     perspectiveMembers.add(user.address);
+                    print(perspectiveMembers);
                   },
                 ),
               ),
