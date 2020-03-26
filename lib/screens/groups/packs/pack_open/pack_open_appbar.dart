@@ -80,12 +80,13 @@ class PackOpenAppbar extends StatelessWidget {
                             onTap: () {
                               showModalBottomSheet(
                                 context: context,
-                                builder: (BuildContext context) => Container(
-                                  color: const Color(0xff737373),
-                                  child: PackOpenActionItems(
-                                    pack: pack,
-                                    userProfile: userProfile,
-                                  ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                builder: (BuildContext context) =>
+                                    PackOpenActionItems(
+                                  pack: pack,
+                                  userProfile: userProfile,
                                 ),
                               );
                             },
