@@ -53,6 +53,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       'context': group.address,
       'context_type': 'Group',
       'pagination_position': currentPos.toString(),
+      if (event.channel != null) 'channels[0]': event.channel,
     };
     try {
       yield PacksLoading();
