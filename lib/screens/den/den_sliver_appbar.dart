@@ -53,6 +53,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
       primary: false,
       actions: const <Widget>[SizedBox(height: 0, width: 0)],
       backgroundColor: Theme.of(context).backgroundColor,
+      brightness: Theme.of(context).brightness,
       pinned: false,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,

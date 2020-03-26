@@ -16,6 +16,7 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
     return PreferredSize(
       preferredSize: const Size.fromHeight(45),
       child: AppBar(
+        brightness: Theme.of(context).brightness,
         automaticallyImplyLeading: false,
         iconTheme: IconThemeData(
           color: Theme.of(context).primaryColor,

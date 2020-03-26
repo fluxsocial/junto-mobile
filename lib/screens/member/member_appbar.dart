@@ -12,7 +12,7 @@ class MemberAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
         automaticallyImplyLeading: false,
-        brightness: Brightness.light,
+        brightness: Theme.of(context).brightness,
         elevation: 0,
         titleSpacing: 0,
         title: Container(

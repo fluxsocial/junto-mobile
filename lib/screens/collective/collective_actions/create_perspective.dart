@@ -244,6 +244,7 @@ class PerspectivesAppBar extends StatelessWidget {
       iconTheme: IconThemeData(
         color: Theme.of(context).primaryColor,
       ),
+      brightness: Theme.of(context).brightness,
       backgroundColor: Theme.of(context).backgroundColor,
       elevation: 0,
       titleSpacing: 0,

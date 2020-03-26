@@ -10,7 +10,7 @@ class AboutMemberAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      brightness: Brightness.light,
+      brightness: Theme.of(context).brightness,
       iconTheme: IconThemeData(
         color: Theme.of(context).primaryColor,
       ),

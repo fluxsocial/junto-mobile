@@ -19,12 +19,12 @@ class _DenAppbarState extends State<DenAppbar> {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
+      brightness: Theme.of(context).brightness,
       actions: <Widget>[Container()],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(.75),
         child: Container(height: .75, color: Theme.of(context).dividerColor),
       ),
-      brightness: Brightness.light,
       elevation: 0,
       titleSpacing: 0.0,
       title: Container(

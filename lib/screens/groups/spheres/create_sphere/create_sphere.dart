@@ -228,7 +228,7 @@ class CreateSphereState extends State<CreateSphere> {
   Widget _buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
-      brightness: Brightness.light,
+      brightness: Theme.of(context).brightness,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       elevation: 0,
       titleSpacing: 0,

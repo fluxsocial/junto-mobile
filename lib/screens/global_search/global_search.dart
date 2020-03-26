@@ -76,7 +76,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
           preferredSize: const Size.fromHeight(.75),
           child: Container(height: .75, color: Theme.of(context).dividerColor),
         ),
-        brightness: Brightness.light,
+        brightness: Theme.of(context).brightness,
         elevation: 0,
         titleSpacing: 0.0,
         title: Container(

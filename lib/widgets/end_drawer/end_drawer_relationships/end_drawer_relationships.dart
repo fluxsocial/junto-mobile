@@ -80,6 +80,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
           ),
           elevation: 0,
           titleSpacing: 0,
+          brightness: Theme.of(context).brightness,
           title: Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

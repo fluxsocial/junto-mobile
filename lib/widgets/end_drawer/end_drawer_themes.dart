@@ -14,7 +14,7 @@ class JuntoThemes extends StatefulWidget {
 }
 
 class JuntoThemesState extends State<JuntoThemes> {
-  String _currentTheme;
+  String _currentTheme = 'rainbow';
   bool _nightMode = false;
 
   @override
@@ -115,6 +115,7 @@ class JuntoThemesState extends State<JuntoThemes> {
           iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
           elevation: 0,
           titleSpacing: 0,
+          brightness: Theme.of(context).brightness,
           title: Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
