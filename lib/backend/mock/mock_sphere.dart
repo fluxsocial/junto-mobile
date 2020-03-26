@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_data.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 @visibleForTesting
@@ -62,7 +63,8 @@ class MockSphere with ChangeNotifier implements GroupService {
   }
 
   @override
-  Future<List<Users>> getGroupMembers(String groupAddress) async {
+  Future<List<Users>> getGroupMembers(
+      String groupAddress, ExpressionQueryParams params) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kGroupUsers;
   }
