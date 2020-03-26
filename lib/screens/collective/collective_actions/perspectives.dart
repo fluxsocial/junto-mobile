@@ -26,6 +26,7 @@ class JuntoPerspectives extends StatelessWidget {
     );
     return Scaffold(
       body: JuntoFilterDrawer(
+        leftDrawer: null,
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           floatingActionButton: CollectiveActionButton(
