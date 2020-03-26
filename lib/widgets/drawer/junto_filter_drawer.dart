@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:provider/provider.dart';
 
 /// Signature for the callback that's called when a [JuntoFilterDrawer] is
@@ -309,14 +310,19 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   }
 
   void _close({DrawerPosition direction}) {
-    if (FocusScope.of(context).hasFocus) {
-      FocusScope.of(context).unfocus();
+    try {
+      if (FocusScope.of(context).hasFocus) {
+        FocusScope.of(context).unfocus();
+      }
+      _filterFocusNode?.unfocus();
+      if (direction != null) {
+        _position = direction;
+      }
+      _controller.fling(velocity: 1);
+    } catch (e, s) {
+      logger.logWarning(
+          'Trying to access focus scope when widget is no longer stable');
     }
-    _filterFocusNode?.unfocus();
-    if (direction != null) {
-      _position = direction;
-    }
-    _controller.fling(velocity: 1);
   }
 
   /// Open or Close JuntoDrawer

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
@@ -60,15 +61,19 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   }
 
   logOut(BuildContext context) async {
-    await Provider.of<AuthRepo>(
-      context,
-      listen: false,
-    ).logoutUser();
-    Navigator.of(context).pushReplacement(
-      FadeRoute<void>(
-        child: Welcome(),
-      ),
-    );
+    try {
+      await Provider.of<AuthRepo>(
+        context,
+        listen: false,
+      ).logoutUser();
+      Navigator.of(context).pushReplacement(
+        FadeRoute<void>(
+          child: Welcome(),
+        ),
+      );
+    } catch (e) {
+      logger.logException(e);
+    }
   }
 
   @override
