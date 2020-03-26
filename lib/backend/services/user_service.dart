@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
@@ -22,6 +23,7 @@ class UserServiceCentralized implements UserService {
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
   Future<PerspectiveModel> createPerspective(Perspective perspective) async {
+    print(perspective.members);
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'name': perspective.name,
       'members': perspective.members,
@@ -49,14 +51,14 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserData> getUser(String userAddress) async {
-    print(userAddress);
+    logger.logDebug(userAddress);
     final http.Response _serverResponse =
         await client.get('/users/$userAddress');
 
     final Map<String, dynamic> _resultMap =
         JuntoHttp.handleResponse(_serverResponse);
     final UserData _userData = UserData.fromMap(_resultMap);
-    print(_userData);
+    logger.logDebug(_userData.toString());
     return _userData;
   }
 
@@ -127,22 +129,31 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<List<ExpressionResponse>> getUsersExpressions(
+  Future<QueryResults<ExpressionResponse>> getUsersExpressions(
     String userAddress,
+    int paginationPos,
+    String lastTimestamp,
   ) async {
-    final http.Response response = await client
-        .get('/users/$userAddress/expressions', queryParams: <String, String>{
+    final parms = <String, String>{
       'root_expressions': 'true',
       'sub_expressions': 'false',
-      'pagination_position': '0'
-    });
+      'pagination_position': '$paginationPos',
+    };
+    if (lastTimestamp != null && lastTimestamp.isNotEmpty) {
+      parms.putIfAbsent('last_timestamp', () => lastTimestamp);
+    }
+    final http.Response response =
+        await client.get('/users/$userAddress/expressions', queryParams: parms);
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    return <ExpressionResponse>[
-      for (dynamic data in _responseMap['root_expressions']['results'])
-        ExpressionResponse.fromMap(data)
-    ];
+    return QueryResults(
+      lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
+      results: <ExpressionResponse>[
+        for (dynamic data in _responseMap['root_expressions']['results'])
+          ExpressionResponse.fromMap(data)
+      ],
+    );
   }
 
   @override
@@ -237,6 +248,7 @@ class UserServiceCentralized implements UserService {
       '/users/$userAddress/connect',
     );
     print(_serverResponse.statusCode);
+    logger.logDebug(_serverResponse.statusCode.toString());
     JuntoHttp.handleResponse(_serverResponse);
   }
 
@@ -252,22 +264,30 @@ class UserServiceCentralized implements UserService {
 
     // set each relationship key into its own variable
     final Map<String, dynamic> _following = _results['following'];
+    final Map<String, dynamic> _followers = _results['followers'];
     final Map<String, dynamic> _connections = _results['connections'];
     final Map<String, dynamic> _pendingConnections =
         _results['pending_connections'];
+    final Map<String, dynamic> _pendingPackRequests =
+        _results['pending_group_join_requests'];
 
     // get the list of users for each relationship type
     final List<dynamic> _followingResults = _results['following']['results'];
+    final List<dynamic> _followerResults = _results['followers']['results'];
     final List<dynamic> _connectionsResults =
         _results['connections']['results'];
     final List<dynamic> _pendingConnectionsResults =
         _results['pending_connections']['results'];
+    final List<dynamic> _pendingPackRequestsResults =
+        _results['pending_group_join_requests']['results'];
 
     // instantiate new variables for list of members; to be used after converting
     // list of users above to UserProfile
     final List<UserProfile> _connectionsMembers = <UserProfile>[];
     final List<UserProfile> _followingMembers = <UserProfile>[];
+    final List<UserProfile> _followerMembers = <UserProfile>[];
     final List<UserProfile> _pendingConnectionsMembers = <UserProfile>[];
+    final List<UserProfile> _pendingPackRequestsMembers = <UserProfile>[];
 
     if (_connectionsResults.isNotEmpty) {
       for (final dynamic result in _connectionsResults) {
@@ -285,21 +305,44 @@ class UserServiceCentralized implements UserService {
       }
     }
 
+    if (_followerResults.isNotEmpty) {
+      for (final dynamic result in _followerResults) {
+        _followerMembers.add(
+          UserProfile.fromMap(result['user']),
+        );
+      }
+    }
+
     for (final dynamic result in _pendingConnectionsResults) {
       _pendingConnectionsMembers.add(
         UserProfile.fromMap(result),
       );
     }
 
+    if (_pendingPackRequestsResults.isNotEmpty) {
+      for (final dynamic result in _pendingPackRequestsResults) {
+        if (result['group_type'] == 'Pack') {
+          _pendingPackRequestsMembers.add(
+            UserProfile.fromMap(result),
+          );
+        }
+      }
+    }
+
     // replace the results (list of users) from the server response with new list of UserProfiles
     _following['results'] = _followingMembers;
+    _followers['results'] = _followerMembers;
     _connections['results'] = _connectionsMembers;
     _pendingConnections['results'] = _pendingConnectionsMembers;
+    _pendingPackRequests['results'] = _pendingPackRequestsMembers;
 
     // replace originalrelationship keys with updated versions
     _results['following'] = _following;
+    _results['followers'] = _followers;
     _results['connections'] = _connections;
     _results['pending_connections'] = _pendingConnections;
+    _results['pending_group_join_requests'] = _pendingPackRequests;
+
     return _results;
   }
 
@@ -322,6 +365,7 @@ class UserServiceCentralized implements UserService {
           username: result['user']['username'],
           name: result['user']['name'],
           profilePicture: <String>[],
+          backgroundPhoto: result['user']['background_photo'],
           gender: List<String>.from(result['user']['gender']),
           location: List<String>.from(result['user']['location']),
           verified: true,

@@ -56,11 +56,12 @@ class _GlobalSearchState extends State<GlobalSearch> {
     debounceTimer = Timer(
       const Duration(milliseconds: 600),
       () async {
-        if (mounted)
+        if (mounted) {
           setState(() {
             _searchFuture =
                 _searchRepo.searchMembers(query, username: !_fullName);
           });
+        }
       },
     );
   }
@@ -75,7 +76,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
           preferredSize: const Size.fromHeight(.75),
           child: Container(height: .75, color: Theme.of(context).dividerColor),
         ),
-        brightness: Brightness.light,
+        brightness: Theme.of(context).brightness,
         elevation: 0,
         titleSpacing: 0.0,
         title: Container(
@@ -88,12 +89,16 @@ class _GlobalSearchState extends State<GlobalSearch> {
                   Navigator.pop(context);
                 },
                 child: Container(
-                    color: Colors.transparent,
-                    alignment: Alignment.centerLeft,
-                    height: 48,
-                    width: 38,
-                    child: Icon(CustomIcons.back,
-                        size: 17, color: Theme.of(context).primaryColor)),
+                  color: Colors.transparent,
+                  alignment: Alignment.centerLeft,
+                  height: 48,
+                  width: 38,
+                  child: Icon(
+                    CustomIcons.back,
+                    size: 17,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
               ),
               Expanded(
                 child: TextField(
@@ -111,17 +116,19 @@ class _GlobalSearchState extends State<GlobalSearch> {
                     hintText: 'search members',
                     border: InputBorder.none,
                     hintStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColorLight),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
                   ),
                   cursorColor: Theme.of(context).primaryColor,
                   cursorWidth: 1,
                   maxLines: 1,
                   style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).primaryColor),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   maxLength: 80,
                   textInputAction: TextInputAction.search,
                 ),
@@ -136,32 +143,39 @@ class _GlobalSearchState extends State<GlobalSearch> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                        color: Theme.of(context).dividerColor, width: .75),
+                      color: Theme.of(context).dividerColor,
+                      width: .75,
+                    ),
                   ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Switch.adaptive(
-                      activeColor: Theme.of(context).accentColor,
-                      value: _fullName,
-                      onChanged: (bool value) => setState(
-                        () => _fullName = value,
+                    Transform.scale(
+                      scale: .8,
+                      child: Switch.adaptive(
+                        activeColor: Theme.of(context).primaryColor,
+                        value: _fullName,
+                        onChanged: (bool value) => setState(
+                          () => _fullName = value,
+                        ),
                       ),
                     ),
                     Text(
                       _fullName ? 'by full name' : 'by username',
                       style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500),
+                        color: Theme.of(context).primaryColorLight,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
@@ -184,7 +198,9 @@ class _GlobalSearchState extends State<GlobalSearch> {
 
                     return ListView.builder(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 15),
+                        vertical: 0,
+                        horizontal: 15,
+                      ),
                       itemCount: snapshot.data.results.length,
                       itemBuilder: (BuildContext context, int index) {
                         final UserProfile data = snapshot.data.results[index];

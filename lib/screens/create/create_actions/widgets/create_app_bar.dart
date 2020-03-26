@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 
 class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CreateAppBar({
@@ -18,35 +16,40 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
     return PreferredSize(
       preferredSize: const Size.fromHeight(45),
       child: AppBar(
+        brightness: Theme.of(context).brightness,
         automaticallyImplyLeading: false,
-        brightness: Brightness.light,
-        iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
+        ),
         elevation: 0,
         titleSpacing: 0,
         title: Container(
-          padding: const EdgeInsets.symmetric(
-              horizontal: JuntoStyles.horizontalPadding),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Icon(expressionType.icon(), size: 24),
-                  const SizedBox(width: 7.5),
-                  Text(
-                    expressionType.appBarName(),
-                    style: Theme.of(context).textTheme.caption,
-                  )
-                ],
+              Text(
+                expressionType.appBarName().toUpperCase(),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  letterSpacing: 1.7,
+                ),
               ),
               InkWell(
                 onTap: onNext,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-                  child:
-                      Text('next', style: Theme.of(context).textTheme.caption),
+                  padding: const EdgeInsets.only(
+                    left: 8.0,
+                    top: 8.0,
+                    bottom: 8.0,
+                  ),
+                  child: Text(
+                    'next',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
               )
             ],

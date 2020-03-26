@@ -20,7 +20,7 @@ class CreateExpressionIcon extends StatelessWidget {
       type: MaterialType.transparency,
       shape: const CircleBorder(side: BorderSide.none),
       child: Container(
-        width: MediaQuery.of(context).size.width * .5 - 50,
+        width: MediaQuery.of(context).size.width / 3,
         color: Colors.transparent,
         alignment: Alignment.center,
         child: InkWell(
@@ -36,20 +36,19 @@ class CreateExpressionIcon extends StatelessWidget {
                 Container(
                   alignment: Alignment.center,
                   height: 40,
-                  width: 50,
                   child: Icon(
                     expressionType.icon(),
                     color: Colors.white,
                     size: 24,
                   ),
                 ),
-                const SizedBox(height: 2.5),
+                const SizedBox(height: 5),
                 Text(
                   expressionType.name(),
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: Colors.white,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                     decoration: TextDecoration.none,
                   ),
                 )

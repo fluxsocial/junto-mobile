@@ -3,18 +3,21 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/member/member_about.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
 import 'package:junto_beta_mobile/screens/member/member_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
@@ -38,9 +41,10 @@ class JuntoMember extends StatefulWidget {
   _JuntoMemberState createState() => _JuntoMemberState();
 }
 
-class _JuntoMemberState extends State<JuntoMember> {
+class _JuntoMemberState extends State<JuntoMember>
+    with HideFab, TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
+  UserData _memberProfile;
   String _userAddress;
   UserData _userProfile;
   UserRepo userProvider;
@@ -52,10 +56,19 @@ class _JuntoMemberState extends State<JuntoMember> {
   bool isPackMember;
 
   bool memberRelationshipsVisible = false;
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
   void initState() {
     super.initState();
+    _memberProfile = UserData(
+      user: widget.profile,
+      pack: null,
+      connectionPerspective: null,
+      userPerspective: null,
+      privateDen: null,
+      publicDen: null,
+    );
   }
 
   @override
@@ -72,7 +85,6 @@ class _JuntoMemberState extends State<JuntoMember> {
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
-
       userProvider = Provider.of<UserRepo>(context, listen: false);
     });
 
@@ -80,7 +92,6 @@ class _JuntoMemberState extends State<JuntoMember> {
     await userProvider
         .isRelated(_userAddress, widget.profile.address)
         .then((Map<String, dynamic> result) {
-      print(result);
       setState(() {
         isConnected = result['is_connected'];
         isFollowing = result['is_following'];
@@ -120,95 +131,77 @@ class _JuntoMemberState extends State<JuntoMember> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-          key: scaffoldKey,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(45),
-            child: MemberAppbar(widget.profile.username),
+    return NotificationListener<ScrollUpdateNotification>(
+      onNotification: (value) => hideOrShowFab(value, _isVisible),
+      child: BlocProvider(
+        create: (context) => DenBloc(
+          Provider.of<UserRepo>(context, listen: false),
+          Provider.of<UserDataProvider>(context, listen: false),
+        )..add(
+            LoadDen(),
           ),
-          body: DefaultTabController(
-            length: _tabs.length,
-            child: NestedScrollView(
-              physics: const ClampingScrollPhysics(),
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  MemberDenAppbar(
-                    profile: widget.profile,
-                    isConnected: isConnected,
-                    toggleMemberRelationships: toggleMemberRelationships,
+        child: Scaffold(
+          //TODO(dominik/Nash): revert filter drawer
+          // and use bloc to fetch member expressions
+          body: Container(
+            // leftDrawer: FilterDrawerContent(ExpressionContextType.Collective),
+            // rightMenu: JuntoDrawer(),
+            child: Stack(
+              children: <Widget>[
+                Scaffold(
+                  key: scaffoldKey,
+                  appBar: PreferredSize(
+                    preferredSize: const Size.fromHeight(45),
+                    child: MemberAppbar(widget.profile.username),
                   ),
-                  SliverPersistentHeader(
-                    delegate: JuntoAppBarDelegate(
-                      TabBar(
-                        labelPadding: const EdgeInsets.all(0),
-                        isScrollable: true,
-                        labelColor: Theme.of(context).primaryColor,
-                        labelStyle: Theme.of(context).textTheme.subtitle1,
-                        indicatorWeight: 0.0001,
-                        tabs: <Widget>[
-                          for (String name in _tabs)
-                            Container(
-                              margin: const EdgeInsets.only(right: 20),
-                              color: Theme.of(context).colorScheme.background,
-                              child: Tab(
-                                child: Text(
-                                  name,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
+                  body: NestedScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                        MemberDenAppbar(
+                          profile: widget.profile,
+                          isConnected: isConnected,
+                          toggleMemberRelationships: toggleMemberRelationships,
+                        ),
+                      ];
+                    },
+                    body: UserExpressions(
+                      privacy: 'Public',
+                      userProfile: widget.profile,
                     ),
-                    pinned: true,
                   ),
-                ];
-              },
-              body: TabBarView(
-                children: <Widget>[
-                  JuntoMemberAbout(
-                    gender: widget.profile.gender,
-                    location: widget.profile.location,
-                    website: widget.profile.website,
-                    bio: widget.profile.bio,
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: memberRelationshipsVisible ? 1.0 : 0.0,
+                  child: Visibility(
+                    visible: memberRelationshipsVisible,
+                    child: MemberRelationships(
+                      isFollowing: isFollowing,
+                      isConnected: isConnected,
+                      hasPendingConnection: hasPendingConnection,
+                      hasPendingPackRequest: hasPendingPackRequest,
+                      isPackMember: isPackMember,
+                      userProvider: userProvider,
+                      memberProfile: widget.profile,
+                      userProfile: _userProfile,
+                      toggleMemberRelationships: toggleMemberRelationships,
+                      refreshRelations: refreshRelations,
+                    ),
                   ),
-                  UserExpressions(
-                    privacy: 'Public',
-                    userProfile: widget.profile,
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-        AnimatedOpacity(
-          duration: const Duration(milliseconds: 200),
-          opacity: memberRelationshipsVisible ? 1.0 : 0.0,
-          child: Visibility(
-            visible: memberRelationshipsVisible,
-            child: MemberRelationships(
-              isFollowing: isFollowing,
-              isConnected: isConnected,
-              hasPendingConnection: hasPendingConnection,
-              hasPendingPackRequest: hasPendingPackRequest,
-              isPackMember: isPackMember,
-              userProvider: userProvider,
-              memberProfile: widget.profile,
-              userProfile: _userProfile,
-              toggleMemberRelationships: toggleMemberRelationships,
-              refreshRelations: refreshRelations,
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

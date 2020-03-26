@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:junto_beta_mobile/app/app.dart';
+import 'package:junto_beta_mobile/app/logger/sentry.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/utils/logging.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -29,10 +29,13 @@ class DynamicPreview extends StatelessWidget {
         child: Text(
           expressionTitle,
           textAlign: TextAlign.left,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 20,
-              fontWeight: FontWeight.w700),
+            color: Theme.of(context).primaryColor,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       );
     } else {

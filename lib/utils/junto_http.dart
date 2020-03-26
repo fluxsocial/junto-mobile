@@ -43,7 +43,7 @@ class JuntoHttp {
   }
 
   Future<http.Response> get(String resource,
-      {Map<String, String> headers, Map<String, dynamic> queryParams}) async {
+      {Map<String, String> headers, Map<String, String> queryParams}) async {
     final Uri _uri = Uri.http(
         END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
     return httpClient.get(

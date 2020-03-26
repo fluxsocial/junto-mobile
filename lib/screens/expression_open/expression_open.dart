@@ -19,11 +19,13 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
-  const ExpressionOpen(this.expression, this.userAddress, this.allowComments);
+  const ExpressionOpen(
+    this.expression,
+    this.userAddress,
+  );
 
   final ExpressionResponse expression;
   final String userAddress;
-  final bool allowComments;
 
   @override
   State<StatefulWidget> createState() => ExpressionOpenState();
@@ -44,15 +46,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   Future<QueryResults<Comment>> futureComments;
 
-  bool get allowComments => widget.allowComments;
-
   @override
   void initState() {
     super.initState();
 
     commentController = TextEditingController();
     _focusNode = FocusNode();
-    print(widget.expression.channels);
   }
 
   @override
@@ -82,7 +81,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     } else if (expressionType == 'EventForm') {
       return EventOpen(widget.expression);
     } else {
-      return const Text('no expressions!');
+      return const SizedBox();
     }
   }
 
@@ -135,8 +134,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         await showFeedback(
           context,
           icon: Icon(
-            CustomIcons.create,
-            size: 17,
+            CustomIcons.newcreate,
+            size: 33,
             color: Theme.of(context).primaryColor,
           ),
           message: 'Comment Created',
@@ -198,105 +197,108 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: RefreshIndicator(
                     onRefresh: _refreshComments,
                     child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       children: <Widget>[
                         ExpressionOpenTop(
-                            expression: widget.expression,
-                            userAddress: widget.userAddress),
+                          expression: widget.expression,
+                          userAddress: widget.userAddress,
+                        ),
                         _buildExpression(),
                         ExpressionOpenBottom(
-                            widget.expression, toggleExpressionContext),
-                        if (allowComments)
-                          FutureBuilder<QueryResults<Comment>>(
-                            future: futureComments,
-                            builder: (
-                              BuildContext context,
-                              AsyncSnapshot<QueryResults<Comment>> snapshot,
-                            ) {
-                              if (snapshot.hasError) {
-                                return Container(
-                                  child: const Text('Error occured'),
-                                );
-                              }
+                          widget.expression,
+                          toggleExpressionContext,
+                        ),
+                        FutureBuilder<QueryResults<Comment>>(
+                          future: futureComments,
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<QueryResults<Comment>> snapshot,
+                          ) {
+                            if (snapshot.hasError) {
+                              return Container(
+                                child: const Text('Hmm, something went wrong'),
+                              );
+                            }
 
-                              if (snapshot.hasData) {
-                                if (snapshot.data.results.isNotEmpty) {
-                                  return Column(
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: _showComments,
-                                        child: Container(
-                                          color: Colors.transparent,
-                                          margin: EdgeInsets.only(
-                                              bottom: commentsVisible ? 0 : 15),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 15),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Text(
-                                                commentsVisible
-                                                    ? 'Hide replies'
-                                                    : 'Show replies (${snapshot.data.results.length})',
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              const SizedBox(width: 5),
-                                              if (!commentsVisible)
-                                                Icon(Icons.keyboard_arrow_down,
-                                                    size: 15,
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight),
-                                              if (commentsVisible)
-                                                Icon(Icons.keyboard_arrow_up,
-                                                    size: 15,
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight),
-                                            ],
-                                          ),
+                            if (snapshot.hasData) {
+                              if (snapshot.data.results.isNotEmpty) {
+                                return Column(
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      onTap: _showComments,
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        margin: EdgeInsets.only(
+                                          bottom: commentsVisible ? 0 : 15,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 15,
+                                        ),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Text(
+                                              commentsVisible
+                                                  ? 'Hide replies'
+                                                  : 'Show replies (${snapshot.data.results.length})',
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(width: 5),
+                                            if (!commentsVisible)
+                                              Icon(Icons.keyboard_arrow_down,
+                                                  size: 15,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
+                                            if (commentsVisible)
+                                              Icon(Icons.keyboard_arrow_up,
+                                                  size: 15,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
+                                          ],
                                         ),
                                       ),
-                                      if (commentsVisible)
-                                        ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          itemCount:
-                                              snapshot.data.results.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return CommentPreview(
-                                              comment:
-                                                  snapshot.data.results[index],
-                                              parent: widget.expression,
-                                              userAddress: widget.userAddress,
-                                            );
-                                          },
-                                        ),
-                                    ],
-                                  );
-                                } else
-                                  return const SizedBox();
+                                    ),
+                                    if (commentsVisible)
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const ClampingScrollPhysics(),
+                                        itemCount: snapshot.data.results.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return CommentPreview(
+                                            comment:
+                                                snapshot.data.results[index],
+                                            parent: widget.expression,
+                                            userAddress: widget.userAddress,
+                                          );
+                                        },
+                                      ),
+                                  ],
+                                );
+                              } else {
+                                return const SizedBox(height: 25);
                               }
-                              return Transform.translate(
-                                offset: const Offset(0.0, 50.0),
-                                child: JuntoProgressIndicator(),
-                              );
-                            },
-                          )
+                            }
+                            return Transform.translate(
+                              offset: const Offset(0.0, 50.0),
+                              child: JuntoProgressIndicator(),
+                            );
+                          },
+                        )
                       ],
                     ),
                   ),
                 ),
               ),
-              if (allowComments)
-                _BottomCommentBar(
-                  postComment: _createComment,
-                  commentController: commentController,
-                  focusNode: _focusNode,
-                ),
+              _BottomCommentBar(
+                postComment: _createComment,
+                commentController: commentController,
+                focusNode: _focusNode,
+              ),
             ],
           ),
         ),
@@ -306,8 +308,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           child: Visibility(
             visible: expressionContextVisible,
             child: ExpressionOpenContext(
-                channels: widget.expression.channels,
-                toggleExpressionContext: toggleExpressionContext),
+              channels: widget.expression.channels,
+              toggleExpressionContext: toggleExpressionContext,
+            ),
           ),
         ),
       ],
@@ -349,9 +352,9 @@ class ExpressionContextChannelPreview extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
             ),
             child: const Icon(
-              CustomIcons.hash,
+              CustomIcons.newhashtag,
               color: Colors.white,
-              size: 15,
+              size: 24,
             ),
           ),
           Container(
@@ -360,9 +363,11 @@ class ExpressionContextChannelPreview extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(channel,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.subtitle1),
+                Text(
+                  channel,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
               ],
             ),
           )
@@ -400,7 +405,8 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
         padding: const EdgeInsets.only(
           left: 10,
           right: 10,
-          top: 14.0,
+          top: 15.0,
+          bottom: 15.0,
         ),
         decoration: BoxDecoration(
           border: Border(
@@ -431,9 +437,10 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                           border: InputBorder.none,
                           hintText: 'write a reply...',
                           hintStyle: TextStyle(
-                              fontSize: 13,
-                              color: Theme.of(context).primaryColorLight,
-                              fontWeight: FontWeight.w500),
+                            fontSize: 16,
+                            color: Theme.of(context).primaryColorLight,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         maxLines: null,
                         cursorColor: Theme.of(context).primaryColor,
@@ -453,7 +460,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
               child: Icon(
                 Icons.send,
                 size: 20,
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).primaryColor,
               ),
             )
           ],

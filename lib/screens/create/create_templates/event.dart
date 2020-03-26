@@ -4,11 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
-import 'package:junto_beta_mobile/utils/form-validation.dart';
+import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
@@ -57,10 +56,10 @@ class CreateEventState extends State<CreateEvent> with DateParser {
 
   Map<String, dynamic> createExpression() {
     return <String, dynamic>{
-      'description': detailsController.value.text,
+      'description': detailsController.value.text.trim(),
       'photo': imageFile.value,
-      'title': titleController.value.text,
-      'location': locationController.text,
+      'title': titleController.value.text.trim(),
+      'location': locationController.text.trim(),
       'start_time': startTime.value.toUtc().toIso8601String(),
       'end_time': endTime.value.toUtc().toIso8601String(),
       'facilitators': <String>[],
@@ -128,6 +127,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
+      expressionType: ExpressionType.event,
       onNext: _onNext,
       child: Expanded(
         child: Form(
@@ -156,7 +156,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                           hintText: 'Name of event',
                           hintStyle: Theme.of(context).textTheme.headline6,
                         ),
-                        cursorColor: JuntoPalette.juntoGrey,
+                        cursorColor: Theme.of(context).primaryColor,
                         cursorWidth: 2,
                         maxLines: null,
                         maxLength: 140,

@@ -1,6 +1,7 @@
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -40,7 +41,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
   Future<void> addMembersToPerspective() async {
     if (_perspectiveMembers.isNotEmpty) {
       JuntoLoader.showLoader(context);
-      print(_perspectiveMembers);
+      logger.logDebug(_perspectiveMembers.toString());
       try {
         await Provider.of<UserRepo>(context, listen: false)
             .addUsersToPerspective(
@@ -48,17 +49,11 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
         Navigator.pop(context);
         widget.refreshPerspectiveMembers();
         JuntoLoader.hide();
-      } catch (error) {
-        print(error);
+      } catch (e, s) {
+        logger.logException(e, s);
         JuntoLoader.hide();
       }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // print(widget.existingMembers);
   }
 
   @override
@@ -72,6 +67,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
             iconTheme: IconThemeData(
               color: Theme.of(context).primaryColor,
             ),
+            brightness: Theme.of(context).brightness,
             backgroundColor: Theme.of(context).backgroundColor,
             elevation: 0,
             titleSpacing: 0,
@@ -101,9 +97,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      addMembersToPerspective();
-                    },
+                    onTap: addMembersToPerspective,
                     child: Container(
                         height: 45,
                         width: 45,

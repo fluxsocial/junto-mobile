@@ -8,7 +8,7 @@ class ExpressionModel {
   ExpressionModel({
     @required this.type,
     @required this.expressionData,
-    this.channels: const <String>[],
+    this.channels = const <String>[],
     this.context,
   });
 
@@ -277,6 +277,11 @@ class ExpressionResponse {
     };
   }
 
+  @override
+  String toString() {
+    return '$type : ${creator.name} : $context';
+  }
+
   static dynamic generateExpressionData(
       String type, Map<String, dynamic> json) {
     if (type == 'LongForm') {
@@ -346,24 +351,6 @@ class Comment {
         'context': context,
       };
 }
-
-class ExpressionQueryParams {
-  ExpressionQueryParams({
-    @required this.dos,
-    @required this.context,
-    @required this.channels,
-    @required this.contextType,
-    @required this.paginationPos,
-  });
-
-  final int dos;
-  final int context;
-  final List<String> channels;
-  final ExpressionContextType contextType;
-  final int paginationPos;
-}
-
-enum ExpressionContextType { dos, perspective, random, collective }
 
 class GroupExpressionQueryParams {
   GroupExpressionQueryParams({

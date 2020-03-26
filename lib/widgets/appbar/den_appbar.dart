@@ -19,12 +19,12 @@ class _DenAppbarState extends State<DenAppbar> {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
+      brightness: Theme.of(context).brightness,
       actions: <Widget>[Container()],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(.75),
         child: Container(height: .75, color: Theme.of(context).dividerColor),
       ),
-      brightness: Brightness.light,
       elevation: 0,
       titleSpacing: 0.0,
       title: Container(
@@ -37,11 +37,17 @@ class _DenAppbarState extends State<DenAppbar> {
               height: 48,
               child: Row(
                 children: <Widget>[
-                  Image.asset('assets/images/junto-mobile__logo.png',
-                      height: 22.0, width: 22.0),
+                  Image.asset(
+                    'assets/images/junto-mobile__logo.png',
+                    height: 22.0,
+                    width: 22.0,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   const SizedBox(width: 7.5),
-                  Text(widget.heading,
-                      style: Theme.of(context).textTheme.subtitle1),
+                  Text(
+                    widget.heading,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
                 ],
               ),
             ),

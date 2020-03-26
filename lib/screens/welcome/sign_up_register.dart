@@ -69,6 +69,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                     children: <Widget>[
                       SignUpTextField(
                         valueController: emailController,
+                        textInputActionType: TextInputAction.next,
                         onSubmit: () {
                           FocusScope.of(context).requestFocus(passwordNode);
                         },
@@ -81,6 +82,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       const SizedBox(height: 40),
                       SignUpTextField(
                         valueController: passwordController,
+                        textInputActionType: TextInputAction.next,
                         onSubmit: () {
                           FocusScope.of(context)
                               .requestFocus(confirmPasswordNode);
@@ -95,6 +97,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       const SizedBox(height: 40),
                       SignUpTextField(
                         valueController: confirmPasswordController,
+                        textInputActionType: TextInputAction.done,
                         onSubmit: () {
                           FocusScope.of(context).unfocus();
                         },

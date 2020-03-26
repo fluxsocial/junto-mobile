@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/expressions.dart';
 
 class HomeIcon extends StatelessWidget {
   const HomeIcon({
     Key key,
+    this.source,
+    this.navigateTo,
   }) : super(key: key);
+
+  final ExpressionType source;
+  final Function navigateTo;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pop(context),
+      onTap: () {
+        if (source == null || source == true) {
+          Navigator.pop(context);
+        } else {
+          navigateTo(context, source);
+        }
+      },
       child: Container(
         alignment: Alignment.center,
-        margin: const EdgeInsets.symmetric(vertical: 25),
         height: 50,
         width: 50,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white, width: 1.2),
-          borderRadius: BorderRadius.circular(1000),
-        ),
-        child: Icon(
-          CustomIcons.back,
-          size: 17,
+        child: Image.asset(
+          'assets/images/junto-mobile__double-down-arrow.png',
+          height: 20,
           color: Colors.white,
         ),
       ),

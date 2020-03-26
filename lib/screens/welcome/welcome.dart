@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
@@ -16,6 +17,7 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 import 'widgets/sign_up_arrows.dart';
 import 'widgets/sign_up_text_field_wrapper.dart';
@@ -102,6 +104,7 @@ class WelcomeState extends State<Welcome> {
       location: <String>[location],
       username: username,
       profileImage: <String>[],
+      backgroundPhoto: '',
       website: <String>[website],
       gender: <String>[gender],
       verificationCode: verificationCode,
@@ -115,7 +118,6 @@ class WelcomeState extends State<Welcome> {
       final UserData results =
           await Provider.of<AuthRepo>(context, listen: false)
               .registerUser(details);
-      print('ok');
       final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
@@ -131,10 +133,14 @@ class WelcomeState extends State<Welcome> {
         _userAddress = results.user.address;
       });
     } catch (error) {
-      _welcomeController.jumpToPage(0);
       JuntoLoader.hide();
       print(error);
-      print('Error: $error');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
+      );
     }
 
     // Update user with profile photos
@@ -183,31 +189,8 @@ class WelcomeState extends State<Welcome> {
     JuntoLoader.hide();
     // Navigate to community agreements
     Navigator.of(context).pushReplacement(
-      PageRouteBuilder<dynamic>(
-        pageBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
-          return SignUpAgreements();
-        },
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(-1, 0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(
-          milliseconds: 400,
-        ),
+      FadeRoute<void>(
+        child: SignUpAgreements(),
       ),
     );
   }
@@ -253,11 +236,18 @@ class WelcomeState extends State<Welcome> {
                   PageKeepAlive(
                     // 1
                     child: SignUpTextFieldWrapper(
+                      textInputActionType: TextInputAction.done,
                       onValueChanged: (String value) => name = value,
                       onSubmit: () async {
-                        FocusScope.of(context).nextFocus();
+                        if (name.isNotEmpty &&
+                            name.length <= 50 &&
+                            name != null) {
+                          await _nextSignUpPage();
+                        } else {
+                          FocusScope.of(context).unfocus();
+                        }
                       },
-                      maxLength: 36,
+                      maxLength: 50,
                       hint: 'My name is...',
                       label: 'FULL NAME',
                       title: 'Hey, what\'s your name?',
@@ -266,17 +256,21 @@ class WelcomeState extends State<Welcome> {
                   PageKeepAlive(
                     // 2
                     child: SignUpTextFieldWrapper(
+                      textInputActionType: TextInputAction.done,
                       onValueChanged: (String value) => username = value,
                       onSubmit: () async {
-                        if (FocusScope.of(context).hasFocus) {
+                        if (username.isNotEmpty &&
+                            username.length <= 22 &&
+                            username != null) {
+                          await _nextSignUpPage();
+                        } else {
                           FocusScope.of(context).unfocus();
                         }
-                        await _nextSignUpPage();
                       },
                       maxLength: 22,
                       hint: 'I\'ll go by...',
                       label: 'USERNAME',
-                      title: 'Choose a unique username!',
+                      title: 'Choose a unique username',
                     ),
                   ),
                   PageKeepAlive(
@@ -285,17 +279,25 @@ class WelcomeState extends State<Welcome> {
                   ),
                   PageKeepAlive(
                     // 4
-                    child: SignUpAbout(key: signUpAboutKey),
+                    child: SignUpAbout(
+                      key: signUpAboutKey,
+                      nextPage: _nextSignUpPage,
+                    ),
                   ),
                   PageKeepAlive(
+                    // 5
                     child: SignUpPhotos(key: signUpPhotosKey),
                   ),
                   PageKeepAlive(
+                    // 6
                     child: SignUpRegister(key: signUpRegisterKey),
                   ),
                   PageKeepAlive(
+                    // 7
                     child: SignUpVerify(
-                        key: signUpVerifyKey, handleSignUp: _handleSignUp),
+                      key: signUpVerifyKey,
+                      handleSignUp: _handleSignUp,
+                    ),
                   )
                 ],
               ),
@@ -304,9 +306,7 @@ class WelcomeState extends State<Welcome> {
                 SignUpArrows(
                   welcomeController: _welcomeController,
                   currentIndex: _currentIndex,
-                  onTap: () {
-                    _nextSignUpPage();
-                  },
+                  onTap: _nextSignUpPage,
                 ),
               if (_currentIndex != 0)
                 Positioned(
@@ -314,7 +314,7 @@ class WelcomeState extends State<Welcome> {
                   left: 20,
                   child: Image.asset(
                     'assets/images/junto-mobile__logo.png',
-                    height: 45,
+                    height: 38,
                     color: Colors.white,
                   ),
                 ),
@@ -327,13 +327,37 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> _nextSignUpPage() async {
     try {
-      if (_currentIndex == 4) {
+      if (_currentIndex == 1) {
+        if (name == null || name.isEmpty || name.length > 50) {
+          return;
+        }
+      } else if (_currentIndex == 2) {
+        if (username == null || username.isEmpty || username.length > 22) {
+          return;
+        } else {
+          final Map<String, dynamic> validateUserResponse =
+              await Provider.of<AuthRepo>(context, listen: false)
+                  .validateUser(username: username);
+          final bool usernameIsAvailable =
+              validateUserResponse['valid_username'];
+          if (!usernameIsAvailable) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => SingleActionDialog(
+                dialogText: 'Sorry, that username is taken.',
+              ),
+            );
+            return;
+          }
+        }
+      } else if (_currentIndex == 4) {
         final AboutPageModel _aboutPageModel =
             signUpAboutKey.currentState.returnDetails();
         bio = _aboutPageModel.bio;
         location = _aboutPageModel.location;
         gender = _aboutPageModel.gender;
         website = _aboutPageModel.website;
+        print(bio.length);
       } else if (_currentIndex == 5) {
         profilePictures = signUpPhotosKey.currentState.returnDetails();
         print(profilePictures);
@@ -342,7 +366,20 @@ class WelcomeState extends State<Welcome> {
         password = signUpRegisterKey.currentState.returnDetails()['password'];
         confirmPassword =
             signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
+        if (email == null ||
+            email.isEmpty ||
+            password.isEmpty ||
+            confirmPassword.isEmpty) {
+          return;
+        }
+        // validate passwords
+        if (!_validatePasswords(password, confirmPassword)) {
+          return;
+        }
+        JuntoLoader.showLoader(context);
+        // verify email address
         await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
+        JuntoLoader.hide();
       }
       // transition to next page of sign up flow
       _welcomeController.nextPage(
@@ -350,12 +387,36 @@ class WelcomeState extends State<Welcome> {
         duration: const Duration(milliseconds: 600),
       );
     } on JuntoException catch (error) {
+      JuntoLoader.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
           dialogText: error.message,
         ),
       );
+    }
+  }
+
+  // ensure passwords are same and meet our specifications
+  bool _validatePasswords(String password, String confirmPassword) {
+    if (password != confirmPassword) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Both passwords must match.',
+        ),
+      );
+      return false;
+    } else if (password.length < 8 || confirmPassword.length < 8) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Your password must be greater than 8 characters.',
+        ),
+      );
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -376,6 +437,11 @@ class WelcomeState extends State<Welcome> {
         _currentTheme = theme;
       }
     });
+
+    final bool nightMode = await prefs.getBool('night-mode');
+    if (nightMode == null) {
+      await prefs.setBool('night-mode', false);
+    }
   }
 
   void onPageChanged(int index) {

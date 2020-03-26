@@ -6,7 +6,9 @@ import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_cou
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpAbout extends StatefulWidget {
-  const SignUpAbout({Key key}) : super(key: key);
+  const SignUpAbout({Key key, this.nextPage}) : super(key: key);
+
+  final Function nextPage;
 
   @override
   State<StatefulWidget> createState() {
@@ -42,7 +44,7 @@ class SignUpAboutState extends State<SignUpAbout> {
   }
 
   AboutPageModel returnDetails() => AboutPageModel(
-        bio: bioController.value.text == '' ? ' ' : bioController.value.text,
+        bio: bioController.value.text,
         location: locationController.value.text,
         gender: genderController.value.text,
         website: websiteController.value.text,
@@ -62,78 +64,62 @@ class SignUpAboutState extends State<SignUpAbout> {
             const SignUpPageTitle(
               title: 'Feel free to share more about yourself (optional)',
             ),
-            Flexible(
+            Expanded(
               child: KeyboardAvoider(
                 autoScroll: true,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 30),
-                      SignUpTextField(
-                        valueController: bioController,
-                        onSubmit: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        hint: 'Short or long bio',
-                        maxLength: 50,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLines: null,
-                      ),
-                      SignUpTextFieldLabelAndCounter(
-                        label: 'ABOUT',
-                        maxLength: 50,
-                        valueController: bioController,
-                        compact: true,
-                      ),
-                      const SizedBox(height: 40),
-                      SignUpTextField(
-                        valueController: locationController,
-                        onSubmit: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        hint: 'Where do you live?',
-                        maxLength: 100,
-                      ),
-                      SignUpTextFieldLabelAndCounter(
-                        label: 'LOCATION',
-                        maxLength: 100,
-                        valueController: locationController,
-                        compact: true,
-                      ),
-                      const SizedBox(height: 40),
-                      SignUpTextField(
-                        valueController: genderController,
-                        onSubmit: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        hint: 'Your gender',
-                        maxLength: 50,
-                      ),
-                      SignUpTextFieldLabelAndCounter(
-                        label: 'GENDER',
-                        maxLength: null,
-                        valueController: locationController,
-                        compact: true,
-                      ),
-                      const SizedBox(height: 30),
-                      SignUpTextField(
-                        valueController: websiteController,
-                        onSubmit: () {
-                          FocusScope.of(context).unfocus();
-                        },
-                        hint: 'Website',
-                        maxLength: 50,
-                        keyboardType: TextInputType.url,
-                        textCapitalization: TextCapitalization.none,
-                      ),
-                      SignUpTextFieldLabelAndCounter(
-                        label: 'WEBSITE',
-                        maxLength: null,
-                        valueController: locationController,
-                        compact: true,
-                      ),
-                    ],
-                  ),
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 50),
+                    SignUpTextField(
+                      valueController: locationController,
+                      onSubmit: () {
+                        FocusScope.of(context).nextFocus();
+                      },
+                      textInputActionType: TextInputAction.next,
+                      hint: 'Location',
+                      maxLength: 30,
+                    ),
+                    SignUpTextFieldLabelAndCounter(
+                      label: 'LOCATION',
+                      maxLength: 30,
+                      valueController: locationController,
+                      compact: true,
+                    ),
+                    const SizedBox(height: 40),
+                    SignUpTextField(
+                      valueController: genderController,
+                      onSubmit: () {
+                        FocusScope.of(context).nextFocus();
+                      },
+                      textInputActionType: TextInputAction.next,
+                      hint: 'Gender Pronouns',
+                      maxLength: 30,
+                    ),
+                    SignUpTextFieldLabelAndCounter(
+                      label: 'PRONOUNS',
+                      maxLength: 30,
+                      valueController: locationController,
+                      compact: true,
+                    ),
+                    const SizedBox(height: 30),
+                    SignUpTextField(
+                      valueController: websiteController,
+                      textInputActionType: TextInputAction.done,
+                      onSubmit: () {
+                        widget.nextPage();
+                      },
+                      hint: 'Website',
+                      maxLength: 100,
+                      keyboardType: TextInputType.url,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    SignUpTextFieldLabelAndCounter(
+                      label: 'WEBSITE',
+                      maxLength: 100,
+                      valueController: locationController,
+                      compact: true,
+                    ),
+                  ],
                 ),
               ),
             ),

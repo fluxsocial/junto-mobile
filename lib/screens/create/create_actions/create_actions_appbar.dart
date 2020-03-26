@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 
 class CreateActionsAppbar extends StatelessWidget {
   const CreateActionsAppbar({
@@ -14,8 +13,8 @@ class CreateActionsAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      brightness: Brightness.light,
-      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+      iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+      brightness: Theme.of(context).brightness,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
@@ -43,8 +42,10 @@ class CreateActionsAppbar extends StatelessWidget {
                 height: 42,
                 alignment: Alignment.centerRight,
                 padding: const EdgeInsets.only(right: 10),
-                child:
-                    Text('create', style: Theme.of(context).textTheme.caption),
+                child: Text(
+                  'create',
+                  style: Theme.of(context).textTheme.caption,
+                ),
               ),
             )
           ],

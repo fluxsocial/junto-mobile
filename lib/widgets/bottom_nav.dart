@@ -11,10 +11,14 @@ class BottomNav extends StatelessWidget {
   const BottomNav({
     this.onLeftButtonTap,
     @required this.actionsVisible,
+    this.address,
+    this.expressionContext = ExpressionContext.Collective,
   });
 
   final VoidCallback onLeftButtonTap;
   final bool actionsVisible;
+  final String address;
+  final ExpressionContext expressionContext;
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +49,9 @@ class BottomNav extends StatelessWidget {
                 alignment: Alignment.center,
                 child: RotatedBox(
                   quarterTurns: actionsVisible ? 2 : 0,
-                  child: Image.asset(
-                    'assets/images/junto-mobile__double-up-arrow.png',
-                    height: 14,
+                  child: Icon(
+                    CustomIcons.newdoubleuparrow,
+                    size: 33,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
@@ -60,9 +64,9 @@ class BottomNav extends StatelessWidget {
                 Navigator.push(
                   context,
                   FadeRoute<void>(
-                    child: const JuntoLotus(
-                      address: null,
-                      expressionContext: ExpressionContext.Collective,
+                    child: JuntoLotus(
+                      address: address,
+                      expressionContext: expressionContext,
                     ),
                   ),
                 );
@@ -76,8 +80,8 @@ class BottomNav extends StatelessWidget {
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Icon(
-                  CustomIcons.lotus,
-                  size: 28,
+                  CustomIcons.newflower,
+                  size: 33,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -93,9 +97,9 @@ class BottomNav extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: Image.asset(
-                  'assets/images/junto-mobile__menu.png',
-                  height: 8,
+                child: Icon(
+                  CustomIcons.drawermenu,
+                  size: 38,
                   color: Theme.of(context).primaryColor,
                 ),
               ),

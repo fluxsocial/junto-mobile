@@ -71,6 +71,7 @@ class UserProfile {
     @required this.bio,
     @required this.location,
     @required this.profilePicture,
+    @required this.backgroundPhoto,
     @required this.verified,
     @required this.username,
     @required this.website,
@@ -87,6 +88,7 @@ class UserProfile {
       profilePicture: map['profile_picture'] != null
           ? List<String>.from(map['profile_picture'])
           : null,
+      backgroundPhoto: map['background_photo'],
       verified: map['verified'] as bool,
       username: map['username'] as String,
       website:
@@ -110,6 +112,9 @@ class UserProfile {
   /// Url of the author's profile image
   final List<String> profilePicture;
 
+  // URL of background photo
+  final String backgroundPhoto;
+
   /// Whether the given user account has been verified
   final bool verified;
 
@@ -132,6 +137,7 @@ class UserProfile {
           bio == other.bio &&
           location == other.location &&
           profilePicture == other.profilePicture &&
+          backgroundPhoto == other.backgroundPhoto &&
           verified == other.verified &&
           username == other.username &&
           website == other.website &&
@@ -144,6 +150,7 @@ class UserProfile {
       bio.hashCode ^
       location.hashCode ^
       profilePicture.hashCode ^
+      backgroundPhoto.hashCode ^
       verified.hashCode ^
       username.hashCode ^
       website.hashCode ^
@@ -157,6 +164,7 @@ class UserProfile {
         ' bio: $bio,'
         ' location: $location,'
         ' profilePicture: $profilePicture,'
+        ' backgroundPhoto: $backgroundPhoto'
         ' verified: $verified,'
         ' username: $username,'
         ' website: $website,'
@@ -171,6 +179,7 @@ class UserProfile {
     String bio,
     List<String> location,
     List<String> profilePicture,
+    String backgroundPhoto,
     bool verified,
     String username,
     List<String> website,
@@ -182,6 +191,7 @@ class UserProfile {
       bio: bio ?? this.bio,
       location: location ?? this.location,
       profilePicture: profilePicture ?? this.profilePicture,
+      backgroundPhoto: backgroundPhoto ?? this.backgroundPhoto,
       verified: verified ?? this.verified,
       username: username ?? this.username,
       website: website ?? this.website,
@@ -196,6 +206,7 @@ class UserProfile {
       'bio': bio,
       'location': location,
       'profile_picture': profilePicture,
+      'background_photo': backgroundPhoto,
       'verified': verified,
       'username': username,
       'website': website,
@@ -241,6 +252,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
       @required this.bio,
       @required this.location,
       @required this.profileImage,
+      @required this.backgroundPhoto,
       @required this.gender,
       @required this.website,
       @required this.verificationCode});
@@ -254,6 +266,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String bio;
   final List<String> location;
   final List<String> profileImage;
+  final String backgroundPhoto;
   final List<String> gender;
   final List<String> website;
   final int verificationCode;
@@ -267,6 +280,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
       'name': name,
       'bio': bio,
       'profileImage': profileImage,
+      'backgroundPhoto': backgroundPhoto,
       'gender': gender,
       'website': website,
       'location': location
@@ -275,7 +289,14 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
 }
 
 class UserData {
-  UserData({
+  final Den privateDen;
+  final Den publicDen;
+  final CentralizedPack pack;
+  final UserProfile user;
+  final PerspectiveModel userPerspective;
+  final PerspectiveModel connectionPerspective;
+
+  const UserData({
     @required this.privateDen,
     @required this.publicDen,
     @required this.pack,
@@ -283,6 +304,57 @@ class UserData {
     @required this.userPerspective,
     @required this.connectionPerspective,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserData &&
+          runtimeType == other.runtimeType &&
+          privateDen == other.privateDen &&
+          publicDen == other.publicDen &&
+          pack == other.pack &&
+          user == other.user &&
+          userPerspective == other.userPerspective &&
+          connectionPerspective == other.connectionPerspective);
+
+  @override
+  int get hashCode =>
+      privateDen.hashCode ^
+      publicDen.hashCode ^
+      pack.hashCode ^
+      user.hashCode ^
+      userPerspective.hashCode ^
+      connectionPerspective.hashCode;
+
+  UserData copyWith({
+    Den privateDen,
+    Den publicDen,
+    CentralizedPack pack,
+    UserProfile user,
+    PerspectiveModel userPerspective,
+    PerspectiveModel connectionPerspective,
+  }) {
+    return UserData(
+      privateDen: privateDen ?? this.privateDen,
+      publicDen: publicDen ?? this.publicDen,
+      pack: pack ?? this.pack,
+      user: user ?? this.user,
+      userPerspective: userPerspective ?? this.userPerspective,
+      connectionPerspective:
+          connectionPerspective ?? this.connectionPerspective,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'private_den': privateDen.toJson(),
+      'public_den': publicDen.toJson(),
+      'pack': pack.toMap(),
+      'user': user.toMap(),
+      'user_perspective': userPerspective.toMap(),
+      'connection_perspective': connectionPerspective.toMap(),
+    };
+  }
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
@@ -299,28 +371,5 @@ class UserData {
         map['connection_perspective'],
       ),
     );
-  }
-
-  final Den privateDen;
-  final Den publicDen;
-  final CentralizedPack pack;
-  final UserProfile user;
-  final PerspectiveModel userPerspective;
-  final PerspectiveModel connectionPerspective;
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'private_den': privateDen.toJson(),
-      'public_den': publicDen.toJson(),
-      'pack': pack.toMap(),
-      'user': user.toMap(),
-      'user_perspective': userPerspective.toMap(),
-      'connection_perspective': connectionPerspective.toMap(),
-    };
-  }
-
-  @override
-  String toString() {
-    return 'User Data: privateDen: $privateDen, publicDen: $publicDen, pack: $pack, user: $user, userPerspective: $userPerspective connectionPerspective $connectionPerspective ';
   }
 }

@@ -2,10 +2,10 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class GroupRepo {
-  GroupRepo(this._groupService);
+  GroupRepo(this._groupService, this._userService);
 
   final GroupService _groupService;
-
+  final UserService _userService;
   Future<SphereResponse> createSphere(SphereModel sphere) {
     return _groupService.createSphere(sphere);
   }
@@ -25,6 +25,10 @@ class GroupRepo {
 
   Future<List<Users>> getGroupMembers(String groupAddress) {
     return _groupService.getGroupMembers(groupAddress);
+  }
+
+  Future<UserGroupsResponse> getUserGroups(String userAddress) {
+    return _userService.getUserGroups(userAddress);
   }
 
   Future<void> addGroupMember(

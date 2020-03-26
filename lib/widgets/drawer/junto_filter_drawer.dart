@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 /// Signature for the callback that's called when a [JuntoFilterDrawer] is
 /// opened or closed.
@@ -31,8 +32,7 @@ enum DrawerPosition {
 //width before initState
 const double _kWidth = 400;
 const double _kMinFlingVelocity = 265.0;
-const double _kEdgeDragWidth = 20.0;
-const Duration _kBaseSettleDuration = Duration(milliseconds: 246);
+const Duration _kBaseSettleDuration = Duration(milliseconds: 350);
 
 class JuntoFilterDrawer extends StatefulWidget {
   const JuntoFilterDrawer({
@@ -108,10 +108,12 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   double _initWidth = _kWidth;
   Orientation _orientation = Orientation.portrait;
   DrawerPosition _position;
+  FocusNode _filterFocusNode;
 
   @override
   void initState() {
     _updateWidth();
+    _filterFocusNode = FocusNode();
 
     _position =
         widget.leftDrawer != null ? DrawerPosition.start : DrawerPosition.end;
@@ -127,6 +129,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
 
   @override
   void dispose() {
+    _filterFocusNode?.dispose();
     _historyEntry?.remove();
     _controller.dispose();
     super.dispose();
@@ -143,7 +146,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   }
 
   LocalHistoryEntry _historyEntry;
-  final FocusScopeNode _focusScopeNode = FocusScopeNode();
 
   void _ensureHistoryEntry() {
     if (_historyEntry == null) {
@@ -151,7 +153,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
       if (route != null) {
         _historyEntry = LocalHistoryEntry(onRemove: _handleHistoryEntryRemoved);
         route.addLocalHistoryEntry(_historyEntry);
-        FocusScope.of(context).setFirstFocus(_focusScopeNode);
       }
     }
   }
@@ -167,16 +168,18 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
       case AnimationStatus.dismissed:
         if (_previouslyOpened != opened) {
           _previouslyOpened = opened;
-          if (widget.innerDrawerCallback != null)
+          if (widget.innerDrawerCallback != null) {
             widget.innerDrawerCallback(opened);
+          }
         }
         _ensureHistoryEntry();
         break;
       case AnimationStatus.completed:
         if (_previouslyOpened != opened) {
           _previouslyOpened = opened;
-          if (widget.innerDrawerCallback != null)
+          if (widget.innerDrawerCallback != null) {
             widget.innerDrawerCallback(opened);
+          }
         }
         _historyEntry?.remove();
         _historyEntry = null;
@@ -204,10 +207,11 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   void _updateWidth() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final RenderBox box = _drawerKey.currentContext?.findRenderObject();
-      if (box != null && box.size != null)
+      if (box != null && box.size != null) {
         setState(() {
           _initWidth = box.size.width;
         });
+      }
     });
   }
 
@@ -216,11 +220,13 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   void _move(DragUpdateDetails details) {
     double delta = details.primaryDelta / _width;
 
-    if (delta > 0 && _controller.value == 1 && widget.leftDrawer != null)
+    if (delta > 0 && _controller.value == 1 && widget.leftDrawer != null) {
       _position = DrawerPosition.start;
-    else if (delta < 0 && _controller.value == 1 && widget.rightMenu != null)
+    } else if (delta < 0 &&
+        _controller.value == 1 &&
+        widget.rightMenu != null) {
       _position = DrawerPosition.end;
-
+    }
     final double left =
         widget.offset != null ? widget.offset.left : widget.leftDrawer;
     final double right =
@@ -229,11 +235,11 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     double offset = _position == DrawerPosition.start ? left : right;
 
     double ee = 1;
-    if (offset <= 0.2)
+    if (offset <= 0.2) {
       ee = 1.7;
-    else if (offset <= 0.4)
+    } else if (offset <= 0.4) {
       ee = 1.2;
-    else if (offset <= 0.6) {
+    } else if (offset <= 0.6) {
       ee = 1.05;
     }
 
@@ -256,8 +262,9 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     }
 
     final bool opened = _controller.value < 0.5;
-    if (opened != _previouslyOpened && widget.innerDrawerCallback != null)
+    if (opened != _previouslyOpened && widget.innerDrawerCallback != null) {
       widget.innerDrawerCallback(opened);
+    }
     _previouslyOpened = opened;
   }
 
@@ -295,7 +302,9 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     if (FocusScope.of(context).hasFocus) {
       FocusScope.of(context).unfocus();
     }
-    if (direction != null) _position = direction;
+    if (direction != null) {
+      _position = direction;
+    }
     _controller.fling(velocity: -1);
   }
 
@@ -303,7 +312,10 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     if (FocusScope.of(context).hasFocus) {
       FocusScope.of(context).unfocus();
     }
-    if (direction != null) _position = direction;
+    _filterFocusNode?.unfocus();
+    if (direction != null) {
+      _position = direction;
+    }
     _controller.fling(velocity: 1);
   }
 
@@ -312,13 +324,13 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     if (FocusScope.of(context).hasFocus) {
       FocusScope.of(context).unfocus();
     }
-    if (direction != null) _position = direction;
+    if (direction != null) {
+      _position = direction;
+    }
     if (_previouslyOpened) {
       _close(direction: DrawerPosition.start);
-      // _controller.fling(velocity: 1);
     } else {
       _open(direction: DrawerPosition.start);
-      // _controller.fling(velocity: -1);
     }
   }
 
@@ -328,10 +340,8 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     }
 
     if (_previouslyOpened) {
-      // _controller.fling(velocity: 1);
       _close(direction: DrawerPosition.end);
     } else {
-      // _controller.fling(velocity: -1);
       _open(direction: DrawerPosition.end);
     }
   }
@@ -415,7 +425,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     final Container container = Container(
       color: Colors.transparent,
     );
-    if (_controller.status == AnimationStatus.dismissed)
+    if (_controller.status == AnimationStatus.dismissed) {
       return BlockSemantics(
         child: GestureDetector(
           // On Android, the back button is used to dismiss a modal.
@@ -427,6 +437,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
           ),
         ),
       );
+    }
     return null;
   }
 
@@ -451,10 +462,11 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     );
 
     final Widget invC = _invisibleCover();
-    if (invC != null)
+    if (invC != null) {
       container = Stack(
         children: <Widget>[container, invC],
       );
+    }
 
     // Vertical translate
     if (widget.offset != null &&
@@ -482,41 +494,41 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     final double offset = 0.5 - _offset * 0.5;
     final double wFactor = (_controller.value * (1 - offset)) + offset;
 
-    return Stack(
-      alignment: _drawerInnerAlignment,
-      children: <Widget>[
-        GestureDetector(
-          child: RepaintBoundary(
-            child: _animatedChild(),
+    return ListenableProvider<FocusNode>.value(
+      value: _filterFocusNode,
+      child: Stack(
+        alignment: _drawerInnerAlignment,
+        children: <Widget>[
+          GestureDetector(
+            child: RepaintBoundary(
+              child: _animatedChild(),
+            ),
+            onHorizontalDragDown: _swipe ? _handleDragDown : null,
+            onHorizontalDragUpdate: _swipe ? _move : null,
+            onHorizontalDragEnd: _swipe ? _settle : null,
+            excludeFromSemantics: true,
           ),
-          onHorizontalDragDown: _swipe ? _handleDragDown : null,
-          onHorizontalDragUpdate: _swipe ? _move : null,
-          onHorizontalDragEnd: _swipe ? _settle : null,
-          excludeFromSemantics: true,
-        ),
-        GestureDetector(
-          key: _gestureDetectorKey,
-          onTap: () {},
-          onHorizontalDragDown: _swipe ? _handleDragDown : null,
-          onHorizontalDragUpdate: _swipe ? _move : null,
-          onHorizontalDragEnd: _swipe ? _settle : null,
-          excludeFromSemantics: true,
-          child: RepaintBoundary(
-            child: Stack(
-              children: <Widget>[
-                DarkBackground(
-                  controller: _controller,
-                  animationType: _animationType,
-                  color: _color,
-                ),
-                Align(
-                  alignment: _drawerOuterAlignment,
-                  child: Align(
-                      alignment: _drawerInnerAlignment,
-                      widthFactor: wFactor,
-                      child: RepaintBoundary(
-                        child: FocusScope(
-                          node: _focusScopeNode,
+          GestureDetector(
+            key: _gestureDetectorKey,
+            onTap: () {},
+            onHorizontalDragDown: _swipe ? _handleDragDown : null,
+            onHorizontalDragUpdate: _swipe ? _move : null,
+            onHorizontalDragEnd: _swipe ? _settle : null,
+            excludeFromSemantics: true,
+            child: RepaintBoundary(
+              child: Stack(
+                children: <Widget>[
+                  DarkBackground(
+                    controller: _controller,
+                    animationType: _animationType,
+                    color: _color,
+                  ),
+                  Align(
+                    alignment: _drawerOuterAlignment,
+                    child: Align(
+                        alignment: _drawerInnerAlignment,
+                        widthFactor: wFactor,
+                        child: RepaintBoundary(
                           child: Stack(
                             children: <Widget>[
                               _scaffold(),
@@ -531,14 +543,14 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
                               ),
                             ],
                           ),
-                        ),
-                      )),
-                ),
-              ].where((Widget a) => a != null).toList(),
+                        )),
+                  ),
+                ].where((Widget a) => a != null).toList(),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

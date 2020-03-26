@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:junto_beta_mobile/app/providers/bloc_providers.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -47,8 +50,14 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<NotificationRepo>.value(value: backend.notificationRepo),
         Provider<AppRepo>.value(value: backend.appRepo),
       ],
-      child: MaterialAppWithTheme(
-        loggedIn: widget.loggedIn,
+      child: ChangeNotifierProvider<UserDataProvider>(
+        create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
+        lazy: false,
+        child: BlocProviders(
+          child: MaterialAppWithTheme(
+            loggedIn: widget.loggedIn,
+          ),
+        ),
       ),
     );
   }
@@ -81,6 +90,11 @@ class MaterialAppWithTheme extends StatelessWidget {
           title: 'JUNTO Alpha',
           debugShowCheckedModeBanner: false,
           theme: theme.getTheme(),
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
         );
       },
     );

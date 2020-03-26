@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_data.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/resonation_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -73,7 +74,7 @@ class MockExpressionService implements ExpressionService {
 
   @override
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
-    Map<String, String> params,
+    Map<String, dynamic> params,
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return QueryResults<ExpressionResponse>(

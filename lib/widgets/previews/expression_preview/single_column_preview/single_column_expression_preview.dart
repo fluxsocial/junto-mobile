@@ -1,32 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/action_items/expression_action_items.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/dynamic.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/event.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/shortform.dart';
+import 'package:provider/provider.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
 class SingleColumnExpressionPreview extends StatelessWidget
     with MemberValidation {
-  const SingleColumnExpressionPreview(
-      {Key key,
-      @required this.expression,
-      @required this.userAddress,
-      this.allowComments = true})
+  const SingleColumnExpressionPreview({Key key, @required this.expression})
       : super(key: key);
 
   final ExpressionResponse expression;
-  final String userAddress;
-  final bool allowComments;
 
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<UserDataProvider>(context, listen: false);
     return GestureDetector(
       onTap: () {
         // pending - create conditional statement that renders ExpressionOpenCreated if
@@ -36,8 +33,7 @@ class SingleColumnExpressionPreview extends StatelessWidget
             FadeRoute<void>(
               child: ExpressionOpen(
                 expression,
-                userAddress,
-                allowComments,
+                userData.userAddress,
               ),
             ),
           );
@@ -49,7 +45,7 @@ class SingleColumnExpressionPreview extends StatelessWidget
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
               ) {
-                return ExpressionOpen(expression, userAddress, allowComments);
+                return ExpressionOpen(expression, userData.userAddress);
               },
               transitionsBuilder: (
                 BuildContext context,
@@ -128,11 +124,14 @@ class SingleColumnExpressionPreview extends StatelessWidget
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                         builder: (BuildContext context) => Container(
                           color: Colors.transparent,
                           child: ExpressionActionItems(
                             expression: expression,
-                            userAddress: userAddress,
+                            userAddress: userData.userAddress,
                           ),
                         ),
                       );

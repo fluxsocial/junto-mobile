@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
 
-class JuntoCreate extends StatelessWidget {
+class JuntoCreate extends StatefulWidget {
   const JuntoCreate({
     @required this.channels,
     @required this.address,
     @required this.expressionContext,
-    @required this.expressionCenterBackground,
+    @required this.currentTheme,
   });
 
   final List<String> channels;
   final String address;
   final ExpressionContext expressionContext;
-  final String expressionCenterBackground;
+  final ThemeData currentTheme;
+
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoCreateState();
+  }
+}
+
+class JuntoCreateState extends State<JuntoCreate> {
+  dynamic source;
 
   void _navigateTo(BuildContext context, ExpressionType expression) {
     switch (expression) {
@@ -28,50 +39,59 @@ class JuntoCreate extends StatelessWidget {
         _push(
             context,
             CreateLongform(
-                expressionContext: expressionContext, address: address),
+                expressionContext: widget.expressionContext,
+                address: widget.address),
             expression);
         break;
       case ExpressionType.event:
         _push(
             context,
-            CreateEvent(expressionContext: expressionContext, address: address),
+            CreateEvent(
+                expressionContext: widget.expressionContext,
+                address: widget.address),
             expression);
         break;
       case ExpressionType.shortform:
         _push(
             context,
             CreateShortform(
-                expressionContext: expressionContext, address: address),
+                expressionContext: widget.expressionContext,
+                address: widget.address),
             expression);
         break;
       case ExpressionType.photo:
         _push(
             context,
-            CreatePhoto(expressionContext: expressionContext, address: address),
+            CreatePhoto(
+              expressionContext: widget.expressionContext,
+              address: widget.address,
+            ),
             expression);
         break;
       default:
     }
   }
 
-  void _push(BuildContext context, Widget form, ExpressionType expression) {
-    Navigator.push(
+  void _push(
+      BuildContext context, Widget form, ExpressionType expression) async {
+    final ExpressionType expressionType = await Navigator.push(
       context,
-      FadeRoute<void>(
+      FadeRoute<ExpressionType>(
         child: form,
       ),
     );
+    setState(() {
+      source = expressionType;
+    });
+    logger.logDebug(source.toString());
   }
 
   Widget _expressionCenter(BuildContext context) {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: Image.asset(
-            expressionCenterBackground,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
+          child: BackgroundTheme(
+            currentTheme: widget.currentTheme,
           ),
         ),
         Positioned(
@@ -79,32 +99,27 @@ class JuntoCreate extends StatelessWidget {
           left: 0,
           right: 0,
           child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      _selectExpressionIcon(ExpressionType.dynamic),
-                      _selectExpressionIcon(ExpressionType.shortform),
-                    ],
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: Row(
+                      children: <Widget>[
+                        _selectExpressionIcon(ExpressionType.dynamic),
+                        _selectExpressionIcon(ExpressionType.shortform),
+                        _selectExpressionIcon(ExpressionType.photo),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      _selectExpressionIcon(ExpressionType.photo),
-                      _selectExpressionIcon(ExpressionType.event),
-                    ],
+                  HomeIcon(
+                    source: source,
+                    navigateTo: _navigateTo,
                   ),
-                ),
-                const HomeIcon(),
-              ],
+                ],
+              ),
             ),
           ),
         ),

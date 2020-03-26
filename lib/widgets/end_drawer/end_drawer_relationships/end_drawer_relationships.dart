@@ -1,14 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending/pending_relationships.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pack_members.dart';
 import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatefulWidget {
@@ -24,28 +26,46 @@ class JuntoRelationships extends StatefulWidget {
 }
 
 class JuntoRelationshipsState extends State<JuntoRelationships> {
-  Future<dynamic> _userRelations;
+  List<UserProfile> pendingConnectionRequests;
+  List<UserProfile> pendingPackRequests;
+
   final List<String> _tabs = <String>[
-    'Connections',
-    'Subscriptions',
-    // 'Subscribers',
-    'Pending'
+    'SUBSCRIPTIONS',
+    'SUBSCRIBERS',
+    'CONNECTIONS',
+    'PACK',
   ];
+
+  Future<void> getUserRelationships() async {
+    final dynamic userRelations =
+        await Provider.of<UserRepo>(context, listen: false).userRelations();
+    setState(() {
+      pendingConnectionRequests =
+          userRelations['pending_connections']['results'];
+      pendingPackRequests =
+          userRelations['pending_group_join_requests']['results'];
+    });
+  }
+
+  Widget _notificationSignal() {
+    return Positioned(
+      top: 10,
+      right: 5,
+      child: Container(
+        height: 7,
+        width: 7,
+        decoration: BoxDecoration(
+          color: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.circular(100),
+        ),
+      ),
+    );
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userRelations = getUserRelationships();
-  }
-
-  Future<dynamic> getUserRelationships() async {
-    return Provider.of<UserRepo>(context, listen: false).userRelations();
-  }
-
-  void _refreshActions(bool action) {
-    setState(() {
-      _userRelations = getUserRelationships();
-    });
+    getUserRelationships();
   }
 
   @override
@@ -55,10 +75,12 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
           automaticallyImplyLeading: false,
-          brightness: Brightness.light,
-          iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColor,
+          ),
           elevation: 0,
           titleSpacing: 0,
+          brightness: Theme.of(context).brightness,
           title: Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,6 +100,45 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     ),
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<dynamic>(
+                        builder: (BuildContext context) => PendingRelationships(
+                          userAddress: widget.userAddress,
+                          refreshActions: getUserRelationships,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 42,
+                    height: 42,
+                    alignment: Alignment.centerRight,
+                    color: Colors.transparent,
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          height: 42,
+                          width: 42,
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(
+                            CustomIcons.request,
+                            color: Theme.of(context).primaryColorDark,
+                            size: 17,
+                          ),
+                        ),
+                        if (pendingConnectionRequests != null &&
+                            pendingPackRequests != null)
+                          if (pendingConnectionRequests.isNotEmpty ||
+                              pendingPackRequests.isNotEmpty)
+                            _notificationSignal()
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -88,7 +149,9 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
             ),
@@ -107,15 +170,22 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
+                    unselectedLabelColor: Theme.of(context).primaryColorLight,
                     labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
                         Container(
-                          margin: const EdgeInsets.only(right: 24),
+                          margin: const EdgeInsets.only(right: 20),
                           color: Theme.of(context).colorScheme.background,
                           child: Tab(
-                            text: name,
+                            child: Text(
+                              name,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           ),
                         ),
                     ],
@@ -125,92 +195,20 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
               ),
             ];
           },
-          body: FutureBuilder<dynamic>(
-            future: _userRelations,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                // get list of connections
-                final List<UserProfile> _connectionsMembers =
-                    snapshot.data['connections']['results'];
+          body: TabBarView(
+            children: <Widget>[
+              // subscriptions
+              Subscriptions(),
 
-                // get list of following
-                final List<UserProfile> _followingMembers =
-                    snapshot.data['following']['results'];
+              // subscribers
+              Subscribers(),
 
-                // get list of pending connections
-                final List<UserProfile> _pendingConnectionsMembers =
-                    snapshot.data['pending_connections']['results'];
+              // connections
+              Connections(),
 
-                return TabBarView(
-                  children: <Widget>[
-                    // connections
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _connectionsMembers
-                          .map(
-                            (dynamic connection) =>
-                                MemberPreview(profile: connection),
-                          )
-                          .toList(),
-                    ),
-
-                    // subscriptions
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _followingMembers
-                          .map(
-                            (dynamic connection) =>
-                                MemberPreview(profile: connection),
-                          )
-                          .toList(),
-                    ),
-                    // pending connections
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _pendingConnectionsMembers
-                          .map(
-                            (dynamic connection) => RelationshipRequest(
-                              connection,
-                              _refreshActions,
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                print(snapshot.error);
-                return TabBarView(
-                  children: <Widget>[
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                  ],
-                );
-              }
-              return TabBarView(
-                children: <Widget>[
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  ),
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  ),
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  )
-                ],
-              );
-            },
+              // pack members
+              PackMembers(userAddress: widget.userAddress),
+            ],
           ),
         ),
       ),

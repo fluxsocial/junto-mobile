@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
+import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 class CommentOpen extends StatelessWidget {
@@ -29,7 +29,7 @@ class CommentOpen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: Text(
-                    'in response to ' + parent.creator.name,
+                    'in response to ${parent.creator.name}',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColorLight,
@@ -79,6 +79,9 @@ class CommentOpen extends StatelessWidget {
                         onTap: () {
                           showModalBottomSheet(
                             context: context,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                             builder: (BuildContext context) =>
                                 CommentActionItems(
                               comment: comment,

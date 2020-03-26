@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
@@ -31,29 +32,34 @@ class CreatePhotoState extends State<CreatePhoto> {
   bool _showBottomNav = true;
 
   Future<void> _onPickPressed() async {
-    final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      setState(() => imageFile = null);
-      return;
+    try {
+      final File image =
+          await ImagePicker.pickImage(source: ImageSource.gallery);
+      if (image == null) {
+        setState(() => imageFile = null);
+        return;
+      }
+      final File cropped = await ImageCroppingDialog.show(context, image,
+          aspectRatios: <String>[
+            '1:1',
+            '2:3',
+            '3:2',
+            '3:4',
+            '4:3',
+            '4:5',
+            '5:4',
+            '9:16',
+            '16:9'
+          ]);
+      if (cropped == null) {
+        setState(() => imageFile = null);
+        return;
+      }
+      setState(() => imageFile = cropped);
+      _toggleBottomNav(false);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
-    final File cropped = await ImageCroppingDialog.show(context, image,
-        aspectRatios: <String>[
-          '1:1',
-          '2:3',
-          '3:2',
-          '3:4',
-          '4:3',
-          '4:5',
-          '5:4',
-          '9:16',
-          '16:9'
-        ]);
-    if (cropped == null) {
-      setState(() => imageFile = null);
-      return;
-    }
-    setState(() => imageFile = cropped);
-    _toggleBottomNav(false);
   }
 
   Future<void> _cropPhoto() async {
@@ -145,6 +151,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
+      expressionType: ExpressionType.photo,
       onNext: _onNext,
       showBottomNav: _showBottomNav,
       child: Expanded(

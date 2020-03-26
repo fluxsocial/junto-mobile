@@ -95,9 +95,8 @@ class ExpressionRepo {
 
   Future<QueryResults<ExpressionResponse>> getPackExpressions(
     Map<String, String> params,
-  ) async {
-    cachedResults = await _expressionService.getCollectiveExpressions(params);
-    return cachedResults;
+  ) {
+    return _expressionService.getCollectiveExpressions(params);
   }
 
   List<ExpressionResponse> get collectiveExpressions =>

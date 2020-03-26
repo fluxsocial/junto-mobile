@@ -12,6 +12,9 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,14 +29,14 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   String _userAddress;
   UserData _userProfile;
   String _userFollowPerspectiveId;
-  String _currentTheme = 'rainbow';
-  bool _nightMode;
+  ThemeData _currentTheme;
 
   @override
   void initState() {
     super.initState();
 
     getUserInformation();
+    getTheme();
   }
 
   Future<void> getUserInformation() async {
@@ -45,32 +48,35 @@ class JuntoDrawerState extends State<JuntoDrawer> {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
       _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
-      _currentTheme = prefs.getString('current-theme');
-      _nightMode = prefs.getBool('night-mode');
-      print(_nightMode);
     });
   }
 
-  String _displayBackground() {
-    if (_currentTheme == 'rainbow' || _currentTheme == 'rainbow-night') {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
-    } else if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
-      return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
-      return 'assets/images/junto-mobile__themes--royal.png';
-    } else {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
-    }
+  Future<void> getTheme() async {
+    final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
+        .getTheme();
+    setState(() {
+      _currentTheme = theme;
+    });
+  }
+
+  logOut(BuildContext context) async {
+    await Provider.of<AuthRepo>(
+      context,
+      listen: false,
+    ).logoutUser();
+    Navigator.of(context).pushReplacement(
+      FadeRoute<void>(
+        child: Welcome(),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Image.asset(_displayBackground(), fit: BoxFit.cover),
+        BackgroundTheme(
+          currentTheme: _currentTheme,
         ),
         Container(
           padding: EdgeInsets.only(
@@ -91,9 +97,9 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                         ? Container(
                             margin: const EdgeInsets.only(right: 32),
                             child: MemberAvatar(
-                                profilePicture:
-                                    _userProfile.user.profilePicture,
-                                diameter: 28),
+                              profilePicture: _userProfile.user.profilePicture,
+                              diameter: 28,
+                            ),
                           )
                         : const SizedBox(),
                     title: 'My Den',
@@ -152,24 +158,21 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                   JuntoDrawerItem(
                     icon: Container(
-                        width: 60,
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          Icons.favorite,
-                          color: Colors.white,
-                          size: 24,
-                        )),
+                      width: 60,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
                     title: 'Themes',
                     onTap: () async {
-                      Navigator.push(
+                      await Navigator.push(
                         context,
-                        CupertinoPageRoute<Widget>(
+                        CupertinoPageRoute<dynamic>(
                           builder: (BuildContext context) {
-                            return JuntoThemes(
-                              refreshData: getUserInformation,
-                              currentTheme: _currentTheme,
-                              nightMode: _nightMode,
-                            );
+                            return JuntoThemes(refreshTheme: getTheme);
                           },
                         ),
                       );
@@ -189,13 +192,12 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                 ),
                 title: 'Log Out',
                 onTap: () async {
-                  await Provider.of<AuthRepo>(
-                    context,
-                    listen: false,
-                  ).logoutUser();
-                  Navigator.of(context).pushReplacement(
-                    FadeRoute<void>(
-                      child: Welcome(),
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => ConfirmDialog(
+                      buildContext: context,
+                      confirm: logOut,
+                      confirmationText: 'Are you sure you want to log out?',
                     ),
                   );
                 },

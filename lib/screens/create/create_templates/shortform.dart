@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
-import 'package:junto_beta_mobile/utils/form-validation.dart';
+import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
@@ -21,23 +21,31 @@ class CreateShortform extends StatefulWidget {
 }
 
 class CreateShortformState extends State<CreateShortform> {
+  final FocusNode _focus = FocusNode();
+  bool _showBottomNav = true;
   String gradientOne;
   String gradientTwo;
 
   TextEditingController _bodyController;
 
+  void toggleBottomNav() {
+    setState(() {
+      _showBottomNav = !_showBottomNav;
+    });
+  }
+
   /// Creates a [ShortFormExpression] from the given data entered
   /// by the user.
   ShortFormExpression createExpression() {
     return ShortFormExpression(
-      body: _bodyController.value.text,
+      body: _bodyController.value.text.trim(),
       background: <dynamic>[gradientOne, gradientTwo],
     );
   }
 
   bool validate() {
     return _bodyController.value.text != null &&
-        _bodyController.value.text.isNotEmpty;
+        _bodyController.value.text.trim().isNotEmpty;
   }
 
   @override
@@ -46,6 +54,7 @@ class CreateShortformState extends State<CreateShortform> {
     gradientOne = '8E8098';
     gradientTwo = '307FAA';
     _bodyController = TextEditingController();
+    _focus.addListener(toggleBottomNav);
   }
 
   @override
@@ -111,12 +120,17 @@ class CreateShortformState extends State<CreateShortform> {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
+      expressionType: ExpressionType.shortform,
       onNext: _onNext,
+      showBottomNav: _showBottomNav,
       child: Expanded(
         child: Column(
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
               child: Row(
                 children: <Widget>[
                   _gradientSelector('8E8098', '307FAA'),
@@ -134,11 +148,12 @@ class CreateShortformState extends State<CreateShortform> {
                   children: <Widget>[
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 25.0,
+                        vertical: 50.0,
                         horizontal: 25.0,
                       ),
-                      alignment: Alignment.center,
-                      height: MediaQuery.of(context).size.width,
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.width,
+                      ),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -154,9 +169,9 @@ class CreateShortformState extends State<CreateShortform> {
                           ],
                         ),
                       ),
-                      child: TextFormField(
-                        autofocus: true,
-                        validator: Validator.validateNonEmpty,
+                      child: TextField(
+                        focusNode: _focus,
+                        autofocus: false,
                         controller: _bodyController,
                         buildCounter: (
                           BuildContext context, {
@@ -167,10 +182,9 @@ class CreateShortformState extends State<CreateShortform> {
                             null,
                         decoration: InputDecoration(
                           hintMaxLines: 25,
-                          hintText: 'Tap here to start typing',
                           hintStyle: TextStyle(
                             color: Colors.white.withOpacity(0.5),
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.w700,
                           ),
                           border: InputBorder.none,

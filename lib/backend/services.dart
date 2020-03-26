@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchService {
@@ -29,6 +30,9 @@ abstract class SearchService {
 
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationService {
+  // verifies the email of a user
+  Future<Map<String, dynamic>> validateUser({String username, String email});
+
   // verifies the email of a user
   Future<String> verifyEmail(String email);
 
@@ -104,7 +108,7 @@ abstract class ExpressionService {
   /// Returns a [QueryExpressionResults] containing a list of results which
   /// satisfies the query.
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
-      Map<String, String> params);
+      Map<String, dynamic> params);
 
   /// Returns mock expression data.
   List<ExpressionResponse> get collectiveExpressions;
@@ -192,8 +196,10 @@ abstract class UserService {
   Future<List<ExpressionResponse>> getUsersResonations(String userAddress);
 
   /// Placeholder for now, currently under development server-side.
-  Future<List<ExpressionResponse>> getUsersExpressions(
+  Future<QueryResults<ExpressionResponse>> getUsersExpressions(
     String userAddress,
+    int paginationPos,
+    String lastTimestamp,
   );
 
   /// Reads the cached user from the device.

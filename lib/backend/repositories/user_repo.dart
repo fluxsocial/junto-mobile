@@ -31,19 +31,21 @@ class UserRepo {
     return _userService.getUserPerspective(userAddress);
   }
 
-  Future<UserGroupsResponse> getUserGroups(String userAddress) {
-    return _userService.getUserGroups(userAddress);
-  }
-
   Future<List<ExpressionResponse>> getUsersResonations(String userAddress) {
     return _userService.getUsersResonations(userAddress);
   }
 
-  Future<List<ExpressionResponse>> getUsersExpressions(
+  Future<QueryResults<ExpressionResponse>> getUsersExpressions(
     String userAddress,
+    int paginationPos,
+    String lastTimestamp,
   ) {
     assert(userAddress != null && userAddress.isNotEmpty);
-    return _userService.getUsersExpressions(userAddress);
+    return _userService.getUsersExpressions(
+      userAddress,
+      paginationPos,
+      lastTimestamp,
+    );
   }
 
   Future<UserData> readLocalUser() {
@@ -130,8 +132,10 @@ class UserRepo {
   }
 
   Future<Map<String, dynamic>> updateUser(
-          Map<String, dynamic> user, String userAddress) =>
-      _userService.updateUser(user, userAddress);
+      Map<String, dynamic> user, String userAddress) {
+    assert(userAddress != null);
+    return _userService.updateUser(user, userAddress);
+  }
 
   Future<List<UserProfile>> getFollowers(String userAddress) =>
       _userService.getFollowers(userAddress);

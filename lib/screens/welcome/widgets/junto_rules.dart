@@ -12,27 +12,43 @@ class JuntoRules extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * .1),
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Container(
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * .05,
+              ),
               child: Text(
-                '1. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
-                style: Theme.of(context).textTheme.headline5,
+                'I. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
                 textAlign: TextAlign.left,
               ),
             ),
-            const SizedBox(height: 25),
             Container(
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * .05,
+              ),
               child: Text(
-                "2. Accept everyone else's experience as valid, even if it doesn't look like yours",
-                style: Theme.of(context).textTheme.headline5,
+                "II. Accept everyone else's experience as valid, even if it doesn't look like yours.",
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-            const SizedBox(height: 25),
             Container(
               child: Text(
-                '3. Express yourself freely. Be real and hold space for authenticity.',
-                style: Theme.of(context).textTheme.headline5,
+                'III. Express yourself freely. Be real and hold space for authenticity.',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ],

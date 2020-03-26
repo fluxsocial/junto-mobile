@@ -43,9 +43,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           GestureDetector(
-            onTap: () {
-              openPerspectivesDrawer();
-            },
+            onTap: openPerspectivesDrawer,
             child: Container(
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.only(left: 10),
@@ -132,10 +130,10 @@ class _JuntoAppbarSearchState extends State<JuntoAppbarSearch> {
   bool searchMembersPage = false;
   bool searchSpheresPage = false;
 
-  FocusNode textFieldFocusNode = FocusNode();
-
   // ignore: unused_field
   ValueNotifier<SelectedUsers> _selectedUsers;
+
+  FocusNode textFieldFocusNode;
 
   @override
   void initState() {
@@ -145,6 +143,7 @@ class _JuntoAppbarSearchState extends State<JuntoAppbarSearch> {
 
   @override
   void didChangeDependencies() {
+    textFieldFocusNode = FocusNode();
     super.didChangeDependencies();
     _selectedUsers = Provider.of<ValueNotifier<SelectedUsers>>(context);
   }
@@ -152,6 +151,7 @@ class _JuntoAppbarSearchState extends State<JuntoAppbarSearch> {
   @override
   void dispose() {
     super.dispose();
+    textFieldFocusNode.dispose();
     pageController.dispose();
   }
 

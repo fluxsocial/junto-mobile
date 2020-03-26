@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
-  AuthRepo(this._authService);
+  AuthRepo(this._authService, this._userRepo);
 
   final AuthenticationService _authService;
+  final UserRepo _userRepo;
 
   String _authKey;
   bool _isLoggedIn;
@@ -17,15 +20,32 @@ class AuthRepo {
   Future<bool> isLoggedIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _isLoggedIn = prefs.getBool('isLoggedIn');
+    // Let's check if user is actually logged in
+    if (_isLoggedIn) {
+      try {
+        final id = prefs.getString('user_id');
+        final _ = await _userRepo.getUser(id);
+      } catch (e) {
+        logger.logException(e);
+        return false;
+      }
+    }
     return _isLoggedIn;
   }
 
+  Future<Map<String, dynamic>> validateUser(
+      {String username, String email}) async {
+    return _authService.validateUser(username: username, email: email);
+  }
+
   Future<String> verifyEmail(String email) async {
+    logger.logDebug('Veryfing e-mail');
     return _authService.verifyEmail(email);
   }
 
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
+    logger.logDebug('Registering user');
     final UserData _data = await _authService.registerUser(details);
     await _authService.loginUser(
       UserAuthLoginDetails(email: details.email, password: details.password),
@@ -60,7 +80,8 @@ class AuthRepo {
         ..setString('user_data', _userMapToString);
 
       return _user;
-    } catch (error) {
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during user login');
       rethrow;
     }
   }
