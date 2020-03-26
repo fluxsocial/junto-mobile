@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -97,8 +98,11 @@ class PerspectiveItem extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: Image.asset('assets/images/junto-mobile__binoculars.png',
-                    height: 15, color: Colors.white),
+                child: Icon(
+                  CustomIcons.newbinoculars,
+                  size: 28,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(width: 15),
               Expanded(

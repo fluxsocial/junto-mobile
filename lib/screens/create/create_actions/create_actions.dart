@@ -196,8 +196,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       await showFeedback(
         context,
         icon: Icon(
-          CustomIcons.create,
-          size: 17,
+          CustomIcons.newcreate,
+          size: 24,
           color: Theme.of(context).primaryColor,
         ),
         message: 'Expression Created!',
