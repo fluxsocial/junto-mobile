@@ -167,7 +167,8 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
       );
 
       _params = <String, String>{
-        'context_type': ExpressionContextTypeEnumMap[currentContextType],
+        'context_type': ExpressionQueryParams
+            .ExpressionContextTypeEnumMap[currentContextType],
         'pagination_position': '$_currentPage',
         if (currentChannels.isNotEmpty == true)
           'channels[0]': currentChannels[0],
@@ -188,12 +189,4 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
       logger.logError('Unauthorized, should be handled on lotus screen');
     }
   }
-
-  static const ExpressionContextTypeEnumMap = {
-    ExpressionContextType.Dos: 'Dos',
-    ExpressionContextType.FollowPerspective: 'FollowPerspective',
-    ExpressionContextType.Collective: 'Collective',
-    ExpressionContextType.Group: 'Group',
-    ExpressionContextType.ConnectPerspective: 'ConnectPerspective',
-  };
 }
