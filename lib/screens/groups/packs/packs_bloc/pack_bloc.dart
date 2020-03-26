@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:meta/meta.dart';
@@ -17,8 +18,11 @@ class PackBloc extends Bloc<PackEvent, PackState> {
   final GroupRepo groupRepo;
   final String groupAddress;
   String lastTimestamp;
+
   Map<String, String> _params;
   int currentPos = 0;
+  int membersPos = 0;
+  String lastMemberTimeStamp;
 
   @override
   PackState get initialState => PackInitial();
@@ -155,6 +159,13 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       results: _private,
       lastTimestamp: results.lastTimestamp,
     );
-    return [publicQueryResults, privateQueryResults, members];
+    return [publicQueryResults, privateQueryResults, members.results];
+  }
+
+  Future<QueryResults<Users>> _getMembers(
+      final String groupAddress, ExpressionQueryParams params) async {
+    final result = await groupRepo.getGroupMembers(groupAddress, params);
+    lastMemberTimeStamp = result.lastTimestamp;
+    return result;
   }
 }
