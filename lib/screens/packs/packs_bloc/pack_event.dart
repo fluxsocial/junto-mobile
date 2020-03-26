@@ -4,8 +4,9 @@ part of 'pack_bloc.dart';
 abstract class PackEvent {}
 
 class FetchPacks extends PackEvent {
-  FetchPacks(this.groupAddress);
-  final String groupAddress;
+  final String group;
+
+  FetchPacks({this.group});
 }
 
 class FetchMorePacks extends PackEvent {}

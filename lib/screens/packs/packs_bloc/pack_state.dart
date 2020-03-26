@@ -12,10 +12,12 @@ class PacksLoaded extends PackState {
     this.publicExpressions,
     this.privateExpressions,
     this.groupMemebers,
+    this.pack,
   );
   final QueryResults<ExpressionResponse> publicExpressions;
   final QueryResults<ExpressionResponse> privateExpressions;
   final List<Users> groupMemebers;
+  final Group pack;
 }
 
 class PacksError extends PackState {

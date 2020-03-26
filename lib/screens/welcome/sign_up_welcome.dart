@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/junto_horizontal_separator.dart';
 import 'widgets/junto_logo.dart';
 import 'widgets/junto_name.dart';
 import 'widgets/junto_rules.dart';
