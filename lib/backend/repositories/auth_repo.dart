@@ -21,7 +21,7 @@ class AuthRepo {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _isLoggedIn = prefs.getBool('isLoggedIn');
     // Let's check if user is actually logged in
-    if (_isLoggedIn) {
+    if (_isLoggedIn != null && _isLoggedIn) {
       try {
         final id = prefs.getString('user_id');
         final _ = await _userRepo.getUser(id);
