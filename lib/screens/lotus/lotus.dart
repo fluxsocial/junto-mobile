@@ -103,7 +103,7 @@ class JuntoLotusState extends State<JuntoLotus> {
             BackgroundTheme(currentTheme: _currentTheme),
             Container(
               height: MediaQuery.of(context).size.height,
-              padding: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.only(bottom: 30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -230,7 +230,6 @@ class JuntoLotusState extends State<JuntoLotus> {
                       ),
                       Container(
                         height: 80,
-                        margin: const EdgeInsets.only(bottom: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
