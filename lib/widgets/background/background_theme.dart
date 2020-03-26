@@ -15,7 +15,7 @@ class BackgroundTheme extends StatelessWidget {
       return 'assets/images/junto-mobile__themes--royal.png';
     } else if (currentTheme == JuntoThemes().rainbow ||
         currentTheme == JuntoThemes().rainbowNight) {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
+      return 'assets/images/junto-mobile__themes--rainbow.png'; 
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     }
