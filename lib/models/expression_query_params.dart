@@ -18,6 +18,7 @@ class ExpressionQueryParams {
   final String context;
   final List<String> channels;
   final String name;
+  final String lastTimestamp;
 
   ExpressionQueryParams({
     this.contextType,
@@ -26,12 +27,24 @@ class ExpressionQueryParams {
     this.context,
     this.channels,
     this.name,
+    this.lastTimestamp,
   });
 
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> params = {};
+  static const ExpressionContextTypeEnumMap = {
+    ExpressionContextType.Dos: 'Dos',
+    ExpressionContextType.FollowPerspective: 'FollowPerspective',
+    ExpressionContextType.Collective: 'Collective',
+    ExpressionContextType.Group: 'Group',
+    ExpressionContextType.ConnectPerspective: 'ConnectPerspective',
+  };
+
+  Map<String, String> toMap() {
+    Map<String, String> params = {};
     if (contextType != null) {
-      params.putIfAbsent('context_type', () => contextType);
+      params.putIfAbsent(
+        'context_type',
+        () => ExpressionContextTypeEnumMap[contextType],
+      );
     }
     if (paginationPosition != null) {
       params.putIfAbsent('pagination_position', () => paginationPosition);
@@ -43,10 +56,13 @@ class ExpressionQueryParams {
       params.putIfAbsent('context', () => context);
     }
     if (channels != null) {
-      params.putIfAbsent('channels', () => channels);
+      params.putIfAbsent('channels', () => ListToString.toJson(channels));
     }
     if (name != null) {
       params.putIfAbsent('name', () => name);
+    }
+    if (lastTimestamp != null) {
+      params.putIfAbsent('last_timestamp', () => lastTimestamp);
     }
     return params;
   }
