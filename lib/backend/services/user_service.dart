@@ -23,6 +23,7 @@ class UserServiceCentralized implements UserService {
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
   Future<PerspectiveModel> createPerspective(Perspective perspective) async {
+    print(perspective.members);
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'name': perspective.name,
       'members': perspective.members,

@@ -52,7 +52,6 @@ class EditPerspectiveState extends State<EditPerspective> {
       setState(() {
         _perspectiveMembers = _members;
       });
-
       return _members;
     } on JuntoException catch (e, s) {
       logger.logException(e, s, 'error fethcing perspectives ${e.errorCode}');
