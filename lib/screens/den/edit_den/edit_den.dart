@@ -1,29 +1,29 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_appbar.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_background_photo.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_header_space.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_profile_picture.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_text_field.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_text_field.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_appbar.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_header_space.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_profile_picture.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_background_photo.dart';
 
 class JuntoEditDen extends StatefulWidget {
   JuntoEditDen({this.currentTheme});
 
   String currentTheme;
-
   @override
   State<StatefulWidget> createState() {
     return JuntoEditDenState();
@@ -54,6 +54,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     _locationController = TextEditingController();
     _genderController = TextEditingController();
     _websiteController = TextEditingController();
+    getUserInformation();
   }
 
   @override
@@ -66,12 +67,15 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final _dataProv = Provider.of<UserDataProvider>(context);
-    _userData = _dataProv.userProfile;
-    _userAddress = _userData.user.address;
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userData = UserData.fromMap(decodedUserData);
+    });
     setEditInfo();
   }
 
