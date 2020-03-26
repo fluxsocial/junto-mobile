@@ -7,10 +7,9 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
-import 'package:junto_beta_mobile/screens/groups/packs/packs_list.dart';
-import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart';
+import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -37,7 +36,6 @@ class JuntoPacks extends StatefulWidget {
 class JuntoPacksState extends State<JuntoPacks>
     with HideFab, ListDistinct, TickerProviderStateMixin {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
 
   bool actionsVisible = false;
   Widget _currentGroup;
@@ -85,7 +83,6 @@ class JuntoPacksState extends State<JuntoPacks>
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: JuntoFilterDrawer(
-            key: _filterDrawerKey,
             leftDrawer: const FilterDrawerContent(ExpressionContextType.Group),
             rightMenu: JuntoDrawer(),
             scaffold: Scaffold(
@@ -101,20 +98,23 @@ class JuntoPacksState extends State<JuntoPacks>
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25),
                   child: BottomNav(
-                      address: widget.initialGroup,
-                      expressionContext: ExpressionContext.Group,
-                      actionsVisible: actionsVisible,
-                      onLeftButtonTap: () {
-                        if (actionsVisible) {
-                          setState(() {
-                            actionsVisible = false;
-                          });
-                        } else {
-                          setState(() {
+                    address: widget.initialGroup,
+                    expressionContext: ExpressionContext.Group,
+                    actionsVisible: actionsVisible,
+                    onLeftButtonTap: () {
+                      if (actionsVisible) {
+                        setState(() {
+                          actionsVisible = false;
+                        });
+                      } else {
+                        setState(
+                          () {
                             actionsVisible = true;
-                          });
-                        }
-                      }),
+                          },
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
               floatingActionButtonLocation:

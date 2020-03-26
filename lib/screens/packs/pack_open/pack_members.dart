@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/packs/packs_bloc/pack_bloc.dart';
+import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
@@ -20,7 +20,7 @@ class PackOpenMembers extends StatelessWidget {
     BuildContext context,
   ) {
     final metrics = notification.metrics;
-    double scrollPercent = (metricxs.pixels / metrics.maxScrollExtent) * 100;
+    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
     if (scrollPercent.roundToDouble() == 60.0) {
       context.bloc<PackBloc>().add(FetchMorePacksMembers());
       return true;

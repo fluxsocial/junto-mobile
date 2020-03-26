@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/packs/my_packs.dart';
-import 'package:junto_beta_mobile/screens/groups/packs/pack_requests.dart';
+import 'package:junto_beta_mobile/screens/packs/my_packs.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_requests.dart';
 
 class PacksList extends StatefulWidget {
   const PacksList({this.selectedGroup});
