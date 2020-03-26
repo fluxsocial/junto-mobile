@@ -12,7 +12,6 @@ class UserDataProvider extends ChangeNotifier {
   ) {
     initialize();
   }
-
   final AppRepo appRepository;
 
   String userAddress;
@@ -41,27 +40,6 @@ class UserDataProvider extends ChangeNotifier {
 
       notifyListeners();
     }
-    return;
-  }
-
-  Future<void> updateUserProfile(UserProfile profile) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final updatedProfile = userProfile.user.copyWith(
-      address: profile.address,
-      name: profile.name,
-      bio: profile.bio,
-      location: profile.location,
-      profilePicture: profile.profilePicture,
-      backgroundPhoto: profile.backgroundPhoto,
-      verified: profile.verified,
-      username: profile.username,
-      website: profile.website,
-      gender: profile.gender,
-    );
-    userProfile = userProfile.copyWith(user: updatedProfile);
-    prefs.setString('user_data', json.encode(userProfile.toMap()));
-    prefs.setString('user_id', userProfile.user.address);
-    notifyListeners();
     return;
   }
 
