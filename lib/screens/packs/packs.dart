@@ -68,21 +68,21 @@ class JuntoPacksState extends State<JuntoPacks>
         )..add(FetchMyPack()),
         lazy: false,
       ),
-      BlocProvider<ChannelFilteringBloc>(
-        create: (ctx) => ChannelFilteringBloc(
-          Provider.of<SearchRepo>(ctx, listen: false),
-          (value) => BlocProvider.of<GroupBloc>(ctx).add(
-            FetchMyPack(),
-          ),
-        ),
-        lazy: false,
-      ),
       BlocProvider<PackBloc>(
         create: (ctx) => PackBloc(
           Provider.of<ExpressionRepo>(ctx, listen: false),
           Provider.of<GroupRepo>(ctx, listen: false),
           initialGroup: widget.initialGroup,
         )..add(FetchPacks()),
+        lazy: false,
+      ),
+      BlocProvider<ChannelFilteringBloc>(
+        create: (ctx) => ChannelFilteringBloc(
+          Provider.of<SearchRepo>(ctx, listen: false),
+          (value) => BlocProvider.of<PackBloc>(ctx).add(
+            FetchPacks(channel: value?.name),
+          ),
+        ),
         lazy: false,
       ),
     ];

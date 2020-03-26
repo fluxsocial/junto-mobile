@@ -5,8 +5,12 @@ abstract class PackEvent {}
 
 class FetchPacks extends PackEvent {
   final String group;
+  final String channel;
 
-  FetchPacks({this.group});
+  FetchPacks({
+    this.group,
+    this.channel,
+  });
 }
 
 class FetchMorePacks extends PackEvent {}
