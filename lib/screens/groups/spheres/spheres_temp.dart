@@ -14,42 +14,40 @@ class SpheresTemp extends StatelessWidget {
         leftDrawer: null,
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
-            floatingActionButton: Padding(
-              padding: const EdgeInsets.only(bottom: 25),
-              child: BottomNav(
-                address: null,
-                expressionContext: ExpressionContext.Group,
-                actionsVisible: false,
-                onLeftButtonTap: () {},
-              ),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            elevation: 0,
+            backgroundColor: Theme.of(context).backgroundColor,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'Groups',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ],
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(height: 45),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    color: Theme.of(context).backgroundColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Groups',
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        const SizedBox(
-                          width: 38,
-                          height: 38,
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )),
+          ),
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: BottomNav(
+              address: null,
+              expressionContext: ExpressionContext.Group,
+              actionsVisible: false,
+              onLeftButtonTap: () {},
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: <Widget>[
+                // ToDo: Eric - visual for empty state
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
