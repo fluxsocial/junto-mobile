@@ -22,7 +22,7 @@ class SphereOpenAppbar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       actions: <Widget>[Container()],
-      brightness: Brightness.light,
+      brightness: Theme.of(context).brightness,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       elevation: 0,
       titleSpacing: 0,

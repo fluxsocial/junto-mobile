@@ -41,7 +41,7 @@ class _SphereOpenMembersState extends State<SphereOpenMembers> {
           preferredSize: const Size.fromHeight(45),
           child: AppBar(
             automaticallyImplyLeading: false,
-            brightness: Brightness.light,
+            brightness: Theme.of(context).brightness,
             elevation: 0,
             titleSpacing: 0,
             title: Container(

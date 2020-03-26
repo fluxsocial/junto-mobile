@@ -22,7 +22,7 @@ class PackOpenAppbar extends StatelessWidget {
         return AppBar(
           automaticallyImplyLeading: false,
           actions: <Widget>[Container()],
-          brightness: Brightness.light,
+          brightness: Theme.of(context).brightness,
           elevation: 0,
           titleSpacing: 0,
           bottom: PreferredSize(

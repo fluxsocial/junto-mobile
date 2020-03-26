@@ -118,6 +118,7 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
+          brightness: Theme.of(context).brightness,
           centerTitle: true,
           title: const Text('Crop', style: TextStyle(fontSize: 16.0)),
           actions: <Widget>[

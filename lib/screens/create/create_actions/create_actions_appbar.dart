@@ -14,6 +14,7 @@ class CreateActionsAppbar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+      brightness: Theme.of(context).brightness,
       elevation: 0,
       titleSpacing: 0,
       title: Container(

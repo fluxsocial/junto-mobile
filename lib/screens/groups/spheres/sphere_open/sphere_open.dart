@@ -122,7 +122,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           ) {
             return <Widget>[
               SliverAppBar(
-                brightness: Brightness.light,
+                brightness: Theme.of(context).brightness,
                 automaticallyImplyLeading: false,
                 primary: false,
                 actions: const <Widget>[

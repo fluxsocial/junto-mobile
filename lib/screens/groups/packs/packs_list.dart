@@ -32,6 +32,7 @@ class PacksListState extends State<PacksList> {
         automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Theme.of(context).backgroundColor,
+        brightness: Theme.of(context).brightness,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

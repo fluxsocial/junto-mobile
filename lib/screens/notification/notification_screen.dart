@@ -168,6 +168,7 @@ class _NotificationScreenState extends State<NotificationScreen>
           'Notifications',
           style: Theme.of(context).textTheme.headline6,
         ),
+        brightness: Theme.of(context).brightness,
         bottom: TabBar(
           controller: _tabController,
           tabs: <Widget>[

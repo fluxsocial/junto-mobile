@@ -79,6 +79,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
   Widget build(BuildContext context) {
     return SliverAppBar(
       automaticallyImplyLeading: false,
+      brightness: Theme.of(context).brightness,
       primary: false,
       actions: const <Widget>[
         SizedBox(

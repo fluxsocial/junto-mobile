@@ -15,6 +15,7 @@ class SpheresTemp extends StatelessWidget {
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           appBar: AppBar(
+            brightness: Theme.of(context).brightness,
             automaticallyImplyLeading: false,
             elevation: 0,
             backgroundColor: Theme.of(context).backgroundColor,
