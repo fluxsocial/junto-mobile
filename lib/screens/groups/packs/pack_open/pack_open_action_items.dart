@@ -32,8 +32,8 @@ class PackOpenActionItems extends StatelessWidget {
         horizontal: 15,
         vertical: 10,
       ),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),

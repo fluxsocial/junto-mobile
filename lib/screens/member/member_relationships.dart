@@ -274,7 +274,6 @@ class MemberRelationships extends StatelessWidget {
         isFollowing: isFollowing,
       );
     } else if (hasPendingPackRequest || isPackMember) {
-      print('yeooo');
       return PackActionItems(
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,

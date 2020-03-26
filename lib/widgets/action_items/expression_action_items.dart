@@ -53,8 +53,8 @@ class ExpressionActionItems extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
           ),
         ),
         child: Column(
@@ -71,8 +71,9 @@ class ExpressionActionItems extends StatelessWidget {
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                          color: Theme.of(context).dividerColor,
-                          borderRadius: BorderRadius.circular(100)),
+                        color: Theme.of(context).dividerColor,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                     ),
                   ],
                 ),
