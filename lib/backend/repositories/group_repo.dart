@@ -24,7 +24,7 @@ class GroupRepo {
     return _groupService.getRelationToGroup(groupAddress, userAddress);
   }
 
-  Future<List<Users>> getGroupMembers(
+  Future<QueryResults<Users>> getGroupMembers(
       String groupAddress, ExpressionQueryParams params) {
     return _groupService.getGroupMembers(groupAddress, params);
   }

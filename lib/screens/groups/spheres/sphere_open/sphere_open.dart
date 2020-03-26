@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_appbar.dart';
@@ -83,9 +84,14 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     print(relationToGroup);
   }
 
+//TODO(Nash): Replace with bloc
   Future<List<Users>> _getMembers() async {
-    return await Provider.of<GroupRepo>(context, listen: false)
-        .getGroupMembers(widget.group.address);
+    final query =
+        await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
+      widget.group.address,
+      ExpressionQueryParams(paginationPosition: '0'),
+    );
+    return query.results;
   }
 
   @override
