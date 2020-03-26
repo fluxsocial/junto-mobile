@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
@@ -77,14 +78,12 @@ class GroupServiceCentralized implements GroupService {
   List<Sphere> get spheres => Sphere.fetchAll();
 
   @override
-  Future<List<Users>> getGroupMembers(String groupAddress) async {
+  Future<List<Users>> getGroupMembers(
+      String groupAddress, ExpressionQueryParams params) async {
     final http.Response _serverResponse = await client.get(
         '/groups/$groupAddress/members',
         queryParams: {'pagination_position': '0'});
     final dynamic items = await JuntoHttp.handleResponse(_serverResponse);
-
-    print(items['results']);
-    final List<Users> users = [];
 
     items['results'].map((result) {
       users.add(Users.fromJson(result));
