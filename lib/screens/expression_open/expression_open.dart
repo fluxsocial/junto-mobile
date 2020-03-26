@@ -81,7 +81,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     } else if (expressionType == 'EventForm') {
       return EventOpen(widget.expression);
     } else {
-      return const Text('no expressions!');
+      return const SizedBox();
     }
   }
 
