@@ -18,13 +18,7 @@ class CollectivePopulatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (state.results.length == 0) {
       return SliverToBoxAdapter(
-        //TODO(Nash): Add illustration for error state.
-        child: Padding(
-          padding: const EdgeInsets.all(28.0),
-          child: Center(
-            child: Text('No expressions'),
-          ),
-        ),
+        child: const SizedBox(),
       );
     } else {
       return SliverList(
