@@ -16,6 +16,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
 
   DenBloc(this.userRepo, this.userData);
 
+  String userAddress;
   int currentPage = 0;
   String currentTimeStamp;
 
@@ -35,7 +36,8 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     }
   }
 
-  Stream<DenState> _fetchUserDenExpressions(event) async* {
+  Stream<DenState> _fetchUserDenExpressions(LoadDen event) async* {
+    userAddress = event.userAddress;
     try {
       yield DenLoadingState();
       final userExpressions = await fetchExpressions();
@@ -83,12 +85,12 @@ class DenBloc extends Bloc<DenEvent, DenState> {
   }
 
   Future<QueryResults<ExpressionResponse>> fetchExpressions() async {
-    final userAddress = userData.userAddress;
     final result = await userRepo.getUsersExpressions(
       userAddress,
       currentPage,
       currentTimeStamp,
     );
+    currentTimeStamp = result.lastTimestamp;
     return result;
   }
 }
