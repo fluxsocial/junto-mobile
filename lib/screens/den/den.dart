@@ -113,6 +113,7 @@ class JuntoDenState extends State<JuntoDen>
             Provider.of<UserDataProvider>(context, listen: false))
           ..add(LoadDen()),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: JuntoFilterDrawer(
             leftDrawer:
                 const FilterDrawerContent(ExpressionContextType.Collective),
