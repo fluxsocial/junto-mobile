@@ -67,8 +67,11 @@ class ExpressionOpenBottom extends StatelessWidget {
                     width: 33,
                     alignment: Alignment.centerLeft,
                     color: Colors.transparent,
-                    child: Icon(CustomIcons.create,
-                        size: 15, color: Theme.of(context).primaryColorLight),
+                    child: Icon(
+                      CustomIcons.newcreate,
+                      size: 24,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
                   ),
                 )
               ],

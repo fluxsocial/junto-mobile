@@ -29,9 +29,9 @@ class FilterDrawerChannelPreview extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
             ),
             child: const Icon(
-              CustomIcons.hash,
+              CustomIcons.newhashtag,
               color: Colors.white,
-              size: 15,
+              size: 24,
             ),
           ),
           const SizedBox(width: 10),

@@ -97,9 +97,9 @@ class BottomNav extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: Image.asset(
-                  'assets/images/junto-mobile__menu.png',
-                  height: 8,
+                child: Icon(
+                  CustomIcons.drawermenu,
+                  size: 38,
                   color: Theme.of(context).primaryColor,
                 ),
               ),

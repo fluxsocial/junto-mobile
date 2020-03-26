@@ -134,8 +134,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         await showFeedback(
           context,
           icon: Icon(
-            CustomIcons.create,
-            size: 17,
+            CustomIcons.newcreate,
+            size: 33,
             color: Theme.of(context).primaryColor,
           ),
           message: 'Comment Created',
@@ -352,9 +352,9 @@ class ExpressionContextChannelPreview extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
             ),
             child: const Icon(
-              CustomIcons.hash,
+              CustomIcons.newhashtag,
               color: Colors.white,
-              size: 15,
+              size: 24,
             ),
           ),
           Container(
@@ -363,9 +363,11 @@ class ExpressionContextChannelPreview extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(channel,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.subtitle1),
+                Text(
+                  channel,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
               ],
             ),
           )

@@ -52,4 +52,8 @@ class CustomIcons {
   static const IconData newpacks = IconData(0xe911, fontFamily: 'j_home_two');
   static const IconData newcollective =
       IconData(0xe913, fontFamily: 'j_home_two');
+  static const IconData newbinoculars =
+      IconData(0xe912, fontFamily: 'j_home_two');
+  static const IconData drawermenu = IconData(0xe90b, fontFamily: 'j_home_two');
+  static const IconData newhashtag = IconData(0xe90e, fontFamily: 'j_home_two');
 }

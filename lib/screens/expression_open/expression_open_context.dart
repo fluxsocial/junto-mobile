@@ -30,9 +30,12 @@ class ExpressionOpenContext extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Icon(CustomIcons.create,
-                    size: 20, color: Theme.of(context).primaryColor),
-                const SizedBox(height: 25),
+                Icon(
+                  CustomIcons.newcreate,
+                  size: 33,
+                  color: Theme.of(context).primaryColor,
+                ),
+                const SizedBox(height: 15),
                 Container(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Row(
@@ -124,9 +127,9 @@ class ExpressionContextChannelPreview extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
             ),
             child: const Icon(
-              CustomIcons.hash,
+              CustomIcons.newhashtag,
               color: Colors.white,
-              size: 15,
+              size: 24,
             ),
           ),
           Container(
@@ -135,9 +138,11 @@ class ExpressionContextChannelPreview extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(channel,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.subtitle1),
+                Text(
+                  channel,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
               ],
             ),
           )
