@@ -12,11 +12,12 @@ part 'pack_event.dart';
 part 'pack_state.dart';
 
 class PackBloc extends Bloc<PackEvent, PackState> {
-  PackBloc(this.expressionRepo, this.groupRepo, this.groupAddress);
+  PackBloc(this.expressionRepo, this.groupRepo, {this.initialGroup});
 
   final ExpressionRepo expressionRepo;
   final GroupRepo groupRepo;
-  final String groupAddress;
+  final String initialGroup;
+  String currentGroup;
   String lastTimestamp;
 
   Map<String, String> _params;
@@ -43,8 +44,13 @@ class PackBloc extends Bloc<PackEvent, PackState> {
   }
 
   Stream<PackState> _mapFetchPacksToState(FetchPacks event) async* {
+    if (event.group != null) {
+      currentGroup = event.group;
+    }
+    final Group group = await groupRepo.getGroup(currentGroup ?? initialGroup);
+    currentGroup = group.address;
     _params = <String, String>{
-      'context': groupAddress,
+      'context': group.address,
       'context_type': 'Group',
       'pagination_position': currentPos.toString(),
     };
@@ -54,7 +60,8 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       QueryResults<ExpressionResponse> publicQueryResults = _results[0];
       QueryResults<ExpressionResponse> privateQueryResults = _results[1];
       List<Users> members = _results[2];
-      yield PacksLoaded(publicQueryResults, privateQueryResults, members);
+      yield PacksLoaded(
+          publicQueryResults, privateQueryResults, members, group);
     } on JuntoException catch (error) {
       yield PacksError(error.message);
     } catch (e, s) {
@@ -76,6 +83,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
           currentResults.publicExpressions,
           currentResults.privateExpressions,
           currentResults.groupMemebers,
+          currentResults.pack,
         );
 
         final _results = await _fetchExpressionAndMembers();
@@ -96,6 +104,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
           currentResults.publicExpressions,
           currentResults.privateExpressions,
           members,
+          currentResults.pack,
         );
       }
     } on JuntoException catch (error) {
@@ -112,20 +121,26 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       final publicExpressions = currentState.publicExpressions;
       final privateExpressions = currentState.privateExpressions;
       final currentMembers = currentState.groupMemebers;
-      yield PacksLoaded(publicExpressions, privateExpressions, currentMembers);
+      yield PacksLoaded(
+        publicExpressions,
+        privateExpressions,
+        currentMembers,
+        currentState.pack,
+      );
 
       membersPos += 50;
       final ExpressionQueryParams _params = ExpressionQueryParams(
         paginationPosition: '$membersPos',
         lastTimestamp: lastMemberTimeStamp,
       );
-      final _updatedMembers = await _getMembers(groupAddress, _params);
+      final _updatedMembers = await _getMembers(currentGroup, _params);
       if (_updatedMembers.results.length > 1) {
         currentMembers.addAll(_updatedMembers.results);
         yield PacksLoaded(
           publicExpressions,
           privateExpressions,
           currentMembers,
+          currentState.pack,
         );
       }
     } catch (error, stack) {
@@ -140,7 +155,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       _params,
     );
     final members = await _getMembers(
-        groupAddress, ExpressionQueryParams(paginationPosition: '0'));
+        currentGroup, ExpressionQueryParams(paginationPosition: '0'));
 
     List<ExpressionResponse> _public = results.results
         .where((element) => element.privacy == 'Public')
@@ -159,6 +174,9 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       results: _private,
       lastTimestamp: results.lastTimestamp,
     );
+    logger.logInfo(
+        'Fetched ${publicQueryResults.results.length} public query results and ${privateQueryResults.results.length} private query results');
+
     return [publicQueryResults, privateQueryResults, members.results];
   }
 

@@ -25,16 +25,16 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener(
-      onNotification: _onScrollNotification,
+    return BlocListener<CollectiveBloc, CollectiveState>(
+      listener: _blocListener,
       child: RefreshIndicator(
         onRefresh: () {
           context.bloc<CollectiveBloc>().add(RefreshCollective());
           return refreshCompleter.future;
         },
         displacement: MediaQuery.of(context).size.height / 4,
-        child: BlocListener<CollectiveBloc, CollectiveState>(
-          listener: _blocListener,
+        child: NotificationListener(
+          onNotification: _onScrollNotification,
           child: widget.child,
         ),
       ),

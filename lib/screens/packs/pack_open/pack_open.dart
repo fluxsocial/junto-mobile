@@ -1,152 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_members.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_name.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_tabs.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 
-class PackOpen extends StatefulWidget {
+class PackOpen extends StatelessWidget {
   const PackOpen({
     Key key,
-    @required this.pack,
   }) : super(key: key);
-
-  final Group pack;
-
-  @override
-  State<StatefulWidget> createState() {
-    return PackOpenState();
-  }
-}
-
-class PackOpenState extends State<PackOpen> {
-  final List<String> _tabs = <String>['Pack', 'Private', 'Members'];
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PackBloc(
-        Provider.of<ExpressionRepo>(context, listen: false),
-        Provider.of<GroupRepo>(context, listen: false),
-        widget.pack.address,
-      )..add(FetchPacks(widget.pack.address)),
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(45),
-          child: PackOpenAppbar(
-            pack: widget.pack,
-          ),
+    return BlocBuilder<PackBloc, PackState>(
+      builder: (context, state) {
+        if (state is PacksLoaded) {
+          return PacksLoadedScaffold(state);
+        }
+        if (state is PacksError) {
+          return JuntoErrorWidget(
+            errorMessage: 'Something went wrong',
+          );
+        } else {
+          return JuntoLoader();
+        }
+      },
+    );
+  }
+}
+
+class PacksLoadedScaffold extends StatelessWidget {
+  const PacksLoadedScaffold(
+    this.state, {
+    Key key,
+  }) : super(key: key);
+
+  final PacksLoaded state;
+  final List<String> _tabs = const <String>['Pack', 'Private', 'Members'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(45),
+        child: PackOpenAppbar(
+          pack: state.pack,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: DefaultTabController(
-          length: _tabs.length,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
-                ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                      width: .75,
-                    ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: DefaultTabController(
+        length: _tabs.length,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 10,
+              ),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
                   ),
                 ),
-                child: TabBar(
-                  labelPadding: const EdgeInsets.all(0),
-                  isScrollable: true,
-                  labelColor: Theme.of(context).primaryColorDark,
-                  unselectedLabelColor: Theme.of(context).primaryColorLight,
-                  labelStyle: Theme.of(context).textTheme.subtitle1,
-                  indicatorWeight: 0.0001,
-                  tabs: <Widget>[
-                    for (String name in _tabs) PackName(name: name),
-                  ],
-                ),
               ),
-              PackTabs(group: widget.pack),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class PackTabs extends StatelessWidget {
-  const PackTabs({
-    Key key,
-    @required this.group,
-  }) : super(key: key);
-
-  final Group group;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: NotificationListener<OverscrollNotification>(
-        onNotification: (value) {
-          if (value.overscroll < 0 && value.metrics.axis == Axis.horizontal) {
-            JuntoFilterDrawer.of(context).toggle();
-            return true;
-          } else if (value.overscroll > 0 &&
-              value.metrics.axis == Axis.horizontal) {
-            JuntoFilterDrawer.of(context).toggleRightMenu();
-            return true;
-          }
-          return false;
-        },
-        child: TabBarView(
-          children: <Widget>[
-            GroupExpressions(
-              key: const PageStorageKey<String>('public-pack'),
-              group: group,
-              privacy: 'Public',
+              child: TabBar(
+                labelPadding: const EdgeInsets.all(0),
+                isScrollable: true,
+                labelColor: Theme.of(context).primaryColorDark,
+                unselectedLabelColor: Theme.of(context).primaryColorLight,
+                labelStyle: Theme.of(context).textTheme.subtitle1,
+                indicatorWeight: 0.0001,
+                tabs: <Widget>[
+                  for (String name in _tabs) PackName(name: name),
+                ],
+              ),
             ),
-            GroupExpressions(
-              key: const PageStorageKey<String>('private-pack'),
-              group: group,
-              privacy: 'Private',
-            ),
-            PackOpenMembers(
-              key: UniqueKey(),
-              packAddress: group.address,
-            )
+            PackTabs(group: state.pack),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class PackName extends StatelessWidget {
-  const PackName({
-    Key key,
-    @required this.name,
-  }) : super(key: key);
-
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      margin: const EdgeInsets.only(right: 20),
-      child: Text(
-        name.toUpperCase(),
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w700,
         ),
       ),
     );
