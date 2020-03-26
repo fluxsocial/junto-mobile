@@ -102,12 +102,41 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     }
   }
 
+  Stream<PackState> _mapFetchMoreMembersToState(event) async* {
+    try {
+      final currentState = state as PacksLoaded;
+      final publicExpressions = currentState.publicExpressions;
+      final privateExpressions = currentState.privateExpressions;
+      final currentMembers = currentState.groupMemebers;
+      yield PacksLoaded(publicExpressions, privateExpressions, currentMembers);
+
+      membersPos += 50;
+      final ExpressionQueryParams _params = ExpressionQueryParams(
+        paginationPosition: '$membersPos',
+        lastTimestamp: lastMemberTimeStamp,
+      );
+      final _updatedMembers = await _getMembers(groupAddress, _params);
+      if (_updatedMembers.results.length > 1) {
+        currentMembers.addAll(_updatedMembers.results);
+        yield PacksLoaded(
+          publicExpressions,
+          privateExpressions,
+          currentMembers,
+        );
+      }
+    } catch (error, stack) {
+      logger.logException(error, stack);
+      yield PacksError();
+    }
+  }
+
   Future<List> _fetchExpressionAndMembers() async {
     final QueryResults<ExpressionResponse> results =
         await expressionRepo.getPackExpressions(
       _params,
     );
-    final members = await groupRepo.getGroupMembers(groupAddress);
+    final members = await _getMembers(
+        groupAddress, ExpressionQueryParams(paginationPosition: '0'));
 
     List<ExpressionResponse> _public = results.results
         .where((element) => element.privacy == 'Public')
