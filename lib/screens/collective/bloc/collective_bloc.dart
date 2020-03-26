@@ -120,12 +120,12 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
         final currentResult = currentState.results;
         if (currentState.results.length > 1) {
           currentResult.addAll(expressions.results);
+          yield CollectivePopulated(
+            currentResult,
+            false,
+            currentState.name,
+          );
         }
-        yield CollectivePopulated(
-          currentResult,
-          false,
-          currentState.name,
-        );
       }
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
