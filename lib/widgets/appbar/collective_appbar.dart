@@ -24,21 +24,23 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
     return Consumer<UserDataProvider>(
       builder: (BuildContext context, UserDataProvider data, Widget child) {
         return Container(
-          height: 135,
+          height: MediaQuery.of(context).size.height * .1 + 50,
+          color: Colors.blue,
           child: Column(
             children: <Widget>[
               Container(
-                height: 85,
+                height: MediaQuery.of(context).size.height * .1,
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Theme.of(context).dividerColor,
-                        width: .75,
-                      ),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: .75,
                     ),
-                    color: Theme.of(context).backgroundColor),
+                  ),
+                  color: Theme.of(context).backgroundColor,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,

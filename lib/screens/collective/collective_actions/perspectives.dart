@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_item.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives_header.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 
 class JuntoPerspectives extends StatelessWidget {
   const JuntoPerspectives();
@@ -32,19 +33,15 @@ class JuntoPerspectives extends StatelessWidget {
         onUpTap: () {},
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: PerspectivesAppbar(),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Container(
-                color: Theme.of(context).backgroundColor,
-                child: PerspectivesHeader(),
-              ),
-            ),
-            const SizedBox(height: 10),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(0),
