@@ -82,14 +82,65 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const SizedBox(height: 70),
-          GestureDetector(
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        SignUpTextField(
+                          hint: 'Email',
+                          maxLength: 100,
+                          textInputActionType: TextInputAction.next,
+                          onSubmit: () {
+                            FocusScope.of(context).nextFocus();
+                          },
+                          valueController: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          textCapitalization: TextCapitalization.none,
+                        ),
+                        const SizedBox(height: 30),
+                        SignUpTextField(
+                          hint: 'Password',
+                          maxLength: 100,
+                          textInputActionType: TextInputAction.done,
+                          onSubmit: () {
+                            // FocusScope.of(context).unfocus();
+                          },
+                          obscureText: true,
+                          valueController: _passwordController,
+                          keyboardType: TextInputType.visiblePassword,
+                          textCapitalization: TextCapitalization.none,
+                        ),
+                        const SizedBox(height: 60),
+                        CallToActionButton(
+                          onSignUp: () {
+                            _handleSignIn(context);
+                          },
+                          title: 'SIGN IN',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        Container(
+          height: 70,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          alignment: Alignment.bottomLeft,
+          child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
               widget.signInController.previousPage(
@@ -111,51 +162,8 @@ class _SignInState extends State<SignIn> {
               ),
             ),
           ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    SignUpTextField(
-                      hint: 'Email',
-                      maxLength: 100,
-                      textInputActionType: TextInputAction.next,
-                      onSubmit: () {
-                        FocusScope.of(context).nextFocus();
-                      },
-                      valueController: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                    const SizedBox(height: 30),
-                    SignUpTextField(
-                      hint: 'Password',
-                      maxLength: 100,
-                      textInputActionType: TextInputAction.done,
-                      onSubmit: () {
-                        // FocusScope.of(context).unfocus();
-                      },
-                      obscureText: true,
-                      valueController: _passwordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                    const SizedBox(height: 60),
-                    CallToActionButton(
-                      onSignUp: () {
-                        _handleSignIn(context);
-                      },
-                      title: 'SIGN IN',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 

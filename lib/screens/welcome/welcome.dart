@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
