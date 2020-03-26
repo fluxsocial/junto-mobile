@@ -289,14 +289,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
 }
 
 class UserData {
-  final Den privateDen;
-  final Den publicDen;
-  final CentralizedPack pack;
-  final UserProfile user;
-  final PerspectiveModel userPerspective;
-  final PerspectiveModel connectionPerspective;
-
-  const UserData({
+  UserData({
     @required this.privateDen,
     @required this.publicDen,
     @required this.pack,
@@ -304,57 +297,6 @@ class UserData {
     @required this.userPerspective,
     @required this.connectionPerspective,
   });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is UserData &&
-          runtimeType == other.runtimeType &&
-          privateDen == other.privateDen &&
-          publicDen == other.publicDen &&
-          pack == other.pack &&
-          user == other.user &&
-          userPerspective == other.userPerspective &&
-          connectionPerspective == other.connectionPerspective);
-
-  @override
-  int get hashCode =>
-      privateDen.hashCode ^
-      publicDen.hashCode ^
-      pack.hashCode ^
-      user.hashCode ^
-      userPerspective.hashCode ^
-      connectionPerspective.hashCode;
-
-  UserData copyWith({
-    Den privateDen,
-    Den publicDen,
-    CentralizedPack pack,
-    UserProfile user,
-    PerspectiveModel userPerspective,
-    PerspectiveModel connectionPerspective,
-  }) {
-    return UserData(
-      privateDen: privateDen ?? this.privateDen,
-      publicDen: publicDen ?? this.publicDen,
-      pack: pack ?? this.pack,
-      user: user ?? this.user,
-      userPerspective: userPerspective ?? this.userPerspective,
-      connectionPerspective:
-          connectionPerspective ?? this.connectionPerspective,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'private_den': privateDen.toJson(),
-      'public_den': publicDen.toJson(),
-      'pack': pack.toMap(),
-      'user': user.toMap(),
-      'user_perspective': userPerspective.toMap(),
-      'connection_perspective': connectionPerspective.toMap(),
-    };
-  }
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
@@ -371,5 +313,28 @@ class UserData {
         map['connection_perspective'],
       ),
     );
+  }
+
+  final Den privateDen;
+  final Den publicDen;
+  final CentralizedPack pack;
+  final UserProfile user;
+  final PerspectiveModel userPerspective;
+  final PerspectiveModel connectionPerspective;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'private_den': privateDen.toJson(),
+      'public_den': publicDen.toJson(),
+      'pack': pack.toMap(),
+      'user': user.toMap(),
+      'user_perspective': userPerspective.toMap(),
+      'connection_perspective': connectionPerspective.toMap(),
+    };
+  }
+
+  @override
+  String toString() {
+    return 'User Data: privateDen: $privateDen, publicDen: $publicDen, pack: $pack, user: $user, userPerspective: $userPerspective connectionPerspective $connectionPerspective ';
   }
 }
