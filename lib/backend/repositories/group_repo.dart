@@ -1,4 +1,5 @@
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class GroupRepo {
@@ -23,8 +24,9 @@ class GroupRepo {
     return _groupService.getRelationToGroup(groupAddress, userAddress);
   }
 
-  Future<List<Users>> getGroupMembers(String groupAddress) {
-    return _groupService.getGroupMembers(groupAddress);
+  Future<List<Users>> getGroupMembers(
+      String groupAddress, ExpressionQueryParams params) {
+    return _groupService.getGroupMembers(groupAddress, params);
   }
 
   Future<UserGroupsResponse> getUserGroups(String userAddress) {
