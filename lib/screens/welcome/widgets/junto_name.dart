@@ -9,8 +9,9 @@ class JuntoName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * .05),
-      margin: const EdgeInsets.only(bottom: 25),
+        horizontal: MediaQuery.of(context).size.width * .05,
+      ),
+      margin: const EdgeInsets.only(bottom: 15),
       child: Text(
         'JUNTO',
         style: TextStyle(

@@ -23,7 +23,6 @@ class SignUpAgreements extends StatelessWidget {
             children: const <Widget>[
               JuntoLogo(),
               JuntoName(),
-              JuntoHorizontalSeparator(),
               Expanded(
                 child: JuntoRules(),
               ),
