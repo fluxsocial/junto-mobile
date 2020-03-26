@@ -51,7 +51,9 @@ class CollectivePopulatedList extends StatelessWidget {
                 ),
               ),
             ),
-            const GetMoreExpressionsButton(),
+            // ToDo: Automate pagination on scroll
+
+            // const GetMoreExpressionsButton(),
           ],
         ),
       );

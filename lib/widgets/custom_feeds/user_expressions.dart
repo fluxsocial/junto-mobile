@@ -107,24 +107,26 @@ class _UserExpressionsState extends State<UserExpressions> {
                           ),
                         ),
                       ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 75,
-                            top: 25,
-                          ),
-                          child: FlatButton(
-                            onPressed: _loadMore,
-                            child: Text(
-                              'GET 50 MORE EXPRESSIONS',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColorLight),
-                            ),
-                          ),
-                        ),
-                      )
+                      // To Do: Make pagination automatically happen on scroll down
+                      
+                      // Center(
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.only(
+                      //       bottom: 75,
+                      //       top: 25,
+                      //     ),
+                      //     child: FlatButton(
+                      //       onPressed: _loadMore,
+                      //       child: Text(
+                      //         'GET 50 MORE EXPRESSIONS',
+                      //         style: TextStyle(
+                      //             fontSize: 12,
+                      //             fontWeight: FontWeight.w700,
+                      //             color: Theme.of(context).primaryColorLight),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   )
                 ],
