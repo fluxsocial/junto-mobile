@@ -95,24 +95,27 @@ class JuntoCreateState extends State<JuntoCreate> {
           left: 0,
           right: 0,
           child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 25),
-                  child: Row(
-                    children: <Widget>[
-                      _selectExpressionIcon(ExpressionType.dynamic),
-                      _selectExpressionIcon(ExpressionType.shortform),
-                      _selectExpressionIcon(ExpressionType.photo),
-                    ],
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: Row(
+                      children: <Widget>[
+                        _selectExpressionIcon(ExpressionType.dynamic),
+                        _selectExpressionIcon(ExpressionType.shortform),
+                        _selectExpressionIcon(ExpressionType.photo),
+                      ],
+                    ),
                   ),
-                ),
-                HomeIcon(
-                  source: source,
-                  navigateTo: _navigateTo,
-                ),
-              ],
+                  HomeIcon(
+                    source: source,
+                    navigateTo: _navigateTo,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
