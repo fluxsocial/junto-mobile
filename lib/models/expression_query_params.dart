@@ -27,6 +27,29 @@ class ExpressionQueryParams {
     this.channels,
     this.name,
   });
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> params = {};
+    if (contextType != null) {
+      params.putIfAbsent('context_type', () => contextType);
+    }
+    if (paginationPosition != null) {
+      params.putIfAbsent('pagination_position', () => paginationPosition);
+    }
+    if (dos != null) {
+      params.putIfAbsent('dos', () => dos);
+    }
+    if (context != null) {
+      params.putIfAbsent('context', () => context);
+    }
+    if (channels != null) {
+      params.putIfAbsent('channels', () => channels);
+    }
+    if (name != null) {
+      params.putIfAbsent('name', () => name);
+    }
+    return params;
+  }
 }
 
 class ListToString {
