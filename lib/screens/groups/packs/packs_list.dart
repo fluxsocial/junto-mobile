@@ -27,96 +27,96 @@ class PacksListState extends State<PacksList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        backgroundColor: Theme.of(context).backgroundColor,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              'Packs',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
       ),
-      color: Theme.of(context).backgroundColor,
-      height: MediaQuery.of(context).size.height - 90,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const SizedBox(height: 45),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            color: Theme.of(context).backgroundColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('Packs', style: Theme.of(context).textTheme.headline4),
-                const SizedBox(
-                  width: 38,
-                  height: 38,
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            color: Theme.of(context).backgroundColor,
-            child: Row(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    packsListController.animateToPage(
-                      0,
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                  child: Container(
-                    child: Text(
-                      'My Packs',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: _currentIndex == 0
-                            ? Theme.of(context).primaryColorDark
-                            : Theme.of(context).primaryColorLight,
-                        decoration: TextDecoration.none,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                GestureDetector(
-                  onTap: () {
-                    packsListController.animateToPage(1,
+      body: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        color: Theme.of(context).backgroundColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              color: Theme.of(context).backgroundColor,
+              child: Row(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      packsListController.animateToPage(
+                        0,
                         duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeIn);
-                  },
-                  child: Container(
-                    child: Text(
-                      'Requests',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: _currentIndex == 1
-                            ? Theme.of(context).primaryColorDark
-                            : Theme.of(context).primaryColorLight,
-                        decoration: TextDecoration.none,
+                        curve: Curves.easeIn,
+                      );
+                    },
+                    child: Container(
+                      child: Text(
+                        'My Packs',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: _currentIndex == 0
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
+                          decoration: TextDecoration.none,
+                        ),
                       ),
                     ),
                   ),
-                )
-              ],
+                  const SizedBox(width: 20),
+                  GestureDetector(
+                    onTap: () {
+                      packsListController.animateToPage(1,
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeIn);
+                    },
+                    child: Container(
+                      child: Text(
+                        'Requests',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: _currentIndex == 1
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: PageView(
-              controller: packsListController,
-              onPageChanged: (int index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              children: <Widget>[
-                MyPacks(selectedGroup: widget.selectedGroup),
-                PackRequests(),
-              ],
-            ),
-          )
-        ],
+            Expanded(
+              child: PageView(
+                controller: packsListController,
+                onPageChanged: (int index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                children: <Widget>[
+                  MyPacks(selectedGroup: widget.selectedGroup),
+                  PackRequests(),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
