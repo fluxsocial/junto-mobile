@@ -78,20 +78,19 @@ class GroupServiceCentralized implements GroupService {
   List<Sphere> get spheres => Sphere.fetchAll();
 
   @override
-  Future<List<Users>> getGroupMembers(
+  Future<QueryResults<Users>> getGroupMembers(
       String groupAddress, ExpressionQueryParams params) async {
-    final http.Response _serverResponse = await client.get(
-        '/groups/$groupAddress/members',
-        queryParams: {'pagination_position': '0'});
-    final dynamic items = await JuntoHttp.handleResponse(_serverResponse);
+    final http.Response _serverResponse = await client
+        .get('/groups/$groupAddress/members', queryParams: params.toMap());
+    final Map<String, dynamic> items =
+        await JuntoHttp.handleResponse(_serverResponse);
 
-    items['results'].map((result) {
-      users.add(Users.fromJson(result));
-    }).toList();
-
-    return users;
-
-    // return [Users.fromJson(items['results'][0])];
+    return QueryResults(
+      lastTimestamp: items['last_timestamp'],
+      results: [
+        for (dynamic data in items['results']) Users.fromJson(data),
+      ],
+    );
   }
 
   @override

@@ -63,10 +63,10 @@ class MockSphere with ChangeNotifier implements GroupService {
   }
 
   @override
-  Future<List<Users>> getGroupMembers(
+  Future<QueryResults<Users>> getGroupMembers(
       String groupAddress, ExpressionQueryParams params) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return kGroupUsers;
+    return QueryResults(results: kGroupUsers, lastTimestamp: '');
   }
 
   @override

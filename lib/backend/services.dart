@@ -144,7 +144,7 @@ abstract class GroupService {
 
   /// Returns a list of users in a group along with with their permission
   /// level.
-  Future<List<Users>> getGroupMembers(
+  Future<QueryResults<Users>> getGroupMembers(
       String groupAddress, ExpressionQueryParams params);
 
   /// Adds the given user address to a group
