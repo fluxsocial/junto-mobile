@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
@@ -55,9 +54,14 @@ class _UserExpressionsState extends State<UserExpressions> {
     });
   }
 
-  void _loadMore() {
-    logger.logDebug('Callll');
-    context.bloc<DenBloc>().add(LoadMoreDen());
+  bool _onNotification(ScrollNotification notification) {
+    final metrics = notification.metrics;
+    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
+    if (scrollPercent.roundToDouble() == 60.0) {
+      context.bloc<DenBloc>().add(LoadMoreDen());
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -75,37 +79,38 @@ class _UserExpressionsState extends State<UserExpressions> {
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,
-              child: ListView(
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      FilterColumnRow(
-                        twoColumnView: twoColumnView,
-                        switchColumnView: _switchColumnView,
-                      ),
-                      Container(
-                        color: Theme.of(context).colorScheme.background,
-                        child: AnimatedCrossFade(
-                          crossFadeState: twoColumnView
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                          duration: const Duration(milliseconds: 200),
-                          firstChild: TwoColumnListView(
-                            data: results,
-                            privacyLayer: 'Public',
-                            scrollChanged: (_) => _loadMore,
-                          ),
-                          secondChild: SingleColumnListView(
-                            data: results,
-                            scrollChanged: (_) => _loadMore,
-                            privacyLayer: 'Public',
+              child: NotificationListener(
+                onNotification: _onNotification,
+                child: ListView(
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        FilterColumnRow(
+                          twoColumnView: twoColumnView,
+                          switchColumnView: _switchColumnView,
+                        ),
+                        Container(
+                          color: Theme.of(context).colorScheme.background,
+                          child: AnimatedCrossFade(
+                            crossFadeState: twoColumnView
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
+                            duration: const Duration(milliseconds: 200),
+                            firstChild: TwoColumnListView(
+                              data: results,
+                              privacyLayer: 'Public',
+                            ),
+                            secondChild: SingleColumnListView(
+                              data: results,
+                              privacyLayer: 'Public',
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           );
