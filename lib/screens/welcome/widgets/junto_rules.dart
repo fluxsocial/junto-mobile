@@ -12,7 +12,7 @@ class JuntoRules extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * .1),
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(

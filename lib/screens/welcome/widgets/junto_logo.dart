@@ -11,7 +11,7 @@ class JuntoLogo extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 25),
       child: Image.asset(
         'assets/images/junto-mobile__outlinelogo--gradient.png',
-        height: 69,
+        height: 55,
         color: Theme.of(context).primaryColor,
       ),
     );

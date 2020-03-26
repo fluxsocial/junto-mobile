@@ -314,7 +314,7 @@ class WelcomeState extends State<Welcome> {
                   left: 20,
                   child: Image.asset(
                     'assets/images/junto-mobile__logo.png',
-                    height: 45,
+                    height: 38,
                     color: Colors.white,
                   ),
                 ),
