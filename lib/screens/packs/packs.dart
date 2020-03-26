@@ -36,7 +36,6 @@ class JuntoPacks extends StatefulWidget {
 class JuntoPacksState extends State<JuntoPacks>
     with HideFab, ListDistinct, TickerProviderStateMixin {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
 
   bool actionsVisible = false;
   Widget _currentGroup;
@@ -84,7 +83,6 @@ class JuntoPacksState extends State<JuntoPacks>
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: JuntoFilterDrawer(
-            key: _filterDrawerKey,
             leftDrawer: const FilterDrawerContent(ExpressionContextType.Group),
             rightMenu: JuntoDrawer(),
             scaffold: Scaffold(
@@ -100,20 +98,23 @@ class JuntoPacksState extends State<JuntoPacks>
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25),
                   child: BottomNav(
-                      address: widget.initialGroup,
-                      expressionContext: ExpressionContext.Group,
-                      actionsVisible: actionsVisible,
-                      onLeftButtonTap: () {
-                        if (actionsVisible) {
-                          setState(() {
-                            actionsVisible = false;
-                          });
-                        } else {
-                          setState(() {
+                    address: widget.initialGroup,
+                    expressionContext: ExpressionContext.Group,
+                    actionsVisible: actionsVisible,
+                    onLeftButtonTap: () {
+                      if (actionsVisible) {
+                        setState(() {
+                          actionsVisible = false;
+                        });
+                      } else {
+                        setState(
+                          () {
                             actionsVisible = true;
-                          });
-                        }
-                      }),
+                          },
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
               floatingActionButtonLocation:
