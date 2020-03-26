@@ -33,6 +33,9 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     if (event is FetchMorePacks) {
       yield* _mapFetchMorePacksToState(event);
     }
+    if (event is FetchMorePacksMembers) {
+      yield* _mapFetchMoreMembersToState(event);
+    }
   }
 
   Stream<PackState> _mapFetchPacksToState(FetchPacks event) async* {
