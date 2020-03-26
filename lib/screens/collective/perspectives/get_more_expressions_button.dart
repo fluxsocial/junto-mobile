@@ -9,12 +9,24 @@ class GetMoreExpressionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 100.0),
+    return Container(
+      padding: const EdgeInsets.only(
+        bottom: 100.0,
+        top: 25,
+      ),
+      decoration: BoxDecoration(
+        border: Border(),
+      ),
       child: FlatButton(
         onPressed: () =>
             BlocProvider.of<CollectiveBloc>(context).add(FetchMoreCollective()),
-        child: const Text('Get more'),
+        child: Text(
+          'GET 50 MORE EXPRESSIONS',
+          style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).primaryColorLight),
+        ),
       ),
     );
   }
