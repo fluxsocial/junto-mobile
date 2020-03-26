@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -45,6 +46,7 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
       //TODO: maybe add loading state
       logger.logInfo('Fetching perspectives');
       final address = userDataProvider.userAddress;
+      assert(address != null);
       final persp = await _fetchUserPerspectives(address);
       if (persp != null) {
         yield PerspectivesFetched(persp);

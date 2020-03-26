@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
@@ -12,12 +11,12 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 import 'widgets/sign_up_arrows.dart';
 import 'widgets/sign_up_text_field_wrapper.dart';
@@ -132,6 +131,7 @@ class WelcomeState extends State<Welcome> {
       setState(() {
         _userAddress = results.user.address;
       });
+      Provider.of<UserDataProvider>(context, listen: false).initialize();
     } catch (error) {
       JuntoLoader.hide();
       print(error);

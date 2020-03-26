@@ -8,10 +8,9 @@ import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,6 +63,7 @@ class _SignInState extends State<SignIn> {
       }
       await Provider.of<AuthRepo>(context, listen: false)
           .loginUser(loginDetails);
+      Provider.of<UserDataProvider>(context, listen: false).initialize();
       JuntoLoader.hide();
       BlocProvider.of<PerspectivesBloc>(context).add(FetchPerspectives());
       Navigator.of(context).pushReplacement(JuntoLotusState.route());
