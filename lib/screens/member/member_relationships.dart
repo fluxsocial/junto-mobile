@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -115,39 +116,45 @@ class MemberRelationships extends StatelessWidget {
   }
 
   Future<void> inviteToPack(BuildContext buildContext) async {
-    // subscribe to user if not already following
-    if (!isFollowing) {
-      await userProvider.addUsersToPerspective(
-          userProfile.userPerspective.address, <String>[memberProfile.address]);
-    }
-
-    // send connection to user if there isn't an existing request of connection
-    if (!hasPendingConnection && !isConnected) {
-      print('mhm');
-
-      await userProvider.connectUser(memberProfile.address);
-    }
-
     try {
+      // subscribe to user if not already following
+      if (!isFollowing) {
+        await userProvider.addUsersToPerspective(
+            userProfile.userPerspective.address,
+            <String>[memberProfile.address]);
+      }
+
+      // send connection to user if there isn't an existing request of connection
+      if (!hasPendingConnection && !isConnected) {
+        print('mhm');
+
+        await userProvider.connectUser(memberProfile.address);
+      }
+
       await Provider.of<GroupRepo>(buildContext, listen: false).addGroupMember(
           userProfile.pack.address, <UserProfile>[memberProfile], 'Member');
       refreshRelations();
     } on JuntoException catch (error) {
-      if (error.message.contains('does not exist or is already a group member'))
+      if (error.message
+          .contains('does not exist or is already a group member')) {
         showDialog(
           context: buildContext,
           builder: (BuildContext context) => const SingleActionDialog(
             dialogText: 'Already sent a connection.',
           ),
         );
+      }
       if (!error.message
-          .contains('does not exist or is already a group member'))
+          .contains('does not exist or is already a group member')) {
         showDialog(
           context: buildContext,
           builder: (BuildContext context) => SingleActionDialog(
             dialogText: error.message,
           ),
         );
+      }
+    } catch (e) {
+      logger.logException(e);
     }
   }
 
