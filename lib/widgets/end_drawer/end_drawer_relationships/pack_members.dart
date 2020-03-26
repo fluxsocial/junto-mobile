@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:provider/provider.dart';
 
 class PackMembers extends StatefulWidget {
@@ -21,11 +22,14 @@ class PackMembers extends StatefulWidget {
 }
 
 class PackMembersState extends State<PackMembers> {
+  //TODO(Nash): Replace with bloc
   Future<List<Users>> getPackMembers() async {
     final userData =
         await Provider.of<UserRepo>(context).getUser(widget.userAddress);
-    return await Provider.of<GroupRepo>(context, listen: false)
-        .getGroupMembers(userData.pack.address);
+    final query = await Provider.of<GroupRepo>(context, listen: false)
+        .getGroupMembers(userData.pack.address,
+            ExpressionQueryParams(paginationPosition: '0'));
+    return query.results;
   }
 
   @override
