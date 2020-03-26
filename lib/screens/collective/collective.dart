@@ -33,8 +33,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
   // Global key to uniquely identify Junto Collective
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
-  final GlobalKey<JuntoFilterDrawerState> _filterDrawerKey =
-      GlobalKey<JuntoFilterDrawerState>();
 
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
@@ -79,7 +77,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: JuntoFilterDrawer(
-        key: _filterDrawerKey,
         leftDrawer: const FilterDrawerContent(ExpressionContextType.Collective),
         rightMenu: JuntoDrawer(),
         scaffold: NotificationListener<ScrollUpdateNotification>(
