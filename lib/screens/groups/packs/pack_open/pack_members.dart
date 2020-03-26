@@ -15,6 +15,19 @@ class PackOpenMembers extends StatelessWidget {
   }) : super(key: key);
   final String packAddress;
 
+  bool _onScrollNotification(
+    ScrollNotification notification,
+    BuildContext context,
+  ) {
+    final metrics = notification.metrics;
+    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
+    if (scrollPercent.roundToDouble() == 60.0) {
+      context.bloc<PackBloc>().add(FetchMorePacksMembers());
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PackBloc, PackState>(
@@ -23,14 +36,20 @@ class PackOpenMembers extends StatelessWidget {
           return JuntoLoader();
         }
         if (state is PacksLoaded) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
+          return NotificationListener(
+            onNotification: (notification) => _onScrollNotification(
+              notification,
+              context,
             ),
-            children: <Widget>[
-              for (Users user in state.groupMemebers)
-                MemberPreview(profile: user.user)
-            ],
+            child: ListView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
+              children: <Widget>[
+                for (Users user in state.groupMemebers)
+                  MemberPreview(profile: user.user)
+              ],
+            ),
           );
         }
         if (state is PacksEmpty) {
