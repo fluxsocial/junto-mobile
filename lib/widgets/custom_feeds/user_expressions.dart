@@ -134,9 +134,7 @@ class _UserExpressionsState extends State<UserExpressions> {
         }
         if (state is DenEmptyState) {
           // TODO(Eric): Update with empty state graphic
-          return Center(
-            child: Text('Get Started by creating an expression'),
-          );
+          return const SizedBox();
         }
         if (state is DenErrorState) {
           return JuntoErrorWidget(

@@ -108,8 +108,11 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                           const SizedBox(height: 15),
                         AboutItem(
                           item: widget.profile.user.gender,
-                          icon: Icon(CustomIcons.gender,
-                              size: 17, color: Theme.of(context).primaryColor),
+                          icon: Icon(
+                            CustomIcons.gender,
+                            size: 17,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                         AboutItem(
                           item: widget.profile.user.location,
