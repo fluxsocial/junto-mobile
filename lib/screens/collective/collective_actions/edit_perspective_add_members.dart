@@ -158,7 +158,6 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                   // get list of following
                   final List<UserProfile> _followingMembers =
                       snapshot.data['following']['results'];
-
                   return TabBarView(
                     children: <Widget>[
                       // subscriptions
@@ -169,11 +168,17 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                               (dynamic connection) => MemberPreviewSelect(
                                 profile: connection,
                                 onSelect: (UserProfile user) {
-                                  _perspectiveMembers.add(user.address);
+                                  setState(() {
+                                    _perspectiveMembers.add(user.address);
+                                  });
                                 },
                                 onDeselect: (UserProfile user) {
-                                  _perspectiveMembers.remove(user.address);
+                                  setState(() {
+                                    _perspectiveMembers.remove(user.address);
+                                  });
                                 },
+                                isSelected: _perspectiveMembers
+                                    .contains(connection.address),
                               ),
                             )
                             .toList(),
@@ -186,11 +191,17 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                               (dynamic connection) => MemberPreviewSelect(
                                 profile: connection,
                                 onSelect: (UserProfile user) {
-                                  _perspectiveMembers.add(user.address);
+                                  setState(() {
+                                    _perspectiveMembers.add(user.address);
+                                  });
                                 },
                                 onDeselect: (UserProfile user) {
-                                  _perspectiveMembers.remove(user.address);
+                                  setState(() {
+                                    _perspectiveMembers.remove(user.address);
+                                  });
                                 },
+                                isSelected: _perspectiveMembers
+                                    .contains(connection.address),
                               ),
                             )
                             .toList(),
