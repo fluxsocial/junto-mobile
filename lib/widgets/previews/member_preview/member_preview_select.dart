@@ -3,13 +3,18 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class MemberPreviewSelect extends StatefulWidget {
-  const MemberPreviewSelect(
-      {Key key, this.profile, this.onSelect, this.onDeselect})
-      : super(key: key);
+  const MemberPreviewSelect({
+    Key key,
+    this.profile,
+    this.onSelect,
+    this.onDeselect,
+    @required this.isSelected,
+  }) : super(key: key);
 
   final UserProfile profile;
   final ValueChanged<UserProfile> onSelect;
   final ValueChanged<UserProfile> onDeselect;
+  final bool isSelected;
 
   @override
   State<StatefulWidget> createState() {
@@ -18,7 +23,21 @@ class MemberPreviewSelect extends StatefulWidget {
 }
 
 class MemberPreviewSelectState extends State<MemberPreviewSelect> {
-  bool _isSelected = false;
+  bool _isSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = widget.isSelected;
+  }
+
+  @override
+  void didUpdateWidget(MemberPreviewSelect oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isSelected != widget.isSelected) {
+      _isSelected = widget.isSelected;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
