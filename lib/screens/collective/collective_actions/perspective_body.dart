@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:provider/provider.dart';
 
 class CreatePerspectiveBody extends StatefulWidget {
   const CreatePerspectiveBody({
@@ -36,32 +37,41 @@ class _CreatePerspectiveBodyState extends State<CreatePerspectiveBody> {
           final List<UserProfile> _followingMembers =
               snapshot.data['following']['results'];
 
-          return TabBarView(
-            children: <Widget>[
-              // subscriptions
-              ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  children: <Widget>[
-                    for (UserProfile connection in _followingMembers)
-                      MemberPreviewSelect(
-                        profile: connection,
-                        onSelect: widget.addUser,
-                        onDeselect: widget.removeUser,
-                      ),
-                  ]),
-              // connections
-              ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+          return Consumer<List<String>>(
+            builder: (BuildContext context, List<String> value, Widget child) {
+              print(value);
+              return TabBarView(
                 children: <Widget>[
-                  for (UserProfile connection in _connectionsMembers)
-                    MemberPreviewSelect(
-                      profile: connection,
-                      onSelect: widget.addUser,
-                      onDeselect: widget.removeUser,
-                    ),
+                  // subscriptions
+                  ListView(
+                      key: PageStorageKey<String>('subscriptions-page-key'),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: <Widget>[
+                        for (UserProfile connection in _followingMembers)
+                          MemberPreviewSelect(
+                            profile: connection,
+                            onSelect: widget.addUser,
+                            onDeselect: widget.removeUser,
+                            isSelected: value.contains(connection.address),
+                          ),
+                      ]),
+                  // connections
+                  ListView(
+                    key: PageStorageKey<String>('connections-page-key'),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: <Widget>[
+                      for (UserProfile connection in _connectionsMembers)
+                        MemberPreviewSelect(
+                          profile: connection,
+                          onSelect: widget.addUser,
+                          onDeselect: widget.removeUser,
+                          isSelected: value.contains(connection.address),
+                        ),
+                    ],
+                  ),
                 ],
-              ),
-            ],
+              );
+            },
           );
         } else if (snapshot.hasError) {
           return TabBarView(

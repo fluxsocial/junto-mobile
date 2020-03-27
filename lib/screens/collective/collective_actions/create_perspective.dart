@@ -6,10 +6,10 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/perspective_body.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
 class CreatePerspectivePage extends StatefulWidget {
@@ -143,7 +143,7 @@ class CreatePerspectivePageState extends State<CreatePerspectivePage> {
   }
 }
 
-class PerspectivesPageView extends StatelessWidget {
+class PerspectivesPageView extends StatefulWidget {
   const PerspectivesPageView({
     Key key,
     @required this.pageController,
@@ -164,29 +164,34 @@ class PerspectivesPageView extends StatelessWidget {
   final Function(int) onPageChanged;
 
   @override
+  _PerspectivesPageViewState createState() => _PerspectivesPageViewState();
+}
+
+class _PerspectivesPageViewState extends State<PerspectivesPageView> {
+  @override
   Widget build(BuildContext context) {
     return Consumer<UserRepo>(
       builder: (context, data, child) {
         return PageView(
-          onPageChanged: onPageChanged,
+          onPageChanged: widget.onPageChanged,
           physics: const NeverScrollableScrollPhysics(),
-          controller: pageController,
+          controller: widget.pageController,
           children: <Widget>[
             Column(
               children: <Widget>[
                 Expanded(
                   child: Form(
-                    key: formKey,
+                    key: widget.formKey,
                     child: ListView(
                       children: <Widget>[
                         PerspectiveTextField(
                           name: 'Perspective Name',
-                          controller: nameController,
+                          controller: widget.nameController,
                           textInputActionType: TextInputAction.next,
                         ),
                         PerspectiveTextField(
                           name: 'About',
-                          controller: aboutController,
+                          controller: widget.aboutController,
                           textInputActionType: TextInputAction.done,
                         ),
                       ],
@@ -197,22 +202,28 @@ class PerspectivesPageView extends StatelessWidget {
               ],
             ),
             DefaultTabController(
-              length: tabs.length,
+              length: widget.tabs.length,
               child: NestedScrollView(
                 physics: const ClampingScrollPhysics(),
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[_Header(tabs: tabs)];
+                  return <Widget>[_Header(tabs: widget.tabs)];
                 },
-                body: CreatePerspectiveBody(
-                  future: data.userRelations(),
-                  removeUser: (UserProfile user) {
-                    perspectiveMembers.remove(user.address);
-                  },
-                  addUser: (UserProfile user) {
-                    perspectiveMembers.add(user.address);
-                    print(perspectiveMembers);
-                  },
+                body: Provider.value(
+                  value: widget.perspectiveMembers,
+                  child: CreatePerspectiveBody(
+                    future: data.userRelations(),
+                    removeUser: (UserProfile user) {
+                      setState(() {
+                        widget.perspectiveMembers.remove(user.address);
+                      });
+                    },
+                    addUser: (UserProfile user) {
+                      setState(() {
+                        widget.perspectiveMembers.add(user.address);
+                      });
+                    },
+                  ),
                 ),
               ),
             )
