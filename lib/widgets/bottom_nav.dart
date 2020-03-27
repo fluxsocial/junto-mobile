@@ -61,7 +61,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   FadeRoute<void>(
                     child: JuntoLotus(
@@ -69,6 +69,7 @@ class BottomNav extends StatelessWidget {
                       expressionContext: expressionContext,
                     ),
                   ),
+                  (route) => route.isFirst,
                 );
               },
               child: Container(
