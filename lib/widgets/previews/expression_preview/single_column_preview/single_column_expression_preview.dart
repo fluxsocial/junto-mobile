@@ -39,28 +39,11 @@ class SingleColumnExpressionPreview extends StatelessWidget
           );
         } else {
           Navigator.of(context).push(
-            PageRouteBuilder<ExpressionOpen>(
-              pageBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return ExpressionOpen(expression, userData.userAddress);
-              },
-              transitionsBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child,
-              ) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(1, 0),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: child,
-                );
-              },
+            CupertinoPageRoute(
+              builder: (context) => ExpressionOpen(
+                expression,
+                userData.userAddress,
+              ),
             ),
           );
         }
