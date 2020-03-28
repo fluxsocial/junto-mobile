@@ -197,7 +197,7 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _userNameSubmission() async {
-    bool _correctLength = username.length > 1 && username.length <= 22;
+    bool _correctLength = username.length >= 1 && username.length <= 22;
     if (username != null && username.isNotEmpty && _correctLength) {
       await _nextSignUpPage();
     } else {
@@ -207,7 +207,7 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _nameCheck() async {
-    bool _correctLength = name.length > 1 && name.length <= 50;
+    bool _correctLength = name.length >= 1 && name.length <= 50;
     if (name != null && name.isNotEmpty && _correctLength) {
       await _nextSignUpPage();
     } else {
@@ -228,7 +228,7 @@ class WelcomeState extends State<Welcome> {
           }
         },
         child: Scaffold(
-          // setting this to true casues white background to be shown during keyboard opening
+          // setting this to true causes white background to be shown during keyboard opening
           resizeToAvoidBottomInset: false,
           body: Stack(
             children: <Widget>[

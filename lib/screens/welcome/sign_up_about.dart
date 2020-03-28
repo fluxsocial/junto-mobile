@@ -118,7 +118,8 @@ class SignUpAboutState extends State<SignUpAbout> {
                       valueController: websiteController,
                       textInputActionType: TextInputAction.done,
                       onSubmit: () {
-                        if (_lengthValidator(websiteController.text, 100)) {
+                        if (_lengthValidator(
+                            websiteController.value.text, 100)) {
                           widget.nextPage();
                         }
                       },
