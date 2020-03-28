@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_counter.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpAbout extends StatefulWidget {
@@ -50,6 +51,19 @@ class SignUpAboutState extends State<SignUpAbout> {
         website: websiteController.value.text,
       );
 
+  bool _lengthValidator(String text, [int charCount = 30]) {
+    bool lengthOk = text.length <= charCount;
+    if (lengthOk) {
+      FocusScope.of(context).nextFocus();
+      return true;
+    } else {
+      FocusScope.of(context).unfocus();
+      showFeedback(context,
+          message: 'Length must be less than ${charCount} characters');
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,9 +86,8 @@ class SignUpAboutState extends State<SignUpAbout> {
                     const SizedBox(height: 50),
                     SignUpTextField(
                       valueController: locationController,
-                      onSubmit: () {
-                        FocusScope.of(context).nextFocus();
-                      },
+                      onSubmit: () =>
+                          _lengthValidator(locationController.value.text),
                       textInputActionType: TextInputAction.next,
                       hint: 'Location',
                       maxLength: 30,
@@ -88,9 +101,8 @@ class SignUpAboutState extends State<SignUpAbout> {
                     const SizedBox(height: 40),
                     SignUpTextField(
                       valueController: genderController,
-                      onSubmit: () {
-                        FocusScope.of(context).nextFocus();
-                      },
+                      onSubmit: () =>
+                          _lengthValidator(genderController.value.text),
                       textInputActionType: TextInputAction.next,
                       hint: 'Gender Pronouns',
                       maxLength: 30,
@@ -106,7 +118,9 @@ class SignUpAboutState extends State<SignUpAbout> {
                       valueController: websiteController,
                       textInputActionType: TextInputAction.done,
                       onSubmit: () {
-                        widget.nextPage();
+                        if (_lengthValidator(websiteController.text, 100)) {
+                          widget.nextPage();
+                        }
                       },
                       hint: 'Website',
                       maxLength: 100,

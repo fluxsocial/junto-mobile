@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpRegister extends StatefulWidget {
@@ -20,6 +21,8 @@ class SignUpRegisterState extends State<SignUpRegister> {
   FocusNode emailNode = FocusNode();
   FocusNode passwordNode = FocusNode();
   FocusNode confirmPasswordNode = FocusNode();
+  final String passwordRegEx =
+      "(?=.{8,})(?=.*[!@#\$%^&*])(?=.*[0-9])(?=.*[A-Z])(?=.*[A-z])";
 
   @override
   void initState() {
@@ -46,6 +49,24 @@ class SignUpRegisterState extends State<SignUpRegister> {
       'password': passwordController.value.text,
       'confirmPassword': confirmPasswordController.value.text,
     };
+  }
+
+  bool _passwordCheck(String password, FocusNode node) {
+    final exp = RegExp(passwordRegEx);
+    bool match = exp.hasMatch(password);
+    if (match) {
+      if (node != null) {
+        FocusScope.of(context).requestFocus(node);
+      } else {
+        FocusScope.of(context).unfocus();
+      }
+    } else {
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Passwords must contain 1 number, 8 characters, 1 special character and must be upper and lowercase',
+        [DialogBack()],
+      );
+    }
   }
 
   @override
@@ -84,8 +105,17 @@ class SignUpRegisterState extends State<SignUpRegister> {
                         valueController: passwordController,
                         textInputActionType: TextInputAction.next,
                         onSubmit: () {
-                          FocusScope.of(context)
-                              .requestFocus(confirmPasswordNode);
+                          if (_passwordCheck(passwordController.value.text,
+                              confirmPasswordNode)) {
+                            FocusScope.of(context)
+                                .requestFocus(confirmPasswordNode);
+                          } else {
+                            JuntoDialog.showJuntoDialog(
+                              context,
+                              'Passwords must contain 1 number, 8 characters, 1 special character and must be upper and lowercase',
+                              [DialogBack()],
+                            );
+                          }
                         },
                         focusNode: passwordNode,
                         hint: 'Password',
@@ -99,7 +129,8 @@ class SignUpRegisterState extends State<SignUpRegister> {
                         valueController: confirmPasswordController,
                         textInputActionType: TextInputAction.done,
                         onSubmit: () {
-                          FocusScope.of(context).unfocus();
+                          _passwordCheck(
+                              confirmPasswordController.value.text, null);
                         },
                         focusNode: confirmPasswordNode,
                         hint: 'Confirm Password',

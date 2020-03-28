@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -201,6 +202,17 @@ class WelcomeState extends State<Welcome> {
       await _nextSignUpPage();
     } else {
       FocusScope.of(context).unfocus();
+      showFeedback(context, message: 'Username must be provided.');
+    }
+  }
+
+  void _nameCheck() async {
+    bool _correctLength = name.length > 1 && name.length <= 50;
+    if (name != null && name.isNotEmpty && _correctLength) {
+      await _nextSignUpPage();
+    } else {
+      FocusScope.of(context).unfocus();
+      showFeedback(context, message: 'Name must be provided.');
     }
   }
 
@@ -247,15 +259,7 @@ class WelcomeState extends State<Welcome> {
                     child: SignUpTextFieldWrapper(
                       textInputActionType: TextInputAction.done,
                       onValueChanged: (String value) => name = value,
-                      onSubmit: () async {
-                        if (name.isNotEmpty &&
-                            name.length <= 50 &&
-                            name != null) {
-                          await _nextSignUpPage();
-                        } else {
-                          FocusScope.of(context).unfocus();
-                        }
-                      },
+                      onSubmit: _nameCheck,
                       maxLength: 50,
                       hint: 'My name is...',
                       label: 'FULL NAME',
