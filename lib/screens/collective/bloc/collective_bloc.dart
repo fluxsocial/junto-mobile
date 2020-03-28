@@ -118,7 +118,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
         final expressions = await _fetchExpressions();
 
         final currentResult = currentState.results;
-        if (currentState.results.length > 1) {
+        if (expressions.results.length > 1) {
           currentResult.addAll(expressions.results);
           yield CollectivePopulated(
             currentResult,
