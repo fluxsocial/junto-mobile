@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/get_more_expressions_button.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 import 'package:provider/provider.dart';
@@ -51,9 +50,6 @@ class CollectivePopulatedList extends StatelessWidget {
                 ),
               ),
             ),
-            // ToDo: Automate pagination on scroll
-
-            // const GetMoreExpressionsButton(),
           ],
         ),
       );
