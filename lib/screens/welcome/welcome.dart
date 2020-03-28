@@ -195,6 +195,15 @@ class WelcomeState extends State<Welcome> {
     );
   }
 
+  void _userNameSubmission() async {
+    bool _correctLength = username.length > 1 && username.length <= 22;
+    if (username != null && username.isNotEmpty && _correctLength) {
+      await _nextSignUpPage();
+    } else {
+      FocusScope.of(context).unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -257,16 +266,9 @@ class WelcomeState extends State<Welcome> {
                     // 2
                     child: SignUpTextFieldWrapper(
                       textInputActionType: TextInputAction.done,
-                      onValueChanged: (String value) => username = value,
-                      onSubmit: () async {
-                        if (username.isNotEmpty &&
-                            username.length <= 22 &&
-                            username != null) {
-                          await _nextSignUpPage();
-                        } else {
-                          FocusScope.of(context).unfocus();
-                        }
-                      },
+                      onValueChanged: (String value) =>
+                          username = value.toLowerCase().trim(),
+                      onSubmit: _userNameSubmission,
                       maxLength: 22,
                       hint: 'I\'ll go by...',
                       label: 'USERNAME',
