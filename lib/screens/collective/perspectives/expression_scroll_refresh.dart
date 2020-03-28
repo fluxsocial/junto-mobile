@@ -33,10 +33,7 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh> {
           return refreshCompleter.future;
         },
         displacement: MediaQuery.of(context).size.height / 4,
-        child: NotificationListener(
-          onNotification: _onScrollNotification,
-          child: widget.child,
-        ),
+        child: widget.child,
       ),
     );
   }
@@ -50,15 +47,5 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh> {
     if (state is CollectiveError) {
       refreshCompleter?.completeError('Error during fetching');
     }
-  }
-
-  bool _onScrollNotification(ScrollNotification scrollNotification) {
-    final metrics = scrollNotification.metrics;
-    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
-    if (scrollPercent.roundToDouble() == 60.0) {
-      BlocProvider.of<CollectiveBloc>(context).add(FetchMoreCollective());
-      return true;
-    }
-    return false;
   }
 }
