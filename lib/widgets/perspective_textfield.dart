@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/utils/form_validation.dart';
 
 class PerspectiveTextField extends StatelessWidget {
   const PerspectiveTextField({
@@ -7,11 +6,13 @@ class PerspectiveTextField extends StatelessWidget {
     @required this.name,
     @required this.controller,
     this.textInputActionType,
+    this.validator,
   }) : super(key: key);
 
   final String name;
   final TextEditingController controller;
   final TextInputAction textInputActionType;
+  final FormFieldValidator<String> validator;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +30,9 @@ class PerspectiveTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         keyboardAppearance: theme.brightness,
+        validator: validator,
         decoration: InputDecoration(
-          counter: Container(),
+          errorStyle: TextStyle(color: Colors.redAccent),
           contentPadding: const EdgeInsets.all(0),
           border: InputBorder.none,
           hintText: name,
@@ -48,7 +50,6 @@ class PerspectiveTextField extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: Theme.of(context).primaryColor,
         ),
-        maxLength: 80,
         textInputAction: textInputActionType,
         keyboardType: TextInputType.text,
         textCapitalization: TextCapitalization.sentences,
