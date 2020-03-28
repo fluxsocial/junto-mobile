@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/perspective_body.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
@@ -49,18 +48,10 @@ class CreatePerspectivePageState extends State<CreatePerspectivePage> {
 // Checks the name and about fields before moving on to the next page.
   void _canCreatePerspective() {
     FocusScope.of(context).unfocus();
-    if (_aboutController.value.text.isNotEmpty ||
-        _nameController.value.text.isNotEmpty) {
+    if (_formKey.currentState.validate()) {
       _pageController.nextPage(
         curve: Curves.easeIn,
         duration: const Duration(milliseconds: 300),
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Please fill in all the fields.',
-        ),
       );
     }
   }
@@ -168,6 +159,22 @@ class PerspectivesPageView extends StatefulWidget {
 }
 
 class _PerspectivesPageViewState extends State<PerspectivesPageView> {
+  String _nameValidator(String value) {
+    if (value != null && value.length >= 1 && value.length <= 50) {
+      return null;
+    } else {
+      return 'Name must be between 1 - 50 characters';
+    }
+  }
+
+  String _aboutValidator(String value) {
+    if (value != null && value.length >= 1 && value.length <= 150) {
+      return null;
+    } else {
+      return 'About must be between 1 - 150 characters';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserRepo>(
@@ -186,11 +193,13 @@ class _PerspectivesPageViewState extends State<PerspectivesPageView> {
                       children: <Widget>[
                         PerspectiveTextField(
                           name: 'Perspective Name',
+                          validator: _nameValidator,
                           controller: widget.nameController,
                           textInputActionType: TextInputAction.next,
                         ),
                         PerspectiveTextField(
                           name: 'About',
+                          validator: _aboutValidator,
                           controller: widget.aboutController,
                           textInputActionType: TextInputAction.done,
                         ),
