@@ -198,11 +198,15 @@ class WelcomeState extends State<Welcome> {
 
   void _userNameSubmission() async {
     bool _correctLength = username.length >= 1 && username.length <= 22;
-    if (username != null && username.isNotEmpty && _correctLength) {
+    bool containsWhiteSpace = username.contains(" ");
+    if (username != null &&
+        username.isNotEmpty &&
+        _correctLength &&
+        !containsWhiteSpace) {
       await _nextSignUpPage();
     } else {
       FocusScope.of(context).unfocus();
-      showFeedback(context, message: 'Username must be provided.');
+      showFeedback(context, message: 'Username not contain any space');
     }
   }
 
