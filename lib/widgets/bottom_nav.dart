@@ -28,14 +28,6 @@ class BottomNav extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         color: Theme.of(context).backgroundColor,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Theme.of(context).dividerColor,
-            offset: const Offset(0.0, 1.0),
-            blurRadius: 6,
-            spreadRadius: 1,
-          )
-        ],
       ),
       child: Row(
         children: <Widget>[
