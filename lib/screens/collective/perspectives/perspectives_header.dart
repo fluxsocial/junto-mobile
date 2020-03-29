@@ -16,13 +16,14 @@ class PerspectivesAppbar extends StatelessWidget {
       brightness: Theme.of(context).brightness,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Text(
             'Perspectives',
             style: Theme.of(context).textTheme.headline4,
           ),
           IconButton(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.bottomRight,
             padding: const EdgeInsets.all(0),
             onPressed: () {
               Navigator.push(

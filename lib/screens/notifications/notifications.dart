@@ -63,7 +63,7 @@ class NotificationsScreen extends StatelessWidget {
         child: Text(
           'Coming soon!',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 17,
             color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.w700,
           ),
