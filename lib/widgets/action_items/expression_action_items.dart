@@ -46,7 +46,7 @@ class ExpressionActionItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.background,
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .4,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
