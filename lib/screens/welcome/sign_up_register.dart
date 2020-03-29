@@ -57,8 +57,10 @@ class SignUpRegisterState extends State<SignUpRegister> {
     if (match) {
       if (node != null) {
         FocusScope.of(context).requestFocus(node);
+        return true;
       } else {
         FocusScope.of(context).unfocus();
+        return false;
       }
     } else {
       JuntoDialog.showJuntoDialog(
@@ -66,6 +68,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
         'Passwords must contain 1 number, 8 characters, 1 special character and must be upper and lowercase',
         [DialogBack()],
       );
+      return false;
     }
   }
 
@@ -104,19 +107,8 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       SignUpTextField(
                         valueController: passwordController,
                         textInputActionType: TextInputAction.next,
-                        onSubmit: () {
-                          if (_passwordCheck(passwordController.value.text,
-                              confirmPasswordNode)) {
-                            FocusScope.of(context)
-                                .requestFocus(confirmPasswordNode);
-                          } else {
-                            JuntoDialog.showJuntoDialog(
-                              context,
-                              'Passwords must contain 1 number, 8 characters, 1 special character and must be upper and lowercase',
-                              [DialogBack()],
-                            );
-                          }
-                        },
+                        onSubmit: () => _passwordCheck(
+                            passwordController.value.text, confirmPasswordNode),
                         focusNode: passwordNode,
                         hint: 'Password',
                         maxLength: 1000,
@@ -128,10 +120,8 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       SignUpTextField(
                         valueController: confirmPasswordController,
                         textInputActionType: TextInputAction.done,
-                        onSubmit: () {
-                          _passwordCheck(
-                              confirmPasswordController.value.text, null);
-                        },
+                        onSubmit: () => _passwordCheck(
+                            confirmPasswordController.value.text, null),
                         focusNode: confirmPasswordNode,
                         hint: 'Confirm Password',
                         maxLength: 1000,
