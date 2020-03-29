@@ -31,10 +31,11 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         color: Colors.transparent,
         child: Column(
           children: <Widget>[
+            const SizedBox(height: 50),
             Container(
               alignment: Alignment.center,
-              height: MediaQuery.of(context).size.width - 40,
-              width: MediaQuery.of(context).size.width - 40,
+              height: MediaQuery.of(context).size.width * .5,
+              width: MediaQuery.of(context).size.width * .5,
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Colors.white,
@@ -46,7 +47,7 @@ class SignUpPhotosState extends State<SignUpPhotos> {
                   ? Icon(
                       Icons.add,
                       color: Colors.white,
-                      size: 60,
+                      size: 45,
                     )
                   : Image.file(
                       profilePicture,
