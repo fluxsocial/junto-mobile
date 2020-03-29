@@ -86,12 +86,10 @@ class _UserExpressionsState extends State<UserExpressions> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        // Eric: leaving this out until we implement filter by channel
-
-                        // FilterColumnRow(
-                        //   twoColumnView: twoColumnView,
-                        //   switchColumnView: _switchColumnView,
-                        // ),
+                        FilterColumnRow(
+                          twoColumnView: twoColumnView,
+                          switchColumnView: _switchColumnView,
+                        ),
                         Container(
                           color: Theme.of(context).colorScheme.background,
                           child: AnimatedCrossFade(
