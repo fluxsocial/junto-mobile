@@ -88,7 +88,7 @@ class JuntoThemesState extends State<JuntoThemes> {
                 bottom: 10,
                 left: 10,
                 child: Text(
-                  theme.toUpperCase(),
+                  theme == 'royal' ? 'PURPLE GOLD' : theme.toUpperCase(),
                   style: const TextStyle(
                     fontSize: 14,
                     letterSpacing: 1.7,
