@@ -65,7 +65,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
     } else {
       JuntoDialog.showJuntoDialog(
         context,
-        'Passwords must contain 1 number, 8 characters, 1 special character and must be upper and lowercase',
+        'Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.',
         [DialogBack()],
       );
       return false;
