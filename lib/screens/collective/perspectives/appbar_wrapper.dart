@@ -13,7 +13,7 @@ class AppBarWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
       delegate: CollectiveAppBar(
-        expandedHeight: 135,
+        expandedHeight: MediaQuery.of(context).size.height * .1 + 50,
         appbarTitle: title,
       ),
       pinned: false,
