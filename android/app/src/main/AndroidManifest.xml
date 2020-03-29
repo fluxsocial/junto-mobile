@@ -15,7 +15,8 @@
     <application
             android:name="io.flutter.app.FlutterApplication"
             android:label="Junto Alpha"
-            android:icon="@mipmap/ic_launcher">
+            android:icon="@mipmap/ic_launcher"
+            android:requestLegacyExternalStorage="true">
         <activity
                 android:name="com.junto.juntobetamobile.MainActivity"
                 android:launchMode="singleTop"
