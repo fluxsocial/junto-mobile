@@ -17,7 +17,7 @@ class CommentActionItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container( 
       color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .4,
