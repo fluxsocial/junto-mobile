@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
@@ -81,28 +82,33 @@ class SignUpPhotosState extends State<SignUpPhotos> {
   }
 
   Future<void> _onPickPressed() async {
-    final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    if (image == null && profilePictureOne == null) {
-      setState(() => profilePictureOne = null);
-      return;
-    } else if (image == null && profilePictureOne != null) {
-      return;
-    }
+    try {
+      final File image =
+          await ImagePicker.pickImage(source: ImageSource.gallery);
+      if (image == null && profilePictureOne == null) {
+        setState(() => profilePictureOne = null);
+        return;
+      } else if (image == null && profilePictureOne != null) {
+        return;
+      }
 
-    final File cropped = await ImageCroppingDialog.show(
-      context,
-      image,
-      aspectRatios: <String>[
-        '1:1',
-      ],
-    );
-    Navigator.of(context).focusScopeNode.unfocus();
-    if (cropped == null) {
-      setState(() => profilePictureOne = null);
+      final File cropped = await ImageCroppingDialog.show(
+        context,
+        image,
+        aspectRatios: <String>[
+          '1:1',
+        ],
+      );
+      Navigator.of(context).focusScopeNode.unfocus();
+      if (cropped == null) {
+        setState(() => profilePictureOne = null);
 
-      return;
+        return;
+      }
+      setState(() => profilePictureOne = cropped);
+    } catch (error) {
+      logger.logException(error);
     }
-    setState(() => profilePictureOne = cropped);
   }
 
   @override
