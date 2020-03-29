@@ -19,7 +19,7 @@ class JuntoRules extends StatelessWidget {
                 bottom: MediaQuery.of(context).size.height * .05,
               ),
               child: Text(
-                'I. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
+                'I. Express yourself freely. Be real and hold space for authenticity.',
                 style: TextStyle(
                   fontSize: 17,
                   color: Theme.of(context).primaryColor,
@@ -43,7 +43,7 @@ class JuntoRules extends StatelessWidget {
             ),
             Container(
               child: Text(
-                'III. Express yourself freely. Be real and hold space for authenticity.',
+                'III. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
                 style: TextStyle(
                   fontSize: 17,
                   color: Theme.of(context).primaryColor,
