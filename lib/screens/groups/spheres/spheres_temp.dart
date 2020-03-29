@@ -58,13 +58,16 @@ class SpheresTemp extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Center(
-              child: Text(
-                'Groups are public, private, or secret communities you can create within Junto. We will open this layer once enough members are on-boarded to make this feature useful.',
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).primaryColor,
+              child: Transform.translate(
+                offset: Offset(0.0, -60),
+                child: Text(
+                  'Groups are public, private, or secret communities you can create within Junto. We will open this layer once enough members are on-boarded to make this feature useful.',
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
           ),
