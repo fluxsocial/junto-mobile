@@ -45,7 +45,7 @@ class PacksLoadedScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(45),
+        preferredSize: const Size.fromHeight(50),
         child: PackOpenAppbar(
           pack: state.pack,
         ),
