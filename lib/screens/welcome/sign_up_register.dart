@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpRegister extends StatefulWidget {
@@ -63,11 +63,24 @@ class SignUpRegisterState extends State<SignUpRegister> {
         return false;
       }
     } else {
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.',
-        [DialogBack()],
-      );
+      print('heyo');
+      if (passwordController.value != passwordController.value) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: 'Passwords must match.',
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText:
+                'Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.',
+          ),
+        );
+      }
+
       return false;
     }
   }
