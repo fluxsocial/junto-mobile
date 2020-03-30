@@ -69,14 +69,16 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     final http.Response response =
         await client.postWithoutEncoding('/auth/register', body: _body);
     logger.logDebug(response.body);
-    if (response.statusCode == 310) {
-      return 'junto';
-    }
+
     final Map<String, dynamic> parseData = JuntoHttp.handleResponse(response);
     if (parseData['message'] != null) {
       return parseData['message'];
     } else {
-      throw JuntoException(parseData['error'], response.statusCode);
+      if (response.statusCode == 310) {
+        return 'follow the white rabbit';
+      } else {
+        throw JuntoException(parseData['error'], response.statusCode);
+      }
     }
   }
 

@@ -409,12 +409,20 @@ class WelcomeState extends State<Welcome> {
       );
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText: error.message,
-        ),
-      );
+      if (error.message == 'follow the white rabbit') {
+        // transition to next page of sign up flow
+        _welcomeController.nextPage(
+          curve: Curves.decelerate,
+          duration: const Duration(milliseconds: 600),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: error.message,
+          ),
+        );
+      }
     }
   }
 
