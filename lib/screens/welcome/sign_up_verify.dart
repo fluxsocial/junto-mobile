@@ -77,12 +77,13 @@ class SignUpVerifyState extends State<SignUpVerify> {
                     decoration: const InputDecoration(
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
-                      hintText: 'Six digit verification code',
+                      hintText: 'Verification code',
                       hintStyle: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1),
+                        color: Colors.white70,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 1,
+                      ),
                       fillColor: Colors.white,
                     ),
                     style: const TextStyle(

@@ -40,7 +40,7 @@ class JuntoPerspectives extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50),
+            preferredSize: Size.fromHeight(60),
             child: PerspectivesAppbar(),
           ),
           body: Padding(

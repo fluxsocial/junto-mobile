@@ -23,7 +23,7 @@ class EditDenAppbar extends StatelessWidget {
               onTap: () => Navigator.pop(context),
               child: Container(
                 padding: const EdgeInsets.only(left: 10),
-                width: 42,
+                width: 80,
                 height: 42,
                 alignment: Alignment.centerLeft,
                 color: Colors.transparent,
@@ -46,7 +46,7 @@ class EditDenAppbar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 10),
                 alignment: Alignment.centerRight,
                 color: Colors.transparent,
-                width: 42,
+                width: 80,
                 height: 42,
                 child: Text(
                   'Save',

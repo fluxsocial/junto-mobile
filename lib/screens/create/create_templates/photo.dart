@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
@@ -164,30 +165,18 @@ class CreatePhotoState extends State<CreatePhoto> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Container(
-                          height: 100,
-                          width: 100,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 1.5),
-                            borderRadius: BorderRadius.circular(10000),
-                          ),
-                          child: Text(
-                            '+',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 28),
-                          ),
+                        Icon(
+                          CustomIcons.add,
+                          size: 60,
                         ),
                         const SizedBox(height: 20),
                         Text(
                           'Press here to share a photo',
                           style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 17),
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500,
+                          ),
                         )
                       ],
                     ),
@@ -241,15 +230,15 @@ class CreatePhotoState extends State<CreatePhoto> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              _cropPhoto();
-                            },
+                            onTap: () async => _cropPhoto(),
                             child: Container(
                               width: MediaQuery.of(context).size.width * .5,
                               color: Colors.transparent,
-                              child: Icon(Icons.crop,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 20),
+                              child: Icon(
+                                Icons.crop,
+                                color: Theme.of(context).primaryColor,
+                                size: 20,
+                              ),
                             ),
                           )
                         ],

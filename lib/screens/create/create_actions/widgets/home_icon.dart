@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class HomeIcon extends StatelessWidget {
   const HomeIcon({
@@ -23,12 +24,16 @@ class HomeIcon extends StatelessWidget {
       },
       child: Container(
         alignment: Alignment.center,
+        color: Colors.transparent,
         height: 50,
-        width: 50,
-        child: Image.asset(
-          'assets/images/junto-mobile__double-down-arrow.png',
-          height: 20,
-          color: Colors.white,
+        width: 100,
+        child: RotatedBox(
+          quarterTurns: 2,
+          child: Icon(
+            CustomIcons.newdoubleuparrow,
+            size: 45,
+            color: Colors.white,
+          ),
         ),
       ),
     );

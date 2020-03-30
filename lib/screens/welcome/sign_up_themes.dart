@@ -15,7 +15,7 @@ class SignUpThemes extends StatelessWidget {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('aqueous');
       toggleTheme('aqueous');
-    } else if (theme == 'ROYAL') {
+    } else if (theme == 'PURPLE GOLD') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('royal');
       toggleTheme('royal');
@@ -75,7 +75,7 @@ class SignUpThemes extends StatelessWidget {
   String _displayThemeAsset(String theme) {
     if (theme == 'AQUEOUS') {
       return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (theme == 'ROYAL') {
+    } else if (theme == 'PURPLE GOLD') {
       return 'assets/images/junto-mobile__themes--royal.png';
     } else if (theme == 'NIGHT') {
       return 'assets/images/junto-mobile__themes--night.png';
@@ -117,7 +117,7 @@ class SignUpThemes extends StatelessWidget {
                 children: <Widget>[
                   _displayThemeSelector('RAINBOW', context),
                   _displayThemeSelector('AQUEOUS', context),
-                  _displayThemeSelector('ROYAL', context),
+                  _displayThemeSelector('PURPLE GOLD', context),
                 ],
               ),
             )

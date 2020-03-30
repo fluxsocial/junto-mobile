@@ -32,19 +32,26 @@ class PacksListState extends State<PacksList> {
         leftDrawer: null,
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            elevation: 0,
-            backgroundColor: Theme.of(context).backgroundColor,
-            brightness: Theme.of(context).brightness,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Packs',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ],
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              elevation: 0,
+              backgroundColor: Theme.of(context).backgroundColor,
+              brightness: Theme.of(context).brightness,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    'Packs',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  const IconButton(
+                    icon: Icon(Icons.add, size: 0),
+                  ),
+                ],
+              ),
             ),
           ),
           floatingActionButton: PacksActionButtons(

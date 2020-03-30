@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
@@ -55,42 +56,10 @@ class _DenAppbarState extends State<DenAppbar> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) => Container(
-                        color: Colors.transparent,
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * .9,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              const SizedBox(height: 10),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Notifications',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700,
-                                      color: Theme.of(context).primaryColorDark,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              const Text('building this last...')
-                            ],
-                          ),
-                        ),
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => NotificationsScreen(),
                       ),
                     );
                   },

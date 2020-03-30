@@ -113,7 +113,7 @@ class PerspectiveItem extends StatelessWidget {
                         style: Theme.of(context).textTheme.subtitle1),
                     if (perspective.name == 'JUNTO')
                       Text(
-                        'Expressions from everyone in Junto.',
+                        'Expressions from everyone on Junto.',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     if (perspective.name == 'Connections')
@@ -123,7 +123,7 @@ class PerspectiveItem extends StatelessWidget {
                       ),
                     if (perspective.name == 'Subscriptions')
                       Text(
-                        'Expressions from specific people you\'re subscribed to.',
+                        'Expressions from specific people you are subscribed to.',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     if (perspective.name != 'JUNTO' &&

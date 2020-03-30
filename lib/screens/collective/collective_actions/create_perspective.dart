@@ -285,7 +285,7 @@ class PerspectivesAppBar extends StatelessWidget {
               onTap: onBackTap,
               child: Container(
                 height: 45,
-                width: 45,
+                width: 80,
                 color: Colors.transparent,
                 alignment: Alignment.centerLeft,
                 child: Icon(CustomIcons.back, size: 20),
@@ -299,7 +299,7 @@ class PerspectivesAppBar extends StatelessWidget {
                 onTap: onCreateTap,
                 child: Container(
                   height: 45,
-                  width: 45,
+                  width: 80,
                   color: Colors.transparent,
                   alignment: Alignment.centerRight,
                   child: Text(
@@ -317,7 +317,7 @@ class PerspectivesAppBar extends StatelessWidget {
                 onTap: onNextTap,
                 child: Container(
                   height: 45,
-                  width: 45,
+                  width: 80,
                   color: Colors.transparent,
                   alignment: Alignment.centerRight,
                   child: Text(

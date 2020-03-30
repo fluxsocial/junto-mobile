@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:provider/provider.dart';
 
@@ -69,15 +70,24 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       Row(
                         children: <Widget>[
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => NotificationsScreen(),
+                                ),
+                              );
+                            },
                             child: Container(
                               width: 42,
                               color: Colors.transparent,
                               alignment: Alignment.bottomRight,
                               padding: const EdgeInsets.only(right: 10),
-                              child: Icon(CustomIcons.moon,
-                                  size: 22,
-                                  color: Theme.of(context).primaryColor),
+                              child: Icon(
+                                CustomIcons.moon,
+                                size: 22,
+                                color: Theme.of(context).primaryColor,
+                              ),
                             ),
                           ),
                         ],

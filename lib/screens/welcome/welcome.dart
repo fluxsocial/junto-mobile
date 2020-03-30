@@ -206,7 +206,7 @@ class WelcomeState extends State<Welcome> {
       await _nextSignUpPage();
     } else {
       FocusScope.of(context).unfocus();
-      showFeedback(context, message: 'Username not contain any space');
+      showFeedback(context, message: 'Username cannot contain any spaces');
     }
   }
 
