@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -196,24 +197,13 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _userNameSubmission() async {
-    print(username);
     bool _correctLength = username.length >= 1 && username.length <= 22;
-    bool containsWhiteSpace = username.contains(' ');
-    if (username != null &&
-        username.isNotEmpty &&
-        _correctLength &&
-        !containsWhiteSpace) {
+    final exp = RegExp("^[a-z0-9_]+\$");
+    if (username != null && exp.hasMatch(username) && _correctLength) {
       await _nextSignUpPage();
     } else {
       FocusScope.of(context).unfocus();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText:
-              'Your username can only contain lowercase letters, underscores, and numbers.',
-        ),
-      );
-      return;
+      showFeedback(context, message: 'Username cannot contain any spaces');
     }
   }
 
@@ -223,7 +213,7 @@ class WelcomeState extends State<Welcome> {
       await _nextSignUpPage();
     } else {
       FocusScope.of(context).unfocus();
-      return;
+      showFeedback(context, message: 'Name must be provided.');
     }
   }
 
@@ -349,11 +339,11 @@ class WelcomeState extends State<Welcome> {
           return;
         }
       } else if (_currentIndex == 2) {
-        if (username == null || username.isEmpty || username.length > 22) {
+        bool _correctLength = username.length >= 1 && username.length <= 22;
+        final exp = RegExp("^[a-z0-9_]+\$");
+        if (username == null || !exp.hasMatch(username) || !_correctLength) {
           return;
         } else {
-          _userNameSubmission();
-
           final Map<String, dynamic> validateUserResponse =
               await Provider.of<AuthRepo>(context, listen: false)
                   .validateUser(username: username);
