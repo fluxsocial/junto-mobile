@@ -22,7 +22,7 @@ storeFile=file-location
 To run call:
 
 ```
-flutter run --flavor tst
+flutter run --flavor tst --target lib/main_tst.dart
 ```
 
 
@@ -33,8 +33,8 @@ Junto app has additional flavors called `tst` and `prod`. This allows to install
 To run this flavor call:
 
 ```
-flutter run --flavor tst
-flutter run --flavor prod
+flutter run --flavor tst --target lib/main_tst.dart
+flutter run --flavor prod --target lib/main_prod.dart
 ```
 
 You can also add launch configuration to VS Code:
@@ -46,7 +46,7 @@ You can also add launch configuration to VS Code:
     "request": "launch",
     "type": "dart",
     "flutterMode": "debug",
-    "program": "lib/main.dart",
+    "program": "lib/main_tst.dart",
     "args": [
         "--flavor",
         "tst"
@@ -57,7 +57,7 @@ You can also add launch configuration to VS Code:
     "request": "launch",
     "type": "dart",
     "flutterMode": "debug",
-    "program": "lib/main.dart",
+    "program": "lib/main_tst.dart",
     "args": [
         "--flavor",
         "prod"
