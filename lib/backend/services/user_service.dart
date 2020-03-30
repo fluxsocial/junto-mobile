@@ -390,6 +390,7 @@ class UserServiceCentralized implements UserService {
   @override
   Future<Map<String, dynamic>> updateUser(
       Map<String, dynamic> body, String userAddress) async {
+    print(body);
     // make request to api with encoded json body
     final http.Response _serverResponse =
         await client.patch('/users/$userAddress', body: body);

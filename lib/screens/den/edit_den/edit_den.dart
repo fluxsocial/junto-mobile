@@ -140,14 +140,14 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     _newProfileBody = <String, dynamic>{
       'name': _nameController.value.text,
       'location': _locationController.value.text == ''
-          ? <String>[]
+          ? null
           : <String>[_locationController.value.text],
-      'bio': _bioController?.value?.text,
+      'bio': _bioController.value.text == '' ? null : _bioController.value.text,
       'website': _websiteController.value.text == ''
-          ? <String>[]
+          ? null
           : <String>[_websiteController.value.text],
       'gender': _genderController.value.text == ''
-          ? <String>[]
+          ? null
           : <String>[_genderController.value.text],
     };
 
