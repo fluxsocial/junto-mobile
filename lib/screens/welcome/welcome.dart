@@ -203,7 +203,13 @@ class WelcomeState extends State<Welcome> {
       await _nextSignUpPage();
     } else {
       FocusScope.of(context).unfocus();
-      showFeedback(context, message: 'Username cannot contain any spaces');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText:
+              'Your username can only contain lowercase letters, numbers, and underscores.',
+        ),
+      );
     }
   }
 
@@ -213,7 +219,7 @@ class WelcomeState extends State<Welcome> {
       await _nextSignUpPage();
     } else {
       FocusScope.of(context).unfocus();
-      showFeedback(context, message: 'Name must be provided.');
+      return;
     }
   }
 
@@ -342,6 +348,13 @@ class WelcomeState extends State<Welcome> {
         bool _correctLength = username.length >= 1 && username.length <= 22;
         final exp = RegExp("^[a-z0-9_]+\$");
         if (username == null || !exp.hasMatch(username) || !_correctLength) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              dialogText:
+                  'Your username can only contain lowercase letters, numbers, and underscores.',
+            ),
+          );
           return;
         } else {
           final Map<String, dynamic> validateUserResponse =
