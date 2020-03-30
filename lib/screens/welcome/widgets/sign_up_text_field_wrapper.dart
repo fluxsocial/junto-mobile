@@ -73,6 +73,7 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
                   hint: widget.hint,
                   maxLength: widget.maxLength,
                   textInputActionType: widget.textInputActionType,
+                  textCapitalization: TextCapitalization.none,
                 ),
                 SignUpTextFieldLabelAndCounter(
                   label: widget.label,
