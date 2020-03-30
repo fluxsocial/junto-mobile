@@ -61,7 +61,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
                 children: <Widget>[
                   TextField(
                     controller: verificationController,
-                    maxLength: 6,
+                    maxLength: 8,
                     buildCounter: (
                       BuildContext context, {
                       int currentLength,

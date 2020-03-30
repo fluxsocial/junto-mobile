@@ -58,6 +58,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     }
     final http.Response response =
         await client.postWithoutEncoding('/users/validate', body: _body);
+    print(response.statusCode);
     final parseData = JuntoHttp.handleResponse(response);
     return parseData;
   }
@@ -69,16 +70,16 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     final http.Response response =
         await client.postWithoutEncoding('/auth/register', body: _body);
     logger.logDebug(response.body);
-
+    print(response.statusCode);
+    if (response.statusCode == 310) {
+      print('yeo');
+      return 'follow the white rabbit';
+    }
     final Map<String, dynamic> parseData = JuntoHttp.handleResponse(response);
     if (parseData['message'] != null) {
       return parseData['message'];
     } else {
-      if (response.statusCode == 310) {
-        return 'follow the white rabbit';
-      } else {
-        throw JuntoException(parseData['error'], response.statusCode);
-      }
+      throw JuntoException(parseData['error'], response.statusCode);
     }
   }
 
