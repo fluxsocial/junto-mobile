@@ -168,6 +168,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
             _photoKeys.add(key);
           } catch (e, s) {
             logger.logException(e, e);
+            print(e.message);
             JuntoLoader.hide();
           }
         }

@@ -356,9 +356,11 @@ class WelcomeState extends State<Welcome> {
           );
           return;
         } else {
+          JuntoLoader.showLoader(context);
           final Map<String, dynamic> validateUserResponse =
               await Provider.of<AuthRepo>(context, listen: false)
                   .validateUser(username: username);
+          JuntoLoader.hide();
           final bool usernameIsAvailable =
               validateUserResponse['valid_username'];
           if (!usernameIsAvailable) {
