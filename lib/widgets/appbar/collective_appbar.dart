@@ -105,12 +105,14 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                                   context, <String>{
                                 'collective_info_id',
                                 'collective_filter_id',
+                                'collective_toggle_id',
                               });
                               FeatureDiscovery.discoverFeatures(
                                 context,
                                 const <String>{
                                   'collective_info_id',
                                   'collective_filter_id',
+                                  'collective_toggle_id',
                                 },
                               );
                             },
@@ -122,7 +124,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               ),
                               featureId: 'collective_info_id',
                               title:
-                                  'This is the Collective of Junto, where all public expressions are shown',
+                                  'This is the Collective of Junto, where all public expressions are shown through perspectives',
                               learnMore: true,
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 10),
@@ -143,7 +145,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   color: Theme.of(context).backgroundColor,
                   border: Border(
                     bottom: BorderSide(
-                        color: Theme.of(context).dividerColor, width: .75),
+                      color: Theme.of(context).dividerColor,
+                      width: .75,
+                    ),
                   ),
                 ),
                 child: Padding(

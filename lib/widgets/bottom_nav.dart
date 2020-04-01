@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
 class BottomNav extends StatelessWidget {
@@ -14,12 +15,18 @@ class BottomNav extends StatelessWidget {
     @required this.actionsVisible,
     this.address,
     this.expressionContext = ExpressionContext.Collective,
+    this.featureId,
+    this.featureTitle,
+    this.isLastFeature,
   });
 
   final VoidCallback onLeftButtonTap;
   final bool actionsVisible;
   final String address;
   final ExpressionContext expressionContext;
+  final String featureId;
+  final String featureTitle;
+  final bool isLastFeature;
 
   @override
   Widget build(BuildContext context) {
@@ -38,42 +45,19 @@ class BottomNav extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: GestureDetector(
-              onTap: onLeftButtonTap,
-              child: DescribedFeatureOverlay(
-                tapTarget: Icon(Icons.add),
-                featureId: 'arrow_id',
-                backgroundColor: Theme.of(context).accentColor,
-                contentLocation: ContentLocation.below,
-                title: const Text('Find the fastest route'),
-                targetColor: Theme.of(context).backgroundColor,
-                enablePulsingAnimation: false,
-                description: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Text(
-                        'Tap the magnifying glass to quickly scan your compounds'),
-                    FlatButton(
-                      padding: const EdgeInsets.all(0),
-                      child: Text('Understood',
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              .copyWith(color: Colors.white)),
-                      onPressed: () async =>
-                          FeatureDiscovery.completeCurrentStep(context),
-                    ),
-                    FlatButton(
-                      padding: const EdgeInsets.all(0),
-                      child: Text('Dismiss',
-                          style: Theme.of(context)
-                              .textTheme
-                              .button
-                              .copyWith(color: Colors.white)),
-                      onPressed: () => FeatureDiscovery.dismissAll(context),
-                    ),
-                  ],
-                ),
+            child: JuntoDescribedFeatureOverlay(
+              icon: Icon(
+                CustomIcons.newdoubleuparrow,
+                size: 33,
+                color: Theme.of(context).primaryColor,
+              ),
+              featureId: featureId,
+              title: featureTitle,
+              contentLocation: ContentLocation.above,
+              learnMore: false,
+              isLastFeature: isLastFeature,
+              child: GestureDetector(
+                onTap: onLeftButtonTap,
                 child: Container(
                   width: 60,
                   height: 50,

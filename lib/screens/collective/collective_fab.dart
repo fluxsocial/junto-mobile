@@ -33,7 +33,7 @@ class CollectiveActionButton extends StatelessWidget {
               //       onPressed: onUpTap,
               //     ),
               //   ),
-              : const SizedBox()
+              : const SizedBox(),
         );
       },
       child: Padding(
@@ -42,6 +42,10 @@ class CollectiveActionButton extends StatelessWidget {
         child: BottomNav(
           actionsVisible: actionsVisible,
           onLeftButtonTap: onTap,
+          featureId: 'collective_toggle_id',
+          featureTitle:
+              'Toggle between your list of perspectives and the current perspective you’re looking at.',
+          isLastFeature: true,
         ),
       ),
     );

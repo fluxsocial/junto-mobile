@@ -3,17 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
 class JuntoDescribedFeatureOverlay extends StatelessWidget {
-  const JuntoDescribedFeatureOverlay(
-      {this.icon,
-      this.featureId,
-      this.title,
-      this.learnMore = false,
-      this.child});
+  const JuntoDescribedFeatureOverlay({
+    this.icon,
+    this.featureId,
+    this.title,
+    this.contentLocation = ContentLocation.below,
+    this.learnMore = false,
+    this.isLastFeature = false,
+    this.child,
+  });
 
   final dynamic icon;
   final String featureId;
   final String title;
+  final ContentLocation contentLocation;
   final bool learnMore;
+  final bool isLastFeature;
   final Widget child;
 
   _actionItemButton(BuildContext context, String name, Function onPressed) {
@@ -37,7 +42,7 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
       tapTarget: icon,
       featureId: featureId,
       backgroundColor: Theme.of(context).accentColor,
-      contentLocation: ContentLocation.below,
+      contentLocation: contentLocation,
       overflowMode: OverflowMode.extendBackground,
       title: Text(
         title,
@@ -58,11 +63,12 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
               'Learn More',
               () {},
             ),
-          _actionItemButton(
-            context,
-            'Next Feature',
-            () async => FeatureDiscovery.completeCurrentStep(context),
-          ),
+          if (!isLastFeature)
+            _actionItemButton(
+              context,
+              'Next Feature',
+              () async => FeatureDiscovery.completeCurrentStep(context),
+            ),
           _actionItemButton(
             context,
             'Dismiss',
