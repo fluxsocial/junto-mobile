@@ -110,7 +110,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    height: 100,
+                    height: 50,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
                     ),
@@ -118,7 +118,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        JuntoInfoIcon(),
+                        JuntoInfoIcon(neutralBackground: false),
                       ],
                     ),
                   ),

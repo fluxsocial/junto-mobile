@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:provider/provider.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
@@ -68,6 +69,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         ),
                       ),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
@@ -79,10 +81,10 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               );
                             },
                             child: Container(
-                              width: 42,
                               color: Colors.transparent,
-                              alignment: Alignment.bottomRight,
-                              padding: const EdgeInsets.only(right: 10),
+                              alignment: Alignment.bottomCenter,
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
                               child: Icon(
                                 CustomIcons.moon,
                                 size: 22,
@@ -90,6 +92,10 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: JuntoInfoIcon(),
+                          )
                         ],
                       )
                     ],
