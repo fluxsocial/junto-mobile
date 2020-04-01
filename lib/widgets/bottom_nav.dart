@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
@@ -39,17 +40,52 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: onLeftButtonTap,
-              child: Container(
-                width: 60,
-                height: 50,
-                color: Colors.transparent,
-                alignment: Alignment.center,
-                child: RotatedBox(
-                  quarterTurns: actionsVisible ? 2 : 0,
-                  child: Icon(
-                    CustomIcons.newdoubleuparrow,
-                    size: 33,
-                    color: Theme.of(context).primaryColor,
+              child: DescribedFeatureOverlay(
+                tapTarget: Icon(Icons.add),
+                featureId: 'arrow_id',
+                backgroundColor: Theme.of(context).accentColor,
+                contentLocation: ContentLocation.below,
+                title: const Text('Find the fastest route'),
+                targetColor: Theme.of(context).backgroundColor,
+                enablePulsingAnimation: false,
+                description: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                        'Tap the magnifying glass to quickly scan your compounds'),
+                    FlatButton(
+                      padding: const EdgeInsets.all(0),
+                      child: Text('Understood',
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Colors.white)),
+                      onPressed: () async =>
+                          FeatureDiscovery.completeCurrentStep(context),
+                    ),
+                    FlatButton(
+                      padding: const EdgeInsets.all(0),
+                      child: Text('Dismiss',
+                          style: Theme.of(context)
+                              .textTheme
+                              .button
+                              .copyWith(color: Colors.white)),
+                      onPressed: () => FeatureDiscovery.dismissAll(context),
+                    ),
+                  ],
+                ),
+                child: Container(
+                  width: 60,
+                  height: 50,
+                  color: Colors.transparent,
+                  alignment: Alignment.center,
+                  child: RotatedBox(
+                    quarterTurns: actionsVisible ? 2 : 0,
+                    child: Icon(
+                      CustomIcons.newdoubleuparrow,
+                      size: 33,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ),

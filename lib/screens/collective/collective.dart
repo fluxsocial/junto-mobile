@@ -11,7 +11,7 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-
+import 'package:feature_discovery/feature_discovery.dart';
 import 'collective_actions/perspectives.dart';
 
 // This class is a collective screen
@@ -74,32 +74,35 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: JuntoFilterDrawer(
-        leftDrawer: const FilterDrawerContent(ExpressionContextType.Collective),
-        rightMenu: JuntoDrawer(),
-        scaffold: NotificationListener<ScrollUpdateNotification>(
-          onNotification: (value) => hideOrShowFab(value, _isFabVisible),
-          child: Scaffold(
-            key: _juntoCollectiveKey,
-            floatingActionButton: CollectiveActionButton(
-              isVisible: _isFabVisible,
-              onUpTap: _scrollToTop,
-              actionsVisible: false,
-              onTap: () {
-                context.bloc<PerspectivesBloc>().add(FetchPerspectives());
-                Navigator.push(
-                  context,
-                  FadeRoute(
-                    child: JuntoPerspectives(),
-                  ),
-                );
-              },
+    return FeatureDiscovery(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: JuntoFilterDrawer(
+          leftDrawer:
+              const FilterDrawerContent(ExpressionContextType.Collective),
+          rightMenu: JuntoDrawer(),
+          scaffold: NotificationListener<ScrollUpdateNotification>(
+            onNotification: (value) => hideOrShowFab(value, _isFabVisible),
+            child: Scaffold(
+              key: _juntoCollectiveKey,
+              floatingActionButton: CollectiveActionButton(
+                isVisible: _isFabVisible,
+                onUpTap: _scrollToTop,
+                actionsVisible: false,
+                onTap: () {
+                  context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+                  Navigator.push(
+                    context,
+                    FadeRoute(
+                      child: JuntoPerspectives(),
+                    ),
+                  );
+                },
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              body: ExpressionFeed(collectiveController: _collectiveController),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: ExpressionFeed(collectiveController: _collectiveController),
           ),
         ),
       ),
