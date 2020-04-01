@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -108,7 +109,19 @@ class JuntoLotusState extends State<JuntoLotus> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const SizedBox(),
+                  Container(
+                    height: 100,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        JuntoInfoIcon(),
+                      ],
+                    ),
+                  ),
                   Column(
                     children: <Widget>[
                       Container(
