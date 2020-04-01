@@ -99,34 +99,35 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               ),
                             ),
                           ),
-                          RaisedButton(onPressed: () {
-                            FeatureDiscovery.clearPreferences(context, <String>{
-                              'information_id',
-                              'arrow_id',
-                              'filter_id',
-                              'twocolumn_id',
-                            });
-                            FeatureDiscovery.discoverFeatures(
-                              context,
-                              const <String>{
-                                'information_id',
-                                'arrow_id',
-                                'filter_id',
-                                'twocolumn_id',
-                              },
-                            );
-                          }),
-                          JuntoDescribedFeatureOverlay(
-                            icon: Icon(
-                              CustomIcons.newcollective,
-                              size: 36,
-                              color: Colors.white,
-                            ),
-                            featureId: 'information_id',
-                            title: 'This is the Collective of Junto',
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: JuntoInfoIcon(),
+                          GestureDetector(
+                            onTap: () {
+                              FeatureDiscovery.clearPreferences(
+                                  context, <String>{
+                                'collective_info_id',
+                                'collective_filter_id',
+                              });
+                              FeatureDiscovery.discoverFeatures(
+                                context,
+                                const <String>{
+                                  'collective_info_id',
+                                  'collective_filter_id',
+                                },
+                              );
+                            },
+                            child: JuntoDescribedFeatureOverlay(
+                              icon: Icon(
+                                CustomIcons.newcollective,
+                                size: 36,
+                                color: Colors.white,
+                              ),
+                              featureId: 'collective_info_id',
+                              title:
+                                  'This is the Collective of Junto, where all public expressions are shown',
+                              learnMore: true,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: JuntoInfoIcon(),
+                              ),
                             ),
                           ),
                         ],
@@ -150,104 +151,31 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      DescribedFeatureOverlay(
-                        tapTarget: Icon(Icons.add),
-                        featureId: 'filter_id',
-                        backgroundColor: Theme.of(context).accentColor,
-                        contentLocation: ContentLocation.below,
-                        title: const Text('Find the fastest route'),
-                        targetColor: Theme.of(context).backgroundColor,
-                        onComplete: action,
-                        enablePulsingAnimation: false,
-                        description: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                                'Tap the magnifying glass to quickly scan your compounds'),
-                            FlatButton(
-                              padding: const EdgeInsets.all(0),
-                              child: Text('Understood',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .button
-                                      .copyWith(color: Colors.white)),
-                              onPressed: () async =>
-                                  FeatureDiscovery.completeCurrentStep(context),
-                            ),
-                            FlatButton(
-                              padding: const EdgeInsets.all(0),
-                              child: Text('Dismiss',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .button
-                                      .copyWith(color: Colors.white)),
-                              onPressed: () =>
-                                  FeatureDiscovery.dismissAll(context),
-                            ),
-                          ],
+                      JuntoDescribedFeatureOverlay(
+                        icon: Image.asset(
+                          'assets/images/junto-mobile__filter.png',
+                          height: 17,
+                          color: Theme.of(context).primaryColor,
                         ),
-                        onOpen: () async {
-                          print('The overlay is about to be displayed.');
-                          return true;
-                        },
+                        featureId: 'collective_filter_id',
+                        title: 'Filter this perspective by channel',
                         child: const FilterDrawerButton(),
                       ),
                       Row(
                         children: <Widget>[
-                          DescribedFeatureOverlay(
-                            tapTarget: Icon(Icons.add),
-                            featureId: 'twocolumn_id',
-                            backgroundColor: Theme.of(context).primaryColor,
-                            contentLocation: ContentLocation.below,
-                            title: const Text('Find the fastest route'),
-                            onComplete: action,
-                            enablePulsingAnimation: false,
-                            description: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                const Text(
-                                    'Tap the magnifying glass to quickly scan your compounds'),
-                                FlatButton(
-                                  padding: const EdgeInsets.all(0),
-                                  child: Text('Understood',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .button
-                                          .copyWith(color: Colors.white)),
-                                  onPressed: () async =>
-                                      FeatureDiscovery.completeCurrentStep(
-                                          context),
-                                ),
-                                FlatButton(
-                                  padding: const EdgeInsets.all(0),
-                                  child: Text('Dismiss',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .button
-                                          .copyWith(color: Colors.white)),
-                                  onPressed: () =>
-                                      FeatureDiscovery.dismissAll(context),
-                                ),
-                              ],
-                            ),
-                            onOpen: () async {
-                              print('The overlay is about to be displayed.');
-                              return true;
-                            },
-                            child: GestureDetector(
-                              onTap: () => data?.switchColumnLayout(
-                                  ExpressionFeedLayout.two),
-                              child: Container(
-                                color: Colors.transparent,
-                                alignment: Alignment.centerRight,
-                                width: 38,
-                                child: Icon(
-                                  CustomIcons.twocolumn,
-                                  size: 20,
-                                  color: data?.twoColumnView == true
-                                      ? Theme.of(context).primaryColorDark
-                                      : Theme.of(context).primaryColorLight,
-                                ),
+                          GestureDetector(
+                            onTap: () => data
+                                ?.switchColumnLayout(ExpressionFeedLayout.two),
+                            child: Container(
+                              color: Colors.transparent,
+                              alignment: Alignment.centerRight,
+                              width: 38,
+                              child: Icon(
+                                CustomIcons.twocolumn,
+                                size: 20,
+                                color: data?.twoColumnView == true
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight,
                               ),
                             ),
                           ),

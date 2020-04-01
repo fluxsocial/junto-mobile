@@ -4,11 +4,16 @@ import 'package:feature_discovery/feature_discovery.dart';
 
 class JuntoDescribedFeatureOverlay extends StatelessWidget {
   const JuntoDescribedFeatureOverlay(
-      {this.icon, this.featureId, this.title, this.child});
+      {this.icon,
+      this.featureId,
+      this.title,
+      this.learnMore = false,
+      this.child});
 
   final dynamic icon;
   final String featureId;
   final String title;
+  final bool learnMore;
   final Widget child;
 
   _actionItemButton(BuildContext context, String name, Function onPressed) {
@@ -18,7 +23,7 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
         name,
         style: TextStyle(
           fontSize: 17,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w500,
           color: Colors.white,
         ),
       ),
@@ -33,6 +38,7 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
       featureId: featureId,
       backgroundColor: Theme.of(context).accentColor,
       contentLocation: ContentLocation.below,
+      overflowMode: OverflowMode.extendBackground,
       title: Text(
         title,
         style: TextStyle(
@@ -46,11 +52,12 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
       description: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _actionItemButton(
-            context,
-            'Learn More',
-            () {},
-          ),
+          if (learnMore)
+            _actionItemButton(
+              context,
+              'Learn More',
+              () {},
+            ),
           _actionItemButton(
             context,
             'Next Feature',
