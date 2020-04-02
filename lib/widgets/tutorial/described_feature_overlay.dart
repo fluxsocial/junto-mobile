@@ -31,15 +31,24 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        margin: const EdgeInsets.only(bottom: 10),
-        child: Text(
-          name,
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          children: <Widget>[
+            Text(
+              name.toUpperCase(),
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
+              size: 20,
+            ),
+          ],
         ),
       ),
     );
