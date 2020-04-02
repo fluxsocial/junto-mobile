@@ -126,6 +126,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               title:
                                   'This is the Collective of Junto, where all public expressions are shown through perspectives',
                               learnMore: true,
+                              hasUpNext: false,
+                              learnMoreText:
+                                  'This is the collective of Junto, where all public expressions are shown. This is the collective of Junto, where all public expressions are shown.',
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: JuntoInfoIcon(),

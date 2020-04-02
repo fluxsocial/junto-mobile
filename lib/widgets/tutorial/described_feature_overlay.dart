@@ -12,12 +12,13 @@ class JuntoDescribedFeatureOverlay extends StatefulWidget {
     this.isLastFeature = false,
     this.oneFeature = false,
     this.hasUpNext = false,
-    this.learnMoreText,
+    this.learnMoreText = '',
     this.child,
   });
 
   final dynamic icon;
   final String featureId;
+
   final String title;
   final ContentLocation contentLocation;
   // if this feature has a learn more section
@@ -84,7 +85,7 @@ class JuntoDescribedFeatureOverlayState
           _learnMore(
             context: context,
             learnMoreText: widget.learnMoreText,
-            hasUpNext: false,
+            hasUpNext: widget.hasUpNext,
           ),
         ],
       ),
