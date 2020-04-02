@@ -95,3 +95,6 @@ flutter:
     - assets/images/junto-mobile__double-down-arrow.png
     - assets/images/junto-mobile__menu.png
     - assets/images/junto-mobile__filter.png
+flutter_intl:
+  enabled: true
+  main_locale: pl
