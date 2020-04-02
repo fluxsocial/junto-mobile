@@ -132,7 +132,7 @@ class PackOpenAppbar extends StatelessWidget {
                       },
                       child: JuntoDescribedFeatureOverlay(
                         icon: Icon(
-                          CustomIcons.newcollective,
+                          CustomIcons.newpacks,
                           size: 36,
                           color: Colors.white,
                         ),

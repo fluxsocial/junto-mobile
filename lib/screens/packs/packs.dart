@@ -15,7 +15,6 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:provider/provider.dart';
 
 class JuntoPacks extends StatefulWidget {

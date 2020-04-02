@@ -25,17 +25,7 @@ class CollectiveActionButton extends StatelessWidget {
       builder: (BuildContext context, bool visible, Widget child) {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          child: visible
-              ? child
-              // : Padding(
-              //     key: ValueKey('Up-Button'),
-              //     padding: const EdgeInsets.only(bottom: 25),
-              //     child: FloatingActionButton(
-              //       child: Icon(Icons.arrow_drop_up),
-              //       onPressed: onUpTap,
-              //     ),
-              //   ),
-              : const SizedBox(),
+          child: visible ? child : const SizedBox(),
         );
       },
       child: Padding(
