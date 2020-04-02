@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -55,8 +56,8 @@ class _NotificationScreenState extends State<NotificationScreen>
       JuntoLoader.hide();
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
@@ -72,8 +73,8 @@ class _NotificationScreenState extends State<NotificationScreen>
       JuntoLoader.hide();
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
@@ -89,8 +90,8 @@ class _NotificationScreenState extends State<NotificationScreen>
       JuntoLoader.hide();
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
@@ -106,21 +107,22 @@ class _NotificationScreenState extends State<NotificationScreen>
       JuntoLoader.hide();
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
   }
 
-  Widget _buildGroupBody(final NotificationResultsModel data) {
+  Widget _buildGroupBody(
+      final NotificationResultsModel data, BuildContext context) {
     return ListView(
       children: <Widget>[
         if (data.groupJoinNotifications.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 24.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
             child: _EmptyResults(
-              name: 'No new group notifications',
+              name: S.of(context).notifications_no_new_group_notif,
             ),
           ),
         if (data.groupJoinNotifications.isNotEmpty)
@@ -129,21 +131,22 @@ class _NotificationScreenState extends State<NotificationScreen>
               key: ValueKey<String>(item.address),
               onPrimaryAction: () => acceptGroupConnection(item),
               onSecondaryAction: () => rejectGroupConnection(item),
-              subtitle: 'Creator',
+              subtitle: S.of(context).notifications_creator,
               title: item.groupData.name,
             ),
       ],
     );
   }
 
-  Widget _buildConnectionBody(final NotificationResultsModel data) {
+  Widget _buildConnectionBody(
+      final NotificationResultsModel data, BuildContext context) {
     return ListView(
       children: <Widget>[
         if (data.connectionNotifications.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 24.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
             child: _EmptyResults(
-              name: 'No new connection notifications',
+              name: S.of(context).notifications_no_new_connection_notif,
             ),
           ),
         if (data.connectionNotifications.isNotEmpty)
@@ -165,7 +168,7 @@ class _NotificationScreenState extends State<NotificationScreen>
       appBar: AppBar(
         elevation: 1.0,
         title: Text(
-          'Notifications',
+          S.of(context).notifications_title,
           style: Theme.of(context).textTheme.headline6,
         ),
         brightness: Theme.of(context).brightness,
@@ -174,13 +177,13 @@ class _NotificationScreenState extends State<NotificationScreen>
           tabs: <Widget>[
             Tab(
               child: Text(
-                'Group',
+                S.of(context).notifications_group,
                 style: Theme.of(context).textTheme.caption,
               ),
             ),
             Tab(
               child: Text(
-                'Connection',
+                S.of(context).notifications_connection,
                 style: Theme.of(context).textTheme.caption,
               ),
             ),
@@ -206,9 +209,9 @@ class _NotificationScreenState extends State<NotificationScreen>
                 return Container(
                   height: 500.0,
                   width: 500.0,
-                  child: const Center(
+                  child: Center(
                     child: _EmptyResults(
-                      name: 'Try again later',
+                      name: S.of(context).common_try_again_later,
                     ),
                   ),
                 );
@@ -217,8 +220,8 @@ class _NotificationScreenState extends State<NotificationScreen>
                 return TabBarView(
                   controller: _tabController,
                   children: <Widget>[
-                    _buildGroupBody(snapshot.data),
-                    _buildConnectionBody(snapshot.data),
+                    _buildGroupBody(snapshot.data, context),
+                    _buildConnectionBody(snapshot.data, context),
                   ],
                 );
               }
@@ -299,8 +302,8 @@ class _ActionTile extends StatelessWidget {
                 ),
                 onPressed: onPrimaryAction,
                 color: Theme.of(context).accentColor,
-                child: const Text(
-                  'Accept',
+                child: Text(
+                  S.of(context).common_accept,
                   style: _style,
                 ),
               ),
@@ -322,7 +325,10 @@ class _ActionTile extends StatelessWidget {
                 ),
                 onPressed: onSecondaryAction,
                 color: Colors.redAccent,
-                child: const Text('Reject', style: _style),
+                child: Text(
+                  S.of(context).common_reject,
+                  style: _style,
+                ),
               ),
             ],
           ),

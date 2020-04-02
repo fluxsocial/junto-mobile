@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
@@ -205,8 +206,7 @@ class WelcomeState extends State<Welcome> {
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
-          dialogText:
-              'Your username can only contain lowercase letters, numbers, and underscores.',
+          dialogText: S.of(context).welcome_username_requirements,
         ),
       );
     }
@@ -267,9 +267,9 @@ class WelcomeState extends State<Welcome> {
                       onValueChanged: (String value) => name = value,
                       onSubmit: _nameCheck,
                       maxLength: 50,
-                      hint: 'My name is...',
-                      label: 'FULL NAME',
-                      title: 'Hey, what\'s your name?',
+                      hint: S.of(context).welcome_my_name_is,
+                      label: S.of(context).welcome_name_label,
+                      title: S.of(context).welcome_name_hint,
                     ),
                   ),
                   PageKeepAlive(
@@ -280,9 +280,9 @@ class WelcomeState extends State<Welcome> {
                           username = value.toLowerCase().trim(),
                       onSubmit: _userNameSubmission,
                       maxLength: 22,
-                      hint: 'I\'ll go by...',
-                      label: 'USERNAME',
-                      title: 'Choose a unique username',
+                      hint: S.of(context).welcome_username_ill_go,
+                      label: S.of(context).welcome_username_label,
+                      title: S.of(context).welcome_username_hint,
                     ),
                   ),
                   PageKeepAlive(
@@ -350,8 +350,7 @@ class WelcomeState extends State<Welcome> {
           showDialog(
             context: context,
             builder: (BuildContext context) => SingleActionDialog(
-              dialogText:
-                  'Your username can only contain lowercase letters, numbers, and underscores.',
+              dialogText: S.of(context).welcome_username_requirements,
             ),
           );
           return;
@@ -433,16 +432,16 @@ class WelcomeState extends State<Welcome> {
     if (password != confirmPassword) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Both passwords must match.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).welcome_passwords_must_match,
         ),
       );
       return false;
     } else if (password.length < 8 || confirmPassword.length < 8) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Your password must be greater than 8 characters.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).welcome_password_length,
         ),
       );
       return false;

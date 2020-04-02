@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/packs/my_packs.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_actions_button.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_requests.dart';
@@ -44,10 +45,10 @@ class PacksListState extends State<PacksList> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    'Packs',
+                    S.of(context).packs_title,
                     style: Theme.of(context).textTheme.headline4,
                   ),
-                  const IconButton(
+                  IconButton(
                     icon: Icon(Icons.add, size: 0),
                   ),
                 ],
@@ -83,7 +84,7 @@ class PacksListState extends State<PacksList> {
                         },
                         child: Container(
                           child: Text(
-                            'My Packs',
+                            S.of(context).packs_my_packs,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
@@ -104,7 +105,7 @@ class PacksListState extends State<PacksList> {
                         },
                         child: Container(
                           child: Text(
-                            'Requests',
+                            S.of(context).packs_requests,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,

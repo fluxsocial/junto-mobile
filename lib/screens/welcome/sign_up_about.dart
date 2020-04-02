@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
@@ -75,8 +76,8 @@ class SignUpAboutState extends State<SignUpAbout> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SignUpPageTitle(
-              title: 'Feel free to share more about yourself (optional)',
+            SignUpPageTitle(
+              title: S.of(context).welcome_feel_free,
             ),
             Expanded(
               child: KeyboardAvoider(
@@ -89,11 +90,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                       onSubmit: () =>
                           _lengthValidator(locationController.value.text),
                       textInputActionType: TextInputAction.next,
-                      hint: 'Location',
+                      hint: S.of(context).welcome_location_hint,
                       maxLength: 30,
                     ),
                     SignUpTextFieldLabelAndCounter(
-                      label: 'LOCATION',
+                      label: S.of(context).welcome_location_label,
                       maxLength: 30,
                       valueController: locationController,
                       compact: true,
@@ -104,11 +105,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                       onSubmit: () =>
                           _lengthValidator(genderController.value.text),
                       textInputActionType: TextInputAction.next,
-                      hint: 'Gender Pronouns',
+                      hint: S.of(context).welcome_gender_hints,
                       maxLength: 30,
                     ),
                     SignUpTextFieldLabelAndCounter(
-                      label: 'PRONOUNS',
+                      label: S.of(context).welcome_gender_label,
                       maxLength: 30,
                       valueController: locationController,
                       compact: true,
@@ -123,13 +124,13 @@ class SignUpAboutState extends State<SignUpAbout> {
                           widget.nextPage();
                         }
                       },
-                      hint: 'Website',
+                      hint: S.of(context).welcome_website_hint,
                       maxLength: 100,
                       keyboardType: TextInputType.url,
                       textCapitalization: TextCapitalization.none,
                     ),
                     SignUpTextFieldLabelAndCounter(
-                      label: 'WEBSITE',
+                      label: S.of(context).welcome_website_label,
                       maxLength: 100,
                       valueController: locationController,
                       compact: true,

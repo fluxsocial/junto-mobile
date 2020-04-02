@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
@@ -58,7 +59,7 @@ class _PackRequestsState extends State<PackRequests> {
                   child: Center(
                     child: Transform.translate(
                       offset: const Offset(0.0, -50),
-                      child: const Text('Hmm, something is up with our server'),
+                      child: Text(S.of(context).common_network_error),
                     ),
                   ),
                 );
