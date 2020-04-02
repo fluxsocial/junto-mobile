@@ -43,23 +43,28 @@ class PackOpenAppbar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 userProfile != null
-                    ? Row(
-                        children: <Widget>[
-                          MemberAvatar(
-                            diameter: 28,
-                            profilePicture:
+                    ? Flexible(
+                        child: Row(
+                          children: <Widget>[
+                            MemberAvatar(
+                              diameter: 28,
+                              profilePicture:
+                                  pack.address == userProfile.pack.address
+                                      ? userProfile.user.profilePicture
+                                      : pack.creator['profile_picture'],
+                            ),
+                            const SizedBox(width: 10),
+                            Flexible(
+                              child: Text(
                                 pack.address == userProfile.pack.address
-                                    ? userProfile.user.profilePicture
-                                    : pack.creator['profile_picture'],
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            pack.address == userProfile.pack.address
-                                ? 'My Pack'
-                                : pack.groupData.name,
-                            style: Theme.of(context).textTheme.headline6,
-                          )
-                        ],
+                                    ? 'My Pack'
+                                    : pack.groupData.name,
+                                style: Theme.of(context).textTheme.headline6,
+                                maxLines: 1,
+                              ),
+                            )
+                          ],
+                        ),
                       )
                     : const SizedBox(),
                 Row(
