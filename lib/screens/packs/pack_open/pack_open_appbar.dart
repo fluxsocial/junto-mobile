@@ -6,7 +6,9 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_action_items.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
-
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 class PackOpenAppbar extends StatelessWidget {
@@ -112,6 +114,38 @@ class PackOpenAppbar extends StatelessWidget {
                             ),
                           )
                         : const SizedBox(),
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.clearPreferences(context, <String>{
+                          'packs_info_id',
+                          // 'collective_filter_id',
+                          'packs_toggle_id',
+                        });
+                        FeatureDiscovery.discoverFeatures(
+                          context,
+                          const <String>{
+                            'packs_info_id',
+                            // 'collective_filter_id',
+                            'packs_toggle_id',
+                          },
+                        );
+                      },
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
+                          CustomIcons.newcollective,
+                          size: 36,
+                          color: Colors.white,
+                        ),
+                        featureId: 'packs_info_id',
+                        title:
+                            'This is your Pack. It displays all of the publicly shared posts from you and the people you choose to have in you pack. There is also a section where you can share things privately to just your pack members.',
+                        learnMore: true,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: JuntoInfoIcon(),
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],

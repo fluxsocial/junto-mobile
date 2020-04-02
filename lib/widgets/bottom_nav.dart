@@ -16,8 +16,9 @@ class BottomNav extends StatelessWidget {
     this.address,
     this.expressionContext = ExpressionContext.Collective,
     this.featureTitle,
-    this.iconNorth,
+    this.iconNorth = true,
     this.isLastFeature,
+    this.featureId,
   });
 
   final VoidCallback onLeftButtonTap;
@@ -26,6 +27,7 @@ class BottomNav extends StatelessWidget {
   final ExpressionContext expressionContext;
   final bool iconNorth;
   final String featureTitle;
+  final String featureId;
   final bool isLastFeature;
 
   @override
@@ -54,7 +56,7 @@ class BottomNav extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
               ),
-              featureId: 'collective_toggle_id',
+              featureId: featureId,
               title: featureTitle,
               contentLocation: ContentLocation.above,
               learnMore: false,

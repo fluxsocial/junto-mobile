@@ -37,6 +37,10 @@ class PacksActionButtons extends StatelessWidget {
           address: initialGroup,
           expressionContext: ExpressionContext.Group,
           actionsVisible: actionsVisible ?? true,
+          featureTitle:
+              'Toggle between the Packs you belong to and the current Pack you’re viewing.',
+          featureId: 'packs_toggle_id',
+          isLastFeature: true,
           onLeftButtonTap: () {
             if (actionsVisible) {
               Navigator.pop(context);
