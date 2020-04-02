@@ -19,6 +19,12 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh_Hans';
 
+  static m0(error) => "";
+
+  static m1(charCount) => "";
+
+  static m2(n) => "";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "collective_new_perspective" : MessageLookupByLibrary.simpleMessage(""),
@@ -36,7 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "error_already_sent_connection" : MessageLookupByLibrary.simpleMessage(""),
     "expression_channels" : MessageLookupByLibrary.simpleMessage(""),
     "expression_delete" : MessageLookupByLibrary.simpleMessage(""),
-    "expression_error" : MessageLookupByLibrary.simpleMessage(""),
+    "expression_error" : m0,
     "lotus_collective" : MessageLookupByLibrary.simpleMessage(""),
     "lotus_create" : MessageLookupByLibrary.simpleMessage(""),
     "lotus_groups" : MessageLookupByLibrary.simpleMessage(""),
@@ -62,12 +68,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome_lets_go" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_location_hint" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_location_label" : MessageLookupByLibrary.simpleMessage(""),
-    "welcome_login_requirements" : MessageLookupByLibrary.simpleMessage(""),
+    "welcome_login_requirements" : m1,
     "welcome_my_name_is" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_name_hint" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_name_label" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_password_hint" : MessageLookupByLibrary.simpleMessage(""),
-    "welcome_password_length" : MessageLookupByLibrary.simpleMessage(""),
+    "welcome_password_length" : m2,
     "welcome_password_rules" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_passwords_must_match" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_remove_photo" : MessageLookupByLibrary.simpleMessage(""),
