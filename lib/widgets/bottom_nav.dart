@@ -15,10 +15,10 @@ class BottomNav extends StatelessWidget {
     @required this.actionsVisible,
     this.address,
     this.expressionContext = ExpressionContext.Collective,
-    this.featureTitle,
+    this.featureTitle = '',
     this.iconNorth = true,
-    this.isLastFeature,
-    this.featureId,
+    this.isLastFeature = true,
+    this.featureId = '',
   });
 
   final VoidCallback onLeftButtonTap;
