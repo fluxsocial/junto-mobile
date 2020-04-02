@@ -11,6 +11,8 @@ import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dar
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,7 +68,16 @@ class _SignInState extends State<SignIn> {
       Provider.of<UserDataProvider>(context, listen: false).initialize();
       JuntoLoader.hide();
       BlocProvider.of<PerspectivesBloc>(context).add(FetchPerspectives());
-      Navigator.of(context).pushReplacement(JuntoLotusState.route());
+      Navigator.of(context).pushReplacement(
+        FadeRoute<void>(
+          child: FeatureDiscovery(
+            child: const JuntoLotus(
+              address: null,
+              expressionContext: ExpressionContext.Collective,
+            ),
+          ),
+        ),
+      );
     } catch (e, s) {
       logger.logException(e, s, 'Error during sign in');
       JuntoLoader.hide();

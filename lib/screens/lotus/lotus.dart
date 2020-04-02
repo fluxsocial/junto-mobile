@@ -99,228 +99,221 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   @override
   Widget build(BuildContext context) {
-    return FeatureDiscovery(
-      child: GestureDetector(
-        child: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              BackgroundTheme(currentTheme: _currentTheme),
-              Container(
-                height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.only(bottom: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
-                      color: Colors.transparent,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              FeatureDiscovery.clearPreferences(
-                                  context, <String>{
-                                'lotus_info_id',
-                              });
-                              FeatureDiscovery.discoverFeatures(
-                                context,
-                                const <String>{
-                                  'lotus_info_id',
-                                },
-                              );
-                            },
-                            child: JuntoDescribedFeatureOverlay(
-                              icon: Icon(
-                                CustomIcons.lotus,
-                                size: 36,
-                                color: Colors.white,
-                              ),
-                              featureId: 'lotus_info_id',
-                              title:
-                                  'This is the intention screen, your medium for navigation.',
-                              learnMore: true,
-                              child: JuntoInfoIcon(neutralBackground: false),
-                            ),
-                          ),
-                        ],
-                      ),
+    return GestureDetector(
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            BackgroundTheme(currentTheme: _currentTheme),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    height: 50,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
                     ),
-                    Column(
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Container(
-                          color: Colors.transparent,
-                          height: 80,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  _navigateTo(Screen.collective);
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  alignment: Alignment.center,
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 40,
-                                        child: const Icon(
-                                          CustomIcons.newcollective,
-                                          size: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const Text(
-                                        'COLLECTIVE',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 1.4,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 80,
-                          color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  _navigateTo(Screen.groups);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  color: Colors.transparent,
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 45,
-                                        child: Icon(
-                                          CustomIcons.newcircles,
-                                          size: 38,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        'GROUPS',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 1.4,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  _navigateTo(Screen.packs);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  color: Colors.transparent,
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 45,
-                                        child: Icon(
-                                          CustomIcons.newpacks,
-                                          size: 38,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        'PACKS',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 1.4,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 80,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  _navigateTo(Screen.create);
-                                },
-                                child: Container(
-                                  height: 80,
-                                  width: 80,
-                                  color: Colors.transparent,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        height: 45,
-                                        child: Icon(
-                                          CustomIcons.newcreate,
-                                          size: 38,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const Text(
-                                        'CREATE',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing: 1.4,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
+                        GestureDetector(
+                          onTap: () {
+                            FeatureDiscovery.clearPreferences(context, <String>{
+                              'lotus_info_id',
+                            });
+                            FeatureDiscovery.discoverFeatures(
+                              context,
+                              const <String>{
+                                'lotus_info_id',
+                              },
+                            );
+                          },
+                          child: JuntoDescribedFeatureOverlay(
+                            icon: Icon(
+                              CustomIcons.lotus,
+                              size: 36,
+                              color: Colors.white,
+                            ),
+                            featureId: 'lotus_info_id',
+                            title:
+                                'This is the intention screen, your medium for navigation.',
+                            learnMore: true,
+                            child: JuntoInfoIcon(neutralBackground: false),
                           ),
                         ),
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        color: Colors.transparent,
+                        height: 80,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                _navigateTo(Screen.collective);
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                alignment: Alignment.center,
+                                width: MediaQuery.of(context).size.width * .5,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 40,
+                                      child: const Icon(
+                                        CustomIcons.newcollective,
+                                        size: 45,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const Text(
+                                      'COLLECTIVE',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 1.4,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 80,
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                _navigateTo(Screen.groups);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                color: Colors.transparent,
+                                width: MediaQuery.of(context).size.width * .5,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 45,
+                                      child: Icon(
+                                        CustomIcons.newcircles,
+                                        size: 38,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'GROUPS',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 1.4,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _navigateTo(Screen.packs);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                color: Colors.transparent,
+                                width: MediaQuery.of(context).size.width * .5,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 45,
+                                      child: Icon(
+                                        CustomIcons.newpacks,
+                                        size: 38,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'PACKS',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 1.4,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 80,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                _navigateTo(Screen.create);
+                              },
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                color: Colors.transparent,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 45,
+                                      child: Icon(
+                                        CustomIcons.newcreate,
+                                        size: 38,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const Text(
+                                      'CREATE',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 1.4,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

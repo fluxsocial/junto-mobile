@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -82,9 +83,11 @@ class MaterialAppWithTheme extends StatelessWidget {
         }
         return MaterialApp(
           home: loggedIn
-              ? const JuntoLotus(
-                  address: null,
-                  expressionContext: ExpressionContext.Collective,
+              ? FeatureDiscovery(
+                  child: const JuntoLotus(
+                    address: null,
+                    expressionContext: ExpressionContext.Collective,
+                  ),
                 )
               : Welcome(),
           title: 'JUNTO Alpha',

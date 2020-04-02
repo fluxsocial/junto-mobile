@@ -86,9 +86,11 @@ class BottomNav extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   FadeRoute<void>(
-                    child: JuntoLotus(
-                      address: address,
-                      expressionContext: expressionContext,
+                    child: FeatureDiscovery(
+                      child: JuntoLotus(
+                        address: address,
+                        expressionContext: expressionContext,
+                      ),
                     ),
                   ),
                   (route) => route.isFirst,
