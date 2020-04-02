@@ -22,17 +22,21 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
   final Widget child;
 
   _actionItemButton(BuildContext context, String name, Function onPressed) {
-    return FlatButton(
-      padding: const EdgeInsets.all(0),
-      child: Text(
-        name,
-        style: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w500,
-          color: Colors.white,
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        color: Colors.transparent,
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.only(bottom: 10),
+        child: Text(
+          name,
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
         ),
       ),
-      onPressed: onPressed,
     );
   }
 
@@ -44,12 +48,15 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
       backgroundColor: Theme.of(context).accentColor,
       contentLocation: contentLocation,
       overflowMode: OverflowMode.extendBackground,
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 20,
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
       targetColor: Theme.of(context).backgroundColor,

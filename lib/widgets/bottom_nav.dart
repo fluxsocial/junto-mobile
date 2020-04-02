@@ -15,8 +15,8 @@ class BottomNav extends StatelessWidget {
     @required this.actionsVisible,
     this.address,
     this.expressionContext = ExpressionContext.Collective,
-    this.featureId,
     this.featureTitle,
+    this.iconNorth,
     this.isLastFeature,
   });
 
@@ -24,7 +24,7 @@ class BottomNav extends StatelessWidget {
   final bool actionsVisible;
   final String address;
   final ExpressionContext expressionContext;
-  final String featureId;
+  final bool iconNorth;
   final String featureTitle;
   final bool isLastFeature;
 
@@ -46,12 +46,15 @@ class BottomNav extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: JuntoDescribedFeatureOverlay(
-              icon: Icon(
-                CustomIcons.newdoubleuparrow,
-                size: 33,
-                color: Theme.of(context).primaryColor,
+              icon: RotatedBox(
+                quarterTurns: iconNorth ? 0 : 2,
+                child: Icon(
+                  CustomIcons.newdoubleuparrow,
+                  size: 33,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
-              featureId: featureId,
+              featureId: 'collective_toggle_id',
               title: featureTitle,
               contentLocation: ContentLocation.above,
               learnMore: false,

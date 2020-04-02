@@ -34,6 +34,7 @@ class JuntoPerspectives extends StatelessWidget {
             floatingActionButton: CollectiveActionButton(
               isVisible: ValueNotifier(true),
               actionsVisible: true,
+              iconNorth: false,
               onTap: () {
                 Navigator.maybePop(context);
               },

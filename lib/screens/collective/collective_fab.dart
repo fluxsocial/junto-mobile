@@ -10,11 +10,13 @@ class CollectiveActionButton extends StatelessWidget {
     @required this.actionsVisible,
     @required this.onTap,
     @required this.onUpTap,
+    @required this.iconNorth,
   }) : super(key: key);
   final ValueNotifier<bool> isVisible;
   final bool actionsVisible;
   final VoidCallback onTap;
   final VoidCallback onUpTap;
+  final bool iconNorth;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class CollectiveActionButton extends StatelessWidget {
         child: BottomNav(
           actionsVisible: actionsVisible,
           onLeftButtonTap: onTap,
-          featureId: 'collective_toggle_id',
+          iconNorth: iconNorth,
           featureTitle:
               'Toggle between your list of perspectives and the current perspective you’re looking at.',
           isLastFeature: true,

@@ -89,6 +89,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                 isVisible: _isFabVisible,
                 onUpTap: _scrollToTop,
                 actionsVisible: false,
+                iconNorth: true,
                 onTap: () {
                   context.bloc<PerspectivesBloc>().add(FetchPerspectives());
                   Navigator.push(
