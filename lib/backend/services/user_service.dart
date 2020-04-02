@@ -67,7 +67,7 @@ class UserServiceCentralized implements UserService {
     final String authKey = _prefs.getString('auth');
 
     final Uri _uri = Uri.http(
-      END_POINT_without_prefix,
+      END_POINT,
       '/users',
       _buildQueryParam(param, queryType),
     );
