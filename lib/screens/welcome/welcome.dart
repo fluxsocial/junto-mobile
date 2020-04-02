@@ -441,7 +441,7 @@ class WelcomeState extends State<Welcome> {
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
-          dialogText: S.of(context).welcome_password_length,
+          dialogText: S.of(context).welcome_password_length(8),
         ),
       );
       return false;
