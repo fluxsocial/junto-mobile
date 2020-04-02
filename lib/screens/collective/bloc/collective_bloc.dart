@@ -139,7 +139,8 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     final expressions =
         await expressionRepository.getCollectiveExpressions(_params);
     logger.logDebug(
-        'Fetched ${expressions.results.length} expressions from API, last_timestamp: ${expressions.lastTimestamp}');
+        'Fetched ${expressions.results.length} expressions from API, last_timestamp: ${expressions.lastTimestamp}. '
+        'First: ${expressions.results.first}, Last: ${expressions.results.last}');
     _lastTimeStamp = expressions.lastTimestamp;
     return expressions;
   }
