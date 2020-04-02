@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/utils/device_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -87,6 +88,7 @@ class MaterialAppWithTheme extends StatelessWidget {
                   expressionContext: ExpressionContext.Collective,
                 )
               : Welcome(),
+          builder: DevicePreviewWrapper.appBuilder,
           title: 'JUNTO Alpha',
           debugShowCheckedModeBanner: false,
           theme: theme.getTheme(),
