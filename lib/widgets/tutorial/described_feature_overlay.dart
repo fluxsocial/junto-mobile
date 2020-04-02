@@ -9,10 +9,11 @@ class JuntoDescribedFeatureOverlay extends StatefulWidget {
     this.title,
     this.contentLocation = ContentLocation.below,
     this.learnMore = false,
+    this.learnMoreText = '',
     this.isLastFeature = false,
     this.oneFeature = false,
     this.hasUpNext = false,
-    this.learnMoreText = '',
+    this.upNextText,
     this.child,
   });
 
@@ -23,13 +24,14 @@ class JuntoDescribedFeatureOverlay extends StatefulWidget {
   final ContentLocation contentLocation;
   // if this feature has a learn more section
   final bool learnMore;
+  final String learnMoreText;
   // if this feature is the last one of the tutorial
   final bool isLastFeature;
   // only one feature in tutorial
   final bool oneFeature;
   // has an up next / learn more section
   final bool hasUpNext;
-  final String learnMoreText;
+  final List<String> upNextText;
   final Widget child;
 
   @override
@@ -184,6 +186,24 @@ class JuntoDescribedFeatureOverlayState
                     ),
                   ),
                   const SizedBox(height: 10),
+                  for (String text in widget.upNextText)
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Flexible(
+                            child: Text(
+                              text,
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             GestureDetector(
