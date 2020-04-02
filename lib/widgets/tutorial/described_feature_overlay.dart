@@ -10,6 +10,7 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
     this.contentLocation = ContentLocation.below,
     this.learnMore = false,
     this.isLastFeature = false,
+    this.oneFeature = false,
     this.child,
   });
 
@@ -17,8 +18,12 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
   final String featureId;
   final String title;
   final ContentLocation contentLocation;
+  // if this feature has a learn more section
   final bool learnMore;
+  // if this feature is the last one of the tutorial
   final bool isLastFeature;
+  // only one feature in tutorial
+  final bool oneFeature;
   final Widget child;
 
   _actionItemButton(BuildContext context, String name, Function onPressed) {
@@ -70,7 +75,7 @@ class JuntoDescribedFeatureOverlay extends StatelessWidget {
               'Learn More',
               () {},
             ),
-          if (!isLastFeature)
+          if (!isLastFeature && !oneFeature)
             _actionItemButton(
               context,
               'Next Feature',

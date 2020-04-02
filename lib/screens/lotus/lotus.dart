@@ -133,11 +133,12 @@ class JuntoLotusState extends State<JuntoLotus> {
                           },
                           child: JuntoDescribedFeatureOverlay(
                             icon: Icon(
-                              CustomIcons.lotus,
-                              size: 36,
+                              CustomIcons.newflower,
+                              size: 38,
                               color: Colors.white,
                             ),
                             featureId: 'lotus_info_id',
+                            oneFeature: true,
                             title:
                                 'This is the intention screen, your medium for navigation.',
                             learnMore: true,
