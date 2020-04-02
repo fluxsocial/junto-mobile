@@ -93,14 +93,16 @@ class _FeedbackBody extends StatelessWidget {
               ),
               child: icon,
             ),
-          Text(
-            message,
-            overflow: TextOverflow.fade,
-            style: TextStyle(
-              fontSize: 17.0,
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.w600,
-              decoration: TextDecoration.none,
+          Flexible(
+            child: Text(
+              message,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                fontSize: 17.0,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.w600,
+                decoration: TextDecoration.none,
+              ),
             ),
           ),
         ],
