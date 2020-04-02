@@ -91,6 +91,12 @@ To use term in Dart code just call:
 S.of(context).welcome_password_length
 ```
 
+### Troubleshooting
+
+Sometimes the translations may not refresh/regenerate immediately. In such case just open any arb file and press CMD+S. The extension should automatically regenerate dart files.
+
+You can read more how to use this approach [here](https://roszkowski.dev/2020/i18n-in-flutter/).
+
 ## Junto Error Codes 
 | Error Code  | Message  | Cause  |  
 |---|---|---|
