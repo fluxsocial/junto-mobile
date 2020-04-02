@@ -270,6 +270,7 @@ class WelcomeState extends State<Welcome> {
                       hint: S.of(context).welcome_my_name_is,
                       label: S.of(context).welcome_name_label,
                       title: S.of(context).welcome_name_hint,
+                      textCapitalization: TextCapitalization.words,
                     ),
                   ),
                   PageKeepAlive(
@@ -283,6 +284,7 @@ class WelcomeState extends State<Welcome> {
                       hint: S.of(context).welcome_username_ill_go,
                       label: S.of(context).welcome_username_label,
                       title: S.of(context).welcome_username_hint,
+                      textCapitalization: TextCapitalization.none,
                     ),
                   ),
                   PageKeepAlive(
@@ -420,7 +422,7 @@ class WelcomeState extends State<Welcome> {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText: error.message,
+            dialogText: S.of(context).welcome_username_taken,
           ),
         );
       }

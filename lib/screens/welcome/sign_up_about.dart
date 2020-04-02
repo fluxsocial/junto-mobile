@@ -92,6 +92,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                       textInputActionType: TextInputAction.next,
                       hint: S.of(context).welcome_location_hint,
                       maxLength: 30,
+                      textCapitalization: TextCapitalization.words,
                     ),
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_location_label,
