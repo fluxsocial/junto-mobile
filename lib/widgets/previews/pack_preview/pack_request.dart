@@ -71,25 +71,27 @@ class PackRequest extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          pack.address == userProfile.pack.address
-                              ? 'My Pack'
-                              : '${pack.creator['name']?.trim()}\'s Pack',
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                        Text(
-                          pack.address == userProfile.pack.address
-                              ? userProfile.user.username
-                              : pack.creator['username'],
-                          textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            pack.address == userProfile.pack.address
+                                ? 'My Pack'
+                                : '${pack.creator['name']?.trim()}\'s Pack',
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                          Text(
+                            pack.address == userProfile.pack.address
+                                ? userProfile.user.username
+                                : pack.creator['username'],
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ],
+                      ),
                     ),
                     Row(
                       children: <Widget>[
