@@ -292,8 +292,10 @@ class PerspectivesAppBar extends StatelessWidget {
               ),
             ),
             if (currentIndex == 0)
-              Text('New Perspective',
-                  style: Theme.of(context).textTheme.subtitle1),
+              Flexible(
+                child: Text('New Perspective',
+                    style: Theme.of(context).textTheme.subtitle1),
+              ),
             if (currentIndex == 1)
               GestureDetector(
                 onTap: onCreateTap,
