@@ -17,7 +17,7 @@ class TwoColumnListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
+      physics: AlwaysScrollableScrollPhysics(),
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.start,

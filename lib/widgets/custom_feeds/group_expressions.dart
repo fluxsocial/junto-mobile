@@ -110,6 +110,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                         privacyLayer: widget.privacy,
                       ),
                       secondChild: ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: _results.length,
                         itemBuilder: (context, index) {
