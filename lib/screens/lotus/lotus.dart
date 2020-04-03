@@ -9,6 +9,9 @@ import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -97,26 +100,99 @@ class JuntoLotusState extends State<JuntoLotus> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onHorizontalDragEnd: _onDrag,
       child: Scaffold(
         body: Stack(
           children: <Widget>[
             BackgroundTheme(currentTheme: _currentTheme),
-            Material(
-              type: MaterialType.transparency,
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.only(bottom: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const SizedBox(),
-                    Column(
+            Container(
+              height: MediaQuery.of(context).size.height,
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    height: 50,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        LotusButton(
-                          label: 'COLLECTIVE',
-                          icon: CustomIcons.newcollective,
-                          onTap: () => _navigateTo(Screen.collective),
+                        GestureDetector(
+                          onTap: () {
+                            FeatureDiscovery.clearPreferences(context, <String>{
+                              'lotus_info_id',
+                            });
+                            FeatureDiscovery.discoverFeatures(
+                              context,
+                              const <String>{
+                                'lotus_info_id',
+                              },
+                            );
+                          },
+                          child: JuntoDescribedFeatureOverlay(
+                            icon: Icon(
+                              CustomIcons.newflower,
+                              size: 38,
+                              color: Colors.white,
+                            ),
+                            featureId: 'lotus_info_id',
+                            oneFeature: true,
+                            title:
+                                'This is the intention screen, your medium for navigation.',
+                            learnMore: true,
+                            learnMoreText:
+                                'The purpose of the intention screen is to reduce noise and invite a more thoughtful experience. Instead of being immediately dropped into a feed when you open the app, the intention screen gives you a choice. We also hope this will encourage more reflection while navigating between screens.',
+                            hasUpNext: false,
+                            child: JuntoInfoIcon(neutralBackground: false),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        color: Colors.transparent,
+                        height: 80,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                _navigateTo(Screen.collective);
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                alignment: Alignment.center,
+                                width: MediaQuery.of(context).size.width * .5,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 40,
+                                      child: const Icon(
+                                        CustomIcons.newcollective,
+                                        size: 45,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const Text(
+                                      'COLLECTIVE',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 1.4,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Container(
                           color: Colors.transparent,
@@ -161,12 +237,6 @@ class JuntoLotusState extends State<JuntoLotus> {
         ),
       ),
     );
-  }
-
-  void _onDrag(dx) {
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).maybePop();
-    }
   }
 }
 

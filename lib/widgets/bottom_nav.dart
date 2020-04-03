@@ -6,6 +6,8 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
@@ -13,12 +15,20 @@ class BottomNav extends StatelessWidget {
     @required this.actionsVisible,
     this.address,
     this.expressionContext = ExpressionContext.Collective,
+    this.featureTitle = '',
+    this.iconNorth = true,
+    this.isLastFeature = true,
+    this.featureId = '',
   });
 
   final VoidCallback onLeftButtonTap;
   final bool actionsVisible;
   final String address;
   final ExpressionContext expressionContext;
+  final bool iconNorth;
+  final String featureTitle;
+  final String featureId;
+  final bool isLastFeature;
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +47,34 @@ class BottomNav extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: GestureDetector(
-              onTap: onLeftButtonTap,
-              child: Container(
-                width: 60,
-                height: 50,
-                color: Colors.transparent,
-                alignment: Alignment.center,
-                child: RotatedBox(
-                  quarterTurns: actionsVisible ? 2 : 0,
-                  child: Icon(
-                    CustomIcons.newdoubleuparrow,
-                    size: 33,
-                    color: Theme.of(context).primaryColor,
+            child: JuntoDescribedFeatureOverlay(
+              icon: RotatedBox(
+                quarterTurns: iconNorth ? 0 : 2,
+                child: Icon(
+                  CustomIcons.newdoubleuparrow,
+                  size: 33,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              featureId: featureId,
+              title: featureTitle,
+              contentLocation: ContentLocation.above,
+              learnMore: false,
+              isLastFeature: isLastFeature,
+              child: GestureDetector(
+                onTap: onLeftButtonTap,
+                child: Container(
+                  width: 60,
+                  height: 50,
+                  color: Colors.transparent,
+                  alignment: Alignment.center,
+                  child: RotatedBox(
+                    quarterTurns: actionsVisible ? 2 : 0,
+                    child: Icon(
+                      CustomIcons.newdoubleuparrow,
+                      size: 33,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -61,9 +86,11 @@ class BottomNav extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(
                   context,
                   FadeRoute<void>(
-                    child: JuntoLotus(
-                      address: address,
-                      expressionContext: expressionContext,
+                    child: FeatureDiscovery(
+                      child: JuntoLotus(
+                        address: address,
+                        expressionContext: expressionContext,
+                      ),
                     ),
                   ),
                   (route) => route.isFirst,
