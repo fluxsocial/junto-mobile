@@ -229,11 +229,15 @@ class JuntoDrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(16.0),
       onTap: onTap,
       child: Container(
         color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+        padding: EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 15 / MediaQuery.of(context).textScaleFactor,
+        ),
         child: Row(
           children: <Widget>[
             icon,
