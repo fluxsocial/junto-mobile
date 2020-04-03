@@ -194,131 +194,104 @@ class JuntoLotusState extends State<JuntoLotus> {
                             ),
                           ],
                         ),
-                      ),
-                      Container(
-                        height: 80,
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                _navigateTo(Screen.groups);
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                color: Colors.transparent,
+                        Container(
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
                                 width: MediaQuery.of(context).size.width * .5,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      height: 45,
-                                      child: Icon(
-                                        CustomIcons.newcircles,
-                                        size: 38,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      'GROUPS',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 1.4,
-                                      ),
-                                    )
-                                  ],
+                                child: LotusButton(
+                                  label: 'GROUPS',
+                                  icon: CustomIcons.newcircles,
+                                  iconSize: 38,
+                                  onTap: () => _navigateTo(Screen.groups),
                                 ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                _navigateTo(Screen.packs);
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                color: Colors.transparent,
+                              Container(
                                 width: MediaQuery.of(context).size.width * .5,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      height: 45,
-                                      child: Icon(
-                                        CustomIcons.newpacks,
-                                        size: 38,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      'PACKS',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 1.4,
-                                      ),
-                                    )
-                                  ],
+                                child: LotusButton(
+                                  label: 'PACKS',
+                                  icon: CustomIcons.newpacks,
+                                  iconSize: 38,
+                                  onTap: () => _navigateTo(Screen.packs),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 80,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                _navigateTo(Screen.create);
-                              },
-                              child: Container(
-                                height: 80,
-                                width: 80,
-                                color: Colors.transparent,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      height: 45,
-                                      child: Icon(
-                                        CustomIcons.newcreate,
-                                        size: 38,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const Text(
-                                      'CREATE',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 1.4,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
+                        LotusButton(
+                          label: 'CREATE',
+                          icon: CustomIcons.newcreate,
+                          iconSize: 38,
+                          onTap: () => _navigateTo(Screen.create),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class LotusButton extends StatelessWidget {
+  const LotusButton({
+    @required this.label,
+    @required this.icon,
+    @required this.onTap,
+    this.iconSize,
+    Key key,
+  }) : super(key: key);
+
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+  final double iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          InkWell(
+            borderRadius: BorderRadius.circular(16.0),
+            onTap: onTap,
+            child: Container(
+              color: Colors.transparent,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: 40,
+                    child: Icon(
+                      icon,
+                      size: iconSize ?? 45,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.4,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

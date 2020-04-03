@@ -247,6 +247,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   UserAuthRegistrationDetails(
       {@required this.email,
       @required this.password,
+      @required this.confirmPassword,
       @required this.name,
       @required this.username,
       @required this.bio,
@@ -261,6 +262,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String email;
   @override
   final String password;
+  final String confirmPassword;
   final String name;
   final String username;
   final String bio;
@@ -278,9 +280,11 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
     return <String, dynamic>{
       'username': username,
       'name': name,
+      'password': password, 
+      "confirm_password": confirmPassword, 
       'bio': bio,
-      'profileImage': profileImage,
-      'backgroundPhoto': backgroundPhoto,
+      'profile_image': profileImage,
+      'background_photo': backgroundPhoto,
       'gender': gender,
       'website': website,
       'location': location

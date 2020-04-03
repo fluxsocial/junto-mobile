@@ -51,6 +51,7 @@ class CreateExpressionIcon extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     decoration: TextDecoration.none,
                   ),
+                  textAlign: TextAlign.center,
                 )
               ],
             ),

@@ -160,10 +160,10 @@ class PerspectivesPageView extends StatefulWidget {
 
 class _PerspectivesPageViewState extends State<PerspectivesPageView> {
   String _nameValidator(String value) {
-    if (value != null && value.length >= 1 && value.length <= 50) {
+    if (value != null && value.length >= 1 && value.length <= 20) {
       return null;
     } else {
-      return 'Name must be between 1 - 50 characters';
+      return 'Name must be between 1 - 20 characters';
     }
   }
 
@@ -196,12 +196,14 @@ class _PerspectivesPageViewState extends State<PerspectivesPageView> {
                           validator: _nameValidator,
                           controller: widget.nameController,
                           textInputActionType: TextInputAction.next,
+                          maxLength: 20,
                         ),
                         PerspectiveTextField(
                           name: 'About',
                           validator: _aboutValidator,
                           controller: widget.aboutController,
                           textInputActionType: TextInputAction.done,
+                          maxLength: 150,
                         ),
                       ],
                     ),
@@ -292,8 +294,10 @@ class PerspectivesAppBar extends StatelessWidget {
               ),
             ),
             if (currentIndex == 0)
-              Text('New Perspective',
-                  style: Theme.of(context).textTheme.subtitle1),
+              Flexible(
+                child: Text('New Perspective',
+                    style: Theme.of(context).textTheme.subtitle1),
+              ),
             if (currentIndex == 1)
               GestureDetector(
                 onTap: onCreateTap,
