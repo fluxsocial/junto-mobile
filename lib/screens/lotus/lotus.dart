@@ -245,7 +245,7 @@ class LotusButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: 40,
+                    height: 50,
                     child: Icon(
                       icon,
                       size: iconSize ?? 45,
