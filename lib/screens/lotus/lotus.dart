@@ -72,18 +72,6 @@ class JuntoLotusState extends State<JuntoLotus> {
     return;
   }
 
-  void _handleLotusPress() {
-    final Route<dynamic> route = ModalRoute.of(context);
-    if (!route.isFirst) {
-      Navigator.of(context).maybePop();
-      return;
-    }
-    Navigator.of(context).push(
-      FadeRoute<void>(child: JuntoCollective(), name: 'collective'),
-    );
-    return;
-  }
-
   Future<void> getTheme() async {
     final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
         .getTheme();
@@ -102,7 +90,6 @@ class JuntoLotusState extends State<JuntoLotus> {
   Widget build(BuildContext context) {
     final s = S.of(context);
     return GestureDetector(
-      onHorizontalDragEnd: _onDrag,
       child: Scaffold(
         body: Stack(
           children: <Widget>[
@@ -141,7 +128,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                               icon: Icon(
                                 CustomIcons.newflower,
                                 size: 38,
-                  color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                               featureId: 'lotus_info_id',
                               oneFeature: true,
@@ -209,12 +196,6 @@ class JuntoLotusState extends State<JuntoLotus> {
         ),
       ),
     );
-  }
-
-  void _onDrag(dx) {
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).maybePop();
-    }
   }
 }
 
