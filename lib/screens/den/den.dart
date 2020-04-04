@@ -79,11 +79,10 @@ class JuntoDenState extends State<JuntoDen>
           ),
         ];
       },
-      body: SafeArea(
-          child: UserExpressions(
+      body: UserExpressions(
         privacy: 'Public',
         userProfile: user.user,
-      )),
+      ),
     );
   }
 
