@@ -131,9 +131,11 @@ class UserRepo {
     return _userService.isFollowingUser(userAddress, targetAddress);
   }
 
-  Future<Map<String, dynamic>> updateUser(
-          Map<String, dynamic> user, String userAddress) =>
-      _userService.updateUser(user, userAddress);
+  Future<UserProfile> updateUser(
+      Map<String, dynamic> user, String userAddress) async {
+    final result = await _userService.updateUser(user, userAddress);
+    return UserProfile.fromMap(result);
+  }
 
   Future<List<UserProfile>> getFollowers(String userAddress) =>
       _userService.getFollowers(userAddress);
