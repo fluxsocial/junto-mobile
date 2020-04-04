@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class GroupExpressions extends StatefulWidget {
@@ -87,43 +88,35 @@ class _GroupExpressionsState extends State<GroupExpressions> {
               ? state.privateExpressions.results
               : state.publicExpressions.results;
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              FilterColumnRow(
-                twoColumnView: twoColumnView,
-                switchColumnView: _switchColumnView,
-              ),
-              Expanded(
-                child: NotificationListener(
-                  onNotification: _handleScrollNotification,
-                  child: Container(
-                    color: Theme.of(context).colorScheme.background,
-                    child: AnimatedCrossFade(
-                      crossFadeState: twoColumnView
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                      duration: const Duration(
-                        milliseconds: 200,
-                      ),
-                      firstChild: TwoColumnListView(
-                        data: _results,
-                        privacyLayer: widget.privacy,
-                      ),
-                      secondChild: ListView.builder(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: _results.length,
-                        itemBuilder: (context, index) {
-                          return SingleColumnExpressionPreview(
-                            key: ValueKey<String>(_results[index].address),
-                            expression: _results[index],
-                          );
-                        },
-                      ),
-                    ),
+            children: [
+              // FilterColumnRow(
+              //   twoColumnView: twoColumnView,
+              //   switchColumnView: _switchColumnView,
+              // ),
+              // Expanded(
+              //   child: NotificationListener(
+              //     onNotification: _handleScrollNotification,
+              //     child:
+              Container(
+                color: Theme.of(context).colorScheme.background,
+                child: AnimatedCrossFade(
+                  crossFadeState: twoColumnView
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(
+                    milliseconds: 200,
+                  ),
+                  firstChild: TwoColumnSliverListView(
+                    data: _results,
+                  ),
+                  secondChild: SingleColumnSliverListView(
+                    data: _results,
+                    privacyLayer: widget.privacy,
                   ),
                 ),
-              ),
+              )
+              //   ),
+              // ),
             ],
           );
         }
