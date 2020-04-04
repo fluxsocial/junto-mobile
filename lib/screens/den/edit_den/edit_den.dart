@@ -91,8 +91,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
         _userData.user.website.isNotEmpty ? _userData.user.website[0] : '';
   }
 
-  Future<void> _onPickPressed(String photoType) async {
-    final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> _onPickPressed(String photoType, String source) async {
+    File image;
+    if (source == 'Gallery') {
+      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    } else if (source == 'Camera') {
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    }
     if (image == null) {
       if (photoType == 'profile' && profilePictureFile == null) {
         setState(() {
