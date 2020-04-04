@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 class SignUpThemes extends StatelessWidget {
@@ -102,8 +103,8 @@ class SignUpThemes extends StatelessWidget {
               margin: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height * .24,
               ),
-              child: const Text(
-                'Which theme feels best?',
+              child: Text(
+                S.of(context).welcome_theme,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,

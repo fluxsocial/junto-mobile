@@ -1,0 +1,313 @@
+{
+  "@@locale" : "th",
+  "collective_new_perspective" : "",
+  "@collective_new_perspective" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "common_accept" : "",
+  "@common_accept" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "common_close" : "",
+  "@common_close" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "common_network_error" : "",
+  "@common_network_error" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "common_ok" : "",
+  "@common_ok" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "common_reject" : "",
+  "@common_reject" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "common_try_again_later" : "",
+  "@common_try_again_later" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "create_dynamic" : "",
+  "@create_dynamic" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "create_event" : "",
+  "@create_event" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "create_new_channel" : "",
+  "@create_new_channel" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "create_photo" : "",
+  "@create_photo" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "create_shortform" : "",
+  "@create_shortform" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "error_already_sent_connection" : "",
+  "@error_already_sent_connection" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "expression_channels" : "",
+  "@expression_channels" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "expression_delete" : "",
+  "@expression_delete" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "expression_error" : "",
+  "@expression_error" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "lotus_collective" : "",
+  "@lotus_collective" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "lotus_create" : "",
+  "@lotus_create" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "lotus_groups" : "",
+  "@lotus_groups" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "lotus_packs" : "",
+  "@lotus_packs" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "notifications_connection" : "",
+  "@notifications_connection" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "notifications_creator" : "",
+  "@notifications_creator" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "notifications_group" : "",
+  "@notifications_group" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "notifications_no_new_connection_notif" : "",
+  "@notifications_no_new_connection_notif" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "notifications_no_new_group_notif" : "",
+  "@notifications_no_new_group_notif" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "notifications_title" : "",
+  "@notifications_title" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "packs_my_packs" : "",
+  "@packs_my_packs" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "packs_requests" : "",
+  "@packs_requests" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "packs_title" : "",
+  "@packs_title" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_add_photo" : "",
+  "@welcome_add_photo" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_almost_done" : "",
+  "@welcome_almost_done" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_check_email" : "",
+  "@welcome_check_email" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_confirm_password" : "",
+  "@welcome_confirm_password" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_email_hint" : "",
+  "@welcome_email_hint" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_feel_free" : "",
+  "@welcome_feel_free" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_final_step" : "",
+  "@welcome_final_step" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_gender_hints" : "",
+  "@welcome_gender_hints" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_gender_label" : "",
+  "@welcome_gender_label" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_lets_go" : "",
+  "@welcome_lets_go" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_location_hint" : "",
+  "@welcome_location_hint" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_location_label" : "",
+  "@welcome_location_label" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_login_requirements" : "",
+  "@welcome_login_requirements" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_my_name_is" : "",
+  "@welcome_my_name_is" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_name_hint" : "",
+  "@welcome_name_hint" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_name_label" : "",
+  "@welcome_name_label" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_password_hint" : "",
+  "@welcome_password_hint" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_password_length" : "",
+  "@welcome_password_length" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_password_rules" : "",
+  "@welcome_password_rules" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_passwords_must_match" : "",
+  "@welcome_passwords_must_match" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_remove_photo" : "",
+  "@welcome_remove_photo" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_sign_in" : "",
+  "@welcome_sign_in" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_theme" : "",
+  "@welcome_theme" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_unable_to_login" : "",
+  "@welcome_unable_to_login" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_username_hint" : "",
+  "@welcome_username_hint" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_username_ill_go" : "",
+  "@welcome_username_ill_go" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_username_label" : "",
+  "@welcome_username_label" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_username_requirements" : "",
+  "@welcome_username_requirements" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_username_taken" : "",
+  "@welcome_username_taken" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_verification_code" : "",
+  "@welcome_verification_code" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_website_hint" : "",
+  "@welcome_website_hint" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_website_label" : "",
+  "@welcome_website_label" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_wrong_email_or_password" : "",
+  "@welcome_wrong_email_or_password" : {
+    "type" : "text",
+    "description" : ""
+  }
+}

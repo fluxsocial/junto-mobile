@@ -65,6 +65,38 @@ You can also add launch configuration to VS Code:
 },
 ```
 
+## Internationalization
+
+We're using Localizely and arb files to i18n the app. I recommend to use _Flutter Intl_ extension for [VS Code](https://marketplace.visualstudio.com/items?itemName=localizely.flutter-intl) or [Android Studio](https://plugins.jetbrains.com/plugin/13666-flutter-intl) to automatically generate the language files. It should automatically detect the files.
+
+In order to download the arb files from Localizely add your API key to the `scripts/fetch_localizely.sh` file. To download just run it. You can also run it through VS Code tasks. Sample tasks.json:
+
+```json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Download translations from Localizely",
+            "type": "shell",
+            "command": "./scripts/fetch_localizely.sh",
+            "problemMatcher": []
+        }
+    ]
+}
+```
+
+To use term in Dart code just call:
+
+```dart
+S.of(context).welcome_password_length
+```
+
+### Troubleshooting
+
+Sometimes the translations may not refresh/regenerate immediately. In such case just open any arb file and press CMD+S. The extension should automatically regenerate dart files.
+
+You can read more how to use this approach [here](https://roszkowski.dev/2020/i18n-in-flutter/).
+
 ## Junto Error Codes 
 | Error Code  | Message  | Cause  |  
 |---|---|---|

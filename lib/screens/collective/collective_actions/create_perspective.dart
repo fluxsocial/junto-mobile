@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/perspective_body.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
@@ -74,10 +75,9 @@ class CreatePerspectivePageState extends State<CreatePerspectivePage> {
         if (state is PerspectivesError) {
           showDialog(
             context: context,
-            builder: (BuildContext context) => ConfirmDialog(
-              buildContext: context,
-              confirmationText: 'Could not create perspective',
-              confirm: () => Navigator.pop(context),
+            builder: (BuildContext context) => SingleActionDialog(
+              context: context,
+              dialogText: 'Could not create perspective',
             ),
           );
         }

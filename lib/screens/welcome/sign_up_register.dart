@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
@@ -68,15 +69,14 @@ class SignUpRegisterState extends State<SignUpRegister> {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText: 'Passwords must match.',
+            dialogText: S.of(context).welcome_passwords_must_match,
           ),
         );
       } else {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText:
-                'Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.',
+            dialogText: S.of(context).welcome_password_rules,
           ),
         );
       }
@@ -96,7 +96,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SignUpPageTitle(title: 'Almost done!'),
+            SignUpPageTitle(title: S.of(context).welcome_almost_done),
             Expanded(
               child: KeyboardAvoider(
                 autoScroll: true,
@@ -111,7 +111,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           FocusScope.of(context).requestFocus(passwordNode);
                         },
                         focusNode: emailNode,
-                        hint: 'Email',
+                        hint: S.of(context).welcome_email_hint,
                         maxLength: 1000,
                         textCapitalization: TextCapitalization.none,
                         keyboardType: TextInputType.emailAddress,
@@ -123,7 +123,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                         onSubmit: () => _passwordCheck(
                             passwordController.value.text, confirmPasswordNode),
                         focusNode: passwordNode,
-                        hint: 'Password',
+                        hint: S.of(context).welcome_password_hint,
                         maxLength: 1000,
                         textCapitalization: TextCapitalization.none,
                         keyboardType: TextInputType.emailAddress,
@@ -136,7 +136,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                         onSubmit: () => _passwordCheck(
                             confirmPasswordController.value.text, null),
                         focusNode: confirmPasswordNode,
-                        hint: 'Confirm Password',
+                        hint: S.of(context).welcome_confirm_password,
                         maxLength: 1000,
                         textCapitalization: TextCapitalization.none,
                         keyboardType: TextInputType.emailAddress,

@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:feature_discovery/feature_discovery.dart';
@@ -96,10 +97,13 @@ class MaterialAppWithTheme extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: theme.getTheme(),
           localizationsDelegates: [
+            S.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          // Replace later with S.supportedLocales
+          supportedLocales: [Locale('en', '')],
         );
       },
     );

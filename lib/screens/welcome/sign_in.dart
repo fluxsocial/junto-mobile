@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
@@ -83,9 +84,8 @@ class _SignInState extends State<SignIn> {
       JuntoLoader.hide();
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText:
-              'Unable to login. Please double check your login credentials.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).welcome_unable_to_login,
         ),
       );
     }
@@ -109,7 +109,7 @@ class _SignInState extends State<SignIn> {
                     Column(
                       children: <Widget>[
                         SignUpTextField(
-                          hint: 'Email',
+                          hint: S.of(context).welcome_email_hint,
                           maxLength: 100,
                           textInputActionType: TextInputAction.next,
                           onSubmit: () {
@@ -121,7 +121,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         const SizedBox(height: 30),
                         SignUpTextField(
-                          hint: 'Password',
+                          hint: S.of(context).welcome_password_hint,
                           maxLength: 100,
                           textInputActionType: TextInputAction.done,
                           onSubmit: () {
@@ -137,7 +137,7 @@ class _SignInState extends State<SignIn> {
                           onSignUp: () {
                             _handleSignIn(context);
                           },
-                          title: 'SIGN IN',
+                          title: S.of(context).welcome_sign_in,
                         ),
                       ],
                     ),
@@ -181,8 +181,8 @@ class _SignInState extends State<SignIn> {
   void _showValidationError() {
     showDialog(
       context: context,
-      builder: (BuildContext context) => const SingleActionDialog(
-        dialogText: 'Wrong email or password.',
+      builder: (BuildContext context) => SingleActionDialog(
+        dialogText: S.of(context).welcome_wrong_email_or_password,
       ),
     );
   }

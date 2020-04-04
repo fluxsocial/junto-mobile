@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
@@ -66,7 +67,7 @@ class SignUpPhotosState extends State<SignUpPhotos> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                   child: Text(
-                    'REMOVE PHOTO',
+                    S.of(context).welcome_remove_photo,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -122,7 +123,7 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const SignUpPageTitle(title: 'Add a profile picture'),
+              SignUpPageTitle(title: S.of(context).welcome_add_photo),
               SizedBox(height: MediaQuery.of(context).size.height * .1),
               Expanded(
                 child: Center(

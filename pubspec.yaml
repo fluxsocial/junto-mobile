@@ -39,6 +39,7 @@ dependencies:
   stack_trace: ^1.9.3
   feature_discovery: 0.8.0  
   device_preview: 0.4.1+1
+  intl: ^0.16.1
 
 dependency_overrides:
   path_provider: 1.6.5
@@ -96,3 +97,6 @@ flutter:
     - assets/images/junto-mobile__double-down-arrow.png
     - assets/images/junto-mobile__menu.png
     - assets/images/junto-mobile__filter.png
+flutter_intl:
+  enabled: true
+  main_locale: en

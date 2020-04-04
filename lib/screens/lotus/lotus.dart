@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
@@ -99,6 +100,7 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return GestureDetector(
       onHorizontalDragEnd: _onDrag,
       child: Scaffold(
@@ -157,13 +159,10 @@ class JuntoLotusState extends State<JuntoLotus> {
                     ),
                     Column(
                       children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: LotusButton(
-                            label: 'COLLECTIVE',
-                            icon: CustomIcons.newcollective,
-                            onTap: () => _navigateTo(Screen.collective),
-                          ),
+                        LotusButton(
+                          label: s.lotus_collective,
+                          icon: CustomIcons.newcollective,
+                          onTap: () => _navigateTo(Screen.collective),
                         ),
                         Container(
                           color: Colors.transparent,
@@ -175,7 +174,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                               Container(
                                 width: MediaQuery.of(context).size.width * .5,
                                 child: LotusButton(
-                                  label: 'PACKS',
+                                  label: s.lotus_packs,
                                   icon: CustomIcons.newpacks,
                                   iconSize: 38,
                                   onTap: () => _navigateTo(Screen.packs),
@@ -184,7 +183,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                               Container(
                                 width: MediaQuery.of(context).size.width * .5,
                                 child: LotusButton(
-                                  label: 'GROUPS',
+                                  label: s.lotus_groups,
                                   icon: CustomIcons.newcircles,
                                   iconSize: 38,
                                   onTap: () => _navigateTo(Screen.groups),
@@ -193,14 +192,11 @@ class JuntoLotusState extends State<JuntoLotus> {
                             ],
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: LotusButton(
-                            label: 'CREATE',
-                            icon: CustomIcons.newcreate,
-                            iconSize: 38,
-                            onTap: () => _navigateTo(Screen.create),
-                          ),
+                        LotusButton(
+                          label: s.lotus_create,
+                          icon: CustomIcons.newcreate,
+                          iconSize: 38,
+                          onTap: () => _navigateTo(Screen.create),
                         ),
                         const SizedBox(height: 10),
                       ],
