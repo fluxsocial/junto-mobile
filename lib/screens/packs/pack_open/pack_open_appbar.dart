@@ -160,7 +160,7 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                               icon: Icon(
                                 CustomIcons.newpacks,
                                 size: 33,
-                                color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                               ),
                               featureId: 'packs_info_id',
                               title:

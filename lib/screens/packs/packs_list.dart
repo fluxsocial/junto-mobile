@@ -73,7 +73,7 @@ class PacksListState extends State<PacksList> {
                       icon: Icon(
                         CustomIcons.newpacks,
                         size: 36,
-                        color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                       ),
                       featureId: 'packs_list_info_id',
                       title:

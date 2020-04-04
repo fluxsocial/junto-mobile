@@ -141,7 +141,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                               icon: Icon(
                                 CustomIcons.newflower,
                                 size: 38,
-                                color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                               ),
                               featureId: 'lotus_info_id',
                               oneFeature: true,

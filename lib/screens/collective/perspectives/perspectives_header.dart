@@ -64,7 +64,7 @@ class PerspectivesAppbar extends StatelessWidget {
                   icon: Icon(
                     CustomIcons.newbinoculars,
                     size: 36,
-                    color: Colors.white,
+                    color: Theme.of(context).primaryColor,
                   ),
                   featureId: 'perspectives_info_id',
                   title:
