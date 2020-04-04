@@ -44,45 +44,28 @@ class PacksLoadedScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: PackOpenAppbar(
-          pack: state.pack,
-        ),
-      ),
+      // appBar: PreferredSize(
+      //   preferredSize: const Size.fromHeight(50),
+      //   child: PackOpenAppbar(
+      //     pack: state.pack,
+      //   ),
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: DefaultTabController(
         length: _tabs.length,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.symmetric(
-                vertical: 15,
-                horizontal: 10,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverPersistentHeader(
+              delegate: PackOpenAppbar(
+                pack: state.pack,
+                expandedHeight: MediaQuery.of(context).size.height * .1 + 50,
+                tabs: _tabs,
               ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
-                  ),
-                ),
-              ),
-              child: TabBar(
-                labelPadding: const EdgeInsets.all(0),
-                isScrollable: true,
-                labelColor: Theme.of(context).primaryColorDark,
-                unselectedLabelColor: Theme.of(context).primaryColorLight,
-                labelStyle: Theme.of(context).textTheme.subtitle1,
-                indicatorWeight: 0.0001,
-                tabs: <Widget>[
-                  for (String name in _tabs) PackName(name: name),
-                ],
-              ),
+              pinned: false,
+              floating: true,
             ),
-            PackTabs(group: state.pack),
+
+            // PackTabs(group: state.pack),
           ],
         ),
       ),
