@@ -19,7 +19,7 @@ class EditDenProfilePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height * .2 - 30,
+      top: MediaQuery.of(context).size.width / 2 - 30,
       left: 10,
       child: GestureDetector(
         onTap: () {

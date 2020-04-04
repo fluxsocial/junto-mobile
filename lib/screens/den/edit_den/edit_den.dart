@@ -107,7 +107,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     }
     final File cropped =
         await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
-      photoType == 'profile' ? '1:1' : '3:2',
+      photoType == 'profile' ? '1:1' : '2:1',
     ]);
     if (cropped == null) {
       if (photoType == 'profile' && profilePictureFile == null) {
