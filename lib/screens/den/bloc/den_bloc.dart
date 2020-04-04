@@ -40,6 +40,8 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     userAddress = event.userAddress;
     try {
       yield DenLoadingState();
+      final userInfo = await userRepo.getUser(userData.userAddress);
+      userData.updateUser(userInfo);
       final userExpressions = await fetchExpressions();
       currentTimeStamp = userExpressions.lastTimestamp;
       if (userExpressions.results.isEmpty) {

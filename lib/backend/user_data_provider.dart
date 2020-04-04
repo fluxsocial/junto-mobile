@@ -12,6 +12,7 @@ class UserDataProvider extends ChangeNotifier {
   ) {
     initialize();
   }
+
   final AppRepo appRepository;
 
   String userAddress;
@@ -41,6 +42,14 @@ class UserDataProvider extends ChangeNotifier {
       notifyListeners();
     }
     return;
+  }
+
+  /// Updates the user information with [user]
+  void updateUser(UserData user) {
+    assert(user.user.address == userAddress);
+    print(user.user.address == userAddress);
+    userProfile = user;
+    notifyListeners();
   }
 
   Future<void> switchColumnLayout(ExpressionFeedLayout layout) async {
