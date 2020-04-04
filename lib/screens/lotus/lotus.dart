@@ -157,26 +157,21 @@ class JuntoLotusState extends State<JuntoLotus> {
                     ),
                     Column(
                       children: <Widget>[
-                        LotusButton(
-                          label: 'COLLECTIVE',
-                          icon: CustomIcons.newcollective,
-                          onTap: () => _navigateTo(Screen.collective),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: LotusButton(
+                            label: 'COLLECTIVE',
+                            icon: CustomIcons.newcollective,
+                            onTap: () => _navigateTo(Screen.collective),
+                          ),
                         ),
                         Container(
                           color: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width * .5,
-                                child: LotusButton(
-                                  label: 'GROUPS',
-                                  icon: CustomIcons.newcircles,
-                                  iconSize: 38,
-                                  onTap: () => _navigateTo(Screen.groups),
-                                ),
-                              ),
                               Container(
                                 width: MediaQuery.of(context).size.width * .5,
                                 child: LotusButton(
@@ -186,15 +181,28 @@ class JuntoLotusState extends State<JuntoLotus> {
                                   onTap: () => _navigateTo(Screen.packs),
                                 ),
                               ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * .5,
+                                child: LotusButton(
+                                  label: 'GROUPS',
+                                  icon: CustomIcons.newcircles,
+                                  iconSize: 38,
+                                  onTap: () => _navigateTo(Screen.groups),
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        LotusButton(
-                          label: 'CREATE',
-                          icon: CustomIcons.newcreate,
-                          iconSize: 38,
-                          onTap: () => _navigateTo(Screen.create),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: LotusButton(
+                            label: 'CREATE',
+                            icon: CustomIcons.newcreate,
+                            iconSize: 38,
+                            onTap: () => _navigateTo(Screen.create),
+                          ),
                         ),
+                        const SizedBox(height: 10),
                       ],
                     )
                   ],
