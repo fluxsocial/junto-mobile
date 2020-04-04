@@ -89,34 +89,30 @@ class _GroupExpressionsState extends State<GroupExpressions> {
               : state.publicExpressions.results;
           return Column(
             children: [
-              // FilterColumnRow(
-              //   twoColumnView: twoColumnView,
-              //   switchColumnView: _switchColumnView,
-              // ),
-              // Expanded(
-              //   child: NotificationListener(
-              //     onNotification: _handleScrollNotification,
-              //     child:
-              Container(
-                color: Theme.of(context).colorScheme.background,
-                child: AnimatedCrossFade(
-                  crossFadeState: twoColumnView
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: const Duration(
-                    milliseconds: 200,
-                  ),
-                  firstChild: TwoColumnSliverListView(
-                    data: _results,
-                  ),
-                  secondChild: SingleColumnSliverListView(
-                    data: _results,
-                    privacyLayer: widget.privacy,
-                  ),
-                ),
-              )
-              //   ),
-              // ),
+              FilterColumnRow(
+                twoColumnView: twoColumnView,
+                switchColumnView: _switchColumnView,
+              ),
+              NotificationListener(
+                  onNotification: _handleScrollNotification,
+                  child: Container(
+                    color: Theme.of(context).colorScheme.background,
+                    child: AnimatedCrossFade(
+                      crossFadeState: twoColumnView
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
+                      duration: const Duration(
+                        milliseconds: 200,
+                      ),
+                      firstChild: TwoColumnSliverListView(
+                        data: _results,
+                      ),
+                      secondChild: SingleColumnSliverListView(
+                        data: _results,
+                        privacyLayer: widget.privacy,
+                      ),
+                    ),
+                  )),
             ],
           );
         }
