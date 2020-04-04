@@ -32,10 +32,15 @@ class CreatePhotoState extends State<CreatePhoto> {
   TextEditingController _captionController;
   bool _showBottomNav = true;
 
-  Future<void> _onPickPressed() async {
+  Future<void> _onPickPressed({@required String source}) async {
     try {
-      final File image =
-          await ImagePicker.pickImage(source: ImageSource.gallery);
+      File image;
+      if (source == 'Gallery') {
+        image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      } else if (source == 'Camera') {
+        image = await ImagePicker.pickImage(source: ImageSource.camera);
+      }
+
       if (image == null) {
         setState(() => imageFile = null);
         return;
@@ -164,7 +169,9 @@ class CreatePhotoState extends State<CreatePhoto> {
                       color: Colors.transparent,
                       width: MediaQuery.of(context).size.width,
                       child: GestureDetector(
-                        onTap: _onPickPressed,
+                        onTap: () {
+                          _onPickPressed(source: 'Gallery');
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -191,7 +198,9 @@ class CreatePhotoState extends State<CreatePhoto> {
               child: Row(
                 children: <Widget>[
                   InkWell(
-                    onTap: _onPickPressed,
+                    onTap: () {
+                      _onPickPressed(source: 'Gallery');
+                    },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 30),
                       width: MediaQuery.of(context).size.width * .5,
@@ -207,17 +216,22 @@ class CreatePhotoState extends State<CreatePhoto> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 30),
-                    width: MediaQuery.of(context).size.width * .5,
-                    alignment: Alignment.center,
-                    child: Text(
-                      'CAMERA',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColor,
-                        letterSpacing: 1.7,
+                  InkWell(
+                    onTap: () {
+                      _onPickPressed(source: 'Camera');
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      width: MediaQuery.of(context).size.width * .5,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'CAMERA',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor,
+                          letterSpacing: 1.7,
+                        ),
                       ),
                     ),
                   ),
