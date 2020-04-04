@@ -11,7 +11,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
-
+ 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar({
