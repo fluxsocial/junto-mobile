@@ -156,98 +156,143 @@ class CreatePhotoState extends State<CreatePhoto> {
       onNext: _onNext,
       showBottomNav: _showBottomNav,
       child: Expanded(
-        child: Center(
-          child: imageFile == null
-              ? Transform.translate(
-                  offset: const Offset(0.0, -50.0),
-                  child: GestureDetector(
-                    onTap: _onPickPressed,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          CustomIcons.add,
-                          size: 60,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: imageFile == null
+                  ? Container(
+                      color: Colors.transparent,
+                      width: MediaQuery.of(context).size.width,
+                      child: GestureDetector(
+                        onTap: _onPickPressed,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              CustomIcons.add,
+                              size: 60,
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'Press here to share a photo',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
+                      ),
+                    )
+                  : _captionPhoto(),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 75),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
+                ),
+              ),
+              child: Row(
+                children: <Widget>[
+                  InkWell(
+                    onTap: _onPickPressed,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      width: MediaQuery.of(context).size.width * .5,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'LIBRARY',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor,
+                          letterSpacing: 1.7,
+                        ),
+                      ),
                     ),
                   ),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: ListView(
-                        children: <Widget>[
-                          Image.file(imageFile),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                            ),
-                            child: TextField(
-                              controller: _captionController,
-                              textInputAction: TextInputAction.done,
-                              decoration: const InputDecoration(
-                                hintText: 'write a caption..',
-                                border: InputBorder.none,
-                              ),
-                              cursorColor: Theme.of(context).primaryColor,
-                              cursorWidth: 1,
-                              maxLines: null,
-                              style: Theme.of(context).textTheme.caption,
-                              keyboardAppearance: Theme.of(context).brightness,
-                            ),
-                          )
-                        ],
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 30),
+                    width: MediaQuery.of(context).size.width * .5,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'CAMERA',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColor,
+                        letterSpacing: 1.7,
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 25),
-                      child: Row(
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                imageFile = null;
-                              });
-                              _toggleBottomNav(true);
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * .5,
-                              color: Colors.transparent,
-                              child: Icon(Icons.keyboard_arrow_left,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 28),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () async => _cropPhoto(),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * .5,
-                              color: Colors.transparent,
-                              child: Icon(
-                                Icons.crop,
-                                color: Theme.of(context).primaryColor,
-                                size: 20,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _captionPhoto() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              Image.file(imageFile),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                child: TextField(
+                  controller: _captionController,
+                  textInputAction: TextInputAction.done,
+                  decoration: const InputDecoration(
+                    hintText: 'write a caption..',
+                    border: InputBorder.none,
+                  ),
+                  cursorColor: Theme.of(context).primaryColor,
+                  cursorWidth: 1,
+                  maxLines: null,
+                  style: Theme.of(context).textTheme.caption,
+                  keyboardAppearance: Theme.of(context).brightness,
+                ),
+              )
+            ],
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 25),
+          child: Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    imageFile = null;
+                  });
+                  _toggleBottomNav(true);
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * .5,
+                  color: Colors.transparent,
+                  child: Icon(Icons.keyboard_arrow_left,
+                      color: Theme.of(context).primaryColor, size: 28),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async => _cropPhoto(),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * .5,
+                  color: Colors.transparent,
+                  child: Icon(
+                    Icons.crop,
+                    color: Theme.of(context).primaryColor,
+                    size: 20,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
