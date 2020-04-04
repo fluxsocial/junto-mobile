@@ -12,7 +12,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_action_items.dart';
 
-
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
 
 // Junto app bar used in collective screen.
@@ -130,14 +129,12 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                       onTap: () {
                         FeatureDiscovery.clearPreferences(context, <String>{
                           'packs_info_id',
-                          // 'collective_filter_id',
                           'packs_toggle_id',
                         });
                         FeatureDiscovery.discoverFeatures(
                           context,
                           const <String>{
                             'packs_info_id',
-                            // 'collective_filter_id',
                             'packs_toggle_id',
                           },
                         );

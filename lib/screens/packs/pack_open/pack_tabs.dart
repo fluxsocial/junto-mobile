@@ -20,47 +20,74 @@ class PackTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: NotificationListener<OverscrollNotification>(
-        onNotification: (value) {
-          if (value.overscroll < 0 && value.metrics.axis == Axis.horizontal) {
-            JuntoFilterDrawer.of(context).toggle();
-            return true;
-          } else if (value.overscroll > 0 &&
-              value.metrics.axis == Axis.horizontal) {
-            JuntoFilterDrawer.of(context).toggleRightMenu();
-            return true;
-          }
-          return false;
-        },
-        child: TabBarView(
-          children: <Widget>[
-            RefreshIndicator(
-              onRefresh: () => _fetchMore(context),
-              child: GroupExpressions(
-                key: const PageStorageKey<String>('public-pack'),
-                group: group,
-                privacy: 'Public',
-              ),
+    return Container(
+      child: TabBarView(children: <Widget>[
+        RefreshIndicator(
+          onRefresh: () => _fetchMore(context),
+          child: ListView(padding: const EdgeInsets.all(0), children: [
+            GroupExpressions(
+              key: const PageStorageKey<String>('public-pack'),
+              group: group,
+              privacy: 'Public',
             ),
-            RefreshIndicator(
-              onRefresh: () => _fetchMore(context),
-              child: GroupExpressions(
-                key: const PageStorageKey<String>('private-pack'),
-                group: group,
-                privacy: 'Private',
-              ),
-            ),
-            RefreshIndicator(
-              onRefresh: () => _fetchMore(context),
-              child: PackOpenMembers(
-                key: UniqueKey(),
-                packAddress: group.address,
-              ),
-            )
-          ],
+          ]),
         ),
-      ),
+        RefreshIndicator(
+          onRefresh: () => _fetchMore(context),
+          child: GroupExpressions(
+            key: const PageStorageKey<String>('private-pack'),
+            group: group,
+            privacy: 'Private',
+          ),
+        ),
+        RefreshIndicator(
+          onRefresh: () => _fetchMore(context),
+          child: PackOpenMembers(
+            key: UniqueKey(),
+            packAddress: group.address,
+          ),
+        )
+      ]),
     );
+    // child: NotificationListener<OverscrollNotification>(
+    //   onNotification: (value) {
+    //     if (value.overscroll < 0 && value.metrics.axis == Axis.horizontal) {
+    //       JuntoFilterDrawer.of(context).toggle();
+    //       return true;
+    //     } else if (value.overscroll > 0 &&
+    //         value.metrics.axis == Axis.horizontal) {
+    //       JuntoFilterDrawer.of(context).toggleRightMenu();
+    //       return true;
+    //     }
+    //     return false;
+    //   },
+    //   child: TabBarView(
+    //     children: <Widget>[
+    //       RefreshIndicator(
+    //         onRefresh: () => _fetchMore(context),
+    //         child: GroupExpressions(
+    //           key: const PageStorageKey<String>('public-pack'),
+    //           group: group,
+    //           privacy: 'Public',
+    //         ),
+    //       ),
+    //       RefreshIndicator(
+    //         onRefresh: () => _fetchMore(context),
+    //         child: GroupExpressions(
+    //           key: const PageStorageKey<String>('private-pack'),
+    //           group: group,
+    //           privacy: 'Private',
+    //         ),
+    //       ),
+    //       RefreshIndicator(
+    //         onRefresh: () => _fetchMore(context),
+    //         child: PackOpenMembers(
+    //           key: UniqueKey(),
+    //           packAddress: group.address,
+    //         ),
+    //       )
+    //     ],
+    //   ),
+    // ),
   }
 }
