@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_name.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_tabs.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 
 class PackOpen extends StatelessWidget {
   const PackOpen({
@@ -45,17 +42,10 @@ class PacksLoadedScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: PreferredSize(
-      //   preferredSize: const Size.fromHeight(50),
-      //   child: PackOpenAppbar(
-      //     pack: state.pack,
-      //   ),
-      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
-          // physics: ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
             return <Widget>[
               SliverPersistentHeader(
@@ -72,17 +62,6 @@ class PacksLoadedScaffold extends StatelessWidget {
           body: PackTabs(group: state.pack),
         ),
       ),
-
-      // SliverList(
-      //   delegate: SliverChildListDelegate(<Widget>[
-      //     GroupExpressions(
-      //       key: const PageStorageKey<String>('public-pack'),
-      //       group: state.pack,
-      //       privacy: 'Public',
-      //     ),
-      //   ]),
-      // ),
-      // PackTabs(group: state.pack),
     );
   }
 }
