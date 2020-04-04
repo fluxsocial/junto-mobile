@@ -5,10 +5,13 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
-
+ 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar({
@@ -18,6 +21,11 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
 
   final double expandedHeight;
   final String appbarTitle;
+
+  final action = () async {
+    print('IconButton of  tapped.');
+    return true;
+  };
 
   @override
   Widget build(
@@ -68,6 +76,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         ),
                       ),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
@@ -79,14 +88,50 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               );
                             },
                             child: Container(
-                              width: 42,
                               color: Colors.transparent,
-                              alignment: Alignment.bottomRight,
-                              padding: const EdgeInsets.only(right: 10),
+                              alignment: Alignment.bottomCenter,
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
                               child: Icon(
                                 CustomIcons.moon,
                                 size: 22,
                                 color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              FeatureDiscovery.clearPreferences(
+                                  context, <String>{
+                                'collective_info_id',
+                                'collective_filter_id',
+                                'collective_toggle_id',
+                              });
+                              FeatureDiscovery.discoverFeatures(
+                                context,
+                                const <String>{
+                                  'collective_info_id',
+                                  'collective_filter_id',
+                                  'collective_toggle_id',
+                                },
+                              );
+                            },
+                            child: JuntoDescribedFeatureOverlay(
+                              icon: Icon(
+                                CustomIcons.newcollective,
+                                size: 36,
+                                color: Colors.white,
+                              ),
+                              featureId: 'collective_info_id',
+                              title:
+                                  'This is the Collective of Junto, where all public expressions are shown through perspectives',
+                              learnMore: true,
+                              hasUpNext: false,
+                              learnMoreText:
+                                  'This is the collective of Junto, where all public expressions are shown. This is the collective of Junto, where all public expressions are shown.',
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: JuntoInfoIcon(),
                               ),
                             ),
                           ),
@@ -103,7 +148,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   color: Theme.of(context).backgroundColor,
                   border: Border(
                     bottom: BorderSide(
-                        color: Theme.of(context).dividerColor, width: .75),
+                      color: Theme.of(context).dividerColor,
+                      width: .75,
+                    ),
                   ),
                 ),
                 child: Padding(
@@ -111,7 +158,16 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const FilterDrawerButton(),
+                      JuntoDescribedFeatureOverlay(
+                        icon: Image.asset(
+                          'assets/images/junto-mobile__filter.png',
+                          height: 17,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        featureId: 'collective_filter_id',
+                        title: 'Filter this perspective by channel',
+                        child: const FilterDrawerButton(),
+                      ),
                       Row(
                         children: <Widget>[
                           GestureDetector(

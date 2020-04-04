@@ -21,11 +21,10 @@ class MemberBackgroundPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .2,
       width: MediaQuery.of(context).size.width,
       child: Image.asset(
         _getBackgroundImageAsset(),
-        height: MediaQuery.of(context).size.height * .2,
+        height: MediaQuery.of(context).size.width / 2,
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.cover,
       ),

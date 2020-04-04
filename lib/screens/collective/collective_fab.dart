@@ -10,11 +10,13 @@ class CollectiveActionButton extends StatelessWidget {
     @required this.actionsVisible,
     @required this.onTap,
     @required this.onUpTap,
+    @required this.iconNorth,
   }) : super(key: key);
   final ValueNotifier<bool> isVisible;
   final bool actionsVisible;
   final VoidCallback onTap;
   final VoidCallback onUpTap;
+  final bool iconNorth;
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +25,7 @@ class CollectiveActionButton extends StatelessWidget {
       builder: (BuildContext context, bool visible, Widget child) {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          child: visible
-              ? child
-              // : Padding(
-              //     key: ValueKey('Up-Button'),
-              //     padding: const EdgeInsets.only(bottom: 25),
-              //     child: FloatingActionButton(
-              //       child: Icon(Icons.arrow_drop_up),
-              //       onPressed: onUpTap,
-              //     ),
-              //   ),
-              : const SizedBox()
+          child: visible ? child : const SizedBox(),
         );
       },
       child: Padding(
@@ -42,6 +34,11 @@ class CollectiveActionButton extends StatelessWidget {
         child: BottomNav(
           actionsVisible: actionsVisible,
           onLeftButtonTap: onTap,
+          iconNorth: iconNorth,
+          featureId: 'collective_toggle_id',
+          featureTitle:
+              'Toggle between your list of perspectives and the current perspective you’re looking at.',
+          isLastFeature: true,
         ),
       ),
     );

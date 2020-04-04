@@ -27,6 +27,9 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
     if (event is FetchMyPack) {
       yield* _mapFetchPacksToState(event);
     }
+    if (event is RefreshPack) {
+      yield* _mapRefreshPacksToState(event);
+    }
   }
 
   Stream<GroupBlocState> _mapFetchPacksToState(FetchMyPack event) async* {
@@ -40,13 +43,7 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
       yield GroupLoading();
       final groups = await groupRepo.getUserGroups(uid);
       final users = await notificationRepo.getNotifications(params);
-      final List<Group> ownedGroups = groups.owned;
-      final List<Group> associatedGroups = groups.associated;
-
-      final List<Group> userPacks =
-          ListDistinct<Group>(ownedGroups, associatedGroups)
-              .where((Group group) => group.groupType == 'Pack')
-              .toList();
+      final userPacks = _buildUserPack(groups);
       yield GroupLoaded(userPacks, users);
     } on JuntoException catch (error) {
       yield GroupError(error.message);
@@ -54,6 +51,38 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
       logger.logException(e, s);
       yield GroupError();
     }
+  }
+
+  Stream<GroupBlocState> _mapRefreshPacksToState(RefreshPack event) async* {
+    final String uid = userDataProvider.userProfile.user.address;
+    final NotificationQuery params = NotificationQuery(
+      connectionRequests: false,
+      groupJoinRequests: true,
+      paginationPosition: 0,
+    );
+    try {
+      final groups = await groupRepo.getUserGroups(uid);
+      final users = await notificationRepo.getNotifications(params);
+      final userPacks = _buildUserPack(groups);
+      yield GroupLoaded(userPacks, users);
+    } on JuntoException catch (error) {
+      yield GroupError(error.message);
+    } catch (e, s) {
+      logger.logException(e, s);
+      yield GroupError();
+    }
+  }
+
+  /// Return a list of "Packs" the user is apart of.
+  List<Group> _buildUserPack(UserGroupsResponse groups) {
+    final List<Group> ownedGroups = groups.owned;
+    final List<Group> associatedGroups = groups.associated;
+
+    final List<Group> userPacks =
+        ListDistinct<Group>(ownedGroups, associatedGroups)
+            .where((Group group) => group.groupType == 'Pack')
+            .toList();
+    return userPacks;
   }
 
   List<T> ListDistinct<T>(List<T> listOne, List<T> listTwo) {

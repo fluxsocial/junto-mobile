@@ -10,6 +10,9 @@ import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -112,7 +115,48 @@ class JuntoLotusState extends State<JuntoLotus> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    const SizedBox(),
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              FeatureDiscovery.clearPreferences(
+                                  context, <String>{
+                                'lotus_info_id',
+                              });
+                              FeatureDiscovery.discoverFeatures(
+                                context,
+                                const <String>{
+                                  'lotus_info_id',
+                                },
+                              );
+                            },
+                            child: JuntoDescribedFeatureOverlay(
+                              icon: Icon(
+                                CustomIcons.newflower,
+                                size: 38,
+                                color: Colors.white,
+                              ),
+                              featureId: 'lotus_info_id',
+                              oneFeature: true,
+                              title:
+                                  'This is the intention screen, your medium for navigation.',
+                              learnMore: true,
+                              learnMoreText:
+                                  'The purpose of the intention screen is to reduce noise and invite a more thoughtful experience. Instead of being immediately dropped into a feed when you open the app, the intention screen gives you a choice. We also hope this will encourage more reflection while navigating between screens.',
+                              hasUpNext: false,
+                              child: JuntoInfoIcon(neutralBackground: false),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Column(
                       children: <Widget>[
                         LotusButton(
@@ -122,6 +166,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                         ),
                         Container(
                           color: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,19 +174,19 @@ class JuntoLotusState extends State<JuntoLotus> {
                               Container(
                                 width: MediaQuery.of(context).size.width * .5,
                                 child: LotusButton(
-                                  label: s.lotus_groups,
-                                  icon: CustomIcons.newcircles,
+                                  label: s.lotus_packs,
+                                  icon: CustomIcons.newpacks,
                                   iconSize: 38,
-                                  onTap: () => _navigateTo(Screen.groups),
+                                  onTap: () => _navigateTo(Screen.packs),
                                 ),
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width * .5,
                                 child: LotusButton(
-                                  label: s.lotus_packs,
-                                  icon: CustomIcons.newpacks,
+                                  label: s.lotus_groups,
+                                  icon: CustomIcons.newcircles,
                                   iconSize: 38,
-                                  onTap: () => _navigateTo(Screen.packs),
+                                  onTap: () => _navigateTo(Screen.groups),
                                 ),
                               ),
                             ],
@@ -153,6 +198,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                           iconSize: 38,
                           onTap: () => _navigateTo(Screen.create),
                         ),
+                        const SizedBox(height: 10),
                       ],
                     )
                   ],
@@ -203,7 +249,7 @@ class LotusButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: 40,
+                    height: 50,
                     child: Icon(
                       icon,
                       size: iconSize ?? 45,

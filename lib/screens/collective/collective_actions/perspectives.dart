@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives_h
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 class JuntoPerspectives extends StatelessWidget {
   const JuntoPerspectives();
@@ -24,46 +25,49 @@ class JuntoPerspectives extends StatelessWidget {
       userCount: null,
       users: null,
     );
-    return Scaffold(
-      body: JuntoFilterDrawer(
-        leftDrawer: null,
-        rightMenu: JuntoDrawer(),
-        scaffold: Scaffold(
-          floatingActionButton: CollectiveActionButton(
-            isVisible: ValueNotifier(true),
-            actionsVisible: true,
-            onTap: () {
-              Navigator.maybePop(context);
-            },
-            onUpTap: () {},
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: PerspectivesAppbar(),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.all(0),
-                    children: <Widget>[
-                      PerspectiveItem(
-                        perspective: juntoPerspective,
-                        onTap: () => onPerspectivesChanged(
-                          juntoPerspective,
-                          context,
+    return FeatureDiscovery(
+      child: Scaffold(
+        body: JuntoFilterDrawer(
+          leftDrawer: null,
+          rightMenu: JuntoDrawer(),
+          scaffold: Scaffold(
+            floatingActionButton: CollectiveActionButton(
+              isVisible: ValueNotifier(true),
+              actionsVisible: true,
+              iconNorth: false,
+              onTap: () {
+                Navigator.maybePop(context);
+              },
+              onUpTap: () {},
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(60),
+              child: PerspectivesAppbar(),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.all(0),
+                      children: <Widget>[
+                        PerspectiveItem(
+                          perspective: juntoPerspective,
+                          onTap: () => onPerspectivesChanged(
+                            juntoPerspective,
+                            context,
+                          ),
                         ),
-                      ),
-                      PerspectivesList(),
-                    ],
-                  ),
-                )
-              ],
+                        PerspectivesList(),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -33,7 +33,7 @@ class EditDenBackgroundPhoto extends StatelessWidget {
                   : MemberBackgroundPlaceholder(theme: currentTheme)
             else
               Container(
-                height: MediaQuery.of(context).size.height * .2,
+                height: MediaQuery.of(context).size.width / 2,
                 width: MediaQuery.of(context).size.width,
                 child: Image.file(
                   backgroundPhotoFile,
@@ -41,7 +41,7 @@ class EditDenBackgroundPhoto extends StatelessWidget {
                 ),
               ),
           Container(
-            height: MediaQuery.of(context).size.height * .2,
+            height: MediaQuery.of(context).size.width / 2,
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
             color: Colors.black38,

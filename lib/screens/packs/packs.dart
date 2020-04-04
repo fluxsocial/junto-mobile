@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 class JuntoPacks extends StatefulWidget {
@@ -33,24 +34,27 @@ class JuntoPacksState extends State<JuntoPacks>
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollUpdateNotification>(
-      onNotification: (value) => hideOrShowFab(value, _isVisible),
-      child: MultiBlocProvider(
-        providers: _getBlocProviders(),
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: JuntoFilterDrawer(
-            leftDrawer: const FilterDrawerContent(ExpressionContextType.Group),
-            rightMenu: JuntoDrawer(),
-            scaffold: Scaffold(
-              floatingActionButton: PacksActionButtons(
-                isVisible: _isVisible,
-                initialGroup: widget.initialGroup,
-                actionsVisible: false,
+    return FeatureDiscovery(
+      child: NotificationListener<ScrollUpdateNotification>(
+        onNotification: (value) => hideOrShowFab(value, _isVisible),
+        child: MultiBlocProvider(
+          providers: _getBlocProviders(),
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: JuntoFilterDrawer(
+              leftDrawer:
+                  const FilterDrawerContent(ExpressionContextType.Group),
+              rightMenu: JuntoDrawer(),
+              scaffold: Scaffold(
+                floatingActionButton: PacksActionButtons(
+                  isVisible: _isVisible,
+                  initialGroup: widget.initialGroup,
+                  actionsVisible: false,
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                body: PackOpen(),
               ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              body: PackOpen(),
             ),
           ),
         ),

@@ -60,147 +60,6 @@ class JuntoDrawerState extends State<JuntoDrawer> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        BackgroundTheme(
-          currentTheme: _currentTheme,
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 32,
-            right: 32,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              JuntoDrawerItem(
-                icon: _userProfile != null
-                    ? Container(
-                        margin: const EdgeInsets.only(right: 32),
-                        child: MemberAvatar(
-                          profilePicture: _userProfile.user.profilePicture,
-                          diameter: 28,
-                        ),
-                      )
-                    : const SizedBox(),
-                title: 'My Den',
-                onTap: () {
-                  Navigator.of(context).push(
-                    FadeRoute<void>(
-                      child: JuntoDen(),
-                    ),
-                  );
-                },
-              ),
-              JuntoDrawerItem(
-                icon: Container(
-                  width: 60,
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                ),
-                title: 'Search',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<Widget>(
-                      builder: (BuildContext context) => const GlobalSearch(),
-                    ),
-                  );
-                },
-              ),
-              JuntoDrawerItem(
-                icon: Container(
-                  width: 60,
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    CustomIcons.infinity,
-                    color: Colors.white,
-                    size: 9,
-                  ),
-                ),
-                title: 'Relations',
-                onTap: () async {
-                  // open relationships
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<dynamic>(
-                      builder: (BuildContext context) {
-                        return JuntoRelationships(
-                            _userAddress, _userFollowPerspectiveId);
-                      },
-                    ),
-                  );
-                },
-              ),
-              JuntoDrawerItem(
-                icon: Container(
-                  width: 60,
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    Icons.favorite,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                ),
-                title: 'Themes',
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    CupertinoPageRoute<dynamic>(
-                      builder: (BuildContext context) {
-                        return JuntoThemes(refreshTheme: getTheme);
-                      },
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: 30),
-              LogoutDrawerItem(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class LogoutDrawerItem extends StatelessWidget {
-  const LogoutDrawerItem({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return JuntoDrawerItem(
-      icon: Container(
-        width: 60,
-        alignment: Alignment.centerLeft,
-        child: Icon(
-          Icons.settings,
-          color: Colors.white,
-          size: 24,
-        ),
-      ),
-      title: 'Log Out',
-      onTap: () async {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => ConfirmDialog(
-            buildContext: context,
-            confirm: logOut,
-            confirmationText: 'Are you sure you want to log out?',
-          ),
-        );
-      },
-    );
-  }
-
   logOut(BuildContext context) async {
     try {
       await Provider.of<AuthRepo>(
@@ -215,6 +74,144 @@ class LogoutDrawerItem extends StatelessWidget {
     } catch (e) {
       logger.logException(e);
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        BackgroundTheme(
+          currentTheme: _currentTheme,
+        ),
+        Container(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * .2,
+            left: 32,
+            bottom: MediaQuery.of(context).size.height * .2,
+            right: 32,
+          ),
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  JuntoDrawerItem(
+                    icon: _userProfile != null
+                        ? Container(
+                            margin: const EdgeInsets.only(right: 32),
+                            child: MemberAvatar(
+                              profilePicture: _userProfile.user.profilePicture,
+                              diameter: 28,
+                            ),
+                          )
+                        : const SizedBox(),
+                    title: 'My Den',
+                    onTap: () {
+                      Navigator.of(context).push(
+                        FadeRoute<void>(
+                          child: JuntoDen(),
+                        ),
+                      );
+                    },
+                  ),
+                  JuntoDrawerItem(
+                    icon: Container(
+                      width: 60,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    title: 'Search',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<Widget>(
+                          builder: (BuildContext context) =>
+                              const GlobalSearch(),
+                        ),
+                      );
+                    },
+                  ),
+                  JuntoDrawerItem(
+                    icon: Container(
+                      width: 60,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        CustomIcons.infinity,
+                        color: Colors.white,
+                        size: 9,
+                      ),
+                    ),
+                    title: 'Relations',
+                    onTap: () async {
+                      // open relationships
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext context) {
+                            return JuntoRelationships(
+                                _userAddress, _userFollowPerspectiveId);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  JuntoDrawerItem(
+                    icon: Container(
+                      width: 60,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    title: 'Themes',
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext context) {
+                            return JuntoThemes(refreshTheme: getTheme);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              JuntoDrawerItem(
+                icon: Container(
+                  width: 60,
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
+                title: 'Log Out',
+                onTap: () async {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => ConfirmDialog(
+                      buildContext: context,
+                      confirm: logOut,
+                      confirmationText: 'Are you sure you want to log out?',
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -232,34 +229,30 @@ class JuntoDrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16.0),
-        onTap: onTap,
-        child: Container(
-          color: Colors.transparent,
-          padding: EdgeInsets.symmetric(
-            vertical: 20,
-            horizontal: 15 / MediaQuery.of(context).textScaleFactor,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              icon,
-              Flexible(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.end,
+    return InkWell(
+      borderRadius: BorderRadius.circular(16.0),
+      onTap: onTap,
+      child: Container(
+        color: Colors.transparent,
+        padding: EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 15 / MediaQuery.of(context).textScaleFactor,
+        ),
+        child: Row(
+          children: <Widget>[
+            icon,
+            Flexible(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
+                textAlign: TextAlign.right,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

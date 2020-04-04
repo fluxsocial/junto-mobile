@@ -34,23 +34,29 @@ class MyPacks extends StatelessWidget {
                 }
                 if (state is GroupLoaded) {
                   return Expanded(
-                      child: ListView(
-                    padding: const EdgeInsets.all(0),
-                    children: <Widget>[
-                      for (Group group in state.groups)
-                        GestureDetector(
-                          onTap: () {
-                            context
-                                .bloc<PackBloc>()
-                                .add(FetchPacks(group: group.address));
-                            Navigator.pop(context);
-                          },
-                          child: PackPreview(
-                            group: group,
-                            userProfile: data?.userProfile,
-                          ),
-                        )
-                    ],
+                      child: RefreshIndicator(
+                    onRefresh: () async {
+                      context.bloc<GroupBloc>().add(RefreshPack());
+                    },
+                    child: ListView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(0),
+                      children: <Widget>[
+                        for (Group group in state.groups)
+                          GestureDetector(
+                            onTap: () {
+                              context
+                                  .bloc<PackBloc>()
+                                  .add(FetchPacks(group: group.address));
+                              Navigator.pop(context);
+                            },
+                            child: PackPreview(
+                              group: group,
+                              userProfile: data?.userProfile,
+                            ),
+                          )
+                      ],
+                    ),
                   ));
                 }
                 if (state is GroupError) {

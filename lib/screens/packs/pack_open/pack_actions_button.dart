@@ -6,12 +6,15 @@ import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 class PacksActionButtons extends StatelessWidget {
   const PacksActionButtons({
     Key key,
     @required ValueNotifier<bool> isVisible,
     @required this.initialGroup,
+    this.onTap,
+    this.iconNorth = true,
     this.actionsVisible,
   })  : _isVisible = isVisible,
         super(key: key);
@@ -19,6 +22,8 @@ class PacksActionButtons extends StatelessWidget {
   final ValueNotifier<bool> _isVisible;
   final bool actionsVisible;
   final String initialGroup;
+  final bool iconNorth;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,11 @@ class PacksActionButtons extends StatelessWidget {
           address: initialGroup,
           expressionContext: ExpressionContext.Group,
           actionsVisible: actionsVisible ?? true,
+          featureTitle:
+              'Toggle between the Packs you belong to and the current Pack you’re viewing.',
+          featureId: 'packs_toggle_id',
+          isLastFeature: true,
+          iconNorth: iconNorth,
           onLeftButtonTap: () {
             if (actionsVisible) {
               Navigator.pop(context);
@@ -53,7 +63,9 @@ class PacksActionButtons extends StatelessWidget {
                         value: context.bloc<PackBloc>(),
                       ),
                     ],
-                    child: PacksList(),
+                    child: FeatureDiscovery(
+                      child: PacksList(),
+                    ),
                   ),
                 ),
               );
