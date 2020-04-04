@@ -82,33 +82,29 @@ class _UserExpressionsState extends State<UserExpressions> {
               child: NotificationListener(
                 onNotification: _onNotification,
                 child: ListView(
+                  padding: const EdgeInsets.all(0),
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        FilterColumnRow(
-                          twoColumnView: twoColumnView,
-                          switchColumnView: _switchColumnView,
+                    FilterColumnRow(
+                      twoColumnView: twoColumnView,
+                      switchColumnView: _switchColumnView,
+                    ),
+                    Container(
+                      color: Theme.of(context).colorScheme.background,
+                      child: AnimatedCrossFade(
+                        crossFadeState: twoColumnView
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: const Duration(milliseconds: 200),
+                        firstChild: TwoColumnListView(
+                          data: results,
+                          privacyLayer: 'Public',
                         ),
-                        Container(
-                          color: Theme.of(context).colorScheme.background,
-                          child: AnimatedCrossFade(
-                            crossFadeState: twoColumnView
-                                ? CrossFadeState.showFirst
-                                : CrossFadeState.showSecond,
-                            duration: const Duration(milliseconds: 200),
-                            firstChild: TwoColumnListView(
-                              data: results,
-                              privacyLayer: 'Public',
-                            ),
-                            secondChild: SingleColumnListView(
-                              data: results,
-                              privacyLayer: 'Public',
-                            ),
-                          ),
+                        secondChild: SingleColumnListView(
+                          data: results,
+                          privacyLayer: 'Public',
                         ),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 ),
               ),
