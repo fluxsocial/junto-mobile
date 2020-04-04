@@ -83,7 +83,6 @@ class CreatePhotoState extends State<CreatePhoto> {
           '16:9'
         ]);
     if (cropped == null) {
-      setState(() => imageFile = null);
       return;
     }
     setState(() => imageFile = cropped);
@@ -177,7 +176,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                           children: <Widget>[
                             Icon(
                               CustomIcons.add,
-                              size: 60,
+                              size: 75,
                             ),
                           ],
                         ),
@@ -185,61 +184,65 @@ class CreatePhotoState extends State<CreatePhoto> {
                     )
                   : _captionPhoto(),
             ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 75),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      _onPickPressed(source: 'Gallery');
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 30),
-                      width: MediaQuery.of(context).size.width * .5,
-                      alignment: Alignment.center,
-                      child: Text(
-                        'LIBRARY',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColor,
-                          letterSpacing: 1.7,
-                        ),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      _onPickPressed(source: 'Camera');
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 30),
-                      width: MediaQuery.of(context).size.width * .5,
-                      alignment: Alignment.center,
-                      child: Text(
-                        'CAMERA',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColor,
-                          letterSpacing: 1.7,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            if (imageFile == null) _uploadPhotoOptions()
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _uploadPhotoOptions() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 75),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: .75,
+          ),
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          InkWell(
+            onTap: () {
+              _onPickPressed(source: 'Gallery');
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 30),
+              width: MediaQuery.of(context).size.width * .5,
+              alignment: Alignment.center,
+              child: Text(
+                'LIBRARY',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  letterSpacing: 1.7,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              _onPickPressed(source: 'Camera');
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 30),
+              width: MediaQuery.of(context).size.width * .5,
+              alignment: Alignment.center,
+              child: Text(
+                'CAMERA',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  letterSpacing: 1.7,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -274,10 +277,9 @@ class CreatePhotoState extends State<CreatePhoto> {
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 25),
           child: Row(
             children: <Widget>[
-              GestureDetector(
+              InkWell(
                 onTap: () {
                   setState(() {
                     imageFile = null;
@@ -286,15 +288,20 @@ class CreatePhotoState extends State<CreatePhoto> {
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * .5,
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   color: Colors.transparent,
-                  child: Icon(Icons.keyboard_arrow_left,
-                      color: Theme.of(context).primaryColor, size: 28),
+                  child: Icon(
+                    Icons.keyboard_arrow_left,
+                    color: Theme.of(context).primaryColor,
+                    size: 28,
+                  ),
                 ),
               ),
-              GestureDetector(
+              InkWell(
                 onTap: () async => _cropPhoto(),
                 child: Container(
                   width: MediaQuery.of(context).size.width * .5,
+                  padding: const EdgeInsets.symmetric(vertical: 25),
                   color: Colors.transparent,
                   child: Icon(
                     Icons.crop,
