@@ -54,8 +54,8 @@ class PacksLoadedScaffold extends StatelessWidget {
                   expandedHeight: MediaQuery.of(context).size.height * .1 + 50,
                   tabs: _tabs,
                 ),
-                pinned: false,
                 floating: true,
+                pinned: false,
               ),
             ];
           },

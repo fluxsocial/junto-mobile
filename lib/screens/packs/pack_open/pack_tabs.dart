@@ -19,36 +19,34 @@ class PackTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TabBarView(children: <Widget>[
-        RefreshIndicator(
-          onRefresh: () => _fetchMore(context),
-          child: ListView(padding: const EdgeInsets.all(0), children: [
-            GroupExpressions(
-              key: const PageStorageKey<String>('public-pack'),
-              group: group,
-              privacy: 'Public',
-            ),
-          ]),
-        ),
-        RefreshIndicator(
-          onRefresh: () => _fetchMore(context),
-          child: ListView(padding: const EdgeInsets.all(0), children: [
-            GroupExpressions(
-              key: const PageStorageKey<String>('private-pack'),
-              group: group,
-              privacy: 'Private',
-            ),
-          ]),
-        ),
-        RefreshIndicator(
-          onRefresh: () => _fetchMore(context),
-          child: PackOpenMembers(
-            key: UniqueKey(),
-            packAddress: group.address,
+    return TabBarView(children: <Widget>[
+      RefreshIndicator(
+        onRefresh: () => _fetchMore(context),
+        child: ListView(padding: const EdgeInsets.all(0), children: [
+          GroupExpressions(
+            key: const PageStorageKey<String>('public-pack'),
+            group: group,
+            privacy: 'Public',
           ),
-        )
-      ]),
-    );
+        ]),
+      ),
+      RefreshIndicator(
+        onRefresh: () => _fetchMore(context),
+        child: ListView(padding: const EdgeInsets.all(0), children: [
+          GroupExpressions(
+            key: const PageStorageKey<String>('private-pack'),
+            group: group,
+            privacy: 'Private',
+          ),
+        ]),
+      ),
+      RefreshIndicator(
+        onRefresh: () => _fetchMore(context),
+        child: PackOpenMembers(
+          key: UniqueKey(),
+          packAddress: group.address,
+        ),
+      )
+    ]);
   }
 }
