@@ -10,7 +10,7 @@ class MockSearch implements SearchService {
     String query, {
     bool username = false,
     int paginationPosition = 0,
-    DateTime lastTimeStamp,
+    String lastTimeStamp,
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 300));
     return QueryResults<UserProfile>(

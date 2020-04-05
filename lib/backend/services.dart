@@ -8,8 +8,8 @@ abstract class SearchService {
   Future<QueryResults<UserProfile>> searchMembers(
     String query, {
     bool username = false,
-    int paginationPosition = 0,
-    DateTime lastTimeStamp,
+    int paginationPosition,
+    String lastTimeStamp,
   });
 
   /// Returns a [QueryResults] contains the names of channels matching the [query]
