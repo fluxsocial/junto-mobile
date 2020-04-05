@@ -44,10 +44,18 @@ class UserDataProvider extends ChangeNotifier {
     return;
   }
 
+  /// Update cached user information, called by [updateUser]
+  Future<void> _setUserInformation(UserData user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_data', json.encode(user.toMap()));
+    await prefs.setString('user_id', user.user.address);
+  }
+
   /// Updates the user information with [user]
   void updateUser(UserData user) {
     assert(user.user.address == userAddress);
     print(user.user.address == userAddress);
+    _setUserInformation(user);
     userProfile = user;
     notifyListeners();
   }
