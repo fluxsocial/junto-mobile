@@ -1,3 +1,4 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,7 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:feature_discovery/feature_discovery.dart';
+
 import 'collective_actions/perspectives.dart';
 
 // This class is a collective screen
@@ -102,7 +103,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              body: ExpressionFeed(collectiveController: _collectiveController),
+              body: ExpressionFeed(),
             ),
           ),
         ),
