@@ -65,7 +65,11 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       QueryResults<ExpressionResponse> privateQueryResults = _results[1];
       List<Users> members = _results[2];
       yield PacksLoaded(
-          publicQueryResults, privateQueryResults, members, group);
+        publicQueryResults,
+        privateQueryResults,
+        members,
+        group,
+      );
     } on JuntoException catch (error) {
       yield PacksError(error.message);
     } catch (e, s) {
