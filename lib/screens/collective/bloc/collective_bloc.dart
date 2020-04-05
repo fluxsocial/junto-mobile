@@ -119,10 +119,19 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
 
         final currentResult = currentState.results;
         if (expressions.results.length > 1) {
+          // The server sends the first expression as the last from the previous
+          // query
+          expressions.results.removeAt(0);
           currentResult.addAll(expressions.results);
           yield CollectivePopulated(
             currentResult,
             false,
+            currentState.name,
+          );
+        } else {
+          yield CollectivePopulated(
+            currentState.results,
+            true,
             currentState.name,
           );
         }
