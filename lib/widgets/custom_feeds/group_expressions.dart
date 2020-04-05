@@ -5,9 +5,10 @@ import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:junto_beta_mobile/widgets/fetch_more.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class GroupExpressions extends StatefulWidget {
@@ -65,16 +66,6 @@ class _GroupExpressionsState extends State<GroupExpressions> {
     context.bloc<PackBloc>().add(FetchMorePacks());
   }
 
-  bool _handleScrollNotification(ScrollNotification scrollNotification) {
-    final metrics = scrollNotification.metrics;
-    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
-    if (scrollPercent.roundToDouble() == 60.0) {
-      _fetchMore();
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PackBloc, PackState>(
@@ -92,26 +83,27 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                 twoColumnView: twoColumnView,
                 switchColumnView: _switchColumnView,
               ),
-              NotificationListener(
-                  onNotification: _handleScrollNotification,
-                  child: Container(
-                    color: Theme.of(context).colorScheme.background,
-                    child: AnimatedCrossFade(
-                      crossFadeState: twoColumnView
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                      duration: const Duration(
-                        milliseconds: 200,
-                      ),
-                      firstChild: TwoColumnSliverListView(
-                        data: _results,
-                      ),
-                      secondChild: SingleColumnSliverListView(
-                        data: _results,
-                        privacyLayer: widget.privacy,
-                      ),
-                    ),
-                  )),
+              Container(
+                color: Theme.of(context).colorScheme.background,
+                child: AnimatedCrossFade(
+                  crossFadeState: twoColumnView
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(
+                    milliseconds: 200,
+                  ),
+                  firstChild: TwoColumnSliverListView(
+                    data: _results,
+                  ),
+                  secondChild: SingleColumnSliverListView(
+                    data: _results,
+                    privacyLayer: widget.privacy,
+                  ),
+                ),
+              ),
+              FetchMoreButton(
+                onPressed: _fetchMore,
+              )
             ],
           );
         }
