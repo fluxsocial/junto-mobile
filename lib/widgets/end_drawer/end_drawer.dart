@@ -229,30 +229,33 @@ class JuntoDrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16.0),
-      onTap: onTap,
-      child: Container(
-        color: Colors.transparent,
-        padding: EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 15 / MediaQuery.of(context).textScaleFactor,
-        ),
-        child: Row(
-          children: <Widget>[
-            icon,
-            Flexible(
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16.0),
+        onTap: onTap,
+        child: Container(
+          color: Colors.transparent,
+          padding: EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 15 / MediaQuery.of(context).textScaleFactor,
+          ),
+          child: Row(
+            children: <Widget>[
+              icon,
+              Flexible(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.right,
                 ),
-                textAlign: TextAlign.right,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
