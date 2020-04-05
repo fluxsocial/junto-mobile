@@ -54,16 +54,6 @@ class _UserExpressionsState extends State<UserExpressions> {
     });
   }
 
-  bool _onNotification(ScrollNotification notification) {
-    final metrics = notification.metrics;
-    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
-    if (scrollPercent.roundToDouble() == 60.0) {
-      context.bloc<DenBloc>().add(LoadMoreDen());
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DenBloc, DenState>(
