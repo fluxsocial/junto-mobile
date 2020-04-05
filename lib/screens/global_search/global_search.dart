@@ -68,150 +68,221 @@ class _GlobalSearchState extends State<GlobalSearch> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        actions: <Widget>[Container()],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(.75),
-          child: Container(height: .75, color: Theme.of(context).dividerColor),
-        ),
-        brightness: Theme.of(context).brightness,
-        elevation: 0,
-        titleSpacing: 0.0,
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  alignment: Alignment.centerLeft,
-                  height: 48,
-                  width: 38,
-                  child: Icon(
-                    CustomIcons.back,
-                    size: 17,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: TextField(
-                  controller: _textEditingController,
-                  onChanged: onTextChange,
-                  buildCounter: (
-                    BuildContext context, {
-                    int currentLength,
-                    int maxLength,
-                    bool isFocused,
-                  }) =>
-                      null,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(0.0),
-                    hintText: 'search members',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).primaryColorLight,
+    return BlocProvider(
+      create: (BuildContext context) => SearchBloc(
+        Provider.of<SearchRepo>(context, listen: false),
+      )..add(SearchingEvent("", _searchByUsername.value)),
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          actions: <Widget>[Container()],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(.75),
+            child: Container(
+              height: .75,
+              color: Theme.of(context).dividerColor,
+            ),
+          ),
+          brightness: Theme.of(context).brightness,
+          elevation: 0,
+          titleSpacing: 0.0,
+          title: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerLeft,
+                    height: 48,
+                    width: 38,
+                    child: Icon(
+                      CustomIcons.back,
+                      size: 17,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  cursorColor: Theme.of(context).primaryColor,
-                  cursorWidth: 1,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  maxLength: 80,
-                  textInputAction: TextInputAction.search,
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Builder(builder: (context) {
+                    return TextField(
+                      controller: _textEditingController,
+                      onChanged: (val) => onTextChange(val, context),
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(0.0),
+                        hintText: 'search members',
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColorLight,
+                        ),
+                      ),
+                      cursorColor: Theme.of(context).primaryColor,
+                      cursorWidth: 1,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      maxLength: 80,
+                      textInputAction: TextInputAction.search,
+                    );
+                  }),
+                ),
+              ],
+            ),
           ),
         ),
+        body: _SearchBody(username: _searchByUsername),
       ),
-      body: SafeArea(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                ),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                      width: .75,
-                    ),
+    );
+  }
+}
+
+class _SearchBody extends StatefulWidget {
+  const _SearchBody({Key key, this.username}) : super(key: key);
+  final ValueNotifier<bool> username;
+
+  @override
+  __SearchBodyState createState() => __SearchBodyState();
+}
+
+class __SearchBodyState extends State<_SearchBody> {
+  ScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+    _controller.addListener(_fetchMore);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.removeListener(_fetchMore);
+    _controller.dispose();
+  }
+
+  void _fetchMore() {
+    if (_controller.hasClients) {
+      final ScrollDirection direction =
+          _controller.position.userScrollDirection;
+      final double pixels = _controller.position.pixels;
+      final double maxExtent = _controller.position.maxScrollExtent;
+      double percent = (pixels / maxExtent) * 100;
+      if (percent.roundToDouble() == 60 &&
+          direction == ScrollDirection.reverse) {
+        context.bloc<SearchBloc>().add(FetchMoreSearchResEvent());
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
                   ),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Transform.scale(
-                      scale: .8,
-                      child: Switch.adaptive(
-                        activeColor: Theme.of(context).primaryColor,
-                        value: _fullName,
-                        onChanged: (bool value) => setState(
-                          () => _fullName = value,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      _fullName ? 'by full name' : 'by username',
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColorLight,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
               ),
-              Expanded(
-                child: FutureBuilder<QueryResults<UserProfile>>(
-                  future: _searchFuture,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QueryResults<UserProfile>> snapshot) {
-                    if (!snapshot.hasData) {
-                      return const SizedBox();
-                    }
-                    if (snapshot.hasError) {
-                      return Container(
-                        child: Center(
-                          child: Text(snapshot.error),
+              child: ValueListenableBuilder<bool>(
+                  valueListenable: widget.username,
+                  builder: (context, value, _) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Transform.scale(
+                          scale: .8,
+                          child: Switch.adaptive(
+                            activeColor: Theme.of(context).primaryColor,
+                            value: value,
+                            onChanged: (bool value) => setState(
+                              () => widget.username.value = value,
+                            ),
+                          ),
                         ),
-                      );
-                    }
-
+                        Text(
+                          value ? 'by username' : 'by full name',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+            ),
+            Expanded(
+              child: BlocBuilder<SearchBloc, SearchState>(
+                builder: (BuildContext context, SearchState state) {
+                  if (state is LoadingSearchState) {
+                    return JuntoProgressIndicator();
+                  }
+                  if (state is LoadedSearchState) {
                     return ListView.builder(
+                      controller: _controller,
                       padding: const EdgeInsets.symmetric(
                         vertical: 0,
                         horizontal: 15,
                       ),
-                      itemCount: snapshot.data.results.length,
+                      itemCount: state.results.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final UserProfile data = snapshot.data.results[index];
+                        final UserProfile data = state.results[index];
                         return MemberPreview(profile: data);
                       },
                     );
-                  },
-                ),
-              )
-            ],
-          ),
+                  }
+                  if (state is EmptySearchState ||
+                      state is InitialSearchState) {
+                    return Container(
+                      child: Center(
+                        child: Text(
+                          'No results, get started by searching something',
+                        ),
+                      ),
+                    );
+                  }
+                  if (state is ErrorSearchState) {
+                    return Center(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: Text(S.of(context).common_network_error),
+                      ),
+                    );
+                  }
+                  return Container();
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
