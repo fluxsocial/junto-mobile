@@ -1,10 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class GlobalSearch extends StatefulWidget {
@@ -23,11 +28,9 @@ class GlobalSearch extends StatefulWidget {
 }
 
 class _GlobalSearchState extends State<GlobalSearch> {
-  SearchRepo _searchRepo;
-  Future<QueryResults<UserProfile>> _searchFuture;
+  final ValueNotifier<bool> _searchByUsername = ValueNotifier(true);
   Timer debounceTimer;
   TextEditingController _textEditingController;
-  bool _fullName = false;
 
   String get query => _textEditingController.value.text;
 
@@ -38,29 +41,20 @@ class _GlobalSearchState extends State<GlobalSearch> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _searchRepo = Provider.of<SearchRepo>(context);
-    _searchFuture = _searchRepo.searchMembers(query, username: !_fullName);
-  }
-
-  @override
   void dispose() {
     _textEditingController.dispose();
-    _searchFuture = null;
     super.dispose();
   }
 
-  void onTextChange(String query) {
+  void onTextChange(String query, BuildContext context) {
     debounceTimer?.cancel();
     debounceTimer = Timer(
       const Duration(milliseconds: 600),
       () async {
         if (mounted) {
-          setState(() {
-            _searchFuture =
-                _searchRepo.searchMembers(query, username: !_fullName);
-          });
+          context
+              .bloc<SearchBloc>()
+              .add(SearchingEvent(query, _searchByUsername.value));
         }
       },
     );
