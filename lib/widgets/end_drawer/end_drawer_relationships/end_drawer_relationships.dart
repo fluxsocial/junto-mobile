@@ -11,6 +11,9 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/su
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pack_members.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatefulWidget {
@@ -100,44 +103,95 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => PendingRelationships(
-                          userAddress: widget.userAddress,
-                          refreshActions: getUserRelationships,
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                PendingRelationships(
+                              userAddress: widget.userAddress,
+                              refreshActions: getUserRelationships,
+                            ),
+                          ),
+                        );
+                      },
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
+                          CustomIcons.request,
+                          size: 20,
+                          color: Theme.of(context).primaryColor,
                         ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 42,
-                    height: 42,
-                    alignment: Alignment.centerRight,
-                    color: Colors.transparent,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          height: 42,
+                        featureId: 'pending_requests_id',
+                        title:
+                            'Click here to see your pending relations requests',
+                        learnMore: false,
+                        hasUpNext: false,
+                        child: Container(
                           width: 42,
+                          height: 42,
                           alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Icon(
-                            CustomIcons.request,
-                            color: Theme.of(context).primaryColorDark,
-                            size: 17,
+                          color: Colors.transparent,
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                height: 42,
+                                width: 42,
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Icon(
+                                  CustomIcons.request,
+                                  color: Theme.of(context).primaryColorDark,
+                                  size: 17,
+                                ),
+                              ),
+                              if (pendingConnectionRequests != null &&
+                                  pendingPackRequests != null)
+                                if (pendingConnectionRequests.isNotEmpty ||
+                                    pendingPackRequests.isNotEmpty)
+                                  _notificationSignal()
+                            ],
                           ),
                         ),
-                        if (pendingConnectionRequests != null &&
-                            pendingPackRequests != null)
-                          if (pendingConnectionRequests.isNotEmpty ||
-                              pendingPackRequests.isNotEmpty)
-                            _notificationSignal()
-                      ],
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.clearPreferences(context, <String>{
+                          'relations_info_id',
+                          'pending_requests_id',
+                        });
+                        FeatureDiscovery.discoverFeatures(
+                          context,
+                          const <String>{
+                            'relations_info_id',
+                            'pending_requests_id',
+                          },
+                        );
+                      },
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
+                          CustomIcons.newbinoculars,
+                          size: 36,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        featureId: 'relations_info_id',
+                        title:
+                            'This screen shows the different relations you have with people on Junto.',
+                        learnMore: true,
+                        hasUpNext: false,
+                        learnMoreText:
+                            'Our design inspiration here is to give you more agency over what you see, rather than applying complex, opaque algorithms that form echo chambers and track your previous activity. Create your own perspective to see expressions from specific people and organize what you care about.',
+                        child: Container(
+                          alignment: Alignment.bottomRight,
+                          padding: const EdgeInsets.only(right: 10),
+                          child: JuntoInfoIcon(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
