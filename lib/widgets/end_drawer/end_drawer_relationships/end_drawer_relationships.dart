@@ -126,7 +126,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                         ),
                         featureId: 'pending_requests_id',
                         isLastFeature: true,
-                        title: 'Click here to see your pending relations',
+                        title: 'View your pending requests.',
                         learnMore: false,
                         hasUpNext: false,
                         child: Container(
@@ -183,7 +183,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                         learnMore: true,
                         hasUpNext: false,
                         learnMoreText: [
-                          'ON Junto, there are multiple relational layers to reflect the more dynamic nature of our physical world relationships.',
+                          'On Junto, there are multiple relational layers to reflect the more dynamic nature of our physical world relationships.',
                           '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
                           '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
                           '"Connections" are your first degree connections. Choosing to connect with someone is like friending them (mutual).',
