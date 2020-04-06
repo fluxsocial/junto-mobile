@@ -68,159 +68,160 @@ class JuntoDrawerState extends State<JuntoDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return  Consumer<UserDataProvider>(
-        builder: (BuildContext context, UserDataProvider value, Widget child) {
-          return Stack(
-            children: <Widget>[
-              BackgroundTheme(
-                currentTheme: _currentTheme,
+    return Consumer<UserDataProvider>(
+      builder: (BuildContext context, UserDataProvider value, Widget child) {
+        return Stack(
+          children: <Widget>[
+            BackgroundTheme(
+              currentTheme: _currentTheme,
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * .2,
+                left: 32,
+                bottom: MediaQuery.of(context).size.height * .2,
+                right: 32,
               ),
-              Container(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * .2,
-                  left: 32,
-                  bottom: MediaQuery.of(context).size.height * .2,
-                  right: 32,
-                ),
-                color: Colors.transparent,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        if (value.userProfile.user != null)
-                          JuntoDrawerItem(
-                            icon: Container(
-                              margin: const EdgeInsets.only(right: 32),
-                              child: MemberAvatar(
-                                profilePicture:
-                                    value.userProfile.user.profilePicture,
-                                diameter: 28,
-                              ),
-                            ),
-                            title: 'My Den',
-                            onTap: () {
-                              Navigator.of(context).push(
-                                FadeRoute<void>(
-                                  child: JuntoDen(),
-                                ),
-                              );
-                            },
-                          ),
-                        if (value.userProfile.user == null)
-                          JuntoDrawerItem(
-                            icon: const SizedBox(),
-                            title: 'My Den',
-                            onTap: () {
-                              Navigator.of(context).push(
-                                FadeRoute<void>(
-                                  child: JuntoDen(),
-                                ),
-                              );
-                            },
-                          ),
+              color: Colors.transparent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      if (value.userProfile.user != null)
                         JuntoDrawerItem(
                           icon: Container(
-                            width: 60,
-                            alignment: Alignment.centerLeft,
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                              size: 24,
+                            margin: const EdgeInsets.only(right: 32),
+                            child: MemberAvatar(
+                              profilePicture:
+                                  value.userProfile.user.profilePicture,
+                              diameter: 28,
                             ),
                           ),
-                          title: 'Search',
+                          title: 'My Den',
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<Widget>(
-                                builder: (BuildContext context) {
-                                  return GlobalSearch();
-                                },
+                            Navigator.of(context).push(
+                              FadeRoute<void>(
+                                child: JuntoDen(),
                               ),
                             );
                           },
                         ),
+                      if (value.userProfile.user == null)
                         JuntoDrawerItem(
-                          icon: Container(
-                            width: 60,
-                            alignment: Alignment.centerLeft,
-                            child: Icon(
-                              CustomIcons.infinity,
-                              color: Colors.white,
-                              size: 9,
-                            ),
+                          icon: const SizedBox(),
+                          title: 'My Den',
+                          onTap: () {
+                            Navigator.of(context).push(
+                              FadeRoute<void>(
+                                child: JuntoDen(),
+                              ),
+                            );
+                          },
+                        ),
+                      JuntoDrawerItem(
+                        icon: Container(
+                          width: 60,
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.white,
+                            size: 24,
                           ),
-                          title: 'Relations',
-                          onTap: () async {
-                            // open relationships
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) {
-                                  return FeatureDiscovery(child: JuntoRelationships(
+                        ),
+                        title: 'Search',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute<Widget>(
+                              builder: (BuildContext context) {
+                                return GlobalSearch();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      JuntoDrawerItem(
+                        icon: Container(
+                          width: 60,
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            CustomIcons.infinity,
+                            color: Colors.white,
+                            size: 9,
+                          ),
+                        ),
+                        title: 'Relations',
+                        onTap: () async {
+                          // open relationships
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute<dynamic>(
+                              builder: (BuildContext context) {
+                                return FeatureDiscovery(
+                                  child: JuntoRelationships(
                                     value.userAddress,
                                     _userFollowPerspectiveId,
-                                  ),);
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        JuntoDrawerItem(
-                          icon: Container(
-                            width: 60,
-                            alignment: Alignment.centerLeft,
-                            child: Icon(
-                              Icons.favorite,
-                              color: Colors.white,
-                              size: 24,
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                          title: 'Themes',
-                          onTap: () async {
-                            await Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) {
-                                  return JuntoThemes(refreshTheme: getTheme);
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    JuntoDrawerItem(
-                      icon: Container(
-                        width: 60,
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          Icons.settings,
-                          color: Colors.white,
-                          size: 24,
-                        ),
+                          );
+                        },
                       ),
-                      title: 'Log Out',
-                      onTap: () async {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => ConfirmDialog(
-                            buildContext: context,
-                            confirm: logOut,
-                            confirmationText:
-                                'Are you sure you want to log out?',
+                      JuntoDrawerItem(
+                        icon: Container(
+                          width: 60,
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            Icons.favorite,
+                            color: Colors.white,
+                            size: 24,
                           ),
-                        );
-                      },
+                        ),
+                        title: 'Themes',
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            CupertinoPageRoute<dynamic>(
+                              builder: (BuildContext context) {
+                                return JuntoThemes(refreshTheme: getTheme);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  JuntoDrawerItem(
+                    icon: Container(
+                      width: 60,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.settings,
+                        color: Colors.white,
+                        size: 24,
+                      ),
                     ),
-                  ],
-                ),
+                    title: 'Log Out',
+                    onTap: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => ConfirmDialog(
+                          buildContext: context,
+                          confirm: logOut,
+                          confirmationText: 'Are you sure you want to log out?',
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          );
-        },
+            ),
+          ],
+        );
+      },
     );
   }
 }
