@@ -71,8 +71,9 @@ class PerspectivesAppbar extends StatelessWidget {
                       'This is your list of your perspectives. There are three by default - you can also make your own.',
                   learnMore: true,
                   hasUpNext: true,
-                  learnMoreText:
-                      'Our design inspiration here is to give you more agency over what you see, rather than applying complex, opaque algorithms that form echo chambers and track your previous activity. Create your own perspective to see expressions from specific people and organize what you care about.',
+                  learnMoreText: [
+                    'Our design inspiration here is to give you more agency over what you see, rather than applying complex, opaque algorithms that form echo chambers and track your previous activity. Create your own perspective to see expressions from specific people and organize what you care about.'
+                  ],
                   upNextText: [
                     'Create perspectives that show expressions from specific people in certain channels.',
                     'Share perspectives with others',

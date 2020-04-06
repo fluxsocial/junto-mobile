@@ -160,14 +160,15 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                               icon: Icon(
                                 CustomIcons.newpacks,
                                 size: 33,
-                  color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).primaryColor,
                               ),
                               featureId: 'packs_info_id',
                               title:
                                   'This is your Pack. It displays all of the publicly shared posts from you and the people you choose to have in you pack. There is also a section where you can share things privately to just your pack members.',
                               learnMore: true,
-                              learnMoreText:
-                                  'Your Pack is your community of people that best represent who you are and evoke the the most unfiltered version of you. Your pack will display the public expressions of all your pack members and all the posts you choose to share privately to just your pack members. In this light, you are the common thread between all of your pack members, facilitating a more organic means for your pack members to discover new people and information through their mutual connection - you. Anyone who belongs to your pack can see your pack feed, and vice versa.',
+                              learnMoreText: [
+                                'Your Pack is your community of people that best represent who you are and evoke the the most unfiltered version of you. Your pack will display the public expressions of all your pack members and all the posts you choose to share privately to just your pack members. In this light, you are the common thread between all of your pack members, facilitating a more organic means for your pack members to discover new people and information through their mutual connection - you. Anyone who belongs to your pack can see your pack feed, and vice versa.'
+                              ],
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: JuntoInfoIcon(),
