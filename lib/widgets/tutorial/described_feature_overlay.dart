@@ -118,7 +118,7 @@ class JuntoDescribedFeatureOverlayState
             if (widget.learnMore)
               _actionItemButton(
                 context,
-                'Learn More',
+                'Learn Why',
                 () {
                   setState(() {
                     upNextVisible = true;
@@ -163,11 +163,11 @@ class JuntoDescribedFeatureOverlayState
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             if (learnMoreText != null)
               for (String text in learnMoreText)
                 Container(
-                  margin: const EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: 15),
                   child: Text(
                     text,
                     style: TextStyle(

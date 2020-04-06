@@ -126,8 +126,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                         ),
                         featureId: 'pending_requests_id',
                         isLastFeature: true,
-                        title:
-                            'Click here to see your pending relations requests',
+                        title: 'Click here to see your pending relations',
                         learnMore: false,
                         hasUpNext: false,
                         child: Container(
@@ -185,8 +184,8 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                         hasUpNext: false,
                         learnMoreText: [
                           'In Junto, there are multiple relation types to more accurately reflect our physical world relationships.',
-                          '"Subscriptions" are people you have added to your "Subscriptions" perspective (not mutual)',
-                          '"Subscribers" are people who have added you to their "Subscriptions" perspective (not mutual)',
+                          '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
+                          '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
                           '"Connections" are your first degree connections. Choosing to connect with someone is like friending them (mutual).',
                           'Your "Pack" is your closet group of friends (mutual). Visit the tutorial in your Pack feed for more information.'
                         ],
