@@ -183,7 +183,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                         learnMore: true,
                         hasUpNext: false,
                         learnMoreText: [
-                          'In Junto, there are multiple relation types to more accurately reflect our physical world relationships.',
+                          'ON Junto, there are multiple relational layers to reflect the more dynamic nature of our physical world relationships.',
                           '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
                           '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
                           '"Connections" are your first degree connections. Choosing to connect with someone is like friending them (mutual).',
