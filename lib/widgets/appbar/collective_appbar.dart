@@ -127,9 +127,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                                   'This is the Collective, where all public content is shown. Click on an expression to open it.',
                               learnMore: true,
                               hasUpNext: false,
-                              learnMoreText: [
-                                'Work in progress...'
-                              ],
+                              learnMoreText: ['Work in progress...'],
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: JuntoInfoIcon(),
@@ -166,7 +164,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                           color: Theme.of(context).primaryColor,
                         ),
                         featureId: 'collective_filter_id',
-                        title: 'Filter this perspective by channel',
+                        title: 'Filter this perspective by channel.',
                         child: const FilterDrawerButton(),
                       ),
                       Row(
