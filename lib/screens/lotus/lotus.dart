@@ -136,7 +136,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                                   'This is the intention screen, your medium for navigation.',
                               learnMore: true,
                               learnMoreText:
-                                  'The purpose of the intention screen is to reduce noise and invite a more thoughtful experience. Instead of being immediately dropped into a feed when you open the app, the intention screen gives you a choice. We also hope this will encourage more reflection while navigating between screens.',
+                                  ['The purpose of the intention screen is to reduce noise and invite a more thoughtful experience. Instead of being immediately dropped into a feed when you open the app, the intention screen gives you a choice. We also hope this will encourage more reflection while navigating between screens.'],
                               hasUpNext: false,
                               child: JuntoInfoIcon(neutralBackground: false),
                             ),

@@ -125,6 +125,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                           color: Theme.of(context).primaryColor,
                         ),
                         featureId: 'pending_requests_id',
+                        isLastFeature: true,
                         title:
                             'Click here to see your pending relations requests',
                         learnMore: false,
@@ -182,8 +183,13 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                             'This screen shows the different relations you have with people on Junto.',
                         learnMore: true,
                         hasUpNext: false,
-                        learnMoreText:
-                            'Our design inspiration here is to give you more agency over what you see, rather than applying complex, opaque algorithms that form echo chambers and track your previous activity. Create your own perspective to see expressions from specific people and organize what you care about.',
+                        learnMoreText: [
+                          'In Junto, there are multiple relation types to more accurately reflect our physical world relationships.',
+                          '"Subscriptions" are people you have added to your "Subscriptions" perspective (not mutual)',
+                          '"Subscribers" are people who have added you to their "Subscriptions" perspective (not mutual)',
+                          '"Connections" are your first degree connections. Choosing to connect with someone is like friending them (mutual).',
+                          'Your "Pack" is your closet group of friends (mutual). Visit the tutorial in your Pack feed for more information.'
+                        ],
                         child: Container(
                           alignment: Alignment.bottomRight,
                           padding: const EdgeInsets.only(right: 10),
