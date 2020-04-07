@@ -22,11 +22,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   final String appbarTitle;
 
-  final action = () async {
-    print('IconButton of  tapped.');
-    return true;
-  };
-
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -34,7 +29,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
       builder: (BuildContext context, UserDataProvider data, Widget child) {
         return Container(
           height: MediaQuery.of(context).size.height * .1 + 50,
-          color: Colors.blue,
           child: Column(
             children: <Widget>[
               Expanded(
@@ -90,8 +84,10 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             child: Container(
                               color: Colors.transparent,
                               alignment: Alignment.bottomCenter,
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
+                              padding: const EdgeInsets.only(
+                                left: 10,
+                                right: 10,
+                              ),
                               child: Icon(
                                 CustomIcons.moon,
                                 size: 22,
@@ -128,10 +124,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               learnMore: true,
                               hasUpNext: false,
                               learnMoreText: ['Work in progress...'],
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: JuntoInfoIcon(),
-                              ),
+                              child: JuntoInfoIcon(),
                             ),
                           ),
                         ],
