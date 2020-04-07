@@ -27,8 +27,9 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
               color: Colors.transparent,
               child: Row(children: <Widget>[
                 MemberAvatar(
-                    profilePicture: expression.creator.profilePicture,
-                    diameter: 45),
+                  profilePicture: expression.creator.profilePicture,
+                  diameter: 45,
+                ),
                 const SizedBox(width: 10),
                 // profile name and handle
                 Container(
