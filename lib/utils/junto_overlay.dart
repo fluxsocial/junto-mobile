@@ -8,20 +8,23 @@ class JuntoLoader extends StatelessWidget {
     Key key,
     this.width = 250.0,
     this.height = 250.0,
+    this.color = Colors.white30,
   }) : super(key: key);
   final double width;
   final double height;
+  final Color color;
   static OverlayEntry currentLoader;
 
   /// Static method which shows the overlay
-  static void showLoader(BuildContext context, {double width, double height}) {
+  static void showLoader(BuildContext context,
+      {double width, double height, Color color}) {
     currentLoader = OverlayEntry(builder: (BuildContext context) {
       return Stack(
         children: <Widget>[
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: Colors.white30,
+            color: color,
             child: Center(
               child: SizedBox(
                 height: height,
