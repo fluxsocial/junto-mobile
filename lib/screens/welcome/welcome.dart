@@ -365,11 +365,14 @@ class WelcomeState extends State<Welcome> {
           return;
         }
       } else if (_currentIndex == 2) {
+        // ensure username is not empty
         if (username.isEmpty) {
           return;
         }
+        // instantiate correct length and validation for username
         bool _correctLength = username.length >= 1 && username.length <= 22;
         final exp = RegExp("^[a-z0-9_]+\$");
+        // ensure username is not null and username meets validation and length
         if (username == null || !exp.hasMatch(username) || !_correctLength) {
           showDialog(
             context: context,
@@ -380,6 +383,7 @@ class WelcomeState extends State<Welcome> {
           return;
         } else {
           JuntoLoader.showLoader(context, color: Colors.transparent);
+          // ensure username is not taken or reserved
           final Map<String, dynamic> validateUserResponse =
               await Provider.of<AuthRepo>(context, listen: false)
                   .validateUser(username: username);
