@@ -24,46 +24,49 @@ class SpheresTemp extends StatelessWidget {
               brightness: Theme.of(context).brightness,
               automaticallyImplyLeading: false,
               elevation: 0,
+              titleSpacing: 0,
               backgroundColor: Theme.of(context).backgroundColor,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    'Groups',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      FeatureDiscovery.clearPreferences(context, <String>{
-                        'groups_info_id',
-                      });
-                      FeatureDiscovery.discoverFeatures(
-                        context,
-                        const <String>{
+              title: Container(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      'Groups',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.clearPreferences(context, <String>{
                           'groups_info_id',
-                        },
-                      );
-                    },
-                    child: JuntoDescribedFeatureOverlay(
-                      icon: Icon(
-                        CustomIcons.newpacks,
-                        size: 36,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      featureId: 'groups_info_id',
-                      isLastFeature: true,
-                      title:
-                          'Groups are public, private, or secret communities you can create on Junto. We will open this layer soon.',
-                      learnMore: false,
-                      child: Container(
-                        alignment: Alignment.bottomRight,
-                        padding: const EdgeInsets.only(left: 10),
+                        });
+                        FeatureDiscovery.discoverFeatures(
+                          context,
+                          const <String>{
+                            'groups_info_id',
+                          },
+                        );
+                      },
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
+                          CustomIcons.newpacks,
+                          size: 36,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        featureId: 'groups_info_id',
+                        isLastFeature: true,
+                        title:
+                            'Groups are public, private, or secret communities you can create on Junto. We will open this layer soon.',
+                        learnMore: false,
                         child: JuntoInfoIcon(),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
