@@ -103,7 +103,6 @@ class JuntoLotusState extends State<JuntoLotus> {
                 type: MaterialType.transparency,
                 child: Container(
                   height: MediaQuery.of(context).size.height,
-                  // padding: const EdgeInsets.only(bottom: 60),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -190,7 +189,6 @@ class JuntoLotusState extends State<JuntoLotus> {
                             iconSize: 38,
                             onTap: () => _navigateTo(Screen.create),
                           ),
-                          const SizedBox(height: 25),
                         ],
                       )
                     ],

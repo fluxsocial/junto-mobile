@@ -129,31 +129,27 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                         title: 'View your pending requests.',
                         learnMore: false,
                         hasUpNext: false,
-                        child: Container(
-                          width: 42,
-                          height: 42,
-                          alignment: Alignment.centerRight,
-                          color: Colors.transparent,
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                height: 42,
-                                width: 42,
-                                alignment: Alignment.centerRight,
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Icon(
-                                  CustomIcons.request,
-                                  color: Theme.of(context).primaryColorDark,
-                                  size: 17,
-                                ),
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              color: Colors.transparent,
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
                               ),
-                              if (pendingConnectionRequests != null &&
-                                  pendingPackRequests != null)
-                                if (pendingConnectionRequests.isNotEmpty ||
-                                    pendingPackRequests.isNotEmpty)
-                                  _notificationSignal()
-                            ],
-                          ),
+                              child: Icon(
+                                CustomIcons.request,
+                                color: Theme.of(context).primaryColorDark,
+                                size: 17,
+                              ),
+                            ),
+                            if (pendingConnectionRequests != null &&
+                                pendingPackRequests != null)
+                              if (pendingConnectionRequests.isNotEmpty ||
+                                  pendingPackRequests.isNotEmpty)
+                                _notificationSignal()
+                          ],
                         ),
                       ),
                     ),
@@ -189,11 +185,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                           '"Connections" are your first degree connections. Choosing to connect with someone is like friending them (mutual).',
                           'Your "Pack" is your closet group of friends (mutual). Visit the tutorial in your Pack feed for more information.'
                         ],
-                        child: Container(
-                          alignment: Alignment.bottomRight,
-                          padding: const EdgeInsets.only(right: 10),
-                          child: JuntoInfoIcon(),
-                        ),
+                        child: JuntoInfoIcon(),
                       ),
                     ),
                   ],

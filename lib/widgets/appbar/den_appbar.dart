@@ -70,10 +70,12 @@ class DenAppbar extends SliverPersistentHeaderDelegate {
                   );
                 },
                 child: Container(
-                  width: 42,
                   color: Colors.transparent,
                   alignment: Alignment.bottomRight,
-                  padding: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                  ),
                   child: const Icon(
                     CustomIcons.moon,
                   ),
