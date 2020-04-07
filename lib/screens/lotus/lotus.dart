@@ -56,7 +56,9 @@ class JuntoLotusState extends State<JuntoLotus> {
     } else if (screen == Screen.packs) {
       child = JuntoPacks(initialGroup: _userProfile.pack.address);
     } else if (screen == Screen.groups) {
-      child = SpheresTemp();
+      child = FeatureDiscovery(
+        child: SpheresTemp(),
+      );
     } else if (screen == Screen.create) {
       child = FeatureDiscovery(
         child: JuntoCreate(
