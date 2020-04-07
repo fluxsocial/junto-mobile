@@ -135,7 +135,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               ),
               Container(
                 height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   border: Border(
@@ -145,59 +144,56 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                     ),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      JuntoDescribedFeatureOverlay(
-                        icon: Image.asset(
-                          'assets/images/junto-mobile__filter.png',
-                          height: 17,
-                          color: Theme.of(context).primaryColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    JuntoDescribedFeatureOverlay(
+                      icon: Image.asset(
+                        'assets/images/junto-mobile__filter.png',
+                        height: 17,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      featureId: 'collective_filter_id',
+                      title: 'Filter this perspective by channel.',
+                      child: const FilterDrawerButton(),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () => data
+                              ?.switchColumnLayout(ExpressionFeedLayout.two),
+                          child: Container(
+                            color: Colors.transparent,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              CustomIcons.twocolumn,
+                              size: 20,
+                              color: data?.twoColumnView == true
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight,
+                            ),
+                          ),
                         ),
-                        featureId: 'collective_filter_id',
-                        title: 'Filter this perspective by channel.',
-                        child: const FilterDrawerButton(),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () => data
-                                ?.switchColumnLayout(ExpressionFeedLayout.two),
-                            child: Container(
-                              color: Colors.transparent,
-                              alignment: Alignment.centerRight,
-                              width: 38,
-                              child: Icon(
-                                CustomIcons.twocolumn,
-                                size: 20,
-                                color: data?.twoColumnView == true
-                                    ? Theme.of(context).primaryColorDark
-                                    : Theme.of(context).primaryColorLight,
-                              ),
+                        GestureDetector(
+                          onTap: () => data
+                              ?.switchColumnLayout(ExpressionFeedLayout.single),
+                          child: Container(
+                            color: Colors.transparent,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              CustomIcons.singlecolumn,
+                              size: 20,
+                              color: data?.twoColumnView == true
+                                  ? Theme.of(context).primaryColorLight
+                                  : Theme.of(context).primaryColorDark,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () => data?.switchColumnLayout(
-                                ExpressionFeedLayout.single),
-                            child: Container(
-                              color: Colors.transparent,
-                              alignment: Alignment.centerRight,
-                              width: 38,
-                              child: Icon(
-                                CustomIcons.singlecolumn,
-                                size: 20,
-                                color: data?.twoColumnView == true
-                                    ? Theme.of(context).primaryColorLight
-                                    : Theme.of(context).primaryColorDark,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               )
             ],

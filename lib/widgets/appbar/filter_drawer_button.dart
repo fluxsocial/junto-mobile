@@ -10,10 +10,12 @@ class FilterDrawerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      hint: 'Toggle filters drawer',
+      hint: 'Toggle filter drawer',
       child: GestureDetector(
         onTap: () => JuntoFilterDrawer.of(context).toggle(),
         child: Container(
+          color: Colors.transparent,
+          padding: const EdgeInsets.all(10),
           child: Image.asset(
             'assets/images/junto-mobile__filter.png',
             height: 17,
