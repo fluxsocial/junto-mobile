@@ -133,11 +133,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                             );
                           },
                           child: JuntoDescribedFeatureOverlay(
-                            icon: Icon(
-                              CustomIcons.newflower,
-                              size: 38,
-                              color: Colors.black,
-                            ),
+                            icon: Icon(CustomIcons.newflower, size: 38),
                             featureId: 'lotus_info_id',
                             oneFeature: true,
                             title:
