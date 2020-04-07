@@ -160,14 +160,16 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                               icon: Icon(
                                 CustomIcons.newpacks,
                                 size: 33,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColor,
                               ),
                               featureId: 'packs_info_id',
                               title:
-                                  'This is your Pack. It displays all of the publicly shared posts from you and the people you choose to have in you pack. There is also a section where you can share things privately to just your pack members.',
+                                  'This is a Pack. It displays the publicly shared posts of the people in it. There is also a private section where the pack owner can share to just its pack members.',
                               learnMore: true,
-                              learnMoreText:
-                                  'Your Pack is your community of people that best represent who you are and evoke the the most unfiltered version of you. Your pack will display the public expressions of all your pack members and all the posts you choose to share privately to just your pack members. In this light, you are the common thread between all of your pack members, facilitating a more organic means for your pack members to discover new people and information through their mutual connection - you. Anyone who belongs to your pack can see your pack feed, and vice versa.',
+                              learnMoreText: [
+                                "Your Pack is your group of close friends who evoke the most unfiltered version of you and represent an extension of yourself. The people you invite to your Pack will have access to your Pack feed, which displays the public content of everyone you've invited. In this light, you are the common thread between all of your pack members, facilitating a more organic way for them to discover one another through their mutual connection - you. You can also share private expressions to just your pack members.",
+                                'Also note that connecting by Packs is not mutual. If someone accepts your pack invitation, you will not be able to see their Pack feed unless they choose to send you an invitation.'
+                              ],
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: JuntoInfoIcon(),

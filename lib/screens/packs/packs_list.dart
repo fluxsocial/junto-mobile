@@ -73,11 +73,11 @@ class PacksListState extends State<PacksList> {
                       icon: Icon(
                         CustomIcons.newpacks,
                         size: 36,
-                        color: Colors.white,
+                        color: Theme.of(context).primaryColor,
                       ),
                       featureId: 'packs_list_info_id',
                       title:
-                          'This is your list of Packs you belong to. Each member of Junto can only create one pack, but can belong to many others.',
+                          'This is the list of Packs you belong to. Each person can only create one pack, but can belong to many others.',
                       learnMore: true,
                       child: Container(
                         alignment: Alignment.bottomRight,

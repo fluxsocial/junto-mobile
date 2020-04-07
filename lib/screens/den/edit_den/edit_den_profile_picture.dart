@@ -10,12 +10,12 @@ class EditDenProfilePicture extends StatelessWidget {
   const EditDenProfilePicture({
     this.userData,
     this.profilePictureFile,
-    this.onPickPressed,
+    this.onPressed,
   });
 
   final UserData userData;
   final File profilePictureFile;
-  final Function onPickPressed;
+  final Function onPressed;
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -23,7 +23,7 @@ class EditDenProfilePicture extends StatelessWidget {
       left: 10,
       child: GestureDetector(
         onTap: () {
-          onPickPressed('profile');
+          onPressed('profile');
         },
         child: Stack(
           children: <Widget>[

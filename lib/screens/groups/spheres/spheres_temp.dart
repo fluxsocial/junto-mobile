@@ -63,7 +63,7 @@ class SpheresTemp extends StatelessWidget {
                 child: Transform.translate(
                   offset: Offset(0.0, -60),
                   child: Text(
-                    'Groups are public, private, or secret communities you can create within Junto. We will open this layer once enough members are on-boarded to make this feature useful.',
+                    'Groups are public, private, or secret communities you can create on Junto. We will open this layer soon.',
                     style: TextStyle(
                       fontSize: 17,
                       color: Theme.of(context).primaryColor,

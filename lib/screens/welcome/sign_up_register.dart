@@ -65,7 +65,8 @@ class SignUpRegisterState extends State<SignUpRegister> {
       }
     } else {
       print('heyo');
-      if (passwordController.value != passwordController.value) {
+      if (passwordController.value.text !=
+          confirmPasswordController.value.text) {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(

@@ -11,7 +11,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
- 
+
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar({
@@ -120,15 +120,14 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               icon: Icon(
                                 CustomIcons.newcollective,
                                 size: 36,
-                                color: Colors.white,
+                                color: Theme.of(context).primaryColor,
                               ),
                               featureId: 'collective_info_id',
                               title:
-                                  'This is the Collective of Junto, where all public expressions are shown through perspectives',
+                                  'This is the Collective, where all public content is shown. Click on an expression to open it.',
                               learnMore: true,
                               hasUpNext: false,
-                              learnMoreText:
-                                  'This is the collective of Junto, where all public expressions are shown. This is the collective of Junto, where all public expressions are shown.',
+                              learnMoreText: ['Work in progress...'],
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: JuntoInfoIcon(),
@@ -165,7 +164,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                           color: Theme.of(context).primaryColor,
                         ),
                         featureId: 'collective_filter_id',
-                        title: 'Filter this perspective by channel',
+                        title: 'Filter this perspective by channel.',
                         child: const FilterDrawerButton(),
                       ),
                       Row(

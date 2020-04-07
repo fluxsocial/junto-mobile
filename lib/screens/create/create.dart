@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -8,6 +9,9 @@ import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
 
@@ -96,27 +100,75 @@ class JuntoCreateState extends State<JuntoCreate> {
         ),
         Positioned(
           bottom: 0,
+          top: 0,
           left: 0,
           right: 0,
           child: SafeArea(
             child: Container(
-              padding: const EdgeInsets.only(bottom: 30),
+              padding: const EdgeInsets.only(bottom: 60),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    color: Colors.transparent,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        _selectExpressionIcon(ExpressionType.dynamic),
-                        _selectExpressionIcon(ExpressionType.shortform),
-                        _selectExpressionIcon(ExpressionType.photo),
+                        GestureDetector(
+                          onTap: () {
+                            FeatureDiscovery.clearPreferences(context, <String>{
+                              'expression_center_id',
+                            });
+                            FeatureDiscovery.discoverFeatures(
+                              context,
+                              const <String>{
+                                'expression_center_id',
+                              },
+                            );
+                          },
+                          child: JuntoDescribedFeatureOverlay(
+                            icon: Icon(
+                              CustomIcons.newcreate,
+                              size: 36,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            featureId: 'expression_center_id',
+                            oneFeature: true,
+                            title:
+                                'This is the expression center, where you can create posts in a variety of forms. These will expand over time.',
+                            learnMore: true,
+                            learnMoreText: ['Work in progress...'],
+                            hasUpNext: false,
+                            child: JuntoInfoIcon(neutralBackground: false),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  HomeIcon(
-                    source: source,
-                    navigateTo: _navigateTo,
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(vertical: 25),
+                        child: Row(
+                          children: <Widget>[
+                            _selectExpressionIcon(ExpressionType.dynamic),
+                            _selectExpressionIcon(ExpressionType.shortform),
+                            _selectExpressionIcon(ExpressionType.photo),
+                          ],
+                        ),
+                      ),
+                      HomeIcon(
+                        source: source,
+                        navigateTo: _navigateTo,
+                      ),
+                    ],
                   ),
                 ],
               ),

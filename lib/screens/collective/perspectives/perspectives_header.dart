@@ -40,22 +40,35 @@ class PerspectivesAppbar extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Icon(
-                  Icons.add,
-                  size: 24,
-                  color: Theme.of(context).primaryColor,
+                icon: JuntoDescribedFeatureOverlay(
+                  icon: Icon(
+                    Icons.add,
+                    size: 24,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  featureId: 'create_perspective_id',
+                  title: 'Create a perspective.',
+                  learnMore: false,
+                  hasUpNext: false,
+                  child: Icon(
+                    Icons.add,
+                    size: 24,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
               GestureDetector(
                 onTap: () {
                   FeatureDiscovery.clearPreferences(context, <String>{
                     'perspectives_info_id',
+                    'create_perspective_id',
                     'collective_toggle_id',
                   });
                   FeatureDiscovery.discoverFeatures(
                     context,
                     const <String>{
                       'perspectives_info_id',
+                      'create_perspective_id',
                       'collective_toggle_id',
                     },
                   );
@@ -64,17 +77,18 @@ class PerspectivesAppbar extends StatelessWidget {
                   icon: Icon(
                     CustomIcons.newbinoculars,
                     size: 36,
-                    color: Colors.white,
+                    color: Theme.of(context).primaryColor,
                   ),
                   featureId: 'perspectives_info_id',
                   title:
                       'This is your list of your perspectives. There are three by default - you can also make your own.',
                   learnMore: true,
                   hasUpNext: true,
-                  learnMoreText:
-                      'Our design inspiration here is to give you more agency over what you see, rather than applying complex, opaque algorithms that form echo chambers and track your previous activity. Create your own perspective to see expressions from specific people and organize what you care about.',
+                  learnMoreText: [
+                    'Creating your own Perspective means creating your own feed with content from specific people. Our design inspiration here is to give you more agency over what you see, rather than building your feed with complex, opaque algorithms that form echo chambers and track your previous activity. Create your own perspective to organize what you care about.'
+                  ],
                   upNextText: [
-                    'Create perspectives that show expressions from specific people in certain channels.',
+                    'Create perspectives that show expressions from specific people within certain channels',
                     'Share perspectives with others',
                     'Create sub perspectives'
                   ],

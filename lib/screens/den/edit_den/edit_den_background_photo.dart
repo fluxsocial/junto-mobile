@@ -9,19 +9,19 @@ import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 class EditDenBackgroundPhoto extends StatelessWidget {
   const EditDenBackgroundPhoto({
     this.profile,
-    this.onPickPressed,
+    this.onPressed,
     this.backgroundPhotoFile,
     this.currentTheme,
   });
   final UserData profile;
   final File backgroundPhotoFile;
-  final Function onPickPressed;
+  final Function onPressed;
   final String currentTheme;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onPickPressed('background');
+        onPressed('background');
       },
       child: Stack(
         children: <Widget>[

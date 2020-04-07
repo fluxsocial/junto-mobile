@@ -152,15 +152,20 @@ class _JuntoMemberState extends State<JuntoMember>
               children: <Widget>[
                 Scaffold(
                   key: scaffoldKey,
-                  appBar: PreferredSize(
-                    preferredSize: const Size.fromHeight(45),
-                    child: MemberAppbar(widget.profile.username),
-                  ),
                   body: NestedScrollView(
                     physics: const ClampingScrollPhysics(),
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return <Widget>[
+                        SliverPersistentHeader(
+                          delegate: MemberAppbar(
+                            expandedHeight:
+                                MediaQuery.of(context).size.height * .1,
+                            username: _memberProfile.user.username,
+                          ),
+                          floating: true,
+                          pinned: false,
+                        ),
                         MemberDenAppbar(
                           profile: widget.profile,
                           isConnected: isConnected,

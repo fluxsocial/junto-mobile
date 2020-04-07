@@ -43,7 +43,7 @@ class PacksActionButtons extends StatelessWidget {
           expressionContext: ExpressionContext.Group,
           actionsVisible: actionsVisible ?? true,
           featureTitle:
-              'Toggle between the Packs you belong to and the current Pack you’re viewing.',
+              "Toggle between the Packs you're in and the current Pack you’re viewing.",
           featureId: 'packs_toggle_id',
           isLastFeature: true,
           iconNorth: iconNorth,

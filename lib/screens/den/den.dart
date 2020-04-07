@@ -59,27 +59,30 @@ class JuntoDenState extends State<JuntoDen>
     });
   }
 
-  Widget _constructAppBar(UserData user) {
-    return DenAppbar(heading: user.user.username);
-  }
-
   Widget _buildBody(UserData user) {
     return NestedScrollView(
       controller: _denController,
       physics: const ClampingScrollPhysics(),
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
+          SliverPersistentHeader(
+            delegate: DenAppbar(
+              expandedHeight: MediaQuery.of(context).size.height * .1,
+              heading: user.user.username,
+            ),
+            floating: true,
+            pinned: false,
+          ),
           JuntoDenSliverAppbar(
             profile: user,
             currentTheme: _currentTheme,
           ),
         ];
       },
-      body: SafeArea(
-          child: UserExpressions(
+      body: UserExpressions(
         privacy: 'Public',
         userProfile: user.user,
-      )),
+      ),
     );
   }
 
@@ -102,7 +105,7 @@ class JuntoDenState extends State<JuntoDen>
                       ExpressionContextType.Collective),
                   rightMenu: JuntoDrawer(),
                   scaffold: Scaffold(
-                    appBar: _constructAppBar(user.userProfile),
+                    // appBar: _constructAppBar(user.userProfile),
                     floatingActionButton: ValueListenableBuilder<bool>(
                       valueListenable: _isVisible,
                       builder: (

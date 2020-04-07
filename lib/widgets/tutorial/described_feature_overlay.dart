@@ -9,7 +9,7 @@ class JuntoDescribedFeatureOverlay extends StatefulWidget {
     this.title,
     this.contentLocation = ContentLocation.below,
     this.learnMore = false,
-    this.learnMoreText = '',
+    this.learnMoreText,
     this.isLastFeature = false,
     this.oneFeature = false,
     this.hasUpNext = false,
@@ -24,7 +24,7 @@ class JuntoDescribedFeatureOverlay extends StatefulWidget {
   final ContentLocation contentLocation;
   // if this feature has a learn more section
   final bool learnMore;
-  final String learnMoreText;
+  final List<String> learnMoreText;
   // if this feature is the last one of the tutorial
   final bool isLastFeature;
   // only one feature in tutorial
@@ -118,7 +118,7 @@ class JuntoDescribedFeatureOverlayState
             if (widget.learnMore)
               _actionItemButton(
                 context,
-                'Learn More',
+                'Learn Why',
                 () {
                   setState(() {
                     upNextVisible = true;
@@ -144,7 +144,7 @@ class JuntoDescribedFeatureOverlayState
 
   Widget _learnMore(
       {BuildContext context,
-      String learnMoreText,
+      List<String> learnMoreText,
       bool hasUpNext,
       String upNext}) {
     return AnimatedOpacity(
@@ -163,15 +163,20 @@ class JuntoDescribedFeatureOverlayState
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              learnMoreText,
-              style: TextStyle(
-                fontSize: 17,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            const SizedBox(height: 15),
+            if (learnMoreText != null)
+              for (String text in learnMoreText)
+                Container(
+                  margin: const EdgeInsets.only(bottom: 15),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
             if (hasUpNext)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
