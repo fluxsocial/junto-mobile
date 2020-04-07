@@ -76,7 +76,6 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
 
             // expression preview handle + more action items
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 7.5),
               color: Colors.transparent,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,6 +86,8 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                       constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * .5 - 40,
                       ),
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.symmetric(vertical: 7.5),
                       child: Text(
                         expression.creator.username.toLowerCase(),
                         style: TextStyle(
@@ -116,7 +117,11 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                     child: Container(
                       color: Colors.transparent,
                       alignment: Alignment.centerRight,
-                      width: 24,
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        top: 7.5,
+                        bottom: 7.5,
+                      ),
                       child: Icon(
                         CustomIcons.morevertical,
                         color: Theme.of(context).primaryColor,
