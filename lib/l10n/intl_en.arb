@@ -280,7 +280,7 @@
     "type" : "text",
     "description" : ""
   },
-  "welcome_username_requirements" : "Your username can only contain lowercase letters, numbers, and underscores.",
+  "welcome_username_requirements" : "Your username can only contain lowercase letters a - z, numbers 0 - 9, and underscores.",
   "@welcome_username_requirements" : {
     "type" : "text",
     "description" : ""

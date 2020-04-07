@@ -10,18 +10,19 @@ import 'intl/messages_all.dart';
 
 class S {
   S();
-  
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final String name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final String name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       return S();
     });
-  } 
+  }
 
   static S of(BuildContext context) {
     return Localizations.of<S>(context, S);
@@ -533,7 +534,7 @@ class S {
 
   String get welcome_username_requirements {
     return Intl.message(
-      'Your username can only contain lowercase letters, numbers, and underscores.',
+      'Your username can only contain lowercase letters a - z, numbers 0 - 9, and underscores.',
       name: 'welcome_username_requirements',
       desc: '',
       args: [],
@@ -591,7 +592,22 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en'), Locale.fromSubtags(languageCode: 'es'), Locale.fromSubtags(languageCode: 'da'), Locale.fromSubtags(languageCode: 'hu'), Locale.fromSubtags(languageCode: 'km'), Locale.fromSubtags(languageCode: 'pt'), Locale.fromSubtags(languageCode: 'de'), Locale.fromSubtags(languageCode: 'sl'), Locale.fromSubtags(languageCode: 'it'), Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'), Locale.fromSubtags(languageCode: 'th'), Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'), Locale.fromSubtags(languageCode: 'tr'), Locale.fromSubtags(languageCode: 'pl'), Locale.fromSubtags(languageCode: 'ja'), Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'es'),
+      Locale.fromSubtags(languageCode: 'da'),
+      Locale.fromSubtags(languageCode: 'hu'),
+      Locale.fromSubtags(languageCode: 'km'),
+      Locale.fromSubtags(languageCode: 'pt'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'sl'),
+      Locale.fromSubtags(languageCode: 'it'),
+      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
+      Locale.fromSubtags(languageCode: 'th'),
+      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
+      Locale.fromSubtags(languageCode: 'tr'),
+      Locale.fromSubtags(languageCode: 'pl'),
+      Locale.fromSubtags(languageCode: 'ja'),
+      Locale.fromSubtags(languageCode: 'fr'),
     ];
   }
 

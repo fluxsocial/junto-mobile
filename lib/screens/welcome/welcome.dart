@@ -277,8 +277,9 @@ class WelcomeState extends State<Welcome> {
                     // 2
                     child: SignUpTextFieldWrapper(
                       textInputActionType: TextInputAction.done,
-                      onValueChanged: (String value) =>
-                          username = value.toLowerCase().trim(),
+                      onValueChanged: (String value) {
+                        username = value.toLowerCase().trim();
+                      },
                       onSubmit: _userNameSubmission,
                       maxLength: 22,
                       hint: S.of(context).welcome_username_ill_go,
