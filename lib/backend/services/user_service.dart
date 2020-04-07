@@ -108,6 +108,7 @@ class UserServiceCentralized implements UserService {
     final http.Response response = await client.get(
       '/users/$userAddress/groups',
     );
+
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);

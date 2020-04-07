@@ -44,49 +44,56 @@ class PacksListState extends State<PacksList> {
               elevation: 0,
               backgroundColor: Theme.of(context).backgroundColor,
               brightness: Theme.of(context).brightness,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      S.of(context).packs_title,
-                      style: Theme.of(context).textTheme.headline4,
+              titleSpacing: 0,
+              title: Container(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        S.of(context).packs_title,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      FeatureDiscovery.clearPreferences(context, <String>{
-                        'packs_list_info_id',
-                        'packs_toggle_id',
-                      });
-                      FeatureDiscovery.discoverFeatures(
-                        context,
-                        const <String>{
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.clearPreferences(context, <String>{
                           'packs_list_info_id',
                           'packs_toggle_id',
-                        },
-                      );
-                    },
-                    child: JuntoDescribedFeatureOverlay(
-                      icon: Icon(
-                        CustomIcons.newpacks,
-                        size: 36,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      featureId: 'packs_list_info_id',
-                      title:
-                          'This is the list of Packs you belong to. Each person can only create one pack, but can belong to many others.',
-                      learnMore: true,
-                      child: Container(
-                        alignment: Alignment.bottomRight,
-                        padding: const EdgeInsets.only(left: 10),
-                        child: JuntoInfoIcon(),
+                        });
+                        FeatureDiscovery.discoverFeatures(
+                          context,
+                          const <String>{
+                            'packs_list_info_id',
+                            'packs_toggle_id',
+                          },
+                        );
+                      },
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
+                          CustomIcons.newpacks,
+                          size: 36,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        featureId: 'packs_list_info_id',
+                        title:
+                            'This is the list of Packs you belong to. Each person can only create one pack, but can belong to many others.',
+                        learnMore: true,
+                        child: Container(
+                          color: Colors.transparent,
+                          alignment: Alignment.bottomRight,
+                          child: JuntoInfoIcon(),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

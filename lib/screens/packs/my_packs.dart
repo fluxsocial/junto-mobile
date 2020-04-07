@@ -33,6 +33,7 @@ class MyPacks extends StatelessWidget {
                   return _loader();
                 }
                 if (state is GroupLoaded) {
+                  print(state.groups);
                   return Expanded(
                       child: RefreshIndicator(
                     onRefresh: () async {
@@ -60,6 +61,7 @@ class MyPacks extends StatelessWidget {
                   ));
                 }
                 if (state is GroupError) {
+                  print(state.groupError);
                   JuntoErrorWidget(
                     errorMessage: state.groupError,
                   );
