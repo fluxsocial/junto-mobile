@@ -579,7 +579,7 @@ class S {
 
   String get welcome_wrong_email_or_password {
     return Intl.message(
-      'Wrong email or password',
+      'Please enter your correct email and password.',
       name: 'welcome_wrong_email_or_password',
       desc: '',
       args: [],

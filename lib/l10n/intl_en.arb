@@ -305,7 +305,7 @@
     "type" : "text",
     "description" : ""
   },
-  "welcome_wrong_email_or_password" : "Wrong email or password",
+  "welcome_wrong_email_or_password" : "Please enter your correct email and password.",
   "@welcome_wrong_email_or_password" : {
     "type" : "text",
     "description" : ""

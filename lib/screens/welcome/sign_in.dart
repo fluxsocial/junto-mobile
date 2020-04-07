@@ -49,7 +49,7 @@ class _SignInState extends State<SignIn> {
   /// with [JuntoCollective].
   Future<void> _handleSignIn(BuildContext context) async {
     logger.logInfo('User tapped sign in');
-    final String email = _emailController.value.text;
+    final String email = _emailController.value.text.trim();
     final String password = _passwordController.value.text;
     if (email.isEmpty || password.isEmpty) {
       _showValidationError();

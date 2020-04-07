@@ -88,6 +88,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome_verification_code" : MessageLookupByLibrary.simpleMessage("Verification code"),
     "welcome_website_hint" : MessageLookupByLibrary.simpleMessage("Website"),
     "welcome_website_label" : MessageLookupByLibrary.simpleMessage("WEBSITE"),
-    "welcome_wrong_email_or_password" : MessageLookupByLibrary.simpleMessage("Wrong email or password")
+    "welcome_wrong_email_or_password" : MessageLookupByLibrary.simpleMessage("Please enter your correct email and password.")
   };
 }
