@@ -35,10 +35,14 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(expression.creator.username.toLowerCase() ?? '',
-                          style: Theme.of(context).textTheme.subtitle1),
-                      Text('${expression.creator.name}',
-                          style: Theme.of(context).textTheme.bodyText1),
+                      Text(
+                        expression.creator.username.toLowerCase() ?? '',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                      Text(
+                        '${expression.creator.name}',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
                     ],
                   ),
                 ),
@@ -60,7 +64,10 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
             },
             child: Container(
               color: Colors.transparent,
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5,
+                vertical: 10,
+              ),
               alignment: Alignment.centerRight,
               child: Icon(
                 CustomIcons.morevertical,
