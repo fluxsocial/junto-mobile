@@ -358,7 +358,7 @@ class WelcomeState extends State<Welcome> {
           );
           return;
         } else {
-          JuntoLoader.showLoader(context);
+          JuntoLoader.showLoader(context, color: Colors.transparent);
           final Map<String, dynamic> validateUserResponse =
               await Provider.of<AuthRepo>(context, listen: false)
                   .validateUser(username: username);
@@ -401,7 +401,7 @@ class WelcomeState extends State<Welcome> {
         if (!_validatePasswords(password, confirmPassword)) {
           return;
         }
-        JuntoLoader.showLoader(context);
+        JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
         await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
         JuntoLoader.hide();
@@ -432,6 +432,7 @@ class WelcomeState extends State<Welcome> {
 
   // ensure passwords are same and meet our specifications
   bool _validatePasswords(String password, String confirmPassword) {
+    // ensure that passwords match
     if (password != confirmPassword) {
       showDialog(
         context: context,
@@ -441,6 +442,7 @@ class WelcomeState extends State<Welcome> {
       );
       return false;
     } else if (password.length < 8 || confirmPassword.length < 8) {
+      // ensure that passwords are greater than 8 characters
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
