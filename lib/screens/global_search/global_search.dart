@@ -47,17 +47,14 @@ class _GlobalSearchState extends State<GlobalSearch> {
   }
 
   void onTextChange(String query, BuildContext context) {
-    debounceTimer?.cancel();
-    debounceTimer = Timer(
-      const Duration(milliseconds: 600),
-      () async {
-        if (mounted) {
-          context
-              .bloc<SearchBloc>()
-              .add(SearchingEvent(query, _searchByUsername.value));
-        }
-      },
-    );
+    if (mounted) {
+      context.bloc<SearchBloc>().add(
+            SearchingEvent(
+              query,
+              _searchByUsername.value,
+            ),
+          );
+    }
   }
 
   @override

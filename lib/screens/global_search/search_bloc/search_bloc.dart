@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'bloc.dart';
 
@@ -17,6 +18,19 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   @override
   SearchState get initialState => InitialSearchState();
+
+  @override
+  Stream<SearchState> transformEvents(
+    Stream<SearchEvent> events,
+    Stream<SearchState> Function(SearchEvent p1) next,
+  ) {
+    final nonDebounceStream = events.where((event) => event is! SearchingEvent);
+    final debounceStream = events
+        .where((event) => event is SearchingEvent)
+        .debounceTime(const Duration(milliseconds: 600));
+    return super.transformEvents(
+        MergeStream([nonDebounceStream, debounceStream]), next);
+  }
 
   @override
   Stream<SearchState> mapEventToState(
