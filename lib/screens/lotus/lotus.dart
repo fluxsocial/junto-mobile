@@ -101,13 +101,12 @@ class JuntoLotusState extends State<JuntoLotus> {
                 type: MaterialType.transparency,
                 child: Container(
                   height: MediaQuery.of(context).size.height,
-                  padding: const EdgeInsets.only(bottom: 60),
+                  // padding: const EdgeInsets.only(bottom: 60),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
                           vertical: 10,
                         ),
                         color: Colors.transparent,
@@ -158,7 +157,6 @@ class JuntoLotusState extends State<JuntoLotus> {
                           ),
                           Container(
                             color: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -190,7 +188,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                             iconSize: 38,
                             onTap: () => _navigateTo(Screen.create),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 25),
                         ],
                       )
                     ],
@@ -231,6 +229,7 @@ class LotusButton extends StatelessWidget {
             child: Container(
               color: Colors.transparent,
               alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
