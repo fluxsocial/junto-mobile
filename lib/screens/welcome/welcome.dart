@@ -365,6 +365,9 @@ class WelcomeState extends State<Welcome> {
           return;
         }
       } else if (_currentIndex == 2) {
+        if (username.isEmpty) {
+          return;
+        }
         bool _correctLength = username.length >= 1 && username.length <= 22;
         final exp = RegExp("^[a-z0-9_]+\$");
         if (username == null || !exp.hasMatch(username) || !_correctLength) {
