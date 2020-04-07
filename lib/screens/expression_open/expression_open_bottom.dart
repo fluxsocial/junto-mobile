@@ -17,17 +17,20 @@ class ExpressionOpenBottom extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: .5,
+          ),
         ),
-      ),
-      padding: const EdgeInsets.only(
-        left: 10,
-        right: 10,
       ),
       child: Column(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+            ),
             child: Column(
               children: <Widget>[
                 Row(
@@ -48,7 +51,9 @@ class ExpressionOpenBottom extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .5),
+                        color: Theme.of(context).dividerColor,
+                        width: .5,
+                      ),
                     ),
                   ),
                 ),
@@ -56,16 +61,17 @@ class ExpressionOpenBottom extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
                   onTap: openExpressionContext,
                   child: Container(
-                    height: 33,
-                    width: 33,
                     alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 10,
+                    ),
                     color: Colors.transparent,
                     child: Icon(
                       CustomIcons.newcreate,
