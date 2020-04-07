@@ -96,7 +96,9 @@ class _UserExpressionsState extends State<UserExpressions> {
                   ),
                   FetchMoreButton(
                     onPressed: () {
-                      context.bloc<DenBloc>().add(LoadMoreDen());
+                      context.bloc<DenBloc>().add(
+                            LoadMoreDen(),
+                          );
                     },
                   )
                 ],

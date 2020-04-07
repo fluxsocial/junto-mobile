@@ -105,14 +105,12 @@ class JuntoCreateState extends State<JuntoCreate> {
           right: 0,
           child: SafeArea(
             child: Container(
-              padding: const EdgeInsets.only(bottom: 60),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
                       vertical: 10,
                     ),
                     color: Colors.transparent,
