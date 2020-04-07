@@ -222,6 +222,24 @@ class WelcomeState extends State<Welcome> {
     }
   }
 
+  bool _passwordCheck(String password) {
+    final String passwordRegEx =
+        "(?=.{8,})(?=.*[!@#\$%^&*])(?=.*[0-9])(?=.*[A-Z])(?=.*[A-z])";
+    final exp = RegExp(passwordRegEx);
+    bool match = exp.hasMatch(password);
+    if (!match) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).welcome_password_rules,
+        ),
+      );
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -399,6 +417,10 @@ class WelcomeState extends State<Welcome> {
         }
         // validate passwords
         if (!_validatePasswords(password, confirmPassword)) {
+          return;
+        }
+
+        if (!_passwordCheck(password)) {
           return;
         }
         JuntoLoader.showLoader(context, color: Colors.transparent);
