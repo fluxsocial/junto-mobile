@@ -10,7 +10,11 @@ class JuntoInfoIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10),
+      color: Colors.transparent,
+      padding: const EdgeInsets.only(
+        left: 10,
+        right: 10,
+      ),
       alignment: Alignment.bottomCenter,
       child: Container(
         height: 20,
@@ -25,7 +29,7 @@ class JuntoInfoIcon extends StatelessWidget {
         child: Text(
           '?',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             color: !neutralBackground
                 ? Color(0xff555555)
                 : Theme.of(context).backgroundColor,

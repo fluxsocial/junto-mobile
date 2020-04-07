@@ -80,6 +80,7 @@ class JuntoDescribedFeatureOverlayState
       contentLocation: widget.contentLocation,
       overflowMode: OverflowMode.extendBackground,
       targetColor: Theme.of(context).backgroundColor,
+      title: null,
       enablePulsingAnimation: false,
       description: Stack(
         children: <Widget>[
