@@ -57,12 +57,15 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                       child: Row(
                         children: <Widget>[
                           MemberAvatar(
-                              profilePicture: comment.creator.profilePicture,
-                              diameter: 45),
+                            profilePicture: comment.creator.profilePicture,
+                            diameter: 45,
+                          ),
                           const SizedBox(width: 10),
                           Container(
-                            child: Text(comment.creator.username,
-                                style: Theme.of(context).textTheme.subtitle1),
+                            child: Text(
+                              comment.creator.username,
+                              style: Theme.of(context).textTheme.subtitle1,
+                            ),
                           ),
                         ],
                       ),
@@ -78,16 +81,20 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                         builder: (BuildContext context) => Container(
                           color: Colors.transparent,
                           child: CommentActionItems(
-                              comment: comment,
-                              userAddress: userAddress,
-                              source: 'preview'),
+                            comment: comment,
+                            userAddress: userAddress,
+                            source: 'preview',
+                          ),
                         ),
                       );
                     },
                     child: Container(
                       color: Colors.transparent,
                       alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                        vertical: 10,
+                      ),
                       child: Icon(
                         CustomIcons.morevertical,
                         size: 20,
