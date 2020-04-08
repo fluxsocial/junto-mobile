@@ -128,9 +128,8 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                                   },
                                   child: Container(
                                     width: 38,
-                                    alignment: Alignment.centerRight,
-                                    // color: Colors.transparent,
-                                    color: Colors.green,
+                                    alignment: Alignment.bottomCenter,
+                                    color: Colors.transparent,
                                     child: Icon(
                                       CustomIcons.morevertical,
                                       size: 22,
@@ -144,14 +143,12 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                               FeatureDiscovery.clearPreferences(
                                   context, <String>{
                                 'packs_info_id',
-                                // 'collective_filter_id',
                                 'packs_toggle_id',
                               });
                               FeatureDiscovery.discoverFeatures(
                                 context,
                                 const <String>{
                                   'packs_info_id',
-                                  // 'collective_filter_id',
                                   'packs_toggle_id',
                                 },
                               );
