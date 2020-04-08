@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
+import 'create_templates/audio.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate({
@@ -72,7 +73,12 @@ class JuntoCreateState extends State<JuntoCreate> {
             ),
             expression);
         break;
-      default:
+      case ExpressionType.audio:
+        _push(
+          context,
+          CreateAudio(),
+          expression,
+        );
     }
   }
 
@@ -87,7 +93,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     setState(() {
       source = expressionType;
     });
-    logger.logDebug(source.toString());
+    logger.logDebug('Current expression source: $source');
   }
 
   Widget _expressionCenter(BuildContext context) {
@@ -159,6 +165,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                             _selectExpressionIcon(ExpressionType.dynamic),
                             _selectExpressionIcon(ExpressionType.shortform),
                             _selectExpressionIcon(ExpressionType.photo),
+                            _selectExpressionIcon(ExpressionType.audio),
                           ],
                         ),
                       ),
