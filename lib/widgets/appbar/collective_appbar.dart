@@ -122,8 +122,14 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               title:
                                   'This is the Collective, where all public content is shown. Click on an expression to open it.',
                               learnMore: true,
-                              hasUpNext: false,
-                              learnMoreText: ['Work in progress...'],
+                              hasUpNext: true,
+                              upNextText: [
+                                "Ethical, human-centered algorithms to filter through content with high activity (not based on user activity or preferences)",
+                              ],
+                              learnMoreText: [
+                                "The Collective is the shared space of everyone in Junto. Each person contributes to this collective intelligence through what they choose to share publicly. Our hope is that people will discover meaningful content and relationships with those they may not know and help to maintain a more positive culture.",
+                                "The expressions in this layer are viewed through 'Perspectives.' These Perspectives are designed to display previews of content where you must open an expression to view its full scope, rather than showing expressions and its captions, comments, and activity all at once. "
+                              ],
                               child: JuntoInfoIcon(),
                             ),
                           ),
