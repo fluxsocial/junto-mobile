@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
@@ -20,27 +21,19 @@ class JuntoLotus extends StatefulWidget {
     Key key,
     @required this.expressionContext,
     @required this.address,
+    @required this.source,
   })  : assert(expressionContext != null),
         assert(address != ''),
         super(key: key);
   final ExpressionContext expressionContext;
   final String address;
+  final Screen source;
 
   @override
   State<StatefulWidget> createState() => JuntoLotusState();
 }
 
 class JuntoLotusState extends State<JuntoLotus> {
-  static Route<dynamic> route() {
-    return FadeRoute<void>(
-      child: const JuntoLotus(
-        address: null,
-        expressionContext: ExpressionContext.Collective,
-      ),
-      name: 'JuntoLotus',
-    );
-  }
-
   bool backButtonTappedOnce = false;
   ThemeData _currentTheme;
 
@@ -68,10 +61,17 @@ class JuntoLotusState extends State<JuntoLotus> {
           currentTheme: _currentTheme,
         ),
       );
+    } else if (screen == Screen.den) {
+      child = FeatureDiscovery(
+        child: JuntoDen(),
+      );
     }
     backButtonTappedOnce = false;
     Navigator.of(context).push(
-      FadeRoute<void>(child: child, name: child.runtimeType.toString()),
+      FadeRoute<void>(
+        child: child,
+        name: child.runtimeType.toString(),
+      ),
     );
     return;
   }
@@ -90,10 +90,20 @@ class JuntoLotusState extends State<JuntoLotus> {
     getTheme();
   }
 
+  _onDragEnd(DragEndDetails dx) {
+    if (widget.source == null) {
+      print('cannot pop, sorry!');
+      return;
+    } else {
+      _navigateTo(widget.source);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
     return GestureDetector(
+      onHorizontalDragEnd: _onDragEnd,
       child: Scaffold(
         body: Stack(
           children: <Widget>[

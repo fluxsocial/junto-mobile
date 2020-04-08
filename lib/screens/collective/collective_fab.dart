@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 
 /// Floating action button used by [JuntoCollective]. Controls the switching
 /// between [ExpressionFeed] and Perspective screens.
@@ -39,6 +40,7 @@ class CollectiveActionButton extends StatelessWidget {
           featureTitle:
               'Toggle between your list of perspectives and the current perspective you’re looking at.',
           isLastFeature: true,
+          source: Screen.collective,
         ),
       ),
     );

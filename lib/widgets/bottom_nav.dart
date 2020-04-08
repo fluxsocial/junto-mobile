@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
@@ -19,6 +20,7 @@ class BottomNav extends StatelessWidget {
     this.iconNorth = true,
     this.isLastFeature = true,
     this.featureId = '',
+    this.source,
   });
 
   final VoidCallback onLeftButtonTap;
@@ -29,6 +31,7 @@ class BottomNav extends StatelessWidget {
   final String featureTitle;
   final String featureId;
   final bool isLastFeature;
+  final Screen source;
 
   @override
   Widget build(BuildContext context) {
@@ -83,17 +86,17 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.pushAndRemoveUntil(
+                Navigator.pushReplacement(
                   context,
                   FadeRoute<void>(
                     child: FeatureDiscovery(
                       child: JuntoLotus(
                         address: address,
                         expressionContext: expressionContext,
+                        source: source,
                       ),
                     ),
                   ),
-                  (route) => route.isFirst,
                 );
               },
               child: Container(

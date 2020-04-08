@@ -1,6 +1,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -133,6 +134,7 @@ class JuntoDenState extends State<JuntoDen>
                               ),
                             );
                           },
+                          source: Screen.den,
                         ),
                       ),
                     ),

@@ -75,6 +75,7 @@ class _SignInState extends State<SignIn> {
             child: const JuntoLotus(
               address: null,
               expressionContext: ExpressionContext.Collective,
+              source: null,
             ),
           ),
         ),

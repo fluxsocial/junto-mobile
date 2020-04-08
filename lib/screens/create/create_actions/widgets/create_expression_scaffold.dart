@@ -5,6 +5,8 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
+
 
 class CreateExpressionScaffold extends StatelessWidget {
   const CreateExpressionScaffold({
@@ -43,6 +45,7 @@ class CreateExpressionScaffold extends StatelessWidget {
                         context,
                         expressionType,
                       ),
+                      source: Screen.create,
                     ),
                   )
                 : null,

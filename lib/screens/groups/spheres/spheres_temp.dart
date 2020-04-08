@@ -8,6 +8,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 
 // This screen displays the temporary page we'll display until groups are released
 class SpheresTemp extends StatelessWidget {
@@ -76,6 +77,7 @@ class SpheresTemp extends StatelessWidget {
               address: null,
               expressionContext: ExpressionContext.Group,
               actionsVisible: false,
+              source: Screen.groups,
               onLeftButtonTap: () {},
             ),
           ),

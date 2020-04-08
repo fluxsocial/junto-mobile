@@ -157,7 +157,7 @@ class JuntoDescribedFeatureOverlayState
           children: <Widget>[
             Container(
               constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * .5,
+                maxHeight: MediaQuery.of(context).size.height * .7,
               ),
               child: ListView(
                 shrinkWrap: true,
