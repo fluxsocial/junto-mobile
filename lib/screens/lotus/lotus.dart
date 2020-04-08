@@ -189,6 +189,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                             iconSize: 38,
                             onTap: () => _navigateTo(Screen.create),
                           ),
+                          const SizedBox(height: 25),
                         ],
                       )
                     ],

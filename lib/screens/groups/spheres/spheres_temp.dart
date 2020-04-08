@@ -53,7 +53,7 @@ class SpheresTemp extends StatelessWidget {
                       },
                       child: JuntoDescribedFeatureOverlay(
                         icon: Icon(
-                          CustomIcons.newpacks,
+                          CustomIcons.newcircles,
                           size: 36,
                           color: Theme.of(context).primaryColor,
                         ),
