@@ -144,8 +144,52 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
       ),
       expandedHeight: _flexibleHeightSpace == null
           ? 1000
-          : _flexibleHeightSpace + MediaQuery.of(context).size.width / 2 + .75,
-      forceElevated: false,
+          : _flexibleHeightSpace + MediaQuery.of(context).size.shortestSide / 8,
+    );
+  }
+}
+
+class _DenUserInfo extends StatelessWidget {
+  const _DenUserInfo({Key key, this.profile}) : super(key: key);
+  final UserData profile;
+
+  UserProfile get user => profile.user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        if (user.gender.isNotEmpty ||
+            user.location.isNotEmpty ||
+            user.website.isNotEmpty)
+          const SizedBox(height: 15),
+        AboutItem(
+          item: user.gender,
+          icon: Icon(
+            CustomIcons.gender,
+            size: 17,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        AboutItem(
+          item: user.location,
+          icon: Image.asset(
+            'assets/images/junto-mobile__location.png',
+            height: 15,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        AboutItem(
+          item: user.website,
+          isWebsite: true,
+          icon: Image.asset(
+            'assets/images/junto-mobile__link.png',
+            height: 15,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        MemberBio(profile: profile)
+      ],
     );
   }
 }
