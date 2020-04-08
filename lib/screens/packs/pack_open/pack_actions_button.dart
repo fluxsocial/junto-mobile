@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 
 class PacksActionButtons extends StatelessWidget {
   const PacksActionButtons({
@@ -42,6 +43,7 @@ class PacksActionButtons extends StatelessWidget {
           address: initialGroup,
           expressionContext: ExpressionContext.Group,
           actionsVisible: actionsVisible ?? true,
+          source: Screen.packs,
           featureTitle:
               "Toggle between the Packs you're in and the current Pack you’re viewing.",
           featureId: 'packs_toggle_id',

@@ -154,64 +154,74 @@ class JuntoDescribedFeatureOverlayState
       child: Visibility(
         visible: upNextVisible,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'DESIGN INSPIRATION',
-              style: TextStyle(
-                fontSize: 17,
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * .7,
               ),
-            ),
-            const SizedBox(height: 15),
-            if (learnMoreText != null)
-              for (String text in learnMoreText)
-                Container(
-                  margin: const EdgeInsets.only(bottom: 15),
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-            if (hasUpNext)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(0),
                 children: <Widget>[
-                  const SizedBox(height: 25),
                   Text(
-                    'UP NEXT',
+                    'DESIGN INSPIRATION',
                     style: TextStyle(
                       fontSize: 17,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  for (String text in widget.upNextText)
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: Text(
-                              text,
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                              ),
+                  const SizedBox(height: 15),
+                  if (learnMoreText != null)
+                    for (String text in learnMoreText)
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 15),
+                        child: Text(
+                          text,
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                  if (hasUpNext)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(height: 25),
+                        Text(
+                          'UP NEXT',
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        for (String text in widget.upNextText)
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              children: <Widget>[
+                                Flexible(
+                                  child: Text(
+                                    text,
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                      ],
                     ),
                 ],
               ),
+            ),
             GestureDetector(
               onTap: () {
                 setState(() {

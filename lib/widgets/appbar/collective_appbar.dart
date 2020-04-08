@@ -30,6 +30,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
         return Container(
           height: MediaQuery.of(context).size.height * .1 + 50,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
                 child: Container(
@@ -124,13 +125,16 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               learnMore: true,
                               hasUpNext: true,
                               upNextText: [
-                                "Ethical, human-centered algorithms to filter through content with high activity (not based on user activity or preferences)",
+                                "Ethical, human-centered algorithms that filter content to create feeds according to high activity (not based on your previous activity or preferences)",
                               ],
                               learnMoreText: [
-                                "The Collective is the shared space of everyone in Junto. Each person contributes to this collective intelligence through what they choose to share publicly. Our hope is that people will discover meaningful content and relationships with those they may not know and help to maintain a more positive culture.",
-                                "The expressions in this layer are viewed through 'Perspectives.' These Perspectives are designed to display previews of content where you must open an expression to view its full scope, rather than showing expressions and its captions, comments, and activity all at once. "
+                                "This is the Collective, a shared space that anyone on Junto can post into. Our hope is that people will discover meaningful content and relationships with those they may not know and help to maintain a positive culture.",
+                                'You can view content in this layer through "Perspectives".  Perspectives are feeds that show filtered content from the Collective. They display previews of content where you open an expression to view its full scope, rather than see the expression and its captions, comments, and activity all at once.'
                               ],
-                              child: JuntoInfoIcon(),
+                              child: Container(
+                                height: 24,
+                                child: JuntoInfoIcon(),
+                              ),
                             ),
                           ),
                         ],

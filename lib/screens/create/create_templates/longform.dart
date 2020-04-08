@@ -185,14 +185,6 @@ class CreateLongformState extends State<CreateLongform> {
                         vertical: 15,
                       ),
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                            width: .75,
-                          ),
-                        ),
-                      ),
                       alignment: Alignment.centerRight,
                       child: RotatedBox(
                         quarterTurns: 3,

@@ -145,14 +145,14 @@ class JuntoCreateState extends State<JuntoCreate> {
                             featureId: 'expression_center_id',
                             oneFeature: true,
                             title:
-                                'This is the expression center, where you can create posts in a variety of forms. These will expand over time.',
+                                'This is the expression center, where you can create posts in a variety of forms. These mediums will expand over time.',
                             learnMore: true,
                             learnMoreText: [
-                              "We've become acclimated to a digital style of highly refined and curated sharing. Our goal with this expression center is to inspire a more authentic and lighthearted atmosphere through improvements on existing forms of sharing content and new mediums we haven't experienced yet. Let's explore these new possibilities together and figure out how we can make our digital experience more human.",
+                              "We've become acclimated to a highly refined and curated style of digital sharing. Our goal with this expression center is to inspire a more raw and lighthearted atmosphere through improvements on existing forms of sharing and new mediums we haven't experienced yet. Let's explore these possibilities together and figure out how we can make our digital experience more human.",
                               'We want to hear your ideas.'
                             ],
                             upNextText: [
-                              'Audio, Video, Music, Links, Events, Poetry, and much more',
+                              'Rich Text Editor, Audio, Video, Music, Events, Art Board, Links, and much more',
                             ],
                             hasUpNext: true,
                             child: JuntoInfoIcon(neutralBackground: false),
