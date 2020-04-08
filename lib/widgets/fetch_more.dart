@@ -9,15 +9,30 @@ class FetchMoreButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
-    return Padding(
+    return Container(
       padding: EdgeInsets.only(
-        bottom: media.padding.bottom + 60.0,
-        top: 12.0,
+        bottom: media.padding.bottom + 80.0,
       ),
+      width: MediaQuery.of(context).size.width,
+      color: Colors.transparent,
       child: FlatButton.icon(
         onPressed: onPressed,
-        icon: Icon(CustomIcons.lotus),
-        label: Text('More'),
+        padding: const EdgeInsets.symmetric(
+          vertical: 20,
+        ),
+        icon: Icon(
+          CustomIcons.newcreate,
+          size: 24,
+          color: Theme.of(context).primaryColor,
+        ),
+        label: Text(
+          'View 50 More Expressions'.toUpperCase(),
+          style: TextStyle(
+            fontSize: 14,
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
     );
   }
