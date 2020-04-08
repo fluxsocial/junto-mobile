@@ -22,6 +22,7 @@ class DevicePreviewWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     if (Platform.isMacOS) {
       return DevicePreview(
+        toolBarStyle: DevicePreviewToolBarStyle.light(),
         builder: (context) => child,
       );
     } else {

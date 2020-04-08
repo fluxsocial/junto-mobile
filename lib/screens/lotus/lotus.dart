@@ -34,7 +34,6 @@ class JuntoLotus extends StatefulWidget {
 }
 
 class JuntoLotusState extends State<JuntoLotus> {
-  bool backButtonTappedOnce = false;
   ThemeData _currentTheme;
 
   /// Pushes new page onto the stack
@@ -66,7 +65,6 @@ class JuntoLotusState extends State<JuntoLotus> {
         child: JuntoDen(),
       );
     }
-    backButtonTappedOnce = false;
     Navigator.of(context).push(
       FadeRoute<void>(
         child: child,
@@ -91,7 +89,7 @@ class JuntoLotusState extends State<JuntoLotus> {
   }
 
   _onDragEnd(DragEndDetails dx) {
-    if (widget.source == null) {
+    if (widget.source == null || Navigator.canPop(context) == false) {
       print('cannot pop, sorry!');
       return;
     } else {
