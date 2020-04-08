@@ -19,7 +19,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
     String query, {
     bool username = false,
     int paginationPosition = 0,
-    DateTime lastTimeStamp,
+    String lastTimeStamp,
   }) async {
     final Map<String, String> _queryParam = <String, String>{
       'pagination_position': paginationPosition.toString()
@@ -34,7 +34,6 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       '/search/users',
       queryParams: _queryParam,
     );
-    logger.logDebug(_serverResponse.statusCode.toString());
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );

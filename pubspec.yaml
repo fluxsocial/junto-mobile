@@ -37,9 +37,11 @@ dependencies:
   animations: ^1.0.0+5
   url_launcher: 5.4.2
   stack_trace: ^1.9.3
-  feature_discovery: 0.8.0  
+  feature_discovery: 0.8.0
   device_preview: 0.4.1+1
   intl: ^0.16.1
+  audioplayers: ^0.15.0
+  flutter_audio_recorder: ^0.5.5
 
 dependency_overrides:
   path_provider: 1.6.5
