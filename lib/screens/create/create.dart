@@ -146,7 +146,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                               'We want to hear your ideas.'
                             ],
                             upNextText: [
-                              'Audio, Video, Music, Links, Events, Poetry, and much more',
+                              'Rich Text Editor, Audio, Video, Music, Events, Poetry, and much more',
                             ],
                             hasUpNext: true,
                             child: JuntoInfoIcon(neutralBackground: false),
