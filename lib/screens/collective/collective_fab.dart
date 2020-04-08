@@ -38,7 +38,7 @@ class CollectiveActionButton extends StatelessWidget {
           iconNorth: iconNorth,
           featureId: 'collective_toggle_id',
           featureTitle:
-              'Toggle between your list of perspectives and the current perspective you’re looking at.',
+              'Toggle between your list of perspectives and the current one you’re looking at.',
           isLastFeature: true,
           source: Screen.collective,
         ),

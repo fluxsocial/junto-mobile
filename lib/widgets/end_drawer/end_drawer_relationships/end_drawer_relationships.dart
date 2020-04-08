@@ -182,7 +182,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                           'On Junto, there are multiple relational layers to reflect the more dynamic nature of our physical world relationships.',
                           '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
                           '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
-                          '"Connections" are your first degree connections. Choosing to connect with someone is like friending them (mutual).',
+                          '"Connections" are your first degree friendships. Choosing to connect with someone is like friending them (mutual).',
                           'Your "Pack" is your closet group of friends (mutual). Visit the tutorial in your Pack feed for more information.'
                         ],
                         child: JuntoInfoIcon(),

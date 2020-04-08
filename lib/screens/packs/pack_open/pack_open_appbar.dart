@@ -164,7 +164,7 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                                   'This is a Pack. It displays the publicly shared posts of the people in it. There is also a private section where the pack owner can share to just its pack members.',
                               learnMore: true,
                               learnMoreText: [
-                                "Your Pack is your group of close friends who evoke the most unfiltered version of you and represent an extension of yourself. The people you invite to your Pack will have access to your Pack feed, which displays the public content of everyone you've invited. In this light, you are the common thread between all of your pack members, facilitating a more organic way for them to discover one another through their mutual connection - you. You can also share private expressions to just your pack members.",
+                                "Your Pack is your group of close friends who evoke the most unfiltered version of you and reflect an extension of you. The people you invite to your Pack will have access to your Pack feed, which displays the public content of everyone in it. In this light, you are the common thread between all the people you invite, facilitating a more organic way for them to hear from or discover one another through their mutual connection - you. You can also share private expressions to just your pack members.",
                                 'Also note that connecting by Packs is not mutual. If someone accepts your pack invitation, you will not be able to see their Pack feed unless they choose to send you an invitation.'
                               ],
                               child: Container(

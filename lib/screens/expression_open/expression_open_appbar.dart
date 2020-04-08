@@ -63,12 +63,13 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 isLastFeature: true,
                 upNextText: [
                   'Ability to react and comment privately',
-                  "Resonations (highlighting other people's content and adding comments on top)",
+                  "Resonations (re-sharing of other people's content and adding comments on top)",
                   'Expression flags (i.e. "work in progress," "collaboration")',
+                  'Ability to edit or update an expression'
                 ],
                 learnMoreText: [
-                  'Our intention here is to reduce noise and group think where possible, encourage more presence while viewing content, and inspire authentic sharing by moving away from rating metrics that foster competitive and curated self-expression.',
-                  'Within each expression, comments are hidden by default and reactions are only visible to the content creator.'
+                  'Our intention here is to reduce noise, encourage more presence while viewing content, and make space for authentic sharing by moving away from rating metrics that result in competitive and disingenuous social dynamics.',
+                  'Within each expression, comments are hidden by default and non-verbal reactions are only visible to the content creator.'
                 ],
                 child: JuntoInfoIcon(),
               ),
