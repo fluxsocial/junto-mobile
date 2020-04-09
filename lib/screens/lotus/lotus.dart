@@ -32,7 +32,7 @@ class JuntoLotus extends StatelessWidget {
   /// Pushes new page onto the stack
   /// Allows to go back from the new page
   /// This way Lotus is always in the root of the app
-  void _navigateTo(BuildContext context, Screen screen) {
+  void _navigateTo(BuildContext context, Screen screen) async {
     final _userProfile =
         Provider.of<UserDataProvider>(context, listen: false).userProfile;
     Widget child;
@@ -57,9 +57,14 @@ class JuntoLotus extends StatelessWidget {
         child: JuntoDen(),
       );
     }
-    Navigator.of(context).push(
+    await Navigator.of(context).push(
       FadeRoute<void>(
-        child: child,
+        child: ReturnToLotusOnSwipe(
+          expressionContext: expressionContext,
+          address: address,
+          source: screen,
+          child: child,
+        ),
         name: child.runtimeType.toString(),
       ),
     );
@@ -69,7 +74,7 @@ class JuntoLotus extends StatelessWidget {
   _onDragEnd(BuildContext context, DragEndDetails dx) {
     if (dx.velocity.pixelsPerSecond.dx > 100) {
       if (source == null || Navigator.canPop(context) == false) {
-        print('cannot pop, sorry!');
+        logger.logDebug('cannot pop, sorry!');
         return;
       } else {
         _navigateTo(context, source);
@@ -80,132 +85,151 @@ class JuntoLotus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
-    return WillPopScope(
-      onWillPop: () async {
-        final canPop = Navigator.canPop(context);
-        logger.logDebug('Current source: ${source}. Can pop: $canPop');
-        if (source != null) {
-          _navigateTo(context, source);
-          return false;
-        }
-        return true;
-      },
-      child: GestureDetector(
-        onHorizontalDragEnd: (dragDetails) => _onDragEnd(context, dragDetails),
-        child: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              BackgroundTheme(),
-              SafeArea(
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  FeatureDiscovery.clearPreferences(
-                                      context, <String>{
-                                    'lotus_info_id',
-                                  });
-                                  FeatureDiscovery.discoverFeatures(
-                                    context,
-                                    const <String>{
-                                      'lotus_info_id',
-                                    },
-                                  );
-                                },
-                                child: JuntoDescribedFeatureOverlay(
-                                  icon: Icon(
-                                    CustomIcons.newflower,
-                                    size: 38,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                  featureId: 'lotus_info_id',
-                                  oneFeature: true,
-                                  title:
-                                      'This is the intention screen, your medium for navigation.',
-                                  learnMore: true,
-                                  learnMoreText: [
-                                    'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
-                                  ],
-                                  hasUpNext: false,
-                                  child:
-                                      JuntoInfoIcon(neutralBackground: false),
-                                ),
-                              ),
-                            ],
-                          ),
+    return GestureDetector(
+      onHorizontalDragEnd: (dragDetails) => _onDragEnd(context, dragDetails),
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            BackgroundTheme(),
+            SafeArea(
+              child: Material(
+                type: MaterialType.transparency,
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
                         ),
-                        Column(
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            LotusButton(
-                              label: s.lotus_collective,
-                              icon: CustomIcons.newcollective,
-                              onTap: () =>
-                                  _navigateTo(context, Screen.collective),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .5,
-                                    child: LotusButton(
-                                      label: s.lotus_packs,
-                                      icon: CustomIcons.newpacks,
-                                      iconSize: 38,
-                                      onTap: () =>
-                                          _navigateTo(context, Screen.packs),
-                                    ),
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .5,
-                                    child: LotusButton(
-                                      label: s.lotus_groups,
-                                      icon: CustomIcons.newcircles,
-                                      iconSize: 38,
-                                      onTap: () =>
-                                          _navigateTo(context, Screen.groups),
-                                    ),
-                                  ),
+                            GestureDetector(
+                              onTap: () {
+                                FeatureDiscovery.clearPreferences(
+                                    context, <String>{
+                                  'lotus_info_id',
+                                });
+                                FeatureDiscovery.discoverFeatures(
+                                  context,
+                                  const <String>{
+                                    'lotus_info_id',
+                                  },
+                                );
+                              },
+                              child: JuntoDescribedFeatureOverlay(
+                                icon: Icon(
+                                  CustomIcons.newflower,
+                                  size: 38,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                featureId: 'lotus_info_id',
+                                oneFeature: true,
+                                title:
+                                    'This is the intention screen, your medium for navigation.',
+                                learnMore: true,
+                                learnMoreText: [
+                                  'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
                                 ],
+                                hasUpNext: false,
+                                child: JuntoInfoIcon(neutralBackground: false),
                               ),
                             ),
-                            LotusButton(
-                              label: s.lotus_create,
-                              icon: CustomIcons.newcreate,
-                              iconSize: 38,
-                              onTap: () => _navigateTo(context, Screen.create),
-                            ),
-                            const SizedBox(height: 25),
                           ],
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                      Column(
+                        children: <Widget>[
+                          LotusButton(
+                            label: s.lotus_collective,
+                            icon: CustomIcons.newcollective,
+                            onTap: () =>
+                                _navigateTo(context, Screen.collective),
+                          ),
+                          Container(
+                            color: Colors.transparent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .5,
+                                  child: LotusButton(
+                                    label: s.lotus_packs,
+                                    icon: CustomIcons.newpacks,
+                                    iconSize: 38,
+                                    onTap: () =>
+                                        _navigateTo(context, Screen.packs),
+                                  ),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .5,
+                                  child: LotusButton(
+                                    label: s.lotus_groups,
+                                    icon: CustomIcons.newcircles,
+                                    iconSize: 38,
+                                    onTap: () =>
+                                        _navigateTo(context, Screen.groups),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          LotusButton(
+                            label: s.lotus_create,
+                            icon: CustomIcons.newcreate,
+                            iconSize: 38,
+                            onTap: () => _navigateTo(context, Screen.create),
+                          ),
+                          const SizedBox(height: 25),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class ReturnToLotusOnSwipe extends StatelessWidget {
+  final Widget child;
+  final Screen source;
+  final String address;
+  final ExpressionContext expressionContext;
+
+  const ReturnToLotusOnSwipe(
+      {Key key, this.child, this.source, this.address, this.expressionContext})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushAndRemoveUntil(
+          context,
+          FadeRoute<void>(
+            child: FeatureDiscovery(
+              child: JuntoLotus(
+                address: address,
+                expressionContext: expressionContext,
+                source: source,
+              ),
+            ),
+          ),
+          (r) => r.isFirst,
+        );
+        return false;
+      },
+      child: child,
     );
   }
 }
