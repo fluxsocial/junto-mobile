@@ -67,6 +67,10 @@ android {
     flavorDimensions "flavor-type"
 
     productFlavors {
+        dev {
+            dimension "flavor-type"
+            applicationIdSuffix ".dev"
+        }
         tst {
             dimension "flavor-type"
             applicationIdSuffix ".tst"
