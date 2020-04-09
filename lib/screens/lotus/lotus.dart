@@ -77,7 +77,7 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   Future<void> getTheme() async {
     final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
-        .getTheme();
+        .currentTheme;
     setState(() {
       _currentTheme = theme;
     });
