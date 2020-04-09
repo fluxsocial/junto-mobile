@@ -73,9 +73,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
       builder: (BuildContext context, UserDataProvider value, Widget child) {
         return Stack(
           children: <Widget>[
-            BackgroundTheme(
-              currentTheme: _currentTheme,
-            ),
+            BackgroundTheme(),
             Container(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * .2,
