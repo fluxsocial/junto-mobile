@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoThemesProvider with ChangeNotifier {
-  JuntoThemesProvider(this._currentTheme);
+  JuntoThemesProvider(this._currentTheme) {
+    _themeName = _themes.keys
+        .firstWhere((k) => _themes[k] == _currentTheme, orElse: () => null);
+    print(_themeName);
+  }
 
   static final Map<String, ThemeData> _themes = <String, ThemeData>{
     'rainbow': JuntoThemes().rainbow,
@@ -27,10 +32,11 @@ class JuntoThemesProvider with ChangeNotifier {
   ThemeData get currentTheme => _currentTheme;
   ThemeData _currentTheme;
   ThemeData setTheme(String themeName) {
-    _persistTheme(themeName);
+    logger.logDebug('Setting theme to $themeName');
     _themeName = themeName;
     _currentTheme = _themes[themeName];
     notifyListeners();
+    _persistTheme(themeName);
     return currentTheme;
   }
 
