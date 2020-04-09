@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:provider/provider.dart';
 
 class BackgroundTheme extends StatelessWidget {
-  BackgroundTheme({this.currentTheme});
+  BackgroundTheme();
 
-  final ThemeData currentTheme;
-
-  String setBackground() {
-    if (currentTheme == JuntoThemes().aqueous ||
-        currentTheme == JuntoThemes().aqueousNight) {
+  String background(String themeName) {
+    if (themeName == JuntoThemes().aqueous ||
+        themeName == JuntoThemes().aqueousNight) {
       return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (currentTheme == JuntoThemes().royal ||
-        currentTheme == JuntoThemes().royalNight) {
+    } else if (themeName == JuntoThemes().royal ||
+        themeName == JuntoThemes().royalNight) {
       return 'assets/images/junto-mobile__themes--royal.png';
-    } else if (currentTheme == JuntoThemes().rainbow ||
-        currentTheme == JuntoThemes().rainbowNight) {
+    } else if (themeName == JuntoThemes().rainbow ||
+        themeName == JuntoThemes().rainbowNight) {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
@@ -23,13 +23,17 @@ class BackgroundTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Image.asset(
-        setBackground(),
-        fit: BoxFit.cover,
-      ),
+    return Consumer<JuntoThemesProvider>(
+      builder: (context, theme, child) {
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Image.asset(
+            background(theme.themeName),
+            fit: BoxFit.cover,
+          ),
+        );
+      },
     );
   }
 }
