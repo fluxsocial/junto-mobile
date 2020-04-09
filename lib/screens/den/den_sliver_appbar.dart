@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_button.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
+import 'package:provider/provider.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
-  const JuntoDenSliverAppbar(
-      {Key key, @required this.profile, @required this.currentTheme})
+  const JuntoDenSliverAppbar({Key key, @required this.profile})
       : super(key: key);
 
   final UserData profile;
-  final String currentTheme;
 
   @override
   State<StatefulWidget> createState() {
@@ -75,7 +75,10 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                   if (photo != null && (photo.isNotEmpty || photo != ''))
                     MemberBackgroundPhoto(profile: widget.profile),
                   if (photo == null || photo.isEmpty)
-                    MemberBackgroundPlaceholder(theme: widget.currentTheme),
+                    Consumer<JuntoThemesProvider>(
+                      builder: (_, theme, __) =>
+                          MemberBackgroundPlaceholder(theme: theme.themeName),
+                    ),
                   Padding(
                     padding: const EdgeInsets.only(
                       right: 10,
@@ -96,7 +99,10 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                             ),
                           ),
                         ),
-                        EditDenButton(currentTheme: widget.currentTheme),
+                        Consumer<JuntoThemesProvider>(
+                          builder: (_, theme, __) =>
+                              EditDenButton(currentTheme: theme.themeName),
+                        ),
                       ],
                     ),
                   ),
