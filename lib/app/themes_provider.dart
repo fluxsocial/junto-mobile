@@ -7,7 +7,6 @@ class JuntoThemesProvider with ChangeNotifier {
   JuntoThemesProvider(this._currentTheme) {
     _themeName = _themes.keys
         .firstWhere((k) => _themes[k] == _currentTheme, orElse: () => null);
-    print(_themeName);
   }
 
   static final Map<String, ThemeData> _themes = <String, ThemeData>{
