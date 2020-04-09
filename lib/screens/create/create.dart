@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -167,11 +168,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(vertical: 25),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             _selectExpressionIcon(ExpressionType.dynamic),
                             _selectExpressionIcon(ExpressionType.shortform),
                             _selectExpressionIcon(ExpressionType.photo),
-                            _selectExpressionIcon(ExpressionType.audio),
+                            if (appConfig.flavor != Flavor.prod)
+                              _selectExpressionIcon(ExpressionType.audio),
                           ],
                         ),
                       ),

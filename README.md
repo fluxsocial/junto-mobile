@@ -3,7 +3,7 @@ Welcome to Junto! This repo contains the source code for our mobile application.
 
 Requirements: 
 To get started building Junto, please ensure your development machine meets the following requirements:
-1) Flutter version 1.10.4 or higher (Junto development team uses branch `dev`)
+1) Flutter version 1.17.0 or higher (Junto development team uses branch `beta`)
 2) Obtain an API key from the development team
 
 Building the project:
@@ -22,47 +22,79 @@ storeFile=file-location
 To run call:
 
 ```
-flutter run --flavor tst
+flutter run --flavor dev --target lib/main_dev.dart
 ```
-
 
 ## Flavors support
 
-Junto app has additional flavors called `tst` and `prod`. This allows to install 2 apps side by side - one from Google Play (prod) and second from CI or your computer.
+Junto app has additional flavors called `dev`, `tst` and `prod`. This allows to install 3 apps side by side - one from Google Play (prod), second from CI, and third from your computer.
 
 To run this flavor call:
 
 ```
-flutter run --flavor tst
-flutter run --flavor prod
+flutter run --flavor dev --target lib/main_dev.dart
+flutter run --flavor tst --target lib/main_tst.dart
+flutter run --flavor prod --target lib/main_prod.dart
 ```
+
+You can access current flavor by calling `appConfig.flavor`.
 
 You can also add launch configuration to VS Code:
 
 ```json
 "configurations": [
-{
-    "name": "Flutter Tst",
-    "request": "launch",
-    "type": "dart",
-    "flutterMode": "debug",
-    "program": "lib/main.dart",
-    "args": [
-        "--flavor",
-        "tst"
-    ],
-},
-{
-    "name": "Flutter Prod",
-    "request": "launch",
-    "type": "dart",
-    "flutterMode": "debug",
-    "program": "lib/main.dart",
-    "args": [
-        "--flavor",
-        "prod"
-    ],
-},
+    {
+        "name": "Flutter Dev Debug",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "debug",
+        "program": "lib/main_dev.dart",
+        "args": [
+            "--flavor",
+            "dev"
+        ]
+    },
+    {
+        "name": "Flutter Dev Debug Mac",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main_dev.dart",
+        "flutterMode": "debug",
+    },
+    {
+        "name": "Flutter Dev Profile",
+        "type": "dart",
+        "request": "launch",
+        "program": "lib/main_dev.dart",
+        "flutterMode": "profile",
+        "args": [
+            "--flavor",
+            "dev"
+        ]
+    },
+    {
+        "name": "Flutter Dev Release",
+        "type": "dart",
+        "request": "launch",
+        "program": "lib/main_dev.dart",
+        "flutterMode": "release",
+        "args": [
+            "--flavor",
+            "dev"
+        ]
+    },
+    {
+        "name": "Flutter Prod Release",
+        "type": "dart",
+        "request": "launch",
+        "program": "lib/main_prod.dart",
+        "flutterMode": "release",
+        "args": [
+            "--flavor",
+            "prod"
+        ]
+    },
+]
 ```
 
 ## Internationalization
