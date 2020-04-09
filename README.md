@@ -3,7 +3,7 @@ Welcome to Junto! This repo contains the source code for our mobile application.
 
 Requirements: 
 To get started building Junto, please ensure your development machine meets the following requirements:
-1) Flutter version 1.10.4 or higher (Junto development team uses branch `dev`)
+1) Flutter version 1.17.0 or higher (Junto development team uses branch `beta`)
 2) Obtain an API key from the development team
 
 Building the project:
