@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
 class BackgroundTheme extends StatelessWidget {
   BackgroundTheme();
 
-  String background(String themeName) {
-    if (themeName == JuntoThemes().aqueous ||
-        themeName == JuntoThemes().aqueousNight) {
-      return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (themeName == JuntoThemes().royal ||
-        themeName == JuntoThemes().royalNight) {
-      return 'assets/images/junto-mobile__themes--royal.png';
-    } else if (themeName == JuntoThemes().rainbow ||
-        themeName == JuntoThemes().rainbowNight) {
+  String background(String theme) {
+    if (theme == 'rainbow' || theme == 'rainbow-night') {
       return 'assets/images/junto-mobile__themes--rainbow.png';
+    } else if (theme == 'aqueous' || theme == 'aqueous-night') {
+      return 'assets/images/junto-mobile__themes--aqueous.png';
+    } else if (theme == 'royal' || theme == 'royal-night') {
+      return 'assets/images/junto-mobile__themes--royal.png';
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     }
