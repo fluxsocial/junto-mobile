@@ -96,7 +96,7 @@ class MaterialAppWithTheme extends StatelessWidget {
           builder: DevicePreviewWrapper.appBuilder,
           title: 'JUNTO Alpha',
           debugShowCheckedModeBanner: false,
-          theme: theme.getTheme(),
+          theme: theme.currentTheme,
           localizationsDelegates: [
             S.delegate,
             GlobalMaterialLocalizations.delegate,
