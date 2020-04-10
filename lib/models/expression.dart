@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
+part 'expression.g.dart';
+
 /// Base class for posting an expression to the server
+
 class ExpressionModel {
   ExpressionModel({
     @required this.type,
@@ -31,10 +35,12 @@ class ExpressionModel {
   /// * [ShortFormExpression]
   /// * [PhotoFormExpression]
   /// * [EventFormExpression]
+
   final Map<String, dynamic> expressionData;
 
   /// Context for the given expression. Value is dependant on [ExpressionContext].
   /// See docs for details: https://github.com/juntofoundation/Junto-Alpha-API/blob/master/docs/expression.md
+
   final dynamic context;
 
   /// list of channel UUIDs the expression will be shared to.
@@ -174,6 +180,7 @@ class EventFormExpression {
       };
 }
 
+@HiveType(typeId: 0)
 class ExpressionResponse {
   ExpressionResponse({
     this.address,
@@ -250,17 +257,28 @@ class ExpressionResponse {
     //       ),
   }
 
+  @HiveField(0)
   final String address;
+  @HiveField(1)
   final String type;
+  @HiveField(2)
   final dynamic expressionData;
   final DateTime createdAt;
+  @HiveField(3)
   final int numberResonations;
+  @HiveField(4)
   final int numberComments;
+  @HiveField(5)
   final dynamic resonations;
+  @HiveField(6)
   final dynamic comments;
+  @HiveField(7)
   final String privacy;
+  @HiveField(8)
   final List<dynamic> channels;
+  @HiveField(9)
   final String context;
+  @HiveField(10)
   final UserProfile creator;
 
   Map<String, dynamic> toMap() {
