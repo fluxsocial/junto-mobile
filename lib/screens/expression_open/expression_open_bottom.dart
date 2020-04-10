@@ -5,6 +5,10 @@ import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 class ExpressionOpenBottom extends StatelessWidget {
   const ExpressionOpenBottom(this.expression, this.openExpressionContext);
@@ -73,10 +77,22 @@ class ExpressionOpenBottom extends StatelessWidget {
                       horizontal: 10,
                     ),
                     color: Colors.transparent,
-                    child: Icon(
-                      CustomIcons.newcreate,
-                      size: 24,
-                      color: Theme.of(context).primaryColorLight,
+                    child: JuntoDescribedFeatureOverlay(
+                      featureId: 'expression_context_id',
+                      title: "View the channels this expression is tagged in.",
+                      learnMore: false,
+                      hasUpNext: false,
+                      isLastFeature: true,
+                      icon: Icon(
+                        CustomIcons.newcreate,
+                        size: 28,
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                      child: Icon(
+                        CustomIcons.newcreate,
+                        size: 24,
+                        color: Theme.of(context).primaryColorLight,
+                      ),
                     ),
                   ),
                 )
