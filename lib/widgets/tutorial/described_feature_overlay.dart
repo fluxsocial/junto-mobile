@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class JuntoDescribedFeatureOverlay extends StatefulWidget {
   const JuntoDescribedFeatureOverlay({
@@ -211,23 +210,26 @@ class JuntoDescribedFeatureOverlayState
                         baseTutorialVisible = true;
                       });
                     },
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'BACK',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.arrow_back,
                             color: Colors.white,
+                            size: 20,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 10),
+                          Text(
+                            'BACK',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   if (hasUpNext)
@@ -238,23 +240,26 @@ class JuntoDescribedFeatureOverlayState
                           comingSoonVisible = true;
                         });
                       },
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'COMING SOON',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              'COMING SOON',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ],
+                            const SizedBox(width: 10),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                 ],
@@ -296,18 +301,12 @@ class JuntoDescribedFeatureOverlayState
                       margin: const EdgeInsets.only(bottom: 15),
                       child: Row(
                         children: <Widget>[
-                          // Icon(
-                          //   Icons.keyboard_arrow_right,
-                          //   size: 24,
-                          //   color: Colors.white,
-                          // ),
                           Icon(
                             Icons.label_important,
                             size: 20,
                             color: Colors.white,
                           ),
                           const SizedBox(width: 10),
-
                           Flexible(
                             child: Text(
                               text,
