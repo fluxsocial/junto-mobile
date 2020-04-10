@@ -40,13 +40,13 @@ class ExpressionOpenAppbar extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                FeatureDiscovery.clearPreferences(context, <String>{
-                  'expression_info_id',
-                });
+                FeatureDiscovery.clearPreferences(context,
+                    <String>{'expression_info_id', 'expression_context_id,'});
                 FeatureDiscovery.discoverFeatures(
                   context,
                   const <String>{
                     'expression_info_id',
+                    'expression_context_id',
                   },
                 );
               },
@@ -57,7 +57,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                     "This screen shows a creator's expression. Click 'Learn Why' to read about our design inspiration",
                 learnMore: true,
                 hasUpNext: true,
-                isLastFeature: true,
+                isLastFeature: false,
                 upNextText: [
                   'Ability to react and comment privately',
                   "Resonations (re-sharing of other people's content and adding comments on top)",
