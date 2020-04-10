@@ -101,6 +101,7 @@ class ExpressionResponseAdapter extends TypeAdapter<ExpressionResponse> {
       address: fields[0] as String,
       type: fields[1] as String,
       expressionData: fields[2] as dynamic,
+      createdAt: fields[11] as DateTime,
       numberResonations: fields[3] as int,
       creator: fields[10] as UserProfile,
       context: fields[9] as String,
@@ -115,7 +116,7 @@ class ExpressionResponseAdapter extends TypeAdapter<ExpressionResponse> {
   @override
   void write(BinaryWriter writer, ExpressionResponse obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.address)
       ..writeByte(1)
@@ -137,6 +138,8 @@ class ExpressionResponseAdapter extends TypeAdapter<ExpressionResponse> {
       ..writeByte(9)
       ..write(obj.context)
       ..writeByte(10)
-      ..write(obj.creator);
+      ..write(obj.creator)
+      ..writeByte(11)
+      ..write(obj.createdAt);
   }
 }
