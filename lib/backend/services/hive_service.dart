@@ -41,6 +41,7 @@ class HiveCache implements LocalCache {
       ExpressionResponse res = await box.get(key);
       items.add(res);
     }
+    items.sort((a, b) => -a.createdAt.compareTo(b.createdAt));
     return items;
   }
 }
