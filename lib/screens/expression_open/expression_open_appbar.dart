@@ -17,7 +17,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       brightness: Theme.of(context).brightness,
-      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+      iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
       elevation: 0,
       titleSpacing: 0,
       title: Container(
