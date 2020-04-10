@@ -102,12 +102,11 @@ class JuntoLotus extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          vertical: 10,
+                          vertical: 15,
                         ),
                         color: Colors.transparent,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {

@@ -112,7 +112,7 @@ class JuntoThemes {
     colorScheme: const ColorScheme(
       // Dark blue
       primary: Color(0xFF1A2F54),
-      primaryVariant: Color(0xFF2E4F78),
+      primaryVariant: Color(0xFF386798),
 
       // Light Blue
       secondary: Color(0xff2B5583),
@@ -405,7 +405,7 @@ class JuntoThemes {
     colorScheme: const ColorScheme(
       // Dark blue
       primary: Color(0xFF1A2F54),
-      primaryVariant: Color(0xFF2E4F78),
+      primaryVariant: Color(0xFF386798),
 
       // Light Blue
       secondary: Color(0xff2B5583),

@@ -23,7 +23,9 @@ class MemberBio extends StatelessWidget {
               );
             },
             child: Container(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(
+                top: 10,
+              ),
               width: MediaQuery.of(context).size.width,
               color: Colors.transparent,
               child: Text(

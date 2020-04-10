@@ -43,6 +43,8 @@ class JuntoDescribedFeatureOverlay extends StatefulWidget {
 class JuntoDescribedFeatureOverlayState
     extends State<JuntoDescribedFeatureOverlay> {
   bool upNextVisible = false;
+  bool comingSoonVisible = false;
+
   _actionItemButton(BuildContext context, String name, Function onPressed) {
     return GestureDetector(
       onTap: onPressed,
@@ -89,6 +91,7 @@ class JuntoDescribedFeatureOverlayState
             context: context,
             learnMoreText: widget.learnMoreText,
             hasUpNext: widget.hasUpNext,
+            upNextText: widget.upNextText,
           ),
         ],
       ),
@@ -110,7 +113,7 @@ class JuntoDescribedFeatureOverlayState
               child: Text(
                 widget.title,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
                 ),
@@ -132,22 +135,18 @@ class JuntoDescribedFeatureOverlayState
                 'Next Feature',
                 () async => FeatureDiscovery.completeCurrentStep(context),
               ),
-            _actionItemButton(
-              context,
-              'Dismiss',
-              () async => FeatureDiscovery.dismissAll(context),
-            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _learnMore(
-      {BuildContext context,
-      List<String> learnMoreText,
-      bool hasUpNext,
-      String upNext}) {
+  Widget _learnMore({
+    BuildContext context,
+    List<String> learnMoreText,
+    bool hasUpNext,
+    List<String> upNextText,
+  }) {
     return AnimatedOpacity(
       opacity: upNextVisible ? 1 : 0,
       duration: Duration(milliseconds: 300),
@@ -166,7 +165,7 @@ class JuntoDescribedFeatureOverlayState
                   Text(
                     'DESIGN INSPIRATION',
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                     ),
@@ -179,46 +178,13 @@ class JuntoDescribedFeatureOverlayState
                         child: Text(
                           text,
                           style: TextStyle(
-                            fontSize: 17,
+                            fontSize: 20,
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
+                            height: 1.7,
                           ),
                         ),
                       ),
-                  if (hasUpNext)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const SizedBox(height: 25),
-                        Text(
-                          'UP NEXT',
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        for (String text in widget.upNextText)
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              children: <Widget>[
-                                Flexible(
-                                  child: Text(
-                                    text,
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
                 ],
               ),
             ),
@@ -253,7 +219,7 @@ class JuntoDescribedFeatureOverlayState
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
