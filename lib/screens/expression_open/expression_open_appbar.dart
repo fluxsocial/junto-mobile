@@ -57,7 +57,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                     "This screen shows a creator's expression. Click 'Learn Why' to read about our design inspiration",
                 learnMore: true,
                 hasUpNext: true,
-                isLastFeature: false,
+                isLastFeature: true,
                 upNextText: [
                   'Ability to react and comment privately',
                   "Resonations (re-sharing of other people's content and adding comments on top)",
