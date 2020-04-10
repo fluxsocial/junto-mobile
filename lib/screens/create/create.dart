@@ -179,6 +179,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                         source: source,
                         navigateTo: _navigateTo,
                       ),
+                      const SizedBox(height: 25),
                     ],
                   ),
                 ],

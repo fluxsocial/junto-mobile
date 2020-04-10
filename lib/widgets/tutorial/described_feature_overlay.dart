@@ -76,7 +76,7 @@ class JuntoDescribedFeatureOverlayState
     return DescribedFeatureOverlay(
       tapTarget: widget.icon,
       featureId: widget.featureId,
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: Theme.of(context).colorScheme.primaryVariant,
       contentLocation: widget.contentLocation,
       overflowMode: OverflowMode.extendBackground,
       targetColor: Theme.of(context).backgroundColor,
