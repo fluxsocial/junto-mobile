@@ -40,13 +40,13 @@ class ExpressionOpenAppbar extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                FeatureDiscovery.clearPreferences(context,
-                    <String>{'expression_info_id', 'expression_context_id,'});
+                FeatureDiscovery.clearPreferences(context, <String>{
+                  'expression_info_id',
+                });
                 FeatureDiscovery.discoverFeatures(
                   context,
                   const <String>{
                     'expression_info_id',
-                    'expression_context_id',
                   },
                 );
               },
