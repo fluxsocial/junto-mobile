@@ -272,7 +272,6 @@ class ExpressionResponse extends HiveObject {
   final String type;
   @HiveField(2)
   final dynamic expressionData;
-  final DateTime createdAt;
   @HiveField(3)
   final int numberResonations;
   @HiveField(4)
@@ -289,6 +288,8 @@ class ExpressionResponse extends HiveObject {
   final String context;
   @HiveField(10)
   final UserProfile creator;
+  @HiveField(11)
+  final DateTime createdAt;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
