@@ -25,12 +25,13 @@ class HiveCache implements LocalCache {
   @override
   Future<void> insertExpressions(List<ExpressionResponse> expressions) async {
     final box = await Hive.openLazyBox<ExpressionResponse>('expressions');
+    final _futures = <Future>[];
     for (ExpressionResponse expression in expressions) {
       if (!box.containsKey(expression.address)) {
-        box.put(expression.address, expression);
+        _futures.add(box.put(expression.address, expression));
       }
     }
-    retrieveExpressions();
+    await Future.wait(_futures);
   }
 
   @override
