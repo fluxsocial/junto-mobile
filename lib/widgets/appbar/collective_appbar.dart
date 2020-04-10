@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/collective/perspectives/expression_fee
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
@@ -114,11 +115,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                               );
                             },
                             child: JuntoDescribedFeatureOverlay(
-                              icon: Icon(
-                                CustomIcons.newcollective,
-                                size: 36,
-                                color: Theme.of(context).primaryColor,
-                              ),
+                              icon: OverlayInfoIcon(),
                               featureId: 'collective_info_id',
                               title:
                                   'This is the Collective, where all public content is shown. Click on an expression to open it.',

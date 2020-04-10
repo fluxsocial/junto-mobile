@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/screens/collective/collective_actions/create_p
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 
 class PerspectivesAppbar extends StatelessWidget {
   const PerspectivesAppbar({
@@ -86,11 +87,7 @@ class PerspectivesAppbar extends StatelessWidget {
                     );
                   },
                   child: JuntoDescribedFeatureOverlay(
-                    icon: Icon(
-                      CustomIcons.newbinoculars,
-                      size: 36,
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    icon: OverlayInfoIcon(),
                     featureId: 'perspectives_info_id',
                     title:
                         'This is your list of your perspectives. There are three by default - you can also make your own.',

@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pa
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatefulWidget {
@@ -168,11 +169,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                         );
                       },
                       child: JuntoDescribedFeatureOverlay(
-                        icon: Icon(
-                          CustomIcons.newbinoculars,
-                          size: 36,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        icon: OverlayInfoIcon(),
                         featureId: 'relations_info_id',
                         title:
                             'This screen shows the different relations you have with people on Junto.',
