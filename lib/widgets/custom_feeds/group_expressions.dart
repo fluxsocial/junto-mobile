@@ -102,7 +102,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                   ),
                 ),
               ),
-              if (appConfig.flavor != Flavor.prod)
+              if (appConfig.flavor == Flavor.dev)
                 FetchMoreButton(
                   onPressed: _fetchMore,
                 )
