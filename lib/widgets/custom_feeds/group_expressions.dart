@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
@@ -101,9 +102,10 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                   ),
                 ),
               ),
-              FetchMoreButton(
-                onPressed: _fetchMore,
-              )
+              if (appConfig.flavor != Flavor.prod)
+                FetchMoreButton(
+                  onPressed: _fetchMore,
+                )
             ],
           );
         }
