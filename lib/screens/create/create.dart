@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -21,13 +22,11 @@ class JuntoCreate extends StatefulWidget {
     @required this.channels,
     @required this.address,
     @required this.expressionContext,
-    @required this.currentTheme,
   });
 
   final List<String> channels;
   final String address;
   final ExpressionContext expressionContext;
-  final ThemeData currentTheme;
 
   @override
   State<StatefulWidget> createState() {
@@ -100,9 +99,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: BackgroundTheme(
-            currentTheme: widget.currentTheme,
-          ),
+          child: BackgroundTheme(),
         ),
         Positioned(
           bottom: 0,
@@ -167,11 +164,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(vertical: 25),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             _selectExpressionIcon(ExpressionType.dynamic),
                             _selectExpressionIcon(ExpressionType.shortform),
                             _selectExpressionIcon(ExpressionType.photo),
-                            _selectExpressionIcon(ExpressionType.audio),
+                            if (appConfig.flavor != Flavor.prod)
+                              _selectExpressionIcon(ExpressionType.audio),
                           ],
                         ),
                       ),

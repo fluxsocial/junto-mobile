@@ -39,14 +39,15 @@ class BottomNav extends StatelessWidget {
       height: 50,
       width: 180,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Theme.of(context).backgroundColor,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Theme.of(context).dividerColor,
-              blurRadius: 6,
-            ),
-          ]),
+        borderRadius: BorderRadius.circular(100),
+        color: Theme.of(context).backgroundColor,
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Theme.of(context).dividerColor,
+            blurRadius: 6,
+          ),
+        ],
+      ),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -86,7 +87,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
                   FadeRoute<void>(
                     child: FeatureDiscovery(
@@ -97,6 +98,7 @@ class BottomNav extends StatelessWidget {
                       ),
                     ),
                   ),
+                  (r) => r.isFirst,
                 );
               },
               child: Container(

@@ -1,18 +1,15 @@
-part of 'collective_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
-@immutable
-abstract class CollectiveState {}
+part 'collective_state.freezed.dart';
 
-class CollectiveInitial extends CollectiveState {}
-
-class CollectivePopulated extends CollectiveState {
-  CollectivePopulated(this.results,
-      [this.loadingMore = false, this.name = 'JUNTO']);
-  final List<ExpressionResponse> results;
-  final bool loadingMore;
-  final String name;
+@freezed
+abstract class CollectiveState with _$CollectiveState {
+  factory CollectiveState.initial() = CollectiveInitial;
+  factory CollectiveState.populated(List<ExpressionResponse> results,
+      [bool loadingMore,
+      @Default('JUNTO') String name,
+      bool availableMore]) = CollectivePopulated;
+  factory CollectiveState.loading() = CollectiveLoading;
+  factory CollectiveState.error() = CollectiveError;
 }
-
-class CollectiveLoading extends CollectiveState {}
-
-class CollectiveError extends CollectiveState {}
