@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatelessWidget {
@@ -122,11 +123,7 @@ class JuntoLotus extends StatelessWidget {
                                 );
                               },
                               child: JuntoDescribedFeatureOverlay(
-                                icon: Icon(
-                                  CustomIcons.newflower,
-                                  size: 38,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                                icon: OverlayInfoIcon(),
                                 featureId: 'lotus_info_id',
                                 oneFeature: true,
                                 title:
