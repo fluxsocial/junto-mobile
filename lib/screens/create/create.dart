@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -13,6 +12,7 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
 import 'create_templates/audio.dart';
@@ -134,11 +134,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                             );
                           },
                           child: JuntoDescribedFeatureOverlay(
-                            icon: Icon(
-                              CustomIcons.newcreate,
-                              size: 36,
-                              color: Theme.of(context).primaryColor,
-                            ),
+                            icon:OverlayInfoIcon(),
                             featureId: 'expression_center_id',
                             oneFeature: true,
                             title:

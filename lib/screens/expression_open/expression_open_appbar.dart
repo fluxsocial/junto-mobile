@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
@@ -50,11 +51,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 );
               },
               child: JuntoDescribedFeatureOverlay(
-                icon: Icon(
-                  CustomIcons.newcreate,
-                  size: 36,
-                  color: Theme.of(context).primaryColor,
-                ),
+                icon: OverlayInfoIcon(),
                 featureId: 'expression_info_id',
                 title:
                     "This screen shows a creator's expression. Click 'Learn Why' to read about our design inspiration",

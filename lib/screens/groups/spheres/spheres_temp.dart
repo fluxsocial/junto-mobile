@@ -6,7 +6,7 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 
@@ -53,11 +53,7 @@ class SpheresTemp extends StatelessWidget {
                         );
                       },
                       child: JuntoDescribedFeatureOverlay(
-                        icon: Icon(
-                          CustomIcons.newcircles,
-                          size: 36,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        icon: OverlayInfoIcon(),
                         featureId: 'groups_info_id',
                         isLastFeature: true,
                         title:

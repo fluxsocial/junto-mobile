@@ -7,7 +7,7 @@ import 'package:junto_beta_mobile/screens/packs/pack_requests.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
@@ -76,11 +76,7 @@ class PacksListState extends State<PacksList> {
                         );
                       },
                       child: JuntoDescribedFeatureOverlay(
-                        icon: Icon(
-                          CustomIcons.newpacks,
-                          size: 36,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        icon: OverlayInfoIcon(),
                         featureId: 'packs_list_info_id',
                         title:
                             'This is the list of Packs you belong to. Each person can only create one pack, but can belong to many others.',

@@ -8,7 +8,7 @@ class OverlayInfoIcon extends StatelessWidget {
       child: Text(
         '?',
         style: TextStyle(
-          fontSize: 17,
+          fontSize: 20,
           color: Theme.of(context).primaryColor,
           fontWeight: FontWeight.w700,
         ),
