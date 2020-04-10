@@ -4,6 +4,8 @@ import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:meta/meta.dart';
 
+part 'user_model.g.dart';
+
 /// Generates a stripped down version of [UserProfile].
 /// Mostly used for overviews and user tiles.
 class SlimUserResponse {

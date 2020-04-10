@@ -70,6 +70,7 @@ class ExpressionModel {
   }
 }
 
+@HiveType(typeId: 4)
 class LongFormExpression {
   LongFormExpression({
     this.title,
@@ -83,7 +84,9 @@ class LongFormExpression {
     );
   }
 
+  @HiveField(0)
   final String title;
+  @HiveField(1)
   final String body;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -92,6 +95,7 @@ class LongFormExpression {
       };
 }
 
+@HiveType(typeId: 3)
 class ShortFormExpression {
   ShortFormExpression({
     @required this.background,
@@ -105,7 +109,9 @@ class ShortFormExpression {
     );
   }
 
+  @HiveField(0)
   final List<dynamic> background;
+  @HiveField(1)
   final String body;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -114,6 +120,7 @@ class ShortFormExpression {
       };
 }
 
+@HiveType(typeId: 2)
 class PhotoFormExpression {
   PhotoFormExpression({
     this.image,
@@ -127,7 +134,9 @@ class PhotoFormExpression {
     );
   }
 
+  @HiveField(0)
   String image;
+  @HiveField(1)
   String caption;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -181,7 +190,7 @@ class EventFormExpression {
 }
 
 @HiveType(typeId: 0)
-class ExpressionResponse {
+class ExpressionResponse extends HiveObject {
   ExpressionResponse({
     this.address,
     this.type,
