@@ -64,7 +64,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                   'Ability to edit or update an expression'
                 ],
                 learnMoreText: [
-                  'Our intention here is to reduce noise, encourage more presence while viewing content, and make space for authentic sharing by moving away from rating metrics that result in competitive and disingenuous social dynamics.',
+                  'Our intention here is to reduce noise, encourage more presence while viewing content, and make space for more authentic sharing by moving away from rating metrics that result in competitive and superficial social dynamics.',
                   'Within each expression, comments are hidden by default and non-verbal reactions are only visible to the content creator.'
                 ],
                 child: JuntoInfoIcon(),
