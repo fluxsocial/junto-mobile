@@ -17,6 +17,7 @@ import 'package:junto_beta_mobile/backend/services/auth_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
 import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
 import 'package:junto_beta_mobile/backend/services/group_service.dart';
+import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/backend/services/notification_service.dart';
 import 'package:junto_beta_mobile/backend/services/search_service.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
@@ -27,17 +28,20 @@ export 'package:junto_beta_mobile/backend/services.dart';
 export 'package:junto_beta_mobile/backend/user_data_provider.dart';
 
 class Backend {
-  const Backend._(
-      {this.searchRepo,
-      this.authRepo,
-      this.userRepo,
-      this.collectiveProvider,
-      this.groupsProvider,
-      this.expressionRepo,
-      this.currentTheme,
-      this.notificationRepo,
-      this.appRepo});
+  const Backend._({
+    this.searchRepo,
+    this.authRepo,
+    this.userRepo,
+    this.collectiveProvider,
+    this.groupsProvider,
+    this.expressionRepo,
+    this.currentTheme,
+    this.notificationRepo,
+    this.appRepo,
+    this.db,
+  });
 
+  // ignore: missing_return
   static Future<Backend> init() async {
     try {
       logger.logDebug('Initializing backend');
@@ -53,17 +57,18 @@ class Backend {
       final NotificationService notificationService =
           NotificationServiceImpl(client);
       final UserRepo userRepo = UserRepo(userService, notificationService);
+      final dbService = HiveCache();
       return Backend._(
-        searchRepo: SearchRepo(searchService),
-        authRepo: AuthRepo(authService, userRepo),
-        userRepo: userRepo,
-        collectiveProvider: CollectiveProviderCentralized(client),
-        groupsProvider: GroupRepo(groupService, userService),
-        expressionRepo: ExpressionRepo(expressionService),
-        currentTheme: currentTheme,
-        notificationRepo: NotificationRepo(notificationService),
-        appRepo: AppRepo(),
-      );
+          searchRepo: SearchRepo(searchService),
+          authRepo: AuthRepo(authService, userRepo),
+          userRepo: userRepo,
+          collectiveProvider: CollectiveProviderCentralized(client),
+          groupsProvider: GroupRepo(groupService, userService),
+          expressionRepo: ExpressionRepo(expressionService, dbService),
+          currentTheme: currentTheme,
+          notificationRepo: NotificationRepo(notificationService),
+          appRepo: AppRepo(),
+          db: dbService);
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -76,15 +81,16 @@ class Backend {
     final GroupService groupService = MockSphere();
     final SearchService searchService = MockSearch();
     return Backend._(
-      authRepo: AuthRepo(authService, null),
-      userRepo: UserRepo(userService, null),
-      collectiveProvider: null,
-      groupsProvider: GroupRepo(groupService, userService),
-      expressionRepo: ExpressionRepo(expressionService),
-      searchRepo: SearchRepo(searchService),
-      currentTheme: JuntoThemes().aqueous,
-      appRepo: AppRepo(),
-    );
+        authRepo: AuthRepo(authService, null),
+        userRepo: UserRepo(userService, null),
+        collectiveProvider: null,
+        groupsProvider: GroupRepo(groupService, userService),
+        //TODO(Nash): MockDB
+        expressionRepo: ExpressionRepo(expressionService, null),
+        searchRepo: SearchRepo(searchService),
+        currentTheme: JuntoThemes().aqueous,
+        appRepo: AppRepo(),
+        db: null);
   }
 
   final SearchRepo searchRepo;
@@ -96,4 +102,5 @@ class Backend {
   final NotificationRepo notificationRepo;
   final ThemeData currentTheme;
   final AppRepo appRepo;
+  final LocalCache db;
 }
