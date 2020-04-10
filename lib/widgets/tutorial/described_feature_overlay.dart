@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class JuntoDescribedFeatureOverlay extends StatefulWidget {
   const JuntoDescribedFeatureOverlay({
@@ -42,7 +43,8 @@ class JuntoDescribedFeatureOverlay extends StatefulWidget {
 
 class JuntoDescribedFeatureOverlayState
     extends State<JuntoDescribedFeatureOverlay> {
-  bool upNextVisible = false;
+  bool baseTutorialVisible = true;
+  bool designInspirationVisible = false;
   bool comingSoonVisible = false;
 
   _actionItemButton(BuildContext context, String name, Function onPressed) {
@@ -93,6 +95,10 @@ class JuntoDescribedFeatureOverlayState
             hasUpNext: widget.hasUpNext,
             upNextText: widget.upNextText,
           ),
+          if (widget.hasUpNext)
+            _comingSoon(
+              context: context,
+            ),
         ],
       ),
       child: widget.child,
@@ -101,15 +107,15 @@ class JuntoDescribedFeatureOverlayState
 
   Widget _tutorialDescription() {
     return AnimatedOpacity(
-      opacity: upNextVisible ? 0 : 1,
+      opacity: baseTutorialVisible ? 1 : 0,
       duration: Duration(milliseconds: 300),
       child: Visibility(
-        visible: !upNextVisible,
+        visible: baseTutorialVisible,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.only(bottom: 20),
               child: Text(
                 widget.title,
                 style: TextStyle(
@@ -125,7 +131,8 @@ class JuntoDescribedFeatureOverlayState
                 'Learn Why',
                 () {
                   setState(() {
-                    upNextVisible = true;
+                    baseTutorialVisible = false;
+                    designInspirationVisible = true;
                   });
                 },
               ),
@@ -148,10 +155,10 @@ class JuntoDescribedFeatureOverlayState
     List<String> upNextText,
   }) {
     return AnimatedOpacity(
-      opacity: upNextVisible ? 1 : 0,
+      opacity: designInspirationVisible ? 1 : 0,
       duration: Duration(milliseconds: 300),
       child: Visibility(
-        visible: upNextVisible,
+        visible: designInspirationVisible,
         child: Column(
           children: <Widget>[
             Container(
@@ -170,7 +177,7 @@ class JuntoDescribedFeatureOverlayState
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 20),
                   if (learnMoreText != null)
                     for (String text in learnMoreText)
                       Container(
@@ -188,10 +195,141 @@ class JuntoDescribedFeatureOverlayState
                 ],
               ),
             ),
+            Container(
+              color: Colors.transparent,
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+                horizontal: 0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        designInspirationVisible = false;
+                        baseTutorialVisible = true;
+                      });
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'BACK',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (hasUpNext)
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          designInspirationVisible = false;
+                          comingSoonVisible = true;
+                        });
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            'COMING SOON',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _comingSoon({BuildContext context}) {
+    return AnimatedOpacity(
+      opacity: comingSoonVisible ? 1 : 0,
+      duration: Duration(milliseconds: 300),
+      child: Visibility(
+        visible: comingSoonVisible,
+        child: Column(
+          children: <Widget>[
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * .7,
+              ),
+              child: ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(0),
+                children: <Widget>[
+                  Text(
+                    'COMING SOON',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  for (String text in widget.upNextText)
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      child: Row(
+                        children: <Widget>[
+                          // Icon(
+                          //   Icons.keyboard_arrow_right,
+                          //   size: 24,
+                          //   color: Colors.white,
+                          // ),
+                          Icon(
+                            Icons.label_important,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 10),
+
+                          Flexible(
+                            child: Text(
+                              text,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                height: 1.7,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
             GestureDetector(
               onTap: () {
                 setState(() {
-                  upNextVisible = false;
+                  comingSoonVisible = false;
+                  designInspirationVisible = true;
                 });
               },
               child: Container(
