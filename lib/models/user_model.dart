@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/models/den_model.dart';
 import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
@@ -64,8 +65,9 @@ class SlimUserResponse {
 /// Class used to store the profile information of a user.
 /// Contains the [address], [name], [bio],
 /// [profilePicture], [verified].
-class UserProfile {
-  const UserProfile({
+@HiveType(typeId: 1)
+class UserProfile extends HiveObject {
+  UserProfile({
     @required this.address,
     @required this.name,
     @required this.bio,
@@ -98,33 +100,43 @@ class UserProfile {
   }
 
   /// User address
+  @HiveField(0)
   final String address;
 
   ///  Name of the author
+  @HiveField(1)
   final String name;
 
   /// Author's biography
+  @HiveField(2)
   final String bio;
 
   /// Author's location
+  @HiveField(3)
   final List<String> location;
 
   /// Url of the author's profile image
+  @HiveField(4)
   final List<String> profilePicture;
 
   // URL of background photo
+  @HiveField(5)
   final String backgroundPhoto;
 
   /// Whether the given user account has been verified
+  @HiveField(6)
   final bool verified;
 
   /// Username of the given user.
+  @HiveField(7)
   final String username;
 
   /// List of websites a user can upload
+  @HiveField(8)
   final List<String> website;
 
   /// Gender of the user.
+  @HiveField(9)
   final List<String> gender;
 
   @override

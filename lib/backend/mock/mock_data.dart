@@ -1,7 +1,7 @@
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 
-UserProfile kUserProfile = const UserProfile(
+UserProfile kUserProfile = UserProfile(
   address: '123e4567-e89b-23s3-a256-426655440000',
   bio: 'Hi there, this is a mock user profile',
   name: 'Testy',
@@ -88,7 +88,7 @@ List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
     numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
-    creator: const UserProfile(
+    creator: UserProfile(
       bio: 'hellooo',
       name: 'Eric',
       profilePicture: <String>[''],
@@ -112,7 +112,7 @@ List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
     numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
-    creator: const UserProfile(
+    creator: UserProfile(
       name: 'Dora',
       profilePicture: <String>[''],
       bio: 'hellooo',
@@ -136,7 +136,7 @@ List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
     numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
-    creator: const UserProfile(
+    creator: UserProfile(
       name: 'Josh',
       profilePicture: <String>[''],
       bio: 'hellooo',
@@ -159,7 +159,7 @@ List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
     numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
-    creator: const UserProfile(
+    creator: UserProfile(
       address: 'parent-address',
       bio: "I'm Drea.",
       name: 'Drea',
@@ -185,7 +185,7 @@ List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
     numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
-    creator: const UserProfile(
+    creator: UserProfile(
       address: '0vefoiwiafjvkbr32r243r5',
       bio: 'hellooo',
       name: 'Nash',
@@ -212,7 +212,7 @@ List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
     numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
-    creator: const UserProfile(
+    creator: UserProfile(
       address: '0vefoiwiafjvkbr32r243r5',
       name: 'Yaz',
       profilePicture: <String>[''],
@@ -235,7 +235,7 @@ List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
     numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
-    creator: const UserProfile(
+    creator: UserProfile(
       address: '0vefoiwiafjvkbr32r243r5',
       backgroundPhoto: '',
       website: <String>['https://www.twitter.com/Junto'],
@@ -259,7 +259,7 @@ List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
     numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
-    creator: const UserProfile(
+    creator: UserProfile(
       address: '0vefoiwiafjvkbr32r243r5',
       website: <String>['https://www.twitter.com/Junto'],
       backgroundPhoto: '',
@@ -495,7 +495,7 @@ List<Group> kGroups = <Group>[
 ];
 
 List<UserProfile> kUsers = <UserProfile>[
-  const UserProfile(
+  UserProfile(
     address: '123e4567-e89b-23s3-a256-426655440000',
     bio: 'Hi there, this is a mock user profile',
     name: 'Testy',
@@ -507,7 +507,7 @@ List<UserProfile> kUsers = <UserProfile>[
     location: <String>['Somewhere on Earth'],
     gender: <String>['Male'],
   ),
-  const UserProfile(
+  UserProfile(
     address: '223e4567-e89b-23s3-a256-426655440000',
     bio: 'Dreaaaaa',
     name: 'Drea',
@@ -519,7 +519,7 @@ List<UserProfile> kUsers = <UserProfile>[
     location: <String>['Somewhere on Earth'],
     gender: <String>['Female'],
   ),
-  const UserProfile(
+  UserProfile(
     address: '323e4567-e89b-23s3-a256-426655440000',
     bio: 'Ericccccc',
     name: 'Eric Yang',
