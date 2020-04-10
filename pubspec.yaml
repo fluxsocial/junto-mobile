@@ -42,17 +42,15 @@ dependencies:
   intl: ^0.16.1
   audioplayers: ^0.15.0
   flutter_audio_recorder: ^0.5.5
-
+  hive: 1.4.1+1
+  hive_flutter: 0.3.0+1
 dependency_overrides:
   path_provider: 1.6.5
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_driver:
-    sdk: flutter
   test: any
   build_runner:
+  hive_generator: 0.7.0+2
   freezed:
   effective_dart:
 
