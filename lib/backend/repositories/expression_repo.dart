@@ -12,6 +12,7 @@ class ExpressionRepo {
   final LocalCache db;
   final ExpressionService _expressionService;
   QueryResults<ExpressionResponse> cachedResults;
+  int count = 0;
 
   Future<ExpressionResponse> createExpression(
     ExpressionModel expression,
@@ -92,8 +93,16 @@ class ExpressionRepo {
 
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
+    if (count > 1) {
+      final cachedResult = await db.retrieveExpressions();
+      return QueryResults(
+        lastTimestamp: cachedResults.lastTimestamp,
+        results: cachedResult,
+      );
+    }
     cachedResults = await _expressionService.getCollectiveExpressions(params);
     db.insertExpressions(cachedResults.results);
+    count++;
     return cachedResults;
   }
 
