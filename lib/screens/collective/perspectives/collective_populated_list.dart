@@ -54,8 +54,9 @@ class CollectivePopulatedList extends StatelessWidget {
             ),
             if (state.availableMore == true && state.loadingMore != true)
               FetchMoreButton(
-                onPressed: () =>
-                    context.bloc<CollectiveBloc>().add(FetchMoreCollective()),
+                onPressed: () => context.bloc<CollectiveBloc>().add(
+                      FetchMoreCollective(),
+                    ),
               ),
           ],
         ),
