@@ -1,13 +1,15 @@
 import 'dart:io';
 
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 enum ExpressionContext { Group, Collection, Collective }
 
 class ExpressionRepo {
-  ExpressionRepo(this._expressionService);
+  ExpressionRepo(this._expressionService, this.db);
 
+  final LocalCache db;
   final ExpressionService _expressionService;
   QueryResults<ExpressionResponse> cachedResults;
 
@@ -89,8 +91,10 @@ class ExpressionRepo {
   }
 
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
-      Map<String, String> params) {
-    return _expressionService.getCollectiveExpressions(params);
+      Map<String, String> params) async {
+    cachedResults = await _expressionService.getCollectiveExpressions(params);
+    db.insertExpressions(cachedResults.results);
+    return cachedResults;
   }
 
   Future<QueryResults<ExpressionResponse>> getPackExpressions(
