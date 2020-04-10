@@ -95,7 +95,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                       ),
                     ),
                   ),
-                  if (appConfig.flavor != Flavor.prod)
+                  if (appConfig.flavor == Flavor.dev)
                     FetchMoreButton(
                       onPressed: () {
                         context.bloc<DenBloc>().add(
