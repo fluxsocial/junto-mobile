@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -12,7 +13,6 @@ class ExpressionRepo {
   final LocalCache db;
   final ExpressionService _expressionService;
   QueryResults<ExpressionResponse> cachedResults;
-  int count = 0;
 
   Future<ExpressionResponse> createExpression(
     ExpressionModel expression,
@@ -93,17 +93,16 @@ class ExpressionRepo {
 
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
-    if (count > 1) {
-      final cachedResult = await db.retrieveExpressions();
-      return QueryResults(
-        lastTimestamp: cachedResults.lastTimestamp,
-        results: cachedResult,
-      );
+    if (await DataConnectionChecker().hasConnection) {
+      cachedResults = await _expressionService.getCollectiveExpressions(params);
+      db.insertExpressions(cachedResults.results);
+      return cachedResults;
     }
-    cachedResults = await _expressionService.getCollectiveExpressions(params);
-    db.insertExpressions(cachedResults.results);
-    count++;
-    return cachedResults;
+    final cachedResult = await db.retrieveExpressions();
+    return QueryResults(
+      lastTimestamp: cachedResults.lastTimestamp,
+      results: cachedResult,
+    );
   }
 
   Future<QueryResults<ExpressionResponse>> getPackExpressions(
