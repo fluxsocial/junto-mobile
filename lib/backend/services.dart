@@ -266,3 +266,12 @@ abstract class UserService {
 abstract class NotificationService {
   Future<NotificationResultsModel> getNotifications(NotificationQuery params);
 }
+
+/// Interface for managing the application's local cache.
+abstract class LocalCache {
+  /// Adds [expressions] to the database.
+  Future<void> insertExpressions(List<ExpressionResponse> expressions);
+
+  /// Retrieves all expressions in the database.
+  Future<List<ExpressionResponse>> retrieveExpressions();
+}
