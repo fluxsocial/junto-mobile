@@ -1,12 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:junto_beta_mobile/backend/services.dart' show LocalCache;
 import 'package:junto_beta_mobile/models/models.dart';
-
-abstract class LocalCache {
-  Future<void> insertExpressions(List<ExpressionResponse> expressions);
-
-  Future<List<ExpressionResponse>> retrieveExpressions();
-}
 
 class HiveCache implements LocalCache {
   HiveCache() {
