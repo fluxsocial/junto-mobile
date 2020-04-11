@@ -165,8 +165,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                             _selectExpressionIcon(ExpressionType.dynamic),
                             _selectExpressionIcon(ExpressionType.shortform),
                             _selectExpressionIcon(ExpressionType.photo),
-                            if (appConfig.flavor != Flavor.prod)
-                              _selectExpressionIcon(ExpressionType.audio),
+                            // if (appConfig.flavor != Flavor.prod)
+                            //   _selectExpressionIcon(ExpressionType.audio),
                           ],
                         ),
                       ),

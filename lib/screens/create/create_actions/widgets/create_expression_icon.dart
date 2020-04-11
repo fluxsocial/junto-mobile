@@ -21,6 +21,7 @@ class CreateExpressionIcon extends StatelessWidget {
       shape: const CircleBorder(side: BorderSide.none),
       child: Container(
         color: Colors.transparent,
+        width: 100,
         alignment: Alignment.center,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
