@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 enum ExpressionContext { Group, Collection, Collective }
@@ -100,7 +99,7 @@ class ExpressionRepo {
     }
     final cachedResult = await db.retrieveExpressions();
     return QueryResults(
-      lastTimestamp: cachedResults.lastTimestamp,
+      lastTimestamp: cachedResults?.lastTimestamp,
       results: cachedResult,
     );
   }
