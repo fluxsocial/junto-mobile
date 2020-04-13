@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -25,8 +26,11 @@ class AuthRepo {
       try {
         final id = prefs.getString('user_id');
         final _ = await _userRepo.getUser(id);
-      } catch (e) {
-        logger.logException(e);
+      } on SocketException catch (_) {
+        // The user is logged in but offline
+        return true;
+      } catch (error) {
+        logger.logException(error);
         return false;
       }
     }
