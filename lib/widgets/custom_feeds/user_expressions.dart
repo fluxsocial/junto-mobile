@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
@@ -94,13 +95,14 @@ class _UserExpressionsState extends State<UserExpressions> {
                       ),
                     ),
                   ),
-                  FetchMoreButton(
-                    onPressed: () {
-                      context.bloc<DenBloc>().add(
-                            LoadMoreDen(),
-                          );
-                    },
-                  )
+                  if (appConfig.flavor == Flavor.dev)
+                    FetchMoreButton(
+                      onPressed: () {
+                        context.bloc<DenBloc>().add(
+                              LoadMoreDen(),
+                            );
+                      },
+                    )
                 ],
               ),
             ),

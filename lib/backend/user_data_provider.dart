@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
@@ -54,7 +55,8 @@ class UserDataProvider extends ChangeNotifier {
   /// Updates the user information with [user]
   void updateUser(UserData user) {
     assert(user.user.address == userAddress);
-    print(user.user.address == userAddress);
+    logger.logDebug(
+        'Current user address is equal to the upadted user address: ${user.user.address == userAddress}');
     _setUserInformation(user);
     userProfile = user;
     notifyListeners();

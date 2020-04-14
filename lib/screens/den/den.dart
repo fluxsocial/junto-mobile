@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -18,7 +19,6 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -28,8 +28,6 @@ class JuntoDen extends StatefulWidget {
 
 class JuntoDenState extends State<JuntoDen>
     with HideFab, TickerProviderStateMixin {
-  String _currentTheme;
-
   bool showComments = false;
 
   ScrollController _denController;
@@ -42,22 +40,9 @@ class JuntoDenState extends State<JuntoDen>
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getUserInformation();
-  }
-
-  @override
   void dispose() {
-    super.dispose();
     _denController.dispose();
-  }
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _currentTheme = prefs.getString('current-theme');
-    });
+    super.dispose();
   }
 
   Widget _buildBody(UserData user) {
@@ -76,7 +61,6 @@ class JuntoDenState extends State<JuntoDen>
           ),
           JuntoDenSliverAppbar(
             profile: user,
-            currentTheme: _currentTheme,
           ),
         ];
       },
@@ -94,50 +78,36 @@ class JuntoDenState extends State<JuntoDen>
         return FeatureDiscovery(
           child: NotificationListener<ScrollUpdateNotification>(
             onNotification: (value) => hideOrShowFab(value, _isVisible),
-            child: BlocProvider(
-              create: (context) => DenBloc(
-                  Provider.of<UserRepo>(context, listen: false),
-                  Provider.of<UserDataProvider>(context, listen: false))
-                ..add(LoadDen(user.userAddress)),
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider<DenBloc>(
+                  create: (context) => DenBloc(
+                      Provider.of<UserRepo>(context, listen: false),
+                      Provider.of<UserDataProvider>(context, listen: false))
+                    ..add(LoadDen(user.userAddress)),
+                ),
+                BlocProvider<ChannelFilteringBloc>(
+                  create: (ctx) => ChannelFilteringBloc(
+                    RepositoryProvider.of<SearchRepo>(ctx),
+                    (value) => BlocProvider.of<DenBloc>(ctx).add(
+                      LoadDen(
+                        user.userAddress,
+                        channels: value != null ? [value.name] : null,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
                 body: JuntoFilterDrawer(
                   leftDrawer: const FilterDrawerContent(
-                      ExpressionContextType.Collective),
+                    ExpressionContextType.Collective,
+                  ),
                   rightMenu: JuntoDrawer(),
                   scaffold: Scaffold(
-                    // appBar: _constructAppBar(user.userProfile),
-                    floatingActionButton: ValueListenableBuilder<bool>(
-                      valueListenable: _isVisible,
-                      builder: (
-                        BuildContext context,
-                        bool visible,
-                        Widget child,
-                      ) {
-                        return AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: visible ? 1.0 : 0.0,
-                          child: child,
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 25),
-                        child: BottomNav(
-                          actionsVisible: false,
-                          onLeftButtonTap: () {
-                            // open about page
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) =>
-                                    AboutMember(profile: user.userProfile),
-                              ),
-                            );
-                          },
-                          source: Screen.den,
-                        ),
-                      ),
-                    ),
+                    floatingActionButton:
+                        DenActionButton(isVisible: _isVisible, user: user),
                     floatingActionButtonLocation:
                         FloatingActionButtonLocation.centerDocked,
                     body: _buildBody(user.userProfile),
@@ -148,6 +118,48 @@ class JuntoDenState extends State<JuntoDen>
           ),
         );
       },
+    );
+  }
+}
+
+class DenActionButton extends StatelessWidget {
+  const DenActionButton({
+    Key key,
+    @required this.isVisible,
+    @required this.user,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> isVisible;
+  final UserDataProvider user;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: isVisible,
+      builder: (context, visible, child) {
+        return AnimatedOpacity(
+          duration: const Duration(milliseconds: 300),
+          opacity: visible ? 1.0 : 0.0,
+          child: child,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 25),
+        child: BottomNav(
+          actionsVisible: false,
+          onLeftButtonTap: () {
+            // open about page
+            Navigator.push(
+              context,
+              CupertinoPageRoute<dynamic>(
+                builder: (BuildContext context) =>
+                    AboutMember(profile: user.userProfile),
+              ),
+            );
+          },
+          source: Screen.den,
+        ),
+      ),
     );
   }
 }

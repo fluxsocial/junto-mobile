@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
@@ -16,7 +16,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       brightness: Theme.of(context).brightness,
-      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+      iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
       elevation: 0,
       titleSpacing: 0,
       title: Container(
@@ -50,11 +50,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 );
               },
               child: JuntoDescribedFeatureOverlay(
-                icon: Icon(
-                  CustomIcons.newcreate,
-                  size: 36,
-                  color: Theme.of(context).primaryColor,
-                ),
+                icon: OverlayInfoIcon(),
                 featureId: 'expression_info_id',
                 title:
                     "This screen shows a creator's expression. Click 'Learn Why' to read about our design inspiration",
@@ -68,7 +64,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                   'Ability to edit or update an expression'
                 ],
                 learnMoreText: [
-                  'Our intention here is to reduce noise, encourage more presence while viewing content, and make space for authentic sharing by moving away from rating metrics that result in competitive and disingenuous social dynamics.',
+                  'Our intention here is to reduce noise, encourage more presence while viewing content, and make space for more authentic sharing by moving away from rating metrics that result in competitive and superficial social dynamics.',
                   'Within each expression, comments are hidden by default and non-verbal reactions are only visible to the content creator.'
                 ],
                 child: JuntoInfoIcon(),

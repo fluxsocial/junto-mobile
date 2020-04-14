@@ -45,7 +45,7 @@ class Backend {
   static Future<Backend> init() async {
     try {
       logger.logDebug('Initializing backend');
-      final ThemeData currentTheme = await JuntoThemesProvider.loadDefault();
+      final ThemeData currentTheme = await JuntoThemesProvider.initialize();
       final JuntoHttp client = JuntoHttp(httpClient: IOClient());
       final AuthenticationService authService =
           AuthenticationServiceCentralized(client);

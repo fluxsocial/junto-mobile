@@ -5,6 +5,7 @@ import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 
 class JuntoHttp {
   JuntoHttp({this.httpClient}) {
@@ -44,8 +45,15 @@ class JuntoHttp {
 
   Future<http.Response> get(String resource,
       {Map<String, String> headers, Map<String, String> queryParams}) async {
-    final Uri _uri = Uri.https(
-        END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
+    Uri _uri;
+    if (appConfig.flavor == Flavor.dev || appConfig.flavor == Flavor.tst) {
+      _uri = Uri.http(
+          END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
+    } else {
+      _uri = Uri.https(
+          END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
+    }
+
     return httpClient.get(
       _uri,
       headers: await _withPersistentHeaders(headers),
@@ -56,8 +64,15 @@ class JuntoHttp {
       {Map<String, String> headers,
       Map<String, String> queryParams,
       dynamic body}) async {
-    final Uri _uri = Uri.https(
-        END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
+    Uri _uri;
+    if (appConfig.flavor == Flavor.dev || appConfig.flavor == Flavor.tst) {
+      _uri = Uri.http(
+          END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
+    } else {
+      _uri = Uri.https(
+          END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
+    }
+
     return httpClient.patch(
       _uri,
       headers: await _withPersistentHeaders(headers),

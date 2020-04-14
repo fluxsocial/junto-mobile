@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 enum ExpressionContext { Group, Collection, Collective }
@@ -94,11 +95,12 @@ class ExpressionRepo {
       Map<String, String> params) async {
     if (await DataConnectionChecker().hasConnection) {
       cachedResults = await _expressionService.getCollectiveExpressions(params);
-      db.insertExpressions(cachedResults.results);
+      await db.insertExpressions(cachedResults.results);
       return cachedResults;
     }
     final cachedResult = await db.retrieveExpressions();
     return QueryResults(
+
       lastTimestamp: cachedResults?.lastTimestamp,
       results: cachedResult,
     );

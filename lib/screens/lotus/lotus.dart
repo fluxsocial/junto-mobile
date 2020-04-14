@@ -1,8 +1,8 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
@@ -10,14 +10,14 @@ import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
-import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
 
-class JuntoLotus extends StatefulWidget {
+class JuntoLotus extends StatelessWidget {
   const JuntoLotus({
     Key key,
     @required this.expressionContext,
@@ -30,17 +30,10 @@ class JuntoLotus extends StatefulWidget {
   final String address;
   final Screen source;
 
-  @override
-  State<StatefulWidget> createState() => JuntoLotusState();
-}
-
-class JuntoLotusState extends State<JuntoLotus> {
-  ThemeData _currentTheme;
-
   /// Pushes new page onto the stack
   /// Allows to go back from the new page
   /// This way Lotus is always in the root of the app
-  void _navigateTo(Screen screen) {
+  void _navigateTo(BuildContext context, Screen screen) async {
     final _userProfile =
         Provider.of<UserDataProvider>(context, listen: false).userProfile;
     Widget child;
@@ -56,9 +49,8 @@ class JuntoLotusState extends State<JuntoLotus> {
       child = FeatureDiscovery(
         child: JuntoCreate(
           channels: const <String>[],
-          address: widget.address,
-          expressionContext: widget.expressionContext,
-          currentTheme: _currentTheme,
+          address: address,
+          expressionContext: expressionContext,
         ),
       );
     } else if (screen == Screen.den) {
@@ -66,35 +58,28 @@ class JuntoLotusState extends State<JuntoLotus> {
         child: JuntoDen(),
       );
     }
-    Navigator.of(context).push(
+    await Navigator.of(context).push(
       FadeRoute<void>(
-        child: child,
+        child: ReturnToLotusOnSwipe(
+          expressionContext: expressionContext,
+          address: address,
+          source: screen,
+          child: child,
+        ),
         name: child.runtimeType.toString(),
       ),
     );
     return;
   }
 
-  Future<void> getTheme() async {
-    final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
-        .getTheme();
-    setState(() {
-      _currentTheme = theme;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getTheme();
-  }
-
-  _onDragEnd(DragEndDetails dx) {
-    if (widget.source == null || Navigator.canPop(context) == false) {
-      print('cannot pop, sorry!');
-      return;
-    } else {
-      _navigateTo(widget.source);
+  _onDragEnd(BuildContext context, DragEndDetails dx) {
+    if (dx.velocity.pixelsPerSecond.dx > 100) {
+      if (source == null || Navigator.canPop(context) == false) {
+        logger.logDebug('cannot pop, sorry!');
+        return;
+      } else {
+        _navigateTo(context, source);
+      }
     }
   }
 
@@ -102,11 +87,11 @@ class JuntoLotusState extends State<JuntoLotus> {
   Widget build(BuildContext context) {
     final s = S.of(context);
     return GestureDetector(
-      onHorizontalDragEnd: _onDragEnd,
+      onHorizontalDragEnd: (dragDetails) => _onDragEnd(context, dragDetails),
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            BackgroundTheme(currentTheme: _currentTheme),
+            BackgroundTheme(),
             SafeArea(
               child: Material(
                 type: MaterialType.transparency,
@@ -117,12 +102,11 @@ class JuntoLotusState extends State<JuntoLotus> {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          vertical: 10,
+                          vertical: 15,
                         ),
                         color: Colors.transparent,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
@@ -138,11 +122,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                                 );
                               },
                               child: JuntoDescribedFeatureOverlay(
-                                icon: Icon(
-                                  CustomIcons.newflower,
-                                  size: 38,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                                icon: OverlayInfoIcon(),
                                 featureId: 'lotus_info_id',
                                 oneFeature: true,
                                 title:
@@ -163,7 +143,8 @@ class JuntoLotusState extends State<JuntoLotus> {
                           LotusButton(
                             label: s.lotus_collective,
                             icon: CustomIcons.newcollective,
-                            onTap: () => _navigateTo(Screen.collective),
+                            onTap: () =>
+                                _navigateTo(context, Screen.collective),
                           ),
                           Container(
                             color: Colors.transparent,
@@ -177,7 +158,8 @@ class JuntoLotusState extends State<JuntoLotus> {
                                     label: s.lotus_packs,
                                     icon: CustomIcons.newpacks,
                                     iconSize: 38,
-                                    onTap: () => _navigateTo(Screen.packs),
+                                    onTap: () =>
+                                        _navigateTo(context, Screen.packs),
                                   ),
                                 ),
                                 Container(
@@ -186,7 +168,8 @@ class JuntoLotusState extends State<JuntoLotus> {
                                     label: s.lotus_groups,
                                     icon: CustomIcons.newcircles,
                                     iconSize: 38,
-                                    onTap: () => _navigateTo(Screen.groups),
+                                    onTap: () =>
+                                        _navigateTo(context, Screen.groups),
                                   ),
                                 ),
                               ],
@@ -196,7 +179,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                             label: s.lotus_create,
                             icon: CustomIcons.newcreate,
                             iconSize: 38,
-                            onTap: () => _navigateTo(Screen.create),
+                            onTap: () => _navigateTo(context, Screen.create),
                           ),
                           const SizedBox(height: 25),
                         ],
@@ -209,6 +192,40 @@ class JuntoLotusState extends State<JuntoLotus> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ReturnToLotusOnSwipe extends StatelessWidget {
+  final Widget child;
+  final Screen source;
+  final String address;
+  final ExpressionContext expressionContext;
+
+  const ReturnToLotusOnSwipe(
+      {Key key, this.child, this.source, this.address, this.expressionContext})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushAndRemoveUntil(
+          context,
+          FadeRoute<void>(
+            child: FeatureDiscovery(
+              child: JuntoLotus(
+                address: address,
+                expressionContext: expressionContext,
+                source: source,
+              ),
+            ),
+          ),
+          (r) => r.isFirst,
+        );
+        return false;
+      },
+      child: child,
     );
   }
 }

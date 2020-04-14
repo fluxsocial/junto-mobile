@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
@@ -154,11 +155,7 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                               );
                             },
                             child: JuntoDescribedFeatureOverlay(
-                              icon: Icon(
-                                CustomIcons.newpacks,
-                                size: 33,
-                                color: Theme.of(context).primaryColor,
-                              ),
+                              icon: OverlayInfoIcon(),
                               featureId: 'packs_info_id',
                               title:
                                   'This is a Pack. It displays the publicly shared posts of the people in it. There is also a private section where the pack owner can share to just its pack members.',

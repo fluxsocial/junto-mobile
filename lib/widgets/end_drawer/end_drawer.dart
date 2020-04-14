@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -46,7 +45,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
 
   Future<void> getTheme() async {
     final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
-        .getTheme();
+        .currentTheme;
     setState(() {
       _currentTheme = theme;
     });
@@ -74,9 +73,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
       builder: (BuildContext context, UserDataProvider value, Widget child) {
         return Stack(
           children: <Widget>[
-            BackgroundTheme(
-              currentTheme: _currentTheme,
-            ),
+            BackgroundTheme(),
             Container(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * .2,

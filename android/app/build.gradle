@@ -67,13 +67,20 @@ android {
     flavorDimensions "flavor-type"
 
     productFlavors {
+        dev {
+            dimension "flavor-type"
+            applicationIdSuffix ".dev"
+            manifestPlaceholders = [appName: "JUNTO DEV"]
+        }
         tst {
             dimension "flavor-type"
             applicationIdSuffix ".tst"
+            manifestPlaceholders = [appName: "JUNTO TST"]
         }
         prod {
             dimension "flavor-type"
             applicationIdSuffix ""
+            manifestPlaceholders = [appName: "JUNTO"]
         }
     }
 }
