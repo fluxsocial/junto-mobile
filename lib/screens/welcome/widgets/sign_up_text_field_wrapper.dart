@@ -70,7 +70,7 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
             Column(
               children: <Widget>[
                 SignUpTextField(
-                  valueController: valueController,
+                  valueController: valueController, 
                   onSubmit: widget.onSubmit,
                   hint: widget.hint,
                   maxLength: widget.maxLength,
