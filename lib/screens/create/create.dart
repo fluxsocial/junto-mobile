@@ -113,14 +113,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     color: Colors.transparent,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        const SizedBox(height: 27),
                         GestureDetector(
                           onTap: () {
                             FeatureDiscovery.clearPreferences(context, <String>{
@@ -134,7 +133,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                             );
                           },
                           child: JuntoDescribedFeatureOverlay(
-                            icon:OverlayInfoIcon(),
+                            icon: OverlayInfoIcon(),
                             featureId: 'expression_center_id',
                             oneFeature: true,
                             title:
