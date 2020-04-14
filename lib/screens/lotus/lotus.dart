@@ -102,7 +102,7 @@ class JuntoLotus extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          vertical: 15,
+                          vertical: 10,
                         ),
                         color: Colors.transparent,
                         child: Row(
