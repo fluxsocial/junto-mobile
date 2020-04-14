@@ -65,12 +65,11 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SignUpPageTitle(title: widget.title),
             SizedBox(height: size.height * 0.24),
             Column(
               children: <Widget>[
                 SignUpTextField(
-                  valueController: valueController, 
+                  valueController: valueController,
                   onSubmit: widget.onSubmit,
                   hint: widget.hint,
                   maxLength: widget.maxLength,

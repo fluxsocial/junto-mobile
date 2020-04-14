@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -92,12 +91,11 @@ class SignUpRegisterState extends State<SignUpRegister> {
       color: Colors.transparent,
       width: MediaQuery.of(context).size.width,
       child: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .16),
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .24),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SignUpPageTitle(title: S.of(context).welcome_almost_done),
             Expanded(
               child: KeyboardAvoider(
                 autoScroll: true,
