@@ -45,7 +45,7 @@ class PacksActionButtons extends StatelessWidget {
           actionsVisible: actionsVisible ?? true,
           source: Screen.packs,
           featureTitle:
-              "Toggle between the Packs you're in and the current Pack you’re viewing.",
+              "Click this icon to move between the Packs you're in and the current Pack you’re viewing.",
           featureId: 'packs_toggle_id',
           isLastFeature: true,
           iconNorth: iconNorth,
