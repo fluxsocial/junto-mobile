@@ -54,7 +54,7 @@ class PerspectivesAppbar extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                     ),
                     featureId: 'create_perspective_id',
-                    title: 'Create a perspective.',
+                    title: 'Click this icon to create a new perspective.',
                     learnMore: false,
                     hasUpNext: false,
                     child: Container(

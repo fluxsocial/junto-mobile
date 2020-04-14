@@ -53,19 +53,19 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 icon: OverlayInfoIcon(),
                 featureId: 'expression_info_id',
                 title:
-                    "This screen shows a creator's expression. Click 'Learn Why' to read about our design inspiration",
+                    "This screen shows an opened expression. Click 'Learn Why' to read about our design inspiration",
                 learnMore: true,
                 hasUpNext: true,
                 isLastFeature: true,
                 upNextText: [
                   'Ability to react and comment privately',
-                  "Resonations (re-sharing of other people's content and adding comments on top)",
-                  'Expression flags (i.e. "work in progress," "collaboration")',
+                  "Resonations (re-sharing of other people's content and adding an expression on top)",
+                  'Expression flags (i.e. "feedback," "work in progress," "collaboration")',
                   'Ability to edit or update an expression'
                 ],
                 learnMoreText: [
                   'Our intention here is to reduce noise, encourage more presence while viewing content, and make space for more authentic sharing by moving away from rating metrics that result in competitive and superficial social dynamics.',
-                  'Within each expression, comments are hidden by default and non-verbal reactions are only visible to the content creator.'
+                  'For each expression, comments are hidden by default and non-verbal reactions are only visible to the content creator.'
                 ],
                 child: JuntoInfoIcon(),
               ),
