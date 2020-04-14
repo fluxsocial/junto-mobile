@@ -100,7 +100,8 @@ class ExpressionRepo {
     }
     final cachedResult = await db.retrieveExpressions();
     return QueryResults(
-      lastTimestamp: cachedResults.lastTimestamp,
+
+      lastTimestamp: cachedResults?.lastTimestamp,
       results: cachedResult,
     );
   }
