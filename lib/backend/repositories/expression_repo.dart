@@ -95,7 +95,7 @@ class ExpressionRepo {
       Map<String, String> params) async {
     if (await DataConnectionChecker().hasConnection) {
       cachedResults = await _expressionService.getCollectiveExpressions(params);
-      db.insertExpressions(cachedResults.results);
+      await db.insertExpressions(cachedResults.results);
       return cachedResults;
     }
     final cachedResult = await db.retrieveExpressions();
