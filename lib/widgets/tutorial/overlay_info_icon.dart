@@ -5,6 +5,7 @@ class OverlayInfoIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
+      width: 50,
       child: Text(
         '?',
         style: TextStyle(

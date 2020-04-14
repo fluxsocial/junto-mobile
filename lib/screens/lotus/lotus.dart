@@ -106,8 +106,33 @@ class JuntoLotus extends StatelessWidget {
                         ),
                         color: Colors.transparent,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/junto-mobile__logo.png',
+                                    color: Colors.white,
+                                    height: 20,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Container(
+                                    child: Text(
+                                      'JUNTO',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        letterSpacing: 1.4,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             GestureDetector(
                               onTap: () {
                                 FeatureDiscovery.clearPreferences(
