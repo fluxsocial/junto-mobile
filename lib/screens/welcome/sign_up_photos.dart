@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
 class SignUpPhotos extends StatefulWidget {
@@ -76,6 +75,21 @@ class SignUpPhotosState extends State<SignUpPhotos> {
                     ),
                   ),
                 ),
+              )
+            else
+              Container(
+                color: Colors.transparent,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                child: Text(
+                  'PROFILE PICTURE',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    letterSpacing: 1.7,
+                  ),
+                ),
               ),
           ],
         ),
@@ -118,12 +132,11 @@ class SignUpPhotosState extends State<SignUpPhotos> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .16),
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .2),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SignUpPageTitle(title: S.of(context).welcome_add_photo),
               SizedBox(height: MediaQuery.of(context).size.height * .1),
               Expanded(
                 child: Center(

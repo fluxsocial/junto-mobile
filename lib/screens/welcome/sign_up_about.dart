@@ -71,20 +71,16 @@ class SignUpAboutState extends State<SignUpAbout> {
       color: Colors.transparent,
       width: MediaQuery.of(context).size.width,
       child: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .16),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SignUpPageTitle(
-              title: S.of(context).welcome_feel_free,
-            ),
             Expanded(
               child: KeyboardAvoider(
                 autoScroll: true,
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 50),
+                    SizedBox(height: MediaQuery.of(context).size.height * .24),
                     SignUpTextField(
                       valueController: locationController,
                       onSubmit: () =>
@@ -100,7 +96,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                       valueController: locationController,
                       compact: true,
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: MediaQuery.of(context).size.height * .08),
                     SignUpTextField(
                       valueController: genderController,
                       onSubmit: () =>
@@ -115,7 +111,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                       valueController: locationController,
                       compact: true,
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: MediaQuery.of(context).size.height * .08),
                     SignUpTextField(
                       valueController: websiteController,
                       textInputActionType: TextInputAction.done,

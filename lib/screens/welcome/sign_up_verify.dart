@@ -41,17 +41,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            child: Text(
-              S.of(context).welcome_final_step,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          SizedBox(height: size.height * .17),
+          SizedBox(height: size.height * .24),
           Expanded(
             flex: 3,
             child: Container(
