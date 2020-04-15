@@ -16,6 +16,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
 import 'create_templates/audio.dart';
+import 'create_templates/audio_new.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate({
@@ -75,7 +76,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       case ExpressionType.audio:
         _push(
           context,
-          CreateAudio(),
+          CreateAudioNew(),
           expression,
         );
     }
@@ -164,8 +165,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                             _selectExpressionIcon(ExpressionType.dynamic),
                             _selectExpressionIcon(ExpressionType.shortform),
                             _selectExpressionIcon(ExpressionType.photo),
-                            // if (appConfig.flavor != Flavor.prod)
-                            //   _selectExpressionIcon(ExpressionType.audio),
+                            if (appConfig.flavor != Flavor.prod)
+                              _selectExpressionIcon(ExpressionType.audio),
                           ],
                         ),
                       ),
