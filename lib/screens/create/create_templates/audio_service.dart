@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 class AudioService with ChangeNotifier {
   static const _fileName = 'junto_audio_recording';
   static const _sampleRate = 16000;
-  static const _maxDuration = Duration(seconds: 30);
+  static const _maxDuration = Duration(seconds: 120);
   final AudioPlayer _audioPlayer;
   FlutterAudioRecorder _recorder;
   Recording _recording;
