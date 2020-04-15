@@ -8,6 +8,7 @@ enum ExpressionType {
   photo,
   event,
   audio,
+  audioNew
 }
 
 extension ExpressionIcon on ExpressionType {
@@ -18,6 +19,7 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: CustomIcons.camera,
       ExpressionType.event: CustomIcons.event,
       ExpressionType.audio: Icons.play_circle_outline,
+      ExpressionType.audioNew: Icons.play_circle_outline,
     };
     return _expressionIcon[this];
   }
@@ -29,6 +31,7 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: 'PHOTO',
       ExpressionType.event: 'EVENT',
       ExpressionType.audio: 'AUDIO',
+      ExpressionType.audioNew: 'AUDIO NEW',
     };
     return _expressionNames[this];
   }
@@ -40,6 +43,7 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: 'photo',
       ExpressionType.event: 'event',
       ExpressionType.audio: 'audio',
+      ExpressionType.audioNew: 'audio',
     };
 
     return _expressionAppBarNames[this];
@@ -52,6 +56,8 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: 'PhotoForm',
       ExpressionType.event: 'EventForm',
       ExpressionType.audio: 'AudioForm',
+      ExpressionType.audioNew: 'AudioForm',
+
     };
 
     return _expressionModelNames[this];

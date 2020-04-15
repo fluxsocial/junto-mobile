@@ -73,7 +73,15 @@ class JuntoCreateState extends State<JuntoCreate> {
             ),
             expression);
         break;
+
       case ExpressionType.audio:
+        _push(
+          context,
+          CreateAudio(),
+          expression,
+        );
+        break;
+      case ExpressionType.audioNew:
         _push(
           context,
           CreateAudioNew(),
@@ -158,15 +166,17 @@ class JuntoCreateState extends State<JuntoCreate> {
                     children: <Widget>[
                       Container(
                         alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(vertical: 25),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        // padding: const EdgeInsets.symmetric(vertical: 25),
+                        height: 250,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
                           children: <Widget>[
                             _selectExpressionIcon(ExpressionType.dynamic),
                             _selectExpressionIcon(ExpressionType.shortform),
                             _selectExpressionIcon(ExpressionType.photo),
                             if (appConfig.flavor != Flavor.prod)
                               _selectExpressionIcon(ExpressionType.audio),
+                            _selectExpressionIcon(ExpressionType.audioNew),
                           ],
                         ),
                       ),

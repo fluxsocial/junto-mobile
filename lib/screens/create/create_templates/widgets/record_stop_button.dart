@@ -16,6 +16,7 @@ class RecordStopButton extends StatelessWidget {
             icon: Icon(Icons.stop),
             onPressed: () async {
               await audio.stopRecording();
+              
             },
           );
         } else {
