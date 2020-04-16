@@ -16,7 +16,6 @@ import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
 import 'create_templates/audio.dart';
-import 'create_templates/audio_new.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate({
@@ -81,12 +80,6 @@ class JuntoCreateState extends State<JuntoCreate> {
           expression,
         );
         break;
-      case ExpressionType.audioNew:
-        _push(
-          context,
-          CreateAudioNew(),
-          expression,
-        );
     }
   }
 
@@ -166,8 +159,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                     children: <Widget>[
                       Container(
                         alignment: Alignment.center,
-                        // padding: const EdgeInsets.symmetric(vertical: 25),
-                        height: 250,
+                        padding: const EdgeInsets.symmetric(vertical: 25),
+                        height: 150,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: <Widget>[
@@ -176,7 +169,6 @@ class JuntoCreateState extends State<JuntoCreate> {
                             _selectExpressionIcon(ExpressionType.photo),
                             if (appConfig.flavor != Flavor.prod)
                               _selectExpressionIcon(ExpressionType.audio),
-                            _selectExpressionIcon(ExpressionType.audioNew),
                           ],
                         ),
                       ),
