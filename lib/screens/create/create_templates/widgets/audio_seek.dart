@@ -12,11 +12,11 @@ class AudioSeek extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       return Consumer<AudioService>(
         builder: (context, audio, child) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
+          return Container(
             child: SliderTheme(
               data: SliderThemeData(
-                thumbColor: Colors.blue,
+                thumbColor: Theme.of(context).colorScheme.primaryVariant,
+                trackHeight: 5,
               ),
               child: Slider(
                 value: getCurrentPosition(audio),
