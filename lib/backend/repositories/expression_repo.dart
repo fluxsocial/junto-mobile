@@ -54,9 +54,7 @@ class ExpressionRepo {
   }
 
   Future<String> createAudio(AudioFormExpression expression) {
-    //TODO: replace with server implementation
-    return Future.value('MOCK');
-    // return _expressionService.createAudio(expression);
+    return _expressionService.createAudio(true, expression);
   }
 
   Future<ExpressionResponse> getExpression(

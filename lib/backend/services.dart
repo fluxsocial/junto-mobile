@@ -72,6 +72,8 @@ abstract class ExpressionService {
 
   Future<String> createPhoto(bool isPrivate, String fileType, File file);
 
+  Future<String> createAudio(bool isPrivate, AudioFormExpression expression);
+
   /// Returns a [ExpressionResponse] for the given address.
   Future<ExpressionResponse> getExpression(
     String expressionAddress,

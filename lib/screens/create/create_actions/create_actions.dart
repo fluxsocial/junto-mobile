@@ -181,6 +181,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         JuntoLoader.hide();
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
+          //TODO: use _audioKey from s3 bucket
           expressionData: audio.toMap(),
           context: _expressionContext,
           channels: channel,
