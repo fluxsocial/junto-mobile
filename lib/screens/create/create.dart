@@ -159,8 +159,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                     children: <Widget>[
                       Container(
                         alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(vertical: 25),
-                        height: 150,
+                        height: 120,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: <Widget>[
