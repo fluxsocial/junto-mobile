@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
-class BackgroundTheme extends StatelessWidget {
-
+class AudioButtonBackground extends StatelessWidget {
   String background(String theme) {
     if (theme == 'rainbow' || theme == 'rainbow-night') {
       return 'assets/images/junto-mobile__themes--rainbow.png';
@@ -18,17 +17,17 @@ class BackgroundTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<JuntoThemesProvider>(
-      builder: (context, theme, child) {
-        return Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return ClipOval(
+        child: Container(
+          height: 80,
+          width: 80,
           child: Image.asset(
             background(theme.themeName),
             fit: BoxFit.cover,
           ),
-        );
-      },
-    );
+        ),
+      );
+    });
   }
 }

@@ -6,8 +6,9 @@ import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
 import 'widgets/audio_button.dart';
-import 'widgets/audio_timer.dart';
+import 'widgets/audio_button_background.dart';
 import 'widgets/audio_seek.dart';
+import 'widgets/audio_timer.dart';
 
 class CreateAudio extends StatefulWidget {
   const CreateAudio({Key key, this.expressionContext, this.address})
@@ -66,22 +67,14 @@ class CreateAudioState extends State<CreateAudio> {
                                       ]),
                                   child: Stack(
                                     children: <Widget>[
-                                      ClipOval(
-                                        child: Container(
-                                          height: 80,
-                                          width: 80,
-                                          child: Image.asset(
-                                            'assets/images/junto-mobile__themes--rainbow.png',
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
+                                      AudioButtonBackground(),
                                       Container(
                                         height: 80,
                                         width: 80,
                                         alignment: Alignment.center,
                                         child: AudioButton(
-                                            setBottomNav: setBottomNav),
+                                          setBottomNav: setBottomNav,
+                                        ),
                                       ),
                                     ],
                                   ),
