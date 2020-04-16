@@ -35,6 +35,7 @@ class ExpressionModel {
   /// * [ShortFormExpression]
   /// * [PhotoFormExpression]
   /// * [EventFormExpression]
+  /// * [AudioFormExpression]
 
   final Map<String, dynamic> expressionData;
 
@@ -68,6 +69,37 @@ class ExpressionModel {
       channels: channels ?? this.channels,
     );
   }
+}
+
+//TODO typeId must be unique?
+@HiveType(typeId: 5)
+class AudioFormExpression {
+  AudioFormExpression({
+    this.title,
+    this.imageUrl,
+    this.audioUrl,
+  });
+
+  factory AudioFormExpression.fromMap(Map<String, dynamic> json) {
+    return AudioFormExpression(
+      title: json['title'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
+      audioUrl: json['audioUrl'] ?? '',
+    );
+  }
+
+  @HiveField(0)
+  final String title;
+  @HiveField(1)
+  final String imageUrl;
+  @HiveField(2)
+  final String audioUrl;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'title': title,
+        'imageUrl': imageUrl,
+        'audioUrl': audioUrl,
+      };
 }
 
 @HiveType(typeId: 4)
