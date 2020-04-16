@@ -13,6 +13,7 @@ class AudioSeek extends StatelessWidget {
       return Consumer<AudioService>(
         builder: (context, audio, child) {
           return Container(
+            height: 36,
             child: SliderTheme(
               data: SliderThemeData(
                 inactiveTrackColor: Theme.of(context).dividerColor,

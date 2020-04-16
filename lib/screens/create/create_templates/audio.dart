@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
 import 'widgets/audio_button.dart';
-import 'widgets/audio_button_background.dart';
 import 'widgets/audio_seek.dart';
 import 'widgets/audio_timer.dart';
 
@@ -23,20 +22,13 @@ class CreateAudio extends StatefulWidget {
 }
 
 class CreateAudioState extends State<CreateAudio> {
-  bool _showBottomNav = true;
-  setBottomNav(bool visibility) {
-    setState(() {
-      _showBottomNav = visibility;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AudioService>(
       create: (context) => AudioService(),
       child: Consumer<AudioService>(builder: (context, audio, child) {
         return CreateExpressionScaffold(
-          showBottomNav: _showBottomNav,
+          showBottomNav: !audio.playBackAvailable,
           expressionType: ExpressionType.audio,
           child: Expanded(
             child: Stack(
@@ -51,51 +43,55 @@ class CreateAudioState extends State<CreateAudio> {
                           children: <Widget>[
                             Column(
                               children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 5,
-                                      ),
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Theme.of(context).dividerColor,
-                                          blurRadius: 9,
-                                        ),
-                                      ]),
-                                  child: Stack(
-                                    children: <Widget>[
-                                      AudioButtonBackground(),
-                                      Container(
-                                        height: 80,
-                                        width: 80,
-                                        alignment: Alignment.center,
-                                        child: AudioButton(
-                                          setBottomNav: setBottomNav,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                AudioButtonDecoration(
+                                  child: AudioButtonStack(),
                                 ),
                                 const SizedBox(height: 15),
-                                !audio.playBackAvailable
-                                    ? AudioTimer(audio: audio)
-                                    : AudioSeek()
+                                audio.playBackAvailable
+                                    ? AudioSeek()
+                                    : AudioTimer(audio: audio)
                               ],
                             ),
                           ],
                         ),
                       ),
                     ]),
-                if (!_showBottomNav)
-                  AudioBottomTools(setBottomNav: setBottomNav),
+                if (audio.playBackAvailable) AudioBottomTools(),
               ],
             ),
           ),
         );
       }),
+    );
+  }
+}
+
+class AudioButtonDecoration extends StatelessWidget {
+  const AudioButtonDecoration({
+    Key key,
+    this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(
+          color: Colors.white,
+          width: 5,
+        ),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).dividerColor,
+            blurRadius: 9,
+          )
+        ],
+      ),
+      child: child,
     );
   }
 }

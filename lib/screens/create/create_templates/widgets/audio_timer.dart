@@ -7,6 +7,7 @@ class AudioTimer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 36,
       child: Text(
         AudioPosition().getCurrentPosition(audio),
         style: TextStyle(
