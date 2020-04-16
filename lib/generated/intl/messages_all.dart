@@ -15,77 +15,77 @@ import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 import 'package:intl/src/intl_helpers.dart';
 
-import 'messages_es.dart' as messages_es;
 import 'messages_da.dart' as messages_da;
-import 'messages_hu.dart' as messages_hu;
-import 'messages_km.dart' as messages_km;
-import 'messages_pt.dart' as messages_pt;
 import 'messages_de.dart' as messages_de;
-import 'messages_sl.dart' as messages_sl;
-import 'messages_it.dart' as messages_it;
-import 'messages_zh-Hans.dart' as messages_zh_hans;
-import 'messages_th.dart' as messages_th;
-import 'messages_zh-Hant.dart' as messages_zh_hant;
-import 'messages_tr.dart' as messages_tr;
-import 'messages_pl.dart' as messages_pl;
-import 'messages_ja.dart' as messages_ja;
 import 'messages_en.dart' as messages_en;
+import 'messages_es.dart' as messages_es;
 import 'messages_fr.dart' as messages_fr;
+import 'messages_hu.dart' as messages_hu;
+import 'messages_it.dart' as messages_it;
+import 'messages_ja.dart' as messages_ja;
+import 'messages_km.dart' as messages_km;
+import 'messages_pl.dart' as messages_pl;
+import 'messages_pt.dart' as messages_pt;
+import 'messages_sl.dart' as messages_sl;
+import 'messages_th.dart' as messages_th;
+import 'messages_tr.dart' as messages_tr;
+import 'messages_zh-Hans.dart' as messages_zh_hans;
+import 'messages_zh-Hant.dart' as messages_zh_hant;
 
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
-  'es': () => new Future.value(null),
   'da': () => new Future.value(null),
-  'hu': () => new Future.value(null),
-  'km': () => new Future.value(null),
-  'pt': () => new Future.value(null),
   'de': () => new Future.value(null),
-  'sl': () => new Future.value(null),
-  'it': () => new Future.value(null),
-  'zh_Hans': () => new Future.value(null),
-  'th': () => new Future.value(null),
-  'zh_Hant': () => new Future.value(null),
-  'tr': () => new Future.value(null),
-  'pl': () => new Future.value(null),
-  'ja': () => new Future.value(null),
   'en': () => new Future.value(null),
+  'es': () => new Future.value(null),
   'fr': () => new Future.value(null),
+  'hu': () => new Future.value(null),
+  'it': () => new Future.value(null),
+  'ja': () => new Future.value(null),
+  'km': () => new Future.value(null),
+  'pl': () => new Future.value(null),
+  'pt': () => new Future.value(null),
+  'sl': () => new Future.value(null),
+  'th': () => new Future.value(null),
+  'tr': () => new Future.value(null),
+  'zh_Hans': () => new Future.value(null),
+  'zh_Hant': () => new Future.value(null),
 };
 
 MessageLookupByLibrary _findExact(String localeName) {
   switch (localeName) {
-    case 'es':
-      return messages_es.messages;
     case 'da':
       return messages_da.messages;
-    case 'hu':
-      return messages_hu.messages;
-    case 'km':
-      return messages_km.messages;
-    case 'pt':
-      return messages_pt.messages;
     case 'de':
       return messages_de.messages;
-    case 'sl':
-      return messages_sl.messages;
-    case 'it':
-      return messages_it.messages;
-    case 'zh_Hans':
-      return messages_zh_hans.messages;
-    case 'th':
-      return messages_th.messages;
-    case 'zh_Hant':
-      return messages_zh_hant.messages;
-    case 'tr':
-      return messages_tr.messages;
-    case 'pl':
-      return messages_pl.messages;
-    case 'ja':
-      return messages_ja.messages;
     case 'en':
       return messages_en.messages;
+    case 'es':
+      return messages_es.messages;
     case 'fr':
       return messages_fr.messages;
+    case 'hu':
+      return messages_hu.messages;
+    case 'it':
+      return messages_it.messages;
+    case 'ja':
+      return messages_ja.messages;
+    case 'km':
+      return messages_km.messages;
+    case 'pl':
+      return messages_pl.messages;
+    case 'pt':
+      return messages_pt.messages;
+    case 'sl':
+      return messages_sl.messages;
+    case 'th':
+      return messages_th.messages;
+    case 'tr':
+      return messages_tr.messages;
+    case 'zh_Hans':
+      return messages_zh_hans.messages;
+    case 'zh_Hant':
+      return messages_zh_hant.messages;
     default:
       return null;
   }
