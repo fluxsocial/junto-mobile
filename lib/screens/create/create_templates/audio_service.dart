@@ -15,7 +15,6 @@ class AudioService with ChangeNotifier {
   FlutterAudioRecorder _recorder;
   Recording _recording;
   Timer _timer;
-  String _currentPath;
 
   Timer _playbackTimer;
 
@@ -40,6 +39,9 @@ class AudioService with ChangeNotifier {
 
   bool get recordingAvailable => _recording != null;
   bool get playBackAvailable => recordingAvailable && _isRecording == false;
+
+  String _currentPath;
+  String get recordingPath => _currentPath;
 
   void stopRecording() async {
     await _recorder.stop();

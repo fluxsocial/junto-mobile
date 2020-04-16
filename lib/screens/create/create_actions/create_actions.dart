@@ -129,11 +129,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<void> _createExpression() async {
     try {
+      final repository = Provider.of<ExpressionRepo>(context, listen: false);
       if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context);
-        final String _photoKey =
-            await Provider.of<ExpressionRepo>(context, listen: false)
-                .createPhoto(
+        final String _photoKey = await repository.createPhoto(
           true,
           '.png',
           widget.expression['image'],
@@ -152,9 +151,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         String eventPhoto = '';
         if (widget.expression['photo'] != null) {
           JuntoLoader.showLoader(context);
-          final String _eventPhotoKey =
-              await Provider.of<ExpressionRepo>(context, listen: false)
-                  .createPhoto(
+          final String _eventPhotoKey = await repository.createPhoto(
             true,
             '.png',
             widget.expression['photo'],
@@ -175,6 +172,18 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               members: <String>[]).toMap(),
           channels: channel,
           context: _expressionContext,
+        );
+      } else if (widget.expressionType == ExpressionType.audio) {
+        JuntoLoader.showLoader(context);
+        final audio = widget.expression as AudioFormExpression;
+        //TODO: handle response from the server
+        final String _audioKey = await repository.createAudio(audio);
+        JuntoLoader.hide();
+        _expression = ExpressionModel(
+          type: widget.expressionType.modelName(),
+          expressionData: audio.toMap(),
+          context: _expressionContext,
+          channels: channel,
         );
       } else {
         _expression = ExpressionModel(
@@ -232,11 +241,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               children: <Widget>[
                 const SizedBox(height: 15),
                 Text(
-                  _currentExpressionContext,
+                  _currentExpressionContext ?? '',
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 Text(
-                  _currentExpressionContextDescription,
+                  _currentExpressionContextDescription ?? '',
                   style: Theme.of(context).textTheme.caption,
                 ),
               ],

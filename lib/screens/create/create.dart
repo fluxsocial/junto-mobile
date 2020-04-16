@@ -76,7 +76,10 @@ class JuntoCreateState extends State<JuntoCreate> {
       case ExpressionType.audio:
         _push(
           context,
-          CreateAudio(),
+          CreateAudio(
+            expressionContext: widget.expressionContext,
+            address: widget.address,
+          ),
           expression,
         );
         break;
