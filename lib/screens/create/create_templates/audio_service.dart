@@ -17,6 +17,8 @@ class AudioService with ChangeNotifier {
   Timer _timer;
   String _currentPath;
 
+  Timer _playbackTimer;
+
   AudioService() : _audioPlayer = AudioPlayer();
 
   Duration get maxDuration => _maxDuration;
@@ -45,6 +47,7 @@ class AudioService with ChangeNotifier {
   }
 
   void resetRecording() async {
+    stopPlayback();
     _recording = null;
     _recorder = null;
     _isRecording = false;
@@ -71,7 +74,7 @@ class AudioService with ChangeNotifier {
       _currentPath,
       audioFormat: AudioFormat.AAC,
       sampleRate: _sampleRate,
-    ); // .wav .aac .m4a
+    );
     await _recorder.initialized;
     logger.logDebug('Starting recording to $_currentPath');
     await _recorder.start();
@@ -87,13 +90,27 @@ class AudioService with ChangeNotifier {
       position: _currentPosition,
     );
     _isPlaying = true;
-    _audioPlayer.onAudioPositionChanged.listen((Duration event) {
-      _currentPosition = event > recordingDuration ? recordingDuration : event;
-      notifyListeners();
-    });
+
+    _playbackTimer = Timer.periodic(
+      Duration(milliseconds: 50),
+      _updateCurrentPlaybackPosition,
+    );
+    _audioPlayer.onAudioPositionChanged.listen((Duration event) {});
     _audioPlayer.onPlayerCompletion.listen((event) {
+      _playbackTimer?.cancel();
       stopPlayback();
     });
+    _audioPlayer.onPlayerStateChanged.listen((event) {
+      if (event == AudioPlayerState.STOPPED ||
+          event == AudioPlayerState.PAUSED) {
+        _playbackTimer?.cancel();
+      }
+    });
+  }
+
+  void _updateCurrentPlaybackPosition(time) async {
+    _currentPosition = await _getCurrentPosition();
+    notifyListeners();
   }
 
   void stopPlayback() async {
@@ -103,11 +120,29 @@ class AudioService with ChangeNotifier {
     notifyListeners();
   }
 
+  void pausePlayback() async {
+    await _audioPlayer.pause();
+    _isPlaying = false;
+    _currentPosition = await _getCurrentPosition();
+    notifyListeners();
+  }
+
+  Future<Duration> _getCurrentPosition() async {
+    final position = await _audioPlayer.getCurrentPosition();
+    final duration = Duration(
+        milliseconds: position.clamp(0, recordingDuration.inMilliseconds));
+    return duration;
+  }
+
   void seek(double val) {
     if (recordingAvailable) {
+      if (_isPlaying) {
+        pausePlayback();
+      }
       final milliseconds = ((val - val.floor()) * 1000).toInt();
       final duration =
           Duration(seconds: val.floor(), milliseconds: milliseconds);
+      print('$val $duration');
       _audioPlayer?.seek(duration);
       _currentPosition = duration;
       notifyListeners();
@@ -152,6 +187,7 @@ class AudioService with ChangeNotifier {
 
   @override
   void dispose() {
+    _playbackTimer?.cancel();
     _audioPlayer?.dispose();
     _recorder?.stop();
     super.dispose();
