@@ -3,9 +3,6 @@ import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.
 import 'package:provider/provider.dart';
 
 class AudioBottomTools extends StatelessWidget {
-  const AudioBottomTools({this.setBottomNav});
-
-  final Function setBottomNav;
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(builder: (context, audio, child) {
@@ -18,7 +15,9 @@ class AudioBottomTools extends StatelessWidget {
                 color: Colors.transparent,
                 border: Border(
                   top: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
               child: Row(
@@ -26,7 +25,6 @@ class AudioBottomTools extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       await audio.resetRecording();
-                      setBottomNav(true);
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * .5,
@@ -42,7 +40,6 @@ class AudioBottomTools extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       await audio.resetRecording();
-                      setBottomNav(true);
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * .5,
