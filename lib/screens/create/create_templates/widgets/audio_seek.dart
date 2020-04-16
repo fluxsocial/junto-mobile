@@ -15,6 +15,8 @@ class AudioSeek extends StatelessWidget {
           return Container(
             child: SliderTheme(
               data: SliderThemeData(
+                inactiveTrackColor: Theme.of(context).dividerColor,
+                activeTrackColor: Theme.of(context).primaryColor,
                 thumbColor: Theme.of(context).colorScheme.primaryVariant,
                 trackHeight: 5,
               ),
