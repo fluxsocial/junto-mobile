@@ -48,21 +48,25 @@ class AudioButtonStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AudioService>(
       builder: (context, audio, child) {
-        return GestureDetector(
-          onTap: () async {
-            if (audio.isRecording) {
-              await audio.stopRecording();
-            } else if (audio.isPlaying) {
-              await audio.pausePlayback();
-            } else if (audio.playBackAvailable && !audio.isPlaying) {
-              await audio.playRecording();
-            } else if (audio.playBackAvailable && audio.isPlaying) {
-              await audio.pausePlayback();
-            } else {
-              await audio.startRecording();
-            }
-          },
-          child: child,
+        return Semantics(
+          button: true,
+          label: _getLabel(audio),
+          child: GestureDetector(
+            onTap: () async {
+              if (audio.isRecording) {
+                await audio.stopRecording();
+              } else if (audio.isPlaying) {
+                await audio.pausePlayback();
+              } else if (audio.playBackAvailable && !audio.isPlaying) {
+                await audio.playRecording();
+              } else if (audio.playBackAvailable && audio.isPlaying) {
+                await audio.pausePlayback();
+              } else {
+                await audio.startRecording();
+              }
+            },
+            child: child,
+          ),
         );
       },
       child: Stack(
@@ -77,5 +81,19 @@ class AudioButtonStack extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getLabel(AudioService audio) {
+    if (audio.isRecording) {
+      return 'Stop recording';
+    } else if (audio.isPlaying) {
+      return 'Pause playing';
+    } else if (audio.playBackAvailable && !audio.isPlaying) {
+      return 'Start playing';
+    } else if (audio.playBackAvailable && audio.isPlaying) {
+      return 'Pause playing';
+    } else {
+      return 'Start recording';
+    }
   }
 }
