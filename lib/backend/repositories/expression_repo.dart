@@ -53,6 +53,12 @@ class ExpressionRepo {
     return _expressionService.createPhoto(isPrivate, fileType, file);
   }
 
+  Future<String> createAudio(AudioFormExpression expression) {
+    //TODO: replace with server implementation
+    return Future.value('MOCK');
+    // return _expressionService.createAudio(expression);
+  }
+
   Future<ExpressionResponse> getExpression(
     String expressionAddress,
   ) {
@@ -100,7 +106,6 @@ class ExpressionRepo {
     }
     final cachedResult = await db.retrieveExpressions();
     return QueryResults(
-
       lastTimestamp: cachedResults?.lastTimestamp,
       results: cachedResult,
     );
