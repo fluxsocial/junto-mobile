@@ -101,8 +101,11 @@ class JuntoHttp {
     dynamic body,
   }) async {
     final dynamic jsonBody = convert.json.encode(body);
-    return httpClient.post(_encodeUrl(resource),
-        headers: await _withPersistentHeaders(headers), body: jsonBody);
+    return httpClient.post(
+      _encodeUrl(resource),
+      headers: await _withPersistentHeaders(headers),
+      body: jsonBody,
+    );
   }
 
   /// Function takes [http.Response] as the only param.

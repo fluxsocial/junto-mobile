@@ -71,20 +71,24 @@ class ExpressionModel {
   }
 }
 
-//TODO typeId must be unique?
 @HiveType(typeId: 5)
 class AudioFormExpression {
   AudioFormExpression({
     this.title,
     this.imageUrl,
     this.audioUrl,
+    this.storageKey,
   });
+
+  // TODO: we're waiting for the model from API so right now these properties are "dummy"
+  // probably it will be similar to photo expression
 
   factory AudioFormExpression.fromMap(Map<String, dynamic> json) {
     return AudioFormExpression(
       title: json['title'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
       audioUrl: json['audioUrl'] ?? '',
+      storageKey: json['storageKey'] ?? '',
     );
   }
 
@@ -94,11 +98,14 @@ class AudioFormExpression {
   final String imageUrl;
   @HiveField(2)
   final String audioUrl;
+  @HiveField(3)
+  final String storageKey;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'title': title,
         'imageUrl': imageUrl,
         'audioUrl': audioUrl,
+        'storageKey': storageKey,
       };
 }
 
