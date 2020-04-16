@@ -113,12 +113,6 @@ class JuntoLotus extends StatelessWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Image.asset(
-                                    'assets/images/junto-mobile__logo.png',
-                                    color: Colors.white,
-                                    height: 20,
-                                  ),
-                                  const SizedBox(width: 10),
                                   Container(
                                     child: Text(
                                       'JUNTO',
@@ -126,7 +120,7 @@ class JuntoLotus extends StatelessWidget {
                                         fontSize: 20,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
-                                        letterSpacing: 1.4,
+                                        letterSpacing: 1.7,
                                       ),
                                     ),
                                   ),
