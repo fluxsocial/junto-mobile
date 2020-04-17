@@ -12,6 +12,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
+import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
@@ -274,7 +275,12 @@ class WelcomeState extends State<Welcome> {
                             onSignUp: _onSignUp,
                           ),
                         ),
-                        PageKeepAlive(child: SignIn(_signInController))
+                        PageKeepAlive(
+                          child: SignIn(_signInController),
+                        ),
+                        ResetPasswordRequest(
+                          signInController: _signInController,
+                        )
                       ],
                     ),
                   ),
