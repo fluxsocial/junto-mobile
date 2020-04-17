@@ -1,13 +1,18 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
+import 'widgets/audio_review.dart';
+import 'widgets/audio_record.dart';
 import 'widgets/audio_button.dart';
 import 'widgets/audio_button_decoration.dart';
 import 'widgets/audio_seek.dart';
@@ -28,6 +33,37 @@ class CreateAudio extends StatefulWidget {
 class CreateAudioState extends State<CreateAudio> {
   final TextEditingController titleController = TextEditingController();
   String imagePath;
+  File audioPhotoBackground;
+
+  Future<void> _onPickPressed() async {
+    try {
+      final File image =
+          await ImagePicker.pickImage(source: ImageSource.gallery);
+      if (image == null && audioPhotoBackground == null) {
+        setState(() => audioPhotoBackground = null);
+        return;
+      } else if (image == null && audioPhotoBackground != null) {
+        return;
+      }
+
+      final File cropped = await ImageCroppingDialog.show(
+        context,
+        image,
+        aspectRatios: <String>[
+          '3:2',
+        ],
+      );
+      Navigator.of(context).focusScopeNode.unfocus();
+      if (cropped == null) {
+        setState(() => audioPhotoBackground = null);
+
+        return;
+      }
+      setState(() => audioPhotoBackground = cropped);
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,30 +77,13 @@ class CreateAudioState extends State<CreateAudio> {
           child: Expanded(
             child: Stack(
               children: <Widget>[
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Transform.translate(
-                        offset: Offset(0.0, -50),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                AudioButtonDecoration(
-                                  child: AudioButtonStack(),
-                                ),
-                                const SizedBox(height: 15),
-                                audio.playBackAvailable
-                                    ? AudioSeek()
-                                    : AudioTimer(audio: audio)
-                              ],
-                            ),
-                          ],
-                        ),
+                !audio.playBackAvailable
+                    ? AudioRecord()
+                    : AudioReview(
+                        audioPhotoBackground: audioPhotoBackground,
                       ),
-                    ]),
-                if (audio.playBackAvailable) AudioBottomTools(),
+                if (audio.playBackAvailable)
+                  AudioBottomTools(onPickPressed: _onPickPressed),
               ],
             ),
           ),
