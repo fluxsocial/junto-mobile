@@ -16,38 +16,37 @@ class ResetPasswordRequest extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        SignUpTextField(
-                          hint: S.of(context).welcome_email_hint,
-                          maxLength: 100,
-                          textInputActionType: TextInputAction.next,
-                          onSubmit: () {
-                            FocusScope.of(context).nextFocus();
-                          },
-                          // valueController: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          textCapitalization: TextCapitalization.none,
-                        ),
-                        const SizedBox(height: 60),
-                        CallToActionButton(
-                          callToAction: () {
-                            signInController.nextPage(
-                              curve: Curves.easeIn,
-                              duration: const Duration(milliseconds: 300),
-                            );
-                          },
-                          title: S.of(context).welcome_reset_password,
-                        ),
-                      ],
+                    const SizedBox(),
+                    SignUpTextField(
+                      hint: S.of(context).welcome_email_hint,
+                      maxLength: 100,
+                      textInputActionType: TextInputAction.next,
+                      onSubmit: () {
+                        FocusScope.of(context).nextFocus();
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 120),
+                      child: CallToActionButton(
+                        callToAction: () {
+                          signInController.nextPage(
+                            curve: Curves.easeIn,
+                            duration: const Duration(milliseconds: 300),
+                          );
+                        },
+                        title: S.of(context).welcome_reset_password,
+                      ),
                     ),
                   ],
                 ),
