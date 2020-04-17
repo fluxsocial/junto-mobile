@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class CallToActionButton extends StatelessWidget {
   const CallToActionButton({
     Key key,
-    @required this.onSignUp,
+    @required this.callToAction,
     @required this.title,
   }) : super(key: key);
 
-  final VoidCallback onSignUp;
+  final VoidCallback callToAction;
   final String title;
 
   @override
@@ -27,7 +27,7 @@ class CallToActionButton extends StatelessWidget {
       ),
       child: FlatButton(
         color: Theme.of(context).accentColor,
-        onPressed: onSignUp,
+        onPressed: callToAction,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40.0),
         ),

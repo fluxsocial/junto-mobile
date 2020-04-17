@@ -135,7 +135,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         const SizedBox(height: 60),
                         CallToActionButton(
-                          onSignUp: () {
+                          callToAction: () {
                             _handleSignIn(context);
                           },
                           title: S.of(context).welcome_sign_in,
