@@ -39,6 +39,9 @@ abstract class AuthenticationService {
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details);
 
+  // Request verification code to reset password
+  Future<void> requestPasswordReset(String email);
+
   /// Authenticates a registered user. Returns the [UserProfile]  for the
   /// given user. Their cookie is stored locally on device and is used for
   /// all future request.

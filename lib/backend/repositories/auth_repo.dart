@@ -90,6 +90,11 @@ class AuthRepo {
     }
   }
 
+  // Request verification code to reset password
+  Future<void> requestPasswordReset(String email) async {
+    await _authService.requestPasswordReset(email);
+  }
+
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser() async {
     await _authService.logoutUser();

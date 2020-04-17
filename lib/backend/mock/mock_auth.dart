@@ -30,4 +30,9 @@ class MockAuth implements AuthenticationService {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kUserData;
   }
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+  }
 }
