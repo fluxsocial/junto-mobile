@@ -59,8 +59,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     print(_body);
     final http.Response response =
         await client.postWithoutEncoding('/users/validate', body: _body);
-        print(response.statusCode);
-        print(response.body);
+    print(response.statusCode);
+    print(response.body);
     print(response.statusCode);
     final parseData = JuntoHttp.handleResponse(response);
     return parseData;
@@ -114,5 +114,19 @@ class AuthenticationServiceCentralized implements AuthenticationService {
         JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);
     return _userData;
+  }
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    final Map<String, dynamic> _body = <String, dynamic>{
+      'email': email,
+    };
+    final http.Response response = await client.postWithoutEncoding(
+      '/auth/forgot',
+      body: _body,
+    );
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    print(_responseMap);
   }
 }
