@@ -442,6 +442,15 @@ class S {
     );
   }
 
+  String get welcome_password_confirm {
+    return Intl.message(
+      'CONFIRM',
+      name: 'welcome_password_confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
   String welcome_password_length(Object n) {
     return Intl.message(
       'Your password must be greater than $n characters.',

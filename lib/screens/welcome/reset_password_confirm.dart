@@ -4,8 +4,8 @@ import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dar
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 
-class ResetPasswordRequest extends StatelessWidget {
-  const ResetPasswordRequest({this.signInController});
+class ResetPasswordConfirm extends StatelessWidget {
+  const ResetPasswordConfirm({this.signInController});
 
   final PageController signInController;
 
@@ -27,25 +27,32 @@ class ResetPasswordRequest extends StatelessWidget {
                     Column(
                       children: <Widget>[
                         SignUpTextField(
-                          hint: S.of(context).welcome_email_hint,
+                          hint: S.of(context).welcome_confirm_password,
                           maxLength: 100,
                           textInputActionType: TextInputAction.next,
                           onSubmit: () {
                             FocusScope.of(context).nextFocus();
                           },
-                          // valueController: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          textCapitalization: TextCapitalization.none,
+                        ),
+                        const SizedBox(height: 60),
+                        SignUpTextField(
+                          hint: S.of(context).welcome_password_hint,
+                          maxLength: 100,
+                          textInputActionType: TextInputAction.next,
+                          onSubmit: () {
+                            FocusScope.of(context).nextFocus();
+                          },
                           keyboardType: TextInputType.emailAddress,
                           textCapitalization: TextCapitalization.none,
                         ),
                         const SizedBox(height: 60),
                         CallToActionButton(
                           callToAction: () {
-                            signInController.nextPage(
-                              curve: Curves.easeIn,
-                              duration: const Duration(milliseconds: 300),
-                            );
+           
                           },
-                          title: S.of(context).welcome_reset_password,
+                          title: S.of(context).welcome_password_confirm,
                         ),
                       ],
                     ),
