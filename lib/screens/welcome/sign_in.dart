@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
@@ -140,6 +140,23 @@ class _SignInState extends State<SignIn> {
                           },
                           title: S.of(context).welcome_sign_in,
                         ),
+                        const SizedBox(height: 30),
+                        GestureDetector(
+                          onTap: () {
+                            widget.signInController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.decelerate,
+                            );
+                          },
+                          child: Text(
+                            'RESET PASSWORD',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -148,33 +165,7 @@ class _SignInState extends State<SignIn> {
             ],
           ),
         ),
-        Container(
-          height: 70,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          alignment: Alignment.bottomLeft,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              widget.signInController.previousPage(
-                curve: Curves.easeIn,
-                duration: const Duration(milliseconds: 300),
-              );
-              if (FocusScope.of(context).hasFocus) {
-                FocusScope.of(context).unfocus();
-              }
-            },
-            child: Container(
-              width: 38,
-              height: 38,
-              alignment: Alignment.centerLeft,
-              child: Icon(
-                CustomIcons.back,
-                color: Colors.white70,
-                size: 20,
-              ),
-            ),
-          ),
-        ),
+        SignInBackNav(signInController: widget.signInController),
       ],
     );
   }
