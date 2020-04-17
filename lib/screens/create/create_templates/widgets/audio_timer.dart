@@ -11,7 +11,7 @@ class AudioTimer extends StatelessWidget {
       child: Text(
         AudioPosition().getCurrentPosition(audio),
         style: TextStyle(
-          fontSize: 28,
+          fontSize: 20,
           letterSpacing: 2,
           color: Theme.of(context).primaryColorLight,
         ),

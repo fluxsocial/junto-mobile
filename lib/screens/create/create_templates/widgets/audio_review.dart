@@ -23,7 +23,6 @@ class AudioReview extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width * 2 / 3,
-                    color: Colors.blue,
                     child: Image.asset(
                       'assets/images/junto-mobile__themes--rainbow.png',
                       fit: BoxFit.cover,
@@ -33,7 +32,6 @@ class AudioReview extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width * 2 / 3,
-                    color: Colors.blue,
                     child: Image.file(
                       audioPhotoBackground,
                       fit: BoxFit.cover,
@@ -66,7 +64,7 @@ class AudioReview extends StatelessWidget {
                           decoration: InputDecoration(
                             hintMaxLines: 25,
                             hintStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.5),
+                              color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                             ),

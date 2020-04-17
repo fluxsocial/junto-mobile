@@ -11,12 +11,8 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
-import 'widgets/audio_review.dart';
 import 'widgets/audio_record.dart';
-import 'widgets/audio_button.dart';
-import 'widgets/audio_button_decoration.dart';
-import 'widgets/audio_seek.dart';
-import 'widgets/audio_timer.dart';
+import 'widgets/audio_review.dart';
 
 class CreateAudio extends StatefulWidget {
   const CreateAudio({Key key, this.expressionContext, this.address})
