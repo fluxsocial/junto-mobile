@@ -9,15 +9,15 @@ class AudioSeek extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Consumer<AudioService>(
-        builder: (context, audio, child) {
-          return Container(
+    return Consumer<AudioService>(
+      builder: (context, audio, child) {
+        return Expanded(
+          child: Container(
             height: 36,
             child: SliderTheme(
               data: SliderThemeData(
                 inactiveTrackColor: Theme.of(context).dividerColor,
-                activeTrackColor: Theme.of(context).primaryColor,
+                activeTrackColor: Theme.of(context).backgroundColor,
                 thumbColor: Theme.of(context).colorScheme.primaryVariant,
                 trackHeight: 5,
               ),
@@ -30,10 +30,10 @@ class AudioSeek extends StatelessWidget {
                 },
               ),
             ),
-          );
-        },
-      );
-    });
+          ),
+        );
+      },
+    );
   }
 
   double getCurrentPosition(AudioService audio) {

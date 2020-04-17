@@ -65,6 +65,12 @@ class CreateAudioState extends State<CreateAudio> {
     }
   }
 
+  void _resetAudioPhotoBackground() {
+    setState(() {
+      audioPhotoBackground = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AudioService>(
@@ -83,7 +89,10 @@ class CreateAudioState extends State<CreateAudio> {
                         audioPhotoBackground: audioPhotoBackground,
                       ),
                 if (audio.playBackAvailable)
-                  AudioBottomTools(onPickPressed: _onPickPressed),
+                  AudioBottomTools(
+                    onPickPressed: _onPickPressed,
+                    resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                  ),
               ],
             ),
           ),
