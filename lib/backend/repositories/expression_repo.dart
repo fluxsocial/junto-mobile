@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 enum ExpressionContext { Group, Collection, Collective }
@@ -13,6 +12,7 @@ class ExpressionRepo {
   final LocalCache db;
   final ExpressionService _expressionService;
   QueryResults<ExpressionResponse> cachedResults;
+  QueryResults<ExpressionResponse> packCachedResults;
 
   Future<ExpressionResponse> createExpression(
     ExpressionModel expression,
@@ -99,10 +99,13 @@ class ExpressionRepo {
       Map<String, String> params) async {
     if (await DataConnectionChecker().hasConnection) {
       cachedResults = await _expressionService.getCollectiveExpressions(params);
-      await db.insertExpressions(cachedResults.results);
+      await db.insertExpressions(
+          cachedResults.results, DBBoxes.collectiveExpressions);
       return cachedResults;
     }
-    final cachedResult = await db.retrieveExpressions();
+    final cachedResult = await db.retrieveExpressions(
+      DBBoxes.collectiveExpressions,
+    );
     return QueryResults(
       lastTimestamp: cachedResults?.lastTimestamp,
       results: cachedResult,
@@ -111,8 +114,23 @@ class ExpressionRepo {
 
   Future<QueryResults<ExpressionResponse>> getPackExpressions(
     Map<String, String> params,
-  ) {
-    return _expressionService.getCollectiveExpressions(params);
+  ) async {
+    if (await DataConnectionChecker().hasConnection) {
+      packCachedResults =
+          await _expressionService.getCollectiveExpressions(params);
+      await db.insertExpressions(
+        packCachedResults.results,
+        DBBoxes.packExpressions,
+      );
+      return packCachedResults;
+    }
+    final _cachedResult = await db.retrieveExpressions(
+      DBBoxes.packExpressions,
+    );
+    return QueryResults(
+      lastTimestamp: packCachedResults?.lastTimestamp,
+      results: _cachedResult,
+    );
   }
 
   List<ExpressionResponse> get collectiveExpressions =>
