@@ -94,90 +94,85 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          margin: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * .3,
-          ),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        SignUpTextField(
-                          hint: S.of(context).welcome_email_hint,
-                          maxLength: 100,
-                          textInputActionType: TextInputAction.next,
-                          onSubmit: () {
-                            FocusScope.of(context).nextFocus();
-                          },
-                          valueController: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          textCapitalization: TextCapitalization.none,
-                        ),
-                        const SizedBox(height: 30),
-                        SignUpTextField(
-                          hint: S.of(context).welcome_password_hint,
-                          maxLength: 100,
-                          textInputActionType: TextInputAction.done,
-                          onSubmit: () {
-                            // FocusScope.of(context).unfocus();
-                          },
-                          obscureText: true,
-                          valueController: _passwordController,
-                          keyboardType: TextInputType.visiblePassword,
-                          textCapitalization: TextCapitalization.none,
-                        ),
-                        const SizedBox(height: 60),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        CallToActionButton(
-                          callToAction: () {
-                            _handleSignIn(context);
-                          },
-                          title: S.of(context).welcome_sign_in,
-                        ),
-                        const SizedBox(height: 30),
-                        GestureDetector(
-                          onTap: () {
-                            widget.signInController.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.decelerate,
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(bottom: 120),
-                            child: Text(
-                              'RESET PASSWORD',
-                              style: TextStyle(
-                                letterSpacing: 1.7,
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: SignInBackNav(signInController: widget.signInController),
+      ),
+      backgroundColor: Colors.transparent,
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SignUpTextField(
+                    hint: S.of(context).welcome_email_hint,
+                    maxLength: 100,
+                    textInputActionType: TextInputAction.next,
+                    onSubmit: () {
+                      FocusScope.of(context).nextFocus();
+                    },
+                    valueController: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    textCapitalization: TextCapitalization.none,
+                  ),
+                  const SizedBox(height: 30),
+                  SignUpTextField(
+                    hint: S.of(context).welcome_password_hint,
+                    maxLength: 100,
+                    textInputActionType: TextInputAction.done,
+                    onSubmit: () {
+                      // FocusScope.of(context).unfocus();
+                    },
+                    obscureText: true,
+                    valueController: _passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    textCapitalization: TextCapitalization.none,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Column(
+              children: [
+                CallToActionButton(
+                  callToAction: () {
+                    _handleSignIn(context);
+                  },
+                  title: S.of(context).welcome_sign_in,
+                ),
+                const SizedBox(height: 30),
+                GestureDetector(
+                  onTap: () {
+                    widget.signInController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.decelerate,
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 120),
+                    child: Text(
+                      'RESET PASSWORD',
+                      style: TextStyle(
+                        letterSpacing: 1.7,
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-        SignInBackNav(signInController: widget.signInController),
-      ],
+      ),
     );
   }
 
