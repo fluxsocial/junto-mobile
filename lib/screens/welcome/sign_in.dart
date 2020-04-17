@@ -99,12 +99,15 @@ class _SignInState extends State<SignIn> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          margin: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * .3,
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Column(
@@ -134,6 +137,10 @@ class _SignInState extends State<SignIn> {
                           textCapitalization: TextCapitalization.none,
                         ),
                         const SizedBox(height: 60),
+                      ],
+                    ),
+                    Column(
+                      children: [
                         CallToActionButton(
                           callToAction: () {
                             _handleSignIn(context);
@@ -148,12 +155,16 @@ class _SignInState extends State<SignIn> {
                               curve: Curves.decelerate,
                             );
                           },
-                          child: Text(
-                            'RESET PASSWORD',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 120),
+                            child: Text(
+                              'RESET PASSWORD',
+                              style: TextStyle(
+                                letterSpacing: 1.7,
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
@@ -161,7 +172,7 @@ class _SignInState extends State<SignIn> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
