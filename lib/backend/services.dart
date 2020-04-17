@@ -275,11 +275,16 @@ abstract class NotificationService {
   Future<NotificationResultsModel> getNotifications(NotificationQuery params);
 }
 
+enum DBBoxes { collectiveExpressions, denExpressions, packExpressions }
+
 /// Interface for managing the application's local cache.
 abstract class LocalCache {
   /// Adds [expressions] to the database.
-  Future<void> insertExpressions(List<ExpressionResponse> expressions);
+  Future<void> insertExpressions(
+    List<ExpressionResponse> expressions,
+    DBBoxes box,
+  );
 
   /// Retrieves all expressions in the database.
-  Future<List<ExpressionResponse>> retrieveExpressions();
+  Future<List<ExpressionResponse>> retrieveExpressions(DBBoxes box);
 }
