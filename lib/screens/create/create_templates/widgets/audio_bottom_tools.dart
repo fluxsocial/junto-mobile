@@ -3,6 +3,9 @@ import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.
 import 'package:provider/provider.dart';
 
 class AudioBottomTools extends StatelessWidget {
+  const AudioBottomTools({this.onPickPressed});
+
+  final Function onPickPressed;
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(builder: (context, audio, child) {
@@ -39,19 +42,19 @@ class AudioBottomTools extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () async {
-                      await audio.resetRecording();
+                      onPickPressed();
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * .5,
                       padding: const EdgeInsets.symmetric(vertical: 25),
                       color: Colors.transparent,
                       child: Icon(
-                        Icons.delete,
+                        Icons.camera_alt,
                         color: Theme.of(context).primaryColorLight,
                         size: 20,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
