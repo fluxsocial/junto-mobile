@@ -45,6 +45,7 @@ class Backend {
   static Future<Backend> init() async {
     try {
       logger.logDebug('Initializing backend');
+      final dbService = HiveCache();
       final ThemeData currentTheme = await JuntoThemesProvider.initialize();
       final JuntoHttp client = JuntoHttp(httpClient: IOClient());
       final AuthenticationService authService =
@@ -56,19 +57,23 @@ class Backend {
       final SearchService searchService = SearchServiceCentralized(client);
       final NotificationService notificationService =
           NotificationServiceImpl(client);
-      final UserRepo userRepo = UserRepo(userService, notificationService);
-      final dbService = HiveCache();
+      final UserRepo userRepo = UserRepo(
+        userService,
+        notificationService,
+        dbService,
+      );
       return Backend._(
-          searchRepo: SearchRepo(searchService),
-          authRepo: AuthRepo(authService, userRepo),
-          userRepo: userRepo,
-          collectiveProvider: CollectiveProviderCentralized(client),
-          groupsProvider: GroupRepo(groupService, userService),
-          expressionRepo: ExpressionRepo(expressionService, dbService),
-          currentTheme: currentTheme,
-          notificationRepo: NotificationRepo(notificationService),
-          appRepo: AppRepo(),
-          db: dbService);
+        searchRepo: SearchRepo(searchService),
+        authRepo: AuthRepo(authService, userRepo),
+        userRepo: userRepo,
+        collectiveProvider: CollectiveProviderCentralized(client),
+        groupsProvider: GroupRepo(groupService, userService),
+        expressionRepo: ExpressionRepo(expressionService, dbService),
+        currentTheme: currentTheme,
+        notificationRepo: NotificationRepo(notificationService),
+        appRepo: AppRepo(),
+        db: dbService,
+      );
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -82,7 +87,7 @@ class Backend {
     final SearchService searchService = MockSearch();
     return Backend._(
         authRepo: AuthRepo(authService, null),
-        userRepo: UserRepo(userService, null),
+        userRepo: UserRepo(userService, null, null),
         collectiveProvider: null,
         groupsProvider: GroupRepo(groupService, userService),
         //TODO(Nash): MockDB
