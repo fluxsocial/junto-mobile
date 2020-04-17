@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart' show LocalCache;
 import 'package:junto_beta_mobile/models/models.dart';
 
@@ -17,9 +18,16 @@ class HiveCache implements LocalCache {
     Hive.registerAdapter(UserProfileAdapter());
   }
 
+  final _supportedBox = <DBBoxes, String>{
+    DBBoxes.collectiveExpressions: "expressions",
+    DBBoxes.packExpressions: "pack",
+    DBBoxes.denExpressions: "den",
+  };
+
   @override
-  Future<void> insertExpressions(List<ExpressionResponse> expressions) async {
-    final box = await Hive.openLazyBox<ExpressionResponse>('expressions');
+  Future<void> insertExpressions(
+      List<ExpressionResponse> expressions, DBBoxes db) async {
+    final box = await Hive.openLazyBox<ExpressionResponse>(_supportedBox[db]);
     final _futures = <Future>[];
     for (ExpressionResponse expression in expressions) {
       if (!box.containsKey(expression.address)) {
@@ -30,8 +38,8 @@ class HiveCache implements LocalCache {
   }
 
   @override
-  Future<List<ExpressionResponse>> retrieveExpressions() async {
-    final box = await Hive.openLazyBox<ExpressionResponse>('expressions');
+  Future<List<ExpressionResponse>> retrieveExpressions(DBBoxes db) async {
+    final box = await Hive.openLazyBox<ExpressionResponse>(_supportedBox[db]);
     List<ExpressionResponse> items = [];
     for (dynamic key in box.keys) {
       ExpressionResponse res = await box.get(key);
