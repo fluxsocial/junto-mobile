@@ -27,12 +27,23 @@ class MockAuth implements AuthenticationService {
 
   @override
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(
+      const Duration(milliseconds: 500),
+    );
     return kUserData;
   }
 
   @override
   Future<void> requestPasswordReset(String email) async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(
+      const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  Future<void> resetPassword(Map<String, dynamic> details) async {
+    await Future<void>.delayed(
+      const Duration(milliseconds: 500),
+    );
   }
 }

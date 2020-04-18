@@ -42,6 +42,9 @@ abstract class AuthenticationService {
   // Request verification code to reset password
   Future<void> requestPasswordReset(String email);
 
+  // Request verification code to reset password
+  Future<void> resetPassword(Map<String, dynamic> details);
+
   /// Authenticates a registered user. Returns the [UserProfile]  for the
   /// given user. Their cookie is stored locally on device and is used for
   /// all future request.
