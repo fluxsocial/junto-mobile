@@ -129,4 +129,21 @@ class AuthenticationServiceCentralized implements AuthenticationService {
         JuntoHttp.handleResponse(response);
     print(_responseMap);
   }
+
+  @override
+  Future<void> resetPassword(Map<String, dynamic> details) async {
+    final Map<String, dynamic> _body = <String, dynamic>{
+      'email': details['email'],
+      'verification_code': details['verification_code'],
+      'password': details['password'],
+      'confirm_password': details['confirm_password']
+    };
+    final http.Response response = await client.postWithoutEncoding(
+      '/auth/reset',
+      body: _body,
+    );
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    print(_responseMap);
+  }
 }

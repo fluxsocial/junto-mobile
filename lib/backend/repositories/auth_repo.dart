@@ -95,6 +95,10 @@ class AuthRepo {
     await _authService.requestPasswordReset(email);
   }
 
+  Future<void> resetPassword(Map<String, dynamic> details) async {
+    await _authService.resetPassword(details);
+  }
+
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser() async {
     await _authService.logoutUser();
