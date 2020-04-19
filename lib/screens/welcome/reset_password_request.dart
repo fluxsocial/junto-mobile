@@ -3,7 +3,6 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
-import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
@@ -101,7 +100,6 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SignUpTextField(
-                      validator: Validator.validateEmail,
                       valueController: _textEditingController,
                       hint: S.of(context).welcome_email_hint,
                       maxLength: 100,

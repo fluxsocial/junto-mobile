@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart'
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +63,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
       await showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
-          dialogText: "Both Passwords do not match",
+          dialogText: "Passwords must match.",
         ),
       );
       return false;
@@ -72,15 +73,29 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
 
   Future<void> _confirmNewPassword() async {
     if (await _validatePasswords()) {
-      await Provider.of<AuthRepo>(context, listen: false).resetPassword(
-        {
-          "password": _newPassword.value.text,
-          "confirm_password": _confirmPassword.value.text,
-          "verification_code": int.parse(_verificationCode.value.text),
-          "email": "eric@junto.foundation"
-        },
-      );
-      Navigator.of(context).pushReplacement(Welcome.route());
+      try {
+        await Provider.of<AuthRepo>(context, listen: false).resetPassword(
+          {
+            "password": _newPassword.value.text,
+            "confirm_password": _confirmPassword.value.text,
+            "verification_code": int.parse(_verificationCode.value.text),
+            "email": "eric@junto.foundation"
+          },
+        );
+        await showFeedback(
+          context,
+          message: "Password successfully reset!",
+        );
+        Navigator.of(context).pushReplacement(Welcome.route());
+      } catch (error) {
+        print(error.message);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: error.message,
+          ),
+        );
+      }
     }
   }
 
