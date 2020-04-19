@@ -41,7 +41,8 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: widget.validator,
       controller: widget.valueController,
       cursorColor: Colors.white70,
       focusNode: widget.focusNode,
@@ -72,7 +73,7 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
       keyboardType: widget.obscureText
           ? TextInputType.visiblePassword
           : widget.keyboardType,
-      onSubmitted: (_) {
+      onFieldSubmitted: (_) {
         widget.onSubmit();
       },
       keyboardAppearance: Theme.of(context).brightness,
