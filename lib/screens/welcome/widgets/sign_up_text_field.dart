@@ -15,6 +15,7 @@ class SignUpTextField extends StatefulWidget {
     this.maxLines = 1,
     this.obscureText = false,
     this.focusNode,
+    this.validator,
   }) : super(key: key);
 
   final TextEditingController valueController;
@@ -27,6 +28,7 @@ class SignUpTextField extends StatefulWidget {
   final int maxLines;
   final bool obscureText;
   final FocusNode focusNode;
+  final FormFieldValidator<String> validator;
 
   @override
   _SignUpTextFieldState createState() => _SignUpTextFieldState();
