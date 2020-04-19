@@ -143,6 +143,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                       },
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.none,
+                      obscureText: true,
                     ),
                     const SizedBox(height: 45),
                     SignUpTextField(
@@ -155,6 +156,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                       },
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.none,
+                      obscureText: true,
                     ),
                   ],
                 ),
