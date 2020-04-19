@@ -71,13 +71,12 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
 
   Future<void> _confirmNewPassword() async {
     if (await _validatePasswords()) {
-      await Provider.of<AuthRepo>(context).resetPassword(
+      await Provider.of<AuthRepo>(context, listen: false).resetPassword(
         {
           "password": _newPassword.value.text,
           "confirm_password": _confirmPassword.value.text,
-          "verification_code": _verificationCode.value.text as int,
-          //TODO(Nash): Pass email
-          "email": "string"
+          "verification_code": int.parse(_verificationCode.value.text),
+          "email": "eric@junto.foundation"
         },
       );
       Navigator.of(context).pushReplacement(Welcome.route());
