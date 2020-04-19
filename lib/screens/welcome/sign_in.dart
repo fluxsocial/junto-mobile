@@ -100,6 +100,7 @@ class _SignInState extends State<SignIn> {
         child: SignInBackNav(signInController: widget.signInController),
       ),
       backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         width: MediaQuery.of(context).size.width,

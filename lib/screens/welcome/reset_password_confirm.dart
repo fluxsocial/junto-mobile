@@ -91,6 +91,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
         child: SignInBackNav(signInController: widget.signInController),
       ),
       backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         width: MediaQuery.of(context).size.width,
@@ -110,7 +111,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                     onSubmit: () {
                       FocusScope.of(context).nextFocus();
                     },
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.number,
                     textCapitalization: TextCapitalization.none,
                   ),
                   const SizedBox(height: 45),
@@ -122,7 +123,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                     onSubmit: () {
                       FocusScope.of(context).nextFocus();
                     },
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.none,
                   ),
                   const SizedBox(height: 45),
@@ -134,19 +135,20 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                     onSubmit: () {
                       FocusScope.of(context).nextFocus();
                     },
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.none,
                   ),
                 ],
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 120),
-              child: CallToActionButton(
-                callToAction: _confirmNewPassword,
-                title: S.of(context).welcome_password_confirm,
+            if (!FocusScope.of(context).hasFocus)
+              Container(
+                margin: const EdgeInsets.only(bottom: 120),
+                child: CallToActionButton(
+                  callToAction: _confirmNewPassword,
+                  title: S.of(context).welcome_password_confirm,
+                ),
               ),
-            ),
           ],
         ),
       ),

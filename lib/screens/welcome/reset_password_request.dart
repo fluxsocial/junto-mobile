@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ResetPasswordRequest extends StatefulWidget {
@@ -53,7 +54,12 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
         );
         return;
       } on JuntoException catch (error) {
-        showFeedback(context, message: error.message);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: error.message,
+          ),
+        );
         return;
       }
     }
@@ -67,6 +73,7 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
         child: SignInBackNav(signInController: widget.signInController),
       ),
       backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         width: MediaQuery.of(context).size.width,
@@ -86,9 +93,9 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
                       valueController: _textEditingController,
                       hint: S.of(context).welcome_email_hint,
                       maxLength: 100,
-                      textInputActionType: TextInputAction.next,
+                      textInputActionType: TextInputAction.done,
                       onSubmit: () {
-                        FocusScope.of(context).nextFocus();
+                        FocusScope.of(context).unfocus();
                       },
                       keyboardType: TextInputType.emailAddress,
                       textCapitalization: TextCapitalization.none,
