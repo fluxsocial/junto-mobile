@@ -91,8 +91,10 @@ class AuthRepo {
   }
 
   // Request verification code to reset password
-  Future<void> requestPasswordReset(String email) async {
-    await _authService.requestPasswordReset(email);
+  Future<int> requestPasswordReset(String email) async {
+    final int responseStatusCode =
+        await _authService.requestPasswordReset(email);
+    return responseStatusCode;
   }
 
   Future<void> resetPassword(Map<String, dynamic> details) async {

@@ -40,7 +40,7 @@ abstract class AuthenticationService {
   Future<UserData> registerUser(UserAuthRegistrationDetails details);
 
   // Request verification code to reset password
-  Future<void> requestPasswordReset(String email);
+  Future<int> requestPasswordReset(String email);
 
   // Request verification code to reset password
   Future<void> resetPassword(Map<String, dynamic> details);
