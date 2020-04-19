@@ -442,6 +442,15 @@ class S {
     );
   }
 
+  String get new_password_hint {
+    return Intl.message(
+      'New Password',
+      name: 'new_password_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get welcome_password_confirm {
     return Intl.message(
       'CONFIRM',
