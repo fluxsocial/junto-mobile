@@ -117,7 +117,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
   }
 
   @override
-  Future<void> requestPasswordReset(String email) async {
+  Future<int> requestPasswordReset(String email) async {
     final Map<String, dynamic> _body = <String, dynamic>{
       'email': email,
     };
@@ -125,9 +125,15 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       '/auth/forgot',
       body: _body,
     );
-    final Map<String, dynamic> _responseMap =
-        JuntoHttp.handleResponse(response);
-    print(_responseMap);
+
+    if (response.statusCode == 310) {
+      return 310;
+    } else {
+      final Map<String, dynamic> _responseMap =
+          JuntoHttp.handleResponse(response);
+      print(_responseMap);
+    }
+    return response.statusCode;
   }
 
   @override

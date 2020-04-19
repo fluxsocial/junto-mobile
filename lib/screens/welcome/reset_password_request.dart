@@ -40,18 +40,30 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
   Future<void> _requestEmail() async {
     if (_formKey.currentState.validate()) {
       try {
-        await Provider.of<AuthRepo>(context, listen: false)
-            .requestPasswordReset(
+        final int responseStatusCode =
+            await Provider.of<AuthRepo>(context, listen: false)
+                .requestPasswordReset(
           _textEditingController.value.text,
         );
-        await showFeedback(
-          context,
-          message: "Verfication email sent.",
-        );
-        widget.signInController.nextPage(
-          curve: Curves.easeIn,
-          duration: const Duration(milliseconds: 300),
-        );
+
+        // if 310, then continue as this status code represents that a verification
+        // email has already been sent
+        if (responseStatusCode == 310) {
+          widget.signInController.nextPage(
+            curve: Curves.easeIn,
+            duration: const Duration(milliseconds: 300),
+          );
+        } else {
+          await showFeedback(
+            context,
+            message: "Check your email for a verification code.",
+          );
+          widget.signInController.nextPage(
+            curve: Curves.easeIn,
+            duration: const Duration(milliseconds: 300),
+          );
+        }
+
         return;
       } on JuntoException catch (error) {
         showDialog(

@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart'
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:provider/provider.dart';
 
 class ResetPasswordConfirm extends StatefulWidget {
@@ -90,8 +91,8 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
         preferredSize: Size.fromHeight(50),
         child: SignInBackNav(signInController: widget.signInController),
       ),
-      backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         width: MediaQuery.of(context).size.width,
@@ -100,55 +101,57 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SignUpTextField(
-                    valueController: _verificationCode,
-                    hint: S.of(context).welcome_verification_code,
-                    maxLength: 100,
-                    textInputActionType: TextInputAction.next,
-                    onSubmit: () {
-                      FocusScope.of(context).nextFocus();
-                    },
-                    keyboardType: TextInputType.number,
-                    textCapitalization: TextCapitalization.none,
-                  ),
-                  const SizedBox(height: 45),
-                  SignUpTextField(
-                    valueController: _newPassword,
-                    hint: S.of(context).welcome_password_hint,
-                    maxLength: 100,
-                    textInputActionType: TextInputAction.next,
-                    onSubmit: () {
-                      FocusScope.of(context).nextFocus();
-                    },
-                    keyboardType: TextInputType.text,
-                    textCapitalization: TextCapitalization.none,
-                  ),
-                  const SizedBox(height: 45),
-                  SignUpTextField(
-                    valueController: _confirmPassword,
-                    hint: S.of(context).welcome_confirm_password,
-                    maxLength: 100,
-                    textInputActionType: TextInputAction.next,
-                    onSubmit: () {
-                      FocusScope.of(context).nextFocus();
-                    },
-                    keyboardType: TextInputType.text,
-                    textCapitalization: TextCapitalization.none,
-                  ),
-                ],
-              ),
-            ),
-            if (!FocusScope.of(context).hasFocus)
-              Container(
-                margin: const EdgeInsets.only(bottom: 120),
-                child: CallToActionButton(
-                  callToAction: _confirmNewPassword,
-                  title: S.of(context).welcome_password_confirm,
+              child: KeyboardAvoider(
+                autoScroll: true,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SignUpTextField(
+                      valueController: _verificationCode,
+                      hint: S.of(context).welcome_verification_code,
+                      maxLength: 100,
+                      textInputActionType: TextInputAction.next,
+                      onSubmit: () {
+                        FocusScope.of(context).nextFocus();
+                      },
+                      keyboardType: TextInputType.number,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    const SizedBox(height: 45),
+                    SignUpTextField(
+                      valueController: _newPassword,
+                      hint: S.of(context).new_password_hint,
+                      maxLength: 100,
+                      textInputActionType: TextInputAction.next,
+                      onSubmit: () {
+                        FocusScope.of(context).nextFocus();
+                      },
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    const SizedBox(height: 45),
+                    SignUpTextField(
+                      valueController: _confirmPassword,
+                      hint: S.of(context).welcome_confirm_password,
+                      maxLength: 100,
+                      textInputActionType: TextInputAction.done,
+                      onSubmit: () {
+                        FocusScope.of(context).unfocus();
+                      },
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                  ],
                 ),
               ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 120),
+              child: CallToActionButton(
+                callToAction: _confirmNewPassword,
+                title: S.of(context).welcome_password_confirm,
+              ),
+            )
           ],
         ),
       ),
