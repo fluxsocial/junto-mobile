@@ -5,14 +5,15 @@ import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart'
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:provider/provider.dart';
 
 class ResetPasswordRequest extends StatefulWidget {
-  const ResetPasswordRequest({this.signInController});
+  const ResetPasswordRequest({@required this.email, this.signInController});
 
   final PageController signInController;
+  final ValueNotifier<String> email;
 
   @override
   _ResetPasswordRequestState createState() => _ResetPasswordRequestState();
@@ -39,12 +40,11 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
   Future<void> _requestEmail() async {
     if (_formKey.currentState.validate()) {
       try {
+        final email = _textEditingController.value.text;
         final int responseStatusCode =
             await Provider.of<AuthRepo>(context, listen: false)
-                .requestPasswordReset(
-          _textEditingController.value.text,
-        );
-
+                .requestPasswordReset(email);
+        widget.email.value = email;
         // if 310, then continue as this status code represents that a verification
         // email has already been sent
         if (responseStatusCode == 310) {

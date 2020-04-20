@@ -11,9 +11,13 @@ import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:provider/provider.dart';
 
 class ResetPasswordConfirm extends StatefulWidget {
-  const ResetPasswordConfirm({this.signInController});
+  const ResetPasswordConfirm({
+    @required this.signInController,
+    @required this.email,
+  });
 
   final PageController signInController;
+  final String email;
 
   @override
   _ResetPasswordConfirmState createState() => _ResetPasswordConfirmState();
@@ -79,7 +83,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
             "password": _newPassword.value.text,
             "confirm_password": _confirmPassword.value.text,
             "verification_code": int.parse(_verificationCode.value.text),
-            "email": "eric@junto.foundation"
+            "email": widget.email,
           },
         );
         await showFeedback(

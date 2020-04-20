@@ -5,6 +5,8 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
+import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
@@ -12,8 +14,6 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
-import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
-import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
@@ -40,6 +40,8 @@ class Welcome extends StatefulWidget {
 }
 
 class WelcomeState extends State<Welcome> {
+  // Used when resetting password
+  final ValueNotifier<String> _email = ValueNotifier("");
   String _currentTheme;
   String _userAddress;
 
@@ -280,10 +282,15 @@ class WelcomeState extends State<Welcome> {
                           child: SignIn(_signInController),
                         ),
                         ResetPasswordRequest(
-                          signInController: _signInController,
-                        ),
-                        ResetPasswordConfirm(
-                            signInController: _signInController),
+                            signInController: _signInController, email: _email),
+                        ValueListenableBuilder<String>(
+                            valueListenable: _email,
+                            builder: (context, email, _) {
+                              return ResetPasswordConfirm(
+                                signInController: _signInController,
+                                email: email,
+                              );
+                            }),
                       ],
                     ),
                   ),
