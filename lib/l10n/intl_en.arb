@@ -100,6 +100,11 @@
     "type" : "text",
     "description" : ""
   },
+  "new_password_hint" : "New password",
+  "@new_password_hint" : {
+    "type" : "text",
+    "description" : ""
+  },
   "notifications_connection" : "Connection",
   "@notifications_connection" : {
     "type" : "text",
@@ -250,6 +255,11 @@
     "type" : "text",
     "description" : ""
   },
+  "welcome_reset_password" : "Reset password",
+  "@welcome_reset_password" : {
+    "type" : "text",
+    "description" : ""
+  },
   "welcome_sign_in" : "SIGN IN",
   "@welcome_sign_in" : {
     "type" : "text",
@@ -280,7 +290,7 @@
     "type" : "text",
     "description" : ""
   },
-  "welcome_username_requirements" : "Your username can only contain lowercase letters a - z, numbers 0 - 9, and underscores.",
+  "welcome_username_requirements" : "Your username can only contain lowercase letters, numbers, and underscores.",
   "@welcome_username_requirements" : {
     "type" : "text",
     "description" : ""
@@ -305,7 +315,7 @@
     "type" : "text",
     "description" : ""
   },
-  "welcome_wrong_email_or_password" : "Please enter your correct email and password.",
+  "welcome_wrong_email_or_password" : "Wrong email or password",
   "@welcome_wrong_email_or_password" : {
     "type" : "text",
     "description" : ""

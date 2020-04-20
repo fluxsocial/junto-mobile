@@ -47,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lotus_create" : MessageLookupByLibrary.simpleMessage("CREATE"),
     "lotus_groups" : MessageLookupByLibrary.simpleMessage("GROUPS"),
     "lotus_packs" : MessageLookupByLibrary.simpleMessage("PACKS"),
+    "new_password_hint" : MessageLookupByLibrary.simpleMessage("New password"),
     "notifications_connection" : MessageLookupByLibrary.simpleMessage("Connection"),
     "notifications_creator" : MessageLookupByLibrary.simpleMessage("Creator"),
     "notifications_group" : MessageLookupByLibrary.simpleMessage("Group"),
@@ -77,17 +78,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome_password_rules" : MessageLookupByLibrary.simpleMessage("Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter."),
     "welcome_passwords_must_match" : MessageLookupByLibrary.simpleMessage("Passwords must match."),
     "welcome_remove_photo" : MessageLookupByLibrary.simpleMessage("REMOVE PHOTO"),
+    "welcome_reset_password" : MessageLookupByLibrary.simpleMessage("Reset password"),
     "welcome_sign_in" : MessageLookupByLibrary.simpleMessage("SIGN IN"),
     "welcome_theme" : MessageLookupByLibrary.simpleMessage("Which theme feels best?"),
     "welcome_unable_to_login" : MessageLookupByLibrary.simpleMessage("Unable to login. Please double check your login credentials."),
     "welcome_username_hint" : MessageLookupByLibrary.simpleMessage("Choose a unique username"),
     "welcome_username_ill_go" : MessageLookupByLibrary.simpleMessage("I\'ll go by..."),
     "welcome_username_label" : MessageLookupByLibrary.simpleMessage("USERNAME"),
-    "welcome_username_requirements" : MessageLookupByLibrary.simpleMessage("Your username can only contain lowercase letters a - z, numbers 0 - 9, and underscores."),
+    "welcome_username_requirements" : MessageLookupByLibrary.simpleMessage("Your username can only contain lowercase letters, numbers, and underscores."),
     "welcome_username_taken" : MessageLookupByLibrary.simpleMessage("Sorry, that username is taken."),
     "welcome_verification_code" : MessageLookupByLibrary.simpleMessage("Verification code"),
     "welcome_website_hint" : MessageLookupByLibrary.simpleMessage("Website"),
     "welcome_website_label" : MessageLookupByLibrary.simpleMessage("WEBSITE"),
-    "welcome_wrong_email_or_password" : MessageLookupByLibrary.simpleMessage("Please enter your correct email and password.")
+    "welcome_wrong_email_or_password" : MessageLookupByLibrary.simpleMessage("Wrong email or password")
   };
 }
