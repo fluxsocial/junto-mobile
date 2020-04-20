@@ -20,13 +20,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JUNTO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eLf-a8-Zwj">
-                                <rect key="frame" x="117" y="431.5" width="180" height="65"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="54"/>
-                                <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <rect key="frame" x="119.5" y="431.5" width="175" height="65"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="54"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" image="junto-mobile__logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
-                                <rect key="frame" x="170" y="341" width="75" height="83"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" image="Logo_solid" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
+                                <rect key="frame" x="169.5" y="340.5" width="75" height="83"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="75" id="8rI-QU-OM2"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="83" id="98t-qk-0C3"/>
@@ -36,7 +36,7 @@
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="thin"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="eLf-a8-Zwj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="8uL-R1-uQB"/>
@@ -52,6 +52,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="junto-mobile__logo.png" width="75" height="83"/>
+        <image name="Logo_solid" width="4167" height="4167"/>
     </resources>
 </document>
