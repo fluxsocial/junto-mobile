@@ -125,6 +125,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       '/auth/forgot',
       body: _body,
     );
+    logger.logDebug("Request code ${response.body}");
 
     if (response.statusCode == 310) {
       return 310;
