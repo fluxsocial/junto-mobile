@@ -1,5 +1,10 @@
 {
   "@@locale" : "de",
+  "audio_title" : "",
+  "@audio_title" : {
+    "type" : "text",
+    "description" : ""
+  },
   "collective_new_perspective" : "",
   "@collective_new_perspective" : {
     "type" : "text",

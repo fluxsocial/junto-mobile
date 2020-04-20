@@ -27,6 +27,15 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  String get audio_title {
+    return Intl.message(
+      'Title (optional)',
+      name: 'audio_title',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get collective_new_perspective {
     return Intl.message(
       'New Perspective',
@@ -609,7 +618,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en'), Locale.fromSubtags(languageCode: 'es'), Locale.fromSubtags(languageCode: 'da'), Locale.fromSubtags(languageCode: 'hu'), Locale.fromSubtags(languageCode: 'km'), Locale.fromSubtags(languageCode: 'pt'), Locale.fromSubtags(languageCode: 'de'), Locale.fromSubtags(languageCode: 'sl'), Locale.fromSubtags(languageCode: 'it'), Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'), Locale.fromSubtags(languageCode: 'th'), Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'), Locale.fromSubtags(languageCode: 'tr'), Locale.fromSubtags(languageCode: 'pl'), Locale.fromSubtags(languageCode: 'ja'), Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'en'), Locale.fromSubtags(languageCode: 'pt'), Locale.fromSubtags(languageCode: 'de'), Locale.fromSubtags(languageCode: 'pl'),
     ];
   }
 

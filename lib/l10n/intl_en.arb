@@ -1,5 +1,10 @@
 {
   "@@locale" : "en",
+  "audio_title" : "Title (optional)",
+  "@audio_title" : {
+    "type" : "text",
+    "description" : ""
+  },
   "collective_new_perspective" : "New Perspective",
   "@collective_new_perspective" : {
     "type" : "text",
