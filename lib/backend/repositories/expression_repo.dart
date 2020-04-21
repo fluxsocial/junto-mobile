@@ -71,7 +71,7 @@ class ExpressionRepo {
       audio: result[0],
       photo: result.length > 1 ? result[1] : null,
       //TODO: implement gradient
-      // gradient: null,
+      gradient: expression.gradient,
     );
   }
 
