@@ -88,7 +88,7 @@ class AudioFormExpression {
       title: json['title'] ?? '',
       photo: json['photo'] ?? '',
       audio: json['audio'] ?? '',
-      gradient: json['gradient'] ?? '',
+      gradient: json['gradient']?.cast<String>() ?? [],
     );
   }
 
@@ -105,7 +105,7 @@ class AudioFormExpression {
         'title': title ?? '',
         'photo': photo ?? '',
         'audio': audio ?? '',
-        'gradient': gradient ?? [''],
+        'gradient': gradient ?? [],
       };
 }
 
@@ -362,6 +362,9 @@ class ExpressionResponse extends HiveObject {
     }
     if (type == 'EventForm') {
       return EventFormExpression.fromMap(json);
+    }
+    if (type == 'AudioForm') {
+      return AudioFormExpression.fromMap(json);
     }
   }
 }

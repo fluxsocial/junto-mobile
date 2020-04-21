@@ -16,6 +16,7 @@ class HiveCache implements LocalCache {
     Hive.registerAdapter(PhotoFormExpressionAdapter());
     Hive.registerAdapter(LongFormExpressionAdapter());
     Hive.registerAdapter(UserProfileAdapter());
+    Hive.registerAdapter(AudioFormExpressionAdapter());
   }
 
   final _supportedBox = <DBBoxes, String>{
