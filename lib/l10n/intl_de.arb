@@ -1,5 +1,10 @@
 {
   "@@locale" : "de",
+  "audio_title" : "",
+  "@audio_title" : {
+    "type" : "text",
+    "description" : ""
+  },
   "collective_new_perspective" : "",
   "@collective_new_perspective" : {
     "type" : "text",
@@ -97,6 +102,11 @@
   },
   "lotus_packs" : "",
   "@lotus_packs" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "new_password_hint" : "",
+  "@new_password_hint" : {
     "type" : "text",
     "description" : ""
   },
@@ -247,6 +257,11 @@
   },
   "welcome_remove_photo" : "",
   "@welcome_remove_photo" : {
+    "type" : "text",
+    "description" : ""
+  },
+  "welcome_reset_password" : "",
+  "@welcome_reset_password" : {
     "type" : "text",
     "description" : ""
   },

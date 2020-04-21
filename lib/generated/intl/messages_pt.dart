@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "audio_title" : MessageLookupByLibrary.simpleMessage(""),
     "collective_new_perspective" : MessageLookupByLibrary.simpleMessage(""),
     "common_accept" : MessageLookupByLibrary.simpleMessage(""),
     "common_close" : MessageLookupByLibrary.simpleMessage(""),
@@ -47,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "lotus_create" : MessageLookupByLibrary.simpleMessage(""),
     "lotus_groups" : MessageLookupByLibrary.simpleMessage(""),
     "lotus_packs" : MessageLookupByLibrary.simpleMessage(""),
+    "new_password_hint" : MessageLookupByLibrary.simpleMessage(""),
     "notifications_connection" : MessageLookupByLibrary.simpleMessage(""),
     "notifications_creator" : MessageLookupByLibrary.simpleMessage(""),
     "notifications_group" : MessageLookupByLibrary.simpleMessage(""),
@@ -77,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome_password_rules" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_passwords_must_match" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_remove_photo" : MessageLookupByLibrary.simpleMessage(""),
+    "welcome_reset_password" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_sign_in" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_theme" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_unable_to_login" : MessageLookupByLibrary.simpleMessage(""),

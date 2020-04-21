@@ -170,7 +170,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
               margin: const EdgeInsets.only(bottom: 120),
               child: CallToActionButton(
                 callToAction: _confirmNewPassword,
-                title: S.of(context).welcome_password_confirm,
+                title: S.of(context).welcome_confirm_password,
               ),
             )
           ],
