@@ -28,7 +28,6 @@ class CreateAudio extends StatefulWidget {
 
 class CreateAudioState extends State<CreateAudio> {
   final TextEditingController titleController = TextEditingController();
-  String imagePath;
   File audioPhotoBackground;
 
   Future<void> _onPickPressed() async {
@@ -101,8 +100,8 @@ class CreateAudioState extends State<CreateAudio> {
     if (_validate(audio)) {
       final audioExpression = AudioFormExpression(
         title: titleController.text,
-        imageUrl: imagePath,
-        audioUrl: audio.recordingPath,
+        photo: audioPhotoBackground?.path,
+        audio: audio.recordingPath,
       );
       Navigator.push(
         context,
