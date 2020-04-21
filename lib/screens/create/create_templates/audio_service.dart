@@ -15,8 +15,9 @@ class AudioService with ChangeNotifier {
   FlutterAudioRecorder _recorder;
   Recording _recording;
   Timer _timer;
-
   Timer _playbackTimer;
+  bool _isLocal = true;
+  bool get _isWeb => !_isLocal;
 
   AudioService() : _audioPlayer = AudioPlayer();
 
@@ -34,10 +35,14 @@ class AudioService with ChangeNotifier {
   bool _isPlaying = false;
   bool get isPlaying => _isPlaying;
 
-  Duration get recordingDuration =>
-      recordingAvailable ? _recording.duration : Duration.zero;
+  Duration _duration;
+  Duration get recordingDuration => recordingAvailable
+      ? _isLocal ? _recording.duration : _duration
+      : Duration.zero;
 
-  bool get recordingAvailable => _recording != null;
+  bool _recordingLoaded = false;
+  bool get recordingAvailable =>
+      _recording != null || (_isWeb && _recordingLoaded);
   bool get playBackAvailable => recordingAvailable && _isRecording == false;
 
   String _currentPath;
@@ -88,7 +93,7 @@ class AudioService with ChangeNotifier {
   void playRecording() async {
     await _audioPlayer.play(
       _currentPath,
-      isLocal: true,
+      isLocal: _isLocal,
       position: _currentPosition,
     );
     _isPlaying = true;
@@ -193,5 +198,18 @@ class AudioService with ChangeNotifier {
     _audioPlayer?.dispose();
     _recorder?.stop();
     super.dispose();
+  }
+
+  initializeFromWeb(String audio) async {
+    _currentPath = audio;
+    _isLocal = false;
+    await _audioPlayer.setUrl(
+      _currentPath,
+      isLocal: _isLocal,
+    );
+    final duration = await _audioPlayer.getDuration();
+    _duration = Duration(milliseconds: duration);
+    _recordingLoaded = true;
+    notifyListeners();
   }
 }

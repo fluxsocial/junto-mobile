@@ -16,10 +16,10 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
+
+import 'expressions/audio_open.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(
@@ -83,6 +83,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       return PhotoOpen(widget.expression);
     } else if (expressionType == 'EventForm') {
       return EventOpen(widget.expression);
+    } else if (expressionType == 'AudioForm') {
+      return AudioOpen(widget.expression);
     } else {
       return const SizedBox();
     }

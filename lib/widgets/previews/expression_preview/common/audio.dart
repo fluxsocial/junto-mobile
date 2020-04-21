@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/audio/audio_title.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 class CommonAudioPreview extends StatelessWidget {
@@ -21,83 +22,59 @@ class CommonAudioPreview extends StatelessWidget {
         ? audio.gradient[1]
         : '#307FAA';
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          stops: const <double>[0.1, 0.9],
-          colors: <Color>[
-            HexColor.fromHex(gradientOne),
-            HexColor.fromHex(gradientTwo)
-          ],
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          if (audio.photo != null && audio.photo.isNotEmpty)
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: CachedNetworkImage(
-                imageUrl: audio.photo,
-                placeholder: (BuildContext context, String _) {
-                  return Container(
-                    color: Theme.of(context).dividerColor,
-                    height: MediaQuery.of(context).size.width,
-                    width: MediaQuery.of(context).size.width,
-                  );
-                },
-                fit: BoxFit.cover,
-              ),
-            ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              if (audio.title.isNotEmpty) AudioPreviewTitle(audio: audio),
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Icon(
-                  Icons.play_arrow,
-                  size: 33,
-                  color: Colors.white,
-                ),
-              ),
+    return AspectRatio(
+      aspectRatio: 3 / 2,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: const <double>[0.1, 0.9],
+            colors: <Color>[
+              HexColor.fromHex(gradientOne),
+              HexColor.fromHex(gradientTwo)
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class AudioPreviewTitle extends StatelessWidget {
-  const AudioPreviewTitle({
-    Key key,
-    @required this.audio,
-  }) : super(key: key);
-
-  final AudioFormExpression audio;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 16.0,
-        left: 8.0,
-        right: 8.0,
-      ),
-      child: Text(
-        audio.title,
-        maxLines: 2,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
         ),
-        overflow: TextOverflow.ellipsis,
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            if (audio.photo != null && audio.photo.isNotEmpty)
+              Positioned.fill(
+                child: Stack(
+                  children: <Widget>[
+                    Positioned.fill(
+                      child: CachedNetworkImage(
+                        imageUrl: audio.photo,
+                        placeholder: (BuildContext context, String _) {
+                          return Container(
+                            color: Theme.of(context).dividerColor,
+                          );
+                        },
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned.fill(child: Container(color: Colors.black38)),
+                  ],
+                ),
+              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                if (audio.title.isNotEmpty) AudioPreviewTitle(audio: audio),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Icon(
+                    Icons.play_arrow,
+                    size: 33,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
