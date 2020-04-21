@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/audio.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/dynamic.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/event.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/photo.dart';
@@ -56,7 +57,8 @@ class SingleColumnExpressionPreview extends StatelessWidget
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
                 border: expression.type != 'PhotoForm' &&
-                        expression.type != 'ShortForm'
+                        expression.type != 'ShortForm' &&
+                        expression.type != 'AudioForm'
                     ? Border(
                         bottom: BorderSide(
                           color: Theme.of(context).dividerColor,
@@ -98,6 +100,8 @@ class SingleColumnExpressionPreview extends StatelessWidget
       return PhotoPreview(expression: expression);
     } else if (expression.type == 'EventForm') {
       return EventPreview(expression: expression);
+    } else if (expression.type == 'AudioForm') {
+      return AudioPreview(expression: expression);
     } else {
       return Container();
     }
