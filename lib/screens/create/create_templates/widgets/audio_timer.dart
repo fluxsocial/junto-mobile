@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'audio_position.dart';
+import 'package:junto_beta_mobile/widgets/audio/audio_position.dart';
 
 class AudioTimer extends StatelessWidget {
   const AudioTimer({this.audio});
