@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/audio/audio_gradient_background.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_title.dart';
-import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 class CommonAudioPreview extends StatelessWidget {
   final ExpressionResponse expression;
@@ -15,27 +15,11 @@ class CommonAudioPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audio = expression.expressionData as AudioFormExpression;
-    final gradientOne = audio.gradient.isNotEmpty && audio.gradient.length > 1
-        ? audio.gradient[0]
-        : '#8E8098';
-    final gradientTwo = audio.gradient.isNotEmpty && audio.gradient.length > 1
-        ? audio.gradient[1]
-        : '#307FAA';
 
     return AspectRatio(
       aspectRatio: 3 / 2,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            stops: const <double>[0.1, 0.9],
-            colors: <Color>[
-              HexColor.fromHex(gradientOne),
-              HexColor.fromHex(gradientTwo)
-            ],
-          ),
-        ),
+      child: AudioGradientBackground(
+        audio: audio,
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[

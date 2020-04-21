@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
+import 'package:junto_beta_mobile/widgets/audio/audio_gradient_background.dart';
 import 'package:provider/provider.dart';
 
 import 'audio_play.dart';
@@ -46,18 +48,22 @@ class PhotoAudioBackground extends StatelessWidget {
 
 class EmptyAudioBackground extends StatelessWidget {
   const EmptyAudioBackground({
+    this.audio,
     Key key,
   }) : super(key: key);
+  final AudioFormExpression audio;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width * 2 / 3,
-      child: Image.asset(
-        'assets/images/junto-mobile__themes--rainbow.png',
-        fit: BoxFit.cover,
-      ),
+      child: audio != null
+          ? AudioGradientBackground(audio: audio)
+          : Image.asset(
+              'assets/images/junto-mobile__themes--rainbow.png',
+              fit: BoxFit.cover,
+            ),
     );
   }
 }
