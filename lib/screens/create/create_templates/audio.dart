@@ -82,6 +82,7 @@ class CreateAudioState extends State<CreateAudio> {
                     ? AudioRecord()
                     : AudioReview(
                         audioPhotoBackground: audioPhotoBackground,
+                        titleController: titleController,
                       ),
                 if (audio.playBackAvailable)
                   AudioBottomTools(

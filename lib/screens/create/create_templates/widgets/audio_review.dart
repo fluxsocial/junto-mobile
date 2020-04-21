@@ -8,8 +8,10 @@ import 'audio_position.dart';
 import 'audio_seek.dart';
 
 class AudioReview extends StatelessWidget {
-  const AudioReview({this.audioPhotoBackground});
+  const AudioReview({this.audioPhotoBackground, this.titleController});
   final File audioPhotoBackground;
+  final TextEditingController titleController;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(builder: (context, audio, child) {
@@ -57,6 +59,7 @@ class AudioReview extends StatelessWidget {
                       children: [
                         Expanded(
                           child: TextField(
+                            controller: titleController,
                             autofocus: false,
                             decoration: InputDecoration(
                               hintMaxLines: 25,
