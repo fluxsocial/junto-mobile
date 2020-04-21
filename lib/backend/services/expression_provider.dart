@@ -110,7 +110,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     };
 
     // turn file into bytes
-    final File file = File(expression.audioUrl);
+    final File file = File(expression.audio);
     final Uint8List fileAsBytes = file.readAsBytesSync();
 
     logger.logDebug('Uploading audio file to api storage');

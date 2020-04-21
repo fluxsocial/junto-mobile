@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -176,13 +178,13 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       } else if (widget.expressionType == ExpressionType.audio) {
         JuntoLoader.showLoader(context);
         final audio = widget.expression as AudioFormExpression;
-        //TODO: handle response from the server
-        final String _audioKey = await repository.createAudio(audio);
+        final AudioFormExpression expression =
+            await repository.createAudio(audio);
+
         JuntoLoader.hide();
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
-          //TODO: use _audioKey from s3 bucket
-          expressionData: audio.toMap(),
+          expressionData: expression.toMap(),
           context: _expressionContext,
           channels: channel,
         );
@@ -214,6 +216,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       );
       _postCreateAction();
     } catch (error) {
+      print(error);
       JuntoLoader.hide();
       showDialog(
         context: context,
