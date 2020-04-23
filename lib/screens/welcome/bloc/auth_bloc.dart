@@ -20,9 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthState get initialState => InitialAuthState();
 
   @override
-  Stream<AuthState> mapEventToState(
-    AuthEvent event,
-  ) async* {
+  Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is SignUpEvent) {
       yield* _mapSignUpEventState(event);
     }
@@ -32,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is LogoutEvent) {
       yield* _mapLogout(event);
     }
-    if (event is LoggedIn) {
+    if (event is LoggedInEvent) {
       yield* _mapLoggedIn(event);
     }
   }
@@ -75,7 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Stream<AuthState> _mapLoggedIn(LoggedIn event) async* {
+  Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
     yield WorkingState();
     try {
       final _prefs = await SharedPreferences.getInstance();

@@ -19,6 +19,6 @@ class LoginEvent extends AuthEvent {
 /// Called when the user is logged into the app.
 /// Cases may include: Launching the app from the background, closing and
 /// re-opening, etc..
-class LoggedIn extends AuthEvent {}
+class LoggedInEvent extends AuthEvent {}
 
 class LogoutEvent extends AuthEvent {}

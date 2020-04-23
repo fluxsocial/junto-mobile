@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/device_preview.dart';
 import 'package:provider/provider.dart';
@@ -58,8 +59,13 @@ class JuntoAppState extends State<JuntoApp> {
         create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
         lazy: false,
         child: BlocProviders(
-          child: MaterialAppWithTheme(
-            loggedIn: widget.loggedIn,
+          child: BlocProvider<AuthBloc>(
+            create: (ctx) => AuthBloc(
+              ctx.repository<AuthRepo>(),
+            )..add(widget.loggedIn ? LoggedInEvent() : LogoutEvent()),
+            child: MaterialAppWithTheme(
+              loggedIn: widget.loggedIn,
+            ),
           ),
         ),
       ),
