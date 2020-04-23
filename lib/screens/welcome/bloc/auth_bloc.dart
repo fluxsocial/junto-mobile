@@ -14,7 +14,21 @@ import 'bloc.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
 
-  AuthBloc(this.authRepo);
+  AuthBloc(this.authRepo) {
+    _getLoggedIn();
+  }
+
+  Future<void> _getLoggedIn() async {
+    final result = await authRepo.isLoggedIn();
+    if (result) {
+      add(LoggedInEvent());
+      return;
+    }
+    if (!result) {
+      add(LogoutEvent());
+      return;
+    }
+  }
 
   @override
   AuthState get initialState => InitialAuthState();
@@ -36,54 +50,60 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
-    yield WorkingState();
+    yield LoadingState();
     try {
       final user = await authRepo.registerUser(event.details);
       yield AuthenticatedState(user);
     } on JuntoException catch (error) {
-      yield ErrorState(error.message);
+      yield UnAuthenticatedState();
     } catch (error) {
-      yield ErrorState(error);
+      yield UnAuthenticatedState();
     }
   }
 
   Stream<AuthState> _mapLoginEventState(LoginEvent event) async* {
-    yield WorkingState();
+    yield LoadingState();
     try {
       final user = await authRepo.loginUser(event.details);
       yield AuthenticatedState(user);
     } on JuntoException catch (error) {
-      yield ErrorState(error.message);
+      logger.logDebug(error.message);
+      yield UnAuthenticatedState();
     } catch (error) {
-      yield ErrorState(error);
+      logger.logDebug(error);
+      yield UnAuthenticatedState();
     }
   }
 
   Stream<AuthState> _mapLogout(LogoutEvent event) async* {
-    yield WorkingState();
+    yield LoadingState();
     try {
       final _prefs = await SharedPreferences.getInstance();
       await authRepo.logoutUser();
       await _prefs.clear();
       yield UnAuthenticatedState();
     } on JuntoException catch (error) {
-      yield ErrorState(error.message);
+      logger.logDebug(error.message);
+      yield UnAuthenticatedState();
     } catch (error) {
-      yield ErrorState(error);
+      logger.logDebug(error);
+      yield UnAuthenticatedState();
     }
   }
 
   Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
-    yield WorkingState();
+    yield LoadingState();
     try {
       final _prefs = await SharedPreferences.getInstance();
       final data = await _prefs.getString('user_data');
       logger.logDebug(data);
       yield AuthenticatedState(UserData.fromMap(json.decode(data)));
     } on JuntoException catch (error) {
-      yield ErrorState(error.message);
+      logger.logDebug(error.message);
+      yield UnAuthenticatedState();
     } catch (error) {
-      yield ErrorState(error);
+      logger.logDebug(error.message);
+      yield UnAuthenticatedState();
     }
   }
 }
