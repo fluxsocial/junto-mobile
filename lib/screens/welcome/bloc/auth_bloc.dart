@@ -1,11 +1,21 @@
 import 'dart:async';
+import 'dart:convert' show json;
 
 import 'package:bloc/bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final AuthRepo authRepo;
+
+  AuthBloc(this.authRepo);
+
   @override
   AuthState get initialState => InitialAuthState();
 
@@ -13,6 +23,69 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-    // TODO: Add Logic
+    if (event is SignUpEvent) {
+      yield* _mapSignUpEventState(event);
+    }
+    if (event is LoginEvent) {
+      yield* _mapLoginEventState(event);
+    }
+    if (event is LogoutEvent) {
+      yield* _mapLogout(event);
+    }
+    if (event is LoggedIn) {
+      yield* _mapLoggedIn(event);
+    }
+  }
+
+  Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
+    yield WorkingState();
+    try {
+      final user = await authRepo.registerUser(event.details);
+      yield AuthenticatedState(user);
+    } on JuntoException catch (error) {
+      yield ErrorState(error.message);
+    } catch (error) {
+      yield ErrorState(error);
+    }
+  }
+
+  Stream<AuthState> _mapLoginEventState(LoginEvent event) async* {
+    yield WorkingState();
+    try {
+      final user = await authRepo.loginUser(event.details);
+      yield AuthenticatedState(user);
+    } on JuntoException catch (error) {
+      yield ErrorState(error.message);
+    } catch (error) {
+      yield ErrorState(error);
+    }
+  }
+
+  Stream<AuthState> _mapLogout(LogoutEvent event) async* {
+    yield WorkingState();
+    try {
+      final _prefs = await SharedPreferences.getInstance();
+      await authRepo.logoutUser();
+      await _prefs.clear();
+      yield UnAuthenticatedState();
+    } on JuntoException catch (error) {
+      yield ErrorState(error.message);
+    } catch (error) {
+      yield ErrorState(error);
+    }
+  }
+
+  Stream<AuthState> _mapLoggedIn(LoggedIn event) async* {
+    yield WorkingState();
+    try {
+      final _prefs = await SharedPreferences.getInstance();
+      final data = await _prefs.getString('user_data');
+      logger.logDebug(data);
+      yield AuthenticatedState(UserData.fromMap(json.decode(data)));
+    } on JuntoException catch (error) {
+      yield ErrorState(error.message);
+    } catch (error) {
+      yield ErrorState(error);
+    }
   }
 }
