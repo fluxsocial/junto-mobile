@@ -1,18 +1,24 @@
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 abstract class AuthEvent {}
 
-class SignUpEvent extends AuthEvent {}
+class SignUpEvent extends AuthEvent {
+  SignUpEvent(this.details);
 
-class LoginEvent extends AuthEvent {}
+  final UserAuthRegistrationDetails details;
+}
+
+class LoginEvent extends AuthEvent {
+  LoginEvent(this.details);
+
+  final UserAuthLoginDetails details;
+}
+
+/// Called when the user is logged into the app.
+/// Cases may include: Launching the app from the background, closing and
+/// re-opening, etc..
+class LoggedIn extends AuthEvent {}
 
 class LogoutEvent extends AuthEvent {}
-
-class WorkingEvent extends AuthEvent {}
-
-class ErrorEvent extends AuthEvent {
-  ErrorEvent(this.error);
-
-  final String error;
-}
