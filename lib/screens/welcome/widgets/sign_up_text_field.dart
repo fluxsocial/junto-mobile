@@ -15,6 +15,7 @@ class SignUpTextField extends StatefulWidget {
     this.maxLines = 1,
     this.obscureText = false,
     this.focusNode,
+    this.validator,
   }) : super(key: key);
 
   final TextEditingController valueController;
@@ -27,6 +28,7 @@ class SignUpTextField extends StatefulWidget {
   final int maxLines;
   final bool obscureText;
   final FocusNode focusNode;
+  final FormFieldValidator<String> validator;
 
   @override
   _SignUpTextFieldState createState() => _SignUpTextFieldState();
@@ -39,7 +41,8 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: widget.validator,
       controller: widget.valueController,
       cursorColor: Colors.white70,
       focusNode: widget.focusNode,
@@ -70,7 +73,7 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
       keyboardType: widget.obscureText
           ? TextInputType.visiblePassword
           : widget.keyboardType,
-      onSubmitted: (_) {
+      onFieldSubmitted: (_) {
         widget.onSubmit();
       },
       keyboardAppearance: Theme.of(context).brightness,

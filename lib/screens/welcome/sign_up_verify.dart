@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 
 class SignUpVerify extends StatefulWidget {
   const SignUpVerify({Key key, this.handleSignUp}) : super(key: key);
@@ -40,17 +41,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            child: const Text(
-              'Final step :)',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          SizedBox(height: size.height * .17),
+          SizedBox(height: size.height * .24),
           Expanded(
             flex: 3,
             child: Container(
@@ -74,10 +65,10 @@ class SignUpVerifyState extends State<SignUpVerify> {
                     keyboardAppearance: Theme.of(context).brightness,
                     maxLines: null,
                     cursorColor: Colors.white70,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
-                      hintText: 'Verification code',
+                      hintText: S.of(context).welcome_verification_code,
                       hintStyle: TextStyle(
                         color: Colors.white70,
                         fontSize: 20,
@@ -94,7 +85,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
                   ),
                   const SizedBox(height: 10.0),
                   Text(
-                    'CHECK EMAIL',
+                    S.of(context).welcome_check_email,
                     style: TextStyle(
                         color: Colors.white70,
                         fontSize: 14,
@@ -124,8 +115,8 @@ class SignUpVerifyState extends State<SignUpVerify> {
                   ),
                 ],
               ),
-              child: const Text(
-                'LET\'S GO!',
+              child: Text(
+                S.of(context).welcome_lets_go,
                 style: TextStyle(
                   letterSpacing: 1.2,
                   color: Colors.white,

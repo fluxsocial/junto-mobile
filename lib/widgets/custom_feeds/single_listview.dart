@@ -35,6 +35,7 @@ class SingleColumnListView extends StatelessWidget {
         child: ListView(
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
+          padding: const EdgeInsets.all(0),
           children: <Widget>[
             for (int index = 0; index < data.length + 1; index++)
               if (index == data.length)

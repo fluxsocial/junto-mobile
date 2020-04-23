@@ -67,7 +67,7 @@ class UserServiceCentralized implements UserService {
     final String authKey = _prefs.getString('auth');
 
     final Uri _uri = Uri.http(
-      END_POINT_without_prefix,
+      END_POINT,
       '/users',
       _buildQueryParam(param, queryType),
     );
@@ -108,6 +108,7 @@ class UserServiceCentralized implements UserService {
     final http.Response response = await client.get(
       '/users/$userAddress/groups',
     );
+
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);

@@ -97,19 +97,7 @@ class SignUpThemes extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height * .24,
-              ),
-              child: const Text(
-                'Which theme feels best?',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height * .24),
             Container(
               height: 140,
               child: ListView(

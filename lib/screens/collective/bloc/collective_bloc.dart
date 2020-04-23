@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -9,17 +10,20 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'collective_state.dart';
+export 'collective_state.dart';
 
 part 'collective_event.dart';
-part 'collective_state.dart';
 
 class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   CollectiveBloc(this.expressionRepository);
 
+  final expressionsPerPage = 50;
   final ExpressionRepo expressionRepository;
   Map<String, String> _params;
   ExpressionQueryParams _previousParameters;
   int _currentPage = 0;
+
   String _lastTimeStamp;
 
   @override
@@ -37,7 +41,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   }
 
   @override
-  CollectiveState get initialState => CollectiveInitial();
+  CollectiveState get initialState => CollectiveState.initial();
 
   @override
   Stream<CollectiveState> mapEventToState(
@@ -62,17 +66,18 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
         _updateParams(true, _previousParameters);
         final expressions = await _fetchExpressions();
 
-        yield CollectivePopulated(
+        yield CollectiveState.populated(
           expressions.results,
           false,
           (state as CollectivePopulated).name,
+          expressions.results.length == expressionsPerPage,
         );
       }
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {
       logger.logException(e, s, 'Error during refreshing the collective');
-      yield CollectiveError();
+      yield CollectiveState.error();
     }
   }
 
@@ -80,17 +85,22 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
       FetchCollective event) async* {
     try {
       final name = getCurrentName(event);
-      yield CollectiveLoading();
+      yield CollectiveState.loading();
 
       _updateParams(true, event.param);
       final expressions = await _fetchExpressions();
 
-      yield CollectivePopulated(expressions.results, false, name);
+      yield CollectiveState.populated(
+        expressions.results,
+        false,
+        name,
+        expressions.results.length == expressionsPerPage,
+      );
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {
       logger.logException(e, s, 'Error during fetching the collective');
-      yield CollectiveError();
+      yield CollectiveState.error();
     }
   }
 
@@ -99,7 +109,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     if (name == null && state is CollectivePopulated) {
       name = (state as CollectivePopulated)?.name;
     }
-    return name;
+    return name ?? 'JUNTO';
   }
 
   Stream<CollectiveState> _mapFetchMoreCollectiveToState(
@@ -108,10 +118,11 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     try {
       if (_params != null && state is CollectivePopulated) {
         final currentState = state as CollectivePopulated;
-        yield CollectivePopulated(
+        yield CollectiveState.populated(
           currentState.results,
           true,
           currentState.name,
+          false,
         );
 
         _updateParams(false, null);
@@ -119,11 +130,23 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
 
         final currentResult = currentState.results;
         if (expressions.results.length > 1) {
+          // The server sends the first expression as the last from the previous
+          // query
+
+          expressions.results.removeAt(0);
           currentResult.addAll(expressions.results);
-          yield CollectivePopulated(
+          yield CollectiveState.populated(
             currentResult,
             false,
             currentState.name,
+            expressions.results.length == expressionsPerPage,
+          );
+        } else {
+          yield CollectiveState.populated(
+            currentState.results,
+            false,
+            currentState.name,
+            false,
           );
         }
       }
@@ -131,7 +154,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
       handleJuntoException(e, s);
     } catch (e, s) {
       logger.logException(e, s, 'Error during fetching more of the collective');
-      yield CollectiveError();
+      yield CollectiveState.error();
     }
   }
 
@@ -139,7 +162,8 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     final expressions =
         await expressionRepository.getCollectiveExpressions(_params);
     logger.logDebug(
-        'Fetched ${expressions.results.length} expressions from API, last_timestamp: ${expressions.lastTimestamp}');
+        'Fetched ${expressions.results.length} expressions from API, last_timestamp: ${expressions.lastTimestamp}. '
+        'First: ${expressions.results.first}, Last: ${expressions.results.last}');
     _lastTimeStamp = expressions.lastTimestamp;
     return expressions;
   }

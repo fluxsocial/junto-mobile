@@ -1,3 +1,4 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +9,10 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/utils/device_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -49,6 +52,7 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<SearchRepo>.value(value: backend.searchRepo),
         Provider<NotificationRepo>.value(value: backend.notificationRepo),
         Provider<AppRepo>.value(value: backend.appRepo),
+        Provider<LocalCache>.value(value: backend.db),
       ],
       child: ChangeNotifierProvider<UserDataProvider>(
         create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
@@ -82,19 +86,26 @@ class MaterialAppWithTheme extends StatelessWidget {
         }
         return MaterialApp(
           home: loggedIn
-              ? const JuntoLotus(
-                  address: null,
-                  expressionContext: ExpressionContext.Collective,
+              ? FeatureDiscovery(
+                  child: const JuntoLotus(
+                    address: null,
+                    expressionContext: ExpressionContext.Collective,
+                    source: null,
+                  ),
                 )
               : Welcome(),
+          builder: DevicePreviewWrapper.appBuilder,
           title: 'JUNTO Alpha',
           debugShowCheckedModeBanner: false,
-          theme: theme.getTheme(),
+          theme: theme.currentTheme,
           localizationsDelegates: [
+            S.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          // Replace later with S.supportedLocales
+          supportedLocales: [Locale('en', '')],
         );
       },
     );

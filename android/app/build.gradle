@@ -58,19 +58,29 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
         }
     }
 
     flavorDimensions "flavor-type"
 
     productFlavors {
+        dev {
+            dimension "flavor-type"
+            applicationIdSuffix ".dev"
+            manifestPlaceholders = [appName: "JUNTO DEV"]
+        }
         tst {
             dimension "flavor-type"
             applicationIdSuffix ".tst"
+            manifestPlaceholders = [appName: "JUNTO TST"]
         }
         prod {
             dimension "flavor-type"
             applicationIdSuffix ""
+            manifestPlaceholders = [appName: "JUNTO"]
         }
     }
 }

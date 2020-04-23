@@ -13,10 +13,13 @@ class FetchPacks extends PackEvent {
   });
 }
 
+class RefreshPacks extends PackEvent {}
+
 class FetchMorePacks extends PackEvent {}
 
 class FetchPacksMembers extends PackEvent {
   FetchPacksMembers(this.groupAddress);
+
   final String groupAddress;
 }
 

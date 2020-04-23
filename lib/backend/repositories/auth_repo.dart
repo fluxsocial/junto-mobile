@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -25,8 +26,11 @@ class AuthRepo {
       try {
         final id = prefs.getString('user_id');
         final _ = await _userRepo.getUser(id);
-      } catch (e) {
-        logger.logException(e);
+      } on SocketException catch (_) {
+        // The user is logged in but offline
+        return true;
+      } catch (error) {
+        logger.logException(error);
         return false;
       }
     }
@@ -84,6 +88,17 @@ class AuthRepo {
       logger.logException(e, s, 'Error during user login');
       rethrow;
     }
+  }
+
+  // Request verification code to reset password
+  Future<int> requestPasswordReset(String email) async {
+    final int responseStatusCode =
+        await _authService.requestPasswordReset(email);
+    return responseStatusCode;
+  }
+
+  Future<void> resetPassword(Map<String, dynamic> details) async {
+    await _authService.resetPassword(details);
   }
 
   /// Logs out a user and removes their auth token from the device.

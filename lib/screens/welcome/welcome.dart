@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
+import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
@@ -37,6 +40,8 @@ class Welcome extends StatefulWidget {
 }
 
 class WelcomeState extends State<Welcome> {
+  // Used when resetting password
+  final ValueNotifier<String> _email = ValueNotifier("");
   String _currentTheme;
   String _userAddress;
 
@@ -205,8 +210,7 @@ class WelcomeState extends State<Welcome> {
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
-          dialogText:
-              'Your username can only contain lowercase letters, numbers, and underscores.',
+          dialogText: S.of(context).welcome_username_requirements,
         ),
       );
     }
@@ -219,6 +223,24 @@ class WelcomeState extends State<Welcome> {
     } else {
       FocusScope.of(context).unfocus();
       return;
+    }
+  }
+
+  bool _passwordCheck(String password) {
+    final String passwordRegEx =
+        "(?=.{8,})(?=.*[!@#\$%^&*])(?=.*[0-9])(?=.*[A-Z])(?=.*[A-z])";
+    final exp = RegExp(passwordRegEx);
+    bool match = exp.hasMatch(password);
+    if (!match) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).welcome_password_rules,
+        ),
+      );
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -256,7 +278,19 @@ class WelcomeState extends State<Welcome> {
                             onSignUp: _onSignUp,
                           ),
                         ),
-                        PageKeepAlive(child: SignIn(_signInController))
+                        PageKeepAlive(
+                          child: SignIn(_signInController),
+                        ),
+                        ResetPasswordRequest(
+                            signInController: _signInController, email: _email),
+                        ValueListenableBuilder<String>(
+                            valueListenable: _email,
+                            builder: (context, email, _) {
+                              return ResetPasswordConfirm(
+                                signInController: _signInController,
+                                email: email,
+                              );
+                            }),
                       ],
                     ),
                   ),
@@ -267,22 +301,25 @@ class WelcomeState extends State<Welcome> {
                       onValueChanged: (String value) => name = value,
                       onSubmit: _nameCheck,
                       maxLength: 50,
-                      hint: 'My name is...',
-                      label: 'FULL NAME',
-                      title: 'Hey, what\'s your name?',
+                      hint: S.of(context).welcome_my_name_is,
+                      label: S.of(context).welcome_name_label,
+                      title: S.of(context).welcome_name_hint,
+                      textCapitalization: TextCapitalization.words,
                     ),
                   ),
                   PageKeepAlive(
                     // 2
                     child: SignUpTextFieldWrapper(
                       textInputActionType: TextInputAction.done,
-                      onValueChanged: (String value) =>
-                          username = value.toLowerCase().trim(),
+                      onValueChanged: (String value) {
+                        username = value.toLowerCase().trim();
+                      },
                       onSubmit: _userNameSubmission,
                       maxLength: 22,
-                      hint: 'I\'ll go by...',
-                      label: 'USERNAME',
-                      title: 'Choose a unique username',
+                      hint: S.of(context).welcome_username_ill_go,
+                      label: S.of(context).welcome_username_label,
+                      title: S.of(context).welcome_username_hint,
+                      textCapitalization: TextCapitalization.none,
                     ),
                   ),
                   PageKeepAlive(
@@ -344,19 +381,25 @@ class WelcomeState extends State<Welcome> {
           return;
         }
       } else if (_currentIndex == 2) {
+        // ensure username is not empty
+        if (username.isEmpty) {
+          return;
+        }
+        // instantiate correct length and validation for username
         bool _correctLength = username.length >= 1 && username.length <= 22;
         final exp = RegExp("^[a-z0-9_]+\$");
+        // ensure username is not null and username meets validation and length
         if (username == null || !exp.hasMatch(username) || !_correctLength) {
           showDialog(
             context: context,
             builder: (BuildContext context) => SingleActionDialog(
-              dialogText:
-                  'Your username can only contain lowercase letters, numbers, and underscores.',
+              dialogText: S.of(context).welcome_username_requirements,
             ),
           );
           return;
         } else {
-          JuntoLoader.showLoader(context);
+          JuntoLoader.showLoader(context, color: Colors.transparent);
+          // ensure username is not taken or reserved
           final Map<String, dynamic> validateUserResponse =
               await Provider.of<AuthRepo>(context, listen: false)
                   .validateUser(username: username);
@@ -399,7 +442,11 @@ class WelcomeState extends State<Welcome> {
         if (!_validatePasswords(password, confirmPassword)) {
           return;
         }
-        JuntoLoader.showLoader(context);
+
+        if (!_passwordCheck(password)) {
+          return;
+        }
+        JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
         await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
         JuntoLoader.hide();
@@ -421,7 +468,7 @@ class WelcomeState extends State<Welcome> {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText: error.message,
+            dialogText: S.of(context).welcome_username_taken,
           ),
         );
       }
@@ -430,19 +477,21 @@ class WelcomeState extends State<Welcome> {
 
   // ensure passwords are same and meet our specifications
   bool _validatePasswords(String password, String confirmPassword) {
+    // ensure that passwords match
     if (password != confirmPassword) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Both passwords must match.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).welcome_passwords_must_match,
         ),
       );
       return false;
     } else if (password.length < 8 || confirmPassword.length < 8) {
+      // ensure that passwords are greater than 8 characters
       showDialog(
         context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Your password must be greater than 8 characters.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).welcome_password_length(8),
         ),
       );
       return false;

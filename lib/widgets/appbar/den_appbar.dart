@@ -2,82 +2,98 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 
-// Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
-class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
-  const DenAppbar({Key key, @required this.heading}) : super(key: key);
+typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
+
+// Junto app bar used in collective screen.
+class DenAppbar extends SliverPersistentHeaderDelegate {
+  DenAppbar({
+    @required this.expandedHeight,
+    @required this.heading,
+  });
+
+  final double expandedHeight;
   final String heading;
 
   @override
-  Size get preferredSize => const Size.fromHeight(48.0);
-
-  @override
-  _DenAppbarState createState() => _DenAppbarState();
-}
-
-class _DenAppbarState extends State<DenAppbar> {
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      brightness: Theme.of(context).brightness,
-      actions: <Widget>[Container()],
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.75),
-        child: Container(height: .75, color: Theme.of(context).dividerColor),
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      height: MediaQuery.of(context).size.height * .1,
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.only(
+        left: 10,
+        bottom: 10,
       ),
-      elevation: 0,
-      titleSpacing: 0.0,
-      title: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(left: 10),
-              color: Colors.transparent,
-              height: 48,
-              child: Row(
-                children: <Widget>[
-                  Image.asset(
-                    'assets/images/junto-mobile__logo.png',
-                    height: 22.0,
-                    width: 22.0,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  const SizedBox(width: 7.5),
-                  Text(
-                    widget.heading,
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ],
-              ),
-            ),
-            Row(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: .75,
+          ),
+        ),
+        color: Theme.of(context).backgroundColor,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            color: Colors.transparent,
+            child: Row(
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => NotificationsScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 42,
-                    color: Colors.transparent,
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 10),
-                    child: const Icon(
-                      CustomIcons.moon,
-                    ),
-                  ),
+                Image.asset(
+                  'assets/images/junto-mobile__logo.png',
+                  height: 22.0,
+                  width: 22.0,
+                  color: Theme.of(context).primaryColor,
+                ),
+                const SizedBox(width: 7.5),
+                Text(
+                  heading,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => NotificationsScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  alignment: Alignment.bottomRight,
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: const Icon(
+                    CustomIcons.moon,
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
+
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  double get minExtent => expandedHeight;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }

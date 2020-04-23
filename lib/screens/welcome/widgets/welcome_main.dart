@@ -45,7 +45,7 @@ class WelcomeMain extends StatelessWidget {
           Column(
             children: <Widget>[
               CallToActionButton(
-                onSignUp: _onSignUp,
+                callToAction: _onSignUp,
                 title: 'WELCOME TO THE PACK',
               ),
               const SizedBox(height: 30),

@@ -1,29 +1,30 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_appbar.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_background_photo.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_header_space.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_profile_picture.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_text_field.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den/update_photo_options.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_text_field.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_appbar.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_header_space.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_profile_picture.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_background_photo.dart';
 
 class JuntoEditDen extends StatefulWidget {
   JuntoEditDen({this.currentTheme});
 
-  String currentTheme;
+  final String currentTheme;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoEditDenState();
@@ -33,6 +34,7 @@ class JuntoEditDen extends StatefulWidget {
 class JuntoEditDenState extends State<JuntoEditDen> {
   String _userAddress;
   UserData _userData;
+  UserDataProvider userProvider;
 
   List<File> profilePictures = <File>[];
   File profilePictureFile;
@@ -54,6 +56,12 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     _locationController = TextEditingController();
     _genderController = TextEditingController();
     _websiteController = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    userProvider = Provider.of<UserDataProvider>(context);
     getUserInformation();
   }
 
@@ -68,14 +76,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   }
 
   Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
-
-    setState(() {
-      _userAddress = prefs.getString('user_id');
-      _userData = UserData.fromMap(decodedUserData);
-    });
+    _userAddress = userProvider.userAddress;
+    _userData = userProvider.userProfile;
     setEditInfo();
   }
 
@@ -90,8 +92,26 @@ class JuntoEditDenState extends State<JuntoEditDen> {
         _userData.user.website.isNotEmpty ? _userData.user.website[0] : '';
   }
 
-  Future<void> _onPickPressed(String photoType) async {
-    final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  void _updatePhotoOptions(String photoType) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      builder: (BuildContext context) => UpdatePhotoOptions(
+        updatePhoto: _onPickPressed,
+        photoType: photoType,
+      ),
+    );
+  }
+
+  Future<void> _onPickPressed(String photoType, String source) async {
+    File image;
+    if (source == 'Gallery') {
+      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    } else if (source == 'Camera') {
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    }
     if (image == null) {
       if (photoType == 'profile' && profilePictureFile == null) {
         setState(() {
@@ -106,7 +126,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     }
     final File cropped =
         await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
-      photoType == 'profile' ? '1:1' : '3:2',
+      photoType == 'profile' ? '1:1' : '2:1',
     ]);
     if (cropped == null) {
       if (photoType == 'profile' && profilePictureFile == null) {
@@ -167,7 +187,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
             );
             _photoKeys.add(key);
           } catch (e, s) {
-            logger.logException(e, e);
+            logger.logException(e, s);
             print(e.message);
             JuntoLoader.hide();
           }
@@ -206,10 +226,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     }
     // update user
     try {
-      await Provider.of<UserRepo>(context, listen: false).updateUser(
+      final UserProfile updatedUser =
+          await Provider.of<UserRepo>(context, listen: false).updateUser(
         _newProfileBody,
         _userAddress,
       );
+      final _user = userProvider.userProfile.copyWith(user: updatedUser);
+      userProvider.updateUser(_user);
       JuntoLoader.hide();
       Navigator.of(context).pushReplacement(
         FadeRoute<void>(
@@ -242,7 +265,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           EditDenBackgroundPhoto(
                             profile: _userData,
                             backgroundPhotoFile: backgroundPhotoFile,
-                            onPickPressed: _onPickPressed,
+                            onPressed: _updatePhotoOptions,
                             currentTheme: widget.currentTheme,
                           ),
                           EditDenHeaderSpace(),
@@ -271,7 +294,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       EditDenProfilePicture(
                         userData: _userData,
                         profilePictureFile: profilePictureFile,
-                        onPickPressed: _onPickPressed,
+                        onPressed: _updatePhotoOptions,
                       )
                     ],
                   ),

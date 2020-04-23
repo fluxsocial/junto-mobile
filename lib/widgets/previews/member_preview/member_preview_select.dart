@@ -96,10 +96,8 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
                                 end: Alignment.centerRight,
                                 stops: const <double>[0.1, 0.9],
                                 colors: <Color>[
-                                  Theme.of(context)
-                                      .colorScheme
-                                      .secondaryVariant,
-                                  Theme.of(context).colorScheme.primaryVariant,
+                                  Theme.of(context).colorScheme.secondary,
+                                  Theme.of(context).colorScheme.primary,
                                 ],
                               ),
                               border: Border.all(

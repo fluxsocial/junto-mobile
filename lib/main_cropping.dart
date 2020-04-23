@@ -43,17 +43,7 @@ class _HomeState extends State<Home> {
       return;
     }
     final File cropped = await ImageCroppingDialog.show(context, image,
-        aspectRatios: <String>[
-          '1:1',
-          '2:3',
-          '3:2',
-          '3:4',
-          '4:3',
-          '4:5',
-          '5:4',
-          '9:16',
-          '16:9'
-        ]);
+        aspectRatios: <String>['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9']);
     if (cropped == null) {
       setState(() => imageFile = null);
       return;
@@ -65,38 +55,27 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Material(
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              RaisedButton(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: RaisedButton(
                 onPressed: _onPickPressed,
                 child: const Text('Pick'),
               ),
-              if (imageFile != null) ...<Widget>[
-                Expanded(
-                  child: Stack(
-                    children: <Widget>[
-                      OverflowBox(
-                        maxWidth: double.infinity,
-                        maxHeight: double.infinity,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 2.0),
-                          ),
-                          child: Image.file(
-                            imageFile,
-                            fit: BoxFit.none,
-                          ),
-                        ),
-                      ),
-                    ],
+            ),
+            if (imageFile != null) ...<Widget>[
+              Expanded(
+                child: Center(
+                  child: Image.file(
+                    imageFile,
+                    fit: BoxFit.contain,
                   ),
                 ),
-              ],
+              ),
             ],
-          ),
+          ],
         ),
       ),
     );

@@ -58,11 +58,9 @@ Future<void> runLoggedApp(Widget app) async {
     }
   };
 
-  runZoned<Future<void>>(
-    () async {
-      runApp(app);
-    },
-    onError: (dynamic error, dynamic stackTrace) async {
+  runZonedGuarded(
+    () => runApp(app),
+    (dynamic error, dynamic stackTrace) async {
       await reportError(error, stackTrace);
     },
   );

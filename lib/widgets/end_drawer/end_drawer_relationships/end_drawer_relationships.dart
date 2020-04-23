@@ -11,6 +11,10 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/su
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pack_members.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatefulWidget {
@@ -100,44 +104,88 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => PendingRelationships(
-                          userAddress: widget.userAddress,
-                          refreshActions: getUserRelationships,
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                PendingRelationships(
+                              userAddress: widget.userAddress,
+                              refreshActions: getUserRelationships,
+                            ),
+                          ),
+                        );
+                      },
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
+                          CustomIcons.request,
+                          size: 20,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        featureId: 'pending_requests_id',
+                        isLastFeature: true,
+                        title: 'View your pending requests.',
+                        learnMore: false,
+                        hasUpNext: false,
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              color: Colors.transparent,
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ),
+                              child: Icon(
+                                CustomIcons.request,
+                                color: Theme.of(context).primaryColorDark,
+                                size: 17,
+                              ),
+                            ),
+                            if (pendingConnectionRequests != null &&
+                                pendingPackRequests != null)
+                              if (pendingConnectionRequests.isNotEmpty ||
+                                  pendingPackRequests.isNotEmpty)
+                                _notificationSignal()
+                          ],
                         ),
                       ),
-                    );
-                  },
-                  child: Container(
-                    width: 42,
-                    height: 42,
-                    alignment: Alignment.centerRight,
-                    color: Colors.transparent,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          height: 42,
-                          width: 42,
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Icon(
-                            CustomIcons.request,
-                            color: Theme.of(context).primaryColorDark,
-                            size: 17,
-                          ),
-                        ),
-                        if (pendingConnectionRequests != null &&
-                            pendingPackRequests != null)
-                          if (pendingConnectionRequests.isNotEmpty ||
-                              pendingPackRequests.isNotEmpty)
-                            _notificationSignal()
-                      ],
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.clearPreferences(context, <String>{
+                          'relations_info_id',
+                          'pending_requests_id',
+                        });
+                        FeatureDiscovery.discoverFeatures(
+                          context,
+                          const <String>{
+                            'relations_info_id',
+                            'pending_requests_id',
+                          },
+                        );
+                      },
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: OverlayInfoIcon(),
+                        featureId: 'relations_info_id',
+                        title:
+                            'This screen shows the different relations you have with people on Junto.',
+                        learnMore: true,
+                        hasUpNext: false,
+                        learnMoreText: [
+                          'On Junto, there are multiple relational layers to reflect the more dynamic nature of our physical world relationships.',
+                          '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
+                          '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
+                          '"Connections" are your first degree friendships. Choosing to connect with someone is like friending them (mutual).',
+                          'Your "Pack" is your closet group of friends (mutual). Visit the tutorial in your Pack feed for more information.'
+                        ],
+                        child: JuntoInfoIcon(),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

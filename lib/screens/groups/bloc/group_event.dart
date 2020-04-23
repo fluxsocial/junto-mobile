@@ -5,3 +5,5 @@ abstract class GroupBlocEvent {
 }
 
 class FetchMyPack extends GroupBlocEvent {}
+
+class RefreshPack extends GroupBlocEvent {}

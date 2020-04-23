@@ -181,9 +181,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
       ),
       expandedHeight: _flexibleHeightSpace == null
           ? 1000
-          : _flexibleHeightSpace +
-              MediaQuery.of(context).size.height * .2 +
-              .75,
+          : _flexibleHeightSpace + MediaQuery.of(context).size.width / 2 + .75,
       forceElevated: false,
     );
   }

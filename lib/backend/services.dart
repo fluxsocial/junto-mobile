@@ -8,8 +8,8 @@ abstract class SearchService {
   Future<QueryResults<UserProfile>> searchMembers(
     String query, {
     bool username = false,
-    int paginationPosition = 0,
-    DateTime lastTimeStamp,
+    int paginationPosition,
+    String lastTimeStamp,
   });
 
   /// Returns a [QueryResults] contains the names of channels matching the [query]
@@ -38,6 +38,12 @@ abstract class AuthenticationService {
 
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details);
+
+  // Request verification code to reset password
+  Future<int> requestPasswordReset(String email);
+
+  // Request verification code to reset password
+  Future<void> resetPassword(Map<String, dynamic> details);
 
   /// Authenticates a registered user. Returns the [UserProfile]  for the
   /// given user. Their cookie is stored locally on device and is used for
@@ -71,6 +77,8 @@ abstract class ExpressionService {
   );
 
   Future<String> createPhoto(bool isPrivate, String fileType, File file);
+
+  Future<String> createAudio(bool isPrivate, AudioFormExpression expression);
 
   /// Returns a [ExpressionResponse] for the given address.
   Future<ExpressionResponse> getExpression(
@@ -265,4 +273,18 @@ abstract class UserService {
 /// App wide notification service
 abstract class NotificationService {
   Future<NotificationResultsModel> getNotifications(NotificationQuery params);
+}
+
+enum DBBoxes { collectiveExpressions, denExpressions, packExpressions }
+
+/// Interface for managing the application's local cache.
+abstract class LocalCache {
+  /// Adds [expressions] to the database.
+  Future<void> insertExpressions(
+    List<ExpressionResponse> expressions,
+    DBBoxes box,
+  );
+
+  /// Retrieves all expressions in the database.
+  Future<List<ExpressionResponse>> retrieveExpressions(DBBoxes box);
 }

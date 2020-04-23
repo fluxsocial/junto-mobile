@@ -3,8 +3,9 @@ import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:junto_beta_mobile/app/app.dart';
 import 'package:junto_beta_mobile/app/logger/sentry.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/utils/device_preview.dart';
 
-Future<void> main() async {
+Future<void> mainApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
@@ -13,9 +14,11 @@ Future<void> main() async {
   final Backend backend = await Backend.init();
   final bool _loggedIn = await backend.authRepo.isLoggedIn();
   runLoggedApp(
-    JuntoApp(
-      backend: backend,
-      loggedIn: _loggedIn ?? false,
+    DevicePreviewWrapper(
+      child: JuntoApp(
+        backend: backend,
+        loggedIn: _loggedIn ?? false,
+      ),
     ),
   );
 }

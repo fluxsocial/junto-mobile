@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_action_items/pack_action_items.dart';
@@ -49,8 +50,8 @@ class MemberRelationships extends StatelessWidget {
       print(error.message);
       showDialog(
         context: buildContext,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
@@ -70,8 +71,8 @@ class MemberRelationships extends StatelessWidget {
       print(error);
       showDialog(
         context: buildContext,
-        builder: (BuildContext buildContext) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
@@ -92,8 +93,8 @@ class MemberRelationships extends StatelessWidget {
       print(error);
       showDialog(
         context: buildContext,
-        builder: (BuildContext buildContext) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
@@ -108,8 +109,8 @@ class MemberRelationships extends StatelessWidget {
       print(error.message);
       showDialog(
         context: buildContext,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
@@ -139,8 +140,8 @@ class MemberRelationships extends StatelessWidget {
           .contains('does not exist or is already a group member')) {
         showDialog(
           context: buildContext,
-          builder: (BuildContext context) => const SingleActionDialog(
-            dialogText: 'Already sent a connection.',
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: S.of(context).error_already_sent_connection,
           ),
         );
       }
@@ -170,8 +171,8 @@ class MemberRelationships extends StatelessWidget {
       print(error);
       showDialog(
         context: buildContext,
-        builder: (BuildContext buildContext) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).common_network_error,
         ),
       );
     }
@@ -221,7 +222,7 @@ class MemberRelationships extends StatelessWidget {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 25),
                     child: Text(
-                      'CLOSE',
+                      S.of(context).common_close,
                       style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).primaryColor,

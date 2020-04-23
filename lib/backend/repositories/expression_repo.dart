@@ -1,15 +1,18 @@
 import 'dart:io';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 enum ExpressionContext { Group, Collection, Collective }
 
 class ExpressionRepo {
-  ExpressionRepo(this._expressionService);
+  ExpressionRepo(this._expressionService, this.db);
 
+  final LocalCache db;
   final ExpressionService _expressionService;
   QueryResults<ExpressionResponse> cachedResults;
+  QueryResults<ExpressionResponse> packCachedResults;
 
   Future<ExpressionResponse> createExpression(
     ExpressionModel expression,
@@ -48,6 +51,28 @@ class ExpressionRepo {
 
   Future<String> createPhoto(bool isPrivate, String fileType, File file) {
     return _expressionService.createPhoto(isPrivate, fileType, file);
+  }
+
+  Future<AudioFormExpression> createAudio(
+      AudioFormExpression expression) async {
+    final futures = <Future>[];
+    final audio = _expressionService.createAudio(true, expression);
+    futures.add(audio);
+    if (expression.photo != null && expression.photo.isNotEmpty) {
+      final photo =
+          _expressionService.createPhoto(true, '.png', File(expression.photo));
+      futures.add(photo);
+    }
+
+    final result = await Future.wait(futures);
+
+    return AudioFormExpression(
+      title: expression.title,
+      audio: result[0],
+      photo: result.length > 1 ? result[1] : null,
+      //TODO: implement gradient
+      gradient: expression.gradient,
+    );
   }
 
   Future<ExpressionResponse> getExpression(
@@ -89,14 +114,41 @@ class ExpressionRepo {
   }
 
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
-      Map<String, String> params) {
-    return _expressionService.getCollectiveExpressions(params);
+      Map<String, String> params) async {
+    if (await DataConnectionChecker().hasConnection) {
+      cachedResults = await _expressionService.getCollectiveExpressions(params);
+      await db.insertExpressions(
+          cachedResults.results, DBBoxes.collectiveExpressions);
+      return cachedResults;
+    }
+    final cachedResult = await db.retrieveExpressions(
+      DBBoxes.collectiveExpressions,
+    );
+    return QueryResults(
+      lastTimestamp: cachedResults?.lastTimestamp,
+      results: cachedResult,
+    );
   }
 
   Future<QueryResults<ExpressionResponse>> getPackExpressions(
     Map<String, String> params,
-  ) {
-    return _expressionService.getCollectiveExpressions(params);
+  ) async {
+    if (await DataConnectionChecker().hasConnection) {
+      packCachedResults =
+          await _expressionService.getCollectiveExpressions(params);
+      await db.insertExpressions(
+        packCachedResults.results,
+        DBBoxes.packExpressions,
+      );
+      return packCachedResults;
+    }
+    final _cachedResult = await db.retrieveExpressions(
+      DBBoxes.packExpressions,
+    );
+    return QueryResults(
+      lastTimestamp: packCachedResults?.lastTimestamp,
+      results: _cachedResult,
+    );
   }
 
   List<ExpressionResponse> get collectiveExpressions =>

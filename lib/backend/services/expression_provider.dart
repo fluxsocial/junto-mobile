@@ -83,6 +83,58 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
+  Future<String> createAudio(
+      bool isPrivate, AudioFormExpression expression) async {
+    logger.logDebug('Sending request to store audio file in api storage');
+    String _serverUrl;
+    if (isPrivate) {
+      _serverUrl = '/auth/s3?private=true';
+    } else if (isPrivate == false) {
+      _serverUrl = '/auth/s3?private=false';
+    }
+    // denote file type and get url, headers, and key of s3 bucket
+    final http.Response _serverResponse =
+        await client.postWithoutEncoding(_serverUrl, body: '.aac');
+    logger.logDebug(_serverResponse.body);
+    logger.logDebug(
+        'Received response from api storage, code: ${_serverResponse.statusCode}');
+
+    // parse response
+    final Map<String, dynamic> parseData =
+        JuntoHttp.handleResponse(_serverResponse);
+
+    // seralize into new headers
+    final Map<String, String> newHeaders = <String, String>{
+      'x-amz-acl': parseData['headers']['x-amz-acl'],
+      'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
+    };
+
+    // turn file into bytes
+    final File file = File(expression.audio);
+    final Uint8List fileAsBytes = file.readAsBytesSync();
+
+    logger.logDebug('Uploading audio file to api storage');
+    // send put request to s3 bucket with url, new headers, and file as bytes
+    final http.Response _serverResponseTwo = await http.put(
+      parseData['signed_url'],
+      headers: newHeaders,
+      body: fileAsBytes,
+    );
+
+    // if successful, return the key for next steps
+    if (_serverResponseTwo.statusCode == 200) {
+      logger.logDebug('Successfuly uploaded audio file to api storage');
+      return parseData['key'];
+    } else {
+      logger.logWarning('Error while uploading audio file to api storage');
+      throw JuntoException(
+        _serverResponse.reasonPhrase,
+        _serverResponse.statusCode,
+      );
+    }
+  }
+
+  @override
   Future<ExpressionResponse> postCommentExpression(
       String expressionAddress, String type, Map<String, dynamic> data) async {
     final Map<String, dynamic> _postBody = <String, dynamic>{

@@ -1,7 +1,10 @@
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/models/den_model.dart';
 import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:meta/meta.dart';
+
+part 'user_model.g.dart';
 
 /// Generates a stripped down version of [UserProfile].
 /// Mostly used for overviews and user tiles.
@@ -64,8 +67,9 @@ class SlimUserResponse {
 /// Class used to store the profile information of a user.
 /// Contains the [address], [name], [bio],
 /// [profilePicture], [verified].
-class UserProfile {
-  const UserProfile({
+@HiveType(typeId: 1)
+class UserProfile extends HiveObject {
+  UserProfile({
     @required this.address,
     @required this.name,
     @required this.bio,
@@ -98,33 +102,43 @@ class UserProfile {
   }
 
   /// User address
+  @HiveField(0)
   final String address;
 
   ///  Name of the author
+  @HiveField(1)
   final String name;
 
   /// Author's biography
+  @HiveField(2)
   final String bio;
 
   /// Author's location
+  @HiveField(3)
   final List<String> location;
 
   /// Url of the author's profile image
+  @HiveField(4)
   final List<String> profilePicture;
 
   // URL of background photo
+  @HiveField(5)
   final String backgroundPhoto;
 
   /// Whether the given user account has been verified
+  @HiveField(6)
   final bool verified;
 
   /// Username of the given user.
+  @HiveField(7)
   final String username;
 
   /// List of websites a user can upload
+  @HiveField(8)
   final List<String> website;
 
   /// Gender of the user.
+  @HiveField(9)
   final List<String> gender;
 
   @override
@@ -247,6 +261,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   UserAuthRegistrationDetails(
       {@required this.email,
       @required this.password,
+      @required this.confirmPassword,
       @required this.name,
       @required this.username,
       @required this.bio,
@@ -261,6 +276,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String email;
   @override
   final String password;
+  final String confirmPassword;
   final String name;
   final String username;
   final String bio;
@@ -278,9 +294,11 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
     return <String, dynamic>{
       'username': username,
       'name': name,
+      'password': password,
+      "confirm_password": confirmPassword,
       'bio': bio,
-      'profileImage': profileImage,
-      'backgroundPhoto': backgroundPhoto,
+      'profile_image': profileImage,
+      'background_photo': backgroundPhoto,
       'gender': gender,
       'website': website,
       'location': location
@@ -289,7 +307,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
 }
 
 class UserData {
-  UserData({
+  const UserData({
     @required this.privateDen,
     @required this.publicDen,
     @required this.pack,
@@ -322,6 +340,25 @@ class UserData {
   final PerspectiveModel userPerspective;
   final PerspectiveModel connectionPerspective;
 
+  UserData copyWith({
+    Den privateDen,
+    Den publicDen,
+    CentralizedPack pack,
+    UserProfile user,
+    PerspectiveModel userPerspective,
+    PerspectiveModel connectionPerspective,
+  }) {
+    return UserData(
+      privateDen: privateDen ?? this.privateDen,
+      publicDen: publicDen ?? this.publicDen,
+      pack: pack ?? this.pack,
+      user: user ?? this.user,
+      userPerspective: userPerspective ?? this.userPerspective,
+      connectionPerspective:
+          connectionPerspective ?? this.connectionPerspective,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'private_den': privateDen.toJson(),
@@ -334,7 +371,23 @@ class UserData {
   }
 
   @override
-  String toString() {
-    return 'User Data: privateDen: $privateDen, publicDen: $publicDen, pack: $pack, user: $user, userPerspective: $userPerspective connectionPerspective $connectionPerspective ';
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserData &&
+          runtimeType == other.runtimeType &&
+          privateDen == other.privateDen &&
+          publicDen == other.publicDen &&
+          pack == other.pack &&
+          user == other.user &&
+          userPerspective == other.userPerspective &&
+          connectionPerspective == other.connectionPerspective);
+
+  @override
+  int get hashCode =>
+      privateDen.hashCode ^
+      publicDen.hashCode ^
+      pack.hashCode ^
+      user.hashCode ^
+      userPerspective.hashCode ^
+      connectionPerspective.hashCode;
 }

@@ -10,7 +10,7 @@ class FilterColumnRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -21,6 +21,11 @@ class FilterColumnRow extends StatelessWidget {
               GestureDetector(
                 onTap: () => switchColumnView('two'),
                 child: Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
                   child: Icon(
                     CustomIcons.twocolumn,
                     size: 20,
@@ -30,10 +35,15 @@ class FilterColumnRow extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
+              // const SizedBox(width: 10),
               GestureDetector(
                 onTap: () => switchColumnView('single'),
                 child: Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
                   child: Icon(
                     CustomIcons.singlecolumn,
                     size: 20,

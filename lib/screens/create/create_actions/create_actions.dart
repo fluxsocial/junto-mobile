@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -129,11 +131,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<void> _createExpression() async {
     try {
+      final repository = Provider.of<ExpressionRepo>(context, listen: false);
       if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context);
-        final String _photoKey =
-            await Provider.of<ExpressionRepo>(context, listen: false)
-                .createPhoto(
+        final String _photoKey = await repository.createPhoto(
           true,
           '.png',
           widget.expression['image'],
@@ -152,9 +153,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         String eventPhoto = '';
         if (widget.expression['photo'] != null) {
           JuntoLoader.showLoader(context);
-          final String _eventPhotoKey =
-              await Provider.of<ExpressionRepo>(context, listen: false)
-                  .createPhoto(
+          final String _eventPhotoKey = await repository.createPhoto(
             true,
             '.png',
             widget.expression['photo'],
@@ -175,6 +174,19 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               members: <String>[]).toMap(),
           channels: channel,
           context: _expressionContext,
+        );
+      } else if (widget.expressionType == ExpressionType.audio) {
+        JuntoLoader.showLoader(context);
+        final audio = widget.expression as AudioFormExpression;
+        final AudioFormExpression expression =
+            await repository.createAudio(audio);
+
+        JuntoLoader.hide();
+        _expression = ExpressionModel(
+          type: widget.expressionType.modelName(),
+          expressionData: expression.toMap(),
+          context: _expressionContext,
+          channels: channel,
         );
       } else {
         _expression = ExpressionModel(
@@ -204,6 +216,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       );
       _postCreateAction();
     } catch (error) {
+      print(error);
       JuntoLoader.hide();
       showDialog(
         context: context,
@@ -232,11 +245,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               children: <Widget>[
                 const SizedBox(height: 15),
                 Text(
-                  _currentExpressionContext,
+                  _currentExpressionContext ?? '',
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 Text(
-                  _currentExpressionContextDescription,
+                  _currentExpressionContextDescription ?? '',
                   style: Theme.of(context).textTheme.caption,
                 ),
               ],

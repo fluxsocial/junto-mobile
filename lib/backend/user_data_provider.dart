@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
@@ -12,6 +13,7 @@ class UserDataProvider extends ChangeNotifier {
   ) {
     initialize();
   }
+
   final AppRepo appRepository;
 
   String userAddress;
@@ -41,6 +43,23 @@ class UserDataProvider extends ChangeNotifier {
       notifyListeners();
     }
     return;
+  }
+
+  /// Update cached user information, called by [updateUser]
+  Future<void> _setUserInformation(UserData user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_data', json.encode(user.toMap()));
+    await prefs.setString('user_id', user.user.address);
+  }
+
+  /// Updates the user information with [user]
+  void updateUser(UserData user) {
+    assert(user.user.address == userAddress);
+    logger.logDebug(
+        'Current user address is equal to the upadted user address: ${user.user.address == userAddress}');
+    _setUserInformation(user);
+    userProfile = user;
+    notifyListeners();
   }
 
   Future<void> switchColumnLayout(ExpressionFeedLayout layout) async {

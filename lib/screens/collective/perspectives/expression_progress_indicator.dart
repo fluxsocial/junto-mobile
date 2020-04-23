@@ -10,7 +10,7 @@ class ExpressionProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Container(
-        height: MediaQuery.of(context).size.height / 2,
+        height: MediaQuery.of(context).size.height / 3,
         child: Center(
           child: JuntoProgressIndicator(),
         ),

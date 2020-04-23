@@ -35,6 +35,9 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     if (event is FetchPacks) {
       yield* _mapFetchPacksToState(event);
     }
+    if (event is RefreshPacks) {
+      yield* _mapRefreshPacksToState(event);
+    }
     if (event is FetchMorePacks) {
       yield* _mapFetchMorePacksToState(event);
     }
@@ -62,12 +65,39 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       QueryResults<ExpressionResponse> privateQueryResults = _results[1];
       List<Users> members = _results[2];
       yield PacksLoaded(
-          publicQueryResults, privateQueryResults, members, group);
+        publicQueryResults,
+        privateQueryResults,
+        members,
+        group,
+      );
     } on JuntoException catch (error) {
       yield PacksError(error.message);
     } catch (e, s) {
       print(e);
       print(s.toString());
+      yield PacksError();
+    }
+  }
+
+  Stream<PackState> _mapRefreshPacksToState(RefreshPacks refreshEvent) async* {
+    try {
+      if (state is PacksLoaded) {
+        currentPos = 0;
+        lastTimestamp = null;
+        final _results = await _fetchExpressionAndMembers();
+        QueryResults<ExpressionResponse> publicQueryResults = _results[0];
+        QueryResults<ExpressionResponse> privateQueryResults = _results[1];
+        List<Users> members = _results[2];
+        final PacksLoaded currentResults = state as PacksLoaded;
+        yield PacksLoaded(
+          publicQueryResults,
+          privateQueryResults,
+          members,
+          currentResults.pack,
+        );
+      }
+    } on JuntoException catch (e, s) {
+      logger.logException(e, s);
       yield PacksError();
     }
   }

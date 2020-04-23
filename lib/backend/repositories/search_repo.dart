@@ -7,13 +7,15 @@ class SearchRepo extends SearchService {
   final SearchService _searchService;
 
   @override
-  Future<QueryResults<UserProfile>> searchMembers(String query,
-      {bool username = false,
-      int paginationPosition = 0,
-      DateTime lastTimeStamp}) {
+  Future<QueryResults<UserProfile>> searchMembers(
+    String query, {
+    bool username = false,
+    int paginationPosition,
+    String lastTimeStamp,
+  }) {
     return _searchService.searchMembers(
       query,
-      paginationPosition: paginationPosition,
+      paginationPosition: paginationPosition ?? 0,
       lastTimeStamp: lastTimeStamp,
       username: username,
     );

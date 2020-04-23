@@ -20,9 +20,12 @@ class CreateExpressionIcon extends StatelessWidget {
       type: MaterialType.transparency,
       shape: const CircleBorder(side: BorderSide.none),
       child: Container(
-        width: MediaQuery.of(context).size.width / 3,
         color: Colors.transparent,
         alignment: Alignment.center,
+        margin: const EdgeInsets.only(
+          right: 15,
+          left: 15,
+        ),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
           onTap: () => onTap(context, expressionType),
@@ -51,6 +54,7 @@ class CreateExpressionIcon extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     decoration: TextDecoration.none,
                   ),
+                  textAlign: TextAlign.center,
                 )
               ],
             ),

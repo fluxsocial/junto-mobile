@@ -1,11 +1,14 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class UserRepo {
-  UserRepo(this._userService, this._notificationService);
+  UserRepo(this._userService, this._notificationService, this.db);
 
   final UserService _userService;
+  final LocalCache db;
   final NotificationService _notificationService;
+  QueryResults<ExpressionResponse> cachedDenExpressions;
 
   Future<PerspectiveModel> createPerspective(Perspective perspective) {
     assert(perspective.name != null);
@@ -39,12 +42,24 @@ class UserRepo {
     String userAddress,
     int paginationPos,
     String lastTimestamp,
-  ) {
+  ) async {
     assert(userAddress != null && userAddress.isNotEmpty);
-    return _userService.getUsersExpressions(
-      userAddress,
-      paginationPos,
-      lastTimestamp,
+    if (await DataConnectionChecker().hasConnection) {
+      cachedDenExpressions = await _userService.getUsersExpressions(
+        userAddress,
+        paginationPos,
+        lastTimestamp,
+      );
+      await db.insertExpressions(
+          cachedDenExpressions.results, DBBoxes.denExpressions);
+      return cachedDenExpressions;
+    }
+    final cachedResult = await db.retrieveExpressions(
+      DBBoxes.denExpressions,
+    );
+    return QueryResults(
+      lastTimestamp: cachedDenExpressions?.lastTimestamp,
+      results: cachedResult,
     );
   }
 
@@ -131,9 +146,11 @@ class UserRepo {
     return _userService.isFollowingUser(userAddress, targetAddress);
   }
 
-  Future<Map<String, dynamic>> updateUser(
-          Map<String, dynamic> user, String userAddress) =>
-      _userService.updateUser(user, userAddress);
+  Future<UserProfile> updateUser(
+      Map<String, dynamic> user, String userAddress) async {
+    final result = await _userService.updateUser(user, userAddress);
+    return UserProfile.fromMap(result);
+  }
 
   Future<List<UserProfile>> getFollowers(String userAddress) =>
       _userService.getFollowers(userAddress);

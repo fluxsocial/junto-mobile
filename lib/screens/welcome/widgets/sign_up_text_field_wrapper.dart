@@ -14,6 +14,7 @@ class SignUpTextFieldWrapper extends StatefulWidget {
     @required this.label,
     @required this.title,
     @required this.textInputActionType,
+    @required this.textCapitalization,
   }) : super(key: key);
 
   /// Called when the user enters a value in the textfield.
@@ -25,6 +26,7 @@ class SignUpTextFieldWrapper extends StatefulWidget {
   final String label;
   final String title;
   final TextInputAction textInputActionType;
+  final TextCapitalization textCapitalization;
 
   @override
   State<StatefulWidget> createState() {
@@ -63,7 +65,6 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SignUpPageTitle(title: widget.title),
             SizedBox(height: size.height * 0.24),
             Column(
               children: <Widget>[
@@ -73,7 +74,8 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
                   hint: widget.hint,
                   maxLength: widget.maxLength,
                   textInputActionType: widget.textInputActionType,
-                  textCapitalization: TextCapitalization.none,
+                  textCapitalization:
+                      widget.textCapitalization ?? TextCapitalization.none,
                 ),
                 SignUpTextFieldLabelAndCounter(
                   label: widget.label,

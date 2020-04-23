@@ -12,7 +12,11 @@ class PackName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      margin: const EdgeInsets.only(right: 20),
+      padding: const EdgeInsets.only(
+        top: 10,
+        bottom: 10,
+        right: 20,
+      ),
       child: Text(
         name.toUpperCase(),
         style: TextStyle(

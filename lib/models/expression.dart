@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
+part 'expression.g.dart';
+
 /// Base class for posting an expression to the server
+
 class ExpressionModel {
   ExpressionModel({
     @required this.type,
@@ -31,10 +35,13 @@ class ExpressionModel {
   /// * [ShortFormExpression]
   /// * [PhotoFormExpression]
   /// * [EventFormExpression]
+  /// * [AudioFormExpression]
+
   final Map<String, dynamic> expressionData;
 
   /// Context for the given expression. Value is dependant on [ExpressionContext].
   /// See docs for details: https://github.com/juntofoundation/Junto-Alpha-API/blob/master/docs/expression.md
+
   final dynamic context;
 
   /// list of channel UUIDs the expression will be shared to.
@@ -64,6 +71,45 @@ class ExpressionModel {
   }
 }
 
+@HiveType(typeId: 5)
+class AudioFormExpression {
+  AudioFormExpression({
+    this.title,
+    this.photo,
+    this.audio,
+    this.gradient,
+  });
+
+  // TODO: we're waiting for the model from API so right now these properties are "dummy"
+  // probably it will be similar to photo expression
+
+  factory AudioFormExpression.fromMap(Map<String, dynamic> json) {
+    return AudioFormExpression(
+      title: json['title'] ?? '',
+      photo: json['photo'] ?? '',
+      audio: json['audio'] ?? '',
+      gradient: json['gradient']?.cast<String>() ?? [],
+    );
+  }
+
+  @HiveField(0)
+  final String title;
+  @HiveField(1)
+  final String photo;
+  @HiveField(2)
+  final String audio;
+  @HiveField(3)
+  final List<String> gradient;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'title': title ?? '',
+        'photo': photo ?? '',
+        'audio': audio ?? '',
+        'gradient': gradient ?? [],
+      };
+}
+
+@HiveType(typeId: 4)
 class LongFormExpression {
   LongFormExpression({
     this.title,
@@ -77,7 +123,9 @@ class LongFormExpression {
     );
   }
 
+  @HiveField(0)
   final String title;
+  @HiveField(1)
   final String body;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -86,6 +134,7 @@ class LongFormExpression {
       };
 }
 
+@HiveType(typeId: 3)
 class ShortFormExpression {
   ShortFormExpression({
     @required this.background,
@@ -99,7 +148,9 @@ class ShortFormExpression {
     );
   }
 
+  @HiveField(0)
   final List<dynamic> background;
+  @HiveField(1)
   final String body;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -108,6 +159,7 @@ class ShortFormExpression {
       };
 }
 
+@HiveType(typeId: 2)
 class PhotoFormExpression {
   PhotoFormExpression({
     this.image,
@@ -121,7 +173,9 @@ class PhotoFormExpression {
     );
   }
 
+  @HiveField(0)
   String image;
+  @HiveField(1)
   String caption;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -174,7 +228,8 @@ class EventFormExpression {
       };
 }
 
-class ExpressionResponse {
+@HiveType(typeId: 0)
+class ExpressionResponse extends HiveObject {
   ExpressionResponse({
     this.address,
     this.type,
@@ -250,18 +305,30 @@ class ExpressionResponse {
     //       ),
   }
 
+  @HiveField(0)
   final String address;
+  @HiveField(1)
   final String type;
+  @HiveField(2)
   final dynamic expressionData;
-  final DateTime createdAt;
+  @HiveField(3)
   final int numberResonations;
+  @HiveField(4)
   final int numberComments;
+  @HiveField(5)
   final dynamic resonations;
+  @HiveField(6)
   final dynamic comments;
+  @HiveField(7)
   final String privacy;
+  @HiveField(8)
   final List<dynamic> channels;
+  @HiveField(9)
   final String context;
+  @HiveField(10)
   final UserProfile creator;
+  @HiveField(11)
+  final DateTime createdAt;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -295,6 +362,9 @@ class ExpressionResponse {
     }
     if (type == 'EventForm') {
       return EventFormExpression.fromMap(json);
+    }
+    if (type == 'AudioForm') {
+      return AudioFormExpression.fromMap(json);
     }
   }
 }

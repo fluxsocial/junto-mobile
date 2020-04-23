@@ -7,12 +7,14 @@ class PerspectiveTextField extends StatelessWidget {
     @required this.controller,
     this.textInputActionType,
     this.validator,
+    this.maxLength,
   }) : super(key: key);
 
   final String name;
   final TextEditingController controller;
   final TextInputAction textInputActionType;
   final FormFieldValidator<String> validator;
+  final int maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class PerspectiveTextField extends StatelessWidget {
         decoration: InputDecoration(
           errorStyle: TextStyle(color: Colors.redAccent),
           contentPadding: const EdgeInsets.all(0),
+          counter: Container(),
           border: InputBorder.none,
           hintText: name,
           hintStyle: TextStyle(
@@ -53,6 +56,7 @@ class PerspectiveTextField extends StatelessWidget {
         textInputAction: textInputActionType,
         keyboardType: TextInputType.text,
         textCapitalization: TextCapitalization.sentences,
+        maxLength: maxLength,
         onFieldSubmitted: (_) {
           if (textInputActionType == TextInputAction.next) {
             FocusScope.of(context).nextFocus();

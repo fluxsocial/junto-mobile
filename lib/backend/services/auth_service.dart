@@ -56,8 +56,11 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     if (email != null && email != '') {
       _body['email'] = email;
     }
+    print(_body);
     final http.Response response =
         await client.postWithoutEncoding('/users/validate', body: _body);
+    print(response.statusCode);
+    print(response.body);
     print(response.statusCode);
     final parseData = JuntoHttp.handleResponse(response);
     return parseData;
@@ -111,5 +114,43 @@ class AuthenticationServiceCentralized implements AuthenticationService {
         JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);
     return _userData;
+  }
+
+  @override
+  Future<int> requestPasswordReset(String email) async {
+    final Map<String, dynamic> _body = <String, dynamic>{
+      'email': email,
+    };
+    final http.Response response = await client.postWithoutEncoding(
+      '/auth/forgot',
+      body: _body,
+    );
+    logger.logDebug("Request code ${response.body}");
+
+    if (response.statusCode == 310) {
+      return 310;
+    } else {
+      final Map<String, dynamic> _responseMap =
+          JuntoHttp.handleResponse(response);
+      print(_responseMap);
+    }
+    return response.statusCode;
+  }
+
+  @override
+  Future<void> resetPassword(Map<String, dynamic> details) async {
+    final Map<String, dynamic> _body = <String, dynamic>{
+      'email': details['email'],
+      'verification_code': details['verification_code'],
+      'password': details['password'],
+      'confirm_password': details['confirm_password']
+    };
+    final http.Response response = await client.postWithoutEncoding(
+      '/auth/reset',
+      body: _body,
+    );
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    print(_responseMap);
   }
 }

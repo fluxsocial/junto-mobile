@@ -4,4 +4,5 @@ enum Screen {
   groups,
   create,
   lotus,
+  den,
 }

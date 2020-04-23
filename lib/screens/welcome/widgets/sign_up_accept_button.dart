@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 class AcceptButton extends StatelessWidget {
   const AcceptButton({
@@ -35,9 +36,12 @@ class AcceptButton extends StatelessWidget {
           onPressed: () async {
             Navigator.of(context).pushReplacement(
               FadeRoute<void>(
-                child: const JuntoLotus(
-                  address: null,
-                  expressionContext: ExpressionContext.Collective,
+                child: FeatureDiscovery(
+                  child: const JuntoLotus(
+                    address: null,
+                    expressionContext: ExpressionContext.Collective,
+                    source: null,
+                  ),
                 ),
               ),
             );
