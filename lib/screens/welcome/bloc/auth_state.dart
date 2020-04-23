@@ -15,11 +15,4 @@ class AuthenticatedState extends AuthState {
 class UnAuthenticatedState extends AuthState {}
 
 /// Used to indicate some background task is in progress.
-class WorkingState extends AuthState {}
-
-/// Called when an error occurs.
-class ErrorState extends AuthState {
-  ErrorState(this.error);
-
-  final String error;
-}
+class LoadingState extends AuthState {}

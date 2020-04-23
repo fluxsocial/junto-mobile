@@ -27,6 +27,8 @@ import 'widgets/welcome_background.dart';
 import 'widgets/welcome_main.dart';
 
 class Welcome extends StatefulWidget {
+  const Welcome({Key key}) : super(key: key);
+
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(
       builder: (BuildContext context) => Welcome(),
