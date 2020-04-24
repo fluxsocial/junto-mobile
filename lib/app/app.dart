@@ -110,7 +110,7 @@ class MaterialAppWithTheme extends StatelessWidget {
         ],
       );
     }
-    if (state is UnAuthenticatedState) {
+    if (state is UnAuthenticatedState || state is InitialAuthState) {
       return MaterialApp(
         key: ValueKey<String>('logged-out'),
         home: Welcome(),
