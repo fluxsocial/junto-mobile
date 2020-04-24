@@ -11,7 +11,7 @@ building this momentum. Additional thanks to our sponsors and to those who have 
 * [Email our founder for partnerships, larger donations, & short-term loan options](mailto:eric@junto.foundation)
 * [Contribute to our open source development](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/OPEN-SOURCE.md)
 
-## Acknowledgement
+## Acknowledgements
 ### Crowdfunders
 [Kickstarter](https://www.kickstarter.com/projects/1958309948/junto-a-new-breed-of-social-media) - 678 backers pledged $106,949 in 30 days to help bring this project to life.
 
@@ -39,3 +39,8 @@ We encourage all of our contributors to hold space for mutual respect, diversity
 ## Contribution
 [Visit our open source contribution guidelines here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/OPEN-SOURCE.md)
 
+## License
+Junto is open-sourced under the Mozilla Public License 2.0.
+
+
+Copyright (c) 2020, Junto Foundation, Inc.
