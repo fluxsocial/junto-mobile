@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert' show json;
 
 import 'package:bloc/bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -16,15 +14,9 @@ import 'bloc.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
   final UserDataProvider userDataProvider;
-  Box box;
 
   AuthBloc(this.authRepo, this.userDataProvider) {
     _getLoggedIn();
-    setupDatabase();
-  }
-
-  Future<void> setupDatabase() async {
-    box = await Hive.openBox('app-data', encryptionKey: key);
   }
 
   Future<void> _getLoggedIn() async {
@@ -64,9 +56,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authRepo.registerUser(event.details);
       final Map<String, dynamic> resultsMap = user.toMap();
       final String resultsMapToString = json.encode(resultsMap);
-      // save user to shared prefs
-      await box.put('isLoggedIn', true);
-      await box.put('userId', user.user.address);
       await SharedPreferences.getInstance()
         ..setString('user_data', resultsMapToString);
       await userDataProvider.initialize();

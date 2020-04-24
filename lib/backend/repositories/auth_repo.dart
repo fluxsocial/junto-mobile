@@ -54,10 +54,14 @@ class AuthRepo {
     logger.logDebug('Registering user');
     final UserData _data = await _authService.registerUser(details);
     await _authService.loginUser(
-      UserAuthLoginDetails(email: details.email, password: details.password),
+      UserAuthLoginDetails(
+        email: details.email,
+        password: details.password,
+      ),
     );
-    box.put('userId', _data.user.address);
-    box.put('userFollowPerspectiveId', _data.userPerspective.address);
+    await box.put('isLoggedIn', true);
+    await box.put('userId', _data.user.address);
+    await box.put('userFollowPerspectiveId', _data.userPerspective.address);
     return _data;
   }
 
