@@ -23,11 +23,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await authRepo.isLoggedIn();
     if (result) {
       add(LoggedInEvent());
-      return;
     }
     if (!result) {
       add(LogoutEvent());
-      return;
     }
   }
 
