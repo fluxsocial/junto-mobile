@@ -5,7 +5,7 @@ Hey! We're excited that you're interested in contributing to Junto and thank you
 
 ## Code of Conduct
 We encourage all of our contributors to hold space for mutual respect, diversity, and open-mindedness. 
-View our code of conduct here.
+View our code of conduct [here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/CONDUCT.md)
 
 ## Contribution Examples
 
@@ -28,7 +28,7 @@ As you start developing, create a new branch off of `dev` and make your pull req
 ## Getting Started
 ### Requirements:
 1) Latest version of [Flutter](https://github.com/flutter/flutter) (Junto development team uses branch `beta`)
-2) Junto API (Request an API key. We are optimizing our security and will open source our API soon) 
+2) Junto API (Request an API key at hi@junto.foundation. We are optimizing our security and will open source our API soon) 
 
 ### Building the project:
 Once you've configured Flutter and obtained an API key from the dev team: 
