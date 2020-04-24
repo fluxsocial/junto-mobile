@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart' show LocalCache;
 import 'package:junto_beta_mobile/models/models.dart';
@@ -10,7 +9,6 @@ class HiveCache implements LocalCache {
   }
 
   Future<void> init() async {
-    await Hive.initFlutter();
     Hive.registerAdapter(ExpressionResponseAdapter());
     Hive.registerAdapter(ShortFormExpressionAdapter());
     Hive.registerAdapter(PhotoFormExpressionAdapter());

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:junto_beta_mobile/app/app.dart';
 import 'package:junto_beta_mobile/app/logger/sentry.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -11,6 +13,7 @@ Future<void> mainApp() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  await Hive.initFlutter();
   final Backend backend = await Backend.init();
   final bool _loggedIn = await backend.authRepo.isLoggedIn();
   runLoggedApp(
