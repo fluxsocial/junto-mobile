@@ -163,14 +163,22 @@ class JuntoCreateState extends State<JuntoCreate> {
                       Container(
                         alignment: Alignment.center,
                         height: 120,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
+                        // child: ListView(
+                        //   scrollDirection: Axis.horizontal,
+                        //   children: <Widget>[
+                        //     _selectExpressionIcon(ExpressionType.dynamic),
+                        //     _selectExpressionIcon(ExpressionType.shortform),
+                        //     _selectExpressionIcon(ExpressionType.photo),
+                        //     if (appConfig.flavor != Flavor.prod)
+                        //       _selectExpressionIcon(ExpressionType.audio),
+                        //   ],
+                        // ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             _selectExpressionIcon(ExpressionType.dynamic),
                             _selectExpressionIcon(ExpressionType.shortform),
                             _selectExpressionIcon(ExpressionType.photo),
-                            if (appConfig.flavor != Flavor.prod)
-                              _selectExpressionIcon(ExpressionType.audio),
                           ],
                         ),
                       ),
