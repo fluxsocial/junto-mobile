@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -15,7 +15,6 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -66,25 +65,21 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      prefs.getString('user_data'),
-    );
     setState(() {
-      _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
+      _userAddress = Provider.of<UserDataProvider>(context).userAddress;
+      _userProfile = Provider.of<UserDataProvider>(context).userProfile;
     });
 
     final Map<String, dynamic> _relationToGroup =
-        await Provider.of<GroupRepo>(context, listen: false)
-            .getRelationToGroup(widget.group.address, _userAddress);
+        await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
+      widget.group.address,
+      _userAddress,
+    );
     setState(() {
       relationToGroup = _relationToGroup;
     });
-    print(relationToGroup);
   }
 
-//TODO(Nash): Replace with bloc
   Future<List<Users>> _getMembers() async {
     final query =
         await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
