@@ -35,13 +35,13 @@ John Howe &nbsp; &nbsp; &nbsp; HEMP360  &nbsp; &nbsp; &nbsp; Ian McCauley  &nbsp
 Adishakti &nbsp; &nbsp; &nbsp; Prayugo Moekie &nbsp; &nbsp; &nbsp; Bennett Family &nbsp; &nbsp; &nbsp; Dhtnetwork &nbsp; &nbsp; &nbsp; Jeremy Wallis
 
 ## Code of Conduct
-We encourage all of our contributors to hold space for mutual respect, diversity, and open-mindedness. View our code of conduct [here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/CONDUCT.md)
+We encourage all of our contributors to hold space for mutual respect, diversity, and open-mindedness. View our code of conduct [here.](https://github.com/juntofoundation/junto-mobile/blob/dev/CONDUCT.md)
 
 ## Contribution
-[Visit our open source contribution guidelines here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/OPEN-SOURCE.md)
+[Visit our open source contribution guidelines here.](https://github.com/juntofoundation/junto-mobile/blob/dev/OPEN-SOURCE.md)
 
 ## License
-Junto is open-sourced under the [Mozilla Public License 2.0.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/LICENSE)
+Junto is open-sourced under the [Mozilla Public License 2.0.](https://github.com/juntofoundation/junto-mobile/blob/dev/LICENSE)
 
 ## Stay in the loop
 * [Flux newsletter](https://junto.substack.com/)
