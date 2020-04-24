@@ -10,7 +10,7 @@ building this momentum. Additional thanks to our sponsors and to those who have 
 * <a href="https://junto.typeform.com/to/xpwCxK" target="_blank">Sign up for our alpha and spread the message</a>
 * <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CX87U4QQQX2TW&source=url" target="_blank">Consider donating via PayPal</a> 
 * [Email our founder for partnerships, larger donations, & short-term loan options](mailto:eric@junto.foundation)
-* [Contribute to our open source development](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/OPEN-SOURCE.md)
+* [Contribute to our open source development](https://github.com/juntofoundation/junto-mobile/blob/dev/OPEN-SOURCE.md)
 
 ## Acknowledgements
 ### Crowdfunders
