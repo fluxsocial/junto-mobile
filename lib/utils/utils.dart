@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AddUserToList<T> {
   List<T> placeUser(T data, List<T> list) {
@@ -56,9 +57,9 @@ mixin RFC3339 {
 /// the same as the user currently logged into the application.
 mixin MemberValidation {
   Future<bool> isHostUser(UserProfile incoming) async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final String _userAddress = _prefs.getString('user_id');
-    return incoming.address == _userAddress;
+    final box = await Hive.openBox("app", encryptionKey: key);
+    final id = await box.get("userId") as String;
+    return incoming.address == id;
   }
 
   /// Navigates the user to the correct profile "Den" screen based on whether
