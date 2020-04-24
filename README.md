@@ -11,6 +11,27 @@ building this momentum. Additional thanks to our sponsors and to those who have 
 * [Email our founder for partnerships, larger donations, & short-term loan options](mailto:eric@junto.foundation)
 * [Contribute to our open source development](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/OPEN-SOURCE.md)
 
+### Crowdfunders
+[Kickstarter](https://www.kickstarter.com/projects/1958309948/junto-a-new-breed-of-social-media) - 678 backers pledged $106,949 in 30 days to help bring this project to life.
+
+[Indiegogo InDemand](https://www.indiegogo.com/projects/junto-a-new-breed-of-social-media--2#/) - 95 more backers helped us raise $110,290 total.
+
+### Special Sponsors
+Arthur Brock &nbsp; &nbsp; &nbsp; Raymond Powell &nbsp; &nbsp; &nbsp; David Magerman &nbsp; &nbsp; &nbsp; Yang Family (楊家)  &nbsp; &nbsp; &nbsp; <img src="/pacificintegral__logo.png" height ="17px">
+
+### Platinum Sponsors
+ANDREW BURGE &nbsp; &nbsp; &nbsp; HW
+
+### Gold Sponsors
+MAXIM DROBINTSEV
+
+### Silver Sponsors
+Abeer Owainati &nbsp; &nbsp; &nbsp; David Wu &nbsp;  &nbsp;  &nbsp; Chris Graff &nbsp; &nbsp; &nbsp; Henry Owainati
+
+John Howe &nbsp; &nbsp; &nbsp; HEMP360  &nbsp; &nbsp; &nbsp; Ian McCauley  &nbsp; &nbsp; &nbsp; <img src="/thodex_logo.png" height="17px">
+
+KOINEKS &nbsp; &nbsp; &nbsp; Adishakti &nbsp; &nbsp; &nbsp; Prayugo Moekie &nbsp; &nbsp; &nbsp; Bennett Family &nbsp; &nbsp; &nbsp; Dhtnetwork &nbsp; &nbsp; &nbsp; Jeremy Wallis
+
 ## Code of Conduct
 We encourage all of our contributors to hold space for mutual respect, diversity, and open-mindedness. View our code of conduct [here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/CONDUCT.md)
 
