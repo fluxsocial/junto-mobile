@@ -1,6 +1,7 @@
-![Junto Logo](/junto_logo--rainbow.png)
-# Junto | A Movement For Authenticity
 
+<img src="/junto_logo--rainbow.png" width="60px">
+
+# Junto | A Movement For Authenticity
 Junto is a nonprofit, open source, and human-centered social media whose ongoing development is made possible by the support of its grassroots community. Thank you to our volunteers, open source developers, and community members who are
 building this momentum. Additional thanks to our sponsors and to those who have contributed to our crowdfunding campaigns, PayPal, and other fundraising mediums. If you're new to Junto, we invite you to join us in our mission to move beyond today's extractive paradigm and inspire authenticity, privacy, and free expression. 
 
