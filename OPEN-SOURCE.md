@@ -1,6 +1,6 @@
+<img src="/junto_logo--rainbow.png" width="45px">
 
 # Junto Contribution Guidelines
-
 Hey! We're excited that you're interested in contributing to Junto and thank you for your time in advance. Please review the following guidelines to get started.
 
 ## Code of Conduct
