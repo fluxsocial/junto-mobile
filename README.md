@@ -1,3 +1,5 @@
+![Junto Logo](images/junto_logo--rainbow.png)
+
 # Junto | A Movement For Authenticity
 Welcome to Junto! This repo contains the source code for our mobile application. 
 
