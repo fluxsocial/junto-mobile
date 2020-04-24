@@ -1,139 +1,51 @@
-![Junto Logo](images/junto_logo--rainbow.png)
+
+<img src="/junto_logo--rainbow.png" width="45px">
 
 # Junto | A Movement For Authenticity
-Welcome to Junto! This repo contains the source code for our mobile application. 
+Junto is a nonprofit, open source, and human-centered social media whose ongoing development is made possible by the support of its grassroots community. Thank you to our volunteers, open source developers, and community members who are
+building this momentum. Additional thanks to our sponsors and to those who have contributed to our crowdfunding campaigns, PayPal, and other fundraising mediums. If you're new to Junto, we invite you to join us in our mission to move beyond today's extractive paradigm and inspire authenticity, privacy, and free expression. 
 
-Requirements: 
-To get started building Junto, please ensure your development machine meets the following requirements:
-1) Flutter version 1.17.0 or higher (Junto development team uses branch `beta`)
-2) Obtain an API key from the development team
+## How you can get involved: 
 
-Building the project:
-Once you've configured Flutter and obtained an API key from the development team you can begin building the project. 
+* <a href="https://junto.typeform.com/to/xpwCxK" target="_blank">Sign up for our alpha and spread the message</a>
+* <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CX87U4QQQX2TW&source=url" target="_blank">Consider donating via PayPal</a> 
+* [Email our founder for partnerships, larger donations, & short-term loan options](mailto:eric@junto.foundation)
+* [Contribute to our open source development](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/OPEN-SOURCE.md)
 
-1) Create a file called `api.dart` in the project's `lib` folder contain the values provided to you by the dev team. 
-2) If you are building for Android, create a `key.properties` file in the root of the `android` folder  containing the following:
-```
-storePassword=dev-password
-keyPassword=key-password
-keyAlias=key-alias
-storeFile=file-location
-```
-3) Congratulations! You should now be able to build the project in debug. Feel free to inspect our code and contribute to the project. PRs are welcome!
+## Acknowledgements
+### Crowdfunders
+[Kickstarter](https://www.kickstarter.com/projects/1958309948/junto-a-new-breed-of-social-media) - 678 backers pledged $106,949 in 30 days to help bring this project to life.
 
-To run call:
+[Indiegogo InDemand](https://www.indiegogo.com/projects/junto-a-new-breed-of-social-media--2#/) - 95 more backers helped us raise $110,290 total.
 
-```
-flutter run --flavor dev --target lib/main_dev.dart
-```
+### Special Sponsors
+Arthur Brock &nbsp; &nbsp; &nbsp; Raymond Powell &nbsp; &nbsp; &nbsp; David Magerman &nbsp; &nbsp; &nbsp; Yang Family (楊家)  &nbsp; &nbsp; &nbsp; <img src="/pacificintegral_logo.png" height ="24px">
 
-## Flavors support
+### Platinum Sponsors
+Andrew Burge &nbsp; &nbsp; &nbsp; HW
 
-Junto app has additional flavors called `dev`, `tst` and `prod`. This allows to install 3 apps side by side - one from Google Play (prod), second from CI, and third from your computer.
+### Gold Sponsors
+Maxim Drobintsev 
 
-To run this flavor call:
+### Silver Sponsors
+Abeer Owainati &nbsp; &nbsp; &nbsp; David Wu &nbsp;  &nbsp;  &nbsp; Chris Graff &nbsp; &nbsp; &nbsp; Henry Owainati
 
-```
-flutter run --flavor dev --target lib/main_dev.dart
-flutter run --flavor tst --target lib/main_tst.dart
-flutter run --flavor prod --target lib/main_prod.dart
-```
+John Howe &nbsp; &nbsp; &nbsp; HEMP360  &nbsp; &nbsp; &nbsp; Ian McCauley  &nbsp; &nbsp; &nbsp; <img src="/thodex_logo.png" height="12px">
 
-You can access current flavor by calling `appConfig.flavor`.
+Adishakti &nbsp; &nbsp; &nbsp; Prayugo Moekie &nbsp; &nbsp; &nbsp; Bennett Family &nbsp; &nbsp; &nbsp; Dhtnetwork &nbsp; &nbsp; &nbsp; Jeremy Wallis
 
-You can also add launch configuration to VS Code:
+## Code of Conduct
+We encourage all of our contributors to hold space for mutual respect, diversity, and open-mindedness. View our code of conduct [here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/CONDUCT.md)
 
-```json
-"configurations": [
-    {
-        "name": "Flutter Dev Debug",
-        "request": "launch",
-        "type": "dart",
-        "flutterMode": "debug",
-        "program": "lib/main_dev.dart",
-        "args": [
-            "--flavor",
-            "dev"
-        ]
-    },
-    {
-        "name": "Flutter Dev Debug Mac",
-        "request": "launch",
-        "type": "dart",
-        "program": "lib/main_dev.dart",
-        "flutterMode": "debug",
-    },
-    {
-        "name": "Flutter Dev Profile",
-        "type": "dart",
-        "request": "launch",
-        "program": "lib/main_dev.dart",
-        "flutterMode": "profile",
-        "args": [
-            "--flavor",
-            "dev"
-        ]
-    },
-    {
-        "name": "Flutter Dev Release",
-        "type": "dart",
-        "request": "launch",
-        "program": "lib/main_dev.dart",
-        "flutterMode": "release",
-        "args": [
-            "--flavor",
-            "dev"
-        ]
-    },
-    {
-        "name": "Flutter Prod Release",
-        "type": "dart",
-        "request": "launch",
-        "program": "lib/main_prod.dart",
-        "flutterMode": "release",
-        "args": [
-            "--flavor",
-            "prod"
-        ]
-    },
-]
-```
+## Contribution
+[Visit our open source contribution guidelines here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/OPEN-SOURCE.md)
 
-## Internationalization
+## License
+Junto is open-sourced under the [Mozilla Public License 2.0.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/LICENSE)
 
-We're using Localizely and arb files to i18n the app. I recommend to use _Flutter Intl_ extension for [VS Code](https://marketplace.visualstudio.com/items?itemName=localizely.flutter-intl) or [Android Studio](https://plugins.jetbrains.com/plugin/13666-flutter-intl) to automatically generate the language files. It should automatically detect the files.
+## Stay in the loop
+* [Flux newsletter](https://junto.substack.com/)
+* [Twitter](https://twitter.com/juntofoundation)
+* [Telegram](http://t.me/juntofoundation)
 
-In order to download the arb files from Localizely add your API key to the `scripts/fetch_localizely.sh` file. To download just run it. You can also run it through VS Code tasks. Sample tasks.json:
-
-```json
-{
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Download translations from Localizely",
-            "type": "shell",
-            "command": "./scripts/fetch_localizely.sh",
-            "problemMatcher": []
-        }
-    ]
-}
-```
-
-To use term in Dart code just call:
-
-```dart
-S.of(context).welcome_password_length
-```
-
-### Troubleshooting
-
-Sometimes the translations may not refresh/regenerate immediately. In such case just open any arb file and press CMD+S. The extension should automatically regenerate dart files.
-
-You can read more how to use this approach [here](https://roszkowski.dev/2020/i18n-in-flutter/).
-
-## Junto Error Codes 
-| Error Code  | Message  | Cause  |  
-|---|---|---|
-|  -1  | Unable to read local user   | The application is unable to read the value of the cached user stored on device.  |   
-| -2   | Please check your password  | The passwords entered by the user does not match.   |  
-  
+Copyright (c) 2020, Junto Foundation, Inc.
