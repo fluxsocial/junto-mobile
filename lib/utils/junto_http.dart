@@ -1,11 +1,11 @@
 import 'dart:convert' as convert;
 
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/api.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 class JuntoHttp {
   JuntoHttp({this.httpClient}) {
@@ -16,9 +16,8 @@ class JuntoHttp {
   http.Client httpClient;
 
   Future<String> _getAuthKey() async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    return sharedPreferences.getString('auth');
+    final box = await Hive.openBox("app", encryptionKey: key);
+    return box.get("auth") as String;
   }
 
   Future<Map<String, String>> _getPersistentHeaders() async {
