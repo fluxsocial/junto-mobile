@@ -31,7 +31,7 @@ Abeer Owainati &nbsp; &nbsp; &nbsp; David Wu &nbsp;  &nbsp;  &nbsp; Chris Graff 
 
 John Howe &nbsp; &nbsp; &nbsp; HEMP360  &nbsp; &nbsp; &nbsp; Ian McCauley  &nbsp; &nbsp; &nbsp; <img src="/thodex_logo.png" height="12px">
 
-KOINEKS &nbsp; &nbsp; &nbsp; Adishakti &nbsp; &nbsp; &nbsp; Prayugo Moekie &nbsp; &nbsp; &nbsp; Bennett Family &nbsp; &nbsp; &nbsp; Dhtnetwork &nbsp; &nbsp; &nbsp; Jeremy Wallis
+Adishakti &nbsp; &nbsp; &nbsp; Prayugo Moekie &nbsp; &nbsp; &nbsp; Bennett Family &nbsp; &nbsp; &nbsp; Dhtnetwork &nbsp; &nbsp; &nbsp; Jeremy Wallis
 
 ## Code of Conduct
 We encourage all of our contributors to hold space for mutual respect, diversity, and open-mindedness. View our code of conduct [here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/CONDUCT.md)
