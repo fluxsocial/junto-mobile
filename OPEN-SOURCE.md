@@ -88,3 +88,16 @@ Sometimes the translations may not refresh/regenerate immediately. In this case,
 
 You can read more how to use this approach [here](https://roszkowski.dev/2020/i18n-in-flutter/).
   
+## Junto Lingo
+* #### Collective - shared space of Junto
+* #### Groups - public, private, or secret communities of people
+* #### Packs - agent-centric communities that represent one's closet group of friends. Each person has their own pack and can belong to many others. 
+* #### Den - profile / private headspace 
+* #### Perspective - different ways (feeds) to view the Collective
+* #### Expression - posts created through mediums in the Expression Center (i.e. dynamic, shortform, audio, etc.)
+* #### Channels - topics you can tag expressions into
+* #### Subscriptions - people you follow / subscribe to. Non-mutual relationships.
+* #### Connections - your 1st degree connections. Mutual relationships.
+* #### Pack Members - your closest group of friends. People you've invited to your pack.
+
+
