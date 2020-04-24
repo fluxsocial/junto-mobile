@@ -43,5 +43,9 @@ We encourage all of our contributors to hold space for mutual respect, diversity
 ## License
 Junto is open-sourced under the [Mozilla Public License 2.0.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/LICENSE)
 
+## Stay in the loop
+* [Flux newsletter](https://junto.substack.com/)
+* [Twitter](https://twitter.com/juntofoundation)
+* [Telegram](http://t.me/juntofoundation)
 
 Copyright (c) 2020, Junto Foundation, Inc.
