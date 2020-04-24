@@ -4,7 +4,7 @@
 Hey! We're excited that you're interested in contributing to Junto and thank you for your time in advance. Please review the following guidelines to get started.
 
 ## Code of Conduct
-We encourage all of our contributors to hold sapcce for mutual respect, diversity, and open-mindedness. 
+We encourage all of our contributors to hold space for mutual respect, diversity, and open-mindedness. 
 View our code of conduct here.
 
 ## Contribution Examples
@@ -14,11 +14,11 @@ View our code of conduct here.
 * Feature development
 * Code clean up
 * Translations
-* Feedback & New Ideas
+* Feedback & new ideas
 
 
 ## Issue Reporting
-Report all issues [here.](https://github.com/juntofoundation/junto-mobile/issues) Remember to add the appropriate labels if applicable. 
+Report all issues [here.](https://github.com/juntofoundation/junto-mobile/issues) Remember to add the appropriate labels.
 
 ## Pull Requests
 *The master branch is just a snapshot of the latest stable release. All development should be done in dedicated branches. Do not submit PRs against the master branch.*
