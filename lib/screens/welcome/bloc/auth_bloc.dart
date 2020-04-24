@@ -13,8 +13,9 @@ import 'bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
+  final UserDataProvider userDataProvider;
 
-  AuthBloc(this.authRepo) {
+  AuthBloc(this.authRepo, this.userDataProvider) {
     _getLoggedIn();
   }
 
@@ -53,6 +54,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield LoadingState();
     try {
       final user = await authRepo.registerUser(event.details);
+      final Map<String, dynamic> resultsMap = user.toMap();
+      final String resultsMapToString = json.encode(resultsMap);
+      // save user to shared prefs
+      await SharedPreferences.getInstance()
+        ..setBool(
+          'isLoggedIn',
+          true,
+        )
+        ..setString('user_id', user.user.address)
+        ..setString('user_data', resultsMapToString);
+      await userDataProvider.initialize();
       yield AuthenticatedState(user);
     } on JuntoException catch (error) {
       yield UnAuthenticatedState();
@@ -78,9 +90,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLogout(LogoutEvent event) async* {
     yield LoadingState();
     try {
-      final _prefs = await SharedPreferences.getInstance();
-      await authRepo.logoutUser();
-      await _prefs.clear();
+      await _clearUserInformation();
       yield UnAuthenticatedState();
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
@@ -100,10 +110,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield AuthenticatedState(UserData.fromMap(json.decode(data)));
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
+      await _clearUserInformation();
       yield UnAuthenticatedState();
     } catch (error) {
       logger.logDebug(error.message);
+      await _clearUserInformation();
       yield UnAuthenticatedState();
     }
+  }
+
+  Future<void> _clearUserInformation() async {
+    final _prefs = await SharedPreferences.getInstance();
+    await authRepo.logoutUser();
+    await _prefs.clear();
+    return;
   }
 }

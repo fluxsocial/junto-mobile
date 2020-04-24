@@ -63,6 +63,7 @@ class JuntoAppState extends State<JuntoApp> {
           child: BlocProvider<AuthBloc>(
             create: (ctx) => AuthBloc(
               ctx.repository<AuthRepo>(),
+              ctx.repository<UserDataProvider>(),
             ),
             child: MaterialAppWithTheme(
               loggedIn: widget.loggedIn,
