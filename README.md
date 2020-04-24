@@ -1,5 +1,5 @@
 
-<img src="/junto_logo--rainbow.png" width="60px">
+<img src="/junto_logo--rainbow.png" width="45px">
 
 # Junto | A Movement For Authenticity
 Junto is a nonprofit, open source, and human-centered social media whose ongoing development is made possible by the support of its grassroots community. Thank you to our volunteers, open source developers, and community members who are
