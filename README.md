@@ -1,17 +1,25 @@
-![Junto Logo](images/junto_logo--rainbow.png)
-
+![Junto Logo](/junto_logo--rainbow.png)
 # Junto | A Movement For Authenticity
-Welcome to Junto! This repo contains the source code for our mobile application. 
 
-Requirements: 
-To get started building Junto, please ensure your development machine meets the following requirements:
-1) Flutter version 1.17.0 or higher (Junto development team uses branch `beta`)
-2) Obtain an API key from the development team
+Junto is a nonprofit, open source, and human-centered social media whose ongoing development is made possible by the support of its grassroots community. Thank you to our volunteers, open source developers, and community members who are
+building this momentum. Additional thanks to our sponsors and to those who have contributed to our crowdfunding campaigns, PayPal, and other fundraising mediums. If you're new to Junto, we invite you to join us in our mission to move beyond today's extractive paradigm and inspire authenticity, privacy, and free expression. 
 
-Building the project:
-Once you've configured Flutter and obtained an API key from the development team you can begin building the project. 
+### How you can get involved:
+* [Sign up for our alpha and spread the message](https://junto.typeform.com/to/xpwCxK)
+* [Consider donating via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CX87U4QQQX2TW&source=url)
+* [Email our founder for partnerships, larger donations, & short-term loan options](mailto:eric@junto.foundation)
+* Contribute to our open source development
 
-1) Create a file called `api.dart` in the project's `lib` folder contain the values provided to you by the dev team. 
+
+
+## Requirements:
+1) Latest version of [Flutter](https://github.com/flutter/flutter) (Junto development team uses branch `beta`)
+2) Junto API (We are optimizing our security and will open source our API soon) 
+
+## Building the project:
+Once you've configured Flutter and obtained an API key from the dev team: 
+
+1) Create a file called `api.dart` in the project's `lib` folder and add the values provided to you by the dev team. 
 2) If you are building for Android, create a `key.properties` file in the root of the `android` folder  containing the following:
 ```
 storePassword=dev-password
@@ -19,25 +27,17 @@ keyPassword=key-password
 keyAlias=key-alias
 storeFile=file-location
 ```
-3) Congratulations! You should now be able to build the project in debug. Feel free to inspect our code and contribute to the project. PRs are welcome!
+3) And you're all set! Feel free to inspect our code and contribute to the project. PRs are welcome :)
 
-To run call:
-
-```
-flutter run --flavor dev --target lib/main_dev.dart
-```
 
 ## Flavors support
 
-Junto app has additional flavors called `dev`, `tst` and `prod`. This allows to install 3 apps side by side - one from Google Play (prod), second from CI, and third from your computer.
-
-To run this flavor call:
+Junto's mobile app has three flavors called `dev`, `tst` and `prod`. Please use the `dev` flavor to begin contributing to the project. If you'd like to install a separate dev build on your phone through our CI, feel free to reach out at dev@junto.foundation and run the `tst` flavor instead.
 
 ```
 flutter run --flavor dev --target lib/main_dev.dart
-flutter run --flavor tst --target lib/main_tst.dart
-flutter run --flavor prod --target lib/main_prod.dart
 ```
+
 
 You can access current flavor by calling `appConfig.flavor`.
 
