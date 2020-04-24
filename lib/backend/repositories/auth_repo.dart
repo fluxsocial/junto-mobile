@@ -10,9 +10,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
-  AuthRepo(this._authService, this._userRepo) {
-    _openBox();
-  }
+  AuthRepo(this._authService, this._userRepo);
 
   final AuthenticationService _authService;
   final UserRepo _userRepo;
@@ -22,11 +20,8 @@ class AuthRepo {
 
   String get authKey => _authKey;
 
-  Future<void> _openBox() async {
-    box = await Hive.openBox("app", encryptionKey: key);
-  }
-
   Future<bool> isLoggedIn() async {
+    box = await Hive.openBox("app", encryptionKey: key);
     _isLoggedIn = await box.get("isLoggedIn");
     // Let's check if user is actually logged in
     if (_isLoggedIn != null && _isLoggedIn) {
