@@ -21,7 +21,7 @@ building this momentum. Additional thanks to our sponsors and to those who have 
 Arthur Brock &nbsp; &nbsp; &nbsp; Raymond Powell &nbsp; &nbsp; &nbsp; David Magerman &nbsp; &nbsp; &nbsp; Yang Family (楊家)  &nbsp; &nbsp; &nbsp; <img src="/pacificintegral_logo.png" height ="24px">
 
 ### Platinum Sponsors
-ANDREW BURGE &nbsp; &nbsp; &nbsp; HW
+Andrew Burge &nbsp; &nbsp; &nbsp; HW
 
 ### Gold Sponsors
 Maxim Drobintsev 
@@ -40,7 +40,7 @@ We encourage all of our contributors to hold space for mutual respect, diversity
 [Visit our open source contribution guidelines here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/OPEN-SOURCE.md)
 
 ## License
-Junto is open-sourced under the Mozilla Public License 2.0.
+Junto is open-sourced under the [Mozilla Public License 2.0.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/LICENSE)
 
 
 Copyright (c) 2020, Junto Foundation, Inc.
