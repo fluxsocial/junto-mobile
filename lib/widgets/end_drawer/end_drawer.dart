@@ -1,11 +1,15 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
@@ -13,8 +17,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
-
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,10 +55,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
 
   logOut(BuildContext context) async {
     try {
-      await Provider.of<AuthRepo>(
-        context,
-        listen: false,
-      ).logoutUser();
+      await context.bloc<AuthBloc>().add(LogoutEvent());
       Navigator.of(context).pushReplacement(
         FadeRoute<void>(
           child: Welcome(),

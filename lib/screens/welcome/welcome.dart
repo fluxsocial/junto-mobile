@@ -1,10 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
@@ -119,26 +120,11 @@ class WelcomeState extends State<Welcome> {
 
     try {
       JuntoLoader.showLoader(context);
-
-      // create user account
-      final UserData results =
-          await Provider.of<AuthRepo>(context, listen: false)
-              .registerUser(details);
-      final Map<String, dynamic> resultsMap = results.toMap();
-      final String resultsMapToString = json.encode(resultsMap);
-
-      // save user to shared prefs
-      await SharedPreferences.getInstance()
-        ..setBool(
-          'isLoggedIn',
-          true,
-        )
-        ..setString('user_id', results.user.address)
-        ..setString('user_data', resultsMapToString);
+      await context.bloc<AuthBloc>().add(SignUpEvent(details));
       setState(() {
-        _userAddress = results.user.address;
+        _userAddress = Provider.of<UserDataProvider>(context).userAddress;
       });
-      Provider.of<UserDataProvider>(context, listen: false).initialize();
+      JuntoLoader.hide();
     } catch (error) {
       JuntoLoader.hide();
       print(error);
