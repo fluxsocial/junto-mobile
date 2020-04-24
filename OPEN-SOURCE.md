@@ -5,7 +5,7 @@ Hey! We're excited that you're interested in contributing to Junto and thank you
 
 ## Code of Conduct
 We encourage all of our contributors to hold space for mutual respect, diversity, and open-mindedness. 
-View our code of conduct [here.](https://github.com/juntofoundation/junto-mobile/blob/prepare-open-source/CONDUCT.md)
+View our code of conduct [here.](https://github.com/juntofoundation/junto-mobile/blob/dev/CONDUCT.md)
 
 ## Contribution Examples
 
