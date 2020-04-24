@@ -6,6 +6,39 @@ part of 'expression.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
+class AudioFormExpressionAdapter extends TypeAdapter<AudioFormExpression> {
+  @override
+  final typeId = 5;
+
+  @override
+  AudioFormExpression read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return AudioFormExpression(
+      title: fields[0] as String,
+      imageUrl: fields[1] as String,
+      audioUrl: fields[2] as String,
+      storageKey: fields[3] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, AudioFormExpression obj) {
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.title)
+      ..writeByte(1)
+      ..write(obj.imageUrl)
+      ..writeByte(2)
+      ..write(obj.audioUrl)
+      ..writeByte(3)
+      ..write(obj.storageKey);
+  }
+}
+
 class LongFormExpressionAdapter extends TypeAdapter<LongFormExpression> {
   @override
   final typeId = 4;
