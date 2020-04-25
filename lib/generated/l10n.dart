@@ -335,7 +335,7 @@ class S {
 
   String get welcome_confirm_password {
     return Intl.message(
-      'Confirm password',
+      'CONFIRM',
       name: 'welcome_confirm_password',
       desc: '',
       args: [],
@@ -497,7 +497,7 @@ class S {
 
   String get welcome_reset_password {
     return Intl.message(
-      'Reset password',
+      'RESET PASSWORD',
       name: 'welcome_reset_password',
       desc: '',
       args: [],
