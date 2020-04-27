@@ -47,9 +47,15 @@ class CreateAudioState extends State<CreateAudio> {
         context,
         image,
         aspectRatios: <String>[
-          '2:3',
           '1:1',
+          '2:3',
           '3:2',
+          '3:4',
+          '4:3',
+          '4:5',
+          '5:4',
+          '9:16',
+          '16:9'
         ],
       );
       Navigator.of(context).focusScopeNode.unfocus();
