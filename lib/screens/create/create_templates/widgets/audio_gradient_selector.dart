@@ -5,80 +5,89 @@ import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
 class AudioGradientSelector extends StatelessWidget {
-  const AudioGradientSelector();
+  const AudioGradientSelector({this.toggleGradientSelector});
+
+  final Function toggleGradientSelector;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(builder: (context, audio, child) {
-      return SafeArea(
+      return Column(children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border(
+              top: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
+              ),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(
+            vertical: 15,
+          ),
+          height: 68,
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border(
-                  top: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
-                  ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    AudioGradientSelectorItem('8E8098', '307FAA'),
+                    AudioGradientSelectorItem('6F51A8', 'E8B974'),
+                    AudioGradientSelectorItem('2E4F78', '6397C7'),
+                    AudioGradientSelectorItem('719cf4', 'ffc7e4'),
+                    AudioGradientSelectorItem('639acf', '7bdaa5'),
+                    AudioGradientSelectorItem('8E8098', '307FAA'),
+                    AudioGradientSelectorItem('6F51A8', 'E8B974'),
+                    AudioGradientSelectorItem('2E4F78', '6397C7'),
+                    AudioGradientSelectorItem('719cf4', 'ffc7e4'),
+                    AudioGradientSelectorItem('639acf', '7bdaa5'),
+                  ],
                 ),
               ),
-              padding: const EdgeInsets.symmetric(
-                vertical: 15,
+            ],
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 15,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  toggleGradientSelector();
+                },
+                child: Icon(
+                  CustomIcons.cancel,
+                  size: 20,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
-              height: 68,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        AudioGradientSelectorItem('8E8098', '307FAA'),
-                        AudioGradientSelectorItem('6F51A8', 'E8B974'),
-                        AudioGradientSelectorItem('2E4F78', '6397C7'),
-                        AudioGradientSelectorItem('719cf4', 'ffc7e4'),
-                        AudioGradientSelectorItem('639acf', '7bdaa5'),
-                      ],
-                    ),
-                  ),
-                ],
+              Text(
+                'GRADIENT',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  letterSpacing: 1.4,
+                ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 15,
+              Icon(
+                Icons.format_color_reset,
+                size: 20,
+                color: Theme.of(context).primaryColor,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(
-                    CustomIcons.cancel,
-                    size: 20,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  Text(
-                    'GRADIENT',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      letterSpacing: 1.4,
-                    ),
-                  ),
-                  Icon(
-                    Icons.format_color_reset,
-                    size: 20,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ],
-              ),
-            ),
-          ]));
+            ],
+          ),
+        ),
+      ]);
     });
   }
 }

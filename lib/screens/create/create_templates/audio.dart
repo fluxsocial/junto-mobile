@@ -86,11 +86,11 @@ class CreateAudioState extends State<CreateAudio> {
                         titleController: titleController,
                       ),
                 if (audio.playBackAvailable)
-                  // AudioBottomTools(
-                  //   onPickPressed: _onPickPressed,
-                  //   resetAudioPhotoBackground: _resetAudioPhotoBackground,
-                  // ),
-                  AudioGradientSelector()
+                  AudioBottomTools(
+                    onPickPressed: _onPickPressed,
+                    resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                  ),
+                  // AudioGradientSelector()
               ],
             ),
           ),
