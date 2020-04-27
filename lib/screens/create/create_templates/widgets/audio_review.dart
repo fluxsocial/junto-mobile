@@ -94,7 +94,44 @@ class AudioReviewWithGradient extends StatelessWidget {
   }
 }
 
-class AudioReviewWithPhoto extends StatelessWidget {
+// class AudioReviewWithPhoto extends StatelessWidget {
+//   AudioReviewWithPhoto({
+//     this.titleController,
+//     this.audioPhotoBackground,
+//   });
+
+//   final titleController;
+//   final File audioPhotoBackground;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         Image.file(audioPhotoBackground),
+//         Container(
+//           color: Colors.black54,
+//           height: Image.file(audioPhotoBackground).height,
+//         ),
+//       ],
+//     );
+
+//     // return Container(
+//     //   width: MediaQuery.of(context).size.width,
+//     //   height: Image.file(audioPhotoBackground).height,
+//     //   decoration: BoxDecoration(
+//     //     image: DecorationImage(
+//     //       image: FileImage(audioPhotoBackground),
+//     //       fit: BoxFit.fitHeight,
+//     //     ),
+//     //   ),
+//     //   child: AudioReviewBody(
+//     //     hasBackground: true,
+//     //     titleController: titleController,
+//     //   ),
+//     // );
+//   }
+// }
+
+class AudioReviewWithPhoto extends StatefulWidget {
   AudioReviewWithPhoto({
     this.titleController,
     this.audioPhotoBackground,
@@ -102,20 +139,68 @@ class AudioReviewWithPhoto extends StatelessWidget {
 
   final titleController;
   final File audioPhotoBackground;
+
+  @override
+  State<StatefulWidget> createState() {
+    return AudioReviewWithPhotoState();
+  }
+}
+
+class AudioReviewWithPhotoState extends State<AudioReviewWithPhoto> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: FileImage(audioPhotoBackground),
-          fit: BoxFit.fitWidth,
+    return Stack(children: [
+      Container(
+        foregroundDecoration: BoxDecoration(color: Colors.black54),
+        child: Image.file(
+          widget.audioPhotoBackground,
         ),
       ),
-      child: AudioReviewBody(
-        hasBackground: true,
-        titleController: titleController,
+      Positioned(
+        top: 10,
+        left: 0,
+        right: 0,
+        child: AudioTitle(
+          titleController: widget.titleController,
+          hasBackground: true,
+        ),
       ),
-    );
+      Positioned(
+        bottom: 10,
+        left: 0,
+        right: 0,
+        child: AudioPlaybackRow(
+          hasBackground: true,
+        ),
+      ),
+      // Container(
+      //   color: Colors.green,
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //     children: [
+      
+      //       AudioPlaybackRow(
+      //         hasBackground: true,
+      //       ),
+      //     ],
+      //   ),
+      // )
+    ]);
+    // return Container(
+    //   width: MediaQuery.of(context).size.width,
+    //   height: Image.file(widget.audioPhotoBackground).height,
+    //   decoration: BoxDecoration(
+    //     image: DecorationImage(
+    //       // image: FileImage(widget.audioPhotoBackground),
+    //       image: Image.file(widget.audioPhotoBackground).image,
+    //       fit: BoxFit.fitWidth,
+    //     ),
+    //   ),
+    //   child: AudioReviewBody(
+    //     hasBackground: true,
+    //     titleController: widget.titleController,
+    //   ),
+    // );
   }
 }
 
