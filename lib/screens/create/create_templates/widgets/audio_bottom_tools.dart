@@ -7,10 +7,12 @@ class AudioBottomTools extends StatefulWidget {
   const AudioBottomTools({
     this.onPickPressed,
     this.resetAudioPhotoBackground,
+    this.resetAudioGradientValues,
     this.setAudioGradientValues,
   });
 
   final Function resetAudioPhotoBackground;
+  final Function resetAudioGradientValues;
   final Function setAudioGradientValues;
   final Function onPickPressed;
   @override
@@ -42,6 +44,7 @@ class AudioBottomToolsState extends State<AudioBottomTools> {
             secondChild: AudioGradientSelector(
               toggleGradientSelector: _toggleGradientSelector,
               setAudioGradientValues: widget.setAudioGradientValues,
+              resetAudioGradientValues: widget.resetAudioGradientValues,
             ),
           )
         ],

@@ -75,7 +75,6 @@ class AudioReviewWithGradient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.width * 2 / 3,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
@@ -106,7 +105,6 @@ class AudioReviewWithPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.width * 2 / 3,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: FileImage(audioPhotoBackground),

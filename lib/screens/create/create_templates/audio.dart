@@ -56,7 +56,10 @@ class CreateAudioState extends State<CreateAudio> {
 
         return;
       }
-      setState(() => audioPhotoBackground = cropped);
+      setState(() {
+        audioPhotoBackground = cropped;
+        audioGradientValues = [];
+      });
     } catch (error) {
       print(error);
     }
@@ -68,7 +71,14 @@ class CreateAudioState extends State<CreateAudio> {
     });
   }
 
+  void _resetAudioGradientValues() {
+    setState(() {
+      audioGradientValues = [];
+    });
+  }
+
   void _setAudioGradientValues(String hexOne, String hexTwo) {
+    _resetAudioPhotoBackground();
     setState(() {
       audioGradientValues = [hexOne, hexTwo];
     });
@@ -97,6 +107,7 @@ class CreateAudioState extends State<CreateAudio> {
                   AudioBottomTools(
                     onPickPressed: _onPickPressed,
                     resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                    resetAudioGradientValues: _resetAudioGradientValues,
                     setAudioGradientValues: _setAudioGradientValues,
                   ),
               ],
