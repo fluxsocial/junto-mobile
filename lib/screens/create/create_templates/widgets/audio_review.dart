@@ -113,7 +113,7 @@ class AudioReviewWithPhoto extends StatelessWidget {
         ),
       ),
       Positioned(
-        top: 10,
+        top: 0,
         left: 0,
         right: 0,
         child: AudioTitle(
@@ -122,7 +122,7 @@ class AudioReviewWithPhoto extends StatelessWidget {
         ),
       ),
       Positioned(
-        bottom: 10,
+        bottom: 0,
         left: 0,
         right: 0,
         child: AudioPlaybackRow(
