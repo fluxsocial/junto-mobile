@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -177,7 +176,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         JuntoLoader.hide();
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
-          expressionData: expression.toMap(),
+          expressionData: _expression.toMap(),
           context: _expressionContext,
           channels: channel,
         );
