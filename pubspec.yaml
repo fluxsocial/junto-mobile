@@ -44,8 +44,6 @@ dependencies:
   hive: 1.4.1+1
   hive_flutter: 0.3.0+1
   data_connection_checker: 0.3.4
-dependency_overrides:
-  path_provider: 1.6.5
 
 dev_dependencies:
   test: any
