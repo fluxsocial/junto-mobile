@@ -133,6 +133,7 @@ class CreateAudioState extends State<CreateAudio> {
         title: titleController.text,
         photo: audioPhotoBackground?.path,
         audio: audio.recordingPath,
+        gradient: audioGradientValues,
       );
       Navigator.push(
         context,
