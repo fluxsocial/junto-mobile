@@ -1,5 +1,6 @@
 import 'dart:async';
 
+
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -176,8 +177,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         JuntoLoader.hide();
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
-          //TODO: use _audioKey from s3 bucket
-          expressionData: audio.toMap(),
+          expressionData: expression.toMap(),
           context: _expressionContext,
           channels: channel,
         );
@@ -209,6 +209,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       );
       _postCreateAction();
     } catch (error) {
+      print(error);
       JuntoLoader.hide();
       showDialog(
         context: context,

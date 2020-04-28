@@ -108,25 +108,26 @@ class JuntoLotus extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      'JUNTO',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                        letterSpacing: 1.7,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            const SizedBox(),
+                            // Container(
+                            //   padding: const EdgeInsets.only(left: 10),
+                            //   child: Row(
+                            //     crossAxisAlignment: CrossAxisAlignment.center,
+                            //     children: <Widget>[
+                            //       Container(
+                            //         child: Text(
+                            //           'JUNTO',
+                            //           style: TextStyle(
+                            //             fontSize: 20,
+                            //             fontWeight: FontWeight.w500,
+                            //             color: Colors.white,
+                            //             letterSpacing: 1.7,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             GestureDetector(
                               onTap: () {
                                 FeatureDiscovery.clearPreferences(

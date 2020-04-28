@@ -75,9 +75,9 @@ class ExpressionModel {
 class AudioFormExpression {
   AudioFormExpression({
     this.title,
-    this.imageUrl,
-    this.audioUrl,
-    this.storageKey,
+    this.photo,
+    this.audio,
+    this.gradient,
   });
 
   // TODO: we're waiting for the model from API so right now these properties are "dummy"
@@ -86,26 +86,26 @@ class AudioFormExpression {
   factory AudioFormExpression.fromMap(Map<String, dynamic> json) {
     return AudioFormExpression(
       title: json['title'] ?? '',
-      imageUrl: json['imageUrl'] ?? '',
-      audioUrl: json['audioUrl'] ?? '',
-      storageKey: json['storageKey'] ?? '',
+      photo: json['photo'] ?? '',
+      audio: json['audio'] ?? '',
+      gradient: json['gradient']?.cast<String>() ?? [],
     );
   }
 
   @HiveField(0)
   final String title;
   @HiveField(1)
-  final String imageUrl;
+  final String photo;
   @HiveField(2)
-  final String audioUrl;
+  final String audio;
   @HiveField(3)
-  final String storageKey;
+  final List<String> gradient;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'title': title,
-        'imageUrl': imageUrl,
-        'audioUrl': audioUrl,
-        'storageKey': storageKey,
+        'title': title ?? '',
+        'photo': photo ?? '',
+        'audio': audio ?? '',
+        'gradient': gradient ?? [],
       };
 }
 
@@ -362,6 +362,9 @@ class ExpressionResponse extends HiveObject {
     }
     if (type == 'EventForm') {
       return EventFormExpression.fromMap(json);
+    }
+    if (type == 'AudioForm') {
+      return AudioFormExpression.fromMap(json);
     }
   }
 }

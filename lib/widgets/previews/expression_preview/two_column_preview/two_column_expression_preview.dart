@@ -12,6 +12,8 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_bottom.dart';
 import 'package:provider/provider.dart';
 
+import 'two_column_expression_preview_types/audio.dart';
+
 /// Renders a concise overview of one given [ExpressionResult].
 class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
   const TwoColumnExpressionPreview({
@@ -57,7 +59,8 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
                 border: expression.type != 'PhotoForm' &&
-                        expression.type != 'ShortForm'
+                        expression.type != 'ShortForm' &&
+                        expression.type != 'AudioForm'
                     ? Border.all(
                         color: Theme.of(context).dividerColor.withOpacity(1),
                         width: .5)
@@ -90,6 +93,8 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
       return PhotoPreview(expression: expression);
     } else if (expression.type == 'EventForm') {
       return EventPreview(expression: expression);
+    } else if (expression.type == 'AudioForm') {
+      return AudioPreview(expression: expression);
     } else {
       return Container();
     }

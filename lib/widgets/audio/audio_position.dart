@@ -11,7 +11,14 @@ class AudioPosition extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AudioService>(
       builder: (context, audio, child) {
-        return Text('${getCurrentPosition(audio)}/${getMaxDuration(audio)}');
+        return Text(
+          '${getCurrentPosition(audio)} / ${getMaxDuration(audio)}',
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
+        );
       },
     );
   }

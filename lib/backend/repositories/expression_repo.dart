@@ -53,8 +53,26 @@ class ExpressionRepo {
     return _expressionService.createPhoto(isPrivate, fileType, file);
   }
 
-  Future<String> createAudio(AudioFormExpression expression) {
-    return _expressionService.createAudio(true, expression);
+  Future<AudioFormExpression> createAudio(
+      AudioFormExpression expression) async {
+    final futures = <Future>[];
+    final audio = _expressionService.createAudio(true, expression);
+    futures.add(audio);
+    if (expression.photo != null && expression.photo.isNotEmpty) {
+      final photo =
+          _expressionService.createPhoto(true, '.png', File(expression.photo));
+      futures.add(photo);
+    }
+
+    final result = await Future.wait(futures);
+
+    return AudioFormExpression(
+      title: expression.title,
+      audio: result[0],
+      photo: result.length > 1 ? result[1] : null,
+      //TODO: implement gradient
+      gradient: expression.gradient,
+    );
   }
 
   Future<ExpressionResponse> getExpression(
