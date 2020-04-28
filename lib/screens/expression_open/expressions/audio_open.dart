@@ -34,12 +34,10 @@ class AudioOpenLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        if (audio.photo.isEmpty) EmptyAudioBackground(audio: audio),
         if (audio.photo.isNotEmpty)
           CachedNetworkImage(
             imageUrl: audio.photo,
           ),
-        if (audio.photo.isNotEmpty) AudioBlackOverlay(),
         Positioned.fill(
           child: Container(
             padding: const EdgeInsets.symmetric(
