@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -63,9 +64,8 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserProfile> queryUser(String param, QueryType queryType) async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final String authKey = _prefs.getString('auth');
-
+    final box = await Hive.openBox("app", encryptionKey: key);
+    final authKey = await box.get("auth");
     final Uri _uri = Uri.http(
       END_POINT,
       '/users',

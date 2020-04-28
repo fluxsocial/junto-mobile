@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ import 'package:junto_beta_mobile/screens/member/member_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
@@ -76,13 +74,9 @@ class _JuntoMemberState extends State<JuntoMember>
   }
 
   Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
-
     setState(() {
-      _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
+      _userAddress = Provider.of<UserDataProvider>(context).userAddress;
+      _userProfile = Provider.of<UserDataProvider>(context).userProfile;
       userProvider = Provider.of<UserRepo>(context, listen: false);
     });
 

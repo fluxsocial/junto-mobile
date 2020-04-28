@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class AuthenticationServiceCentralized implements AuthenticationService {
@@ -25,10 +26,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     );
     if (response.statusCode == 200) {
       final String authorization = response.headers['authorization'];
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('auth', authorization);
-      logger.logInfo('User logged in');
-
+      final box = await Hive.openBox('app', encryptionKey: key);
+      box.put("auth", authorization);
       return UserData.fromMap(JuntoHttp.handleResponse(response));
     } else {
       final Map<String, dynamic> errorResponse =
@@ -40,9 +39,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
 
   @override
   Future<void> logoutUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    await prefs.remove('auth');
+    final box = await Hive.openBox('app', encryptionKey: key);
+    box.deleteAll(box.keys);
     logger.logInfo('User logged out');
   }
 

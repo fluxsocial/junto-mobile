@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
+
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -20,7 +19,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({
@@ -96,13 +94,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
-
     setState(() {
-      _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
+      _userAddress = Provider.of<UserDataProvider>(context).userAddress;
+      _userProfile = Provider.of<UserDataProvider>(context).userProfile;
     });
   }
 
@@ -178,9 +172,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       } else if (widget.expressionType == ExpressionType.audio) {
         JuntoLoader.showLoader(context);
         final audio = widget.expression as AudioFormExpression;
-        final AudioFormExpression expression =
-            await repository.createAudio(audio);
-
+        //TODO: handle response from the server
+        await repository.createAudio(audio);
         JuntoLoader.hide();
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),

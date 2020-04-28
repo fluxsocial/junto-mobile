@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoThemes extends StatefulWidget {
   const JuntoThemes({this.refreshTheme});
+
   final Function refreshTheme;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoThemesState();
@@ -24,10 +27,9 @@ class JuntoThemesState extends State<JuntoThemes> {
   }
 
   Future<void> getThemeInfo() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final bool nightMode = await prefs.getBool('night-mode');
-    final String theme = await prefs.getString('current-theme');
+    final box = await Hive.openBox("app", encryptionKey: key);
+    final bool nightMode = await box.get('night-mode');
+    final String theme = await box.get("current-theme") as String;
     if (nightMode != null) {
       setState(() {
         _nightMode = nightMode;
@@ -193,9 +195,10 @@ class JuntoThemesState extends State<JuntoThemes> {
                     child: Switch.adaptive(
                       value: _nightMode,
                       onChanged: (bool value) async {
-                        final SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.setBool('night-mode', value);
+                        final box =
+                            await Hive.openBox("app", encryptionKey: key);
+                        await box.delete('night-mode');
+                        await box.put('night-mode', value);
                         setState(() {
                           _nightMode = value;
                         });

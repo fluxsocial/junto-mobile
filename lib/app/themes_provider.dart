@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoThemesProvider with ChangeNotifier {
   JuntoThemesProvider(this._currentTheme) {
@@ -19,17 +20,18 @@ class JuntoThemesProvider with ChangeNotifier {
   };
 
   static Future<ThemeData> initialize() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String _currentTheme = prefs.getString('current-theme');
+    final box = await Hive.openBox("app", encryptionKey: key);
+    final String theme = await box.get("current-theme") as String;
 
-    if (_currentTheme != null && _currentTheme.isNotEmpty) {
-      return _themes[_currentTheme];
+    if (theme != null && theme.isNotEmpty) {
+      return _themes[theme];
     }
     return _themes['rainbow'];
   }
 
   ThemeData get currentTheme => _currentTheme;
   ThemeData _currentTheme;
+
   ThemeData setTheme(String themeName) {
     logger.logDebug('Setting theme to $themeName');
     _themeName = themeName;
@@ -40,10 +42,12 @@ class JuntoThemesProvider with ChangeNotifier {
   }
 
   String _themeName;
+
   String get themeName => _themeName;
 
   Future<void> _persistTheme(String value) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('current-theme', value);
+    final box = await Hive.openBox("app", encryptionKey: key);
+    box.put("current-theme", value);
+    return;
   }
 }

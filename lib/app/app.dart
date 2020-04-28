@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/device_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -59,23 +60,14 @@ class JuntoAppState extends State<JuntoApp> {
         create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
         lazy: false,
         child: BlocProviders(
-          child: BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              return MaterialAppWithTheme(
-                child: state is AuthenticatedState
-                    ? FeatureDiscovery(
-                        key: ValueKey<String>('junto-lotus'),
-                        child: const JuntoLotus(
-                          address: null,
-                          expressionContext: ExpressionContext.Collective,
-                          source: null,
-                        ),
-                      )
-                    : Welcome(
-                        key: ValueKey<String>('junto-welcome'),
-                      ),
-              );
-            },
+          child: BlocProvider<AuthBloc>(
+            create: (ctx) => AuthBloc(
+              ctx.repository<AuthRepo>(),
+              ctx.repository<UserDataProvider>(),
+            ),
+            child: MaterialAppWithTheme(
+              loggedIn: widget.loggedIn,
+            ),
           ),
         ),
       ),
@@ -86,9 +78,72 @@ class JuntoAppState extends State<JuntoApp> {
 class MaterialAppWithTheme extends StatelessWidget {
   const MaterialAppWithTheme({
     Key key,
-    @required this.child,
+    @required this.loggedIn,
   }) : super(key: key);
-  final Widget child;
+
+  final bool loggedIn;
+
+  Widget _buildPage(AuthState state, JuntoThemesProvider theme) {
+    if (state is AuthenticatedState) {
+      return MaterialApp(
+        key: ValueKey<String>('logged-in'),
+        home: FeatureDiscovery(
+          child: const JuntoLotus(
+            address: null,
+            expressionContext: ExpressionContext.Collective,
+            source: null,
+          ),
+        ),
+        builder: DevicePreviewWrapper.appBuilder,
+        title: 'JUNTO Alpha',
+        debugShowCheckedModeBanner: false,
+        theme: theme.currentTheme,
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        // Replace later with S.supportedLocales
+        supportedLocales: [
+          Locale('en', ''),
+        ],
+      );
+    }
+    if (state is UnAuthenticatedState || state is InitialAuthState) {
+      return MaterialApp(
+        key: ValueKey<String>('logged-out'),
+        home: Welcome(),
+        builder: DevicePreviewWrapper.appBuilder,
+        title: 'JUNTO Alpha',
+        debugShowCheckedModeBanner: false,
+        theme: theme.currentTheme,
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        // Replace later with S.supportedLocales
+        supportedLocales: [
+          Locale('en', ''),
+        ],
+      );
+    }
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Stack(
+        children: <Widget>[
+          Image.asset(
+            'assets/images/junto-mobile__themes--aqueous.png',
+            key: ValueKey<String>('image-background'),
+            fit: BoxFit.cover,
+          ),
+          JuntoProgressIndicator(),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,26 +158,7 @@ class MaterialAppWithTheme extends StatelessWidget {
           builder: (context, AuthState state) {
             return AnimatedSwitcher(
               duration: kThemeChangeDuration,
-              child: MaterialApp(
-                home: AnimatedSwitcher(
-                  duration: kThemeChangeDuration,
-                  child: child,
-                ),
-                builder: DevicePreviewWrapper.appBuilder,
-                title: 'JUNTO Alpha',
-                debugShowCheckedModeBanner: false,
-                theme: theme.currentTheme,
-                localizationsDelegates: [
-                  S.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                // Replace later with S.supportedLocales
-                supportedLocales: [
-                  Locale('en', ''),
-                ],
-              ),
+              child: _buildPage(state, theme),
             );
           },
         );

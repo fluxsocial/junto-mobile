@@ -18,9 +18,9 @@ class AudioFormExpressionAdapter extends TypeAdapter<AudioFormExpression> {
     };
     return AudioFormExpression(
       title: fields[0] as String,
-      photo: fields[1] as String,
-      audio: fields[2] as String,
-      gradient: (fields[3] as List)?.cast<String>(),
+      imageUrl: fields[1] as String,
+      audioUrl: fields[2] as String,
+      storageKey: fields[3] as String,
     );
   }
 
@@ -31,11 +31,11 @@ class AudioFormExpressionAdapter extends TypeAdapter<AudioFormExpression> {
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.photo)
+      ..write(obj.imageUrl)
       ..writeByte(2)
-      ..write(obj.audio)
+      ..write(obj.audioUrl)
       ..writeByte(3)
-      ..write(obj.gradient);
+      ..write(obj.storageKey);
   }
 }
 

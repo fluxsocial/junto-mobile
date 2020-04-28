@@ -2,6 +2,8 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
@@ -18,7 +20,6 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/en
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoDrawer extends StatefulWidget {
   @override
@@ -39,10 +40,9 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   }
 
   Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
-    });
+    final box = await Hive.openBox("app", encryptionKey: key);
+    final _Id = await box.get('userFollowPerspectiveId') as String;
+    setState(() => _userFollowPerspectiveId = _Id);
   }
 
   Future<void> getTheme() async {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -20,7 +22,6 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widgets/sign_up_arrows.dart';
 import 'widgets/sign_up_text_field_wrapper.dart';
@@ -495,20 +496,20 @@ class WelcomeState extends State<Welcome> {
   }
 
   Future<void> _getTheme() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String theme = prefs.getString('current-theme');
+    final box = await Hive.openBox("app", encryptionKey: key);
+    final _theme = await box.get("current-theme") as String;
 
     setState(() {
-      if (theme == null) {
+      if (_theme == null) {
         _currentTheme = 'rainbow';
       } else {
-        _currentTheme = theme;
+        _currentTheme = _theme;
       }
     });
 
-    final bool nightMode = await prefs.getBool('night-mode');
+    final bool nightMode = await box.get('night-mode');
     if (nightMode == null) {
-      await prefs.setBool('night-mode', false);
+      await box.put('night-mode', false);
     }
   }
 

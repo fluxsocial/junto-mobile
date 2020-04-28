@@ -54,13 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authRepo.registerUser(event.details);
       final Map<String, dynamic> resultsMap = user.toMap();
       final String resultsMapToString = json.encode(resultsMap);
-      // save user to shared prefs
       await SharedPreferences.getInstance()
-        ..setBool(
-          'isLoggedIn',
-          true,
-        )
-        ..setString('user_id', user.user.address)
         ..setString('user_data', resultsMapToString);
       await userDataProvider.initialize();
       yield AuthenticatedState(user);

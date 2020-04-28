@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -30,11 +32,11 @@ class UserDataProvider extends ChangeNotifier {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final box = await Hive.openBox("app", encryptionKey: key);
     final userData = prefs.getString('user_data');
     if (userData != null && userData.isNotEmpty) {
       final Map<String, dynamic> decodedUserData = jsonDecode(userData);
-
-      userAddress = prefs.getString('user_id');
+      userAddress = box.get("userId");
       userProfile = UserData.fromMap(decodedUserData);
       if (prefs.getBool('twoColumnView') != null) {
         twoColumnView = prefs.getBool('twoColumnView');
@@ -49,7 +51,10 @@ class UserDataProvider extends ChangeNotifier {
   Future<void> _setUserInformation(UserData user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_data', json.encode(user.toMap()));
-    await prefs.setString('user_id', user.user.address);
+    final box = await Hive.openBox("app", encryptionKey: key);
+    box.delete("userId");
+    box.put("userId", user.user.address);
+    return;
   }
 
   /// Updates the user information with [user]
