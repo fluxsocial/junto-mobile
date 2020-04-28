@@ -34,7 +34,7 @@ dependencies:
   freezed_annotation: ^0.7.1
   dio: ^3.0.9
   animations: ^1.0.0+5
-  url_launcher: 5.4.2
+  url_launcher: 5.4.5
   stack_trace: ^1.9.3
   feature_discovery: 0.8.0
   device_preview: 0.4.1+1
