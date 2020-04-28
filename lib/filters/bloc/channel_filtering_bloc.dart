@@ -27,9 +27,11 @@ class ChannelFilteringBloc
 
   // This debounces type events but leaves other events with normal "pace"
   @override
-  Stream<ChannelFilteringState> transformEvents(
+  Stream<Transition<ChannelFilteringEvent, ChannelFilteringState>>
+      transformEvents(
     Stream<ChannelFilteringEvent> events,
-    Stream<ChannelFilteringState> Function(ChannelFilteringEvent event) next,
+    TransitionFunction<ChannelFilteringEvent, ChannelFilteringState>
+        transitionFn,
   ) {
     final nonDebounceStream =
         events.where((event) => event is! FilterQueryUpdated);
@@ -37,7 +39,7 @@ class ChannelFilteringBloc
         .where((event) => event is FilterQueryUpdated)
         .debounceTime(const Duration(milliseconds: 600));
     return super.transformEvents(
-        MergeStream([nonDebounceStream, debounceStream]), next);
+        MergeStream([nonDebounceStream, debounceStream]), transitionFn);
   }
 
   @override

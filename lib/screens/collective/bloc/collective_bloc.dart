@@ -27,9 +27,9 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   String _lastTimeStamp;
 
   @override
-  Stream<CollectiveState> transformEvents(
+  Stream<Transition<CollectiveEvent, CollectiveState>> transformEvents(
     Stream<CollectiveEvent> events,
-    Stream<CollectiveState> Function(CollectiveEvent event) next,
+    TransitionFunction<CollectiveEvent, CollectiveState> transitionFn,
   ) {
     final nonDebounceStream = events.where((event) => event is FetchCollective);
     final debounceStream = events
@@ -37,7 +37,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
             event is RefreshCollective || event is FetchMoreCollective)
         .debounceTime(const Duration(milliseconds: 1000));
     return super.transformEvents(
-        MergeStream([nonDebounceStream, debounceStream]), next);
+        MergeStream([nonDebounceStream, debounceStream]), transitionFn);
   }
 
   @override
