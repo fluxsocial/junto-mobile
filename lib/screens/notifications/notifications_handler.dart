@@ -7,6 +7,8 @@ class NotificationsHandler extends ChangeNotifier {
   final NotificationRepo repository;
 
   List<JuntoNotification> _notifications;
+
+  bool get unreadNotifications => true;
   List<JuntoNotification> get notifications => _notifications;
 
   NotificationsHandler(this.repository) {
