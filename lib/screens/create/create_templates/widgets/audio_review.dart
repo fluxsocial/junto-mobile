@@ -107,13 +107,15 @@ class AudioReviewWithPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
-        foregroundDecoration: BoxDecoration(color: Colors.black54),
+        foregroundDecoration: BoxDecoration(
+          color: Colors.black54,
+        ),
         child: Image.file(
           audioPhotoBackground,
         ),
       ),
       Positioned(
-        top: 0,
+        top: 15,
         left: 0,
         right: 0,
         child: AudioTitle(
@@ -122,11 +124,16 @@ class AudioReviewWithPhoto extends StatelessWidget {
         ),
       ),
       Positioned(
-        bottom: 0,
+        bottom: 15,
         left: 0,
         right: 0,
-        child: AudioPlaybackRow(
-          hasBackground: true,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          child: AudioPlaybackRow(
+            hasBackground: true,
+          ),
         ),
       ),
     ]);
@@ -144,6 +151,7 @@ class AudioReviewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: hasBackground ? Colors.black54 : Colors.transparent,
+      padding: const EdgeInsets.symmetric(vertical: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,8 +160,11 @@ class AudioReviewBody extends StatelessWidget {
             titleController: titleController,
             hasBackground: hasBackground,
           ),
-          AudioPlaybackRow(
-            hasBackground: hasBackground,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: AudioPlaybackRow(
+              hasBackground: hasBackground,
+            ),
           ),
         ],
       ),
@@ -176,8 +187,8 @@ class AudioTitle extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
-        vertical: 10,
       ),
+      margin: const EdgeInsets.only(bottom: 15),
       child: TextField(
         controller: titleController,
         autofocus: false,
