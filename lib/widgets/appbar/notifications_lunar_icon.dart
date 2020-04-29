@@ -38,6 +38,7 @@ class NotificationsIcon extends StatelessWidget {
             context,
             CupertinoPageRoute(
               builder: (context) => NotificationsScreen(),
+              settings: RouteSettings(name: 'notifications')
             ),
           );
         },
