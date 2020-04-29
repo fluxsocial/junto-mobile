@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:provider/provider.dart';
 
 class NotificationsScreen extends StatelessWidget {
   @override
@@ -59,21 +61,38 @@ class NotificationsScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Center(
-          child: Transform.translate(
-            offset: Offset(0.0, -60),
-            child: Text(
-              'This screen will be your stream of notifications. We are currently working on this and will open this open before Alpha II(b), ~ mid-April.',
-              style: TextStyle(
-                fontSize: 17,
-                color: Theme.of(context).primaryColor,
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Center(
+              child: Text(
+                'This screen will be your stream of notifications. We are currently working on this and will open this open before Alpha II(b), ~ mid-April.',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Theme.of(context).primaryColor,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
-        ),
+          Flexible(child: Consumer<NotificationsHandler>(
+            builder: (context, data, child) {
+              final notifications = data.notifications;
+              return ListView.builder(
+                itemCount: notifications.length,
+                itemBuilder: (context, index) {
+                  final item = notifications[index];
+                  return ListTile(
+                    title: Text(
+                      item.notificationType.toString(),
+                    ),
+                  );
+                },
+              );
+            },
+          )),
+        ],
       ),
     );
   }
