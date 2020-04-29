@@ -30,7 +30,7 @@ class NotificationRepo {
       if (result.wasSuccessful) {
         //TODO store in cache
         //TODO merge result with cache (read/unread)
-        //return new
+        return result;
       } else {
         //TODO try to return from cache
         //if not then just return failed attempt
@@ -38,13 +38,13 @@ class NotificationRepo {
           //return cached
         } else {
           logger.logError('Couldn\'t retrieve notifications from cache');
-          return JuntoNotificationResults([], wasSuccessful: false);
+          return JuntoNotificationResults(wasSuccessful: false);
         }
       }
       return result;
     } catch (e, s) {
       logger.logException(e, s, 'Error while retrieving notifications');
-      return JuntoNotificationResults([], wasSuccessful: false);
+      return JuntoNotificationResults(wasSuccessful: false);
     }
   }
 }

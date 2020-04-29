@@ -8,12 +8,12 @@ part 'notification.freezed.dart';
 part 'notification.g.dart';
 
 enum NotificationType {
-  connectionNotification,
-  groupJoinRequests,
-  newComment,
-  newSubscription,
-  newConnection,
-  newPackJoin,
+  ConnectionNotification,
+  GroupJoinRequests,
+  NewComment,
+  NewSubscription,
+  NewConnection,
+  NewPackJoin,
 }
 
 //We store notifications list in Hive as json not as an object
@@ -30,7 +30,7 @@ enum NotificationType {
 @freezed
 abstract class JuntoNotification with _$JuntoNotification {
   factory JuntoNotification(
-    //TODO: add unique id
+    String address,
     NotificationType notificationType,
     DateTime createdAt, {
     @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
@@ -39,6 +39,7 @@ abstract class JuntoNotification with _$JuntoNotification {
         Group group,
     @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
         SlimUserResponse creator,
+    bool unread,
   }) = _Notification;
 
   factory JuntoNotification.fromJson(Map<String, dynamic> json) =>
@@ -46,10 +47,21 @@ abstract class JuntoNotification with _$JuntoNotification {
 
 // These methods are here because in these models there are factory constructors
 // and instance methods used for fromMap and toMap calls
-  static Group groupFromJson(Map<String, dynamic> json) => Group.fromMap(json);
-  static Map<String, dynamic> groupToJson(Group obj) => obj.toMap();
-  static SlimUserResponse slimUserFromJson(Map<String, dynamic> json) =>
-      SlimUserResponse.fromMap(json);
+  static Group groupFromJson(Map<String, dynamic> json) {
+    if (json != null) {
+      return Group.fromMap(json);
+    }
+    return null;
+  }
+
+  static Map<String, dynamic> groupToJson(Group obj) => obj?.toMap();
+  static SlimUserResponse slimUserFromJson(Map<String, dynamic> json) {
+    if (json != null) {
+      return SlimUserResponse.fromMap(json);
+    }
+    return null;
+  }
+
   static Map<String, dynamic> slimUserToJson(SlimUserResponse obj) =>
-      obj.toMap();
+      obj?.toMap();
 }

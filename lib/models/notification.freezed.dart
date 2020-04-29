@@ -16,6 +16,7 @@ class _$JuntoNotificationTearOff {
   const _$JuntoNotificationTearOff();
 
   _Notification call(
+      String address,
       NotificationType notificationType,
       DateTime createdAt,
       {@JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
@@ -23,13 +24,16 @@ class _$JuntoNotificationTearOff {
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
       @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse creator}) {
+          SlimUserResponse creator,
+      bool unread}) {
     return _Notification(
+      address,
       notificationType,
       createdAt,
       user: user,
       group: group,
       creator: creator,
+      unread: unread,
     );
   }
 }
@@ -38,6 +42,7 @@ class _$JuntoNotificationTearOff {
 const $JuntoNotification = _$JuntoNotificationTearOff();
 
 mixin _$JuntoNotification {
+  String get address;
   NotificationType get notificationType;
   DateTime get createdAt;
   @JsonKey(
@@ -52,6 +57,7 @@ mixin _$JuntoNotification {
       fromJson: JuntoNotification.slimUserFromJson,
       toJson: JuntoNotification.slimUserToJson)
   SlimUserResponse get creator;
+  bool get unread;
 
   Map<String, dynamic> toJson();
   $JuntoNotificationCopyWith<JuntoNotification> get copyWith;
@@ -62,14 +68,16 @@ abstract class $JuntoNotificationCopyWith<$Res> {
           JuntoNotification value, $Res Function(JuntoNotification) then) =
       _$JuntoNotificationCopyWithImpl<$Res>;
   $Res call(
-      {NotificationType notificationType,
+      {String address,
+      NotificationType notificationType,
       DateTime createdAt,
       @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
           SlimUserResponse user,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
       @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse creator});
+          SlimUserResponse creator,
+      bool unread});
 }
 
 class _$JuntoNotificationCopyWithImpl<$Res>
@@ -82,13 +90,16 @@ class _$JuntoNotificationCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object address = freezed,
     Object notificationType = freezed,
     Object createdAt = freezed,
     Object user = freezed,
     Object group = freezed,
     Object creator = freezed,
+    Object unread = freezed,
   }) {
     return _then(_value.copyWith(
+      address: address == freezed ? _value.address : address as String,
       notificationType: notificationType == freezed
           ? _value.notificationType
           : notificationType as NotificationType,
@@ -98,6 +109,7 @@ class _$JuntoNotificationCopyWithImpl<$Res>
       group: group == freezed ? _value.group : group as Group,
       creator:
           creator == freezed ? _value.creator : creator as SlimUserResponse,
+      unread: unread == freezed ? _value.unread : unread as bool,
     ));
   }
 }
@@ -109,14 +121,16 @@ abstract class _$NotificationCopyWith<$Res>
       __$NotificationCopyWithImpl<$Res>;
   @override
   $Res call(
-      {NotificationType notificationType,
+      {String address,
+      NotificationType notificationType,
       DateTime createdAt,
       @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
           SlimUserResponse user,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
       @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse creator});
+          SlimUserResponse creator,
+      bool unread});
 }
 
 class __$NotificationCopyWithImpl<$Res>
@@ -131,13 +145,16 @@ class __$NotificationCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object address = freezed,
     Object notificationType = freezed,
     Object createdAt = freezed,
     Object user = freezed,
     Object group = freezed,
     Object creator = freezed,
+    Object unread = freezed,
   }) {
     return _then(_Notification(
+      address == freezed ? _value.address : address as String,
       notificationType == freezed
           ? _value.notificationType
           : notificationType as NotificationType,
@@ -146,6 +163,7 @@ class __$NotificationCopyWithImpl<$Res>
       group: group == freezed ? _value.group : group as Group,
       creator:
           creator == freezed ? _value.creator : creator as SlimUserResponse,
+      unread: unread == freezed ? _value.unread : unread as bool,
     ));
   }
 }
@@ -153,6 +171,7 @@ class __$NotificationCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Notification with DiagnosticableTreeMixin implements _Notification {
   _$_Notification(
+      this.address,
       this.notificationType,
       this.createdAt,
       {@JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
@@ -160,13 +179,17 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           this.group,
       @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          this.creator})
-      : assert(notificationType != null),
+          this.creator,
+      this.unread})
+      : assert(address != null),
+        assert(notificationType != null),
         assert(createdAt != null);
 
   factory _$_Notification.fromJson(Map<String, dynamic> json) =>
       _$_$_NotificationFromJson(json);
 
+  @override
+  final String address;
   @override
   final NotificationType notificationType;
   @override
@@ -186,10 +209,12 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       fromJson: JuntoNotification.slimUserFromJson,
       toJson: JuntoNotification.slimUserToJson)
   final SlimUserResponse creator;
+  @override
+  final bool unread;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'JuntoNotification(notificationType: $notificationType, createdAt: $createdAt, user: $user, group: $group, creator: $creator)';
+    return 'JuntoNotification(address: $address, notificationType: $notificationType, createdAt: $createdAt, user: $user, group: $group, creator: $creator, unread: $unread)';
   }
 
   @override
@@ -197,17 +222,22 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'JuntoNotification'))
+      ..add(DiagnosticsProperty('address', address))
       ..add(DiagnosticsProperty('notificationType', notificationType))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('user', user))
       ..add(DiagnosticsProperty('group', group))
-      ..add(DiagnosticsProperty('creator', creator));
+      ..add(DiagnosticsProperty('creator', creator))
+      ..add(DiagnosticsProperty('unread', unread));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Notification &&
+            (identical(other.address, address) ||
+                const DeepCollectionEquality()
+                    .equals(other.address, address)) &&
             (identical(other.notificationType, notificationType) ||
                 const DeepCollectionEquality()
                     .equals(other.notificationType, notificationType)) &&
@@ -219,17 +249,22 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
             (identical(other.group, group) ||
                 const DeepCollectionEquality().equals(other.group, group)) &&
             (identical(other.creator, creator) ||
-                const DeepCollectionEquality().equals(other.creator, creator)));
+                const DeepCollectionEquality()
+                    .equals(other.creator, creator)) &&
+            (identical(other.unread, unread) ||
+                const DeepCollectionEquality().equals(other.unread, unread)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(notificationType) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(user) ^
       const DeepCollectionEquality().hash(group) ^
-      const DeepCollectionEquality().hash(creator);
+      const DeepCollectionEquality().hash(creator) ^
+      const DeepCollectionEquality().hash(unread);
 
   @override
   _$NotificationCopyWith<_Notification> get copyWith =>
@@ -243,6 +278,7 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
 
 abstract class _Notification implements JuntoNotification {
   factory _Notification(
+      String address,
       NotificationType notificationType,
       DateTime createdAt,
       {@JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
@@ -250,11 +286,14 @@ abstract class _Notification implements JuntoNotification {
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
       @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse creator}) = _$_Notification;
+          SlimUserResponse creator,
+      bool unread}) = _$_Notification;
 
   factory _Notification.fromJson(Map<String, dynamic> json) =
       _$_Notification.fromJson;
 
+  @override
+  String get address;
   @override
   NotificationType get notificationType;
   @override
@@ -274,6 +313,8 @@ abstract class _Notification implements JuntoNotification {
       fromJson: JuntoNotification.slimUserFromJson,
       toJson: JuntoNotification.slimUserToJson)
   SlimUserResponse get creator;
+  @override
+  bool get unread;
   @override
   _$NotificationCopyWith<_Notification> get copyWith;
 }

@@ -8,6 +8,7 @@ part of 'notification.dart';
 
 _$_Notification _$_$_NotificationFromJson(Map json) {
   return _$_Notification(
+    json['address'] as String,
     _$enumDecodeNullable(_$NotificationTypeEnumMap, json['notification_type']),
     json['created_at'] == null
         ? null
@@ -18,16 +19,19 @@ _$_Notification _$_$_NotificationFromJson(Map json) {
         JuntoNotification.groupFromJson(json['group'] as Map<String, dynamic>),
     creator: JuntoNotification.slimUserFromJson(
         json['creator'] as Map<String, dynamic>),
+    unread: json['unread'] as bool,
   );
 }
 
 Map<String, dynamic> _$_$_NotificationToJson(_$_Notification instance) =>
     <String, dynamic>{
+      'address': instance.address,
       'notification_type': _$NotificationTypeEnumMap[instance.notificationType],
       'created_at': instance.createdAt?.toIso8601String(),
       'user': JuntoNotification.slimUserToJson(instance.user),
       'group': JuntoNotification.groupToJson(instance.group),
       'creator': JuntoNotification.slimUserToJson(instance.creator),
+      'unread': instance.unread,
     };
 
 T _$enumDecode<T>(
@@ -63,10 +67,10 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$NotificationTypeEnumMap = {
-  NotificationType.connectionNotification: 'connectionNotification',
-  NotificationType.groupJoinRequests: 'groupJoinRequests',
-  NotificationType.newComment: 'newComment',
-  NotificationType.newSubscription: 'newSubscription',
-  NotificationType.newConnection: 'newConnection',
-  NotificationType.newPackJoin: 'newPackJoin',
+  NotificationType.ConnectionNotification: 'ConnectionNotification',
+  NotificationType.GroupJoinRequests: 'GroupJoinRequests',
+  NotificationType.NewComment: 'NewComment',
+  NotificationType.NewSubscription: 'NewSubscription',
+  NotificationType.NewConnection: 'NewConnection',
+  NotificationType.NewPackJoin: 'NewPackJoin',
 };

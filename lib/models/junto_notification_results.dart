@@ -7,8 +7,10 @@ part 'junto_notification_results.g.dart';
 
 @freezed
 abstract class JuntoNotificationResults with _$JuntoNotificationResults {
-  factory JuntoNotificationResults(
-    List<JuntoNotification> notifications, {
+  factory JuntoNotificationResults({
+    List<JuntoNotification> results,
+    String lastTimestamp,
+    int resultCount,
     bool wasSuccessful,
   }) = _JuntoNotificationResults;
 
