@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/device_preview.dart';
@@ -55,6 +56,10 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<NotificationRepo>.value(value: backend.notificationRepo),
         Provider<AppRepo>.value(value: backend.appRepo),
         Provider<LocalCache>.value(value: backend.db),
+        ChangeNotifierProvider(
+          create: (context) => NotificationsHandler(backend.notificationRepo),
+          lazy: false,
+        ),
       ],
       child: ChangeNotifierProvider<UserDataProvider>(
         create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
