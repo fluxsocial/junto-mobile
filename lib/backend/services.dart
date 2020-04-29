@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
+import 'package:junto_beta_mobile/models/junto_notification_results.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchService {
@@ -273,9 +274,17 @@ abstract class UserService {
 /// App wide notification service
 abstract class NotificationService {
   Future<NotificationResultsModel> getNotifications(NotificationQuery params);
+
+  Future<JuntoNotificationResults> getJuntoNotifications(
+      NotificationQuery params);
 }
 
-enum DBBoxes { collectiveExpressions, denExpressions, packExpressions }
+enum DBBoxes {
+  collectiveExpressions,
+  denExpressions,
+  packExpressions,
+  //TODO: notifications
+}
 
 /// Interface for managing the application's local cache.
 abstract class LocalCache {
