@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_navigation_observer.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
@@ -88,52 +89,12 @@ class MaterialAppWithTheme extends StatelessWidget {
 
   final bool loggedIn;
 
-  Widget _buildPage(AuthState state, JuntoThemesProvider theme) {
+  Widget _buildPage(AuthState state) {
     if (state is AuthenticatedState) {
-      return MaterialApp(
-        key: ValueKey<String>('logged-in'),
-        home: FeatureDiscovery(
-          child: const JuntoLotus(
-            address: null,
-            expressionContext: ExpressionContext.Collective,
-            source: null,
-          ),
-        ),
-        builder: DevicePreviewWrapper.appBuilder,
-        title: 'JUNTO Alpha',
-        debugShowCheckedModeBanner: false,
-        theme: theme.currentTheme,
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        // Replace later with S.supportedLocales
-        supportedLocales: [
-          Locale('en', ''),
-        ],
-      );
+      return AuthenticatedMaterialApp();
     }
     if (state is UnAuthenticatedState || state is InitialAuthState) {
-      return MaterialApp(
-        key: ValueKey<String>('logged-out'),
-        home: Welcome(),
-        builder: DevicePreviewWrapper.appBuilder,
-        title: 'JUNTO Alpha',
-        debugShowCheckedModeBanner: false,
-        theme: theme.currentTheme,
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        // Replace later with S.supportedLocales
-        supportedLocales: [
-          Locale('en', ''),
-        ],
-      );
+      return UnauthenticatedMaterialApp();
     }
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -163,9 +124,83 @@ class MaterialAppWithTheme extends StatelessWidget {
           builder: (context, AuthState state) {
             return AnimatedSwitcher(
               duration: kThemeChangeDuration,
-              child: _buildPage(state, theme),
+              child: _buildPage(state),
             );
           },
+        );
+      },
+    );
+  }
+}
+
+class UnauthenticatedMaterialApp extends StatelessWidget {
+  const UnauthenticatedMaterialApp({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<JuntoThemesProvider>(
+      builder: (context, theme, child) {
+        return MaterialApp(
+          key: ValueKey<String>('logged-out'),
+          home: Welcome(),
+          builder: DevicePreviewWrapper.appBuilder,
+          title: 'JUNTO Alpha',
+          debugShowCheckedModeBanner: false,
+          theme: theme.currentTheme,
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          // Replace later with S.supportedLocales
+          supportedLocales: [
+            Locale('en', ''),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class AuthenticatedMaterialApp extends StatelessWidget {
+  const AuthenticatedMaterialApp({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<JuntoThemesProvider>(
+      builder: (context, theme, child) {
+        return MaterialApp(
+          key: ValueKey<String>('logged-in'),
+          home: FeatureDiscovery(
+            child: const JuntoLotus(
+              address: null,
+              expressionContext: ExpressionContext.Collective,
+              source: null,
+            ),
+          ),
+          builder: DevicePreviewWrapper.appBuilder,
+          title: 'JUNTO Alpha',
+          debugShowCheckedModeBanner: false,
+          theme: theme.currentTheme,
+          navigatorObservers: [
+            NotificationNavigationObserver(
+                Provider.of<NotificationsHandler>(context)),
+          ],
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          // Replace later with S.supportedLocales
+          supportedLocales: [
+            Locale('en', ''),
+          ],
         );
       },
     );
