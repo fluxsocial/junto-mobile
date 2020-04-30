@@ -19,7 +19,9 @@ class AudioSeek extends StatelessWidget {
             height: 36,
             child: SliderTheme(
               data: SliderThemeData(
-                inactiveTrackColor: Theme.of(context).primaryColorLight,
+                inactiveTrackColor: hasBackground
+                    ? Colors.white
+                    : Theme.of(context).dividerColor,
                 activeTrackColor: hasBackground
                     ? Colors.white
                     : Theme.of(context).primaryColor,
