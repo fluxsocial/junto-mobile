@@ -28,6 +28,24 @@ class AudioPreview extends StatelessWidget {
             ),
             fit: BoxFit.cover,
           ),
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: const <double>[0.1, 0.9],
+            colors: audioGradients.isNotEmpty && audioGradients.length == 2
+                ? <Color>[
+                    HexColor.fromHex(audioGradients[0]),
+                    HexColor.fromHex(audioGradients[1]),
+                  ]
+                : <Color>[
+                    Colors.transparent,
+                    Colors.transparent,
+                  ],
+          ),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: .5,
+          ),
         ),
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height * .24,
@@ -41,19 +59,20 @@ class AudioPreview extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: Text(
-                audioTitle,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  color: audioGradients.isNotEmpty || audioPhoto.isNotEmpty
-                      ? Colors.white
-                      : Theme.of(context).primaryColor,
+            if (audioTitle.isNotEmpty)
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  audioTitle,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    color: audioGradients.isNotEmpty || audioPhoto.isNotEmpty
+                        ? Colors.white
+                        : Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
-            ),
             Image.asset(
               'assets/images/junto-mobile__waveform.png',
               height: 38,
