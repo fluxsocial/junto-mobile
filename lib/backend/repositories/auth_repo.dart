@@ -6,8 +6,8 @@ import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
   AuthRepo(this._authService, this._userRepo);
@@ -21,12 +21,12 @@ class AuthRepo {
   String get authKey => _authKey;
 
   Future<bool> isLoggedIn() async {
-    box = await Hive.openBox("app", encryptionKey: key);
-    _isLoggedIn = await box.get("isLoggedIn");
+    box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
+    _isLoggedIn = await box.get(HiveKeys.kisLoggedIn);
     // Let's check if user is actually logged in
     if (_isLoggedIn != null && _isLoggedIn) {
       try {
-        final id = await box.get("userId");
+        final id = await box.get(HiveKeys.kUserId);
         await _userRepo.getUser(id);
       } on SocketException catch (_) {
         // The user is logged in but offline
@@ -45,7 +45,7 @@ class AuthRepo {
   }
 
   Future<String> verifyEmail(String email) async {
-    logger.logDebug('Veryfing e-mail');
+    logger.logDebug('Verifying e-mail');
     return _authService.verifyEmail(email);
   }
 
@@ -59,9 +59,12 @@ class AuthRepo {
         password: details.password,
       ),
     );
-    await box.put('isLoggedIn', true);
-    await box.put('userId', _data.user.address);
-    await box.put('userFollowPerspectiveId', _data.userPerspective.address);
+    await box.put(HiveKeys.kisLoggedIn, true);
+    await box.put(HiveKeys.kUserId, _data.user.address);
+    await box.put(
+      HiveKeys.kUserFollowPerspectiveId,
+      _data.userPerspective.address,
+    );
     return _data;
   }
 
@@ -71,14 +74,16 @@ class AuthRepo {
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
     try {
       final UserData _user = await _authService.loginUser(details);
-      final box = await Hive.openBox('app', encryptionKey: key);
-      box.put('isLoggedIn', true);
-      box.put('userId', _user.user.address);
-      box.put('userFollowPerspectiveId', _user.userPerspective.address);
+      final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
+      await box.put(HiveKeys.kisLoggedIn, true);
+      await box.put(HiveKeys.kUserId, _user.user.address);
+      await box.put(
+        HiveKeys.kUserFollowPerspectiveId,
+        _user.userPerspective.address,
+      );
       final Map<String, dynamic> _userToMap = _user.toMap();
       final String _userMapToString = json.encode(_userToMap);
-      await SharedPreferences.getInstance()
-        ..setString('user_data', _userMapToString);
+      await box.put(HiveKeys.kUserData, _userMapToString);
       return _user;
     } catch (e, s) {
       logger.logException(e, s, 'Error during user login');
