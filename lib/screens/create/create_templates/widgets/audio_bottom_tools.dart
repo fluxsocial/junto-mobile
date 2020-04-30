@@ -26,55 +26,34 @@ class AudioBottomTools extends StatelessWidget {
               ),
               child: Row(
                 children: <Widget>[
-                  Expanded(
-                    child: InkWell(
-                      onTap: () async {
-                        await audio.resetRecording();
-                        resetAudioPhotoBackground();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 25),
-                        color: Colors.transparent,
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.keyboard_arrow_left,
-                          color: Theme.of(context).primaryColorLight,
-                          size: 28,
-                        ),
+                  InkWell(
+                    onTap: () async {
+                      await audio.resetRecording();
+                      resetAudioPhotoBackground();
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      padding: const EdgeInsets.symmetric(vertical: 25),
+                      color: Colors.transparent,
+                      child: Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Theme.of(context).primaryColorLight,
+                        size: 28,
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () async {
-                        // show gradient selector
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 25),
-                        color: Colors.transparent,
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.invert_colors,
-                          color: Theme.of(context).primaryColorLight,
-                          size: 24,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () async {
-                        onPickPressed();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 25),
-                        color: Colors.transparent,
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: Theme.of(context).primaryColorLight,
-                          size: 20,
-                        ),
+                  InkWell(
+                    onTap: () async {
+                      onPickPressed();
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      padding: const EdgeInsets.symmetric(vertical: 25),
+                      color: Colors.transparent,
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Theme.of(context).primaryColorLight,
+                        size: 20,
                       ),
                     ),
                   ),

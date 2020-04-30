@@ -11,7 +11,6 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
-import 'widgets/audio_gradient_selector.dart';
 import 'widgets/audio_record.dart';
 import 'widgets/audio_review.dart';
 
@@ -86,11 +85,10 @@ class CreateAudioState extends State<CreateAudio> {
                         titleController: titleController,
                       ),
                 if (audio.playBackAvailable)
-                  // AudioBottomTools(
-                  //   onPickPressed: _onPickPressed,
-                  //   resetAudioPhotoBackground: _resetAudioPhotoBackground,
-                  // ),
-                  AudioGradientSelector()
+                  AudioBottomTools(
+                    onPickPressed: _onPickPressed,
+                    resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                  ),
               ],
             ),
           ),
