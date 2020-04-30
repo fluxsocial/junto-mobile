@@ -1,4 +1,6 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 
 class AppRepo {
   AppRepo() {
@@ -10,12 +12,12 @@ class AppRepo {
 // Loads the previously save configuration. If there is none, it starts with a
 // default of false.
   Future<void> _loadLayout() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool _result = prefs.getBool('twoColumnView');
+    final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final bool _result = box.get(HiveKeys.kLayoutView);
     if (_result != null) {
       _twoColumn = _result;
     } else {
-      prefs.setBool('twoColumnView', _twoColumn);
+      box.put(HiveKeys.kLayoutView, _twoColumn);
     }
     return;
   }
@@ -25,8 +27,9 @@ class AppRepo {
 
   // Allows the layout type to be updated and saved.
   Future<void> setLayout(bool value) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('twoColumnView', value);
+    final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
+    box.delete(HiveKeys.kLayoutView);
+    box.put(HiveKeys.kLayoutView, value);
     _twoColumn = value;
     return;
   }
