@@ -19,6 +19,7 @@ class AudioBlackOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width * 2 / 3,
       color: Colors.black38,
     );
   }
@@ -78,20 +79,14 @@ class AudioPlaybackRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AudioService>(
       builder: (context, audio, child) {
-        return Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 10,
-          ),
-          child: Row(
-            children: <Widget>[
-              AudioPlayButton(
-                hasBackground: hasBackground,
-              ),
-              AudioSeek(),
-              AudioPosition(),
-            ],
-          ),
+        return Row(
+          children: <Widget>[
+            AudioPlayButton(
+              hasBackground: hasBackground,
+            ),
+            AudioSeek(),
+            AudioPosition(),
+          ],
         );
       },
     );
