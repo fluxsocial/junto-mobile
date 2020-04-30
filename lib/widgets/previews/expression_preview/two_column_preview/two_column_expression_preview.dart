@@ -62,9 +62,8 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                         expression.type != 'ShortForm' &&
                         expression.type != 'AudioForm'
                     ? Border.all(
-                        color: Theme.of(context).dividerColor,
-                        width: .5,
-                      )
+                        color: Theme.of(context).dividerColor.withOpacity(1),
+                        width: .5)
                     : Border.all(width: 0, color: Colors.transparent),
                 borderRadius: BorderRadius.circular(9),
               ),
