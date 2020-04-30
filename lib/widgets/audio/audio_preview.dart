@@ -89,7 +89,7 @@ class AudioPlaybackRow extends StatelessWidget {
                 hasBackground: hasBackground,
               ),
               AudioSeek(),
-              AudioPosition(hasBackground: hasBackground),
+              AudioPosition(),
             ],
           ),
         );
