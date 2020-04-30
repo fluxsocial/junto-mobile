@@ -43,17 +43,7 @@ class _HomeState extends State<Home> {
       return;
     }
     final File cropped = await ImageCroppingDialog.show(context, image,
-        aspectRatios: <String>[
-          '1:1',
-          '2:3',
-          '3:2',
-          '3:4',
-          '4:3',
-          '4:5',
-          '5:4',
-          '9:16',
-          '16:9'
-        ]);
+        aspectRatios: <String>['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9']);
     if (cropped == null) {
       setState(() => imageFile = null);
       return;

@@ -46,7 +46,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.white,
+    bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -145,7 +145,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.white,
+    bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -241,7 +241,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.white,
+    bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -339,7 +339,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: const Color(0xff333333),
+    bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -438,7 +438,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: const Color(0xff333333),
+    bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -535,7 +535,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: const Color(0xff333333),
+    bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -630,7 +630,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: const Color(0xff333333),
+    bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
