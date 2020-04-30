@@ -12,26 +12,26 @@ class AudioButton extends StatelessWidget {
         if (audio.isRecording) {
           return Icon(
             Icons.stop,
-            size: 28,
-            color: Theme.of(context).primaryColor,
+            size: 33,
+            color: Colors.white,
           );
         } else if (audio.playBackAvailable && !audio.isPlaying) {
           return Icon(
             Icons.play_arrow,
-            size: 28,
-            color: Theme.of(context).primaryColor,
+            size: 33,
+            color: Colors.white,
           );
         } else if (audio.playBackAvailable && audio.isPlaying) {
           return Icon(
             Icons.pause,
-            size: 28,
-            color: Theme.of(context).primaryColor,
+            size: 33,
+            color: Colors.white,
           );
         } else {
           return Icon(
             Icons.mic,
-            size: 28,
-            color: Theme.of(context).primaryColor,
+            size: 33,
+            color: Colors.white,
           );
         }
       },
@@ -71,10 +71,10 @@ class AudioButtonStack extends StatelessWidget {
       },
       child: Stack(
         children: <Widget>[
-          // AudioButtonBackground(),
+          AudioButtonBackground(),
           Container(
-            height: 60,
-            width: 60,
+            height: 80,
+            width: 80,
             alignment: Alignment.center,
             child: AudioButton(),
           ),
