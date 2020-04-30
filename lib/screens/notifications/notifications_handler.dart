@@ -9,8 +9,8 @@ class NotificationsHandler extends ChangeNotifier {
   List<JuntoNotification> _notifications;
   List<JuntoNotification> get notifications => _notifications ?? [];
 
-  int unreadNotificationsCount = 0;
-  bool get unreadNotifications => unreadNotificationsCount == 0;
+  int _unreadNotificationsCount = 0;
+  bool get unreadNotifications => _unreadNotificationsCount != 0;
 
   NotificationsHandler(this.repository) {
     fetchNotifications();
@@ -20,8 +20,8 @@ class NotificationsHandler extends ChangeNotifier {
     final result = await repository.getJuntoNotifications();
     if (result.wasSuccessful) {
       _notifications = result.results;
-      unreadNotificationsCount = _notifications
-          .where((element) => element.unread == true)
+      _unreadNotificationsCount = _notifications
+          .where((element) => element.unread != false)
           .toList()
           .length;
       logger.logInfo('${result.results.length} notifications fetched');
@@ -31,7 +31,17 @@ class NotificationsHandler extends ChangeNotifier {
     }
   }
 
-  Future<void> markAsRead() async {
-    //TODO mark as read
+  Future<void> markAllAsRead() async {
+    try {
+      final ids = _notifications?.map((e) => e.address)?.toList();
+      final result = await repository.markAsRead(ids);
+      if (result == true) {
+        logger.logInfo('Marked notifications as read');
+        _unreadNotificationsCount = 0;
+        notifyListeners();
+      }
+    } catch (e, s) {
+      logger.logException(e, s, 'Error while setting notifications as read');
+    }
   }
 }
