@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
@@ -27,7 +30,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     if (response.statusCode == 200) {
       final String authorization = response.headers['authorization'];
       final box = await Hive.openBox('app', encryptionKey: key);
-      box.put("auth", authorization);
+      await box.put("auth", authorization);
+      await box.put(HiveKeys.kUserData, jsonEncode(response.body));
       return UserData.fromMap(JuntoHttp.handleResponse(response));
     } else {
       final Map<String, dynamic> errorResponse =
