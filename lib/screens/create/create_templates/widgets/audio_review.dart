@@ -22,24 +22,49 @@ class AudioReview extends StatelessWidget {
             onTap: () => FocusScope.of(context).unfocus(),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              child: _showAudioReviewTemplate(),
+              child: Container(
+                height: MediaQuery.of(context).size.width * 2 / 3,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: audioPhotoBackground != null
+                        ? FileImage(audioPhotoBackground)
+                        : null,
+                    fit: BoxFit.fitWidth,
+                  ),
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.bottomLeft,
+                  //   end: Alignment.topRight,
+                  //   stops: const <double>[0.2, 0.9],
+                  //   colors: <Color>[
+                  //     Theme.of(context).colorScheme.primary,
+                  //     Theme.of(context).colorScheme.secondary,
+                  //   ],
+                  // ),
+                ),
+                child: Container(
+                  color: Colors.black54,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AudioTitle(
+                        titleController: titleController,
+                        hasBackground:
+                            audioPhotoBackground != null ? true : false,
+                      ),
+                      AudioPlaybackRow(
+                        hasBackground:
+                            audioPhotoBackground != null ? true : false,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ],
       );
     });
-  }
-
-  Widget _showAudioReviewTemplate() {
-    if (audioPhotoBackground == null) {
-      return AudioReviewDefault();
-    } else if (audioPhotoBackground != null) {
-      return AudioReviewWithPhoto(
-        audioPhotoBackground: audioPhotoBackground,
-      );
-    } else {
-      return SizedBox();
-    }
   }
 }
 
@@ -57,10 +82,36 @@ class AudioReviewDefault extends StatelessWidget {
 }
 
 class AudioReviewWithGradient extends StatelessWidget {
-  AudioReviewWithGradient({this.titleController});
+  AudioReviewWithGradient({
+    this.titleController,
+    this.audioPhotoBackground,
+  });
 
   final titleController;
+  final File audioPhotoBackground;
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.width * 2 / 3,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: FileImage(audioPhotoBackground),
+          fit: BoxFit.fitWidth,
+        ),
+      ),
+      child: AudioReviewBody(
+        hasBackground: true,
+        titleController: titleController,
+      ),
+    );
+  }
+}
+
+class AudioReviewWithPhoto extends StatelessWidget {
+  AudioReviewWithPhoto({this.titleController});
+
+  final titleController;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,32 +125,6 @@ class AudioReviewWithGradient extends StatelessWidget {
             Theme.of(context).colorScheme.primary,
             Theme.of(context).colorScheme.secondary,
           ],
-        ),
-      ),
-      child: AudioReviewBody(
-        hasBackground: true,
-        titleController: titleController,
-      ),
-    );
-  }
-}
-
-class AudioReviewWithPhoto extends StatelessWidget {
-  AudioReviewWithPhoto({
-    this.titleController,
-    this.audioPhotoBackground,
-  });
-
-  final titleController;
-  final File audioPhotoBackground;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.width * 2 / 3,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: FileImage(audioPhotoBackground),
-          fit: BoxFit.fitWidth,
         ),
       ),
       child: AudioReviewBody(
