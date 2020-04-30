@@ -99,7 +99,9 @@ class AudioBottomToolsDefault extends StatelessWidget {
             ),
             Expanded(
               child: InkWell(
-                onTap: toggleGradientSelector,
+                onTap: () {
+                  toggleGradientSelector();
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 25),
                   color: Colors.transparent,
