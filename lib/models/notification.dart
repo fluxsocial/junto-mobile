@@ -33,12 +33,12 @@ abstract class JuntoNotification with _$JuntoNotification {
     String address,
     NotificationType notificationType,
     DateTime createdAt, {
-    @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-        SlimUserResponse user,
+    @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+        UserProfile user,
     @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
         Group group,
-    @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-        SlimUserResponse creator,
+    @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+        UserProfile creator,
     bool unread,
   }) = _Notification;
 
@@ -55,13 +55,12 @@ abstract class JuntoNotification with _$JuntoNotification {
   }
 
   static Map<String, dynamic> groupToJson(Group obj) => obj?.toMap();
-  static SlimUserResponse slimUserFromJson(Map<String, dynamic> json) {
+  static UserProfile userFromJson(Map<String, dynamic> json) {
     if (json != null) {
-      return SlimUserResponse.fromMap(json);
+      return UserProfile.fromMap(json);
     }
     return null;
   }
 
-  static Map<String, dynamic> slimUserToJson(SlimUserResponse obj) =>
-      obj?.toMap();
+  static Map<String, dynamic> userToJson(UserProfile obj) => obj?.toMap();
 }

@@ -19,12 +19,12 @@ class _$JuntoNotificationTearOff {
       String address,
       NotificationType notificationType,
       DateTime createdAt,
-      {@JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse user,
+      {@JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+          UserProfile user,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
-      @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse creator,
+      @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+          UserProfile creator,
       bool unread}) {
     return _Notification(
       address,
@@ -46,17 +46,17 @@ mixin _$JuntoNotification {
   NotificationType get notificationType;
   DateTime get createdAt;
   @JsonKey(
-      fromJson: JuntoNotification.slimUserFromJson,
-      toJson: JuntoNotification.slimUserToJson)
-  SlimUserResponse get user;
+      fromJson: JuntoNotification.userFromJson,
+      toJson: JuntoNotification.userToJson)
+  UserProfile get user;
   @JsonKey(
       fromJson: JuntoNotification.groupFromJson,
       toJson: JuntoNotification.groupToJson)
   Group get group;
   @JsonKey(
-      fromJson: JuntoNotification.slimUserFromJson,
-      toJson: JuntoNotification.slimUserToJson)
-  SlimUserResponse get creator;
+      fromJson: JuntoNotification.userFromJson,
+      toJson: JuntoNotification.userToJson)
+  UserProfile get creator;
   bool get unread;
 
   Map<String, dynamic> toJson();
@@ -71,12 +71,12 @@ abstract class $JuntoNotificationCopyWith<$Res> {
       {String address,
       NotificationType notificationType,
       DateTime createdAt,
-      @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse user,
+      @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+          UserProfile user,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
-      @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse creator,
+      @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+          UserProfile creator,
       bool unread});
 }
 
@@ -105,10 +105,9 @@ class _$JuntoNotificationCopyWithImpl<$Res>
           : notificationType as NotificationType,
       createdAt:
           createdAt == freezed ? _value.createdAt : createdAt as DateTime,
-      user: user == freezed ? _value.user : user as SlimUserResponse,
+      user: user == freezed ? _value.user : user as UserProfile,
       group: group == freezed ? _value.group : group as Group,
-      creator:
-          creator == freezed ? _value.creator : creator as SlimUserResponse,
+      creator: creator == freezed ? _value.creator : creator as UserProfile,
       unread: unread == freezed ? _value.unread : unread as bool,
     ));
   }
@@ -124,12 +123,12 @@ abstract class _$NotificationCopyWith<$Res>
       {String address,
       NotificationType notificationType,
       DateTime createdAt,
-      @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse user,
+      @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+          UserProfile user,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
-      @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse creator,
+      @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+          UserProfile creator,
       bool unread});
 }
 
@@ -159,10 +158,9 @@ class __$NotificationCopyWithImpl<$Res>
           ? _value.notificationType
           : notificationType as NotificationType,
       createdAt == freezed ? _value.createdAt : createdAt as DateTime,
-      user: user == freezed ? _value.user : user as SlimUserResponse,
+      user: user == freezed ? _value.user : user as UserProfile,
       group: group == freezed ? _value.group : group as Group,
-      creator:
-          creator == freezed ? _value.creator : creator as SlimUserResponse,
+      creator: creator == freezed ? _value.creator : creator as UserProfile,
       unread: unread == freezed ? _value.unread : unread as bool,
     ));
   }
@@ -174,11 +172,11 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       this.address,
       this.notificationType,
       this.createdAt,
-      {@JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
+      {@JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           this.user,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           this.group,
-      @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
+      @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           this.creator,
       this.unread})
       : assert(address != null),
@@ -196,9 +194,9 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
   final DateTime createdAt;
   @override
   @JsonKey(
-      fromJson: JuntoNotification.slimUserFromJson,
-      toJson: JuntoNotification.slimUserToJson)
-  final SlimUserResponse user;
+      fromJson: JuntoNotification.userFromJson,
+      toJson: JuntoNotification.userToJson)
+  final UserProfile user;
   @override
   @JsonKey(
       fromJson: JuntoNotification.groupFromJson,
@@ -206,9 +204,9 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
   final Group group;
   @override
   @JsonKey(
-      fromJson: JuntoNotification.slimUserFromJson,
-      toJson: JuntoNotification.slimUserToJson)
-  final SlimUserResponse creator;
+      fromJson: JuntoNotification.userFromJson,
+      toJson: JuntoNotification.userToJson)
+  final UserProfile creator;
   @override
   final bool unread;
 
@@ -281,12 +279,12 @@ abstract class _Notification implements JuntoNotification {
       String address,
       NotificationType notificationType,
       DateTime createdAt,
-      {@JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse user,
+      {@JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+          UserProfile user,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
-      @JsonKey(fromJson: JuntoNotification.slimUserFromJson, toJson: JuntoNotification.slimUserToJson)
-          SlimUserResponse creator,
+      @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
+          UserProfile creator,
       bool unread}) = _$_Notification;
 
   factory _Notification.fromJson(Map<String, dynamic> json) =
@@ -300,9 +298,9 @@ abstract class _Notification implements JuntoNotification {
   DateTime get createdAt;
   @override
   @JsonKey(
-      fromJson: JuntoNotification.slimUserFromJson,
-      toJson: JuntoNotification.slimUserToJson)
-  SlimUserResponse get user;
+      fromJson: JuntoNotification.userFromJson,
+      toJson: JuntoNotification.userToJson)
+  UserProfile get user;
   @override
   @JsonKey(
       fromJson: JuntoNotification.groupFromJson,
@@ -310,9 +308,9 @@ abstract class _Notification implements JuntoNotification {
   Group get group;
   @override
   @JsonKey(
-      fromJson: JuntoNotification.slimUserFromJson,
-      toJson: JuntoNotification.slimUserToJson)
-  SlimUserResponse get creator;
+      fromJson: JuntoNotification.userFromJson,
+      toJson: JuntoNotification.userToJson)
+  UserProfile get creator;
   @override
   bool get unread;
   @override
