@@ -54,14 +54,12 @@ class AudioOpenTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 25),
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
-        vertical: 15,
       ),
       child: Text(
         title,
-        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w700,
@@ -82,6 +80,7 @@ class AudioOpenDefault extends StatelessWidget {
       constraints: BoxConstraints(
         minHeight: MediaQuery.of(context).size.height * .17,
       ),
+      padding: const EdgeInsets.symmetric(vertical: 25),
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).dividerColor,
@@ -171,7 +170,7 @@ class AudioOpenWithPhoto extends StatelessWidget {
         ),
         if (title.isNotEmpty)
           Positioned(
-            top: 0,
+            top: 25,
             left: 0,
             right: 0,
             child: AudioOpenTitle(
