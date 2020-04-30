@@ -4,9 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/junto_notification_read_status.dart';
-import 'package:junto_beta_mobile/models/junto_notification_results.dart';
-import 'package:junto_beta_mobile/models/notification_model.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 class NotificationRepo {
   NotificationRepo(this.service);
@@ -14,10 +12,6 @@ class NotificationRepo {
   final NotificationService service;
   final String cacheReadNotificationsBoxName = 'read_notifications';
   final String cacheNotificationsBoxName = 'notifications';
-
-  Future<NotificationResultsModel> getNotifications(NotificationQuery params) {
-    return service.getNotifications(params);
-  }
 
   Future<bool> markAsRead(List<String> addresses) async {
     try {
@@ -78,7 +72,8 @@ class NotificationRepo {
       } else {
         //TODO try to return from cache
         //if not then just return failed attempt
-        if (true) {
+        final cacheExists = false;
+        if (cacheExists) {
           //return cached
         } else {
           logger.logError('Couldn\'t retrieve notifications from cache');
@@ -107,6 +102,7 @@ class NotificationRepo {
         final list = response.results;
         logger.logDebug(
             'There are ${status.readNotifications.length} read notifications in cache');
+        //TODO: maybe replace with simple for loop
         list.forEach((element) {
           list[list.indexOf(element)] = element.copyWith(
               unread: !status.readNotifications.contains(element.address));
@@ -115,6 +111,7 @@ class NotificationRepo {
         logger.logInfo(
             'Current cache for read notification doesn\'t exist. Setting all notifications as unread');
         final list = response.results;
+        //TODO: maybe replace with simple for loop
         list.forEach((element) {
           list[list.indexOf(element)] = element.copyWith(unread: true);
         });
