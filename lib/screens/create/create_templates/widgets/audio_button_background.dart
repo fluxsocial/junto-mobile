@@ -20,8 +20,8 @@ class AudioButtonBackground extends StatelessWidget {
     return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
       return ClipOval(
         child: Container(
-          height: 80,
-          width: 80,
+          height: 60,
+          width: 60,
           child: Image.asset(
             background(theme.themeName),
             fit: BoxFit.cover,
