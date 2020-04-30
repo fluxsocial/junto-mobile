@@ -40,8 +40,7 @@ class _PackRequestsState extends State<PackRequests> {
                   child: ListView(
                     padding: const EdgeInsets.all(0),
                     children: <Widget>[
-                      for (Group packRequest
-                          in state.notifications.groupJoinNotifications)
+                      for (Group packRequest in state.groupJoinNotifications)
                         if (packRequest.groupType == 'Pack')
                           PackRequest(
                             userProfile: user.userProfile,

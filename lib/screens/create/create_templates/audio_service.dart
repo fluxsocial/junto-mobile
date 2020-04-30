@@ -194,10 +194,15 @@ class AudioService with ChangeNotifier {
 
   @override
   void dispose() {
+    _disposeAudioPlayer();
     _playbackTimer?.cancel();
-    _audioPlayer?.dispose();
     _recorder?.stop();
     super.dispose();
+  }
+
+  void _disposeAudioPlayer() async {
+    await _audioPlayer?.stop();
+    await _audioPlayer?.dispose();
   }
 
   initializeFromWeb(String audio) async {

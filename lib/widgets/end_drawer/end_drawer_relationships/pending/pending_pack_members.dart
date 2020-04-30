@@ -36,8 +36,7 @@ class PendingPackMembers extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     children: <Widget>[
-                      for (Group packRequest
-                          in state.notifications.groupJoinNotifications)
+                      for (Group packRequest in state.groupJoinNotifications)
                         if (packRequest.groupType == 'Pack')
                           PackRequest(
                             userProfile: user.userProfile,

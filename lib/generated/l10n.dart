@@ -335,7 +335,7 @@ class S {
 
   String get welcome_confirm_password {
     return Intl.message(
-      'CONFIRM',
+      'Confirm password',
       name: 'welcome_confirm_password',
       desc: '',
       args: [],
@@ -497,7 +497,7 @@ class S {
 
   String get welcome_reset_password {
     return Intl.message(
-      'RESET PASSWORD',
+      'Reset password',
       name: 'welcome_reset_password',
       desc: '',
       args: [],
@@ -618,7 +618,10 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en'), Locale.fromSubtags(languageCode: 'pt'), Locale.fromSubtags(languageCode: 'de'), Locale.fromSubtags(languageCode: 'pl'),
+      Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'pl'),
+      Locale.fromSubtags(languageCode: 'pt'),
     ];
   }
 

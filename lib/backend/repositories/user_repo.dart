@@ -3,11 +3,11 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class UserRepo {
-  UserRepo(this._userService, this._notificationService, this.db);
+  UserRepo(this._userService, this._notificationRepo, this.db);
 
   final UserService _userService;
   final LocalCache db;
-  final NotificationService _notificationService;
+  final NotificationRepo _notificationRepo;
   QueryResults<ExpressionResponse> cachedDenExpressions;
 
   Future<PerspectiveModel> createPerspective(Perspective perspective) {
@@ -112,17 +112,19 @@ class UserRepo {
   }
 
   Future<List<UserProfile>> pendingConnections(String userAddress) async {
-    final NotificationResultsModel result =
-        await _notificationService.getNotifications(
-      const NotificationQuery(
-          groupJoinRequests: false,
-          connectionRequests: true,
-          paginationPosition: 0),
-    );
-    return <UserProfile>[
-      for (dynamic data in result.connectionNotifications)
-        UserProfile.fromMap(data)
-    ];
+    final result =
+        await _notificationRepo.getJuntoNotifications(connectionRequests: true);
+    if (result.wasSuccessful) {
+      final notifications = result.results
+          .where((element) =>
+              element.notificationType ==
+              NotificationType.ConnectionNotification)
+          .toList();
+      final users = notifications.map((e) => e.user).toList();
+      return users;
+    } else {
+      return <UserProfile>[];
+    }
   }
 
   Future<void> removeUserConnection(String userAddress) {

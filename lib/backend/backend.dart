@@ -57,9 +57,10 @@ class Backend {
       final SearchService searchService = SearchServiceCentralized(client);
       final NotificationService notificationService =
           NotificationServiceImpl(client);
+      final notificationRepo = NotificationRepo(notificationService);
       final UserRepo userRepo = UserRepo(
         userService,
-        notificationService,
+        notificationRepo,
         dbService,
       );
       return Backend._(
@@ -70,7 +71,7 @@ class Backend {
         groupsProvider: GroupRepo(groupService, userService),
         expressionRepo: ExpressionRepo(expressionService, dbService),
         currentTheme: currentTheme,
-        notificationRepo: NotificationRepo(notificationService),
+        notificationRepo: notificationRepo,
         appRepo: AppRepo(),
         db: dbService,
       );

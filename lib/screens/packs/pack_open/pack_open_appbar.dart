@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
+import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
@@ -91,26 +91,7 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => NotificationsScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: 38,
-                              color: Colors.transparent,
-                              alignment: Alignment.bottomCenter,
-                              child: Icon(
-                                CustomIcons.moon,
-                                size: 22,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
+                          NotificationsLunarIcon(),
                           userProfile != null &&
                                   userProfile.pack.address != pack.address
                               ? GestureDetector(
