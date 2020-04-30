@@ -3,17 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
-import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
 class AudioReview extends StatelessWidget {
   const AudioReview({
     this.audioPhotoBackground,
-    this.audioGradientValues,
     this.titleController,
   });
   final File audioPhotoBackground;
-  final List<String> audioGradientValues;
   final TextEditingController titleController;
 
   @override
@@ -34,18 +31,14 @@ class AudioReview extends StatelessWidget {
   }
 
   Widget _showAudioReviewTemplate() {
-    if (audioPhotoBackground == null && audioGradientValues.isEmpty) {
+    if (audioPhotoBackground == null) {
       return AudioReviewDefault();
-    } else if (audioPhotoBackground != null && audioGradientValues.isEmpty) {
+    } else if (audioPhotoBackground != null) {
       return AudioReviewWithPhoto(
         audioPhotoBackground: audioPhotoBackground,
       );
-    } else if (audioPhotoBackground == null && audioGradientValues.isNotEmpty) {
-      return AudioReviewWithGradient(
-        audioGradientValues: audioGradientValues,
-      );
     } else {
-      return AudioReviewDefault();
+      return SizedBox();
     }
   }
 }
@@ -64,13 +57,9 @@ class AudioReviewDefault extends StatelessWidget {
 }
 
 class AudioReviewWithGradient extends StatelessWidget {
-  AudioReviewWithGradient({
-    this.titleController,
-    this.audioGradientValues,
-  });
+  AudioReviewWithGradient({this.titleController});
 
   final titleController;
-  final List<String> audioGradientValues;
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +69,10 @@ class AudioReviewWithGradient extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
-          stops: <double>[0.2, 0.9],
+          stops: const <double>[0.2, 0.9],
           colors: <Color>[
-            HexColor.fromHex(audioGradientValues[0]),
-            HexColor.fromHex(audioGradientValues[1]),
+            Theme.of(context).colorScheme.primary,
+            Theme.of(context).colorScheme.secondary,
           ],
         ),
       ),
