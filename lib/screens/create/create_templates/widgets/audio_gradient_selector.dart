@@ -53,21 +53,24 @@ class AudioGradientSelector extends StatelessWidget {
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 15,
-          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                onTap: () {
-                  toggleGradientSelector();
-                },
-                child: Icon(
-                  CustomIcons.cancel,
-                  size: 20,
-                  color: Theme.of(context).primaryColor,
+              InkWell(
+                // onTap: () {
+                //   toggleGradientSelector();
+                // },
+                onTap: toggleGradientSelector,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 15,
+                  ),
+                  child: Icon(
+                    CustomIcons.cancel,
+                    size: 20,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
               Text(
@@ -79,10 +82,16 @@ class AudioGradientSelector extends StatelessWidget {
                   letterSpacing: 1.4,
                 ),
               ),
-              Icon(
-                Icons.format_color_reset,
-                size: 20,
-                color: Theme.of(context).primaryColor,
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 15,
+                ),
+                child: Icon(
+                  Icons.format_color_reset,
+                  size: 20,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ],
           ),
