@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert' show json;
 
 import 'package:bloc/bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc.dart';
 
@@ -52,13 +53,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield LoadingState();
     try {
       final user = await authRepo.registerUser(event.details);
-      final Map<String, dynamic> resultsMap = user.toMap();
-      final String resultsMapToString = json.encode(resultsMap);
-      await SharedPreferences.getInstance()
-        ..setString('user_data', resultsMapToString);
       await userDataProvider.initialize();
       yield AuthenticatedState(user);
-    } on JuntoException catch (error) {
+    } on JuntoException catch (_) {
       yield UnAuthenticatedState();
     } catch (error) {
       yield UnAuthenticatedState();
@@ -96,8 +93,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
     yield LoadingState();
     try {
-      final _prefs = await SharedPreferences.getInstance();
-      final data = await _prefs.getString('user_data');
+      final box = await Hive.openBox(HiveBoxes.kAppBox);
+      final data = await box.get(HiveKeys.kUserData);
       logger.logDebug(data);
       yield AuthenticatedState(UserData.fromMap(json.decode(data)));
     } on JuntoException catch (error) {
@@ -112,9 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _clearUserInformation() async {
-    final _prefs = await SharedPreferences.getInstance();
     await authRepo.logoutUser();
-    await _prefs.clear();
     return;
   }
 }
