@@ -166,6 +166,7 @@ class AudioPreviewWithPhoto extends StatelessWidget {
         vertical: 50.0,
       ),
       decoration: BoxDecoration(
+        color: Theme.of(context).dividerColor,
         image: DecorationImage(
           colorFilter: ColorFilter.mode(
             Colors.black38,
