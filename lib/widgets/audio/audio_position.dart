@@ -16,7 +16,7 @@ class AudioPosition extends StatelessWidget {
         return Text(
           '${getCurrentPosition(audio)} / ${getMaxDuration(audio)}',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             color:
                 hasBackground ? Colors.white : Theme.of(context).primaryColor,
             fontWeight: FontWeight.w700,

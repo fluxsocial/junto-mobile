@@ -88,7 +88,7 @@ class AudioPlaybackRow extends StatelessWidget {
               AudioPlayButton(
                 hasBackground: hasBackground,
               ),
-              AudioSeek(hasBackground: hasBackground),
+              AudioSeek(),
               AudioPosition(hasBackground: hasBackground),
             ],
           ),
