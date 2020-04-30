@@ -105,54 +105,62 @@ class JuntoLotus extends StatelessWidget {
                           vertical: 10,
                         ),
                         color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
                           children: <Widget>[
-                            const SizedBox(),
-                            // Container(
-                            //   padding: const EdgeInsets.only(left: 10),
-                            //   child: Row(
-                            //     crossAxisAlignment: CrossAxisAlignment.center,
-                            //     children: <Widget>[
-                            //       Container(
-                            //         child: Text(
-                            //           'JUNTO',
-                            //           style: TextStyle(
-                            //             fontSize: 20,
-                            //             fontWeight: FontWeight.w500,
-                            //             color: Colors.white,
-                            //             letterSpacing: 1.7,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            GestureDetector(
-                              onTap: () {
-                                FeatureDiscovery.clearPreferences(
-                                    context, <String>{
-                                  'lotus_info_id',
-                                });
-                                FeatureDiscovery.discoverFeatures(
-                                  context,
-                                  const <String>{
-                                    'lotus_info_id',
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                const SizedBox(),
+                                GestureDetector(
+                                  onTap: () {
+                                    FeatureDiscovery.clearPreferences(
+                                        context, <String>{
+                                      'lotus_info_id',
+                                    });
+                                    FeatureDiscovery.discoverFeatures(
+                                      context,
+                                      const <String>{
+                                        'lotus_info_id',
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              child: JuntoDescribedFeatureOverlay(
-                                icon: OverlayInfoIcon(),
-                                featureId: 'lotus_info_id',
-                                oneFeature: true,
-                                title:
-                                    'This is the intention screen, your medium for navigation.',
-                                learnMore: true,
-                                learnMoreText: [
-                                  'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
+                                  child: JuntoDescribedFeatureOverlay(
+                                    icon: OverlayInfoIcon(),
+                                    featureId: 'lotus_info_id',
+                                    oneFeature: true,
+                                    title:
+                                        'This is the intention screen, your medium for navigation.',
+                                    learnMore: true,
+                                    learnMoreText: [
+                                      'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
+                                    ],
+                                    hasUpNext: false,
+                                    child:
+                                        JuntoInfoIcon(neutralBackground: false),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 25,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    child: Text(
+                                      'JUNTO',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        letterSpacing: 2.4,
+                                      ),
+                                    ),
+                                  ),
                                 ],
-                                hasUpNext: false,
-                                child: JuntoInfoIcon(neutralBackground: false),
                               ),
                             ),
                           ],

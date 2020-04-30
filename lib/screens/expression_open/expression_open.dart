@@ -273,6 +273,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                       if (commentsVisible)
                                         ListView.builder(
                                           shrinkWrap: true,
+                                          reverse: true,
                                           physics:
                                               const ClampingScrollPhysics(),
                                           itemCount:

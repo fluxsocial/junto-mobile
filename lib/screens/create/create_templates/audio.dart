@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
+import 'widgets/audio_gradient_selector.dart';
 import 'widgets/audio_record.dart';
 import 'widgets/audio_review.dart';
 
@@ -29,6 +30,7 @@ class CreateAudio extends StatefulWidget {
 class CreateAudioState extends State<CreateAudio> {
   final TextEditingController titleController = TextEditingController();
   File audioPhotoBackground;
+  List<String> audioGradientValues = [];
 
   Future<void> _onPickPressed() async {
     try {
@@ -45,7 +47,15 @@ class CreateAudioState extends State<CreateAudio> {
         context,
         image,
         aspectRatios: <String>[
+          '1:1',
+          '2:3',
           '3:2',
+          '3:4',
+          '4:3',
+          '4:5',
+          '5:4',
+          '9:16',
+          '16:9'
         ],
       );
       Navigator.of(context).focusScopeNode.unfocus();
@@ -54,7 +64,11 @@ class CreateAudioState extends State<CreateAudio> {
 
         return;
       }
-      setState(() => audioPhotoBackground = cropped);
+
+      setState(() {
+        audioPhotoBackground = cropped;
+        audioGradientValues = [];
+      });
     } catch (error) {
       print(error);
     }
@@ -63,6 +77,19 @@ class CreateAudioState extends State<CreateAudio> {
   void _resetAudioPhotoBackground() {
     setState(() {
       audioPhotoBackground = null;
+    });
+  }
+
+  void _resetAudioGradientValues() {
+    setState(() {
+      audioGradientValues = [];
+    });
+  }
+
+  void _setAudioGradientValues(String hexOne, String hexTwo) {
+    _resetAudioPhotoBackground();
+    setState(() {
+      audioGradientValues = [hexOne, hexTwo];
     });
   }
 
@@ -82,12 +109,15 @@ class CreateAudioState extends State<CreateAudio> {
                     ? AudioRecord()
                     : AudioReview(
                         audioPhotoBackground: audioPhotoBackground,
+                        audioGradientValues: audioGradientValues,
                         titleController: titleController,
                       ),
                 if (audio.playBackAvailable)
                   AudioBottomTools(
                     onPickPressed: _onPickPressed,
                     resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                    resetAudioGradientValues: _resetAudioGradientValues,
+                    setAudioGradientValues: _setAudioGradientValues,
                   ),
               ],
             ),
@@ -103,6 +133,7 @@ class CreateAudioState extends State<CreateAudio> {
         title: titleController.text,
         photo: audioPhotoBackground?.path,
         audio: audio.recordingPath,
+        gradient: audioGradientValues,
       );
       Navigator.push(
         context,
