@@ -5,10 +5,7 @@ import 'package:provider/provider.dart';
 class AudioPlayButton extends StatelessWidget {
   const AudioPlayButton({
     Key key,
-    this.hasBackground,
   }) : super(key: key);
-
-  final bool hasBackground;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +30,7 @@ class AudioPlayButton extends StatelessWidget {
           ),
         );
       },
-      child: AudioPlayIcon(
-        hasBackground: hasBackground,
-      ),
+      child: AudioPlayIcon(),
     );
   }
 
@@ -53,8 +48,6 @@ class AudioPlayButton extends StatelessWidget {
 }
 
 class AudioPlayIcon extends StatelessWidget {
-  AudioPlayIcon({this.hasBackground});
-  final bool hasBackground;
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(
@@ -63,22 +56,19 @@ class AudioPlayIcon extends StatelessWidget {
           return Icon(
             Icons.play_arrow,
             size: 33,
-            color:
-                hasBackground ? Colors.white : Theme.of(context).primaryColor,
+            color: Colors.white,
           );
         } else if (audio.playBackAvailable && audio.isPlaying) {
           return Icon(
             Icons.pause,
             size: 33,
-            color:
-                hasBackground ? Colors.white : Theme.of(context).primaryColor,
+            color: Colors.white,
           );
         } else {
           return Icon(
             Icons.play_arrow,
             size: 33,
-            color:
-                hasBackground ? Colors.white : Theme.of(context).primaryColor,
+            color: Colors.white,
           );
         }
       },
