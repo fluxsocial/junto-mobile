@@ -96,7 +96,6 @@ flutter:
     - assets/images/junto-mobile__menu.png
     - assets/images/junto-mobile__filter.png
     - assets/images/junto-mobile__groups--placeholder.png
-    - assets/images/junto-mobile__waveform.png
 flutter_intl:
   enabled: true
   main_locale: en
