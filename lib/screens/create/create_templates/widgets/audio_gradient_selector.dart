@@ -5,15 +5,11 @@ import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
 class AudioGradientSelector extends StatelessWidget {
-  const AudioGradientSelector({
-    this.toggleGradientSelector,
-    this.setAudioGradientValues,
-    this.resetAudioGradientValues,
-  });
+  const AudioGradientSelector(
+      {this.toggleGradientSelector, this.setAudioGradientValues});
 
   final Function toggleGradientSelector;
   final Function setAudioGradientValues;
-  final Function resetAudioGradientValues;
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +99,7 @@ class AudioGradientSelector extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: () {
-                  resetAudioGradientValues();
-                  toggleGradientSelector();
-                },
+                onTap: toggleGradientSelector,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -128,18 +121,15 @@ class AudioGradientSelector extends StatelessWidget {
                   letterSpacing: 1.4,
                 ),
               ),
-              InkWell(
-                onTap: toggleGradientSelector,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 15,
-                  ),
-                  child: Icon(
-                    Icons.check,
-                    size: 20,
-                    color: Theme.of(context).primaryColor,
-                  ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 15,
+                ),
+                child: Icon(
+                  Icons.format_color_reset,
+                  size: 20,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ],
