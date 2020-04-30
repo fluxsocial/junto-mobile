@@ -166,7 +166,16 @@ class AudioOpenWithPhoto extends StatelessWidget {
         Container(
           foregroundDecoration: BoxDecoration(color: Colors.black38),
           width: MediaQuery.of(context).size.width,
-          child: CachedNetworkImage(imageUrl: photo),
+          child: CachedNetworkImage(
+            imageUrl: photo,
+            placeholder: (BuildContext context, String _) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width * 2 / 3,
+                color: Theme.of(context).dividerColor,
+              );
+            },
+          ),
         ),
         if (title.isNotEmpty)
           Positioned(
