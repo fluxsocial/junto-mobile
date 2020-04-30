@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -83,16 +84,71 @@ class NotificationsScreen extends StatelessWidget {
                 itemCount: notifications.length,
                 itemBuilder: (context, index) {
                   final item = notifications[index];
-                  return ListTile(
-                    title: Text(
-                      item.notificationType.toString(),
-                    ),
-                  );
+                  return NotificationTile(item: item);
                 },
               );
             },
           )),
         ],
+      ),
+    );
+  }
+}
+
+class NotificationTile extends StatelessWidget {
+  const NotificationTile({
+    Key key,
+    @required this.item,
+  }) : super(key: key);
+
+  final JuntoNotification item;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget content;
+    switch (item.notificationType) {
+      case NotificationType.ConnectionNotification:
+        // TODO: Handle this case.
+        break;
+      case NotificationType.GroupJoinRequests:
+        // TODO: Handle this case.
+        break;
+      case NotificationType.NewComment:
+        content = NewCommentNotification(item: item);
+        break;
+      case NotificationType.NewSubscription:
+        // TODO: Handle this case.
+        break;
+      case NotificationType.NewConnection:
+        // TODO: Handle this case.
+        break;
+      case NotificationType.NewPackJoin:
+        // TODO: Handle this case.
+        break;
+    }
+    return ListTile(
+      title: content ??
+          Text(
+            item.notificationType.toString(),
+            style: TextStyle(
+              fontWeight:
+                  item.unread == true ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+    );
+  }
+}
+
+class NewCommentNotification extends StatelessWidget {
+  final JuntoNotification item;
+
+  const NewCommentNotification({Key key, this.item}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '${item.user?.name} commented on your expression',
+      style: TextStyle(
+        fontWeight: item.unread == true ? FontWeight.bold : FontWeight.normal,
       ),
     );
   }
