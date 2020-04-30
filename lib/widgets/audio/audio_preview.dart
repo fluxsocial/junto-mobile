@@ -19,10 +19,6 @@ class AudioPlaybackRow extends StatelessWidget {
     return Consumer<AudioService>(
       builder: (context, audio, child) {
         return Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 10,
-          ),
           child: Row(
             children: <Widget>[
               AudioPlayButton(
