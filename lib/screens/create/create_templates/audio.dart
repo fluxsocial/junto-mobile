@@ -30,6 +30,7 @@ class CreateAudio extends StatefulWidget {
 class CreateAudioState extends State<CreateAudio> {
   final TextEditingController titleController = TextEditingController();
   File audioPhotoBackground;
+  List<String> audioGradientValues = [];
 
   Future<void> _onPickPressed() async {
     try {
@@ -67,6 +68,12 @@ class CreateAudioState extends State<CreateAudio> {
     });
   }
 
+  void _setAudioGradientValues(String hexOne, String hexTwo) {
+    setState(() {
+      audioGradientValues = [hexOne, hexTwo];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AudioService>(
@@ -83,14 +90,15 @@ class CreateAudioState extends State<CreateAudio> {
                     ? AudioRecord()
                     : AudioReview(
                         audioPhotoBackground: audioPhotoBackground,
+                        audioGradientValues: audioGradientValues,
                         titleController: titleController,
                       ),
                 if (audio.playBackAvailable)
                   AudioBottomTools(
                     onPickPressed: _onPickPressed,
                     resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                    setAudioGradientValues: _setAudioGradientValues,
                   ),
-                  // AudioGradientSelector()
               ],
             ),
           ),
