@@ -34,25 +34,19 @@ class AudioOpenLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: <Widget>[Text('yo')],
+        if (audio.photo.isNotEmpty)
+          CachedNetworkImage(
+            imageUrl: audio.photo,
           ),
-        )
-        // if (audio.photo.isNotEmpty)
-        //   CachedNetworkImage(
-        //     imageUrl: audio.photo,
-        //   ),
-        // Positioned.fill(
-        //   child: Container(
-        //     padding: const EdgeInsets.symmetric(
-        //       horizontal: 20,
-        //       vertical: 20,
-        //     ),
-        //     child: AudioPlayControls(audio: audio),
-        //   ),
-        // ),
+        Positioned.fill(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
+            ),
+            child: AudioPlayControls(audio: audio),
+          ),
+        ),
       ],
     );
   }
