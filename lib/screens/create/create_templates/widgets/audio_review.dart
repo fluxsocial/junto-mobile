@@ -5,13 +5,41 @@ import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
 import 'package:provider/provider.dart';
 
-class AudioReview extends StatelessWidget {
+class AudioReview extends StatefulWidget {
   const AudioReview({
     this.audioPhotoBackground,
     this.titleController,
   });
   final File audioPhotoBackground;
   final TextEditingController titleController;
+
+  @override
+  State<StatefulWidget> createState() {
+    return AudioReviewState();
+  }
+}
+
+class AudioReviewState extends State<AudioReview> {
+  double _flexibleHeightSpace;
+  final GlobalKey<AudioReviewState> _keyFlexibleSpace =
+      GlobalKey<AudioReviewState>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
+  }
+
+  void _getFlexibleSpaceSize(_) {
+    final RenderBox renderBoxFlexibleSpace =
+        _keyFlexibleSpace.currentContext.findRenderObject();
+    final Size sizeFlexibleSpace = renderBoxFlexibleSpace.size;
+    final double heightFlexibleSpace = sizeFlexibleSpace.height;
+
+    setState(() {
+      _flexibleHeightSpace = heightFlexibleSpace;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,44 +50,44 @@ class AudioReview extends StatelessWidget {
             onTap: () => FocusScope.of(context).unfocus(),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              child: Container(
-                height: 100,
-                // height: MediaQuery.of(context).size.width * 2 / 3,
-                decoration: BoxDecoration(
-                  // image: DecorationImage(
-                  //   image: audioPhotoBackground != null
-                  //       ? FileImage(audioPhotoBackground)
-                  //       : null,
-                  //   fit: BoxFit.fitWidth,
-                  // ),
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.2, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
-                  ),
-                ),
-                child: Container(
-                  color: Colors.black54,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AudioTitle(
-                        titleController: titleController,
-                        hasBackground:
-                            audioPhotoBackground != null ? true : false,
+              child: Stack(
+                children: <Widget>[
+                  // if (widget.audioPhotoBackground == null)
+                  //   EmptyAudioBackground(),
+                  // if (audioPhotoBackground != null)
+                  //   PhotoAudioBackground(
+                  //     audioPhotoBackground: audioPhotoBackground,
+                  //   ),
+                  // AudioBlackOverlay(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 20,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        stops: const <double>[0.2, 0.9],
+                        colors: <Color>[
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(context).colorScheme.secondary,
+                        ],
                       ),
-                      AudioPlaybackRow(
-                        hasBackground:
-                            audioPhotoBackground != null ? true : false,
-                      ),
-                    ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AudioTitle(
+                          titleController: widget.titleController,
+                          hasBackground: true,
+                        ),
+                        AudioPlaybackRow(hasBackground: true),
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
@@ -82,10 +110,7 @@ class AudioTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 10,
-      ),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextField(
         controller: titleController,
         autofocus: false,
