@@ -1,20 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_search.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_request.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Spheres extends StatefulWidget {
   const Spheres({
@@ -52,12 +49,13 @@ class SpheresState extends State<Spheres> with ListDistinct {
     _userProvider = Provider.of<GroupRepo>(context, listen: false);
     _notificationProvider =
         Provider.of<NotificationRepo>(context, listen: false);
-    _refreshSpheres();
+    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
   }
 
   Future<void> _refreshSpheres() async {
     try {
-      await getUserInformation();
+      _userProfile =
+          Provider.of<UserDataProvider>(context, listen: false).userProfile;
       setState(() {
         getSpheres = getUserGroups();
       });
@@ -69,16 +67,6 @@ class SpheresState extends State<Spheres> with ListDistinct {
         ),
       );
     }
-  }
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      prefs.getString('user_data'),
-    );
-    setState(() {
-      _userProfile = UserData.fromMap(decodedUserData);
-    });
   }
 
   Future<UserGroupsResponse> getUserGroups() async {

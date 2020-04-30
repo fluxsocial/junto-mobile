@@ -61,15 +61,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    getUserInformation();
+    _userAddress = Provider.of<UserDataProvider>(context).userAddress;
+    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
+    _loadRelationship();
   }
 
-  Future<void> getUserInformation() async {
-    setState(() {
-      _userAddress = Provider.of<UserDataProvider>(context).userAddress;
-      _userProfile = Provider.of<UserDataProvider>(context).userProfile;
-    });
-
+  Future<void> _loadRelationship() async {
     final Map<String, dynamic> _relationToGroup =
         await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
       widget.group.address,
@@ -261,7 +258,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(
-          'JOiN',
+          'JOIN',
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w700,
