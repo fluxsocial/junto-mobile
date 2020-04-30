@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class UserRepo {
@@ -151,6 +155,13 @@ class UserRepo {
   Future<UserProfile> updateUser(
       Map<String, dynamic> user, String userAddress) async {
     final result = await _userService.updateUser(user, userAddress);
+    final box = await Hive.openBox(HiveBoxes.kAppBox);
+    box.put(HiveKeys.kUserData, jsonEncode(result));
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(await box.get(HiveKeys.kUserData));
+    decodedUserData['user'] = result;
+    box.delete(HiveKeys.kUserData);
+    box.put(HiveKeys.kUserData, jsonEncode(decodedUserData));
     return UserProfile.fromMap(result);
   }
 
