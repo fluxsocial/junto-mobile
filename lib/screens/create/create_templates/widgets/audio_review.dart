@@ -94,7 +94,44 @@ class AudioReviewWithGradient extends StatelessWidget {
   }
 }
 
-class AudioReviewWithPhoto extends StatelessWidget {
+// class AudioReviewWithPhoto extends StatelessWidget {
+//   AudioReviewWithPhoto({
+//     this.titleController,
+//     this.audioPhotoBackground,
+//   });
+
+//   final titleController;
+//   final File audioPhotoBackground;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         Image.file(audioPhotoBackground),
+//         Container(
+//           color: Colors.black54,
+//           height: Image.file(audioPhotoBackground).height,
+//         ),
+//       ],
+//     );
+
+//     // return Container(
+//     //   width: MediaQuery.of(context).size.width,
+//     //   height: Image.file(audioPhotoBackground).height,
+//     //   decoration: BoxDecoration(
+//     //     image: DecorationImage(
+//     //       image: FileImage(audioPhotoBackground),
+//     //       fit: BoxFit.fitHeight,
+//     //     ),
+//     //   ),
+//     //   child: AudioReviewBody(
+//     //     hasBackground: true,
+//     //     titleController: titleController,
+//     //   ),
+//     // );
+//   }
+// }
+
+class AudioReviewWithPhoto extends StatefulWidget {
   AudioReviewWithPhoto({
     this.titleController,
     this.audioPhotoBackground,
@@ -104,12 +141,19 @@ class AudioReviewWithPhoto extends StatelessWidget {
   final File audioPhotoBackground;
 
   @override
+  State<StatefulWidget> createState() {
+    return AudioReviewWithPhotoState();
+  }
+}
+
+class AudioReviewWithPhotoState extends State<AudioReviewWithPhoto> {
+  @override
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
         foregroundDecoration: BoxDecoration(color: Colors.black54),
         child: Image.file(
-          audioPhotoBackground,
+          widget.audioPhotoBackground,
         ),
       ),
       Positioned(
@@ -117,7 +161,7 @@ class AudioReviewWithPhoto extends StatelessWidget {
         left: 0,
         right: 0,
         child: AudioTitle(
-          titleController: titleController,
+          titleController: widget.titleController,
           hasBackground: true,
         ),
       ),
@@ -129,7 +173,34 @@ class AudioReviewWithPhoto extends StatelessWidget {
           hasBackground: true,
         ),
       ),
+      // Container(
+      //   color: Colors.green,
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //     children: [
+      
+      //       AudioPlaybackRow(
+      //         hasBackground: true,
+      //       ),
+      //     ],
+      //   ),
+      // )
     ]);
+    // return Container(
+    //   width: MediaQuery.of(context).size.width,
+    //   height: Image.file(widget.audioPhotoBackground).height,
+    //   decoration: BoxDecoration(
+    //     image: DecorationImage(
+    //       // image: FileImage(widget.audioPhotoBackground),
+    //       image: Image.file(widget.audioPhotoBackground).image,
+    //       fit: BoxFit.fitWidth,
+    //     ),
+    //   ),
+    //   child: AudioReviewBody(
+    //     hasBackground: true,
+    //     titleController: widget.titleController,
+    //   ),
+    // );
   }
 }
 
