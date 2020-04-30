@@ -5,11 +5,9 @@ import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
 class AudioGradientSelector extends StatelessWidget {
-  const AudioGradientSelector(
-      {this.toggleGradientSelector, this.setAudioGradientValues});
+  const AudioGradientSelector({this.toggleGradientSelector});
 
   final Function toggleGradientSelector;
-  final Function setAudioGradientValues;
 
   @override
   Widget build(BuildContext context) {
@@ -38,56 +36,16 @@ class AudioGradientSelector extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    AudioGradientSelectorItem(
-                      '8E8098',
-                      '307FAA',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '6F51A8',
-                      'E8B974',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '2E4F78',
-                      '6397C7',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '719cf4',
-                      'ffc7e4',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '639acf',
-                      '7bdaa5',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '8E8098',
-                      '307FAA',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '6F51A8',
-                      'E8B974',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '2E4F78',
-                      '6397C7',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '719cf4',
-                      'ffc7e4',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '639acf',
-                      '7bdaa5',
-                      setAudioGradientValues,
-                    ),
+                    AudioGradientSelectorItem('8E8098', '307FAA'),
+                    AudioGradientSelectorItem('6F51A8', 'E8B974'),
+                    AudioGradientSelectorItem('2E4F78', '6397C7'),
+                    AudioGradientSelectorItem('719cf4', 'ffc7e4'),
+                    AudioGradientSelectorItem('639acf', '7bdaa5'),
+                    AudioGradientSelectorItem('8E8098', '307FAA'),
+                    AudioGradientSelectorItem('6F51A8', 'E8B974'),
+                    AudioGradientSelectorItem('2E4F78', '6397C7'),
+                    AudioGradientSelectorItem('719cf4', 'ffc7e4'),
+                    AudioGradientSelectorItem('639acf', '7bdaa5'),
                   ],
                 ),
               ),
@@ -99,6 +57,9 @@ class AudioGradientSelector extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
+                // onTap: () {
+                //   toggleGradientSelector();
+                // },
                 onTap: toggleGradientSelector,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
@@ -141,33 +102,26 @@ class AudioGradientSelector extends StatelessWidget {
 }
 
 class AudioGradientSelectorItem extends StatelessWidget {
-  const AudioGradientSelectorItem(
-      this.hexOne, this.hexTwo, this.setAudioGradientValues);
+  const AudioGradientSelectorItem(this.hexOne, this.hexTwo);
 
   final String hexOne;
   final String hexTwo;
-  final Function setAudioGradientValues;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setAudioGradientValues(hexOne, hexTwo);
-      },
-      child: Container(
-        height: 38,
-        width: 38,
-        margin: EdgeInsets.only(
-          left: 15,
-          right: 15,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          gradient: LinearGradient(colors: [
-            HexColor.fromHex(hexOne),
-            HexColor.fromHex(hexTwo),
-          ]),
-        ),
+    return Container(
+      height: 38,
+      width: 38,
+      margin: EdgeInsets.only(
+        left: 15,
+        right: 15,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        gradient: LinearGradient(colors: [
+          HexColor.fromHex(hexOne),
+          HexColor.fromHex(hexTwo),
+        ]),
       ),
     );
   }

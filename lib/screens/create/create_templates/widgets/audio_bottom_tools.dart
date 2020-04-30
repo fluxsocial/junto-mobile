@@ -4,14 +4,9 @@ import 'package:provider/provider.dart';
 import 'audio_gradient_selector.dart';
 
 class AudioBottomTools extends StatefulWidget {
-  const AudioBottomTools({
-    this.onPickPressed,
-    this.resetAudioPhotoBackground,
-    this.setAudioGradientValues,
-  });
+  const AudioBottomTools({this.onPickPressed, this.resetAudioPhotoBackground});
 
   final Function resetAudioPhotoBackground;
-  final Function setAudioGradientValues;
   final Function onPickPressed;
   @override
   State<StatefulWidget> createState() {
@@ -41,7 +36,6 @@ class AudioBottomToolsState extends State<AudioBottomTools> {
             ),
             secondChild: AudioGradientSelector(
               toggleGradientSelector: _toggleGradientSelector,
-              setAudioGradientValues: widget.setAudioGradientValues,
             ),
           )
         ],
