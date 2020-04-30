@@ -40,6 +40,8 @@ class UserDataProvider extends ChangeNotifier {
       userProfile = UserData.fromMap(decodedUserData);
       if (prefs.getBool('twoColumnView') != null) {
         twoColumnView = prefs.getBool('twoColumnView');
+      if (box.get(HiveKeys.kLayoutView) != null) {
+        twoColumnView = box.get(HiveKeys.kLayoutView);
       }
 
       notifyListeners();
