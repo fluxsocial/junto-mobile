@@ -23,23 +23,24 @@ class AudioReview extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               child: Container(
-                height: MediaQuery.of(context).size.width * 2 / 3,
+                height: 100,
+                // height: MediaQuery.of(context).size.width * 2 / 3,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: audioPhotoBackground != null
-                        ? FileImage(audioPhotoBackground)
-                        : null,
-                    fit: BoxFit.fitWidth,
-                  ),
-                  // gradient: LinearGradient(
-                  //   begin: Alignment.bottomLeft,
-                  //   end: Alignment.topRight,
-                  //   stops: const <double>[0.2, 0.9],
-                  //   colors: <Color>[
-                  //     Theme.of(context).colorScheme.primary,
-                  //     Theme.of(context).colorScheme.secondary,
-                  //   ],
+                  // image: DecorationImage(
+                  //   image: audioPhotoBackground != null
+                  //       ? FileImage(audioPhotoBackground)
+                  //       : null,
+                  //   fit: BoxFit.fitWidth,
                   // ),
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: const <double>[0.2, 0.9],
+                    colors: <Color>[
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.secondary,
+                    ],
+                  ),
                 ),
                 child: Container(
                   color: Colors.black54,
@@ -65,101 +66,6 @@ class AudioReview extends StatelessWidget {
         ],
       );
     });
-  }
-}
-
-class AudioReviewDefault extends StatelessWidget {
-  AudioReviewDefault({this.titleController});
-
-  final titleController;
-  @override
-  Widget build(BuildContext context) {
-    return AudioReviewBody(
-      hasBackground: false,
-      titleController: titleController,
-    );
-  }
-}
-
-class AudioReviewWithGradient extends StatelessWidget {
-  AudioReviewWithGradient({
-    this.titleController,
-    this.audioPhotoBackground,
-  });
-
-  final titleController;
-  final File audioPhotoBackground;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.width * 2 / 3,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: FileImage(audioPhotoBackground),
-          fit: BoxFit.fitWidth,
-        ),
-      ),
-      child: AudioReviewBody(
-        hasBackground: true,
-        titleController: titleController,
-      ),
-    );
-  }
-}
-
-class AudioReviewWithPhoto extends StatelessWidget {
-  AudioReviewWithPhoto({this.titleController});
-
-  final titleController;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.width * 2 / 3,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          stops: const <double>[0.2, 0.9],
-          colors: <Color>[
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.secondary,
-          ],
-        ),
-      ),
-      child: AudioReviewBody(
-        hasBackground: true,
-        titleController: titleController,
-      ),
-    );
-  }
-}
-
-class AudioReviewBody extends StatelessWidget {
-  AudioReviewBody({
-    this.titleController,
-    this.hasBackground,
-  });
-  final titleController;
-  final bool hasBackground;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: hasBackground ? Colors.black54 : Colors.transparent,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          AudioTitle(
-            titleController: titleController,
-            hasBackground: hasBackground,
-          ),
-          AudioPlaybackRow(
-            hasBackground: hasBackground,
-          ),
-        ],
-      ),
-    );
   }
 }
 
