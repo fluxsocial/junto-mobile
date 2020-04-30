@@ -57,7 +57,6 @@ class EmptyAudioBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width * 2 / 3,
       child: audio != null
           ? AudioGradientBackground(audio: audio)
           : Image.asset(
@@ -71,7 +70,10 @@ class EmptyAudioBackground extends StatelessWidget {
 class AudioPlaybackRow extends StatelessWidget {
   const AudioPlaybackRow({
     Key key,
+    this.hasBackground,
   }) : super(key: key);
+
+  final bool hasBackground;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +81,9 @@ class AudioPlaybackRow extends StatelessWidget {
       builder: (context, audio, child) {
         return Row(
           children: <Widget>[
-            AudioPlayButton(),
+            AudioPlayButton(
+              hasBackground: hasBackground,
+            ),
             AudioSeek(),
             AudioPosition(),
           ],
