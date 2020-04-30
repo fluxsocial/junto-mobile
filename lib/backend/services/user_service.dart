@@ -13,7 +13,6 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class UserServiceCentralized implements UserService {
@@ -391,7 +390,6 @@ class UserServiceCentralized implements UserService {
   @override
   Future<Map<String, dynamic>> updateUser(
       Map<String, dynamic> body, String userAddress) async {
-    print(body);
     // make request to api with encoded json body
     final http.Response _serverResponse =
         await client.patch('/users/$userAddress', body: body);
@@ -399,16 +397,6 @@ class UserServiceCentralized implements UserService {
     // handle response
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
-
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    // get existing user data from shared prefs
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      _prefs.getString('user_data'),
-    );
-    // replace user with response and update shared prefs
-    decodedUserData['user'] = _data;
-    final String _userMapToString = json.encode(decodedUserData);
-    _prefs..setString('user_data', _userMapToString);
 
     return _data;
   }
