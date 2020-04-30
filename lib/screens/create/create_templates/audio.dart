@@ -47,9 +47,7 @@ class CreateAudioState extends State<CreateAudio> {
         context,
         image,
         aspectRatios: <String>[
-          '2:3',
-          '1:1',
-          '3:2',
+          '2:3', '1:1', '3:2',
         ],
       );
       Navigator.of(context).focusScopeNode.unfocus();
@@ -58,7 +56,6 @@ class CreateAudioState extends State<CreateAudio> {
 
         return;
       }
-
       setState(() {
         audioPhotoBackground = cropped;
         audioGradientValues = [];
