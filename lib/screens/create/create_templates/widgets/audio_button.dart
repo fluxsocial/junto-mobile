@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:provider/provider.dart';
 
+import 'audio_button_background.dart';
+
 class AudioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -10,6 +12,18 @@ class AudioButton extends StatelessWidget {
         if (audio.isRecording) {
           return Icon(
             Icons.stop,
+            size: 28,
+            color: Theme.of(context).primaryColor,
+          );
+        } else if (audio.playBackAvailable && !audio.isPlaying) {
+          return Icon(
+            Icons.play_arrow,
+            size: 28,
+            color: Theme.of(context).primaryColor,
+          );
+        } else if (audio.playBackAvailable && audio.isPlaying) {
+          return Icon(
+            Icons.pause,
             size: 28,
             color: Theme.of(context).primaryColor,
           );
@@ -41,6 +55,12 @@ class AudioButtonStack extends StatelessWidget {
             onTap: () async {
               if (audio.isRecording) {
                 await audio.stopRecording();
+              } else if (audio.isPlaying) {
+                await audio.pausePlayback();
+              } else if (audio.playBackAvailable && !audio.isPlaying) {
+                await audio.playRecording();
+              } else if (audio.playBackAvailable && audio.isPlaying) {
+                await audio.pausePlayback();
               } else {
                 await audio.startRecording();
               }
@@ -51,11 +71,11 @@ class AudioButtonStack extends StatelessWidget {
       },
       child: Stack(
         children: <Widget>[
+          // AudioButtonBackground(),
           Container(
             height: 60,
             width: 60,
             alignment: Alignment.center,
-            color: Colors.transparent,
             child: AudioButton(),
           ),
         ],
@@ -66,6 +86,12 @@ class AudioButtonStack extends StatelessWidget {
   String _getLabel(AudioService audio) {
     if (audio.isRecording) {
       return 'Stop recording';
+    } else if (audio.isPlaying) {
+      return 'Pause playing';
+    } else if (audio.playBackAvailable && !audio.isPlaying) {
+      return 'Start playing';
+    } else if (audio.playBackAvailable && audio.isPlaying) {
+      return 'Pause playing';
     } else {
       return 'Start recording';
     }

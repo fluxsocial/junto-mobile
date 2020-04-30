@@ -6,13 +6,15 @@ class AudioTimer extends StatelessWidget {
   final audio;
   @override
   Widget build(BuildContext context) {
-    return Text(
-      AudioPosition().getCurrentPosition(audio),
-      style: TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.w600,
-        letterSpacing: 2.4,
-        color: Theme.of(context).primaryColorLight,
+    return Container(
+      height: 36,
+      child: Text(
+        AudioPosition().getCurrentPosition(audio),
+        style: TextStyle(
+          fontSize: 20,
+          letterSpacing: 2,
+          color: Theme.of(context).primaryColorLight,
+        ),
       ),
     );
   }

@@ -22,7 +22,6 @@ class AudioButtonDecoration extends StatelessWidget {
           BoxShadow(
             color: Theme.of(context).dividerColor,
             blurRadius: 9,
-            spreadRadius: 3,
           )
         ],
       ),
