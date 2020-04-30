@@ -14,10 +14,10 @@ class AudioButtonDecoration extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         border: Border.all(
-          color: Theme.of(context).backgroundColor,
+          color: Colors.white,
           width: 5,
         ),
-        color: Theme.of(context).backgroundColor,
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).dividerColor,
