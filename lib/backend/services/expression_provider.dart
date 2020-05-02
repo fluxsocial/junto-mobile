@@ -44,9 +44,13 @@ class ExpressionServiceCentralized implements ExpressionService {
     } else if (isPrivate == false) {
       _serverUrl = '/auth/s3?private=false';
     }
+    final contentLength = file.lengthSync();
+
     // denote file type and get url, headers, and key of s3 bucket
-    final http.Response _serverResponse =
-        await client.postWithoutEncoding(_serverUrl, body: fileType);
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      _serverUrl,
+      body: {'content_type': fileType, 'content_length': '${contentLength}'},
+    );
     logger.logDebug(_serverResponse.body);
     logger.logDebug(_serverResponse.statusCode.toString());
 
