@@ -15,7 +15,12 @@ class UserNavigationWrapper extends StatelessWidget {
         Navigator.push(
           context,
           CupertinoPageRoute(
-            builder: (context) => JuntoMember(profile: notification.user),
+            builder: (context) => JuntoMember(
+              profile: notification.notificationType ==
+                      NotificationType.GroupJoinRequests
+                  ? notification.creator
+                  : notification.user,
+            ),
           ),
         );
       },
