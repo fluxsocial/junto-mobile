@@ -34,7 +34,7 @@ class CommentNotification extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    TextSpan(text: 'commented on your expression')
+                    TextSpan(text: 'commented on your expression.')
                   ]),
             ),
           ),

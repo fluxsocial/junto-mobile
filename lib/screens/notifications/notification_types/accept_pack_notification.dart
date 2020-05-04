@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
-class SubscribedNotification extends StatelessWidget {
+class AcceptPackNotification extends StatelessWidget {
   final JuntoNotification item;
 
-  const SubscribedNotification({Key key, this.item}) : super(key: key);
+  const AcceptPackNotification({Key key, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +34,7 @@ class SubscribedNotification extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    TextSpan(text: 'subscribed to you.')
+                    TextSpan(text: 'accepted your pack invitation.')
                   ]),
             ),
           ),

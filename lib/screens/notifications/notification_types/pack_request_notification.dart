@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
-class SubscribedNotification extends StatelessWidget {
+class PackRequestNotification extends StatelessWidget {
   final JuntoNotification item;
 
-  const SubscribedNotification({Key key, this.item}) : super(key: key);
+  const PackRequestNotification({Key key, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,7 +13,7 @@ class SubscribedNotification extends StatelessWidget {
       child: Row(
         children: <Widget>[
           MemberAvatar(
-            profilePicture: item.user.profilePicture,
+            profilePicture: item.creator.profilePicture,
             diameter: 38,
           ),
           const SizedBox(width: 10),
@@ -27,14 +27,14 @@ class SubscribedNotification extends StatelessWidget {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: '${item.user?.username} ',
+                      text: '${item.creator?.username} ',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    TextSpan(text: 'subscribed to you.')
+                    TextSpan(text: 'invited you to their pack.')
                   ]),
             ),
           ),

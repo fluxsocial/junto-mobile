@@ -4,7 +4,10 @@ import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_connection_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_pack_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/connection_request_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/pack_request_notification.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -100,10 +103,10 @@ class NotificationTile extends StatelessWidget {
     Widget content;
     switch (item.notificationType) {
       case NotificationType.ConnectionNotification:
-        // TODO: Handle this case.
+        content = ConnectionRequestNotification(item: item);
         break;
       case NotificationType.GroupJoinRequests:
-        // TODO: Handle this case.
+        content = PackRequestNotification(item: item);
         break;
       case NotificationType.NewComment:
         content = CommentNotification(item: item);
@@ -115,7 +118,7 @@ class NotificationTile extends StatelessWidget {
         content = AcceptConnectionNotification(item: item);
         break;
       case NotificationType.NewPackJoin:
-        // TODO: Handle this case.
+        content = AcceptPackNotification(item: item);
         break;
     }
     return Container(
