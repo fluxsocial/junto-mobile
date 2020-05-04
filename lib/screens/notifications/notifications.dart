@@ -64,22 +64,10 @@ class NotificationsScreen extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Center(
-              child: Text(
-                'This screen will be your stream of notifications. We are currently working on this and will open this open before Alpha II(b), ~ mid-April.',
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).primaryColor,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
           Flexible(child: Consumer<NotificationsHandler>(
             builder: (context, data, child) {
               final notifications = data.notifications;
+              print(notifications);
               return ListView.builder(
                 itemCount: notifications.length,
                 itemBuilder: (context, index) {
@@ -129,7 +117,8 @@ class NotificationTile extends StatelessWidget {
     return ListTile(
       title: content ??
           Text(
-            item.notificationType.toString(),
+            // item.notificationType.toString(),
+            'hello',
             style: TextStyle(
               fontWeight:
                   item.unread == true ? FontWeight.bold : FontWeight.normal,
