@@ -49,7 +49,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     // denote file type and get url, headers, and key of s3 bucket
     final http.Response _serverResponse = await client.postWithoutEncoding(
       _serverUrl,
-      body: {'content_type': fileType, 'content_length': '${contentLength}'},
+      body: {'content_type': fileType, 'content_length': contentLength},
     );
     logger.logDebug(_serverResponse.body);
     logger.logDebug(_serverResponse.statusCode.toString());
