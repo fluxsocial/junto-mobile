@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -63,11 +64,12 @@ class NotificationsScreen extends StatelessWidget {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Flexible(child: Consumer<NotificationsHandler>(
+          Expanded(child: Consumer<NotificationsHandler>(
             builder: (context, data, child) {
               final notifications = data.notifications;
-              print(notifications);
               return ListView.builder(
                 itemCount: notifications.length,
                 itemBuilder: (context, index) {
@@ -114,31 +116,19 @@ class NotificationTile extends StatelessWidget {
         // TODO: Handle this case.
         break;
     }
-    return ListTile(
-      title: content ??
-          Text(
-            // item.notificationType.toString(),
-            'hello',
-            style: TextStyle(
-              fontWeight:
-                  item.unread == true ? FontWeight.bold : FontWeight.normal,
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: .75,
           ),
-    );
-  }
-}
-
-class NewCommentNotification extends StatelessWidget {
-  final JuntoNotification item;
-
-  const NewCommentNotification({Key key, this.item}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      '${item.user?.name} commented on your expression',
-      style: TextStyle(
-        fontWeight: item.unread == true ? FontWeight.bold : FontWeight.normal,
+        ),
       ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 15,
+      ),
+      child: content ?? Text('hello'),
     );
   }
 }
