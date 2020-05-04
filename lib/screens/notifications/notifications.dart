@@ -46,11 +46,11 @@ class NotificationsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
-                  'Notifications',
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-                const SizedBox(width: 42)
+                // Text(
+                //   'Notifications',
+                //   style: Theme.of(context).textTheme.subtitle1,
+                // ),
+                // const SizedBox(width: 42)
               ],
             ),
           ),
@@ -74,6 +74,7 @@ class NotificationsScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          NotificationsTitle(),
           Expanded(child: Consumer<NotificationsHandler>(
             builder: (context, data, child) {
               final notifications = data.notifications;
@@ -81,7 +82,12 @@ class NotificationsScreen extends StatelessWidget {
                 itemCount: notifications.length,
                 itemBuilder: (context, index) {
                   final item = notifications[index];
-                  return NotificationTile(item: item);
+                  if (notifications.length > 0) {
+                    return NotificationTile(item: item);
+                  } else {
+                    // notification placeholder
+                  }
+                  return const SizedBox();
                 },
               );
             },
@@ -153,6 +159,9 @@ class NotificationTile extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: item.unread
+              ? Theme.of(context).dividerColor.withOpacity(.3)
+              : Theme.of(context).backgroundColor,
           border: Border(
             bottom: BorderSide(
               color: Theme.of(context).dividerColor,
@@ -164,6 +173,23 @@ class NotificationTile extends StatelessWidget {
           vertical: 15,
         ),
         child: content ?? const SizedBox(),
+      ),
+    );
+  }
+}
+
+class NotificationsTitle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      child: Text(
+        'Notifications',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: Theme.of(context).primaryColor,
+        ),
       ),
     );
   }
