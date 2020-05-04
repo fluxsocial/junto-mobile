@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_navigation_wrapper.dart';
 
+
 class UserProfilePicture extends StatelessWidget {
   final JuntoNotification item;
 
