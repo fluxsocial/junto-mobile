@@ -7,7 +7,7 @@ class UserNavigationWrapper extends StatelessWidget {
   const UserNavigationWrapper({this.notification, this.child});
 
   final JuntoNotification notification;
-  final Widget child;
+  final dynamic child;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

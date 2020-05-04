@@ -1,6 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 
 class CommentNotification extends StatelessWidget {
   final JuntoNotification item;
@@ -24,6 +27,14 @@ class CommentNotification extends StatelessWidget {
                   ),
                   children: <TextSpan>[
                     TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) =>
+                                    JuntoMember(profile: item.user),
+                              ),
+                            ),
                       text: '${item.user?.username} ',
                       style: TextStyle(
                         fontSize: 14,
