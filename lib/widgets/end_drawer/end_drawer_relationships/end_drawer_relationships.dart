@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/notification_signal.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending/pending_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
@@ -49,21 +50,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
       pendingPackRequests =
           userRelations['pending_group_join_requests']['results'];
     });
-  }
-
-  Widget _notificationSignal() {
-    return Positioned(
-      top: 10,
-      right: 5,
-      child: Container(
-        height: 7,
-        width: 7,
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          borderRadius: BorderRadius.circular(100),
-        ),
-      ),
-    );
   }
 
   @override
@@ -149,7 +135,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                                 pendingPackRequests != null)
                               if (pendingConnectionRequests.isNotEmpty ||
                                   pendingPackRequests.isNotEmpty)
-                                _notificationSignal()
+                                NotificationSignal(top: 10, right: 5,),
                           ],
                         ),
                       ),

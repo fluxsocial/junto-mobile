@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:junto_beta_mobile/widgets/notification_signal.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsLunarIcon extends StatelessWidget {
@@ -37,32 +38,27 @@ class NotificationsIcon extends StatelessWidget {
           Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) => NotificationsScreen(),
-              settings: RouteSettings(name: 'notifications')
-            ),
+                builder: (context) => NotificationsScreen(),
+                settings: RouteSettings(name: 'notifications')),
           );
         },
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: <Widget>[
-            Icon(
-              CustomIcons.moon,
-              size: 22,
-              color: Theme.of(context).primaryColor,
+            Container(
+              color: Colors.transparent,
+              padding: const EdgeInsets.only(right: 10),
+              child: Icon(
+                CustomIcons.moon,
+                size: 22,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
             if (unread)
-              Positioned(
-                top: 0,
-                left: 0,
-                child: Container(
-                  height: 8,
-                  width: 8,
-                  decoration: ShapeDecoration(
-                    shape: CircleBorder(),
-                    color: Theme.of(context).accentColor,
-                  ),
-                ),
-              )
+              NotificationSignal(
+                top: 2,
+                right: 5,
+              ),
           ],
         ),
       ),

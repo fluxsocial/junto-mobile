@@ -26,7 +26,7 @@ class CommentNotification extends StatelessWidget {
                   ),
                   children: <TextSpan>[
                     UsernameTextspan(item: item).retrieveTextSpan(context),
-                    TextSpan(text: 'commented on your expression.')
+                    TextSpan(text: 'commented on your expression.'),
                   ]),
             ),
           ),

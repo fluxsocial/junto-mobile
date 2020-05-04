@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_connection_notification.dart';
@@ -164,7 +163,7 @@ class NotificationTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           vertical: 15,
         ),
-        child: content ?? Text('hello'),
+        child: content ?? const SizedBox(),
       ),
     );
   }

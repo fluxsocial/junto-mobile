@@ -26,7 +26,7 @@ class AcceptPackNotification extends StatelessWidget {
                   ),
                   children: <TextSpan>[
                     UsernameTextspan(item: item).retrieveTextSpan(context),
-                    TextSpan(text: 'accepted your pack invitation.')
+                    TextSpan(text: 'accepted your pack invitation.'),
                   ]),
             ),
           ),
