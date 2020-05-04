@@ -3,6 +3,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_connection_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -107,10 +109,10 @@ class NotificationTile extends StatelessWidget {
         content = CommentNotification(item: item);
         break;
       case NotificationType.NewSubscription:
-        // TODO: Handle this case.
+        content = SubscribedNotification(item: item);
         break;
       case NotificationType.NewConnection:
-        // TODO: Handle this case.
+        content = AcceptConnectionNotification(item: item);
         break;
       case NotificationType.NewPackJoin:
         // TODO: Handle this case.
