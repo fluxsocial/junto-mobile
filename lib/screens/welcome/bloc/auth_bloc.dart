@@ -71,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       logger.logDebug(error.message);
       yield UnAuthenticatedState();
     } catch (error) {
-      logger.logDebug(error);
+      logger.logException(error);
       yield UnAuthenticatedState();
     }
   }
@@ -102,7 +102,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _clearUserInformation();
       yield UnAuthenticatedState();
     } catch (error) {
-      logger.logDebug(error.message);
+      logger.logException(error);
       await _clearUserInformation();
       yield UnAuthenticatedState();
     }
