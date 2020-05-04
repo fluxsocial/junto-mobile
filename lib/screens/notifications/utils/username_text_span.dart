@@ -10,7 +10,7 @@ class UsernameTextspan extends StatelessWidget {
     return TextSpan(
       recognizer: JuntoTextSpanNav().tapRecognizer(context, item),
       text: item.notificationType == NotificationType.GroupJoinRequests
-          ? '${item.creator?.username}'
+          ? '${item.creator.username} '
           : '${item.user?.username} ',
       style: TextStyle(
         fontSize: 14,

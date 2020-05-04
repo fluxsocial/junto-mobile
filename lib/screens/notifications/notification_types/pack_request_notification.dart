@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
-import 'package:junto_beta_mobile/screens/notifications/utils/text_span_nav.dart';
+import 'package:junto_beta_mobile/screens/notifications/utils/username_text_span.dart';
 
 
 class PackRequestNotification extends StatelessWidget {
@@ -25,14 +25,8 @@ class PackRequestNotification extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                   ),
                   children: <TextSpan>[
-                    TextSpan(
-                      text: '${item.creator?.username} ',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
+                                 UsernameTextspan(item: item).retrieveTextSpan(context),
+
                     TextSpan(text: 'invited you to their pack.')
                   ]),
             ),
