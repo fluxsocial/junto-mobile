@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_connection_notification.dart';
@@ -121,19 +124,48 @@ class NotificationTile extends StatelessWidget {
         content = AcceptPackNotification(item: item);
         break;
     }
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).dividerColor,
-            width: .75,
+
+    void navigateTo(BuildContext context) {
+      if (item.notificationType == NotificationType.NewComment) {
+        // [WIP] nav to expression; waiting on API
+        return;
+      } else {
+        if (item.notificationType == NotificationType.GroupJoinRequests) {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => JuntoMember(profile: item.creator),
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => JuntoMember(profile: item.user),
+            ),
+          );
+        }
+      }
+    }
+
+    return GestureDetector(
+      onTap: () {
+        navigateTo(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: .75,
+            ),
           ),
         ),
+        padding: const EdgeInsets.symmetric(
+          vertical: 15,
+        ),
+        child: content ?? Text('hello'),
       ),
-      padding: const EdgeInsets.symmetric(
-        vertical: 15,
-      ),
-      child: content ?? Text('hello'),
     );
   }
 }
