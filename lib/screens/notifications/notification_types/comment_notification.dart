@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:provider/provider.dart';
 
-class NewCommentNotification extends StatelessWidget {
+class CommentNotification extends StatelessWidget {
   final JuntoNotification item;
 
-  const NewCommentNotification({Key key, this.item}) : super(key: key);
+  const CommentNotification({Key key, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,16 +38,6 @@ class NewCommentNotification extends StatelessWidget {
                   ]),
             ),
           ),
-          // Flexible(
-          //             child: Text(
-          //     '${item.user?.username} ',
-          //     style: TextStyle(
-          //       fontSize: 14,
-          //       fontWeight: FontWeight.w700,
-          //       color: Theme.of(context).primaryColor,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

@@ -104,7 +104,7 @@ class NotificationTile extends StatelessWidget {
         // TODO: Handle this case.
         break;
       case NotificationType.NewComment:
-        content = NewCommentNotification(item: item);
+        content = CommentNotification(item: item);
         break;
       case NotificationType.NewSubscription:
         // TODO: Handle this case.
