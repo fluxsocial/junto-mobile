@@ -47,10 +47,10 @@ dependencies:
 
 dev_dependencies:
   test: any
-  build_runner:
+  build_runner: 1.9.0
   hive_generator: 0.7.0+2
-  freezed:
-  effective_dart:
+  freezed: 0.10.7
+  effective_dart: 1.2.1
 
 flutter:
   uses-material-design: true
