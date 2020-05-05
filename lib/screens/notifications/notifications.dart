@@ -75,6 +75,7 @@ class NotificationsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           NotificationsTitle(),
+   
           Expanded(child: Consumer<NotificationsHandler>(
             builder: (context, data, child) {
               final notifications = data.notifications;

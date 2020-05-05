@@ -58,7 +58,6 @@ abstract class JuntoNotification with _$JuntoNotification {
   }
 
   static ExpressionResponse expressionFromJson(Map<String, dynamic> json) {
-    print(json);
     if (json != null) {
       return ExpressionResponse.fromMap(json);
     }
