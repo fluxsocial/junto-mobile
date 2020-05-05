@@ -16,8 +16,9 @@ class NotificationsRelationsView extends StatelessWidget {
         Expanded(child: Consumer<NotificationsHandler>(
           builder: (context, data, child) {
             final notifications = data.notifications;
-            List<JuntoNotification> relationsNotifications = [];
-            notifications.map((notification) {
+            List relationsNotifications = [];
+
+            notifications.forEach((notification) {
               if (notification.notificationType !=
                   NotificationType.NewComment) {
                 relationsNotifications.add(notification);
@@ -32,8 +33,9 @@ class NotificationsRelationsView extends StatelessWidget {
                   if (notifications.length > 0 &&
                       item.notificationType != NotificationType.NewComment) {
                     return NotificationTile(item: item);
+                  } else {
+                    return SizedBox();
                   }
-                  return SizedBox();
                 },
               );
             } else {

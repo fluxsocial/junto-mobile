@@ -16,19 +16,31 @@ class NotificationsExpressionView extends StatelessWidget {
         Expanded(child: Consumer<NotificationsHandler>(
           builder: (context, data, child) {
             final notifications = data.notifications;
-            return ListView.builder(
-              itemCount: notifications.length,
-              itemBuilder: (context, index) {
-                final item = notifications[index];
-                if (notifications.length > 0 &&
-                    item.notificationType == NotificationType.NewComment) {
-                  return NotificationTile(item: item);
-                } else {
-                  // notification placeholder
-                  return NotificationPlaceholder();
-                }
-              },
-            );
+            List expressionNotifications = [];
+
+            notifications.forEach((notification) {
+              if (notification.notificationType ==
+                  NotificationType.NewComment) {
+                expressionNotifications.add(notification);
+              }
+            });
+
+            if (expressionNotifications.isNotEmpty) {
+              return ListView.builder(
+                itemCount: notifications.length,
+                itemBuilder: (context, index) {
+                  final item = notifications[index];
+                  if (notifications.length > 0 &&
+                      item.notificationType == NotificationType.NewComment) {
+                    return NotificationTile(item: item);
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              );
+            } else {
+              return NotificationPlaceholder();
+            }
           },
         )),
       ],
