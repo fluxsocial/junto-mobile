@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
-import 'package:junto_beta_mobile/screens/notifications/widgets/accept_pack_request.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/pack_request_response.dart';
 import 'package:junto_beta_mobile/screens/notifications/utils/username_text_span.dart';
 
 class PackRequestNotification extends StatelessWidget {
@@ -31,7 +31,7 @@ class PackRequestNotification extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          AcceptPackRequest(
+          PackRequestResponse(
             packAddress: item.group.address,
             userAddress: item.creator.address,
           ),
