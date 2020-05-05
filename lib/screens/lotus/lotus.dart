@@ -153,9 +153,9 @@ class JuntoLotus extends StatelessWidget {
                                     child: Text(
                                       'JUNTO',
                                       style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white.withOpacity(1),
                                         letterSpacing: 2.4,
                                       ),
                                     ),

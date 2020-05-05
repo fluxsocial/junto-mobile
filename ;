@@ -1,0 +1,16 @@
+Revert "Fix created at type in notification models"
+
+This reverts commit f876d339308b6a7f6c7c042b4d988573665bb091.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch notifications-design
+# Your branch is up to date with 'origin/notifications-design'.
+#
+# Changes to be committed:
+#	modified:   lib/models/notification.dart
+#	modified:   lib/models/notification.freezed.dart
+#	modified:   lib/models/notification.g.dart
+#	modified:   lib/widgets/appbar/notifications_lunar_icon.dart
+e
