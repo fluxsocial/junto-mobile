@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+
+import 'expression_slim_model.dart';
 
 part 'notification.freezed.dart';
 part 'notification.g.dart';
@@ -23,7 +26,7 @@ enum NotificationType {
 ///
 /// - For [NotificationType.connectionNotification] it's [user]
 /// - For [NotificationType.groupJoinRequests] it's [group] and [creator]
-/// - For [NotificationType.newComment] it's [user]
+/// - For [NotificationType.newComment] it's [user] and [expression]
 /// - For [NotificationType.newSubscription] it's [user]
 /// - For [NotificationType.newConnection] it's [user]
 /// - For [NotificationType.newPackJoin] it's [user]
@@ -39,6 +42,7 @@ abstract class JuntoNotification with _$JuntoNotification {
         Group group,
     @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
         UserProfile creator,
+    ExpressionSlimModel expression,
     bool unread,
   }) = _Notification;
 

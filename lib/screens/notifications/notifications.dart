@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/screens/notifications/views/all_view.dart';
+import 'package:junto_beta_mobile/screens/notifications/views/expression_view.dart';
+import 'package:junto_beta_mobile/screens/notifications/views/relations_view.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/notification_tab_name.dart';
 
 class NotificationsScreen extends StatelessWidget {
+  final List<String> _tabs = [
+    'ALL',
+    'EXPRESSION',
+    'RELATIONS',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,93 +70,39 @@ class NotificationsScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Center(
-              child: Text(
-                'This screen will be your stream of notifications. We are currently working on this and will open this open before Alpha II(b), ~ mid-April.',
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).primaryColor,
+      body: DefaultTabController(
+        length: _tabs.length,
+        child: NestedScrollView(
+          physics: const ClampingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverPersistentHeader(
+                delegate: JuntoAppBarDelegate(
+                  TabBar(
+                    labelPadding: const EdgeInsets.all(0),
+                    isScrollable: true,
+                    labelColor: Theme.of(context).primaryColorDark,
+                    unselectedLabelColor: Theme.of(context).primaryColorLight,
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
+                    indicatorWeight: 0.0001,
+                    tabs: <Widget>[
+                      for (String name in _tabs)
+                        NotificationTabName(name: name),
+                    ],
+                  ),
                 ),
-                textAlign: TextAlign.center,
+                pinned: true,
               ),
-            ),
+            ];
+          },
+          body: TabBarView(
+            children: <Widget>[
+              NotificationsAllView(),
+              NotificationsExpressionView(),
+              NotificationsRelationsView(),
+            ],
           ),
-          Flexible(child: Consumer<NotificationsHandler>(
-            builder: (context, data, child) {
-              final notifications = data.notifications;
-              return ListView.builder(
-                itemCount: notifications.length,
-                itemBuilder: (context, index) {
-                  final item = notifications[index];
-                  return NotificationTile(item: item);
-                },
-              );
-            },
-          )),
-        ],
-      ),
-    );
-  }
-}
-
-class NotificationTile extends StatelessWidget {
-  const NotificationTile({
-    Key key,
-    @required this.item,
-  }) : super(key: key);
-
-  final JuntoNotification item;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget content;
-    switch (item.notificationType) {
-      case NotificationType.ConnectionNotification:
-        // TODO: Handle this case.
-        break;
-      case NotificationType.GroupJoinRequests:
-        // TODO: Handle this case.
-        break;
-      case NotificationType.NewComment:
-        content = NewCommentNotification(item: item);
-        break;
-      case NotificationType.NewSubscription:
-        // TODO: Handle this case.
-        break;
-      case NotificationType.NewConnection:
-        // TODO: Handle this case.
-        break;
-      case NotificationType.NewPackJoin:
-        // TODO: Handle this case.
-        break;
-    }
-    return ListTile(
-      title: content ??
-          Text(
-            item.notificationType.toString(),
-            style: TextStyle(
-              fontWeight:
-                  item.unread == true ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-    );
-  }
-}
-
-class NewCommentNotification extends StatelessWidget {
-  final JuntoNotification item;
-
-  const NewCommentNotification({Key key, this.item}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      '${item.user?.name} commented on your expression',
-      style: TextStyle(
-        fontWeight: item.unread == true ? FontWeight.bold : FontWeight.normal,
+        ),
       ),
     );
   }

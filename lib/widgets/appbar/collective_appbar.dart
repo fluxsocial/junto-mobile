@@ -39,117 +39,113 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          child: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: .75,
-                        ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                        width: .75,
                       ),
-                      color: Theme.of(context).backgroundColor,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.bottomLeft,
-                          padding: const EdgeInsets.only(left: 10),
-                          color: Colors.transparent,
-                          height: 36,
-                          child: Row(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__logo.png',
-                                height: 22.0,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              const SizedBox(width: 7.5),
-                              Text(
-                                appbarTitle ?? 'JUNTO',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            NotificationsLunarIcon(),
-                            AppBarFeatureDiscovery(),
-                          ],
-                        )
-                      ],
-                    ),
+                    color: Theme.of(context).backgroundColor,
                   ),
-                ),
-                Container(
-                  height: 50,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      JuntoDescribedFeatureOverlay(
-                        icon: Image.asset(
-                          'assets/images/junto-mobile__filter.png',
-                          height: 17,
-                          color: Theme.of(context).primaryColor,
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        padding: const EdgeInsets.only(left: 10),
+                        color: Colors.transparent,
+                        height: 36,
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__logo.png',
+                              height: 22.0,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            const SizedBox(width: 7.5),
+                            Text(
+                              appbarTitle ?? 'JUNTO',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                          ],
                         ),
-                        featureId: 'collective_filter_id',
-                        title:
-                            'Click this icon to filter this perspective by channel.',
-                        child: const FilterDrawerButton(),
                       ),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () => data
-                                ?.switchColumnLayout(ExpressionFeedLayout.two),
-                            child: Container(
-                              color: Colors.transparent,
-                              alignment: Alignment.centerRight,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Icon(
-                                CustomIcons.twocolumn,
-                                size: 20,
-                                color: data?.twoColumnView == true
-                                    ? Theme.of(context).primaryColorDark
-                                    : Theme.of(context).primaryColorLight,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => data?.switchColumnLayout(
-                                ExpressionFeedLayout.single),
-                            child: Container(
-                              color: Colors.transparent,
-                              alignment: Alignment.centerRight,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Icon(
-                                CustomIcons.singlecolumn,
-                                size: 20,
-                                color: data?.twoColumnView == true
-                                    ? Theme.of(context).primaryColorLight
-                                    : Theme.of(context).primaryColorDark,
-                              ),
-                            ),
-                          ),
+                          NotificationsLunarIcon(),
+                          AppBarFeatureDiscovery(),
                         ],
-                      ),
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+              Container(
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    JuntoDescribedFeatureOverlay(
+                      icon: Image.asset(
+                        'assets/images/junto-mobile__filter.png',
+                        height: 17,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      featureId: 'collective_filter_id',
+                      title:
+                          'Click this icon to filter this perspective by channel.',
+                      child: const FilterDrawerButton(),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () => data
+                              ?.switchColumnLayout(ExpressionFeedLayout.two),
+                          child: Container(
+                            color: Colors.transparent,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              CustomIcons.twocolumn,
+                              size: 20,
+                              color: data?.twoColumnView == true
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => data
+                              ?.switchColumnLayout(ExpressionFeedLayout.single),
+                          child: Container(
+                            color: Colors.transparent,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              CustomIcons.singlecolumn,
+                              size: 20,
+                              color: data?.twoColumnView == true
+                                  ? Theme.of(context).primaryColorLight
+                                  : Theme.of(context).primaryColorDark,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         );
       },
