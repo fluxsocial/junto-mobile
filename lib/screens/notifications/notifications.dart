@@ -50,11 +50,11 @@ class NotificationsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Text(
-                //   'Notifications',
-                //   style: Theme.of(context).textTheme.subtitle1,
-                // ),
-                // const SizedBox(width: 42)
+                Text(
+                  'Notifications',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                const SizedBox(width: 42)
               ],
             ),
           ),
@@ -78,7 +78,7 @@ class NotificationsScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          NotificationsTitle(),
+          // NotificationsTitle(),
           Expanded(child: Consumer<NotificationsHandler>(
             builder: (context, data, child) {
               final notifications = data.notifications;
@@ -136,19 +136,19 @@ class NotificationTile extends StatelessWidget {
 
     void navigateTo(BuildContext context) async {
       if (item.notificationType == NotificationType.NewComment) {
-        var expression =
-            await Provider.of<ExpressionRepo>(context, listen: false)
-                .getExpression(item.expression);
-        var userAddress =
-            await Provider.of<UserDataProvider>(context, listen: false)
-                .userAddress;
+        // var expression =
+        //     await Provider.of<ExpressionRepo>(context, listen: false)
+        //         .getExpression(item.expression);
+        // var userAddress =
+        //     await Provider.of<UserDataProvider>(context, listen: false)
+        //         .userAddress;
 
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => ExpressionOpen(expression, userAddress),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   CupertinoPageRoute(
+        //     builder: (context) => ExpressionOpen(expression, userAddress),
+        //   ),
+        // );
       } else {
         if (item.notificationType == NotificationType.GroupJoinRequests) {
           Navigator.push(
