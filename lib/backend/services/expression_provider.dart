@@ -74,7 +74,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];
     } else {
-      print('hello');
       throw JuntoException(
         _serverResponse.reasonPhrase,
         _serverResponse.statusCode,
@@ -168,8 +167,6 @@ class ExpressionServiceCentralized implements ExpressionService {
   ) async {
     final http.Response _response =
         await client.get('/expressions/$expressionAddress');
-        print(_response.body);
-        print(_response.statusCode);
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_response);
     return ExpressionResponse.withCommentsAndResonations(_decodedResponse);

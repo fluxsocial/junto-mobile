@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/utils/text_span_nav.dart';
 
-class UsernameTextspan extends StatelessWidget {
+class UsernameTextspan {
   const UsernameTextspan({this.item});
   final JuntoNotification item;
 
@@ -20,8 +20,4 @@ class UsernameTextspan extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox();
-  }
 }
