@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/notification_placeholder.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/notification_tile.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +25,8 @@ class NotificationsExpressionView extends StatelessWidget {
                   return NotificationTile(item: item);
                 } else {
                   // notification placeholder
+                  return NotificationPlaceholder();
                 }
-                return const SizedBox();
               },
             );
           },
