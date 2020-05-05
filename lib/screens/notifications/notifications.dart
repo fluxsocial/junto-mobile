@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
@@ -75,7 +79,6 @@ class NotificationsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           NotificationsTitle(),
-   
           Expanded(child: Consumer<NotificationsHandler>(
             builder: (context, data, child) {
               final notifications = data.notifications;
@@ -131,10 +134,21 @@ class NotificationTile extends StatelessWidget {
         break;
     }
 
-    void navigateTo(BuildContext context) {
+    void navigateTo(BuildContext context) async {
       if (item.notificationType == NotificationType.NewComment) {
-        // [WIP] nav to expression; waiting on API
-        return;
+        var expression =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .getExpression(item.expression);
+        var userAddress =
+            await Provider.of<UserDataProvider>(context, listen: false)
+                .userAddress;
+
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => ExpressionOpen(expression, userAddress),
+          ),
+        );
       } else {
         if (item.notificationType == NotificationType.GroupJoinRequests) {
           Navigator.push(
@@ -160,7 +174,7 @@ class NotificationTile extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: item.unread
+          color: item.unread == true
               ? Theme.of(context).dividerColor.withOpacity(.3)
               : Theme.of(context).backgroundColor,
           border: Border(

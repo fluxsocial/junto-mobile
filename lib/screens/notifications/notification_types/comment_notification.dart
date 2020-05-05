@@ -10,6 +10,7 @@ class CommentNotification extends StatelessWidget {
   const CommentNotification({Key key, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    print(item.expression);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(

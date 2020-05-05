@@ -257,14 +257,16 @@ class ExpressionResponse extends HiveObject {
       createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
-      numberResonations: json['resonations'] as int,
+      resonations: json['resonations'],
+      // numberResonations: json['resonations'],
       creator: UserProfile.fromMap(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
       channels: json['channels'],
       context: json['context'] ?? '',
-      numberComments: json['comments'],
+      // numberComments: json['comments'],
+      comments: json['comments'],
     );
   }
 

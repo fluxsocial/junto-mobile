@@ -31,7 +31,7 @@ class UserRepo {
   }
 
   Future<UserProfile> queryUser(String param, QueryType queryType) {
-    return _userService.queryUser(param, queryType);
+    return _userService.queryUser(param, queryType); 
   }
 
   Future<List<PerspectiveModel>> getUserPerspective(String userAddress) {
