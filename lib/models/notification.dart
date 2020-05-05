@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 part 'notification.freezed.dart';
 part 'notification.g.dart';
@@ -35,6 +36,8 @@ abstract class JuntoNotification with _$JuntoNotification {
     DateTime createdAt, {
     @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
         UserProfile user,
+    @JsonKey(fromJson: JuntoNotification.expressionFromJson, toJson: JuntoNotification.expressionToJson)
+        ExpressionResponse expression,
     @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
         Group group,
     @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
@@ -54,6 +57,14 @@ abstract class JuntoNotification with _$JuntoNotification {
     return null;
   }
 
+  static ExpressionResponse expressionFromJson(Map<String, dynamic> json) {
+    print(json);
+    if (json != null) {
+      return ExpressionResponse.fromMap(json);
+    }
+    return null;
+  }
+
   static Map<String, dynamic> groupToJson(Group obj) => obj?.toMap();
   static UserProfile userFromJson(Map<String, dynamic> json) {
     if (json != null) {
@@ -63,4 +74,6 @@ abstract class JuntoNotification with _$JuntoNotification {
   }
 
   static Map<String, dynamic> userToJson(UserProfile obj) => obj?.toMap();
+  static Map<String, dynamic> expressionToJson(ExpressionResponse obj) =>
+      obj?.toMap();
 }

@@ -14,6 +14,8 @@ _$_Notification _$_$_NotificationFromJson(Map json) {
         ? null
         : DateTime.parse(json['created_at'] as String),
     user: JuntoNotification.userFromJson(json['user'] as Map<String, dynamic>),
+    expression: JuntoNotification.expressionFromJson(
+        json['expression'] as Map<String, dynamic>),
     group:
         JuntoNotification.groupFromJson(json['group'] as Map<String, dynamic>),
     creator:
@@ -28,6 +30,7 @@ Map<String, dynamic> _$_$_NotificationToJson(_$_Notification instance) =>
       'notification_type': _$NotificationTypeEnumMap[instance.notificationType],
       'created_at': instance.createdAt?.toIso8601String(),
       'user': JuntoNotification.userToJson(instance.user),
+      'expression': JuntoNotification.expressionToJson(instance.expression),
       'group': JuntoNotification.groupToJson(instance.group),
       'creator': JuntoNotification.userToJson(instance.creator),
       'unread': instance.unread,

@@ -21,6 +21,8 @@ class _$JuntoNotificationTearOff {
       DateTime createdAt,
       {@JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile user,
+      @JsonKey(fromJson: JuntoNotification.expressionFromJson, toJson: JuntoNotification.expressionToJson)
+          ExpressionResponse expression,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
@@ -31,6 +33,7 @@ class _$JuntoNotificationTearOff {
       notificationType,
       createdAt,
       user: user,
+      expression: expression,
       group: group,
       creator: creator,
       unread: unread,
@@ -49,6 +52,10 @@ mixin _$JuntoNotification {
       fromJson: JuntoNotification.userFromJson,
       toJson: JuntoNotification.userToJson)
   UserProfile get user;
+  @JsonKey(
+      fromJson: JuntoNotification.expressionFromJson,
+      toJson: JuntoNotification.expressionToJson)
+  ExpressionResponse get expression;
   @JsonKey(
       fromJson: JuntoNotification.groupFromJson,
       toJson: JuntoNotification.groupToJson)
@@ -73,6 +80,8 @@ abstract class $JuntoNotificationCopyWith<$Res> {
       DateTime createdAt,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile user,
+      @JsonKey(fromJson: JuntoNotification.expressionFromJson, toJson: JuntoNotification.expressionToJson)
+          ExpressionResponse expression,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
@@ -94,6 +103,7 @@ class _$JuntoNotificationCopyWithImpl<$Res>
     Object notificationType = freezed,
     Object createdAt = freezed,
     Object user = freezed,
+    Object expression = freezed,
     Object group = freezed,
     Object creator = freezed,
     Object unread = freezed,
@@ -106,6 +116,9 @@ class _$JuntoNotificationCopyWithImpl<$Res>
       createdAt:
           createdAt == freezed ? _value.createdAt : createdAt as DateTime,
       user: user == freezed ? _value.user : user as UserProfile,
+      expression: expression == freezed
+          ? _value.expression
+          : expression as ExpressionResponse,
       group: group == freezed ? _value.group : group as Group,
       creator: creator == freezed ? _value.creator : creator as UserProfile,
       unread: unread == freezed ? _value.unread : unread as bool,
@@ -125,6 +138,8 @@ abstract class _$NotificationCopyWith<$Res>
       DateTime createdAt,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile user,
+      @JsonKey(fromJson: JuntoNotification.expressionFromJson, toJson: JuntoNotification.expressionToJson)
+          ExpressionResponse expression,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
@@ -148,6 +163,7 @@ class __$NotificationCopyWithImpl<$Res>
     Object notificationType = freezed,
     Object createdAt = freezed,
     Object user = freezed,
+    Object expression = freezed,
     Object group = freezed,
     Object creator = freezed,
     Object unread = freezed,
@@ -159,6 +175,9 @@ class __$NotificationCopyWithImpl<$Res>
           : notificationType as NotificationType,
       createdAt == freezed ? _value.createdAt : createdAt as DateTime,
       user: user == freezed ? _value.user : user as UserProfile,
+      expression: expression == freezed
+          ? _value.expression
+          : expression as ExpressionResponse,
       group: group == freezed ? _value.group : group as Group,
       creator: creator == freezed ? _value.creator : creator as UserProfile,
       unread: unread == freezed ? _value.unread : unread as bool,
@@ -174,6 +193,8 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       this.createdAt,
       {@JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           this.user,
+      @JsonKey(fromJson: JuntoNotification.expressionFromJson, toJson: JuntoNotification.expressionToJson)
+          this.expression,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           this.group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
@@ -199,6 +220,11 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
   final UserProfile user;
   @override
   @JsonKey(
+      fromJson: JuntoNotification.expressionFromJson,
+      toJson: JuntoNotification.expressionToJson)
+  final ExpressionResponse expression;
+  @override
+  @JsonKey(
       fromJson: JuntoNotification.groupFromJson,
       toJson: JuntoNotification.groupToJson)
   final Group group;
@@ -212,7 +238,7 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'JuntoNotification(address: $address, notificationType: $notificationType, createdAt: $createdAt, user: $user, group: $group, creator: $creator, unread: $unread)';
+    return 'JuntoNotification(address: $address, notificationType: $notificationType, createdAt: $createdAt, user: $user, expression: $expression, group: $group, creator: $creator, unread: $unread)';
   }
 
   @override
@@ -224,6 +250,7 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       ..add(DiagnosticsProperty('notificationType', notificationType))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('user', user))
+      ..add(DiagnosticsProperty('expression', expression))
       ..add(DiagnosticsProperty('group', group))
       ..add(DiagnosticsProperty('creator', creator))
       ..add(DiagnosticsProperty('unread', unread));
@@ -244,6 +271,9 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
                     .equals(other.createdAt, createdAt)) &&
             (identical(other.user, user) ||
                 const DeepCollectionEquality().equals(other.user, user)) &&
+            (identical(other.expression, expression) ||
+                const DeepCollectionEquality()
+                    .equals(other.expression, expression)) &&
             (identical(other.group, group) ||
                 const DeepCollectionEquality().equals(other.group, group)) &&
             (identical(other.creator, creator) ||
@@ -260,6 +290,7 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       const DeepCollectionEquality().hash(notificationType) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(user) ^
+      const DeepCollectionEquality().hash(expression) ^
       const DeepCollectionEquality().hash(group) ^
       const DeepCollectionEquality().hash(creator) ^
       const DeepCollectionEquality().hash(unread);
@@ -281,6 +312,8 @@ abstract class _Notification implements JuntoNotification {
       DateTime createdAt,
       {@JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile user,
+      @JsonKey(fromJson: JuntoNotification.expressionFromJson, toJson: JuntoNotification.expressionToJson)
+          ExpressionResponse expression,
       @JsonKey(fromJson: JuntoNotification.groupFromJson, toJson: JuntoNotification.groupToJson)
           Group group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
@@ -301,6 +334,11 @@ abstract class _Notification implements JuntoNotification {
       fromJson: JuntoNotification.userFromJson,
       toJson: JuntoNotification.userToJson)
   UserProfile get user;
+  @override
+  @JsonKey(
+      fromJson: JuntoNotification.expressionFromJson,
+      toJson: JuntoNotification.expressionToJson)
+  ExpressionResponse get expression;
   @override
   @JsonKey(
       fromJson: JuntoNotification.groupFromJson,
