@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/backend/user_data_provider.dart';
-import 'package:junto_beta_mobile/models/notification.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_connection_notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_pack_notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/connection_request_notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/pack_request_notification.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/screens/notifications/views/all_view.dart';
+import 'package:junto_beta_mobile/screens/notifications/views/expression_view.dart';
+import 'package:junto_beta_mobile/screens/notifications/views/relations_view.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/notification_tab_name.dart';
 
 class NotificationsScreen extends StatelessWidget {
+  final List<String> _tabs = [
+    'ALL',
+    'EXPRESSION',
+    'RELATIONS',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,136 +70,38 @@ class NotificationsScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // NotificationsTitle(),
-          Expanded(child: Consumer<NotificationsHandler>(
-            builder: (context, data, child) {
-              final notifications = data.notifications;
-              return ListView.builder(
-                itemCount: notifications.length,
-                itemBuilder: (context, index) {
-                  final item = notifications[index];
-                  if (notifications.length > 0) {
-                    return NotificationTile(item: item);
-                  } else {
-                    // notification placeholder
-                  }
-                  return const SizedBox();
-                },
-              );
-            },
-          )),
-        ],
-      ),
-    );
-  }
-}
-
-class NotificationTile extends StatelessWidget {
-  const NotificationTile({
-    Key key,
-    @required this.item,
-  }) : super(key: key);
-
-  final JuntoNotification item;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget content;
-    switch (item.notificationType) {
-      case NotificationType.ConnectionNotification:
-        content = ConnectionRequestNotification(item: item);
-        break;
-      case NotificationType.GroupJoinRequests:
-        content = PackRequestNotification(item: item);
-        break;
-      case NotificationType.NewComment:
-        content = CommentNotification(item: item);
-        break;
-      case NotificationType.NewSubscription:
-        content = SubscribedNotification(item: item);
-        break;
-      case NotificationType.NewConnection:
-        content = AcceptConnectionNotification(item: item);
-        break;
-      case NotificationType.NewPackJoin:
-        content = AcceptPackNotification(item: item);
-        break;
-    }
-
-    void navigateTo(BuildContext context) async {
-      if (item.notificationType == NotificationType.NewComment) {
-        // var expression =
-        //     await Provider.of<ExpressionRepo>(context, listen: false)
-        //         .getExpression(item.expression);
-        // var userAddress =
-        //     await Provider.of<UserDataProvider>(context, listen: false)
-        //         .userAddress;
-
-        // Navigator.push(
-        //   context,
-        //   CupertinoPageRoute(
-        //     builder: (context) => ExpressionOpen(expression, userAddress),
-        //   ),
-        // );
-      } else {
-        if (item.notificationType == NotificationType.GroupJoinRequests) {
-          Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => JuntoMember(profile: item.creator),
-            ),
-          );
-        } else {
-          Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => JuntoMember(profile: item.user),
-            ),
-          );
-        }
-      }
-    }
-
-    return GestureDetector(
-      onTap: () {
-        navigateTo(context);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: item.unread == true
-              ? Theme.of(context).dividerColor.withOpacity(.3)
-              : Theme.of(context).backgroundColor,
-          border: Border(
-            bottom: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: .75,
-            ),
+      body: DefaultTabController(
+        length: _tabs.length,
+        child: NestedScrollView(
+          physics: const ClampingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverPersistentHeader(
+                delegate: JuntoAppBarDelegate(
+                  TabBar(
+                    labelPadding: const EdgeInsets.all(0),
+                    isScrollable: true,
+                    labelColor: Theme.of(context).primaryColorDark,
+                    unselectedLabelColor: Theme.of(context).primaryColorLight,
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
+                    indicatorWeight: 0.0001,
+                    tabs: <Widget>[
+                      for (String name in _tabs)
+                        NotificationTabName(name: name),
+                    ],
+                  ),
+                ),
+                pinned: true,
+              ),
+            ];
+          },
+          body: TabBarView(
+            children: <Widget>[
+              NotificationsAllView(),
+              NotificationsExpressionView(),
+              NotificationsRelationsView(),
+            ],
           ),
-        ),
-        padding: const EdgeInsets.symmetric(
-          vertical: 15,
-        ),
-        child: content ?? const SizedBox(),
-      ),
-    );
-  }
-}
-
-class NotificationsTitle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      child: Text(
-        'Notifications',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: Theme.of(context).primaryColor,
         ),
       ),
     );
