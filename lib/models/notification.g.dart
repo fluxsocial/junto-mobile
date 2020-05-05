@@ -10,9 +10,7 @@ _$_Notification _$_$_NotificationFromJson(Map json) {
   return _$_Notification(
     json['address'] as String,
     _$enumDecodeNullable(_$NotificationTypeEnumMap, json['notification_type']),
-    json['created_at'] == null
-        ? null
-        : DateTime.parse(json['created_at'] as String),
+    json['created_at'] == null ? null : json['created_at'] as String,
     json['expression'] == null ? null : json['expression']['address'] as String,
     user: JuntoNotification.userFromJson(json['user'] as Map<String, dynamic>),
     group:
@@ -27,7 +25,7 @@ Map<String, dynamic> _$_$_NotificationToJson(_$_Notification instance) =>
     <String, dynamic>{
       'address': instance.address,
       'notification_type': _$NotificationTypeEnumMap[instance.notificationType],
-      'created_at': instance.createdAt?.toIso8601String(),
+      'created_at': instance.createdAt,
       'expression': instance.expression,
       'user': JuntoNotification.userToJson(instance.user),
       'group': JuntoNotification.groupToJson(instance.group),

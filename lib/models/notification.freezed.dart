@@ -18,7 +18,7 @@ class _$JuntoNotificationTearOff {
   _Notification call(
       String address,
       NotificationType notificationType,
-      DateTime createdAt,
+      String createdAt,
       String expression,
       {@JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile user,
@@ -46,7 +46,7 @@ const $JuntoNotification = _$JuntoNotificationTearOff();
 mixin _$JuntoNotification {
   String get address;
   NotificationType get notificationType;
-  DateTime get createdAt;
+  String get createdAt;
   String get expression;
   @JsonKey(
       fromJson: JuntoNotification.userFromJson,
@@ -73,7 +73,7 @@ abstract class $JuntoNotificationCopyWith<$Res> {
   $Res call(
       {String address,
       NotificationType notificationType,
-      DateTime createdAt,
+      String createdAt,
       String expression,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile user,
@@ -109,7 +109,7 @@ class _$JuntoNotificationCopyWithImpl<$Res>
           ? _value.notificationType
           : notificationType as NotificationType,
       createdAt:
-          createdAt == freezed ? _value.createdAt : createdAt as DateTime,
+          createdAt == freezed ? _value.createdAt : createdAt as String,
       expression:
           expression == freezed ? _value.expression : expression as String,
       user: user == freezed ? _value.user : user as UserProfile,
@@ -129,7 +129,7 @@ abstract class _$NotificationCopyWith<$Res>
   $Res call(
       {String address,
       NotificationType notificationType,
-      DateTime createdAt,
+      String createdAt,
       String expression,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile user,
@@ -166,7 +166,7 @@ class __$NotificationCopyWithImpl<$Res>
       notificationType == freezed
           ? _value.notificationType
           : notificationType as NotificationType,
-      createdAt == freezed ? _value.createdAt : createdAt as DateTime,
+      createdAt == freezed ? _value.createdAt : createdAt as String,
       expression == freezed ? _value.createdAt : expression as String,
       user: user == freezed ? _value.user : user as UserProfile,
       group: group == freezed ? _value.group : group as Group,
@@ -202,7 +202,7 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
   @override
   final NotificationType notificationType;
   @override
-  final DateTime createdAt;
+  final String createdAt;
   @override
   final String expression;
   @override
@@ -297,7 +297,7 @@ abstract class _Notification implements JuntoNotification {
   factory _Notification(
       String address,
       NotificationType notificationType,
-      DateTime createdAt,
+      String createdAt,
       String expression,
       {@JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile user,
@@ -315,7 +315,7 @@ abstract class _Notification implements JuntoNotification {
   @override
   NotificationType get notificationType;
   @override
-  DateTime get createdAt;
+  String get createdAt;
   @override
   String get expression;
   @override

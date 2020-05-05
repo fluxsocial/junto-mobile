@@ -33,7 +33,7 @@ abstract class JuntoNotification with _$JuntoNotification {
   factory JuntoNotification(
     String address,
     NotificationType notificationType,
-    DateTime createdAt,
+    String createdAt,
     String expressionAddress, {
     @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
         UserProfile user,
