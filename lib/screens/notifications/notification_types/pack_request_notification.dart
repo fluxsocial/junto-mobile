@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/accept_pack_request.dart';
 import 'package:junto_beta_mobile/screens/notifications/utils/username_text_span.dart';
-
 
 class PackRequestNotification extends StatelessWidget {
   final JuntoNotification item;
@@ -25,11 +25,15 @@ class PackRequestNotification extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                   ),
                   children: <TextSpan>[
-                                 UsernameTextspan(item: item).retrieveTextSpan(context),
-
+                    UsernameTextspan(item: item).retrieveTextSpan(context),
                     TextSpan(text: 'invited you to their pack.')
                   ]),
             ),
+          ),
+          const SizedBox(width: 10),
+          AcceptPackRequest(
+            packAddress: item.group.address,
+            userAddress: item.creator.address,
           ),
         ],
       ),

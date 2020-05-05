@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
-import 'package:junto_beta_mobile/screens/notifications/widgets/accept_request.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/accept_connection_request.dart';
 import 'package:junto_beta_mobile/screens/notifications/utils/username_text_span.dart';
 
 class ConnectionRequestNotification extends StatelessWidget {
@@ -31,7 +31,7 @@ class ConnectionRequestNotification extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          AcceptRequest(userAddress: item.user.address),
+          AcceptConnectionRequest(userAddress: item.user.address),
         ],
       ),
     );

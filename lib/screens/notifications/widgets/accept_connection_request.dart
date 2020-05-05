@@ -3,18 +3,18 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
 
-class AcceptRequest extends StatefulWidget {
-  const AcceptRequest({this.userAddress});
+class AcceptConnectionRequest extends StatefulWidget {
+  const AcceptConnectionRequest({this.userAddress});
 
   final String userAddress;
 
   @override
   State<StatefulWidget> createState() {
-    return AcceptRequestState();
+    return AcceptConnectionRequestState();
   }
 }
 
-class AcceptRequestState extends State<AcceptRequest> {
+class AcceptConnectionRequestState extends State<AcceptConnectionRequest> {
   bool isConnected = false;
   @override
   void initState() {
