@@ -13,12 +13,16 @@ _$_Notification _$_$_NotificationFromJson(Map json) {
     json['created_at'] == null
         ? null
         : DateTime.parse(json['created_at'] as String),
-    json['expression'] == null ? null : json['expression']['address'] as String,
     user: JuntoNotification.userFromJson(json['user'] as Map<String, dynamic>),
     group:
         JuntoNotification.groupFromJson(json['group'] as Map<String, dynamic>),
     creator:
         JuntoNotification.userFromJson(json['creator'] as Map<String, dynamic>),
+    expression: json['expression'] == null
+        ? null
+        : ExpressionSlimModel.fromJson((json['expression'] as Map)?.map(
+            (k, e) => MapEntry(k as String, e),
+          )),
     unread: json['unread'] as bool,
   );
 }
@@ -28,10 +32,10 @@ Map<String, dynamic> _$_$_NotificationToJson(_$_Notification instance) =>
       'address': instance.address,
       'notification_type': _$NotificationTypeEnumMap[instance.notificationType],
       'created_at': instance.createdAt?.toIso8601String(),
-      'expression': instance.expression,
       'user': JuntoNotification.userToJson(instance.user),
       'group': JuntoNotification.groupToJson(instance.group),
       'creator': JuntoNotification.userToJson(instance.creator),
+      'expression': instance.expression?.toJson(),
       'unread': instance.unread,
     };
 
