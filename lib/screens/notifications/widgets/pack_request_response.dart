@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/request_response_button.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class PackRequestResponse extends StatelessWidget {
@@ -19,8 +21,12 @@ class PackRequestResponse extends StatelessWidget {
           const SizedBox(width: 48),
           RequestResponseButton(
             onTap: () async {
+              JuntoLoader.showLoader(context);
               await Provider.of<GroupRepo>(context, listen: false)
                   .respondToGroupRequest(packAddress, true);
+              await Provider.of<NotificationsHandler>(context, listen: false)
+                  .fetchNotifications();
+              JuntoLoader.hide();
             },
             buttonTitle: 'Accept',
           ),
