@@ -143,7 +143,7 @@ class JuntoLotus extends StatelessWidget {
                             ),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                vertical: 25,
+                                vertical: 40,
                               ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,9 +153,9 @@ class JuntoLotus extends StatelessWidget {
                                     child: Text(
                                       'JUNTO',
                                       style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white.withOpacity(.8),
                                         letterSpacing: 2.4,
                                       ),
                                     ),

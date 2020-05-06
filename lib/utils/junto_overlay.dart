@@ -8,7 +8,7 @@ class JuntoLoader extends StatelessWidget {
     Key key,
     this.width = 250.0,
     this.height = 250.0,
-    this.color = Colors.white30,
+    this.color = Colors.white70,
   }) : super(key: key);
   final double width;
   final double height;

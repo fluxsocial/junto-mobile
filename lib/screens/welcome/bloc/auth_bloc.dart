@@ -71,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       logger.logDebug(error.message);
       yield UnAuthenticatedState();
     } catch (error) {
-      logger.logDebug(error);
+      logger.logException(error);
       yield UnAuthenticatedState();
     }
   }
