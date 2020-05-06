@@ -170,6 +170,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       } else if (widget.expressionType == ExpressionType.audio) {
         JuntoLoader.showLoader(context);
         final audio = widget.expression as AudioFormExpression;
+        print(widget.expression.caption);
         final AudioFormExpression expression =
             await repository.createAudio(audio);
 

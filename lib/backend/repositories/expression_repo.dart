@@ -70,8 +70,8 @@ class ExpressionRepo {
       title: expression.title,
       audio: result[0],
       photo: result.length > 1 ? result[1] : null,
-      //TODO: implement gradient
       gradient: expression.gradient,
+      caption: expression.caption,
     );
   }
 
