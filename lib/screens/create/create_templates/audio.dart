@@ -28,6 +28,8 @@ class CreateAudio extends StatefulWidget {
 }
 
 class CreateAudioState extends State<CreateAudio> {
+  bool _showBottomTools = true;
+  final FocusNode captionFocus = FocusNode();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController captionController = TextEditingController();
   File audioPhotoBackground;
@@ -94,6 +96,18 @@ class CreateAudioState extends State<CreateAudio> {
     });
   }
 
+  void _toggleBottomTools() {
+    setState(() {
+      _showBottomTools = !_showBottomTools;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    captionFocus.addListener(_toggleBottomTools);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AudioService>(
@@ -113,8 +127,9 @@ class CreateAudioState extends State<CreateAudio> {
                         audioGradientValues: audioGradientValues,
                         titleController: titleController,
                         captionController: captionController,
+                        captionFocus: captionFocus,
                       ),
-                if (audio.playBackAvailable)
+                if (audio.playBackAvailable && _showBottomTools)
                   AudioBottomTools(
                     onPickPressed: _onPickPressed,
                     resetAudioPhotoBackground: _resetAudioPhotoBackground,

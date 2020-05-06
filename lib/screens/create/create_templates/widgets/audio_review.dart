@@ -12,11 +12,13 @@ class AudioReview extends StatelessWidget {
     this.audioGradientValues,
     this.titleController,
     this.captionController,
+    this.captionFocus,
   });
   final File audioPhotoBackground;
   final List<String> audioGradientValues;
   final TextEditingController titleController;
   final TextEditingController captionController;
+  final FocusNode captionFocus;
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +42,27 @@ class AudioReview extends StatelessWidget {
       return AudioReviewDefault(
         titleController: titleController,
         captionController: captionController,
+        captionFocus: captionFocus,
       );
     } else if (audioPhotoBackground != null && audioGradientValues.isEmpty) {
       return AudioReviewWithPhoto(
         titleController: titleController,
         captionController: captionController,
         audioPhotoBackground: audioPhotoBackground,
+        captionFocus: captionFocus,
       );
     } else if (audioPhotoBackground == null && audioGradientValues.isNotEmpty) {
       return AudioReviewWithGradient(
         titleController: titleController,
         captionController: captionController,
         audioGradientValues: audioGradientValues,
+        captionFocus: captionFocus,
       );
     } else {
       return AudioReviewDefault(
         captionController: captionController,
         titleController: titleController,
+        captionFocus: captionFocus,
       );
     }
   }
@@ -66,10 +72,12 @@ class AudioReviewDefault extends StatelessWidget {
   AudioReviewDefault({
     this.titleController,
     this.captionController,
+    this.captionFocus,
   });
 
   final TextEditingController titleController;
   final TextEditingController captionController;
+  final FocusNode captionFocus;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -80,6 +88,7 @@ class AudioReviewDefault extends StatelessWidget {
         ),
         AudioCaption(
           captionController: captionController,
+          captionFocus: captionFocus,
         ),
       ],
     );
@@ -90,11 +99,13 @@ class AudioReviewWithGradient extends StatelessWidget {
   AudioReviewWithGradient({
     this.titleController,
     this.captionController,
+    this.captionFocus,
     this.audioGradientValues,
   });
 
   final TextEditingController titleController;
   final TextEditingController captionController;
+  final FocusNode captionFocus;
   final List<String> audioGradientValues;
 
   @override
@@ -120,6 +131,7 @@ class AudioReviewWithGradient extends StatelessWidget {
         ),
         AudioCaption(
           captionController: captionController,
+          captionFocus: captionFocus,
         ),
       ],
     );
@@ -130,11 +142,13 @@ class AudioReviewWithPhoto extends StatelessWidget {
   AudioReviewWithPhoto({
     this.titleController,
     this.captionController,
+    this.captionFocus,
     this.audioPhotoBackground,
   });
 
   final titleController;
   final TextEditingController captionController;
+  final FocusNode captionFocus;
   final File audioPhotoBackground;
 
   @override
@@ -175,6 +189,7 @@ class AudioReviewWithPhoto extends StatelessWidget {
         ]),
         AudioCaption(
           captionController: captionController,
+          captionFocus: captionFocus,
         ),
       ],
     );
@@ -267,9 +282,11 @@ class AudioCaption extends StatelessWidget {
   const AudioCaption({
     Key key,
     @required this.captionController,
+    @required this.captionFocus,
   }) : super(key: key);
 
   final TextEditingController captionController;
+  final FocusNode captionFocus;
 
   @override
   Widget build(BuildContext context) {
@@ -280,6 +297,8 @@ class AudioCaption extends StatelessWidget {
       ),
       child: TextField(
         controller: captionController,
+        
+        focusNode: captionFocus,
         autofocus: false,
         decoration: InputDecoration(
           hintStyle: TextStyle(

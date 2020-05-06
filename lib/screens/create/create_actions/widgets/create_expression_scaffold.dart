@@ -27,7 +27,8 @@ class CreateExpressionScaffold extends StatelessWidget {
       child: Scaffold(
         body: JuntoFilterDrawer(
           leftDrawer: null,
-          rightMenu: JuntoDrawer(),
+          // rightMenu: JuntoDrawer(),
+          rightMenu: null,
           scaffold: Scaffold(
             appBar: CreateAppBar(
               expressionType: expressionType,
