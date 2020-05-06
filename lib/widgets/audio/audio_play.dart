@@ -60,11 +60,14 @@ class AudioPlayIcon extends StatelessWidget {
     return Consumer<AudioService>(
       builder: (context, audio, child) {
         if (audio.playBackAvailable && !audio.isPlaying) {
-          return Icon(
-            Icons.play_arrow,
-            size: 33,
-            color:
-                hasBackground ? Colors.white : Theme.of(context).primaryColor,
+          return Container(
+            color: Colors.purple,
+            child: Icon(
+              Icons.play_arrow,
+              size: 38,
+              color:
+                  hasBackground ? Colors.white : Theme.of(context).primaryColor,
+            ),
           );
         } else if (audio.playBackAvailable && audio.isPlaying) {
           return Icon(
