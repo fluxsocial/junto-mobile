@@ -16,11 +16,14 @@ class AudioOpen extends StatelessWidget {
     final audioTitle = expression.expressionData.title;
     final audioGradients = expression.expressionData.gradient;
     final audioPhoto = expression.expressionData.photo;
+    final audioCaption = expression.expressionData.caption;
 
     Widget _displayAudioOpen() {
+      print(audioCaption);
       if (audioGradients.isEmpty && audioPhoto.isEmpty) {
         return AudioOpenDefault(
           title: audioTitle,
+          caption: audioCaption,
         );
       } else if (audioPhoto.isNotEmpty) {
         return AudioOpenWithPhoto(
@@ -33,7 +36,10 @@ class AudioOpen extends StatelessWidget {
           title: audioTitle,
         );
       } else {
-        return AudioOpenDefault(title: audioTitle);
+        return AudioOpenDefault(
+          title: audioTitle,
+          caption: audioCaption,
+        );
       }
     }
 
@@ -71,10 +77,15 @@ class AudioOpenTitle extends StatelessWidget {
 }
 
 class AudioOpenDefault extends StatelessWidget {
-  AudioOpenDefault({this.title});
+  AudioOpenDefault({
+    this.title,
+    this.caption,
+  });
   final String title;
+  final String caption;
   @override
   Widget build(BuildContext context) {
+    print(caption);
     return Container(
       width: MediaQuery.of(context).size.width,
       constraints: BoxConstraints(
@@ -88,18 +99,28 @@ class AudioOpenDefault extends StatelessWidget {
         ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: title.isNotEmpty
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          title.isNotEmpty
-              ? AudioOpenTitle(
-                  title: title,
-                  color: Theme.of(context).primaryColor,
-                )
-              : const SizedBox(),
+          if (title.isNotEmpty)
+            AudioOpenTitle(
+              title: title,
+              color: Theme.of(context).primaryColor,
+            ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: AudioPlaybackRow(hasBackground: false),
+          ),
+          Container(
+            child: Text(
+              caption,
+              style: TextStyle(
+                fontSize: 17,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
           ),
         ],
       ),

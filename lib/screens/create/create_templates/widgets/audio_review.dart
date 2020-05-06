@@ -37,17 +37,27 @@ class AudioReview extends StatelessWidget {
 
   Widget _showAudioReviewTemplate() {
     if (audioPhotoBackground == null && audioGradientValues.isEmpty) {
-      return AudioReviewDefault();
+      return AudioReviewDefault(
+        titleController: titleController,
+        captionController: captionController,
+      );
     } else if (audioPhotoBackground != null && audioGradientValues.isEmpty) {
       return AudioReviewWithPhoto(
+        titleController: titleController,
+        captionController: captionController,
         audioPhotoBackground: audioPhotoBackground,
       );
     } else if (audioPhotoBackground == null && audioGradientValues.isNotEmpty) {
       return AudioReviewWithGradient(
+        titleController: titleController,
+        captionController: captionController,
         audioGradientValues: audioGradientValues,
       );
     } else {
-      return AudioReviewDefault();
+      return AudioReviewDefault(
+        captionController: captionController,
+        titleController: titleController,
+      );
     }
   }
 }

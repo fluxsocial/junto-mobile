@@ -136,7 +136,10 @@ class CreateAudioState extends State<CreateAudio> {
         photo: audioPhotoBackground?.path,
         audio: audio.recordingPath,
         gradient: audioGradientValues,
+        caption: captionController.text,
       );
+      print(audioExpression);
+      print(audioExpression.caption);
       Navigator.push(
         context,
         MaterialPageRoute<dynamic>(
