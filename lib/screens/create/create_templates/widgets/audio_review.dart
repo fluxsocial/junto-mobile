@@ -206,7 +206,7 @@ class AudioReviewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: hasBackground ? Colors.black54 : Colors.transparent,
+      color: hasBackground ? Colors.black45 : Colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -244,8 +244,7 @@ class AudioTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
       ),
-      // margin: const EdgeInsets.only(bottom: 15),
-      color: Colors.orange,
+      margin: const EdgeInsets.only(bottom: 15),
       child: TextField(
         controller: titleController,
         autofocus: false,
@@ -295,7 +294,6 @@ class AudioCaption extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
-        vertical: 5,
       ),
       child: TextField(
         controller: captionController,

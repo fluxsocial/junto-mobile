@@ -17,6 +17,45 @@ class AudioGradientSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, String>> audioGradients = [
+      {
+        'first': '8E8098',
+        'second': '307FAA',
+      },
+      {
+        'first': '6F51A8',
+        'second': 'E8B974',
+      },
+      {
+        'first': '2E4F78',
+        'second': '6397C7',
+      },
+      {
+        'first': '719cf4',
+        'second': 'ffc7e4',
+      },
+      {
+        'first': '639acf',
+        'second': '7bdaa5',
+      },
+      {
+        'first': 'FC6073',
+        'second': 'FFD391',
+      },
+      {
+        'first': '2CBAB1',
+        'second': 'E7E26E',
+      },
+      {
+        'first': '222222',
+        'second': '555555',
+      },
+      {
+        'first': 'BD96D6',
+        'second': '2034BC',
+      },
+    ];
+
     return Consumer<AudioService>(builder: (context, audio, child) {
       return Column(children: <Widget>[
         Container(
@@ -39,62 +78,17 @@ class AudioGradientSelector extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    AudioGradientSelectorItem(
-                      '8E8098',
-                      '307FAA',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '6F51A8',
-                      'E8B974',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '2E4F78',
-                      '6397C7',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '719cf4',
-                      'ffc7e4',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '639acf',
-                      '7bdaa5',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '8E8098',
-                      '307FAA',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '6F51A8',
-                      'E8B974',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '2E4F78',
-                      '6397C7',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '719cf4',
-                      'ffc7e4',
-                      setAudioGradientValues,
-                    ),
-                    AudioGradientSelectorItem(
-                      '639acf',
-                      '7bdaa5',
-                      setAudioGradientValues,
-                    ),
-                  ],
-                ),
-              ),
+                  child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: audioGradients
+                    .map(
+                      (audioGradient) => AudioGradientSelectorItem(
+                          audioGradient['first'],
+                          audioGradient['second'],
+                          setAudioGradientValues),
+                    )
+                    .toList(),
+              )),
             ],
           ),
         ),
