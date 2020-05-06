@@ -6,6 +6,7 @@ class HiveKeys {
   static const kUserId = 'userId';
   static const kUserData = 'user_data';
   static const kLayoutView = 'twoColumnView';
+  static const kAuth = 'auth';
 }
 
 /// Class containing the name of the different "boxes" used by the application.

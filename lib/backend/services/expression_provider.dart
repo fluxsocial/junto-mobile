@@ -44,9 +44,13 @@ class ExpressionServiceCentralized implements ExpressionService {
     } else if (isPrivate == false) {
       _serverUrl = '/auth/s3?private=false';
     }
+    final contentLength = file.lengthSync();
+
     // denote file type and get url, headers, and key of s3 bucket
-    final http.Response _serverResponse =
-        await client.postWithoutEncoding(_serverUrl, body: fileType);
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      _serverUrl,
+      body: {'content_type': fileType, 'content_length': contentLength},
+    );
     logger.logDebug(_serverResponse.body);
     logger.logDebug(_serverResponse.statusCode.toString());
 
@@ -86,14 +90,22 @@ class ExpressionServiceCentralized implements ExpressionService {
       bool isPrivate, AudioFormExpression expression) async {
     logger.logDebug('Sending request to store audio file in api storage');
     String _serverUrl;
+    // turn file into bytes
+    final File file = File(expression.audio);
+    final Uint8List fileAsBytes = file.readAsBytesSync();
     if (isPrivate) {
       _serverUrl = '/auth/s3?private=true';
     } else if (isPrivate == false) {
       _serverUrl = '/auth/s3?private=false';
     }
     // denote file type and get url, headers, and key of s3 bucket
-    final http.Response _serverResponse =
-        await client.postWithoutEncoding(_serverUrl, body: '.aac');
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      _serverUrl,
+      body: {
+        'content_type': 'aac',
+        'content_length': file.lengthSync(),
+      },
+    );
     logger.logDebug(_serverResponse.body);
     logger.logDebug(
         'Received response from api storage, code: ${_serverResponse.statusCode}');
@@ -107,10 +119,6 @@ class ExpressionServiceCentralized implements ExpressionService {
       'x-amz-acl': parseData['headers']['x-amz-acl'],
       'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
     };
-
-    // turn file into bytes
-    final File file = File(expression.audio);
-    final Uint8List fileAsBytes = file.readAsBytesSync();
 
     logger.logDebug('Uploading audio file to api storage');
     // send put request to s3 bucket with url, new headers, and file as bytes
