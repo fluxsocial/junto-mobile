@@ -102,7 +102,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     final http.Response _serverResponse = await client.postWithoutEncoding(
       _serverUrl,
       body: {
-        'content_type': 'aac',
+        'content_type': '.aac',
         'content_length': file.lengthSync(),
       },
     );
