@@ -244,11 +244,13 @@ class AudioTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
       ),
-      margin: const EdgeInsets.only(bottom: 15),
+      // margin: const EdgeInsets.only(bottom: 15),
+      color: Colors.orange,
       child: TextField(
         controller: titleController,
         autofocus: false,
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(0),
           hintMaxLines: 25,
           hintStyle: TextStyle(
             color:
@@ -293,14 +295,14 @@ class AudioCaption extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
-        vertical: 15,
+        vertical: 5,
       ),
       child: TextField(
         controller: captionController,
-        
         focusNode: captionFocus,
         autofocus: false,
         decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(0),
           hintStyle: TextStyle(
             color: Theme.of(context).primaryColorLight,
             fontSize: 17,

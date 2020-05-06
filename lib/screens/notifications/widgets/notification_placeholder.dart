@@ -15,6 +15,7 @@ class NotificationPlaceholder extends StatelessWidget {
             Image.asset(
               'assets/images/junto-mobile__placeholder--notifications.png',
               height: MediaQuery.of(context).size.height * .15,
+              color: Theme.of(context).primaryColor,
             ),
             const SizedBox(height: 20),
             Text(

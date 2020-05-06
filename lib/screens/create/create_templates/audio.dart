@@ -135,7 +135,7 @@ class CreateAudioState extends State<CreateAudio> {
                     resetAudioPhotoBackground: _resetAudioPhotoBackground,
                     resetAudioGradientValues: _resetAudioGradientValues,
                     setAudioGradientValues: _setAudioGradientValues,
-                  ),
+                  )
               ],
             ),
           ),
