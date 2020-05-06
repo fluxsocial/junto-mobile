@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +48,7 @@ class AudioPlayButton extends StatelessWidget {
     } else if (audio.playBackAvailable && audio.isPlaying) {
       return 'Pause playing';
     } else {
-      return 'Pause recording';
+      return 'Start playing';
     }
   }
 }
@@ -61,27 +62,33 @@ class AudioPlayIcon extends StatelessWidget {
       builder: (context, audio, child) {
         if (audio.playBackAvailable && !audio.isPlaying) {
           return Container(
-            color: Colors.purple,
+            color: Colors.transparent,
             child: Icon(
-              Icons.play_arrow,
-              size: 38,
+              CustomIcons.play,
+              size: 33,
               color:
                   hasBackground ? Colors.white : Theme.of(context).primaryColor,
             ),
           );
         } else if (audio.playBackAvailable && audio.isPlaying) {
-          return Icon(
-            Icons.pause,
-            size: 33,
-            color:
-                hasBackground ? Colors.white : Theme.of(context).primaryColor,
+          return Container(
+            color: Colors.transparent,
+            child: Icon(
+              CustomIcons.pause,
+              size: 33,
+              color:
+                  hasBackground ? Colors.white : Theme.of(context).primaryColor,
+            ),
           );
         } else {
-          return Icon(
-            Icons.play_arrow,
-            size: 33,
-            color:
-                hasBackground ? Colors.white : Theme.of(context).primaryColor,
+          return Container(
+            color: Colors.transparent,
+            child: Icon(
+              CustomIcons.play,
+              size: 33,
+              color:
+                  hasBackground ? Colors.white : Theme.of(context).primaryColor,
+            ),
           );
         }
       },
