@@ -131,7 +131,7 @@ class AudioOpenDefault extends StatelessWidget {
             ],
           ),
         ),
-        AudioOpenCaption(caption: caption),
+        if (caption.isNotEmpty) AudioOpenCaption(caption: caption),
       ],
     );
   }
@@ -189,7 +189,7 @@ class AudioOpenWithGradients extends StatelessWidget {
             ],
           ),
         ),
-        AudioOpenCaption(caption: caption),
+        if (caption.isNotEmpty) AudioOpenCaption(caption: caption),
       ],
     );
   }
@@ -246,7 +246,7 @@ class AudioOpenWithPhoto extends StatelessWidget {
             )
           ],
         ),
-        AudioOpenCaption(caption: caption),
+        if (caption.isNotEmpty) AudioOpenCaption(caption: caption),
       ],
     );
   }
