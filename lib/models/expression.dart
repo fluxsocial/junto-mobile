@@ -78,10 +78,8 @@ class AudioFormExpression {
     this.photo,
     this.audio,
     this.gradient,
+    this.caption,
   });
-
-  // TODO: we're waiting for the model from API so right now these properties are "dummy"
-  // probably it will be similar to photo expression
 
   factory AudioFormExpression.fromMap(Map<String, dynamic> json) {
     return AudioFormExpression(
@@ -89,6 +87,7 @@ class AudioFormExpression {
       photo: json['photo'] ?? '',
       audio: json['audio'] ?? '',
       gradient: json['gradient']?.cast<String>() ?? [],
+      caption: json['caption'] ?? '',
     );
   }
 
@@ -100,12 +99,15 @@ class AudioFormExpression {
   final String audio;
   @HiveField(3)
   final List<String> gradient;
+  @HiveField(4)
+  final String caption;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'title': title ?? '',
         'photo': photo ?? '',
         'audio': audio ?? '',
         'gradient': gradient ?? [],
+        'caption': caption ?? '',
       };
 }
 

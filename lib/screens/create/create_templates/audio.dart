@@ -29,6 +29,7 @@ class CreateAudio extends StatefulWidget {
 
 class CreateAudioState extends State<CreateAudio> {
   final TextEditingController titleController = TextEditingController();
+  final TextEditingController captionController = TextEditingController();
   File audioPhotoBackground;
   List<String> audioGradientValues = [];
 
@@ -111,6 +112,7 @@ class CreateAudioState extends State<CreateAudio> {
                         audioPhotoBackground: audioPhotoBackground,
                         audioGradientValues: audioGradientValues,
                         titleController: titleController,
+                        captionController: captionController,
                       ),
                 if (audio.playBackAvailable)
                   AudioBottomTools(
