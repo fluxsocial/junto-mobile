@@ -30,7 +30,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     if (response.statusCode == 200) {
       final String authorization = response.headers['authorization'];
       final box = await Hive.openBox('app', encryptionKey: key);
-      await box.put("auth", authorization);
+      await box.put(HiveKeys.kAuth, authorization);
       await box.put(HiveKeys.kUserData, jsonEncode(response.body));
       return UserData.fromMap(JuntoHttp.handleResponse(response));
     } else {
