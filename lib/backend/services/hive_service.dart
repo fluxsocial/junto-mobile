@@ -21,6 +21,7 @@ class HiveCache implements LocalCache {
     DBBoxes.collectiveExpressions: "expressions",
     DBBoxes.packExpressions: "pack",
     DBBoxes.denExpressions: "den",
+    DBBoxes.notifications: "notifications"
   };
 
   @override
