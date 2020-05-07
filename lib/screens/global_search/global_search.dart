@@ -253,19 +253,13 @@ class __SearchBodyState extends State<_SearchBody> {
                   }
                   if (state is EmptySearchState ||
                       state is InitialSearchState) {
-                    return Container(
-                      child: Center(
-                        child: Text(
-                          'No results, get started by searching something',
-                        ),
-                      ),
-                    );
+                    return SizedBox();
                   }
                   if (state is ErrorSearchState) {
                     return Center(
                       child: Transform.translate(
                         offset: const Offset(0.0, -50),
-                        child: Text(S.of(context).common_network_error),
+                        child: Text('Hmm, something is up'),
                       ),
                     );
                   }
