@@ -93,6 +93,7 @@ class AudioPreviewDefault extends StatelessWidget {
           color: Theme.of(context).dividerColor,
           width: .5,
         ),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
