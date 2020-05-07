@@ -106,9 +106,10 @@ class AudioGradientSelector extends StatelessWidget {
                     horizontal: 10,
                     vertical: 15,
                   ),
+                  color: Colors.transparent,
                   child: Icon(
                     CustomIcons.cancel,
-                    size: 20,
+                    size: 22,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
@@ -129,9 +130,10 @@ class AudioGradientSelector extends StatelessWidget {
                     horizontal: 10,
                     vertical: 15,
                   ),
+                  color: Colors.transparent,
                   child: Icon(
                     Icons.check,
-                    size: 20,
+                    size: 22,
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
