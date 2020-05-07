@@ -43,7 +43,7 @@ class _PackRequestsState extends State<PackRequests> {
                       for (Group packRequest in state.groupJoinNotifications)
                         if (packRequest.groupType == 'Pack')
                           PackRequest(
-                            userProfile: user.userProfile,
+                            // userProfile: user.userProfile,
                             pack: packRequest,
                             refreshGroups: () async {
                               context.bloc<GroupBloc>().add(FetchMyPack());
