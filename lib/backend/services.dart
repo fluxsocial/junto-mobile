@@ -282,7 +282,7 @@ enum DBBoxes {
   collectiveExpressions,
   denExpressions,
   packExpressions,
-  //TODO: notifications
+  notifications,
 }
 
 /// Interface for managing the application's local cache.
