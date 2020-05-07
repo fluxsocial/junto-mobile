@@ -3,47 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
+import 'package:provider/provider.dart';
 
 class AudioOpen extends StatelessWidget {
   AudioOpen(this.expression);
+
   final ExpressionResponse expression;
 
-  @override
-  Widget build(BuildContext context) {
-    final audioRecording = expression.expressionData.audio;
+  Widget _displayAudioOpen() {
     final audioTitle = expression.expressionData.title;
     final audioGradients = expression.expressionData.gradient;
     final audioPhoto = expression.expressionData.photo;
     final audioCaption = expression.expressionData.caption;
-
-    Widget _displayAudioOpen() {
-      if (audioGradients.isEmpty && audioPhoto.isEmpty) {
-        return AudioOpenDefault(
-          title: audioTitle,
-          caption: audioCaption,
-        );
-      } else if (audioPhoto.isNotEmpty) {
-        return AudioOpenWithPhoto(
-          title: audioTitle,
-          photo: audioPhoto,
-          caption: audioCaption,
-        );
-      } else if (audioGradients.isNotEmpty && audioGradients.length == 2) {
-        return AudioOpenWithGradients(
-          gradients: audioGradients,
-          title: audioTitle,
-          caption: audioCaption,
-        );
-      } else {
-        return AudioOpenDefault(
-          title: audioTitle,
-          caption: audioCaption,
-        );
-      }
+    if (audioGradients.isEmpty && audioPhoto.isEmpty) {
+      return AudioOpenDefault(
+        title: audioTitle,
+        caption: audioCaption,
+      );
+    } else if (audioPhoto.isNotEmpty) {
+      return AudioOpenWithPhoto(
+        title: audioTitle,
+        photo: audioPhoto,
+        caption: audioCaption,
+      );
+    } else if (audioGradients.isNotEmpty && audioGradients.length == 2) {
+      return AudioOpenWithGradients(
+        gradients: audioGradients,
+        title: audioTitle,
+        caption: audioCaption,
+      );
+    } else {
+      return AudioOpenDefault(
+        title: audioTitle,
+        caption: audioCaption,
+      );
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    final audioRecording = expression.expressionData.audio;
     return ChangeNotifierProvider<AudioService>(
       create: (context) => AudioService()..initializeFromWeb(audioRecording),
       lazy: false,
@@ -56,8 +56,10 @@ class AudioOpen extends StatelessWidget {
 
 class AudioOpenTitle extends StatelessWidget {
   AudioOpenTitle({this.title, this.color});
+
   final String title;
   final Color color;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,7 +81,9 @@ class AudioOpenTitle extends StatelessWidget {
 
 class AudioOpenCaption extends StatelessWidget {
   const AudioOpenCaption({this.caption});
+
   final String caption;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,8 +107,10 @@ class AudioOpenDefault extends StatelessWidget {
     this.title,
     this.caption,
   });
+
   final String title;
   final String caption;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -143,9 +149,11 @@ class AudioOpenWithGradients extends StatelessWidget {
     this.caption,
     this.gradients,
   });
+
   final String title;
   final String caption;
   final List<String> gradients;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -206,9 +214,11 @@ class AudioOpenWithGradients extends StatelessWidget {
 
 class AudioOpenWithPhoto extends StatelessWidget {
   AudioOpenWithPhoto({this.title, this.caption, this.photo});
+
   final String title;
   final String caption;
   final String photo;
+
   @override
   Widget build(BuildContext context) {
     return Column(
