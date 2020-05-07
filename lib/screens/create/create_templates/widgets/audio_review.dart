@@ -158,7 +158,7 @@ class AudioReviewWithPhoto extends StatelessWidget {
         Stack(children: [
           Container(
             foregroundDecoration: BoxDecoration(
-              color: Colors.black54,
+              color: Colors.black45,
             ),
             child: Image.file(
               audioPhotoBackground,
