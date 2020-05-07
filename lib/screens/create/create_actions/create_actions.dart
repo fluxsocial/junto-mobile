@@ -125,7 +125,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     try {
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
       if (widget.expressionType == ExpressionType.photo) {
-        JuntoLoader.showLoader(context);
+        JuntoLoader.showLoader(
+          context,
+          color: Colors.white54,
+        );
         final String _photoKey = await repository.createPhoto(
           true,
           '.png',
