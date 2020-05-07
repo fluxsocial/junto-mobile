@@ -89,7 +89,10 @@ class JuntoLotus extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = S.of(context);
     return GestureDetector(
-      onHorizontalDragEnd: (dragDetails) => _onDragEnd(context, dragDetails),
+      onHorizontalDragEnd: (dragDetails)  {
+       _onDragEnd(context, dragDetails);
+
+      },
       child: JuntoFilterDrawer(
         leftDrawer: null,
         rightMenu: JuntoDrawer(),

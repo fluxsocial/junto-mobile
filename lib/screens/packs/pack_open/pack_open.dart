@@ -51,7 +51,7 @@ class PacksLoadedScaffold extends StatelessWidget {
               SliverPersistentHeader(
                 delegate: PackOpenAppbar(
                   pack: state.pack,
-                  expandedHeight: MediaQuery.of(context).size.height * .1 + 50,
+                  expandedHeight: MediaQuery.of(context).size.height * .11 + 50,
                   tabs: _tabs,
                 ),
                 floating: true,
