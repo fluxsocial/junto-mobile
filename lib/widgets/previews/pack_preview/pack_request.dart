@@ -40,7 +40,6 @@ class PackRequest extends StatelessWidget {
       },
       child: Container(
         color: Theme.of(context).colorScheme.background,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           children: <Widget>[
             MemberAvatar(
