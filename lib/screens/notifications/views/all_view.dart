@@ -12,25 +12,27 @@ class NotificationsAllView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(child: Consumer<NotificationsHandler>(
-          builder: (context, data, child) {
-            final notifications = data.notifications;
-            if (notifications.length > 0) {
-              return ListView.builder(
-                itemCount: notifications.length,
-                itemBuilder: (context, index) {
-                  final item = notifications[index];
-                  if (notifications.length > 0) {
-                    return NotificationTile(item: item);
-                  }
-                  return const SizedBox();
-                },
-              );
-            } else {
-              return NotificationPlaceholder();
-            }
-          },
-        )),
+        Expanded(
+          child: Consumer<NotificationsHandler>(
+            builder: (context, data, child) {
+              final notifications = data.notifications;
+              if (notifications.length > 0) {
+                return ListView.builder(
+                  itemCount: notifications.length,
+                  itemBuilder: (context, index) {
+                    final item = notifications[index];
+                    if (notifications.length > 0) {
+                      return NotificationTile(item: item);
+                    }
+                    return const SizedBox();
+                  },
+                );
+              } else {
+                return NotificationPlaceholder();
+              }
+            },
+          ),
+        ),
       ],
     );
   }

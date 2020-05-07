@@ -7,6 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/notification_tile.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/notification_placeholder.dart';
+import 'package:provider/provider.dart';
 
 class PendingPackMembers extends StatelessWidget {
   const PendingPackMembers();
@@ -23,49 +27,34 @@ class PendingPackMembers extends StatelessWidget {
       );
     }
 
-    return Consumer<UserDataProvider>(builder: (context, user, _) {
-      return Column(
-        children: <Widget>[
-          BlocBuilder<GroupBloc, GroupBlocState>(
-            builder: (BuildContext context, GroupBlocState state) {
-              if (state is GroupLoading) {
-                return _loader();
+    return Consumer<NotificationsHandler>(
+      builder: (context, data, child) {
+        final notifications = data.notifications;
+        if (notifications.length > 0) {
+          return ListView.builder(
+            itemCount: notifications.length,
+            itemBuilder: (context, index) {
+              final item = notifications[index];
+              if (notifications.length > 0 &&
+                  item.notificationType == NotificationType.GroupJoinRequests) {
+                if (item.group.groupType == 'Pack') {
+                  return PackRequest(
+                    userProfile: item.creator,
+                    pack: item.group,
+                    refreshGroups: () async {
+                      await context.bloc<GroupBloc>().add(
+                            FetchMyPack(),
+                          );
+                    },
+                  );
+                }
               }
-              if (state is GroupLoaded) {
-                return Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: <Widget>[
-                      for (Group packRequest in state.groupJoinNotifications)
-                        if (packRequest.groupType == 'Pack')
-                          PackRequest(
-                            userProfile: user.userProfile,
-                            pack: packRequest,
-                            refreshGroups: () async {
-                              await context.bloc<GroupBloc>().add(
-                                    FetchMyPack(),
-                                  );
-                            },
-                          )
-                    ],
-                  ),
-                );
-              }
-              if (state is GroupError) {
-                return Expanded(
-                  child: Center(
-                    child: Transform.translate(
-                      offset: const Offset(0.0, -50),
-                      child: const Text('Hmm, something is up'),
-                    ),
-                  ),
-                );
-              }
-              return _loader();
+              return const SizedBox();
             },
-          ),
-        ],
-      );
-    });
+          );
+        }
+        return const SizedBox();
+      },
+    );
   }
 }
