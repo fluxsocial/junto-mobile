@@ -23,8 +23,8 @@ class CreateExpressionIcon extends StatelessWidget {
         color: Colors.transparent,
         alignment: Alignment.center,
         margin: const EdgeInsets.only(
-          right: 15,
-          left: 15,
+          right: 25,
+          left: 25,
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
