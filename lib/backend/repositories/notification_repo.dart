@@ -3,7 +3,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
-/// Notifications are cached as json in hive box
+/// Notifications are cached through custom adapter [JuntoNotificationAdapter]
 ///
 /// We limit the number of notifications to 100
 class NotificationRepo {
@@ -14,8 +14,6 @@ class NotificationRepo {
 
   final int maximumNotificationCount = 100;
 
-  /// Marking notifications is equvialent to adding selected
-  /// notifications ids to the collection of read notification ids collection
   Future<bool> markAsRead(List<String> addresses) async {
     try {
       if (addresses == null) {
