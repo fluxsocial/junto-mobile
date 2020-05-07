@@ -63,7 +63,6 @@ class SignUpRegisterState extends State<SignUpRegister> {
         return false;
       }
     } else {
-      print('heyo');
       if (passwordController.value.text !=
           confirmPasswordController.value.text) {
         showDialog(

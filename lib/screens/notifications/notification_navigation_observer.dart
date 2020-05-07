@@ -21,7 +21,10 @@ class NotificationNavigationObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route previousRoute) {
-    if (previousRoute.settings?.name == 'JuntoCollective') {
+    logger.logDebug(
+        'pop ${route?.settings?.name} from ${previousRoute?.settings?.name}');
+    if (previousRoute.settings?.name == 'JuntoCollective' &&
+        route.settings?.name != null) {
       notificationsHandler.fetchNotifications();
     }
     if (route.settings?.name == 'notifications') {
