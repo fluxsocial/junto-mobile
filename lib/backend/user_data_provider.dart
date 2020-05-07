@@ -31,14 +31,16 @@ class UserDataProvider extends ChangeNotifier {
   }
 
   Future<void> getUserInformation() async {
-    final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
-    final userData = box.get(HiveKeys.kUserData);
+    logger.logInfo('Fetching user information');
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final userData = await box.get(HiveKeys.kUserData);
     if (userData != null && userData.isNotEmpty) {
       final Map<String, dynamic> decodedUserData = jsonDecode(userData);
       userProfile = UserData.fromMap(decodedUserData);
       userAddress = userProfile.user.address;
-      if (box.get(HiveKeys.kLayoutView) != null) {
-        twoColumnView = box.get(HiveKeys.kLayoutView);
+      final cachedLayoutView = await box.get(HiveKeys.kLayoutView);
+      if (cachedLayoutView != null) {
+        twoColumnView = cachedLayoutView;
       }
 
       notifyListeners();
@@ -48,7 +50,7 @@ class UserDataProvider extends ChangeNotifier {
 
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
-    final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     box.delete(HiveKeys.kUserData);
     box.put(HiveKeys.kUserData, jsonEncode(user.toMap()));
     box.delete(HiveKeys.kUserId);
