@@ -45,4 +45,13 @@ class NotificationsHandler extends ChangeNotifier {
       logger.logException(e, s, 'Error while setting notifications as read');
     }
   }
+
+  Future<void> wipe() async {
+    try {
+      _notifications.clear();
+      repository.clear();
+    } catch (e, s) {
+      logger.logException(e, s);
+    }
+  }
 }
