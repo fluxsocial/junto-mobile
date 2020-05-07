@@ -143,6 +143,10 @@ class UnauthenticatedMaterialApp extends StatelessWidget {
           title: 'JUNTO Alpha',
           debugShowCheckedModeBanner: false,
           theme: theme.currentTheme,
+          navigatorObservers: [
+            NotificationNavigationObserver(
+                Provider.of<NotificationsHandler>(context)),
+          ],
           localizationsDelegates: [
             S.delegate,
             GlobalMaterialLocalizations.delegate,
