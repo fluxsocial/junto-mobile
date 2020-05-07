@@ -1,3 +1,6 @@
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+
 /// Various item keys used to store data in Hive boxes
 class HiveKeys {
   /// Used to access
@@ -13,5 +16,10 @@ class HiveKeys {
 class HiveBoxes {
   /// Used to access the application box.
   static const kAppBox = 'app';
-  static const kNotificaitons = 'notifications';
+  static const kNotifications = 'notifications';
+  static const kExpressions = 'expressions';
+  static const kPack = 'pack';
+  static const kDen = 'pack';
+
+  static List<String> get keys => [kAppBox, kNotifications, kExpressions, kDen];
 }
