@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'notification.dart';
+part of 'junto_notification.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -23,7 +23,7 @@ _$_Notification _$_$_NotificationFromJson(Map json) {
         : ExpressionSlimModel.fromJson((json['expression'] as Map)?.map(
             (k, e) => MapEntry(k as String, e),
           )),
-    unread: json['unread'] as bool,
+    unread: json['unread'] as bool ?? true,
   );
 }
 
