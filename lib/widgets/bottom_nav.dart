@@ -111,7 +111,7 @@ class BottomNav extends StatelessWidget {
                 ),
                 child: Icon(
                   CustomIcons.newflower,
-                  size: 33,
+                  size: 38,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
