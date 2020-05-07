@@ -130,13 +130,19 @@ class CreateShortformState extends State<CreateShortform> {
                 horizontal: 10,
                 vertical: 10,
               ),
-              child: Row(
+              height: 58,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   _gradientSelector('8E8098', '307FAA'),
                   _gradientSelector('6F51A8', 'E8B974'),
                   _gradientSelector('2E4F78', '6397C7'),
                   _gradientSelector('719cf4', 'ffc7e4'),
                   _gradientSelector('639acf', '7bdaa5'),
+                  _gradientSelector('FC6073', 'FFD391'),
+                  _gradientSelector('2CBAB1', 'E7E26E'),
+                  _gradientSelector('BD96D6', '2034BC'),
+                  _gradientSelector('222222', '555555'),
                 ],
               ),
             ),
