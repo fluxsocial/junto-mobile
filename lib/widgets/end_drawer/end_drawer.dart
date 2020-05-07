@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
@@ -41,7 +42,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   }
 
   Future<void> getUserInformation() async {
-    final box = await Hive.openBox("app", encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     final _Id = await box.get('userFollowPerspectiveId') as String;
     setState(() => _userFollowPerspectiveId = _Id);
   }
