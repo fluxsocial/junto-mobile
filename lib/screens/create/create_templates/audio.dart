@@ -11,7 +11,7 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
-import 'widgets/audio_gradient_selector.dart';
+import 'widgets/audio_photo_options.dart';
 import 'widgets/audio_record.dart';
 import 'widgets/audio_review.dart';
 
@@ -35,10 +35,17 @@ class CreateAudioState extends State<CreateAudio> {
   File audioPhotoBackground;
   List<String> audioGradientValues = [];
 
-  Future<void> _onPickPressed() async {
+  Future<void> _onPickPressed({String source}) async {
     try {
-      final File image =
-          await ImagePicker.pickImage(source: ImageSource.gallery);
+      File image;
+      if (source == 'Camera') {
+        image = await ImagePicker.pickImage(source: ImageSource.camera);
+      } else if (source == 'Gallery') {
+        image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      } else {
+        image = await ImagePicker.pickImage(source: ImageSource.camera);
+      }
+
       if (image == null && audioPhotoBackground == null) {
         setState(() => audioPhotoBackground = null);
         return;
@@ -96,6 +103,19 @@ class CreateAudioState extends State<CreateAudio> {
     });
   }
 
+  void _audioPhotoOptions() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      builder: (BuildContext context) => AudioPhotoOptions(
+        updatePhoto: _onPickPressed,
+        resetPhoto: _resetAudioPhotoBackground,
+      ),
+    );
+  }
+
   void _toggleBottomTools() {
     setState(() {
       _showBottomTools = !_showBottomTools;
@@ -131,7 +151,7 @@ class CreateAudioState extends State<CreateAudio> {
                       ),
                 if (audio.playBackAvailable && _showBottomTools)
                   AudioBottomTools(
-                    onPickPressed: _onPickPressed,
+                    openPhotoOptions: _audioPhotoOptions,
                     resetAudioPhotoBackground: _resetAudioPhotoBackground,
                     resetAudioGradientValues: _resetAudioGradientValues,
                     setAudioGradientValues: _setAudioGradientValues,

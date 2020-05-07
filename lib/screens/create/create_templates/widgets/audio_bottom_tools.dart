@@ -5,7 +5,7 @@ import 'audio_gradient_selector.dart';
 
 class AudioBottomTools extends StatefulWidget {
   const AudioBottomTools({
-    this.onPickPressed,
+    this.openPhotoOptions,
     this.resetAudioPhotoBackground,
     this.resetAudioGradientValues,
     this.setAudioGradientValues,
@@ -14,7 +14,7 @@ class AudioBottomTools extends StatefulWidget {
   final Function resetAudioPhotoBackground;
   final Function resetAudioGradientValues;
   final Function setAudioGradientValues;
-  final Function onPickPressed;
+  final Function openPhotoOptions;
   @override
   State<StatefulWidget> createState() {
     return AudioBottomToolsState();
@@ -38,7 +38,7 @@ class AudioBottomToolsState extends State<AudioBottomTools> {
             ),
             firstChild: AudioBottomToolsDefault(
               resetAudioPhotoBackground: widget.resetAudioPhotoBackground,
-              onPickPressed: widget.onPickPressed,
+              openPhotoOptions: widget.openPhotoOptions,
               toggleGradientSelector: _toggleGradientSelector,
             ),
             secondChild: AudioGradientSelector(
@@ -65,13 +65,13 @@ class AudioBottomToolsState extends State<AudioBottomTools> {
 
 class AudioBottomToolsDefault extends StatelessWidget {
   const AudioBottomToolsDefault({
-    this.onPickPressed,
+    this.openPhotoOptions,
     this.resetAudioPhotoBackground,
     this.toggleGradientSelector,
   });
 
   final Function resetAudioPhotoBackground;
-  final Function onPickPressed;
+  final Function openPhotoOptions;
   final Function toggleGradientSelector;
   @override
   Widget build(BuildContext context) {
@@ -124,7 +124,7 @@ class AudioBottomToolsDefault extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () async {
-                  onPickPressed();
+                  openPhotoOptions();
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 25),
