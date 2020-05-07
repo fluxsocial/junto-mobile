@@ -47,12 +47,12 @@ class AudioGradientSelector extends StatelessWidget {
         'second': 'E7E26E',
       },
       {
-        'first': '222222',
-        'second': '555555',
-      },
-      {
         'first': 'BD96D6',
         'second': '2034BC',
+      },
+      {
+        'first': '222222',
+        'second': '555555',
       },
     ];
 
