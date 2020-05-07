@@ -112,7 +112,22 @@ class AudioService with ChangeNotifier {
           event == AudioPlayerState.PAUSED) {
         _playbackTimer?.cancel();
       }
+      if (event == AudioPlayerState.PLAYING) {
+        _getDuration();
+      }
     });
+    _audioPlayer.onDurationChanged.listen((event) {
+      print(event);
+    });
+    _audioPlayer.onNotificationPlayerStateChanged.listen((event) {
+      print(event);
+    });
+  }
+
+  Future _getDuration() async {
+    final duration = await _audioPlayer.getDuration();
+    _duration = Duration(milliseconds: duration);
+    notifyListeners();
   }
 
   void _updateCurrentPlaybackPosition(time) async {
