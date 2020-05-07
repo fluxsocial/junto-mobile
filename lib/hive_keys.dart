@@ -13,4 +13,5 @@ class HiveKeys {
 class HiveBoxes {
   /// Used to access the application box.
   static const kAppBox = 'app';
+  static const kNotificaitons = 'notifications';
 }
