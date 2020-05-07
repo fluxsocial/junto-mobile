@@ -85,6 +85,7 @@ class HiveCache implements LocalCache {
       if (items.length > 0) {
         items.sort((a, b) => -a?.createdAt?.compareTo(b?.createdAt));
       }
+      //TODO: remove if number of items exceeds 100 
       return items;
     } catch (e) {
       logger.logException(e);
