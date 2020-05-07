@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CreateCTAButton extends StatelessWidget {
-  const CreateCTAButton({this.cta, this.title,});
+  const CreateCTAButton({
+    this.cta,
+    this.title,
+  });
 
   final Function cta;
   final String title;
@@ -18,7 +21,7 @@ class CreateCTAButton extends StatelessWidget {
           bottom: 5,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryVariant,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Text(

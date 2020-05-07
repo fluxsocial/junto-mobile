@@ -433,9 +433,9 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
           children: <Widget>[
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 15), 
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: Theme.of(context).colorScheme.onSurface,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 constraints: const BoxConstraints(maxHeight: 180),
