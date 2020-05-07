@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/notification.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 class NotificationsHandler extends ChangeNotifier {
   final NotificationRepo repository;
@@ -17,7 +17,7 @@ class NotificationsHandler extends ChangeNotifier {
   }
 
   Future<void> fetchNotifications() async {
-    print('fetching notifications');
+    logger.logInfo('fetching notifications');
     final result = await repository.getJuntoNotifications();
     if (result.wasSuccessful) {
       _notifications = result.results;
@@ -43,6 +43,14 @@ class NotificationsHandler extends ChangeNotifier {
       }
     } catch (e, s) {
       logger.logException(e, s, 'Error while setting notifications as read');
+    }
+  }
+
+  Future<void> wipe() async {
+    try {
+      _notifications.clear();
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 }

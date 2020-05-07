@@ -66,6 +66,8 @@ class CreateSphereState extends State<CreateSphere> {
       }
     }
 
+
+    //TODO: remove usage of shared prefs
     // get user address from shared preferences
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String userAddress = await prefs.get('user_id');

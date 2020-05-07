@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'notification.dart';
+import 'junto_notification.dart';
 
 part 'junto_notification_results.freezed.dart';
 part 'junto_notification_results.g.dart';

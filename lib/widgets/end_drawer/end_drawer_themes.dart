@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:provider/provider.dart';
 
 class JuntoThemes extends StatefulWidget {
@@ -27,7 +28,7 @@ class JuntoThemesState extends State<JuntoThemes> {
   }
 
   Future<void> getThemeInfo() async {
-    final box = await Hive.openBox("app", encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     final bool nightMode = await box.get('night-mode');
     final String theme = await box.get("current-theme") as String;
     if (nightMode != null) {
@@ -196,7 +197,7 @@ class JuntoThemesState extends State<JuntoThemes> {
                       value: _nightMode,
                       onChanged: (bool value) async {
                         final box =
-                            await Hive.openBox("app", encryptionKey: key);
+                            await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
                         await box.delete('night-mode');
                         await box.put('night-mode', value);
                         setState(() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/notification.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
 import 'package:junto_beta_mobile/screens/notifications/utils/username_text_span.dart';
 
@@ -10,7 +10,6 @@ class CommentNotification extends StatelessWidget {
   const CommentNotification({Key key, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print(item.expression);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(

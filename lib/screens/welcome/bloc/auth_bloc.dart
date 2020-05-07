@@ -93,7 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
     yield LoadingState();
     try {
-      final box = await Hive.openBox(HiveBoxes.kAppBox);
+      final box = await Hive.openLazyBox(HiveBoxes.kAppBox);
       final data = await box.get(HiveKeys.kUserData);
       logger.logDebug(data);
       yield AuthenticatedState(UserData.fromMap(json.decode(data)));
@@ -109,7 +109,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _clearUserInformation() async {
-    await authRepo.logoutUser();
-    return;
+    try {
+      await authRepo.logoutUser();
+    } catch (e, s) {
+      logger.logException(e, s, 'Error while clearing the user data');
+    }
   }
 }

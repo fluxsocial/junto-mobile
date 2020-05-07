@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_relation_button.dart';
@@ -70,7 +71,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
   }
 
   Future<void> getCurrentTheme() async {
-    final box = await Hive.openBox("app", encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     final _theme = await box.get("current-theme") as String;
     setState(() => _currentTheme = _theme);
   }

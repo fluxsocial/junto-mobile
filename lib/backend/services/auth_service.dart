@@ -7,15 +7,17 @@ import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 @immutable
 class AuthenticationServiceCentralized implements AuthenticationService {
-  const AuthenticationServiceCentralized(this.client);
+  const AuthenticationServiceCentralized(this.client, this.dbService);
 
   final JuntoHttp client;
+  final LocalCache dbService;
 
   @override
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
@@ -29,7 +31,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     );
     if (response.statusCode == 200) {
       final String authorization = response.headers['authorization'];
-      final box = await Hive.openBox('app', encryptionKey: key);
+      final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
       await box.put(HiveKeys.kAuth, authorization);
       await box.put(HiveKeys.kUserData, jsonEncode(response.body));
       return UserData.fromMap(JuntoHttp.handleResponse(response));
@@ -43,9 +45,9 @@ class AuthenticationServiceCentralized implements AuthenticationService {
 
   @override
   Future<void> logoutUser() async {
-    final box = await Hive.openBox('app', encryptionKey: key);
-    box.deleteAll(box.keys);
-    logger.logInfo('User logged out');
+    await dbService.wipe();
+
+    logger.logInfo('User logged out, cache cleaned');
   }
 
   @override

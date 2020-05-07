@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
@@ -496,7 +497,7 @@ class WelcomeState extends State<Welcome> {
   }
 
   Future<void> _getTheme() async {
-    final box = await Hive.openBox("app", encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     final _theme = await box.get("current-theme") as String;
 
     setState(() {

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/notification.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
 import 'package:junto_beta_mobile/screens/notifications/utils/username_text_span.dart';
-
 
 class AcceptConnectionNotification extends StatelessWidget {
   final JuntoNotification item;
@@ -25,8 +24,7 @@ class AcceptConnectionNotification extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                   ),
                   children: <TextSpan>[
-                       UsernameTextspan(item: item).retrieveTextSpan(context),
-
+                    UsernameTextspan(item: item).retrieveTextSpan(context),
                     TextSpan(text: 'is now your 1st degree connection.')
                   ]),
             ),

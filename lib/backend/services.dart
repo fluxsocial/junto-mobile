@@ -282,7 +282,7 @@ enum DBBoxes {
   collectiveExpressions,
   denExpressions,
   packExpressions,
-  //TODO: notifications
+  notifications,
 }
 
 /// Interface for managing the application's local cache.
@@ -295,4 +295,13 @@ abstract class LocalCache {
 
   /// Retrieves all expressions in the database.
   Future<List<ExpressionResponse>> retrieveExpressions(DBBoxes box);
+
+  /// Adds list of notifications to database
+  Future<void> insertNotifications(List<JuntoNotification> notifications,
+      {bool overwrite});
+
+  /// Retrieves all cached notifications
+  Future<List<JuntoNotification>> retrieveNotifications();
+
+  Future<void> wipe();
 }

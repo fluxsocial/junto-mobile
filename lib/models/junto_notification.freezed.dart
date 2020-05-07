@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
 
-part of 'notification.dart';
+part of 'junto_notification.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -26,7 +26,7 @@ class _$JuntoNotificationTearOff {
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile creator,
       ExpressionSlimModel expression,
-      bool unread}) {
+      bool unread = true}) {
     return _Notification(
       address,
       notificationType,
@@ -207,10 +207,11 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           this.creator,
       this.expression,
-      this.unread})
+      this.unread = true})
       : assert(address != null),
         assert(notificationType != null),
-        assert(createdAt != null);
+        assert(createdAt != null),
+        assert(unread != null);
 
   factory _$_Notification.fromJson(Map<String, dynamic> json) =>
       _$_$_NotificationFromJson(json);
@@ -238,6 +239,7 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
   final UserProfile creator;
   @override
   final ExpressionSlimModel expression;
+  @JsonKey(defaultValue: true)
   @override
   final bool unread;
 

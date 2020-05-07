@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
@@ -61,14 +62,14 @@ class _SignInState extends State<SignIn> {
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
     try {
-      final box = await Hive.openBox("app", encryptionKey: key);
+      final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
       final bool nightMode = await box.get('night-mode');
       if (nightMode == null) {
         await box.put('night-mode', false);
       }
       await Provider.of<AuthRepo>(context, listen: false)
           .loginUser(loginDetails);
-      Provider.of<UserDataProvider>(context, listen: false).initialize();
+      await Provider.of<UserDataProvider>(context, listen: false).initialize();
       JuntoLoader.hide();
       BlocProvider.of<PerspectivesBloc>(context).add(FetchPerspectives());
       Navigator.of(context).pushReplacement(

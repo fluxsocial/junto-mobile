@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -63,7 +64,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserProfile> queryUser(String param, QueryType queryType) async {
-    final box = await Hive.openBox("app", encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     final authKey = await box.get("auth");
     final Uri _uri = Uri.http(
       END_POINT,

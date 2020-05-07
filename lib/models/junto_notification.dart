@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 
 import 'expression_slim_model.dart';
 
-part 'notification.freezed.dart';
-part 'notification.g.dart';
+part 'junto_notification.freezed.dart';
+part 'junto_notification.g.dart';
 
 enum NotificationType {
   ConnectionNotification,
@@ -43,7 +46,7 @@ abstract class JuntoNotification with _$JuntoNotification {
     @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
         UserProfile creator,
     ExpressionSlimModel expression,
-    bool unread,
+    @Default(true) bool unread,
   }) = _Notification;
 
   factory JuntoNotification.fromJson(Map<String, dynamic> json) =>
@@ -67,4 +70,29 @@ abstract class JuntoNotification with _$JuntoNotification {
   }
 
   static Map<String, dynamic> userToJson(UserProfile obj) => obj?.toMap();
+}
+
+class JuntoNotificationAdapter extends TypeAdapter<JuntoNotification> {
+  @override
+  final typeId = 6;
+
+  @override
+  JuntoNotification read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    final data = fields[0] as String;
+    final notification = JuntoNotification.fromJson(jsonDecode(data));
+    return notification;
+  }
+
+  @override
+  void write(BinaryWriter writer, JuntoNotification obj) {
+    final json = jsonEncode(obj.toJson());
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(json);
+  }
 }

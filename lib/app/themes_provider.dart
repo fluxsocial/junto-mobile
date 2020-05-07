@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 
 class JuntoThemesProvider with ChangeNotifier {
   JuntoThemesProvider(this._currentTheme) {
@@ -20,7 +21,7 @@ class JuntoThemesProvider with ChangeNotifier {
   };
 
   static Future<ThemeData> initialize() async {
-    final box = await Hive.openBox("app", encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     final String theme = await box.get("current-theme") as String;
 
     if (theme != null && theme.isNotEmpty) {
@@ -46,7 +47,7 @@ class JuntoThemesProvider with ChangeNotifier {
   String get themeName => _themeName;
 
   Future<void> _persistTheme(String value) async {
-    final box = await Hive.openBox("app", encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     box.put("current-theme", value);
     return;
   }

@@ -319,7 +319,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         _position = direction;
       }
       _controller.fling(velocity: 1);
-    } catch (e, s) {
+    } catch (e) {
       logger.logWarning(
           'Trying to access focus scope when widget is no longer stable');
     }
