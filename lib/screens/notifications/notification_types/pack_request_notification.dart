@@ -12,25 +12,28 @@ class PackRequestNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
+      child: Column(
         children: <Widget>[
-          UserProfilePicture(item: item),
-          const SizedBox(width: 10),
-          Flexible(
-            child: RichText(
-              text: TextSpan(
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  children: <TextSpan>[
-                    UsernameTextspan(item: item).retrieveTextSpan(context),
-                    TextSpan(text: 'invited you to their pack.')
-                  ]),
-            ),
+          Row(
+            children: <Widget>[
+              UserProfilePicture(item: item),
+              const SizedBox(width: 10),
+              Flexible(
+                child: RichText(
+                  text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      children: <TextSpan>[
+                        UsernameTextspan(item: item).retrieveTextSpan(context),
+                        TextSpan(text: 'invited you to their pack.')
+                      ]),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 10),
           PackRequestResponse(
             packAddress: item.group.address,
             userAddress: item.creator.address,

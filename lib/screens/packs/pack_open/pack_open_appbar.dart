@@ -35,14 +35,14 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
       builder: (context, user, child) {
         final userProfile = user.userProfile;
         return Container(
-          height: MediaQuery.of(context).size.height * .1 + 50,
+          height: MediaQuery.of(context).size.height * .11 + 50,
           width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * .1,
+                  height: MediaQuery.of(context).size.height * .11,
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.only(
                     bottom: 10,

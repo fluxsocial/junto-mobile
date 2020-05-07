@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class MemberRelationButton extends StatelessWidget {
   const MemberRelationButton({this.toggleMemberRelationships});
@@ -13,8 +14,8 @@ class MemberRelationButton extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(left: 15),
         padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
+          horizontal: 21,
+          vertical: 7,
         ),
         decoration: BoxDecoration(
           border: Border.all(
@@ -23,21 +24,14 @@ class MemberRelationButton extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(5),
         ),
-        child: Row(
-          children: <Widget>[
-            const SizedBox(width: 14),
-            Image.asset(
-              'assets/images/junto-mobile__infinity.png',
-              height: 14,
-              color: Theme.of(context).primaryColor,
-            ),
-            const SizedBox(width: 2),
-            Icon(
-              Icons.keyboard_arrow_down,
-              size: 12,
-              color: Theme.of(context).primaryColor,
-            ),
-          ],
+        alignment: Alignment.center,
+        child: Transform.translate(
+          offset: Offset(-9.0, 0),
+          child: Icon(
+            CustomIcons.infinity,
+            size: 8,
+            color: Theme.of(context).primaryColor,
+          ),
         ),
       ),
     );
