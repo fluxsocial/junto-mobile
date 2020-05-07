@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/cta_button.dart';
 
 class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CreateAppBar({
@@ -32,26 +33,13 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
               Text(
                 expressionType.appBarName().toUpperCase(),
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).primaryColor,
                   letterSpacing: 1.7,
                 ),
               ),
-              InkWell(
-                onTap: onNext,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 8.0,
-                    top: 8.0,
-                    bottom: 8.0,
-                  ),
-                  child: Text(
-                    'next',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ),
-              )
+              CreateCTAButton(cta: onNext, title: 'Next'),
             ],
           ),
         ),

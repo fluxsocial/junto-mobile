@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/cta_button.dart';
 
 class CreateActionsAppbar extends StatelessWidget {
   const CreateActionsAppbar({
@@ -36,18 +37,13 @@ class CreateActionsAppbar extends StatelessWidget {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: onCreateTap,
-              child: Container(
-                height: 42,
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 10),
-                child: Text(
-                  'create',
-                  style: Theme.of(context).textTheme.caption,
-                ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: CreateCTAButton(
+                cta: onCreateTap,
+                title: 'Create',
               ),
-            )
+            ),
           ],
         ),
       ),
