@@ -169,24 +169,33 @@ class AudioOpenWithGradients extends StatelessWidget {
                   HexColor.fromHex(gradients[1]),
                 ]),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              if (title.isNotEmpty)
-                AudioOpenTitle(
-                  title: title,
-                  color: Colors.white,
+          child: Container(
+            color: Colors.black45,
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height * .17,
+            ),
+            child: Column(
+              mainAxisAlignment: title.isNotEmpty
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (title.isNotEmpty)
+                  AudioOpenTitle(
+                    title: title,
+                    color: Colors.white,
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
+                  child: AudioPlaybackRow(
+                    hasBackground: true,
+                  ),
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                ),
-                child: AudioPlaybackRow(
-                  hasBackground: true,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         if (caption.isNotEmpty) AudioOpenCaption(caption: caption),
