@@ -144,7 +144,7 @@ class JuntoLotus extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.symmetric(
                                 vertical:
-                                    MediaQuery.of(context).size.height * .075,
+                                    MediaQuery.of(context).size.height * .07,
                               ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
