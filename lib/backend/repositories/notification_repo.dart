@@ -1,49 +1,40 @@
-import 'dart:convert';
-
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
+/// Notifications are cached as json in hive box
+///
+/// We limit the number of notifications to 100
 class NotificationRepo {
-  NotificationRepo(this.service);
+  NotificationRepo(this.service, this.dbService);
 
+  final HiveCache dbService;
   final NotificationService service;
-  final String cacheReadNotificationsBoxName = 'read_notifications';
-  final String cacheNotificationsBoxName = 'notifications';
 
+  final int maximumNotificationCount = 100;
+
+  /// Marking notifications is equvialent to adding selected
+  /// notifications ids to the collection of read notification ids collection
   Future<bool> markAsRead(List<String> addresses) async {
     try {
       if (addresses == null) {
         return false;
       }
-      final box = await _getReadNotificationsBox();
+      logger.logInfo('Marking ${addresses.length} notifications as read');
+      final notifications = await dbService.retrieveNotifications();
 
-      final currentCache = box.get(cacheReadNotificationsBoxName);
-      if (currentCache != null) {
-        // append newly read notifications to cached list
-        final json = jsonDecode(currentCache);
-        final status = JuntoNotificationReadStatus.fromJson(json);
-        status.readNotifications.addAll(addresses);
-        final uniqueList = status.readNotifications.toSet().toList();
-        final newStatus =
-            JuntoNotificationReadStatus(readNotifications: uniqueList);
-        final newJson = jsonEncode(newStatus);
-        box.put(cacheReadNotificationsBoxName, newJson);
-        return true;
-      } else {
-        // create new list of read notifications
-        final status =
-            JuntoNotificationReadStatus(readNotifications: addresses);
-        final json = jsonEncode(status);
-        box.put(cacheReadNotificationsBoxName, json);
-        return true;
+      for (var i = 0; i < notifications.length; i++) {
+        final notif = notifications[i];
+        if (addresses.contains(notif.address)) {
+          final newNotification = notif.copyWith(unread: false);
+          notifications[i] = newNotification;
+        }
       }
+      await dbService.insertNotifications(notifications, overwrite: true);
+      return true;
     } catch (e, s) {
       logger.logException(e, s, 'Error while setting notifications as read');
-      final box = await _getReadNotificationsBox();
-      await box.clear();
       return false;
     }
   }
@@ -63,71 +54,31 @@ class NotificationRepo {
           lastTimestamp: lastTimestamp,
         ),
       );
+
       if (result.wasSuccessful) {
         logger.logInfo(
-            'Retrieved ${result.results.length} notifications from API. Updating unread status');
-        final updatedResult = await _updateReadNotificationsStatus(result);
-        //TODO: add to cache
-        return updatedResult;
+            'Retrieved ${result.results.length} notifications from API. Updating read status');
+
+        await dbService.insertNotifications(result.results);
+        final currentNotifications = await dbService.retrieveNotifications();
+
+        return result.copyWith(
+          results: currentNotifications.take(maximumNotificationCount).toList(),
+        );
       } else {
-        //TODO try to return from cache
-        //if not then just return failed attempt
-        final cacheExists = false;
-        if (cacheExists) {
-          //return cached
+        final current = await dbService.retrieveNotifications();
+        if (current.isNotEmpty) {
+          return JuntoNotificationResults(
+              wasSuccessful: true,
+              results: current.take(maximumNotificationCount).toList());
         } else {
           logger.logError('Couldn\'t retrieve notifications from cache');
           return JuntoNotificationResults(wasSuccessful: false);
         }
       }
-      return result;
     } catch (e, s) {
       logger.logException(e, s, 'Error while retrieving notifications');
       return JuntoNotificationResults(wasSuccessful: false);
     }
-  }
-
-  Future<JuntoNotificationResults> _updateReadNotificationsStatus(
-      JuntoNotificationResults response) async {
-    try {
-      final box = await _getReadNotificationsBox();
-      final currentCache = box.get(cacheReadNotificationsBoxName);
-
-      if (currentCache != null) {
-        logger.logInfo(
-            'Current cache for read notification exist. Merging current read status with new notifications');
-        final json = jsonDecode(currentCache);
-        final status = JuntoNotificationReadStatus.fromJson(json);
-
-        final list = response.results;
-        logger.logDebug(
-            'There are ${status.readNotifications.length} read notifications in cache');
-        //TODO: maybe replace with simple for loop
-        list.forEach((element) {
-          list[list.indexOf(element)] = element.copyWith(
-              unread: !status.readNotifications.contains(element.address));
-        });
-      } else {
-        logger.logInfo(
-            'Current cache for read notification doesn\'t exist. Setting all notifications as unread');
-        final list = response.results;
-        //TODO: maybe replace with simple for loop
-        list.forEach((element) {
-          list[list.indexOf(element)] = element.copyWith(unread: true);
-        });
-      }
-    } catch (e) {
-      logger
-          .logError('Error while updating the notification read status: ${e}');
-    }
-    return response;
-  }
-
-  Future<Box> _getReadNotificationsBox() async {
-    final box = await Hive.openBox(
-      cacheReadNotificationsBoxName,
-      encryptionKey: key,
-    );
-    return box;
   }
 }

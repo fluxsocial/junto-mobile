@@ -49,7 +49,7 @@ class Backend {
       final ThemeData currentTheme = await JuntoThemesProvider.initialize();
       final JuntoHttp client = JuntoHttp(httpClient: IOClient());
       final AuthenticationService authService =
-          AuthenticationServiceCentralized(client);
+          AuthenticationServiceCentralized(client, dbService);
       final UserService userService = UserServiceCentralized(client);
       final ExpressionService expressionService =
           ExpressionServiceCentralized(client);
@@ -57,7 +57,7 @@ class Backend {
       final SearchService searchService = SearchServiceCentralized(client);
       final NotificationService notificationService =
           NotificationServiceImpl(client);
-      final notificationRepo = NotificationRepo(notificationService);
+      final notificationRepo = NotificationRepo(notificationService, dbService);
       final UserRepo userRepo = UserRepo(
         userService,
         notificationRepo,

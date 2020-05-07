@@ -21,7 +21,6 @@ class NotificationServiceImpl implements NotificationService {
         '/notifications',
         queryParams: params.toMap(),
       );
-      print(response.body);
       final Map<String, dynamic> data = JuntoHttp.handleResponse(response);
       final result = JuntoNotificationResults.fromJson(data);
 

@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
@@ -16,9 +15,8 @@ import 'bloc.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
   final UserDataProvider userDataProvider;
-  final NotificationsHandler notificationsHandler;
 
-  AuthBloc(this.authRepo, this.userDataProvider, this.notificationsHandler) {
+  AuthBloc(this.authRepo, this.userDataProvider) {
     _getLoggedIn();
   }
 
@@ -112,7 +110,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _clearUserInformation() async {
     try {
-      await notificationsHandler.wipe();
       await authRepo.logoutUser();
     } catch (e, s) {
       logger.logException(e, s, 'Error while clearing the user data');
