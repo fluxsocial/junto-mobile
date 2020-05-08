@@ -43,14 +43,14 @@ class NotificationsIcon extends StatelessWidget {
           );
         },
         child: Stack(
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.bottomLeft, 
           children: <Widget>[
             Container(
               color: Colors.transparent,
               padding: const EdgeInsets.only(right: 10),
               child: Icon(
-                CustomIcons.moon,
-                size: 22,
+                CustomIcons.newmoon,
+                size: 20,
                 color: Theme.of(context).primaryColor,
               ),
             ),

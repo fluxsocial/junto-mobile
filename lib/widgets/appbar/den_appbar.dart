@@ -76,8 +76,10 @@ class DenAppbar extends SliverPersistentHeaderDelegate {
                     left: 10,
                     right: 10,
                   ),
-                  child: const Icon(
-                    CustomIcons.moon,
+                  child: Icon(
+                    CustomIcons.newmoon,
+                    size: 20,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),

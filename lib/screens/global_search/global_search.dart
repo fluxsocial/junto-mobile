@@ -258,7 +258,7 @@ class __SearchBodyState extends State<_SearchBody> {
                     return Center(
                       child: Transform.translate(
                         offset: const Offset(0.0, -50),
-                        child: Text('Hmm, something is up'),
+                        child: Text('Hmm, something is up...'),
                       ),
                     );
                   }
