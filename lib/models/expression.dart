@@ -449,10 +449,12 @@ class QueryResults<T> {
   QueryResults({
     @required this.results,
     @required this.lastTimestamp,
+    this.resultCount,
   });
 
   final List<T> results;
   final String lastTimestamp;
+  final int resultCount;
 }
 
 class Channel with RFC3339 {

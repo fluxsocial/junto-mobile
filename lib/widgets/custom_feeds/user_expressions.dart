@@ -61,7 +61,7 @@ class _UserExpressionsState extends State<UserExpressions> {
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
         if (state is DenLoadingState) {
-          return JuntoProgressIndicator();
+          return JuntoProgressIndicator(); 
         }
         if (state is DenLoadedState) {
           final results = state.expressions;

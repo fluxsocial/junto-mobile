@@ -3,9 +3,19 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class ChannelPreview extends StatelessWidget {
-  const ChannelPreview({Key key, this.channel}) : super(key: key);
+  const ChannelPreview({Key key, this.channel, this.resultCount})
+      : super(key: key);
 
   final Channel channel;
+  final int resultCount;
+
+  String _expressionText() {
+    if (resultCount > 1 && resultCount != 0) {
+      return '${resultCount} expressions';
+    } else {
+      return '${resultCount} expression';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +25,8 @@ class ChannelPreview extends StatelessWidget {
         children: <Widget>[
           Container(
             alignment: Alignment.center,
-            height: 38.0,
-            width: 38.0,
+            height: 45.0,
+            width: 45.0,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
@@ -54,9 +64,20 @@ class ChannelPreview extends StatelessWidget {
                   Text(
                     channel.name,
                     textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(color: Theme.of(context).primaryColor),
                   ),
-                  // To Do: Add # of channels in API/display here
+                  // const SizedBox(height: 2.5),
+                  // Text(
+                  //   _expressionText(),
+                  //   textAlign: TextAlign.start,
+                  //   style: Theme.of(context).textTheme.subtitle1.copyWith(
+                  //         color: Theme.of(context).primaryColorLight,
+                  //         fontWeight: FontWeight.w500,
+                  //       ),
+                  // ),
                 ],
               ),
             ),

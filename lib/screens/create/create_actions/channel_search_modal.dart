@@ -243,6 +243,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
                                   onTap: () => _addItem(item.name),
                                   child: ChannelPreview(
                                     channel: item,
+                                    resultCount: snapshot.data.resultCount,
                                   ),
                                 );
                               },
