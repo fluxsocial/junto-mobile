@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/request_response_button.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -31,7 +32,7 @@ class PackRequestResponse extends StatelessWidget {
                   .fetchNotifications();
               JuntoLoader.hide();
             },
-            buttonTitle: 'Accept',
+            buttonTitle: S.of(context).common_accept,
           ),
           const SizedBox(width: 10),
           RequestResponseButton(
@@ -46,7 +47,7 @@ class PackRequestResponse extends StatelessWidget {
                   .fetchNotifications();
               JuntoLoader.hide();
             },
-            buttonTitle: 'Decline',
+            buttonTitle: S.of(context).common_decline,
           ),
         ],
       ),

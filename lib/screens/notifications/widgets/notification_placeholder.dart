@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 
 class NotificationPlaceholder extends StatelessWidget {
   @override
@@ -19,7 +20,7 @@ class NotificationPlaceholder extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Nothing new yet!',
+              S.of(context).notifications_nothing_new_yet,
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w500,

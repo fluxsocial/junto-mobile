@@ -1,328 +1,333 @@
 {
-  "@@locale" : "en",
-  "audio_title" : "Title (optional)",
-  "@audio_title" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "collective_new_perspective" : "New Perspective",
-  "@collective_new_perspective" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "common_accept" : "Accept",
-  "@common_accept" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "common_close" : "CLOSE",
-  "@common_close" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "common_network_error" : "Hmm, something went wrong.",
-  "@common_network_error" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "common_ok" : "Ok",
-  "@common_ok" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "common_reject" : "Reject",
-  "@common_reject" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "common_try_again_later" : "Try again later",
-  "@common_try_again_later" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "create_dynamic" : "DYNAMIC",
-  "@create_dynamic" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "create_event" : "EVENT",
-  "@create_event" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "create_new_channel" : "Add new channel",
-  "@create_new_channel" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "create_photo" : "PHOTO",
-  "@create_photo" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "create_shortform" : "SHORTFORM",
-  "@create_shortform" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "error_already_sent_connection" : "Already sent a connection.",
-  "@error_already_sent_connection" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "expression_channels" : "CHANNELS",
-  "@expression_channels" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "expression_delete" : "Delete expression",
-  "@expression_delete" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "expression_error" : "Something went wrong {error}",
-  "@expression_error" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "lotus_collective" : "COLLECTIVE",
-  "@lotus_collective" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "lotus_create" : "CREATE",
-  "@lotus_create" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "lotus_groups" : "GROUPS",
-  "@lotus_groups" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "lotus_packs" : "PACKS",
-  "@lotus_packs" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "new_password_hint" : "New password",
-  "@new_password_hint" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "notifications_connection" : "Connection",
-  "@notifications_connection" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "notifications_creator" : "Creator",
-  "@notifications_creator" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "notifications_group" : "Group",
-  "@notifications_group" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "notifications_no_new_connection_notif" : "No new connection notifications",
-  "@notifications_no_new_connection_notif" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "notifications_no_new_group_notif" : "No new group notifications",
-  "@notifications_no_new_group_notif" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "notifications_title" : "Notifications",
-  "@notifications_title" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "packs_my_packs" : "My Packs",
-  "@packs_my_packs" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "packs_requests" : "Requests",
-  "@packs_requests" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "packs_title" : "Packs",
-  "@packs_title" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_add_photo" : "Add a profile picture",
-  "@welcome_add_photo" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_almost_done" : "Almost done!",
-  "@welcome_almost_done" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_check_email" : "CHECK EMAIL",
-  "@welcome_check_email" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_confirm_password" : "Confirm password",
-  "@welcome_confirm_password" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_email_hint" : "Email",
-  "@welcome_email_hint" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_feel_free" : "Feel free to share more about yourself (optional)",
-  "@welcome_feel_free" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_final_step" : "Final step!",
-  "@welcome_final_step" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_gender_hints" : "Gender Pronouns",
-  "@welcome_gender_hints" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_gender_label" : "PRONOUNS",
-  "@welcome_gender_label" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_lets_go" : "LET'S GO",
-  "@welcome_lets_go" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_location_hint" : "Location",
-  "@welcome_location_hint" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_location_label" : "LOCATION",
-  "@welcome_location_label" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_login_requirements" : "Length must be less than {charCount} characters",
-  "@welcome_login_requirements" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_my_name_is" : "My name is...",
-  "@welcome_my_name_is" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_name_hint" : "Hey, what's your name?",
-  "@welcome_name_hint" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_name_label" : "FULL NAME",
-  "@welcome_name_label" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_password_hint" : "Password",
-  "@welcome_password_hint" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_password_length" : "Your password must be greater than {n} characters.",
-  "@welcome_password_length" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_password_rules" : "Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.",
-  "@welcome_password_rules" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_passwords_must_match" : "Passwords must match.",
-  "@welcome_passwords_must_match" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_remove_photo" : "REMOVE PHOTO",
-  "@welcome_remove_photo" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_reset_password" : "Reset password",
-  "@welcome_reset_password" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_sign_in" : "SIGN IN",
-  "@welcome_sign_in" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_theme" : "Which theme feels best?",
-  "@welcome_theme" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_unable_to_login" : "Unable to login. Please double check your login credentials.",
-  "@welcome_unable_to_login" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_username_hint" : "Choose a unique username",
-  "@welcome_username_hint" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_username_ill_go" : "I'll go by...",
-  "@welcome_username_ill_go" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_username_label" : "USERNAME",
-  "@welcome_username_label" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_username_requirements" : "Your username can only contain lowercase letters, numbers, and underscores.",
-  "@welcome_username_requirements" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_username_taken" : "Sorry, that username is taken.",
-  "@welcome_username_taken" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_verification_code" : "Verification code",
-  "@welcome_verification_code" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_website_hint" : "Website",
-  "@welcome_website_hint" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_website_label" : "WEBSITE",
-  "@welcome_website_label" : {
-    "type" : "text",
-    "description" : ""
-  },
-  "welcome_wrong_email_or_password" : "Wrong email or password",
-  "@welcome_wrong_email_or_password" : {
-    "type" : "text",
-    "description" : ""
-  }
+  "@@locale": "en",
+  "audio_title": "Title (optional)",
+  "@audio_title": {
+    "type": "text",
+    "description": ""
+  },
+  "collective_new_perspective": "New Perspective",
+  "@collective_new_perspective": {
+    "type": "text",
+    "description": ""
+  },
+  "common_accept": "Accept",
+  "@common_accept": {
+    "type": "text",
+    "description": ""
+  },
+  "common_close": "CLOSE",
+  "@common_close": {
+    "type": "text",
+    "description": ""
+  },
+  "common_network_error": "Hmm, something went wrong.",
+  "@common_network_error": {
+    "type": "text",
+    "description": ""
+  },
+  "common_ok": "Ok",
+  "@common_ok": {
+    "type": "text",
+    "description": ""
+  },
+  "common_reject": "Reject",
+  "@common_reject": {
+    "type": "text",
+    "description": ""
+  },
+  "common_try_again_later": "Try again later",
+  "@common_try_again_later": {
+    "type": "text",
+    "description": ""
+  },
+  "create_dynamic": "DYNAMIC",
+  "@create_dynamic": {
+    "type": "text",
+    "description": ""
+  },
+  "create_event": "EVENT",
+  "@create_event": {
+    "type": "text",
+    "description": ""
+  },
+  "create_new_channel": "Add new channel",
+  "@create_new_channel": {
+    "type": "text",
+    "description": ""
+  },
+  "create_photo": "PHOTO",
+  "@create_photo": {
+    "type": "text",
+    "description": ""
+  },
+  "create_shortform": "SHORTFORM",
+  "@create_shortform": {
+    "type": "text",
+    "description": ""
+  },
+  "error_already_sent_connection": "Already sent a connection.",
+  "@error_already_sent_connection": {
+    "type": "text",
+    "description": ""
+  },
+  "expression_channels": "CHANNELS",
+  "@expression_channels": {
+    "type": "text",
+    "description": ""
+  },
+  "expression_delete": "Delete expression",
+  "@expression_delete": {
+    "type": "text",
+    "description": ""
+  },
+  "expression_error": "Something went wrong {error}",
+  "@expression_error": {
+    "type": "text",
+    "description": ""
+  },
+  "lotus_collective": "COLLECTIVE",
+  "@lotus_collective": {
+    "type": "text",
+    "description": ""
+  },
+  "lotus_create": "CREATE",
+  "@lotus_create": {
+    "type": "text",
+    "description": ""
+  },
+  "lotus_groups": "GROUPS",
+  "@lotus_groups": {
+    "type": "text",
+    "description": ""
+  },
+  "lotus_packs": "PACKS",
+  "@lotus_packs": {
+    "type": "text",
+    "description": ""
+  },
+  "new_password_hint": "New password",
+  "@new_password_hint": {
+    "type": "text",
+    "description": ""
+  },
+  "notifications_connection": "Connection",
+  "@notifications_connection": {
+    "type": "text",
+    "description": ""
+  },
+  "notifications_creator": "Creator",
+  "@notifications_creator": {
+    "type": "text",
+    "description": ""
+  },
+  "notifications_group": "Group",
+  "@notifications_group": {
+    "type": "text",
+    "description": ""
+  },
+  "notifications_no_new_connection_notif": "No new connection notifications",
+  "@notifications_no_new_connection_notif": {
+    "type": "text",
+    "description": ""
+  },
+  "notifications_no_new_group_notif": "No new group notifications",
+  "@notifications_no_new_group_notif": {
+    "type": "text",
+    "description": ""
+  },
+  "notifications_title": "Notifications",
+  "@notifications_title": {
+    "type": "text",
+    "description": ""
+  },
+  "packs_my_packs": "My Packs",
+  "@packs_my_packs": {
+    "type": "text",
+    "description": ""
+  },
+  "packs_requests": "Requests",
+  "@packs_requests": {
+    "type": "text",
+    "description": ""
+  },
+  "packs_title": "Packs",
+  "@packs_title": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_add_photo": "Add a profile picture",
+  "@welcome_add_photo": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_almost_done": "Almost done!",
+  "@welcome_almost_done": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_check_email": "CHECK EMAIL",
+  "@welcome_check_email": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_confirm_password": "Confirm password",
+  "@welcome_confirm_password": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_email_hint": "Email",
+  "@welcome_email_hint": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_feel_free": "Feel free to share more about yourself (optional)",
+  "@welcome_feel_free": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_final_step": "Final step!",
+  "@welcome_final_step": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_gender_hints": "Gender Pronouns",
+  "@welcome_gender_hints": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_gender_label": "PRONOUNS",
+  "@welcome_gender_label": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_lets_go": "LET'S GO",
+  "@welcome_lets_go": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_location_hint": "Location",
+  "@welcome_location_hint": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_location_label": "LOCATION",
+  "@welcome_location_label": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_login_requirements": "Length must be less than {charCount} characters",
+  "@welcome_login_requirements": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_my_name_is": "My name is...",
+  "@welcome_my_name_is": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_name_hint": "Hey, what's your name?",
+  "@welcome_name_hint": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_name_label": "FULL NAME",
+  "@welcome_name_label": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_password_hint": "Password",
+  "@welcome_password_hint": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_password_length": "Your password must be greater than {n} characters.",
+  "@welcome_password_length": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_password_rules": "Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.",
+  "@welcome_password_rules": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_passwords_must_match": "Passwords must match.",
+  "@welcome_passwords_must_match": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_remove_photo": "REMOVE PHOTO",
+  "@welcome_remove_photo": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_reset_password": "Reset password",
+  "@welcome_reset_password": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_sign_in": "SIGN IN",
+  "@welcome_sign_in": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_theme": "Which theme feels best?",
+  "@welcome_theme": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_unable_to_login": "Unable to login. Please double check your login credentials.",
+  "@welcome_unable_to_login": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_username_hint": "Choose a unique username",
+  "@welcome_username_hint": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_username_ill_go": "I'll go by...",
+  "@welcome_username_ill_go": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_username_label": "USERNAME",
+  "@welcome_username_label": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_username_requirements": "Your username can only contain lowercase letters, numbers, and underscores.",
+  "@welcome_username_requirements": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_username_taken": "Sorry, that username is taken.",
+  "@welcome_username_taken": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_verification_code": "Verification code",
+  "@welcome_verification_code": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_website_hint": "Website",
+  "@welcome_website_hint": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_website_label": "WEBSITE",
+  "@welcome_website_label": {
+    "type": "text",
+    "description": ""
+  },
+  "welcome_wrong_email_or_password": "Wrong email or password",
+  "@welcome_wrong_email_or_password": {
+    "type": "text",
+    "description": ""
+  },
+  "notification_cat_all": "ALL",
+  "notification_cat_expression": "EXPRESSION",
+  "notification_cat_relations": "RELATIONS",
+  "notifications_nothing_new_yet": "Nothing new yet!",
+  "common_decline": "Decline"
 }
