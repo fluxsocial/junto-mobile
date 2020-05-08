@@ -307,7 +307,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         setState(() {
           _expressionContext = ExpressionContext.Collective;
           _currentExpressionContextDescription =
-              'shared to the public of Junto';
+              'share publicly on Junto';
           _address = null;
         });
       };
@@ -323,7 +323,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         setState(() {
           _expressionContext = ExpressionContext.Group;
           _currentExpressionContextDescription =
-              'shared to just your pack members';
+              'share to just your Pack members';
           _address = _userProfile.pack.address;
         });
       };
