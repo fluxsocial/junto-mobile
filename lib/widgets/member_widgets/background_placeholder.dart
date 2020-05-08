@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:provider/provider.dart';
 
 class MemberBackgroundPlaceholder extends StatelessWidget {
-  const MemberBackgroundPlaceholder({this.theme});
+  const MemberBackgroundPlaceholder();
 
-  final String theme;
-
-  String _getBackgroundImageAsset() {
+  String background(String theme) {
     if (theme == 'rainbow' || theme == 'rainbow-night') {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     } else if (theme == 'aqueous' || theme == 'aqueous-night') {
@@ -20,14 +20,16 @@ class MemberBackgroundPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Image.asset(
-        _getBackgroundImageAsset(),
-        height: MediaQuery.of(context).size.width / 2,
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return Container(
         width: MediaQuery.of(context).size.width,
-        fit: BoxFit.cover,
-      ),
-    );
+        child: Image.asset(
+          background(theme.themeName),
+          height: MediaQuery.of(context).size.width / 2,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+        ),
+      );
+    });
   }
 }

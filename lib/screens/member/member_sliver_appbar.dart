@@ -107,7 +107,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                   _memberProfile.user.backgroundPhoto.isNotEmpty ||
                           _memberProfile.user.backgroundPhoto != ''
                       ? MemberBackgroundPhoto(profile: _memberProfile)
-                      : MemberBackgroundPlaceholder(theme: _currentTheme),
+                      : MemberBackgroundPlaceholder(),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),

@@ -30,7 +30,7 @@ class EditDenBackgroundPhoto extends StatelessWidget {
               profile.user.backgroundPhoto.isNotEmpty ||
                       profile.user.backgroundPhoto != ''
                   ? MemberBackgroundPhoto(profile: profile)
-                  : MemberBackgroundPlaceholder(theme: currentTheme)
+                  : MemberBackgroundPlaceholder()
             else
               Container(
                 height: MediaQuery.of(context).size.width / 2,
