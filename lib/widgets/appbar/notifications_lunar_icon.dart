@@ -58,7 +58,7 @@ class NotificationsIcon extends StatelessWidget {
             if (unread)
               NotificationSignal(
                 top: 2,
-                right: 4,
+                right: 1,
               ),
           ],
         ),
