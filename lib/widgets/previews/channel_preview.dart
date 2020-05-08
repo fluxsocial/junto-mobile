@@ -15,8 +15,8 @@ class ChannelPreview extends StatelessWidget {
         children: <Widget>[
           Container(
             alignment: Alignment.center,
-            height: 45.0,
-            width: 45.0,
+            height: 38.0,
+            width: 38.0,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
@@ -51,12 +51,12 @@ class ChannelPreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(channel.name,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.subtitle1),
-                  Text('x expressions',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyText1)
+                  Text(
+                    channel.name,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  // To Do: Add # of channels in API/display here
                 ],
               ),
             ),
