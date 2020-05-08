@@ -57,8 +57,8 @@ class SphereOpenAppbar extends StatelessWidget {
                     color: Colors.transparent,
                     alignment: Alignment.centerRight,
                     child: Icon(
-                      CustomIcons.moon,
-                      size: 22,
+                      CustomIcons.newmoon,
+                      size: 20,
                       color: Theme.of(context).primaryColor,
                     ),
                   ),

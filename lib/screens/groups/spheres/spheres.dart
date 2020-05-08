@@ -215,7 +215,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                                 child: Transform.translate(
                                   offset: const Offset(0.0, -50),
                                   child: const Text(
-                                    'Hmm, something is up with our server',
+                                    'Hmm, something is up...',
                                   ),
                                 ),
                               ),
