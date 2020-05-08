@@ -11,12 +11,10 @@ class EditDenBackgroundPhoto extends StatelessWidget {
     this.profile,
     this.onPressed,
     this.backgroundPhotoFile,
-    this.currentTheme,
   });
   final UserData profile;
   final File backgroundPhotoFile;
   final Function onPressed;
-  final String currentTheme;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
