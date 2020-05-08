@@ -48,7 +48,7 @@ class JuntoThemesProvider with ChangeNotifier {
 
   Future<void> _persistTheme(String value) async {
     final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    box.put("current-theme", value);
+    box.put(HiveKeys.kTheme, value);
     return;
   }
 }
