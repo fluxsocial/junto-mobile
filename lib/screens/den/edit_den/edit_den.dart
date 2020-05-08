@@ -21,10 +21,6 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
 
 class JuntoEditDen extends StatefulWidget {
-  JuntoEditDen({this.currentTheme});
-
-  final String currentTheme;
-
   @override
   State<StatefulWidget> createState() {
     return JuntoEditDenState();
@@ -266,7 +262,6 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                             profile: _userData,
                             backgroundPhotoFile: backgroundPhotoFile,
                             onPressed: _updatePhotoOptions,
-                            currentTheme: widget.currentTheme,
                           ),
                           EditDenHeaderSpace(),
                           EditDenTextField(
