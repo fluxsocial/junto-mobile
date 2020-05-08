@@ -44,6 +44,7 @@ dependencies:
   hive: 1.4.1+1
   hive_flutter: 0.3.0+1
   data_connection_checker: 0.3.4
+  vibration: ^1.2.4  
 
 dev_dependencies:
   test: any
