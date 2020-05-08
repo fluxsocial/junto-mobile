@@ -50,6 +50,7 @@ class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
                   child: ExpressionActionItems(
                     expression: expression,
                     userAddress: userData.userAddress,
+                    isExpressionOpen: false,
                   ),
                 ),
               );

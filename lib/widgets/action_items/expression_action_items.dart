@@ -18,10 +18,12 @@ class ExpressionActionItems extends StatelessWidget {
   const ExpressionActionItems({
     this.expression,
     this.userAddress,
+    this.isExpressionOpen,
   });
 
   final ExpressionResponse expression;
   final String userAddress;
+  final bool isExpressionOpen;
 
   Future<void> _deleteExpression(BuildContext context) async {
     JuntoLoader.showLoader(context);
@@ -30,7 +32,9 @@ class ExpressionActionItems extends StatelessWidget {
           .deleteExpression(expression.address);
 
       JuntoLoader.hide();
-      Navigator.pop(context);
+      if (isExpressionOpen) {
+        Navigator.pop(context);
+      }
     } catch (error) {
       Navigator.pop(context);
       JuntoLoader.hide();
