@@ -656,6 +656,15 @@ class S {
       args: [],
     );
   }
+
+  String get toggle_filter_drawer {
+    return Intl.message(
+      'Toggle filter drawer',
+      name: 'toggle_filter_drawer',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
