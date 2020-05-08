@@ -261,15 +261,17 @@ class CreatePhotoState extends State<CreatePhoto> {
                 ),
                 child: TextField(
                   controller: _captionController,
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.newline,
                   decoration: const InputDecoration(
-                    hintText: 'write a caption..',
+                    hintText: 'Write a caption...',
                     border: InputBorder.none,
                   ),
                   cursorColor: Theme.of(context).primaryColor,
                   cursorWidth: 1,
                   maxLines: null,
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: 17,
+                      ),
                   keyboardAppearance: Theme.of(context).brightness,
                 ),
               )
