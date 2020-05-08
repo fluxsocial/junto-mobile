@@ -85,7 +85,9 @@ class JuntoDenState extends State<JuntoDen>
                       Provider.of<UserRepo>(context, listen: false),
                       Provider.of<UserDataProvider>(context, listen: false))
                     ..add(LoadDen(user.userAddress)),
+                    
                 ),
+                
                 BlocProvider<ChannelFilteringBloc>(
                   create: (ctx) => ChannelFilteringBloc(
                     RepositoryProvider.of<SearchRepo>(ctx),
