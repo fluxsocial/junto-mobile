@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
 import 'package:junto_beta_mobile/screens/notifications/utils/username_text_span.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/previews/shortform_preview.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/previews/photo_preview.dart';
 
 class CommentNotification extends StatelessWidget {
   final JuntoNotification item;
@@ -42,6 +43,16 @@ class CommentNotification extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(width: 48),
                   NotificationShortformPreview(item: item),
+                ],
+              ),
+            ),
+          if (item.sourceExpression.type == 'PhotoForm')
+            Container(
+              margin: const EdgeInsets.only(top: 15),
+              child: Row(
+                children: <Widget>[
+                  const SizedBox(width: 48),
+                  NotificationPhotoPreview(item: item),
                 ],
               ),
             ),
