@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
@@ -27,7 +28,7 @@ class CreatePhoto extends StatefulWidget {
 }
 
 // State for CreatePhoto class
-class CreatePhotoState extends State<CreatePhoto> {
+class CreatePhotoState extends State<CreatePhoto> with Compressor {
   File imageFile;
   TextEditingController _captionController;
   bool _showBottomNav = true;
@@ -36,9 +37,15 @@ class CreatePhotoState extends State<CreatePhoto> {
     try {
       File image;
       if (source == 'Gallery') {
-        image = await ImagePicker.pickImage(source: ImageSource.gallery);
+        image = await ImagePicker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 70,
+        );
       } else if (source == 'Camera') {
-        image = await ImagePicker.pickImage(source: ImageSource.camera);
+        image = await ImagePicker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 70,
+        );
       }
 
       if (image == null) {
@@ -61,7 +68,8 @@ class CreatePhotoState extends State<CreatePhoto> {
         setState(() => imageFile = null);
         return;
       }
-      setState(() => imageFile = cropped);
+      final _compressed = await compressImage(cropped);
+      setState(() => imageFile = _compressed);
       _toggleBottomNav(false);
     } catch (e, s) {
       logger.logException(e, s);
