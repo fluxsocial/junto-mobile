@@ -17,22 +17,27 @@ class NotificationShortformPreview extends StatelessWidget {
         item.sourceExpression.expressionData['background'][1];
 
     return Container(
-      height: MediaQuery.of(context).size.width / 3 * 2 - 68,
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.width / 3 * 2 - 68,
+      ),
       width: MediaQuery.of(context).size.width - 68,
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(
-        horizontal: 25.0,
-        vertical: 50.0,
+        horizontal: 20.0,
+        vertical: 40.0,
       ),
       child: Text(
         sourceExpression.expressionData['body'],
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 17,
           fontWeight: FontWeight.w700,
           color: _hexOne.contains('fff') || _hexTwo.contains('fff')
               ? Color(0xff333333)
               : Colors.white,
         ),
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
