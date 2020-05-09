@@ -101,3 +101,5 @@ flutter:
 flutter_intl:
   enabled: true
   main_locale: en
+  localizely:
+    project_id: 8a7cdfd2-aaef-4e44-a773-9c9801bf1c69
