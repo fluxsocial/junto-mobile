@@ -25,7 +25,8 @@ class _$JuntoNotificationTearOff {
           Group group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile creator,
-      ExpressionSlimModel expression,
+      ExpressionSlimModel commentExpression,
+      ExpressionSlimModel sourceExpression,
       bool unread = true}) {
     return _Notification(
       address,
@@ -34,7 +35,8 @@ class _$JuntoNotificationTearOff {
       user: user,
       group: group,
       creator: creator,
-      expression: expression,
+      commentExpression: commentExpression,
+      sourceExpression: sourceExpression,
       unread: unread,
     );
   }
@@ -59,7 +61,8 @@ mixin _$JuntoNotification {
       fromJson: JuntoNotification.userFromJson,
       toJson: JuntoNotification.userToJson)
   UserProfile get creator;
-  ExpressionSlimModel get expression;
+  ExpressionSlimModel get commentExpression;
+  ExpressionSlimModel get sourceExpression;
   bool get unread;
 
   Map<String, dynamic> toJson();
@@ -80,10 +83,12 @@ abstract class $JuntoNotificationCopyWith<$Res> {
           Group group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile creator,
-      ExpressionSlimModel expression,
+      ExpressionSlimModel commentExpression,
+      ExpressionSlimModel sourceExpression,
       bool unread});
 
-  $ExpressionSlimModelCopyWith<$Res> get expression;
+  $ExpressionSlimModelCopyWith<$Res> get commentExpression;
+  $ExpressionSlimModelCopyWith<$Res> get sourceExpression;
 }
 
 class _$JuntoNotificationCopyWithImpl<$Res>
@@ -102,7 +107,8 @@ class _$JuntoNotificationCopyWithImpl<$Res>
     Object user = freezed,
     Object group = freezed,
     Object creator = freezed,
-    Object expression = freezed,
+    Object commentExpression = freezed,
+    Object sourceExpression = freezed,
     Object unread = freezed,
   }) {
     return _then(_value.copyWith(
@@ -115,20 +121,34 @@ class _$JuntoNotificationCopyWithImpl<$Res>
       user: user == freezed ? _value.user : user as UserProfile,
       group: group == freezed ? _value.group : group as Group,
       creator: creator == freezed ? _value.creator : creator as UserProfile,
-      expression: expression == freezed
-          ? _value.expression
-          : expression as ExpressionSlimModel,
+      commentExpression: commentExpression == freezed
+          ? _value.commentExpression
+          : commentExpression as ExpressionSlimModel,
+      sourceExpression: sourceExpression == freezed
+          ? _value.sourceExpression
+          : sourceExpression as ExpressionSlimModel,
       unread: unread == freezed ? _value.unread : unread as bool,
     ));
   }
 
   @override
-  $ExpressionSlimModelCopyWith<$Res> get expression {
-    if (_value.expression == null) {
+  $ExpressionSlimModelCopyWith<$Res> get commentExpression {
+    if (_value.commentExpression == null) {
       return null;
     }
-    return $ExpressionSlimModelCopyWith<$Res>(_value.expression, (value) {
-      return _then(_value.copyWith(expression: value));
+    return $ExpressionSlimModelCopyWith<$Res>(_value.commentExpression,
+        (value) {
+      return _then(_value.copyWith(commentExpression: value));
+    });
+  }
+
+  @override
+  $ExpressionSlimModelCopyWith<$Res> get sourceExpression {
+    if (_value.sourceExpression == null) {
+      return null;
+    }
+    return $ExpressionSlimModelCopyWith<$Res>(_value.sourceExpression, (value) {
+      return _then(_value.copyWith(sourceExpression: value));
     });
   }
 }
@@ -149,11 +169,14 @@ abstract class _$NotificationCopyWith<$Res>
           Group group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile creator,
-      ExpressionSlimModel expression,
+      ExpressionSlimModel commentExpression,
+      ExpressionSlimModel sourceExpression,
       bool unread});
 
   @override
-  $ExpressionSlimModelCopyWith<$Res> get expression;
+  $ExpressionSlimModelCopyWith<$Res> get commentExpression;
+  @override
+  $ExpressionSlimModelCopyWith<$Res> get sourceExpression;
 }
 
 class __$NotificationCopyWithImpl<$Res>
@@ -174,7 +197,8 @@ class __$NotificationCopyWithImpl<$Res>
     Object user = freezed,
     Object group = freezed,
     Object creator = freezed,
-    Object expression = freezed,
+    Object commentExpression = freezed,
+    Object sourceExpression = freezed,
     Object unread = freezed,
   }) {
     return _then(_Notification(
@@ -186,9 +210,12 @@ class __$NotificationCopyWithImpl<$Res>
       user: user == freezed ? _value.user : user as UserProfile,
       group: group == freezed ? _value.group : group as Group,
       creator: creator == freezed ? _value.creator : creator as UserProfile,
-      expression: expression == freezed
-          ? _value.expression
-          : expression as ExpressionSlimModel,
+      commentExpression: commentExpression == freezed
+          ? _value.commentExpression
+          : commentExpression as ExpressionSlimModel,
+      sourceExpression: sourceExpression == freezed
+          ? _value.sourceExpression
+          : sourceExpression as ExpressionSlimModel,
       unread: unread == freezed ? _value.unread : unread as bool,
     ));
   }
@@ -206,7 +233,8 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
           this.group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           this.creator,
-      this.expression,
+      this.commentExpression,
+      this.sourceExpression,
       this.unread = true})
       : assert(address != null),
         assert(notificationType != null),
@@ -238,14 +266,16 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       toJson: JuntoNotification.userToJson)
   final UserProfile creator;
   @override
-  final ExpressionSlimModel expression;
+  final ExpressionSlimModel commentExpression;
+  @override
+  final ExpressionSlimModel sourceExpression;
   @JsonKey(defaultValue: true)
   @override
   final bool unread;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'JuntoNotification(address: $address, notificationType: $notificationType, createdAt: $createdAt, user: $user, group: $group, creator: $creator, expression: $expression, unread: $unread)';
+    return 'JuntoNotification(address: $address, notificationType: $notificationType, createdAt: $createdAt, user: $user, group: $group, creator: $creator, commentExpression: $commentExpression, sourceExpression: $sourceExpression, unread: $unread)';
   }
 
   @override
@@ -259,7 +289,8 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       ..add(DiagnosticsProperty('user', user))
       ..add(DiagnosticsProperty('group', group))
       ..add(DiagnosticsProperty('creator', creator))
-      ..add(DiagnosticsProperty('expression', expression))
+      ..add(DiagnosticsProperty('commentExpression', commentExpression))
+      ..add(DiagnosticsProperty('sourceExpression', sourceExpression))
       ..add(DiagnosticsProperty('unread', unread));
   }
 
@@ -283,9 +314,12 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
             (identical(other.creator, creator) ||
                 const DeepCollectionEquality()
                     .equals(other.creator, creator)) &&
-            (identical(other.expression, expression) ||
+            (identical(other.commentExpression, commentExpression) ||
                 const DeepCollectionEquality()
-                    .equals(other.expression, expression)) &&
+                    .equals(other.commentExpression, commentExpression)) &&
+            (identical(other.sourceExpression, sourceExpression) ||
+                const DeepCollectionEquality()
+                    .equals(other.sourceExpression, sourceExpression)) &&
             (identical(other.unread, unread) ||
                 const DeepCollectionEquality().equals(other.unread, unread)));
   }
@@ -299,7 +333,8 @@ class _$_Notification with DiagnosticableTreeMixin implements _Notification {
       const DeepCollectionEquality().hash(user) ^
       const DeepCollectionEquality().hash(group) ^
       const DeepCollectionEquality().hash(creator) ^
-      const DeepCollectionEquality().hash(expression) ^
+      const DeepCollectionEquality().hash(commentExpression) ^
+      const DeepCollectionEquality().hash(sourceExpression) ^
       const DeepCollectionEquality().hash(unread);
 
   @override
@@ -323,7 +358,8 @@ abstract class _Notification implements JuntoNotification {
           Group group,
       @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
           UserProfile creator,
-      ExpressionSlimModel expression,
+      ExpressionSlimModel commentExpression,
+      ExpressionSlimModel sourceExpression,
       bool unread}) = _$_Notification;
 
   factory _Notification.fromJson(Map<String, dynamic> json) =
@@ -351,7 +387,9 @@ abstract class _Notification implements JuntoNotification {
       toJson: JuntoNotification.userToJson)
   UserProfile get creator;
   @override
-  ExpressionSlimModel get expression;
+  ExpressionSlimModel get commentExpression;
+  @override
+  ExpressionSlimModel get sourceExpression;
   @override
   bool get unread;
   @override

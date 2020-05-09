@@ -18,11 +18,13 @@ class _$ExpressionSlimModelTearOff {
   _ExpressionSlimModel call(
       {@required String address,
       @required String type,
+      Map<String, dynamic> expressionData,
       DateTime createdAt,
       String context}) {
     return _ExpressionSlimModel(
       address: address,
       type: type,
+      expressionData: expressionData,
       createdAt: createdAt,
       context: context,
     );
@@ -35,6 +37,7 @@ const $ExpressionSlimModel = _$ExpressionSlimModelTearOff();
 mixin _$ExpressionSlimModel {
   String get address;
   String get type;
+  Map<String, dynamic> get expressionData;
   DateTime get createdAt;
   String get context;
 
@@ -46,7 +49,12 @@ abstract class $ExpressionSlimModelCopyWith<$Res> {
   factory $ExpressionSlimModelCopyWith(
           ExpressionSlimModel value, $Res Function(ExpressionSlimModel) then) =
       _$ExpressionSlimModelCopyWithImpl<$Res>;
-  $Res call({String address, String type, DateTime createdAt, String context});
+  $Res call(
+      {String address,
+      String type,
+      Map<String, dynamic> expressionData,
+      DateTime createdAt,
+      String context});
 }
 
 class _$ExpressionSlimModelCopyWithImpl<$Res>
@@ -61,12 +69,16 @@ class _$ExpressionSlimModelCopyWithImpl<$Res>
   $Res call({
     Object address = freezed,
     Object type = freezed,
+    Object expressionData = freezed,
     Object createdAt = freezed,
     Object context = freezed,
   }) {
     return _then(_value.copyWith(
       address: address == freezed ? _value.address : address as String,
       type: type == freezed ? _value.type : type as String,
+      expressionData: expressionData == freezed
+          ? _value.expressionData
+          : expressionData as Map<String, dynamic>,
       createdAt:
           createdAt == freezed ? _value.createdAt : createdAt as DateTime,
       context: context == freezed ? _value.context : context as String,
@@ -80,7 +92,12 @@ abstract class _$ExpressionSlimModelCopyWith<$Res>
           $Res Function(_ExpressionSlimModel) then) =
       __$ExpressionSlimModelCopyWithImpl<$Res>;
   @override
-  $Res call({String address, String type, DateTime createdAt, String context});
+  $Res call(
+      {String address,
+      String type,
+      Map<String, dynamic> expressionData,
+      DateTime createdAt,
+      String context});
 }
 
 class __$ExpressionSlimModelCopyWithImpl<$Res>
@@ -97,12 +114,16 @@ class __$ExpressionSlimModelCopyWithImpl<$Res>
   $Res call({
     Object address = freezed,
     Object type = freezed,
+    Object expressionData = freezed,
     Object createdAt = freezed,
     Object context = freezed,
   }) {
     return _then(_ExpressionSlimModel(
       address: address == freezed ? _value.address : address as String,
       type: type == freezed ? _value.type : type as String,
+      expressionData: expressionData == freezed
+          ? _value.expressionData
+          : expressionData as Map<String, dynamic>,
       createdAt:
           createdAt == freezed ? _value.createdAt : createdAt as DateTime,
       context: context == freezed ? _value.context : context as String,
@@ -115,6 +136,7 @@ class _$_ExpressionSlimModel implements _ExpressionSlimModel {
   _$_ExpressionSlimModel(
       {@required this.address,
       @required this.type,
+      this.expressionData,
       this.createdAt,
       this.context})
       : assert(address != null),
@@ -128,13 +150,15 @@ class _$_ExpressionSlimModel implements _ExpressionSlimModel {
   @override
   final String type;
   @override
+  final Map<String, dynamic> expressionData;
+  @override
   final DateTime createdAt;
   @override
   final String context;
 
   @override
   String toString() {
-    return 'ExpressionSlimModel(address: $address, type: $type, createdAt: $createdAt, context: $context)';
+    return 'ExpressionSlimModel(address: $address, type: $type, expressionData: $expressionData, createdAt: $createdAt, context: $context)';
   }
 
   @override
@@ -146,6 +170,9 @@ class _$_ExpressionSlimModel implements _ExpressionSlimModel {
                     .equals(other.address, address)) &&
             (identical(other.type, type) ||
                 const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.expressionData, expressionData) ||
+                const DeepCollectionEquality()
+                    .equals(other.expressionData, expressionData)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
@@ -158,6 +185,7 @@ class _$_ExpressionSlimModel implements _ExpressionSlimModel {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(type) ^
+      const DeepCollectionEquality().hash(expressionData) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(context);
 
@@ -176,6 +204,7 @@ abstract class _ExpressionSlimModel implements ExpressionSlimModel {
   factory _ExpressionSlimModel(
       {@required String address,
       @required String type,
+      Map<String, dynamic> expressionData,
       DateTime createdAt,
       String context}) = _$_ExpressionSlimModel;
 
@@ -186,6 +215,8 @@ abstract class _ExpressionSlimModel implements ExpressionSlimModel {
   String get address;
   @override
   String get type;
+  @override
+  Map<String, dynamic> get expressionData;
   @override
   DateTime get createdAt;
   @override
