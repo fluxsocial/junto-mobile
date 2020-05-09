@@ -45,7 +45,8 @@ abstract class JuntoNotification with _$JuntoNotification {
         Group group,
     @JsonKey(fromJson: JuntoNotification.userFromJson, toJson: JuntoNotification.userToJson)
         UserProfile creator,
-    ExpressionSlimModel expression,
+    ExpressionSlimModel commentExpression,
+    ExpressionSlimModel sourceExpression,
     @Default(true) bool unread,
   }) = _Notification;
 

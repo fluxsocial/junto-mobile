@@ -10,6 +10,7 @@ abstract class ExpressionSlimModel with _$ExpressionSlimModel {
   factory ExpressionSlimModel({
     @required String address,
     @required String type,
+    Map<String, dynamic> expressionData,
     DateTime createdAt,
     String context,
   }) = _ExpressionSlimModel;
