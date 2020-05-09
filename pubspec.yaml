@@ -40,15 +40,20 @@ dependencies:
   device_preview: 0.4.1+1
   intl: ^0.16.1
   audioplayers: 0.15.1
+  flutter_native_image: 0.0.5
   flutter_audio_recorder: ^0.5.5
-  hive: 1.4.1+1
-  hive_flutter: 0.3.0+1
+  hive:
+  hive_flutter:
+    git:
+      url: https://github.com/Nash0x7E2/hive.git
+      ref: patch-1
+      path: hive_flutter/
   data_connection_checker: 0.3.4
 
 dev_dependencies:
   test: any
   build_runner: 1.9.0
-  hive_generator: 0.7.0+2
+  hive_generator:
   freezed: 0.10.7
   effective_dart: 1.2.1
 
