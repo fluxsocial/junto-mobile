@@ -14,8 +14,8 @@ class NotificationDynamicPreview extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width - 68,
       padding: const EdgeInsets.symmetric(
-        horizontal: 15.0,
-        vertical: 15.0,
+        horizontal: 20.0,
+        vertical: 20.0,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +50,7 @@ class NotificationDynamicPreview extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         border: Border.all(
-          width: .75,
+          width: .5,
           color: Theme.of(context).dividerColor,
         ),
         borderRadius: BorderRadius.circular(10),
