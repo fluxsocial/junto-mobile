@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
@@ -176,5 +180,22 @@ mixin DateParser {
         break;
     }
     return 0;
+  }
+}
+
+/// Mixin which exposes image compression.
+/// `compressImage` requires the source image as the only param.
+/// Funtion uses `FlutterNativeImage` to handle compression on Android and IOS.
+/// In the case of an error, the exception is logged and the original `image` is returned.
+mixin Compressor {
+  Future<File> compressImage(File image) async {
+    try {
+      final _compressedFile =
+          await FlutterNativeImage.compressImage(image.path);
+      return _compressedFile;
+    } catch (e) {
+      logger.logException(e);
+      return image;
+    }
   }
 }
