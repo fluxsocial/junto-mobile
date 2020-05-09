@@ -2,6 +2,7 @@ export 'collective.dart';
 export 'den_model.dart';
 export 'emoji_model.dart';
 export 'expression.dart';
+export 'expression_slim_model.dart';
 export 'group_model.dart';
 export 'junto_notification.dart';
 export 'junto_notification_read_status.dart';
