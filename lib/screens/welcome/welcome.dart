@@ -410,7 +410,7 @@ class WelcomeState extends State<Welcome> {
             showDialog(
               context: context,
               builder: (BuildContext context) => SingleActionDialog(
-                dialogText: 'Sorry, that username is taken.',
+                dialogText: S.of(context).welcome_username_taken,
               ),
             );
             return;
