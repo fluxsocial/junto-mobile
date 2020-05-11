@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart' as pp;
 
@@ -53,7 +54,8 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
   @override
   void initState() {
     super.initState();
-    _cropperRatios = widget.aspectRatios.map((name) => _ImageCropperRatio(name)).toList();
+    _cropperRatios =
+        widget.aspectRatios.map((name) => _ImageCropperRatio(name)).toList();
     _selectedRatio = _cropperRatios[0];
   }
 
@@ -62,7 +64,9 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
       return;
     }
     setState(() => _processing = true);
+    JuntoLoader.showLoader(context);
     File result = await _imageCropperKey.currentState.performCrop();
+     JuntoLoader.hide();
     if (result == null) {
       if (mounted) {
         setState(() => _processing = false);
@@ -155,7 +159,8 @@ class _AspectRatioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final Color foreground = selected ? theme.primaryColorDark : theme.primaryColorLight;
+    final Color foreground =
+        selected ? theme.primaryColorDark : theme.primaryColorLight;
     return AspectRatio(
       aspectRatio: 1.0,
       child: Material(
@@ -213,7 +218,8 @@ class _ImageCropper extends StatefulWidget {
   _ImageCropperState createState() => _ImageCropperState();
 }
 
-class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMixin {
+class _ImageCropperState extends State<_ImageCropper>
+    with TickerProviderStateMixin {
   AnimationController _matrixController;
   Animation<Matrix4> _matrixAnimation;
 
@@ -231,12 +237,14 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
   @override
   void initState() {
     super.initState();
-    _matrixController = AnimationController(duration: kThemeAnimationDuration, vsync: this)
-      ..addListener(_onAnimateMatrix);
+    _matrixController =
+        AnimationController(duration: kThemeAnimationDuration, vsync: this)
+          ..addListener(_onAnimateMatrix);
     _matrixAnimation = AlwaysStoppedAnimation<Matrix4>(Matrix4.identity());
 
-    _aspectController = AnimationController(duration: kThemeAnimationDuration, vsync: this)
-      ..addListener(_onAnimateAspect);
+    _aspectController =
+        AnimationController(duration: kThemeAnimationDuration, vsync: this)
+          ..addListener(_onAnimateAspect);
     _aspectAnimation = AlwaysStoppedAnimation<double>(widget.aspectRatio);
 
     _viewMatrix = ValueNotifier<Matrix4>(Matrix4.identity());
@@ -313,12 +321,14 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
     );
 
     final picture = recorder.endRecording();
-    final outputImage = await picture.toImage(imageRect.width.toInt(), imageRect.height.toInt());
+    final outputImage = await picture.toImage(
+        imageRect.width.toInt(), imageRect.height.toInt());
     final bytes = await outputImage.toByteData(format: ui.ImageByteFormat.png);
 
     final timeStamp = DateTime.now().millisecondsSinceEpoch;
     final outputBase = p.basenameWithoutExtension(widget.sourceFile.path);
-    final outputPath = p.join((await pp.getTemporaryDirectory()).path, '$outputBase-$timeStamp.png');
+    final outputPath = p.join(
+        (await pp.getTemporaryDirectory()).path, '$outputBase-$timeStamp.png');
     final outputFile = File(outputPath);
     await outputFile.writeAsBytes(bytes.buffer.asUint8List());
 
@@ -337,7 +347,8 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
   void updateAspectRatio() {
     final double begin = _aspectAnimation?.value ?? widget.aspectRatio;
     final double end = widget.aspectRatio;
-    _aspectAnimation = Tween<double>(begin: begin, end: end).animate(_aspectController);
+    _aspectAnimation =
+        Tween<double>(begin: begin, end: end).animate(_aspectController);
     _aspectController.forward(from: 0.0);
   }
 
@@ -374,7 +385,8 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
     }
     return MatrixUtils.transformRect(
       _viewMatrix.value,
-      Rect.fromLTWH(0.0, 0.0, _image.width.toDouble(), _image.height.toDouble()),
+      Rect.fromLTWH(
+          0.0, 0.0, _image.width.toDouble(), _image.height.toDouble()),
     );
   }
 
@@ -382,7 +394,9 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
     final aspectRect = _getAspectRect();
 
     Rect displayRect = getDisplayRect();
-    if (withScale && (displayRect.width < aspectRect.width || displayRect.height < aspectRect.height)) {
+    if (withScale &&
+        (displayRect.width < aspectRect.width ||
+            displayRect.height < aspectRect.height)) {
       _matrixController.stop();
       _viewMatrix.value = _scaleMatrix(
         matrix: _viewMatrix.value,
@@ -397,7 +411,9 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
 
     double deltaX = 0.0, deltaY = 0.0;
     if (displayRect.height <= aspectRect.height) {
-      deltaY = (aspectRect.height - displayRect.height) / 2 - displayRect.top + aspectRect.top;
+      deltaY = (aspectRect.height - displayRect.height) / 2 -
+          displayRect.top +
+          aspectRect.top;
     } else if (displayRect.top > aspectRect.top) {
       deltaY = aspectRect.top - displayRect.top;
     } else if (displayRect.bottom < aspectRect.bottom) {
@@ -405,14 +421,17 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
     }
 
     if (displayRect.width <= aspectRect.width) {
-      deltaX = (aspectRect.width - displayRect.width) / 2 - displayRect.left + aspectRect.left;
+      deltaX = (aspectRect.width - displayRect.width) / 2 -
+          displayRect.left +
+          aspectRect.left;
     } else if (displayRect.left > aspectRect.left) {
       deltaX = aspectRect.left - displayRect.left;
     } else if (displayRect.right < aspectRect.right) {
       deltaX = aspectRect.right - displayRect.right;
     }
 
-    _viewMatrix.value = Matrix4.translationValues(deltaX, deltaY, 0.0) * _viewMatrix.value;
+    _viewMatrix.value =
+        Matrix4.translationValues(deltaX, deltaY, 0.0) * _viewMatrix.value;
   }
 
   void _onScaleStart(ScaleStartDetails details) {
@@ -435,7 +454,8 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
     checkMatrixBounds();
     final displayRect = getDisplayRect();
     final aspectRect = _getAspectRect();
-    if (displayRect.width < aspectRect.width || displayRect.height < aspectRect.height) {
+    if (displayRect.width < aspectRect.width ||
+        displayRect.height < aspectRect.height) {
       final end = _scaleMatrix(
         matrix: _viewMatrix.value,
         scale: math.max(
@@ -460,7 +480,8 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
   }) {
     return Matrix4.translationValues(offset.dx, offset.dy, 0.0) *
         Matrix4.diagonal3Values(scale, scale, 1.0) *
-        Matrix4.translationValues(-(offset.dx + delta.dx), -(offset.dy + delta.dy), 0.0) *
+        Matrix4.translationValues(
+            -(offset.dx + delta.dx), -(offset.dy + delta.dy), 0.0) *
         matrix;
   }
 
@@ -502,7 +523,8 @@ class _ImageCropperState extends State<_ImageCropper> with TickerProviderStateMi
                 child: TickerMode(
                   enabled: isNotLoaded,
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xB3FFFFFF)),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xB3FFFFFF)),
                   ),
                 ),
               ),
@@ -526,7 +548,9 @@ class _AspectRatioPainter extends CustomPainter {
         assert(strokeColor != null),
         assert(strokeWidth != null),
         assert(overlayColor != null),
-        super(repaint: Listenable.merge(<Listenable>[aspectAnimation, imageMatrix]));
+        super(
+            repaint:
+                Listenable.merge(<Listenable>[aspectAnimation, imageMatrix]));
 
   final Animation<double> aspectAnimation;
   final Color strokeColor;
@@ -550,7 +574,8 @@ class _AspectRatioPainter extends CustomPainter {
       canvas.restore();
     }
 
-    canvas.saveLayer(bounds, Paint()..color = Color.fromRGBO(0, 0, 0, strokeColor.opacity));
+    canvas.saveLayer(
+        bounds, Paint()..color = Color.fromRGBO(0, 0, 0, strokeColor.opacity));
 
     final Paint strokePaint = Paint()
       ..style = PaintingStyle.stroke
@@ -564,12 +589,14 @@ class _AspectRatioPainter extends CustomPainter {
 
     final double hSpace = strokeRect.height * (1.0 / 3.0);
     for (double y = strokeRect.top; y <= strokeRect.bottom; y += hSpace) {
-      canvas.drawLine(Offset(strokeRect.left, y), Offset(strokeRect.right, y), strokePaint);
+      canvas.drawLine(
+          Offset(strokeRect.left, y), Offset(strokeRect.right, y), strokePaint);
     }
 
     final double wSpace = strokeRect.width * (1.0 / 3.0);
     for (double x = strokeRect.left; x <= strokeRect.right; x += wSpace) {
-      canvas.drawLine(Offset(x, strokeRect.top), Offset(x, strokeRect.bottom), strokePaint);
+      canvas.drawLine(
+          Offset(x, strokeRect.top), Offset(x, strokeRect.bottom), strokePaint);
     }
 
     canvas.restore();
