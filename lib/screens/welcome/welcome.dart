@@ -133,7 +133,7 @@ class WelcomeState extends State<Welcome> {
 
     try {
       JuntoLoader.showLoader(context);
-      await context.bloc<AuthBloc>().add(SignUpEvent(details));
+      context.bloc<AuthBloc>().add(SignUpEvent(details));
       _userAddress = userDataProvider.userAddress;
       JuntoLoader.hide();
     } catch (error) {
