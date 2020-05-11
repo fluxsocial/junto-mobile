@@ -153,7 +153,7 @@ class CreateLongformState extends State<CreateLongform> {
                       textInputAction: TextInputAction.newline,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Share your story...',
+                        hintText: 'Write here...',
                       ),
                       cursorColor: Theme.of(context).primaryColorLight,
                       cursorWidth: 2,

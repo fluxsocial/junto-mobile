@@ -10,12 +10,10 @@ import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.
 import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
-  const JuntoDenSliverAppbar(
-      {Key key, @required this.profile, @required this.currentTheme})
+  const JuntoDenSliverAppbar({Key key, @required this.profile})
       : super(key: key);
 
   final UserData profile;
-  final String currentTheme;
 
   @override
   State<StatefulWidget> createState() {
@@ -74,7 +72,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                   if (photo != null && (photo.isNotEmpty || photo != ''))
                     MemberBackgroundPhoto(profile: widget.profile),
                   if (photo == null || photo.isEmpty)
-                    MemberBackgroundPlaceholder(theme: widget.currentTheme),
+                    MemberBackgroundPlaceholder(),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),
@@ -99,7 +97,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 ),
                               ),
                             ),
-                            EditDenButton(currentTheme: widget.currentTheme),
+                            EditDenButton(),
                           ],
                         ),
                         if (widget.profile.user.gender.isNotEmpty ||

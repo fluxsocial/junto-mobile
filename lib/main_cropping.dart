@@ -11,13 +11,6 @@ class CroppingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      /*theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.grey,
-        primaryColor: Colors.grey[50],
-        primaryColorLight: Colors.grey[600],
-        primaryColorDark: Colors.blue,
-      ),*/
       theme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.blueGrey,

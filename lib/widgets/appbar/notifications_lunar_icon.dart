@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/widgets/notification_signal.dart';
@@ -32,7 +33,7 @@ class NotificationsIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: 'Notifications',
+      message: S.of(context).notifications_title,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -43,21 +44,21 @@ class NotificationsIcon extends StatelessWidget {
           );
         },
         child: Stack(
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.bottomLeft, 
           children: <Widget>[
             Container(
               color: Colors.transparent,
               padding: const EdgeInsets.only(right: 10),
               child: Icon(
-                CustomIcons.moon,
-                size: 22,
+                CustomIcons.newmoon,
+                size: 20,
                 color: Theme.of(context).primaryColor,
               ),
             ),
             if (unread)
               NotificationSignal(
                 top: 2,
-                right: 4,
+                right: 1,
               ),
           ],
         ),

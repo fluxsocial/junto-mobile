@@ -60,6 +60,7 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
                 builder: (BuildContext context) => ExpressionActionItems(
                   expression: expression,
                   userAddress: userAddress,
+                  isExpressionOpen: true,
                 ),
               );
             },

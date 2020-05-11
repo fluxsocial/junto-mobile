@@ -18,9 +18,14 @@ _$_Notification _$_$_NotificationFromJson(Map json) {
         JuntoNotification.groupFromJson(json['group'] as Map<String, dynamic>),
     creator:
         JuntoNotification.userFromJson(json['creator'] as Map<String, dynamic>),
-    expression: json['expression'] == null
+    commentExpression: json['comment_expression'] == null
         ? null
-        : ExpressionSlimModel.fromJson((json['expression'] as Map)?.map(
+        : ExpressionSlimModel.fromJson((json['comment_expression'] as Map)?.map(
+            (k, e) => MapEntry(k as String, e),
+          )),
+    sourceExpression: json['source_expression'] == null
+        ? null
+        : ExpressionSlimModel.fromJson((json['source_expression'] as Map)?.map(
             (k, e) => MapEntry(k as String, e),
           )),
     unread: json['unread'] as bool ?? true,
@@ -35,7 +40,8 @@ Map<String, dynamic> _$_$_NotificationToJson(_$_Notification instance) =>
       'user': JuntoNotification.userToJson(instance.user),
       'group': JuntoNotification.groupToJson(instance.group),
       'creator': JuntoNotification.userToJson(instance.creator),
-      'expression': instance.expression?.toJson(),
+      'comment_expression': instance.commentExpression?.toJson(),
+      'source_expression': instance.sourceExpression?.toJson(),
       'unread': instance.unread,
     };
 

@@ -1,22 +1,13 @@
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/providers/bloc_providers.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_navigation_observer.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
-import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
-import 'package:junto_beta_mobile/utils/device_preview.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -44,8 +35,7 @@ class JuntoAppState extends State<JuntoApp> {
     return MultiProvider(
       providers: <SingleChildWidget>[
         ChangeNotifierProvider<JuntoThemesProvider>(
-          create: (BuildContext context) =>
-              JuntoThemesProvider(backend.currentTheme),
+          create: (_) => JuntoThemesProvider(backend.currentTheme),
         ),
         Provider<SearchService>.value(value: backend.searchRepo),
         Provider<AuthRepo>.value(value: backend.authRepo),
@@ -58,149 +48,19 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<AppRepo>.value(value: backend.appRepo),
         Provider<LocalCache>.value(value: backend.db),
         ChangeNotifierProvider(
-          create: (context) => NotificationsHandler(backend.notificationRepo),
+          create: (_) => NotificationsHandler(backend.notificationRepo),
+          lazy: false,
+        ),
+        ChangeNotifierProvider<UserDataProvider>(
+          create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
           lazy: false,
         ),
       ],
-      child: ChangeNotifierProvider<UserDataProvider>(
-        create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
-        lazy: false,
-        child: BlocProviders(
-          child: MaterialAppWithTheme(
-            loggedIn: widget.loggedIn,
-          ),
+      child: BlocProviders(
+        child: MaterialAppWithTheme(
+          loggedIn: widget.loggedIn,
         ),
       ),
-    );
-  }
-}
-
-class MaterialAppWithTheme extends StatelessWidget {
-  const MaterialAppWithTheme({
-    Key key,
-    @required this.loggedIn,
-  }) : super(key: key);
-
-  final bool loggedIn;
-
-  Widget _buildPage(AuthState state) {
-    if (state is AuthenticatedState) {
-      return AuthenticatedMaterialApp();
-    }
-    if (state is UnAuthenticatedState || state is InitialAuthState) {
-      return UnauthenticatedMaterialApp();
-    }
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Stack(
-        children: <Widget>[
-          Image.asset(
-            'assets/images/junto-mobile__themes--aqueous.png',
-            key: ValueKey<String>('image-background'),
-            fit: BoxFit.cover,
-          ),
-          JuntoProgressIndicator(),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<JuntoThemesProvider>(
-      builder: (BuildContext context, JuntoThemesProvider theme, _) {
-        if (theme.currentTheme != null) {
-          theme.currentTheme.brightness == Brightness.dark
-              ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
-              : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-        }
-        return BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, AuthState state) {
-            return AnimatedSwitcher(
-              duration: kThemeChangeDuration,
-              child: _buildPage(state),
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
-class UnauthenticatedMaterialApp extends StatelessWidget {
-  const UnauthenticatedMaterialApp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<JuntoThemesProvider>(
-      builder: (context, theme, child) {
-        return MaterialApp(
-          key: ValueKey<String>('logged-out'),
-          home: Welcome(),
-          builder: DevicePreviewWrapper.appBuilder,
-          title: 'JUNTO Alpha',
-          debugShowCheckedModeBanner: false,
-          theme: theme.currentTheme,
-          navigatorObservers: [
-            NotificationNavigationObserver(
-                Provider.of<NotificationsHandler>(context)),
-          ],
-          localizationsDelegates: [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          // Replace later with S.supportedLocales
-          supportedLocales: [
-            Locale('en', ''),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class AuthenticatedMaterialApp extends StatelessWidget {
-  const AuthenticatedMaterialApp({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<JuntoThemesProvider>(
-      builder: (context, theme, child) {
-        return MaterialApp(
-          key: ValueKey<String>('logged-in'),
-          home: FeatureDiscovery(
-            child: const JuntoLotus(
-              address: null,
-              expressionContext: ExpressionContext.Collective,
-              source: null,
-            ),
-          ),
-          builder: DevicePreviewWrapper.appBuilder,
-          title: 'JUNTO Alpha',
-          debugShowCheckedModeBanner: false,
-          theme: theme.currentTheme,
-          navigatorObservers: [
-            NotificationNavigationObserver(
-                Provider.of<NotificationsHandler>(context)),
-          ],
-          localizationsDelegates: [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          // Replace later with S.supportedLocales
-          supportedLocales: [
-            Locale('en', ''),
-          ],
-        );
-      },
     );
   }
 }

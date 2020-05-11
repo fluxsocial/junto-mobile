@@ -27,28 +27,27 @@ dependencies:
   flutter_slidable: 0.5.4
   package_info: 0.4.0+14
   keyboard_avoider: 0.1.2
-  flutter_bloc: ^4.0.0
+  flutter_bloc: 4.0.0
   rxdart: 0.24.0
-  equatable: ^1.1.1
-  json_serializable: ^3.2.5
-  freezed_annotation: ^0.7.1
-  dio: ^3.0.9
-  animations: ^1.0.0+5
+  equatable: 1.1.1
+  json_serializable: 3.2.5
+  freezed_annotation: 0.7.1
+  dio: 3.0.9
+  animations: 1.0.0+5
   url_launcher: 5.4.5
-  stack_trace: ^1.9.3
+  stack_trace: 1.9.3
   feature_discovery: 0.8.0
   device_preview: 0.4.1+1
   intl: ^0.16.1
   audioplayers: 0.15.1
   flutter_native_image: 0.0.5
-  flutter_audio_recorder: ^0.5.5
+  flutter_audio_recorder: 0.5.5
   hive:
-  hive_flutter:
-    git:
-      url: https://github.com/Nash0x7E2/hive.git
-      ref: patch-1
-      path: hive_flutter/
+  hive_flutter: 0.3.0+2
   data_connection_checker: 0.3.4
+  vibration: 1.2.4  
+  flutter_launcher_icons: 0.7.5
+
 
 dev_dependencies:
   test: any
@@ -56,6 +55,14 @@ dev_dependencies:
   hive_generator:
   freezed: 0.10.7
   effective_dart: 1.2.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_ios: "assets/images/junto-mobile__launcher--rainbow.png"
+  image_path_android: "assets/images/junto-mobile__launcher--rainbow.png"
+  adaptive_icon_background: "assets/images/junto-mobile__launcher--background.png"
+  adaptive_icon_foreground: "assets/images/junto-mobile__launcher--foreground.png"
 
 flutter:
   uses-material-design: true
@@ -103,6 +110,12 @@ flutter:
     - assets/images/junto-mobile__groups--placeholder.png
     - assets/images/junto-mobile__placeholder--notifications.png
     - assets/images/junto-mobile__waveform.png
+    - assets/images/junto-mobile__launcher--rainbow.png
+    - assets/images/junto-mobile__launcher--foreground.png
+    - assets/images/junto-mobile__launcher--background.png
+
 flutter_intl:
   enabled: true
   main_locale: en
+  localizely:
+    project_id: 8a7cdfd2-aaef-4e44-a773-9c9801bf1c69

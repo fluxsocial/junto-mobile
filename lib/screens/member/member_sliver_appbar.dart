@@ -1,11 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_relation_button.dart';
@@ -39,14 +34,12 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
   final GlobalKey<MemberDenAppbarState> _keyFlexibleSpace =
       GlobalKey<MemberDenAppbarState>();
 
-  String _currentTheme;
   UserData _memberProfile;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
-    getCurrentTheme();
     _memberProfile = UserData(
       user: widget.profile,
       pack: null,
@@ -68,12 +61,6 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
     setState(() {
       _flexibleHeightSpace = heightFlexibleSpace;
     });
-  }
-
-  Future<void> getCurrentTheme() async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    final _theme = await box.get("current-theme") as String;
-    setState(() => _currentTheme = _theme);
   }
 
   @override
@@ -107,7 +94,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                   _memberProfile.user.backgroundPhoto.isNotEmpty ||
                           _memberProfile.user.backgroundPhoto != ''
                       ? MemberBackgroundPhoto(profile: _memberProfile)
-                      : MemberBackgroundPlaceholder(theme: _currentTheme),
+                      : MemberBackgroundPlaceholder(),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),

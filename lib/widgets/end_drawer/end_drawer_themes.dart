@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 
 class JuntoThemes extends StatefulWidget {
   const JuntoThemes({this.refreshTheme});
@@ -40,7 +41,11 @@ class JuntoThemesState extends State<JuntoThemes> {
   }
 
   Future<void> setTheme(String theme) async {
-    print(theme);
+    if (await Vibration.hasVibrator()) {
+      Vibration.vibrate(
+        duration: 500,
+      );
+    }
     setState(() {
       if (_nightMode) {
         if (!_currentTheme.contains('-night')) {
@@ -57,7 +62,6 @@ class JuntoThemesState extends State<JuntoThemes> {
         }
       }
     });
-    print(_currentTheme);
 
     await Provider.of<JuntoThemesProvider>(context, listen: false)
         .setTheme(_currentTheme);
@@ -196,8 +200,8 @@ class JuntoThemesState extends State<JuntoThemes> {
                     child: Switch.adaptive(
                       value: _nightMode,
                       onChanged: (bool value) async {
-                        final box =
-                            await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+                        final box = await Hive.openLazyBox(HiveBoxes.kAppBox,
+                            encryptionKey: key);
                         await box.delete('night-mode');
                         await box.put('night-mode', value);
                         setState(() {

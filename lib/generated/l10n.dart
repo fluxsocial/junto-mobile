@@ -611,6 +611,60 @@ class S {
       args: [],
     );
   }
+
+  String get notification_cat_all {
+    return Intl.message(
+      'ALL',
+      name: 'notification_cat_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get notification_cat_expression {
+    return Intl.message(
+      'EXPRESSION',
+      name: 'notification_cat_expression',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get notification_cat_relations {
+    return Intl.message(
+      'RELATIONS',
+      name: 'notification_cat_relations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get notifications_nothing_new_yet {
+    return Intl.message(
+      'Nothing new yet!',
+      name: 'notifications_nothing_new_yet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get common_decline {
+    return Intl.message(
+      'Decline',
+      name: 'common_decline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get toggle_filter_drawer {
+    return Intl.message(
+      'Toggle filter drawer',
+      name: 'toggle_filter_drawer',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

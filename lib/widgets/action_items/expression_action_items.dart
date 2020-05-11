@@ -13,15 +13,19 @@ import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 class ExpressionActionItems extends StatelessWidget {
   const ExpressionActionItems({
     this.expression,
     this.userAddress,
+    this.isExpressionOpen,
   });
 
   final ExpressionResponse expression;
   final String userAddress;
+  final bool isExpressionOpen;
 
   Future<void> _deleteExpression(BuildContext context) async {
     JuntoLoader.showLoader(context);
@@ -30,9 +34,10 @@ class ExpressionActionItems extends StatelessWidget {
           .deleteExpression(expression.address);
 
       JuntoLoader.hide();
-      Navigator.pop(context);
+      if (isExpressionOpen) {
+        Navigator.pop(context);
+      }
     } catch (error) {
-      Navigator.pop(context);
       JuntoLoader.hide();
       showDialog(
         context: context,
@@ -93,31 +98,26 @@ class ExpressionActionItems extends StatelessWidget {
   Widget _myActionItems(
     BuildContext context,
   ) {
-    return Column(
-      children: <Widget>[
-        ListTile(
-          onTap: () {
-            Navigator.pop(context);
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => ConfirmDialog(
-                buildContext: context,
-                confirm: _deleteExpression,
-                confirmationText:
-                    'Are you sure you want to delete this expression?',
-              ),
-            );
-          },
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-          title: Row(
-            children: <Widget>[
-              Text('Delete Expression',
-                  style: Theme.of(context).textTheme.headline5),
-            ],
+    return ListTile(
+      onTap: () {
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => ConfirmDialog(
+            buildContext: context,
+            confirm: _deleteExpression,
+            confirmationText:
+                'Are you sure you want to delete this expression?',
           ),
-        ),
-      ],
+        );
+      },
+      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+      title: Row(
+        children: <Widget>[
+          Text('Delete Expression',
+              style: Theme.of(context).textTheme.headline5),
+        ],
+      ),
     );
   }
 

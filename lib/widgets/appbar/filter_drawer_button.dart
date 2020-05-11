@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
 class FilterDrawerButton extends StatelessWidget {
@@ -10,7 +11,7 @@ class FilterDrawerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      hint: 'Toggle filter drawer',
+      hint: S.of(context).toggle_filter_drawer,
       child: GestureDetector(
         onTap: () => JuntoFilterDrawer.of(context).toggle(),
         child: Container(
