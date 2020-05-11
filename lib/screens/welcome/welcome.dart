@@ -75,6 +75,9 @@ class WelcomeState extends State<Welcome> {
   GlobalKey<SignUpRegisterState> signUpRegisterKey;
   GlobalKey<SignUpVerifyState> signUpVerifyKey;
 
+  UserRepo userRepository;
+  UserDataProvider userDataProvider;
+
   @override
   void initState() {
     super.initState();
@@ -92,6 +95,14 @@ class WelcomeState extends State<Welcome> {
       viewportFraction: 0.99,
     );
     _signInController = PageController(keepPage: true);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    //TODO: don't perform user signup in state of welcome.dart
+    userRepository = Provider.of<UserRepo>(context, listen: false);
+    userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
   }
 
   @override
@@ -122,10 +133,8 @@ class WelcomeState extends State<Welcome> {
 
     try {
       JuntoLoader.showLoader(context);
-      await context.bloc<AuthBloc>().add(SignUpEvent(details));
-      setState(() {
-        _userAddress = Provider.of<UserDataProvider>(context).userAddress;
-      });
+      context.bloc<AuthBloc>().add(SignUpEvent(details));
+      _userAddress = userDataProvider.userAddress;
       JuntoLoader.hide();
     } catch (error) {
       JuntoLoader.hide();
@@ -172,9 +181,10 @@ class WelcomeState extends State<Welcome> {
       };
       // update user with profile photos
       try {
-        await Provider.of<UserRepo>(context, listen: false).updateUser(
-            profilePictures[0] == null ? _photoKeys : _profilePictureKeys,
-            _userAddress);
+        await userRepository.updateUser(
+          profilePictures[0] == null ? _photoKeys : _profilePictureKeys,
+          _userAddress,
+        );
       } catch (error) {
         print(error);
         JuntoLoader.hide();
@@ -400,7 +410,7 @@ class WelcomeState extends State<Welcome> {
             showDialog(
               context: context,
               builder: (BuildContext context) => SingleActionDialog(
-                dialogText: 'Sorry, that username is taken.',
+                dialogText: S.of(context).welcome_username_taken,
               ),
             );
             return;
