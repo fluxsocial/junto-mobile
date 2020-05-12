@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/avatars/group_avatar_placeholder.dart';
 
 class GroupAvatar extends StatelessWidget {
@@ -14,6 +15,7 @@ class GroupAvatar extends StatelessWidget {
         ? Container(
             child: ClipOval(
               child: CachedNetworkImage(
+                cacheManager: CustomCacheManager(),
                 imageUrl: profilePicture,
                 height: diameter,
                 width: diameter,

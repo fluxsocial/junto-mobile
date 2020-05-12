@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_appbar.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -157,6 +158,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               ),
                             )
                           : CachedNetworkImage(
+                              cacheManager: CustomCacheManager(),
                               imageUrl: widget.group.groupData.photo,
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height * .3,

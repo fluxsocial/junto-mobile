@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 
 /// Shows a preview for the given event.
 /// Widget takes [eventTitle], [eventLocation] and [eventPhoto]
@@ -21,6 +22,7 @@ class EventPreview extends StatelessWidget {
               ? ClipRRect(
                   child: Container(
                     child: CachedNetworkImage(
+                        cacheManager: CustomCacheManager(),
                         width: MediaQuery.of(context).size.width,
                         imageUrl: expression.expressionData.photo,
                         placeholder: (BuildContext context, String _) {

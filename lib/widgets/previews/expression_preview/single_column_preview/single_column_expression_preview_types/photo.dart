@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 
 // Displays the given [image] and [imageCaption]
 class PhotoPreview extends StatelessWidget {
@@ -19,6 +20,7 @@ class PhotoPreview extends StatelessWidget {
         tag: 'single_column_photo_preview-${expression.address}',
         child: RepaintBoundary(
           child: CachedNetworkImage(
+            cacheManager: CustomCacheManager(),
             imageUrl: expression.expressionData.image,
             placeholder: (BuildContext context, String _) {
               return Container(
