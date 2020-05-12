@@ -1,9 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/cache_manager.dart';
+import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
@@ -41,8 +40,7 @@ class SpherePreview extends StatelessWidget {
                   ),
                 )
               : ClipOval(
-                  child: CachedNetworkImage(
-                      cacheManager: CustomCacheManager(),
+                  child: ImageWrapper(
                       imageUrl: group.groupData.photo,
                       height: 45,
                       width: 45,

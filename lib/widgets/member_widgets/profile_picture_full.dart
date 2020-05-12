@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:junto_beta_mobile/utils/cache_manager.dart';
+import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 class MemberProfilePictureFull extends StatelessWidget {
   const MemberProfilePictureFull({this.profile});
@@ -12,8 +11,7 @@ class MemberProfilePictureFull extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return profile.user.profilePicture.isNotEmpty
-        ? CachedNetworkImage(
-            cacheManager: CustomCacheManager(),
+        ? ImageWrapper(
             imageUrl: profile.user.profilePicture[0],
             width: MediaQuery.of(context).size.width,
             placeholder: (BuildContext context, String _) {
