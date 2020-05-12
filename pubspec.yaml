@@ -56,14 +56,6 @@ dev_dependencies:
   freezed: 0.10.7
   effective_dart: 1.2.1
 
-flutter_icons:
-  android: true
-  ios: true
-  image_path_ios: "assets/images/junto-mobile__launcher--rainbow.png"
-  image_path_android: "assets/images/junto-mobile__launcher--rainbow.png"
-  adaptive_icon_background: "assets/images/junto-mobile__launcher--background.png"
-  adaptive_icon_foreground: "assets/images/junto-mobile__launcher--foreground.png"
-
 flutter:
   uses-material-design: true
 
@@ -110,9 +102,6 @@ flutter:
     - assets/images/junto-mobile__groups--placeholder.png
     - assets/images/junto-mobile__placeholder--notifications.png
     - assets/images/junto-mobile__waveform.png
-    - assets/images/junto-mobile__launcher--rainbow.png
-    - assets/images/junto-mobile__launcher--foreground.png
-    - assets/images/junto-mobile__launcher--background.png
 
 flutter_intl:
   enabled: true
