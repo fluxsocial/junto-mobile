@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
+import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
@@ -229,7 +231,7 @@ class AudioOpenWithPhoto extends StatelessWidget {
             Container(
               foregroundDecoration: BoxDecoration(color: Colors.black38),
               width: MediaQuery.of(context).size.width,
-              child: CachedNetworkImage(
+              child: ImageWrapper(
                 imageUrl: photo,
                 placeholder: (BuildContext context, String _) {
                   return Container(

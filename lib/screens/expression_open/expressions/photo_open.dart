@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
+import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 class PhotoOpen extends StatelessWidget {
   const PhotoOpen(this.photoExpression);
@@ -19,7 +21,7 @@ class PhotoOpen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: Hero(
                     tag: 'photo_preview-${photoExpression.address}',
-                    child: CachedNetworkImage(
+                    child: ImageWrapper(
                       imageUrl: photoExpression.expressionData.image,
                       placeholder: (BuildContext context, String _) {
                         return Container(

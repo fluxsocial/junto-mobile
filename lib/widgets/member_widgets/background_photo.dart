@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 class MemberBackgroundPhoto extends StatelessWidget {
   const MemberBackgroundPhoto({this.profile});
@@ -10,7 +10,7 @@ class MemberBackgroundPhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
+    return ImageWrapper(
       imageUrl: profile.user.backgroundPhoto,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width / 2,
