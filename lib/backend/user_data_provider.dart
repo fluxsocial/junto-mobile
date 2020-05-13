@@ -53,21 +53,26 @@ class UserDataProvider extends ChangeNotifier {
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
     final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    box.delete(HiveKeys.kUserData);
-    final userData = jsonEncode(user);
-    box.put(HiveKeys.kUserData, userData);
-    box.delete(HiveKeys.kUserId);
-    box.put(HiveKeys.kUserId, user.user.address);
+    await box.delete(HiveKeys.kUserData);
+    final userMap = user.toMap();
+    final userData = jsonEncode(userMap);
+    await box.put(HiveKeys.kUserData, userData);
+    await box.delete(HiveKeys.kUserId);
+    await box.put(HiveKeys.kUserId, user.user.address);
   }
 
   /// Updates the user information with [user]
   void updateUser(UserData user) {
-    assert(user.user.address == userAddress);
-    logger.logDebug(
-        'Current user address is equal to the updated user address: ${user.user.address == userAddress}');
-    _setUserInformation(user);
-    userProfile = user;
-    notifyListeners();
+    try {
+      assert(user.user.address == userAddress);
+      logger.logDebug(
+          'Current user address is equal to the updated user address: ${user.user.address == userAddress}');
+      _setUserInformation(user);
+      userProfile = user;
+      notifyListeners();
+    } catch (e) {
+      logger.logException(e);
+    }
   }
 
   Future<void> switchColumnLayout(ExpressionFeedLayout layout) async {

@@ -18,8 +18,8 @@ class SignUpPhotos extends StatefulWidget {
 class SignUpPhotosState extends State<SignUpPhotos> {
   File profilePictureOne;
 
-  List<File> returnDetails() {
-    return <File>[profilePictureOne];
+  File returnDetails() {
+    return profilePictureOne;
   }
 
   Widget _buildPhotoSelector({File profilePicture}) {

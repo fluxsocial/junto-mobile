@@ -10,9 +10,10 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class AuthRepo {
-  const AuthRepo(this.authService, this.userRepo);
+  const AuthRepo(this.authService, this.userRepo, this.expressionService);
 
   final AuthenticationService authService;
+  final ExpressionService expressionService;
   final UserRepo userRepo;
 
   Future<bool> isLoggedIn() async {
@@ -45,7 +46,8 @@ class AuthRepo {
   }
 
   /// Registers a user on the server and creates their profile.
-  Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
+  Future<UserData> registerUser(
+      UserAuthRegistrationDetails details, File profilePicture) async {
     logger.logDebug('Registering user');
     final UserData _data = await authService.registerUser(details);
     await authService.loginUser(
@@ -54,6 +56,24 @@ class AuthRepo {
         password: details.password,
       ),
     );
+
+    if (profilePicture != null) {
+      final key =
+          await expressionService.createPhoto(false, '.png', profilePicture);
+
+      //TODO: WHAT IS THAT? WHY ARE WE CREATING MAPS MANUALLY?
+      final _profilePictureKeys = <String, dynamic>{
+        'profile_picture': <Map<String, dynamic>>[
+          <String, dynamic>{'index': 0, 'key': key},
+        ]
+      };
+      // update user with profile photos
+      await userRepo.updateUser(
+        _profilePictureKeys,
+        _data.user.address,
+      );
+    }
+
     final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     await box.put(HiveKeys.kisLoggedIn, true);
     await box.put(HiveKeys.kUserId, _data.user.address);

@@ -81,8 +81,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     logger.logDebug(_body.toString());
     final http.Response response =
         await client.postWithoutEncoding('/auth/register', body: _body);
-    logger.logDebug(response.body);
-    print(response.statusCode);
+    logger.logDebug('${response.statusCode} ${response.body}');
     if (response.statusCode == 310) {
       print('yeo');
       return 'follow the white rabbit';
