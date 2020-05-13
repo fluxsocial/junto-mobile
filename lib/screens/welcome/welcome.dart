@@ -164,7 +164,6 @@ class WelcomeState extends State<Welcome> {
             _photoKeys.add(key);
           } catch (error) {
             print(error);
-            JuntoLoader.hide();
           }
         }
       }

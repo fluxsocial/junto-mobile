@@ -135,7 +135,10 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                                 pendingPackRequests != null)
                               if (pendingConnectionRequests.isNotEmpty ||
                                   pendingPackRequests.isNotEmpty)
-                                NotificationSignal(top: 10, right: 5,),
+                                NotificationSignal(
+                                  top: 10,
+                                  right: 5,
+                                ),
                           ],
                         ),
                       ),
