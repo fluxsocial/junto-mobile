@@ -10,20 +10,19 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class AuthRepo {
-  AuthRepo(this._authService, this._userRepo);
+  const AuthRepo(this.authService, this.userRepo);
 
-  final AuthenticationService _authService;
-  final UserRepo _userRepo;
-  bool _isLoggedIn;
+  final AuthenticationService authService;
+  final UserRepo userRepo;
 
   Future<bool> isLoggedIn() async {
     final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    _isLoggedIn = await box.get(HiveKeys.kisLoggedIn);
+    final isLoggedIn = await box.get(HiveKeys.kisLoggedIn);
     // Let's check if user is actually logged in
-    if (_isLoggedIn != null && _isLoggedIn) {
+    if (isLoggedIn != null && isLoggedIn) {
       try {
         final id = await box.get(HiveKeys.kUserId);
-        await _userRepo.getUser(id);
+        await userRepo.getUser(id);
       } on SocketException catch (_) {
         // The user is logged in but offline
         return true;
@@ -32,24 +31,24 @@ class AuthRepo {
         return false;
       }
     }
-    return _isLoggedIn;
+    return isLoggedIn;
   }
 
   Future<Map<String, dynamic>> validateUser(
       {String username, String email}) async {
-    return _authService.validateUser(username: username, email: email);
+    return authService.validateUser(username: username, email: email);
   }
 
   Future<String> verifyEmail(String email) async {
     logger.logDebug('Verifying e-mail');
-    return _authService.verifyEmail(email);
+    return authService.verifyEmail(email);
   }
 
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
     logger.logDebug('Registering user');
-    final UserData _data = await _authService.registerUser(details);
-    await _authService.loginUser(
+    final UserData _data = await authService.registerUser(details);
+    await authService.loginUser(
       UserAuthLoginDetails(
         email: details.email,
         password: details.password,
@@ -70,7 +69,7 @@ class AuthRepo {
   /// all future request.
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
     try {
-      final UserData _user = await _authService.loginUser(details);
+      final UserData _user = await authService.loginUser(details);
       final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
       await box.put(HiveKeys.kisLoggedIn, true);
       await box.put(HiveKeys.kUserId, _user.user.address);
@@ -91,17 +90,16 @@ class AuthRepo {
   // Request verification code to reset password
   Future<int> requestPasswordReset(String email) async {
     final int responseStatusCode =
-        await _authService.requestPasswordReset(email);
+        await authService.requestPasswordReset(email);
     return responseStatusCode;
   }
 
   Future<void> resetPassword(Map<String, dynamic> details) async {
-    await _authService.resetPassword(details);
+    await authService.resetPassword(details);
   }
 
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser() async {
-    await _authService.logoutUser();
-    _isLoggedIn = false;
+    await authService.logoutUser();
   }
 }
