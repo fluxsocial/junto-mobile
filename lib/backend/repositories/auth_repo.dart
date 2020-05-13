@@ -14,10 +14,7 @@ class AuthRepo {
 
   final AuthenticationService _authService;
   final UserRepo _userRepo;
-  String _authKey;
   bool _isLoggedIn;
-
-  String get authKey => _authKey;
 
   Future<bool> isLoggedIn() async {
     final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
