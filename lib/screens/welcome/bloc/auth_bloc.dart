@@ -54,9 +54,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await authRepo.registerUser(event.details);
       await userDataProvider.initialize();
       yield AuthenticatedState(user);
-    } on JuntoException catch (_) {
+    } on JuntoException catch (e) {
+      logger.logException(e);
       yield UnAuthenticatedState();
     } catch (error) {
+      logger.logException(error);
       yield UnAuthenticatedState();
     }
   }
