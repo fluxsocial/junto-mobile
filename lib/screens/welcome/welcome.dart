@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
@@ -77,6 +78,7 @@ class WelcomeState extends State<Welcome> {
 
   UserRepo userRepository;
   UserDataProvider userDataProvider;
+  AuthRepo authRepo;
 
   @override
   void initState() {
@@ -103,6 +105,7 @@ class WelcomeState extends State<Welcome> {
     //TODO: don't perform user signup in state of welcome.dart
     userRepository = Provider.of<UserRepo>(context, listen: false);
     userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+    authRepo = Provider.of<AuthRepo>(context, listen: false);
   }
 
   @override
@@ -163,7 +166,7 @@ class WelcomeState extends State<Welcome> {
             );
             _photoKeys.add(key);
           } catch (error) {
-            print(error);
+            logger.logException(error);
             JuntoLoader.hide();
           }
         }
@@ -401,8 +404,7 @@ class WelcomeState extends State<Welcome> {
           JuntoLoader.showLoader(context, color: Colors.transparent);
           // ensure username is not taken or reserved
           final Map<String, dynamic> validateUserResponse =
-              await Provider.of<AuthRepo>(context, listen: false)
-                  .validateUser(username: username);
+              await authRepo.validateUser(username: username);
           JuntoLoader.hide();
           final bool usernameIsAvailable =
               validateUserResponse['valid_username'];
@@ -448,7 +450,7 @@ class WelcomeState extends State<Welcome> {
         }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
-        await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
+        await authRepo.verifyEmail(email);
         JuntoLoader.hide();
       }
       // transition to next page of sign up flow
