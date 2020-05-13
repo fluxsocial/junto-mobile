@@ -14,14 +14,13 @@ class AuthRepo {
 
   final AuthenticationService _authService;
   final UserRepo _userRepo;
-  LazyBox box;
   String _authKey;
   bool _isLoggedIn;
 
   String get authKey => _authKey;
 
   Future<bool> isLoggedIn() async {
-    box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     _isLoggedIn = await box.get(HiveKeys.kisLoggedIn);
     // Let's check if user is actually logged in
     if (_isLoggedIn != null && _isLoggedIn) {
@@ -59,6 +58,7 @@ class AuthRepo {
         password: details.password,
       ),
     );
+    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
     await box.put(HiveKeys.kisLoggedIn, true);
     await box.put(HiveKeys.kUserId, _data.user.address);
     await box.put(
@@ -105,7 +105,6 @@ class AuthRepo {
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser() async {
     await _authService.logoutUser();
-    box = null;
     _isLoggedIn = false;
   }
 }
