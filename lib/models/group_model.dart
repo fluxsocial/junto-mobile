@@ -136,6 +136,12 @@ class GroupDataPack {
       'name': name,
     };
   }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'name': name,
+    };
+  }
 }
 
 /// Returned when [Group.groupType] == `Sphere`.
