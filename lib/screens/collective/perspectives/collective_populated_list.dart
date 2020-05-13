@@ -22,45 +22,33 @@ class CollectivePopulatedList extends StatelessWidget {
         child: const SizedBox(),
       );
     } else {
-      return SliverList(
-        delegate: SliverChildListDelegate(
-          <Widget>[
-            TweenAnimationBuilder<double>(
-              duration: Duration(milliseconds: 1000),
-              curve: Curves.ease,
-              tween: Tween<double>(begin: 0.0, end: 1.0),
-              builder: (context, anim, child) {
-                return Opacity(
-                  opacity: anim,
-                  child: child,
-                );
-              },
-              child: Consumer<UserDataProvider>(
-                builder: (context, user, _) => AnimatedCrossFade(
-                  crossFadeState: user.twoColumnView
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: const Duration(milliseconds: 300),
-                  firstCurve: Curves.easeInOut,
-                  firstChild: TwoColumnSliverListView(
-                    data: state.results,
-                  ),
-                  secondChild: SingleColumnSliverListView(
-                    data: state.results,
-                    privacyLayer: 'Public',
-                  ),
+      return Consumer<UserDataProvider>(builder: (context, snapshot, _) {
+        return SliverList(
+          delegate: SliverChildListDelegate(
+            <Widget>[
+              AnimatedSwitcher(
+                duration: kThemeChangeDuration,
+                child: snapshot.twoColumnView
+                    ? TwoColumnSliverListView(
+                        key: ValueKey<String>('two-column'),
+                        data: state.results,
+                      )
+                    : SingleColumnSliverListView(
+                        key: ValueKey<String>('singlxe-column'),
+                        data: state.results,
+                        privacyLayer: 'Public',
+                      ),
+              ),
+              if (state.availableMore == true && state.loadingMore != true)
+                FetchMoreButton(
+                  onPressed: () => context.bloc<CollectiveBloc>().add(
+                        FetchMoreCollective(),
+                      ),
                 ),
-              ),
-            ),
-            if (state.availableMore == true && state.loadingMore != true)
-              FetchMoreButton(
-                onPressed: () => context.bloc<CollectiveBloc>().add(
-                      FetchMoreCollective(),
-                    ),
-              ),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
+      });
     }
   }
 }
