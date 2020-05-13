@@ -30,12 +30,15 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       },
     );
     if (response.statusCode == 200) {
+      logger.logInfo('User logged in');
       final String authorization = response.headers['authorization'];
       final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
       await box.put(HiveKeys.kAuth, authorization);
       final userData = JuntoHttp.handleResponse(response);
       final user = UserData.fromMap(userData);
-      await box.put(HiveKeys.kUserData, jsonEncode(user));
+      final userMap = jsonEncode(userData);
+      logger.logInfo('Storing user data');
+      await box.put(HiveKeys.kUserData, userMap);
       return user;
     } else {
       final Map<String, dynamic> errorResponse =
@@ -78,8 +81,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     logger.logDebug(_body.toString());
     final http.Response response =
         await client.postWithoutEncoding('/auth/register', body: _body);
-    logger.logDebug(response.body);
-    print(response.statusCode);
+    logger.logDebug('${response.statusCode} ${response.body}');
     if (response.statusCode == 310) {
       print('yeo');
       return 'follow the white rabbit';

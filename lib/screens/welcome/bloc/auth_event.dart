@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:meta/meta.dart';
 
@@ -5,9 +8,12 @@ import 'package:meta/meta.dart';
 abstract class AuthEvent {}
 
 class SignUpEvent extends AuthEvent {
-  SignUpEvent(this.details);
+  SignUpEvent(this.details, this.profilePicture, this.completer);
 
   final UserAuthRegistrationDetails details;
+  final File profilePicture;
+  // this is a temporary solution until welcome.dart is rewritten to handle bloc
+  final Completer completer;
 }
 
 class LoginEvent extends AuthEvent {

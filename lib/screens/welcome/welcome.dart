@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
@@ -48,7 +52,6 @@ class WelcomeState extends State<Welcome> {
   // Used when resetting password
   final ValueNotifier<String> _email = ValueNotifier("");
   String _currentTheme;
-  String _userAddress;
 
   PageController _welcomeController;
   PageController _signInController;
@@ -60,7 +63,7 @@ class WelcomeState extends State<Welcome> {
   String location;
   String gender;
   String website;
-  List<dynamic> profilePictures;
+  File profilePicture;
   String email;
   String password;
   String confirmPassword;
@@ -77,6 +80,7 @@ class WelcomeState extends State<Welcome> {
 
   UserRepo userRepository;
   UserDataProvider userDataProvider;
+  AuthRepo authRepo;
 
   @override
   void initState() {
@@ -103,6 +107,7 @@ class WelcomeState extends State<Welcome> {
     //TODO: don't perform user signup in state of welcome.dart
     userRepository = Provider.of<UserRepo>(context, listen: false);
     userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+    authRepo = Provider.of<AuthRepo>(context, listen: false);
   }
 
   @override
@@ -121,6 +126,7 @@ class WelcomeState extends State<Welcome> {
       email: email,
       name: name,
       password: password,
+      confirmPassword: confirmPassword,
       location: <String>[location],
       username: username,
       profileImage: <String>[],
@@ -133,62 +139,22 @@ class WelcomeState extends State<Welcome> {
 
     try {
       JuntoLoader.showLoader(context);
-      context.bloc<AuthBloc>().add(SignUpEvent(details));
-      _userAddress = userDataProvider.userAddress;
+      //TODO this is workaround because we need to wait for the registration to complete
+      final completer = Completer();
+      context
+          .bloc<AuthBloc>()
+          .add(SignUpEvent(details, profilePicture, completer));
+      await completer.future;
       JuntoLoader.hide();
     } catch (error) {
       JuntoLoader.hide();
-      print(error);
+      logger.logException(error);
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
-          dialogText: error.message,
+          dialogText: S.of(context).common_network_error,
         ),
       );
-    }
-
-    // Update user with profile photos
-    if (profilePictures[0] != null) {
-      // instantiate list to store photo keys retrieve from /s3
-      final List<String> _photoKeys = <String>[];
-      for (final dynamic image in profilePictures) {
-        if (image != null) {
-          try {
-            final String key =
-                await Provider.of<ExpressionRepo>(context, listen: false)
-                    .createPhoto(
-              false,
-              '.png',
-              image,
-            );
-            _photoKeys.add(key);
-          } catch (error) {
-            print(error);
-            JuntoLoader.hide();
-          }
-        }
-      }
-
-      Map<String, dynamic> _profilePictureKeys;
-
-      // instantiate data structure to update user with profile pictures
-      _profilePictureKeys = <String, dynamic>{
-        'profile_picture': <Map<String, dynamic>>[
-          <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
-          if (_photoKeys.length == 2)
-            <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
-        ]
-      };
-      // update user with profile photos
-      try {
-        await userRepository.updateUser(
-          profilePictures[0] == null ? _photoKeys : _profilePictureKeys,
-          _userAddress,
-        );
-      } catch (error) {
-        print(error);
-        JuntoLoader.hide();
-      }
     }
 
     JuntoLoader.hide();
@@ -401,8 +367,7 @@ class WelcomeState extends State<Welcome> {
           JuntoLoader.showLoader(context, color: Colors.transparent);
           // ensure username is not taken or reserved
           final Map<String, dynamic> validateUserResponse =
-              await Provider.of<AuthRepo>(context, listen: false)
-                  .validateUser(username: username);
+              await authRepo.validateUser(username: username);
           JuntoLoader.hide();
           final bool usernameIsAvailable =
               validateUserResponse['valid_username'];
@@ -425,8 +390,8 @@ class WelcomeState extends State<Welcome> {
         website = _aboutPageModel.website;
         print(bio.length);
       } else if (_currentIndex == 5) {
-        profilePictures = signUpPhotosKey.currentState.returnDetails();
-        print(profilePictures);
+        profilePicture = signUpPhotosKey.currentState.returnDetails();
+        print(profilePicture);
       } else if (_currentIndex == 6) {
         email = signUpRegisterKey.currentState.returnDetails()['email'];
         password = signUpRegisterKey.currentState.returnDetails()['password'];
@@ -448,7 +413,8 @@ class WelcomeState extends State<Welcome> {
         }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
-        await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
+        final result = await authRepo.verifyEmail(email);
+        logger.logDebug(result);
         JuntoLoader.hide();
       }
       // transition to next page of sign up flow
