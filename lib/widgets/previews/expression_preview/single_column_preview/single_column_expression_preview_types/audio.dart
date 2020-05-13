@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 
 class AudioPreview extends StatelessWidget {
   AudioPreview({@required this.expression});
@@ -157,7 +159,7 @@ class AudioPreviewWithPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width * 2/3,
+      height: MediaQuery.of(context).size.width * 2 / 3,
       padding: const EdgeInsets.symmetric(
         horizontal: 25.0,
         vertical: 50.0,
@@ -169,8 +171,9 @@ class AudioPreviewWithPhoto extends StatelessWidget {
             Colors.black38,
             BlendMode.srcOver,
           ),
-          image: NetworkImage(
+          image: CachedNetworkImageProvider(
             photo,
+            cacheManager: CustomCacheManager(),
           ),
           fit: BoxFit.cover,
         ),
