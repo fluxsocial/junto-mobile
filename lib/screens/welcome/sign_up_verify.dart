@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 
 class SignUpVerify extends StatefulWidget {
-  const SignUpVerify({Key key, this.handleSignUp}) : super(key: key);
+  const SignUpVerify({Key key, this.handleSignUp, this.verificationController})
+      : super(key: key);
 
+  final TextEditingController verificationController;
   final VoidCallback handleSignUp;
 
   @override
@@ -14,24 +16,6 @@ class SignUpVerify extends StatefulWidget {
 }
 
 class SignUpVerifyState extends State<SignUpVerify> {
-  TextEditingController verificationController;
-
-  @override
-  void initState() {
-    super.initState();
-    verificationController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    verificationController.dispose();
-    super.dispose();
-  }
-
-  int returnDetails() {
-    return int.parse(verificationController.value.text);
-  }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -51,7 +35,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextField(
-                    controller: verificationController,
+                    controller: widget.verificationController,
                     maxLength: 8,
                     buildCounter: (
                       BuildContext context, {

@@ -1,18 +1,12 @@
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
-@immutable
-abstract class AuthState {}
+part 'auth_state.freezed.dart';
 
-class InitialAuthState extends AuthState {}
-
-class AuthenticatedState extends AuthState {
-  AuthenticatedState(this.user);
-
-  final UserData user;
+@freezed
+abstract class AuthState with _$AuthState {
+  factory AuthState.loading() = AuthLoading;
+  factory AuthState.agreementsRequired(UserData user) = AuthAgreementsRequired;
+  factory AuthState.authenticated(UserData user) = AuthAuthenticated;
+  factory AuthState.unauthenticated() = AuthUnauthenticated;
 }
-
-class UnAuthenticatedState extends AuthState {}
-
-/// Used to indicate some background task is in progress.
-class LoadingState extends AuthState {}
