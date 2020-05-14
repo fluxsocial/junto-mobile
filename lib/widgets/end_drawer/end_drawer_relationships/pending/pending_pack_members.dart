@@ -13,6 +13,7 @@ class PendingPackMembers extends StatelessWidget {
     return Consumer<NotificationsHandler>(
       builder: (context, data, child) {
         final notifications = data.notifications;
+        print(notifications);
         if (notifications.length > 0) {
           return ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -23,7 +24,7 @@ class PendingPackMembers extends StatelessWidget {
                   item.notificationType == NotificationType.GroupJoinRequests) {
                 if (item.group.groupType == 'Pack') {
                   return PackRequest(
-                    userProfile: item.creator,
+                    userProfile: item.user,
                     pack: item.group,
                     refreshGroups: () async {
                       await context.bloc<GroupBloc>().add(
@@ -37,6 +38,7 @@ class PendingPackMembers extends StatelessWidget {
             },
           );
         }
+        print('yellow');
         return const SizedBox();
       },
     );

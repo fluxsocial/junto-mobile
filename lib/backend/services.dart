@@ -303,5 +303,8 @@ abstract class LocalCache {
   /// Retrieves all cached notifications
   Future<List<JuntoNotification>> retrieveNotifications();
 
+  //  Deletes a notification from cache
+  Future<void> deleteNotification(String notificationKey);
+
   Future<void> wipe();
 }
