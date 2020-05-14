@@ -38,50 +38,55 @@ class ExpressionServiceCentralized implements ExpressionService {
 
   @override
   Future<String> createPhoto(bool isPrivate, String fileType, File file) async {
-    String _serverUrl;
-    if (isPrivate) {
-      _serverUrl = '/auth/s3?private=true';
-    } else if (isPrivate == false) {
-      _serverUrl = '/auth/s3?private=false';
-    }
-    final contentLength = file.lengthSync();
+    try {
+      logger.logDebug('Creating a photo');
+      String _serverUrl;
+      if (isPrivate) {
+        _serverUrl = '/auth/s3?private=true';
+      } else if (isPrivate == false) {
+        _serverUrl = '/auth/s3?private=false';
+      }
+      final contentLength = file.lengthSync();
 
-    // denote file type and get url, headers, and key of s3 bucket
-    final http.Response _serverResponse = await client.postWithoutEncoding(
-      _serverUrl,
-      body: {'content_type': fileType, 'content_length': contentLength},
-    );
-    logger.logDebug(_serverResponse.body);
-    logger.logDebug(_serverResponse.statusCode.toString());
-
-    // parse response
-    final Map<String, dynamic> parseData =
-        JuntoHttp.handleResponse(_serverResponse);
-
-    // seralize into new headers
-    final Map<String, String> newHeaders = <String, String>{
-      'x-amz-acl': parseData['headers']['x-amz-acl'],
-      'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
-    };
-
-    // turn file into bytes
-    final Uint8List fileAsBytes = file.readAsBytesSync();
-
-    // send put request to s3 bucket with url, new headers, and file as bytes
-    final http.Response _serverResponseTwo = await http.put(
-      parseData['signed_url'],
-      headers: newHeaders,
-      body: fileAsBytes,
-    );
-
-    // if successful, return the key for next steps
-    if (_serverResponseTwo.statusCode == 200) {
-      return parseData['key'];
-    } else {
-      throw JuntoException(
-        _serverResponse.reasonPhrase,
-        _serverResponse.statusCode,
+      // denote file type and get url, headers, and key of s3 bucket
+      final http.Response _serverResponse = await client.postWithoutEncoding(
+        _serverUrl,
+        body: {'content_type': fileType, 'content_length': contentLength},
       );
+      logger.logDebug(_serverResponse.body);
+      logger.logDebug(_serverResponse.statusCode.toString());
+
+      // parse response
+      final Map<String, dynamic> parseData =
+          JuntoHttp.handleResponse(_serverResponse);
+
+      // seralize into new headers
+      final Map<String, String> newHeaders = <String, String>{
+        'x-amz-acl': parseData['headers']['x-amz-acl'],
+        'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
+      };
+
+      // turn file into bytes
+      final Uint8List fileAsBytes = file.readAsBytesSync();
+
+      // send put request to s3 bucket with url, new headers, and file as bytes
+      final http.Response _serverResponseTwo = await http.put(
+        parseData['signed_url'],
+        headers: newHeaders,
+        body: fileAsBytes,
+      );
+
+      // if successful, return the key for next steps
+      if (_serverResponseTwo.statusCode == 200) {
+        return parseData['key'];
+      } else {
+        throw JuntoException(
+          _serverResponse.reasonPhrase,
+          _serverResponse.statusCode,
+        );
+      }
+    } catch (e) {
+      logger.logException(e);
     }
   }
 

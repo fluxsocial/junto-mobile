@@ -19,8 +19,8 @@ class SignUpPhotosState extends State<SignUpPhotos> {
   File originalFile;
   File profilePictureOne;
 
-  List<File> returnDetails() {
-    return <File>[profilePictureOne];
+  File returnDetails() {
+    return profilePictureOne;
   }
 
   Widget _buildPhotoSelector({File profilePicture}) {

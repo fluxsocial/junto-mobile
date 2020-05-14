@@ -27,44 +27,52 @@ class UserDataProvider extends ChangeNotifier {
 
   Future<void> initialize() async {
     await getUserInformation();
-    return;
   }
 
   Future<void> getUserInformation() async {
-    logger.logInfo('Fetching user information');
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    final userData = await box.get(HiveKeys.kUserData);
-    if (userData != null && userData.isNotEmpty) {
-      final Map<String, dynamic> decodedUserData = jsonDecode(userData);
-      userProfile = UserData.fromMap(decodedUserData);
-      userAddress = userProfile.user.address;
-      final cachedLayoutView = await box.get(HiveKeys.kLayoutView);
-      if (cachedLayoutView != null) {
-        twoColumnView = cachedLayoutView;
-      }
+    try {
+      logger.logInfo('Fetching user information');
+      final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+      final userData = await box.get(HiveKeys.kUserData);
+      if (userData != null && userData.isNotEmpty) {
+        final decodedUserData = jsonDecode(userData);
+        userProfile = UserData.fromMap(decodedUserData);
+        userAddress = userProfile.user.address;
+        final cachedLayoutView = await box.get(HiveKeys.kLayoutView);
+        if (cachedLayoutView != null) {
+          twoColumnView = cachedLayoutView;
+        }
 
-      notifyListeners();
+        notifyListeners();
+      }
+    } catch (e) {
+      logger.logException(e);
     }
-    return;
   }
 
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
     final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    box.delete(HiveKeys.kUserData);
-    box.put(HiveKeys.kUserData, jsonEncode(user.toMap()));
-    box.delete(HiveKeys.kUserId);
-    box.put(HiveKeys.kUserId, user.user.address);
+    await box.delete(HiveKeys.kUserData);
+    final userMap = user.toMap();
+    final userData = jsonEncode(userMap);
+    await box.put(HiveKeys.kUserData, userData);
+    await box.delete(HiveKeys.kUserId);
+    await box.put(HiveKeys.kUserId, user.user.address);
   }
 
   /// Updates the user information with [user]
   void updateUser(UserData user) {
-    assert(user.user.address == userAddress);
-    logger.logDebug(
-        'Current user address is equal to the updated user address: ${user.user.address == userAddress}');
-    _setUserInformation(user);
-    userProfile = user;
-    notifyListeners();
+    try {
+      assert(user.user.address == userAddress);
+      logger.logDebug(
+          'Current user address is equal to the updated user address: ${user.user.address == userAddress}');
+      _setUserInformation(user);
+      userProfile = user;
+      notifyListeners();
+    } catch (e) {
+      logger.logException(e);
+    }
   }
 
   Future<void> switchColumnLayout(ExpressionFeedLayout layout) async {

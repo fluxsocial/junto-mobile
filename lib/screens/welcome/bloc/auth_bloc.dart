@@ -51,13 +51,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
     yield LoadingState();
     try {
-      final user = await authRepo.registerUser(event.details);
+      final user =
+          await authRepo.registerUser(event.details, event.profilePicture);
       await userDataProvider.initialize();
+
       yield AuthenticatedState(user);
-    } on JuntoException catch (_) {
+    } on JuntoException catch (e) {
+      logger.logException(e);
       yield UnAuthenticatedState();
     } catch (error) {
+      logger.logException(error);
       yield UnAuthenticatedState();
+    } finally {
+      event?.completer?.complete();
     }
   }
 

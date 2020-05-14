@@ -91,7 +91,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        if (value.userProfile.user != null)
+                        if (value.userProfile?.user != null)
                           JuntoDrawerItem(
                             icon: Container(
                               margin: const EdgeInsets.only(right: 32),
@@ -110,7 +110,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                               );
                             },
                           ),
-                        if (value.userProfile.user == null)
+                        if (value.userProfile?.user == null)
                           JuntoDrawerItem(
                             icon: const SizedBox(),
                             title: 'My Den',
