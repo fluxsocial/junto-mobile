@@ -1,5 +1,6 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
@@ -21,12 +22,6 @@ class MaterialAppWithTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
       builder: (context, theme, _) {
-        //TODO: remove this changes to UiOverlay from builder to JuntoThemesProvider
-        // if (theme.currentTheme != null) {
-        //   theme.currentTheme.brightness == Brightness.dark
-        //       ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
-        //       : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-        // }
         return MaterialApp(
           home: HomePage(),
           builder: DevicePreviewWrapper.appBuilder,
