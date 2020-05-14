@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
@@ -61,7 +61,7 @@ class _UserExpressionsState extends State<UserExpressions> {
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
         if (state is DenLoadingState) {
-          return JuntoProgressIndicator(); 
+          return JuntoProgressIndicator();
         }
         if (state is DenLoadedState) {
           final results = state.expressions;
@@ -91,6 +91,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                       ),
                       secondChild: SingleColumnListView(
                         data: results,
+                        itemCount: results.length,
                         privacyLayer: 'Public',
                       ),
                     ),
