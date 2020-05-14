@@ -39,7 +39,7 @@ class PhotoOpen extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 10),
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    photoExpression.expressionData.caption,
+                    photoExpression.expressionData.caption.trim(),
                     style: Theme.of(context).textTheme.caption,
                   ),
                 )
