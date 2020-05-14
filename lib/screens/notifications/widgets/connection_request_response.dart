@@ -13,6 +13,22 @@ class ConnectionRequestResponse extends StatelessWidget {
   final String userAddress;
   final JuntoNotification notification;
 
+  void _respondToRequest(BuildContext context, bool response) async {
+    // show Junto loader
+    JuntoLoader.showLoader(context);
+    // respond to request
+    await Provider.of<UserRepo>(context, listen: false)
+        .respondToConnection(userAddress, response);
+    // delete notification from cache
+    await Provider.of<LocalCache>(context, listen: false)
+        .deleteNotification(notification.address);
+    // refetch notifications
+    await Provider.of<NotificationsHandler>(context, listen: false)
+        .fetchNotifications();
+    // hide Junto loader
+    await JuntoLoader.hide();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,34 +38,14 @@ class ConnectionRequestResponse extends StatelessWidget {
           const SizedBox(width: 48),
           RequestResponseButton(
             onTap: () async {
-              JuntoLoader.showLoader(
-                context,
-                color: Colors.white70,
-              );
-              await Provider.of<UserRepo>(context, listen: false)
-                  .respondToConnection(userAddress, true);
-              await Provider.of<LocalCache>(context, listen: false)
-                  .deleteNotification(notification.address);
-              await Provider.of<NotificationsHandler>(context, listen: false)
-                  .fetchNotifications();
-
-              await JuntoLoader.hide();
+              _respondToRequest(context, true);
             },
             buttonTitle: 'Connect',
           ),
           const SizedBox(width: 10),
           RequestResponseButton(
             onTap: () async {
-              JuntoLoader.showLoader(
-                context,
-                color: Colors.white70,
-              );
-              await Provider.of<UserRepo>(context, listen: false)
-                  .respondToConnection(userAddress, false);
-
-              await Provider.of<NotificationsHandler>(context, listen: false)
-                  .fetchNotifications();
-              JuntoLoader.hide();
+              _respondToRequest(context, false);
             },
             buttonTitle: 'Decline',
           ),
