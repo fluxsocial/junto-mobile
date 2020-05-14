@@ -206,6 +206,7 @@ class CreateShortformState extends State<CreateShortform> {
                         maxLength: 220,
                         textAlign: TextAlign.center,
                         textInputAction: TextInputAction.done,
+                        textCapitalization: TextCapitalization.sentences,
                         keyboardAppearance: Theme.of(context).brightness,
                       ),
                     )

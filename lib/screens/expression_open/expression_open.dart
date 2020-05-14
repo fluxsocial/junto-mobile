@@ -433,7 +433,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
           children: <Widget>[
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(left: 15), 
+                padding: const EdgeInsets.only(left: 15),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onSurface,
                   borderRadius: BorderRadius.circular(25),
@@ -459,6 +459,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                         cursorWidth: 2,
                         style: Theme.of(context).textTheme.caption,
                         textInputAction: TextInputAction.newline,
+                        textCapitalization: TextCapitalization.sentences,
                         keyboardAppearance: Theme.of(context).brightness,
                       ),
                     ),

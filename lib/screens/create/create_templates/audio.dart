@@ -149,40 +149,13 @@ class CreateAudioState extends State<CreateAudio> {
                         captionController: captionController,
                         captionFocus: captionFocus,
                       ),
-
-                audio.playBackAvailable && _showBottomTools
-                    ? AudioBottomTools(
-                        openPhotoOptions: _audioPhotoOptions,
-                        resetAudioPhotoBackground: _resetAudioPhotoBackground,
-                        resetAudioGradientValues: _resetAudioGradientValues,
-                        setAudioGradientValues: _setAudioGradientValues,
-                      )
-                    : SizedBox(),
-                // : Column(
-                //     mainAxisAlignment: MainAxisAlignment.end,
-                //     children: <Widget>[
-                //       Container(
-                //         padding: const EdgeInsets.symmetric(horizontal: 10),
-                //         alignment: Alignment.centerRight,
-                //         width: MediaQuery.of(context).size.width,
-                //         color: Colors.transparent,
-                //         child: GestureDetector(
-                //           onTap: () {
-                //             captionFocus.unfocus();
-                //           },
-                //           child: Container(
-                //             height: 50,
-                //             color: Colors.orange,
-                //             child: Icon(
-                //               Icons.keyboard_arrow_down,
-                //               size: 17,
-                //               color: Theme.of(context).primaryColorLight,
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
+                if (audio.playBackAvailable && _showBottomTools)
+                  AudioBottomTools(
+                    openPhotoOptions: _audioPhotoOptions,
+                    resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                    resetAudioGradientValues: _resetAudioGradientValues,
+                    setAudioGradientValues: _setAudioGradientValues,
+                  )
               ],
             ),
           ),
