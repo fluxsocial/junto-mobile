@@ -10,7 +10,7 @@ class AudioPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final audioTitle = expression.expressionData.title;
+    final audioTitle = expression.expressionData.title.trim();
     final audioGradients = expression.expressionData.gradient;
     final audioPhoto = expression.expressionData.photo;
 
