@@ -162,7 +162,7 @@ class _SignInState extends State<SignIn> {
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 120),
                     child: Text(
-                      'RESET PASSWORD',
+                      S.of(context).reset_password,
                       style: TextStyle(
                         letterSpacing: 1.7,
                         color: Colors.white,
