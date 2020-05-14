@@ -28,8 +28,8 @@ class Group {
         createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
         groupType: json['group_type'],
-        members: json['members'] as int,
-        facilitators: json['facilitators'] as int,
+        members: json['members'] ,
+        facilitators: json['facilitators'] ,
         groupData: json['group_type'] == 'Sphere'
             ? GroupDataSphere.fromJson(json['group_data'])
             : GroupDataPack.fromMap(json['group_data']),

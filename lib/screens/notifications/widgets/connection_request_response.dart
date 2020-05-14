@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/request_response_button.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class ConnectionRequestResponse extends StatelessWidget {
-  const ConnectionRequestResponse({this.userAddress});
+  const ConnectionRequestResponse({this.userAddress, this.notification});
 
   final String userAddress;
+  final JuntoNotification notification;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,12 @@ class ConnectionRequestResponse extends StatelessWidget {
               );
               await Provider.of<UserRepo>(context, listen: false)
                   .respondToConnection(userAddress, true);
+              await Provider.of<LocalCache>(context, listen: false)
+                  .deleteNotification(notification.address);
               await Provider.of<NotificationsHandler>(context, listen: false)
                   .fetchNotifications();
-              JuntoLoader.hide();
+
+              await JuntoLoader.hide();
             },
             buttonTitle: 'Connect',
           ),
