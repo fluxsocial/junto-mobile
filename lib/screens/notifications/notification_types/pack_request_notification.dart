@@ -35,8 +35,7 @@ class PackRequestNotification extends StatelessWidget {
             ],
           ),
           PackRequestResponse(
-            packAddress: item.group.address,
-            userAddress: item.user.address,
+            notification: item,
           ),
         ],
       ),
