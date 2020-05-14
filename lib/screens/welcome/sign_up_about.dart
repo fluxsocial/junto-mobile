@@ -7,9 +7,18 @@ import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpAbout extends StatefulWidget {
-  const SignUpAbout({Key key, this.nextPage}) : super(key: key);
-
+  final TextEditingController pronounController;
+  final TextEditingController locationController;
+  final TextEditingController websiteController;
   final Function nextPage;
+
+  const SignUpAbout({
+    Key key,
+    this.nextPage,
+    this.pronounController,
+    this.locationController,
+    this.websiteController,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -18,38 +27,19 @@ class SignUpAbout extends StatefulWidget {
 }
 
 class SignUpAboutState extends State<SignUpAbout> {
-  TextEditingController bioController;
-  TextEditingController locationController;
-  TextEditingController genderController;
-  TextEditingController websiteController;
   ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
-    bioController = TextEditingController();
-    locationController = TextEditingController();
-    genderController = TextEditingController();
-    websiteController = TextEditingController();
   }
 
   @override
   void dispose() {
-    bioController.dispose();
-    locationController.dispose();
-    genderController.dispose();
-    websiteController.dispose();
     scrollController.dispose();
     super.dispose();
   }
-
-  AboutPageModel returnDetails() => AboutPageModel(
-        bio: bioController.value.text,
-        location: locationController.value.text,
-        gender: genderController.value.text,
-        website: websiteController.value.text,
-      );
 
   bool _lengthValidator(String text, [int charCount = 30]) {
     bool lengthOk = text.length <= charCount;
@@ -81,9 +71,9 @@ class SignUpAboutState extends State<SignUpAbout> {
                   children: <Widget>[
                     SizedBox(height: MediaQuery.of(context).size.height * .24),
                     SignUpTextField(
-                      valueController: locationController,
+                      valueController: widget.locationController,
                       onSubmit: () =>
-                          _lengthValidator(locationController.value.text),
+                          _lengthValidator(widget.locationController.text),
                       textInputActionType: TextInputAction.next,
                       hint: S.of(context).welcome_location_hint,
                       maxLength: 30,
@@ -92,14 +82,14 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_location_label,
                       maxLength: 30,
-                      valueController: locationController,
+                      valueController: widget.locationController,
                       compact: true,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * .08),
                     SignUpTextField(
-                      valueController: genderController,
+                      valueController: widget.pronounController,
                       onSubmit: () =>
-                          _lengthValidator(genderController.value.text),
+                          _lengthValidator(widget.pronounController.text),
                       textInputActionType: TextInputAction.next,
                       hint: S.of(context).welcome_gender_hints,
                       maxLength: 30,
@@ -107,16 +97,16 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_gender_label,
                       maxLength: 30,
-                      valueController: locationController,
+                      valueController: widget.pronounController,
                       compact: true,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * .08),
                     SignUpTextField(
-                      valueController: websiteController,
+                      valueController: widget.websiteController,
                       textInputActionType: TextInputAction.done,
                       onSubmit: () {
                         if (_lengthValidator(
-                            websiteController.value.text, 100)) {
+                            widget.websiteController.text, 100)) {
                           widget.nextPage();
                         }
                       },
@@ -128,7 +118,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_website_label,
                       maxLength: 100,
-                      valueController: locationController,
+                      valueController: widget.websiteController,
                       compact: true,
                     ),
                   ],
