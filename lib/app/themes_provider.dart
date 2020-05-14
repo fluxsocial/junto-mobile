@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -39,7 +40,16 @@ class JuntoThemesProvider with ChangeNotifier {
     _currentTheme = _themes[themeName];
     notifyListeners();
     _persistTheme(themeName);
+    _setSystemOverlay(_currentTheme);
     return currentTheme;
+  }
+
+  void _setSystemOverlay(ThemeData theme) {
+    if (theme != null) {
+      theme.brightness == Brightness.dark
+          ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
+          : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    }
   }
 
   String _themeName;
