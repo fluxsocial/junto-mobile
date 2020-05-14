@@ -16,6 +16,7 @@ class SignUpPhotos extends StatefulWidget {
 }
 
 class SignUpPhotosState extends State<SignUpPhotos> {
+  File originalFile;
   File profilePictureOne;
 
   List<File> returnDetails() {
@@ -25,7 +26,11 @@ class SignUpPhotosState extends State<SignUpPhotos> {
   Widget _buildPhotoSelector({File profilePicture}) {
     return GestureDetector(
       onTap: () async {
-        await _onPickPressed();
+        if (profilePicture == null) {
+          await _onPickPressed();
+        } else {
+          await _cropPhoto();
+        }
       },
       child: Container(
         color: Colors.transparent,
@@ -121,10 +126,26 @@ class SignUpPhotosState extends State<SignUpPhotos> {
 
         return;
       }
-      setState(() => profilePictureOne = cropped);
+
+      setState(() {
+        originalFile = image;
+        profilePictureOne = cropped;
+      });
     } catch (error) {
       logger.logException(error);
     }
+  }
+
+  Future<void> _cropPhoto() async {
+    final File cropped = await ImageCroppingDialog.show(context, originalFile,
+        aspectRatios: <String>[
+          '1:1',
+        ]);
+    if (cropped == null) {
+      return;
+    }
+
+    setState(() => profilePictureOne = cropped);
   }
 
   @override
