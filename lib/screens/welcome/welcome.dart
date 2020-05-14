@@ -399,7 +399,7 @@ class WelcomeState extends State<Welcome> {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText: S.of(context).welcome_username_taken,
+            dialogText: error.message,
           ),
         );
       }
