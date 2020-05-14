@@ -102,7 +102,7 @@ class CreatePhotoState extends State<CreatePhoto> with Compressor {
   Map<String, dynamic> createExpression() {
     return <String, dynamic>{
       'image': imageFile,
-      'caption': _captionController.value.text
+      'caption': _captionController.value.text.trim()
     };
   }
 

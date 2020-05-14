@@ -97,8 +97,8 @@ class CreatePerspectivePageState extends State<CreatePerspectivePage> {
               onCreateTap: () {
                 context.bloc<PerspectivesBloc>().add(
                       CreatePerspective(
-                        _nameController.text,
-                        _aboutController.text,
+                        _nameController.text.trim(),
+                        _aboutController.text.trim(),
                         _perspectiveMembers,
                       ),
                     );
@@ -159,7 +159,10 @@ class PerspectivesPageView extends StatefulWidget {
 
 class _PerspectivesPageViewState extends State<PerspectivesPageView> {
   String _nameValidator(String value) {
-    if (value != null && value.length >= 1 && value.length <= 20) {
+    final String trimmedValue = value.trim();
+    if (trimmedValue != null &&
+        trimmedValue.length >= 1 &&
+        trimmedValue.length <= 20) {
       return null;
     } else {
       return 'Name must be between 1 - 20 characters';
@@ -167,7 +170,11 @@ class _PerspectivesPageViewState extends State<PerspectivesPageView> {
   }
 
   String _aboutValidator(String value) {
-    if (value != null && value.length >= 1 && value.length <= 150) {
+    final String trimmedValue = value.trim();
+
+    if (trimmedValue != null &&
+        trimmedValue.length >= 1 &&
+        trimmedValue.length <= 150) {
       return null;
     } else {
       return 'About must be between 1 - 150 characters';

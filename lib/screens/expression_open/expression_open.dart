@@ -131,7 +131,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           'LongForm',
           LongFormExpression(
             title: 'Expression Comment',
-            body: commentController.value.text,
+            body: commentController.value.text.trim(),
           ).toMap(),
         );
         commentController.clear();
