@@ -167,14 +167,13 @@ class CreateAudioState extends State<CreateAudio> {
   void _onNext(AudioService audio) {
     if (_validate(audio)) {
       final audioExpression = AudioFormExpression(
-        title: titleController.text,
+        title: titleController.text.trim(),
         photo: audioPhotoBackground?.path,
         audio: audio.recordingPath,
         gradient: audioGradientValues,
-        caption: captionController.text,
+        caption: captionController.text.trim(),
       );
-      print(audioExpression);
-      print(audioExpression.caption);
+
       Navigator.push(
         context,
         MaterialPageRoute<dynamic>(

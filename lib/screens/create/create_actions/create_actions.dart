@@ -306,8 +306,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _setExpressionContextDescription = () {
         setState(() {
           _expressionContext = ExpressionContext.Collective;
-          _currentExpressionContextDescription =
-              'share publicly on Junto';
+          _currentExpressionContextDescription = 'share publicly on Junto';
           _address = null;
         });
       };
@@ -380,6 +379,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
       builder: (BuildContext context) {
         return ChannelSearchModal(
           channels: _channels,

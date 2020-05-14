@@ -109,7 +109,7 @@ class CommentPreview extends StatelessWidget with MemberValidation {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                comment.expressionData.body,
+                comment.expressionData.body.trim(),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
                 style: TextStyle(
