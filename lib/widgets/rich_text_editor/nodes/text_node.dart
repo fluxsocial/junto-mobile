@@ -34,7 +34,7 @@ class TextNode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: node.controller,
+      controller: node.text,
       focusNode: node.focus,
       decoration: null,
       style: _getTextStyle(),
