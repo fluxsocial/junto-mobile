@@ -56,7 +56,8 @@ dev_dependencies:
   hive_generator: 0.7.0+2
   freezed: 0.10.7
   effective_dart: 1.2.1
-
+dependency_overrides:
+  path: 1.7.0
 flutter:
   uses-material-design: true
 
