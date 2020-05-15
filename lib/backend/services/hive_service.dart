@@ -68,7 +68,6 @@ class HiveCache implements LocalCache {
       }
       await Future.wait(_futures);
     } catch (e) {
-      print('inserting notifs went wrong');
       logger.logException(e);
     }
   }
@@ -80,7 +79,6 @@ class HiveCache implements LocalCache {
           _supportedBox[DBBoxes.notifications]);
       List<JuntoNotification> items = [];
       for (String key in box.keys) {
-        key.toString();
         JuntoNotification res = await box.get(key);
         items.add(res);
       }
