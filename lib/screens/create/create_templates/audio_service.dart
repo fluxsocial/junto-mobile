@@ -116,12 +116,8 @@ class AudioService with ChangeNotifier {
         _getDuration();
       }
     });
-    _audioPlayer.onDurationChanged.listen((event) {
-      print(event);
-    });
-    _audioPlayer.onNotificationPlayerStateChanged.listen((event) {
-      print(event);
-    });
+    _audioPlayer.onDurationChanged.listen(print);
+    _audioPlayer.onNotificationPlayerStateChanged.listen(print);
   }
 
   Future _getDuration() async {

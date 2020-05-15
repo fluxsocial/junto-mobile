@@ -1,4 +1,3 @@
-
 /// Various item keys used to store data in Hive boxes
 class HiveKeys {
   /// Used to access

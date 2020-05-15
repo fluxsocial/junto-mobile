@@ -9,14 +9,6 @@ class ChannelPreview extends StatelessWidget {
   final Channel channel;
   final int resultCount;
 
-  String _expressionText() {
-    if (resultCount > 1 && resultCount != 0) {
-      return '${resultCount} expressions';
-    } else {
-      return '${resultCount} expression';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -51,7 +51,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
         shortformBody,
         maxLines: 7,
         textAlign: TextAlign.center,
-        style:  TextStyle(
+        style: TextStyle(
           fontSize: 18,
           color: _hexOne.contains('fff') || _hexTwo.contains('fff')
               ? Color(0xff333333)

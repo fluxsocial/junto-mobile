@@ -157,7 +157,7 @@ class AudioPreviewWithPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width * 2/3,
+      height: MediaQuery.of(context).size.width * 2 / 3,
       padding: const EdgeInsets.symmetric(
         horizontal: 25.0,
         vertical: 50.0,

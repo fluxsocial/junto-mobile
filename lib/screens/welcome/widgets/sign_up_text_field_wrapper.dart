@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'sign_up_page_title.dart';
 import 'sign_up_text_field.dart';
 import 'sign_up_text_field_counter.dart';
 

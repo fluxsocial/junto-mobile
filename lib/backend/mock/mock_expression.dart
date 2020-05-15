@@ -25,7 +25,8 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<String> createAudio(bool isPrivate, AudioFormExpression expression) async {
+  Future<String> createAudio(
+      bool isPrivate, AudioFormExpression expression) async {
     return 'xczxc-qwerqwe-324234';
   }
 

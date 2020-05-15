@@ -66,7 +66,7 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
     setState(() => _processing = true);
     JuntoLoader.showLoader(context);
     File result = await _imageCropperKey.currentState.performCrop();
-     JuntoLoader.hide();
+    JuntoLoader.hide();
     if (result == null) {
       if (mounted) {
         setState(() => _processing = false);

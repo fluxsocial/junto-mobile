@@ -306,8 +306,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _setExpressionContextDescription = () {
         setState(() {
           _expressionContext = ExpressionContext.Collective;
-          _currentExpressionContextDescription =
-              'share publicly on Junto';
+          _currentExpressionContextDescription = 'share publicly on Junto';
           _address = null;
         });
       };

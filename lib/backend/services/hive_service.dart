@@ -85,7 +85,7 @@ class HiveCache implements LocalCache {
       if (items.length > 0) {
         items.sort((a, b) => -a?.createdAt?.compareTo(b?.createdAt));
       }
-      //TODO: remove if number of items exceeds 100 
+      //TODO: remove if number of items exceeds 100
       return items;
     } catch (e) {
       logger.logException(e);
@@ -125,7 +125,8 @@ class HiveCache implements LocalCache {
         final pack = await Hive.lazyBox<ExpressionResponse>(HiveBoxes.kPack);
         await pack.deleteAll(pack.keys);
       } else {
-        final pack = await Hive.openLazyBox<ExpressionResponse>(HiveBoxes.kPack);
+        final pack =
+            await Hive.openLazyBox<ExpressionResponse>(HiveBoxes.kPack);
         await pack.deleteAll(pack.keys);
       }
     } catch (e) {
