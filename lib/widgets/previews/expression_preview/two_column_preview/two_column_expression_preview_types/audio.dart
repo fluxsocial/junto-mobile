@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:junto_beta_mobile/utils/cache_manager.dart';

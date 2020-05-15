@@ -15,21 +15,16 @@ class PhotoPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: Hero(
-        tag: 'single_column_photo_preview-${expression.address}',
-        child: RepaintBoundary(
-          child: ImageWrapper(
-            imageUrl: expression.expressionData.image,
-            placeholder: (BuildContext context, String _) {
-              return Container(
-                color: Theme.of(context).dividerColor,
-                height: MediaQuery.of(context).size.width,
-                width: MediaQuery.of(context).size.width,
-              );
-            },
-            fit: BoxFit.cover,
-          ),
-        ),
+      child: ImageWrapper(
+        imageUrl: expression.expressionData.image,
+        placeholder: (BuildContext context, String _) {
+          return Container(
+            color: Theme.of(context).dividerColor,
+            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width,
+          );
+        },
+        fit: BoxFit.cover,
       ),
     );
   }

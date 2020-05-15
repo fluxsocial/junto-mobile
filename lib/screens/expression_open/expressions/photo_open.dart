@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 class PhotoOpen extends StatelessWidget {
@@ -17,15 +15,15 @@ class PhotoOpen extends StatelessWidget {
         children: <Widget>[
           photoExpression.expressionData.image == 'test-image'
               ? const SizedBox()
-              : Container(
-                  width: MediaQuery.of(context).size.width,
+              : SizedBox(
+                  width: double.maxFinite,
                   child: Hero(
-                    tag: 'photo_preview-${photoExpression.address}',
+                    tag: 'two_column_photo_preview-${photoExpression.address}',
                     child: ImageWrapper(
                       imageUrl: photoExpression.expressionData.image,
                       placeholder: (BuildContext context, String _) {
                         return Container(
-                          height: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 2.4,
                           width: MediaQuery.of(context).size.width,
                           color: Theme.of(context).dividerColor,
                         );
@@ -34,16 +32,16 @@ class PhotoOpen extends StatelessWidget {
                     ),
                   ),
                 ),
-          photoExpression.expressionData.caption != ''
-              ? Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    photoExpression.expressionData.caption.trim(),
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                )
-              : const SizedBox()
+          if (photoExpression.expressionData.caption.isNotEmpty)
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                photoExpression.expressionData.caption.trim(),
+                style: Theme.of(context).textTheme.caption,
+              ),
+            )
+
         ],
       ),
     );
