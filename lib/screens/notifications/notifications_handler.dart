@@ -26,17 +26,16 @@ class NotificationsHandler extends ChangeNotifier {
           .toList()
           .length;
       logger.logInfo('${result.results.length} notifications fetched');
+      notifyListeners();
     } else {
       logger.logError('Couldn\'t fetch the notifications');
     }
   }
 
   Future<void> deleteNotification(String notificationKey) async {
-    logger.logInfo('deleting notification');
     try {
-      print(_notifications.length);
-      _notifications.remove(notificationKey);
-      print(_notifications.length);
+      await repository.deleteNotification(notificationKey);
+      logger.logInfo('notification deleted');
       notifyListeners();
     } catch (e) {
       logger.logError(e);

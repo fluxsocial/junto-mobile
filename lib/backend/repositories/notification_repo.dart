@@ -37,6 +37,14 @@ class NotificationRepo {
     }
   }
 
+  Future<void> deleteNotification(String notificationKey) async {
+    try {
+      await dbService.deleteNotification(notificationKey);
+    } catch (e) {
+      logger.logException(e);
+    }
+  }
+
   Future<JuntoNotificationResults> getJuntoNotifications({
     int page = 0,
     String lastTimestamp,
