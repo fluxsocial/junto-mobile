@@ -11,6 +11,8 @@ import 'package:junto_beta_mobile/widgets/rich_text_editor/text_span_controller.
 import 'nodes/types.dart';
 import 'rich_text_controller.dart';
 
+const zeroWidthSpace = '\u200B';
+
 class RichTextEditorExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class RichTextEditor extends StatefulWidget {
 
 class RichTextNode {
   RichTextNode(this.controller, this.type,
-      [String text = '\u200B']) // Zero Width Space (ZWSP)
+      [String text = zeroWidthSpace]) // Zero Width Space (ZWSP)
       : text = TextSpanEditingController(text),
         focus = FocusNode() {
     this.text.addListener(_onTextChanged);
@@ -66,7 +68,8 @@ class RichTextNode {
 
   TextSelection get selection => text.value.selection;
 
-  bool get isEmpty => text.value.text.isEmpty || text.value.text == '\u200B';
+  bool get isEmpty =>
+      text.value.text.isEmpty || text.value.text == zeroWidthSpace;
 
   void _onTextChanged() {
     if (text.value.text.isEmpty) {
