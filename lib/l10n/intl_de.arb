@@ -332,5 +332,6 @@
   "common_decline": "Decline",
   "toggle_filter_drawer": "Toggle filter drawer",
   "count_me_in": "COUNT ME IN",
-  "reset_password": "RESET PASSWORD"
+  "reset_password": "RESET PASSWORD",
+  "profile_picture": "PROFILE PICTURE"
 }
