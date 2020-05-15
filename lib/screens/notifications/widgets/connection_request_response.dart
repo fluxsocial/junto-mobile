@@ -17,14 +17,14 @@ class ConnectionRequestResponse extends StatelessWidget {
     // show Junto loader
     JuntoLoader.showLoader(context);
     // respond to request
-    await Provider.of<UserRepo>(context, listen: false)
-        .respondToConnection(userAddress, response);
+    // await Provider.of<UserRepo>(context, listen: false)
+    //     .respondToConnection(userAddress, response);
     // delete notification from cache
-    await Provider.of<LocalCache>(context, listen: false)
-        .deleteNotification(notification.address);
-    // refetch notifications
     await Provider.of<NotificationsHandler>(context, listen: false)
-        .fetchNotifications();
+        .deleteNotification(notification.address);
+    // // refetch notifications
+    // await Provider.of<NotificationsHandler>(context, listen: false)
+    //     .fetchNotifications();
     // hide Junto loader
     await JuntoLoader.hide();
   }
