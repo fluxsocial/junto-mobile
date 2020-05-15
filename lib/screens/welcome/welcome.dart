@@ -134,16 +134,16 @@ class WelcomeState extends State<Welcome> {
     final verificationCode = int.parse(verificationCodeController.text);
 
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
-      email: emailController.text,
-      name: nameController.text,
-      username: userNameController.text,
+      email: emailController.text.trim(),
+      name: nameController.text.trim(),
+      username: userNameController.text.trim(),
       password: passwordController.text,
       confirmPassword: confirmPasswordController.text,
-      location: <String>[locationController.text],
+      location: <String>[locationController.text.trim()],
       profileImage: <String>[],
       backgroundPhoto: '',
-      website: <String>[websiteController.text],
-      gender: <String>[pronounController.text],
+      website: <String>[websiteController.text.trim()],
+      gender: <String>[pronounController.text.trim()],
       verificationCode: verificationCode,
       bio: '',
     );
