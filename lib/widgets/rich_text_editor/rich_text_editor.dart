@@ -69,21 +69,38 @@ enum RichTextNodeType {
   PhotoLarge,
 }
 
-class RichTextNode {
-  RichTextNode(this.type, String text)
-      : controller = TextSpanEditingController(text),
-        focus = FocusNode();
+class RichTextController {
+  void _nodeDeleted(RichTextNode node) {
+    //
+    print('DELETE node $this');
+  }
+}
 
+class RichTextNode {
+  RichTextNode(this._controller, this.type, [String text = '\u200B']) // Zero Width Space (ZWSP)
+      : text = TextSpanEditingController(text),
+        focus = FocusNode() {
+    this.text.addListener(_onTextChanged);
+  }
+
+  final RichTextController _controller;
   RichTextNodeType type;
-  final TextSpanEditingController controller;
+  final TextSpanEditingController text;
   final FocusNode focus;
 
-  TextSelection get selection => controller.value.selection;
+  TextSelection get selection => text.value.selection;
 
-  bool get isEmpty => controller.value.text.isEmpty;
+  bool get isEmpty => text.value.text.isEmpty || text.value.text == '\u200B';
+
+  void _onTextChanged() {
+    if (text.value.text.isEmpty) {
+      _controller._nodeDeleted(this);
+    }
+  }
 
   void dispose() {
-    controller.dispose();
+    text.removeListener(_onTextChanged);
+    text.dispose();
     focus.dispose();
   }
 }
@@ -142,12 +159,12 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
     final RichTextNode focusedNode = _currentNode;
     RichTextNode node;
     if (inPlaceInsert && !(focusedNode?.isEmpty ?? true)) {
-      node = RichTextNode(RichTextNodeType.Text, '');
+      node = RichTextNode(RichTextNodeType.Text);
       _nodes.insert(_nodes.indexOf(focusedNode) + 1, node);
     } else {
       node = _nodes.isNotEmpty ? _nodes[_nodes.length - 1] : null;
       if (node == null || node.controller.value.text.isNotEmpty) {
-        node = RichTextNode(RichTextNodeType.Text, '');
+        node = RichTextNode(RichTextNodeType.Text);
         _nodes.add(node);
       } else {
         node.focus.requestFocus();
