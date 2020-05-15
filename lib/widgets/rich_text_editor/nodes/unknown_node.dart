@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/rich_text_editor/rich_text_editor.dart';
 
-class UnknownNode extends StatelessWidget {
+class UnknownNode extends StatefulWidget {
   const UnknownNode({
     Key key,
     @required this.node,
@@ -10,15 +10,23 @@ class UnknownNode extends StatelessWidget {
   final RichTextNode node;
 
   @override
+  _UnknownNodeState createState() => _UnknownNodeState();
+}
+
+class _UnknownNodeState extends State<UnknownNode> {
+  @override
   Widget build(BuildContext context) {
     return Focus(
-      focusNode: node.focus,
+      focusNode: widget.node.focus,
+      onFocusChange: (bool focus) {
+        setState(() {});
+      },
       child: GestureDetector(
         onTap: () {
-          node.focus.requestFocus();
+          widget.node.focus.requestFocus();
         },
         child: Container(
-          color: Colors.red,
+          color: widget.node.focus.hasFocus ? Colors.blue : Colors.red,
           height: 24.0,
         ),
       ),
