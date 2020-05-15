@@ -76,9 +76,8 @@ class UserDataProvider extends ChangeNotifier {
   }
 
   Future<void> switchColumnLayout(ExpressionFeedLayout layout) async {
-    twoColumnView = !twoColumnView;
-    notifyListeners();
     await appRepository?.setLayout(layout == ExpressionFeedLayout.two);
     await getUserInformation();
+    notifyListeners();
   }
 }
