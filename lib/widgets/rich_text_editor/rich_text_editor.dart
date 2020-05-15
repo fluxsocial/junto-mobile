@@ -30,7 +30,7 @@ class RichTextEditorExample extends StatelessWidget {
                     onTap: () => Focus.of(context).requestFocus(),
                     child: TextField(
                       decoration: InputDecoration(
-                        fillColor: Colors.red,
+                        // fillColor: Colors.red,
                         filled: true,
                       ),
                     ),
@@ -54,14 +54,11 @@ class RichTextEditor extends StatefulWidget {
 }
 
 class RichTextNode {
-  RichTextNode(this.controller, this.type,
+  RichTextNode(this.type,
       [String text = zeroWidthSpace]) // Zero Width Space (ZWSP)
       : text = TextSpanEditingController(text),
-        focus = FocusNode() {
-    this.text.addListener(_onTextChanged);
-  }
+        focus = FocusNode();
 
-  final RichTextController controller;
   RichTextNodeType type;
   final TextSpanEditingController text;
   final FocusNode focus;
@@ -71,54 +68,38 @@ class RichTextNode {
   bool get isEmpty =>
       text.value.text.isEmpty || text.value.text == zeroWidthSpace;
 
-  void _onTextChanged() {
-    if (text.value.text.isEmpty) {
-      _controller._nodeDeleted(this);
-    }
-  }
-
   void dispose() {
-    text.removeListener(_onTextChanged);
     text.dispose();
     focus.dispose();
   }
 }
 
-class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStateMixin {
+class _RichTextEditorState extends State<RichTextEditor>
+    with TickerProviderStateMixin {
+  final RichTextController controller = RichTextController();
   final ValueNotifier<bool> _showingToolbar = ValueNotifier<bool>(false);
-  final ValueNotifier<RichTextControlsMode> _controlsMode =
-      ValueNotifier<RichTextControlsMode>(RichTextControlsMode.InsertMode);
   final FocusScopeNode _focusScopeNode = FocusScopeNode();
-
-  final List<RichTextNode> _nodes = <RichTextNode>[];
-
-  RichTextNode get _currentNode {
-    return _nodes.firstWhere((RichTextNode node) => node.focus.hasFocus, orElse: () => null);
-  }
 
   @override
   void initState() {
     super.initState();
     _focusScopeNode.addListener(_onFocusChanged);
-    addNode(false);
+    controller.addNode();
+    controller.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    for (final RichTextNode node in _nodes) {
-      node.dispose();
-    }
     _focusScopeNode.removeListener(_onFocusChanged);
     _focusScopeNode.dispose();
+    controller.dispose();
     super.dispose();
   }
 
   void _onTextChanged(RichTextNode node) {
-    if (_currentNode == node) {
-      _controlsMode.value = (!node.selection.isCollapsed)
-          ? RichTextControlsMode.SelectionMode
-          : RichTextControlsMode.InsertMode;
-    }
+    controller.onTextChanged(node);
   }
 
   void _onFocusChanged() {
@@ -132,104 +113,6 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
 
   void hideKeyboard() {
     _focusScopeNode.unfocus();
-  }
-
-  void addNode(bool inPlaceInsert) {
-    final RichTextNode focusedNode = _currentNode;
-    RichTextNode node;
-    if (inPlaceInsert && !(focusedNode?.isEmpty ?? true)) {
-      node = RichTextNode(RichTextNodeType.Text);
-      _nodes.insert(_nodes.indexOf(focusedNode) + 1, node);
-    } else {
-      node = _nodes.isNotEmpty ? _nodes[_nodes.length - 1] : null;
-      if (node == null || node.controller.value.text.isNotEmpty) {
-        node = RichTextNode(RichTextNodeType.Text);
-        _nodes.add(node);
-      } else {
-        node.focus.requestFocus();
-        return;
-      }
-    }
-    setState(() {
-      node.controller.addListener(() => _onTextChanged(node));
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        node.focus.requestFocus();
-      });
-    });
-  }
-
-  void _onControlPressed(RichTextControl control) {
-    final RichTextNode node = _currentNode;
-    print('control $control');
-    setState(() {
-      switch (control) {
-        case RichTextControl.TitleToggle:
-          switch (node.type) {
-            case RichTextNodeType.Text:
-              node.type = RichTextNodeType.Title;
-              break;
-            case RichTextNodeType.Title:
-              node.type = RichTextNodeType.Subtitle;
-              break;
-            case RichTextNodeType.Subtitle:
-            default:
-              node.type = RichTextNodeType.Text;
-              break;
-          }
-          break;
-        case RichTextControl.Quote:
-          switch (node.type) {
-            case RichTextNodeType.Quote:
-              node.type = RichTextNodeType.Text;
-              break;
-            case RichTextNodeType.Text:
-            default:
-              node.type = RichTextNodeType.Quote;
-              break;
-          }
-          break;
-        case RichTextControl.BulletList:
-          switch (node.type) {
-            case RichTextNodeType.OrderedBulletList:
-              node.type = RichTextNodeType.UnorderedBulletList;
-              break;
-            case RichTextNodeType.UnorderedBulletList:
-            default:
-              node.type = RichTextNodeType.OrderedBulletList;
-              break;
-          }
-          break;
-        case RichTextControl.LineBreak:
-          node.type = RichTextNodeType.LineBreak;
-          break;
-        case RichTextControl.Bold:
-          break;
-        case RichTextControl.Italic:
-          break;
-        case RichTextControl.Link:
-          InsertLinkDialog.show(context).then((String value) {
-            if (value != null) {
-              node.type = RichTextNodeType.LinkUrl;
-            }
-          });
-          break;
-        case RichTextControl.InsertPhoto:
-          switch (node.type) {
-            case RichTextNodeType.PhotoSmall:
-              node.type = RichTextNodeType.PhotoMedium;
-              break;
-            case RichTextNodeType.PhotoMedium:
-              node.type = RichTextNodeType.PhotoLarge;
-              break;
-            case RichTextNodeType.PhotoLarge:
-            default:
-              node.type = RichTextNodeType.PhotoSmall;
-              break;
-          }
-          break;
-      }
-    });
-    print('control $control > ${node.type}');
   }
 
   @override
@@ -256,12 +139,14 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
                             padding: const EdgeInsets.symmetric(vertical: 4.0),
                             decoration: BoxDecoration(
                               border: Border(
-                                bottom: BorderSide(color: Colors.grey[200], width: 1.0),
+                                bottom: BorderSide(
+                                    color: Colors.grey[200], width: 1.0),
                               ),
                             ),
                             child: Builder(
                               builder: (BuildContext context) {
-                                final RichTextNode node = _nodes[index];
+                                final RichTextNode node =
+                                    controller.nodes[index];
                                 switch (node.type) {
                                   case RichTextNodeType.Text:
                                   case RichTextNodeType.Title:
@@ -279,7 +164,7 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
                             ),
                           );
                         },
-                        childCount: _nodes.length,
+                        childCount: controller.nodes.length,
                       ),
                     ),
                   ),
@@ -287,7 +172,7 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
                     hasScrollBody: false,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: () => addNode(false),
+                      onTap: () => controller.addNode(inPlaceInsert: false),
                       child: SizedBox(
                         height: 96.0,
                         child: Placeholder(color: Colors.grey.shade300),
@@ -298,7 +183,7 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
               ),
               floatingActionButton: FloatingActionButton(
                 child: Icon(Icons.add),
-                onPressed: () => addNode(true),
+                onPressed: () => controller.addNode(inPlaceInsert: true),
               ),
             ),
           ),
@@ -320,14 +205,9 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
                 dragStartBehavior: DragStartBehavior.down,
                 onTap: () {},
                 onVerticalDragEnd: _onSwipeDown,
-                child: ValueListenableBuilder<RichTextControlsMode>(
-                  valueListenable: _controlsMode,
-                  builder: (BuildContext context, RichTextControlsMode mode, Widget child) {
-                    return RichTextControls(
-                      mode: mode,
-                      onPressed: _onControlPressed,
-                    );
-                  },
+                child: RichTextControls(
+                  mode: controller.controlsMode,
+                  onPressed: controller.onControlPressed,
                 ),
               ),
             ),

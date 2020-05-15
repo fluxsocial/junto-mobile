@@ -20,7 +20,7 @@ class QuoteNode extends StatelessWidget {
         ),
       ),
       child: TextField(
-        controller: node.controller,
+        controller: node.text,
         focusNode: node.focus,
         decoration: null,
         style: const TextStyle(
