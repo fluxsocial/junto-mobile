@@ -3,6 +3,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/rich_text_editor/rich_text_editor.dart';
 
+import 'types.dart';
+
 class BulletListNode extends StatelessWidget {
   const BulletListNode({
     Key key,
@@ -83,6 +85,8 @@ class _BulletPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_BulletPainter oldDelegate) {
-    return oldDelegate.node != node || oldDelegate.node.type != node.type || oldDelegate.style != style;
+    return oldDelegate.node != node ||
+        oldDelegate.node.type != node.type ||
+        oldDelegate.style != style;
   }
 }

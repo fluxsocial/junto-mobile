@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/rich_text_editor/rich_text_editor.dart';
 
+import 'types.dart';
+
 class TextNode extends StatelessWidget {
   const TextNode({
     Key key,

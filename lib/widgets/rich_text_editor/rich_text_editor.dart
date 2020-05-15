@@ -8,6 +8,9 @@ import 'package:junto_beta_mobile/widgets/rich_text_editor/nodes/unknown_node.da
 import 'package:junto_beta_mobile/widgets/rich_text_editor/rich_text_controls.dart';
 import 'package:junto_beta_mobile/widgets/rich_text_editor/text_span_controller.dart';
 
+import 'nodes/types.dart';
+import 'rich_text_controller.dart';
+
 class RichTextEditorExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -48,26 +51,6 @@ class RichTextEditor extends StatefulWidget {
   _RichTextEditorState createState() => _RichTextEditorState();
 }
 
-enum RichTextNodeType {
-  Text,
-  Title,
-  Subtitle,
-  //
-  Quote,
-  //
-  UnorderedBulletList,
-  OrderedBulletList,
-  //
-  LineBreak,
-  //
-  LinkUrl,
-  //
-  EmbeddedContent,
-  //
-  PhotoSmall,
-  PhotoMedium,
-  PhotoLarge,
-}
 class RichTextNode {
   RichTextNode(this.controller, this.type,
       [String text = '\u200B']) // Zero Width Space (ZWSP)
