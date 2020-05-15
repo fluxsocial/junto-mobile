@@ -169,7 +169,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                           '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
                           '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
                           '"Connections" are your first degree friendships. Choosing to connect with someone is like friending them (mutual).',
-                          'Your "Pack" is your closest group of friends (mutual). Visit the tutorial in your Pack feed for more information.'
+                          'Your "Pack" is your closest group of friends (not mutual). Visit the tutorial in your Pack feed for more information.'
                         ],
                         child: JuntoInfoIcon(),
                       ),
