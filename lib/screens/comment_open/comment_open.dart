@@ -111,7 +111,7 @@ class CommentOpen extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Text(
-                          comment.expressionData.body,
+                          comment.expressionData.body.trim(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 17,

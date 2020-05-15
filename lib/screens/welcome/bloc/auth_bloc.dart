@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert' show json;
+import 'dart:convert' show jsonDecode;
 
 import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 import 'bloc.dart';
@@ -30,12 +29,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   @override
-  AuthState get initialState => InitialAuthState();
+  AuthState get initialState => AuthState.loading();
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is SignUpEvent) {
       yield* _mapSignUpEventState(event);
+    }
+    if (event is AcceptAgreements) {
+      yield* _mapAcceptAgreementsToState(event, state);
     }
     if (event is LoginEvent) {
       yield* _mapLoginEventState(event);
@@ -49,67 +51,78 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
-    yield LoadingState();
+    yield AuthState.loading();
     try {
+      logger.logInfo('User signed up');
       final user =
           await authRepo.registerUser(event.details, event.profilePicture);
+
       await userDataProvider.initialize();
 
-      yield AuthenticatedState(user);
+      yield AuthState.agreementsRequired(user);
     } on JuntoException catch (e) {
       logger.logException(e);
-      yield UnAuthenticatedState();
+      yield AuthState.unauthenticated();
     } catch (error) {
       logger.logException(error);
-      yield UnAuthenticatedState();
-    } finally {
-      event?.completer?.complete();
+      yield AuthState.unauthenticated();
+    }
+  }
+
+  Stream<AuthState> _mapAcceptAgreementsToState(
+      AcceptAgreements event, AuthAgreementsRequired state) async* {
+    try {
+      yield AuthState.authenticated(state.user);
+    } catch (error) {
+      logger.logException(error);
+      yield AuthState.unauthenticated();
     }
   }
 
   Stream<AuthState> _mapLoginEventState(LoginEvent event) async* {
-    yield LoadingState();
+    yield AuthState.loading();
     try {
       final user = await authRepo.loginUser(event.details);
-      yield AuthenticatedState(user);
+      yield AuthState.authenticated(user);
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
-      yield UnAuthenticatedState();
+      yield AuthState.unauthenticated();
     } catch (error) {
       logger.logException(error);
-      yield UnAuthenticatedState();
+      yield AuthState.unauthenticated();
     }
   }
 
   Stream<AuthState> _mapLogout(LogoutEvent event) async* {
-    yield LoadingState();
+    yield AuthState.loading();
     try {
       await _clearUserInformation();
-      yield UnAuthenticatedState();
+      yield AuthState.unauthenticated();
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
-      yield UnAuthenticatedState();
+      yield AuthState.unauthenticated();
     } catch (error) {
       logger.logDebug(error);
-      yield UnAuthenticatedState();
+      yield AuthState.unauthenticated();
     }
   }
 
   Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
-    yield LoadingState();
+    yield AuthState.loading();
     try {
       final box = await Hive.openLazyBox(HiveBoxes.kAppBox);
       final data = await box.get(HiveKeys.kUserData);
       logger.logDebug(data);
-      yield AuthenticatedState(UserData.fromMap(json.decode(data)));
+      final user = UserData.fromMap(jsonDecode(data));
+      yield AuthState.authenticated(user);
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
       await _clearUserInformation();
-      yield UnAuthenticatedState();
+      yield AuthState.unauthenticated();
     } catch (error) {
       logger.logException(error);
       await _clearUserInformation();
-      yield UnAuthenticatedState();
+      yield AuthState.unauthenticated();
     }
   }
 

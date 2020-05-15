@@ -32,7 +32,7 @@ class ShortformOpen extends StatelessWidget {
         vertical: 50.0,
       ),
       child: SelectableText(
-        expression.expressionData.body,
+        expression.expressionData.body.trim(),
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 20.0,

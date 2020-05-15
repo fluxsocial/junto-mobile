@@ -14,10 +14,10 @@ class AudioOpen extends StatelessWidget {
   final ExpressionResponse expression;
 
   Widget _displayAudioOpen() {
-    final audioTitle = expression.expressionData.title;
+    final audioTitle = expression.expressionData.title.trim();
     final audioGradients = expression.expressionData.gradient;
     final audioPhoto = expression.expressionData.photo;
-    final audioCaption = expression.expressionData.caption;
+    final audioCaption = expression.expressionData.caption.trim();
     if (audioGradients.isEmpty && audioPhoto.isEmpty) {
       return AudioOpenDefault(
         title: audioTitle,

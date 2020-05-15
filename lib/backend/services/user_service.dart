@@ -385,6 +385,8 @@ class UserServiceCentralized implements UserService {
         'status': response,
       },
     );
+    print(_serverResponse.body);
+    print(_serverResponse.statusCode);
     JuntoHttp.handleResponse(_serverResponse);
   }
 

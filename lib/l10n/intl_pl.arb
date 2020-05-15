@@ -330,5 +330,7 @@
   "notification_cat_relations": "RELATIONS",
   "notifications_nothing_new_yet": "Nothing new yet!",
   "common_decline": "Decline",
-  "toggle_filter_drawer": "Toggle filter drawer"
+  "toggle_filter_drawer": "Toggle filter drawer",
+  "count_me_in": "COUNT ME IN",
+  "reset_password": "RESET PASSWORD"
 }

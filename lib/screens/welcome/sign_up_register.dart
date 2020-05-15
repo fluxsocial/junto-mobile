@@ -5,7 +5,15 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpRegister extends StatefulWidget {
-  const SignUpRegister({Key key}) : super(key: key);
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+  const SignUpRegister({
+    Key key,
+    this.emailController,
+    this.passwordController,
+    this.confirmPasswordController,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -14,10 +22,6 @@ class SignUpRegister extends StatefulWidget {
 }
 
 class SignUpRegisterState extends State<SignUpRegister> {
-  TextEditingController emailController;
-  TextEditingController passwordController;
-  TextEditingController confirmPasswordController;
-
   FocusNode emailNode = FocusNode();
   FocusNode passwordNode = FocusNode();
   FocusNode confirmPasswordNode = FocusNode();
@@ -25,30 +29,11 @@ class SignUpRegisterState extends State<SignUpRegister> {
       "(?=.{8,})(?=.*[!@#\$%^&*])(?=.*[0-9])(?=.*[A-Z])(?=.*[A-z])";
 
   @override
-  void initState() {
-    super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    confirmPasswordController = TextEditingController();
-  }
-
-  @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
     emailNode.dispose();
     passwordNode.dispose();
     confirmPasswordNode.dispose();
     super.dispose();
-  }
-
-  Map<String, dynamic> returnDetails() {
-    return <String, dynamic>{
-      'email': emailController.value.text,
-      'password': passwordController.value.text,
-      'confirmPassword': confirmPasswordController.value.text,
-    };
   }
 
   bool _passwordCheck(String password, FocusNode node) {
@@ -63,8 +48,8 @@ class SignUpRegisterState extends State<SignUpRegister> {
         return false;
       }
     } else {
-      if (passwordController.value.text !=
-          confirmPasswordController.value.text) {
+      if (widget.passwordController.text !=
+          widget.confirmPasswordController.text) {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
@@ -103,7 +88,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                   child: Column(
                     children: <Widget>[
                       SignUpTextField(
-                        valueController: emailController,
+                        valueController: widget.emailController,
                         textInputActionType: TextInputAction.next,
                         onSubmit: () {
                           FocusScope.of(context).requestFocus(passwordNode);
@@ -116,10 +101,11 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       ),
                       const SizedBox(height: 40),
                       SignUpTextField(
-                        valueController: passwordController,
+                        valueController: widget.passwordController,
                         textInputActionType: TextInputAction.next,
                         onSubmit: () => _passwordCheck(
-                            passwordController.value.text, confirmPasswordNode),
+                            widget.passwordController.text,
+                            confirmPasswordNode),
                         focusNode: passwordNode,
                         hint: S.of(context).welcome_password_hint,
                         maxLength: 1000,
@@ -129,10 +115,10 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       ),
                       const SizedBox(height: 40),
                       SignUpTextField(
-                        valueController: confirmPasswordController,
+                        valueController: widget.confirmPasswordController,
                         textInputActionType: TextInputAction.done,
                         onSubmit: () => _passwordCheck(
-                            confirmPasswordController.value.text, null),
+                            widget.confirmPasswordController.text, null),
                         focusNode: confirmPasswordNode,
                         hint: S.of(context).welcome_confirm_password,
                         maxLength: 1000,
