@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
@@ -9,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Linear list of expressions created by the given [userProfile].

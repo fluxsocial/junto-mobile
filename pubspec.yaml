@@ -46,7 +46,7 @@ dependencies:
   hive_flutter: 0.3.0+2
   data_connection_checker: 0.3.4
   vibration: 1.2.4  
-
+  flutter_staggered_grid_view: 0.3.0
 dev_dependencies:
   test: any
   build_runner: 1.9.0
