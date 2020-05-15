@@ -1,0 +1,20 @@
+enum RichTextNodeType {
+  Text,
+  Title,
+  Subtitle,
+  //
+  Quote,
+  //
+  UnorderedBulletList,
+  OrderedBulletList,
+  //
+  LineBreak,
+  //
+  LinkUrl,
+  //
+  EmbeddedContent,
+  //
+  PhotoSmall,
+  PhotoMedium,
+  PhotoLarge,
+}
