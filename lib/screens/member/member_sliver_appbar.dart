@@ -110,7 +110,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                             children: <Widget>[
                               Flexible(
                                 child: Text(
-                                  widget.profile.name,
+                                  widget.profile.name.trim(),
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w700,
