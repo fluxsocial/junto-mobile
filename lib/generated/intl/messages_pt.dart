@@ -64,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "packs_my_packs" : MessageLookupByLibrary.simpleMessage(""),
     "packs_requests" : MessageLookupByLibrary.simpleMessage(""),
     "packs_title" : MessageLookupByLibrary.simpleMessage(""),
+    "profile_picture" : MessageLookupByLibrary.simpleMessage("PROFILE PICTURE"),
     "reset_password" : MessageLookupByLibrary.simpleMessage("RESET PASSWORD"),
     "toggle_filter_drawer" : MessageLookupByLibrary.simpleMessage("Toggle filter drawer"),
     "welcome_add_photo" : MessageLookupByLibrary.simpleMessage(""),

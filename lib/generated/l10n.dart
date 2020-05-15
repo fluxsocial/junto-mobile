@@ -683,6 +683,15 @@ class S {
       args: [],
     );
   }
+
+  String get profile_picture {
+    return Intl.message(
+      'PROFILE PICTURE',
+      name: 'profile_picture',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
