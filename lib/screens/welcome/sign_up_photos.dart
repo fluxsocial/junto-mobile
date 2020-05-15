@@ -20,37 +20,45 @@ class SignUpPhotos extends StatelessWidget {
         margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .2),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: MediaQuery.of(context).size.height * .1),
-              Expanded(
-                child: Center(
-                    child: GestureDetector(
-                  onTap: () async {
-                    if (profilePicture.file.value == null) {
-                      await _onPickPressed(context);
-                    } else {
-                      await _cropPhoto(context);
-                    }
-                  },
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: MediaQuery.of(context).size.height * .1),
+            Expanded(
+              child: Center(
+                child: GestureDetector(
+                  onTap: () => _onImageSelect(context),
                   child: Column(
                     children: <Widget>[
                       const SizedBox(height: 50),
                       ProfilePictureImage(profilePicture: profilePicture),
                       if (profilePicture.file.value != null)
-                        RemovePhoto(onTap: () {
-                          profilePicture.file.value = null;
-                          profilePicture.originalFile.value = null;
-                        })
+                        RemovePhoto(onTap: _onRemovePhoto)
                       else
                         ProfilePictureLabel(),
                     ],
                   ),
-                )),
+                ),
               ),
-            ]),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void _onRemovePhoto() {
+    profilePicture.file.value = null;
+    profilePicture.originalFile.value = null;
+  }
+
+  Future<void> _onImageSelect(BuildContext context) async {
+    {
+      if (profilePicture.file.value == null) {
+        await _onPickPressed(context);
+      } else {
+        await _cropPhoto(context);
+      }
+    }
   }
 
   Future<void> _onPickPressed(BuildContext context) async {
