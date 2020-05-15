@@ -66,37 +66,37 @@ class _UserExpressionsState extends State<UserExpressions> {
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,
-              child: ListView(
-                padding: const EdgeInsets.all(0),
-                children: <Widget>[
-                  FilterColumnRow(
-                    twoColumnView: twoColumnView,
-                    switchColumnView: _switchColumnView,
-                  ),
-                  Container(
-                    color: Theme.of(context).colorScheme.background,
-                    child: Consumer<UserDataProvider>(
-                      builder:
-                          (BuildContext context, UserDataProvider data, _) {
-                        if (data.twoColumnView) {
-                          return TwoColumnList(
-                            data: results,
-                          );
-                        }
-                        return SingleColumnSliverListView(
-                          data: results,
-                          privacyLayer: widget.privacy,
-                        );
-                      },
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: FilterColumnRow(
+                      twoColumnView: twoColumnView,
+                      switchColumnView: _switchColumnView,
                     ),
                   ),
+                  Consumer<UserDataProvider>(
+                    builder: (BuildContext context, UserDataProvider data, _) {
+                      if (data.twoColumnView) {
+                        return TwoColumnList(
+                          data: results,
+                          useSliver: true,
+                        );
+                      }
+                      return SingleColumnSliverListView(
+                        data: results,
+                        privacyLayer: widget.privacy,
+                      );
+                    },
+                  ),
                   if (appConfig.flavor == Flavor.dev)
-                    FetchMoreButton(
-                      onPressed: () {
-                        context.bloc<DenBloc>().add(
-                              LoadMoreDen(),
-                            );
-                      },
+                    SliverToBoxAdapter(
+                      child: FetchMoreButton(
+                        onPressed: () {
+                          context.bloc<DenBloc>().add(
+                                LoadMoreDen(),
+                              );
+                        },
+                      ),
                     )
                 ],
               ),

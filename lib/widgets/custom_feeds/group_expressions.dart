@@ -58,29 +58,35 @@ class _GroupExpressionsState extends State<GroupExpressions> {
               ? state.privateExpressions.results
               : state.publicExpressions.results;
           return Consumer<UserDataProvider>(
-              builder: (BuildContext context, UserDataProvider data, _) {
-            return Column(
-              children: [
-                FilterColumnRow(
-                  twoColumnView: data.twoColumnView,
-                  switchColumnView: _switchColumnView,
-                ),
-                if (data.twoColumnView)
-                  TwoColumnList(
-                    data: _results,
+            builder: (BuildContext context, UserDataProvider data, _) {
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: FilterColumnRow(
+                      twoColumnView: data.twoColumnView,
+                      switchColumnView: _switchColumnView,
+                    ),
                   ),
-                if (!data.twoColumnView)
-                  SingleColumnSliverListView(
-                    data: _results,
-                    privacyLayer: widget.privacy,
-                  ),
-                if (appConfig.flavor == Flavor.dev)
-                  FetchMoreButton(
-                    onPressed: _fetchMore,
-                  )
-              ],
-            );
-          });
+                  if (data.twoColumnView)
+                    TwoColumnList(
+                      data: _results,
+                      useSliver: true,
+                    ),
+                  if (!data.twoColumnView)
+                    SingleColumnSliverListView(
+                      data: _results,
+                      privacyLayer: widget.privacy,
+                    ),
+                  if (appConfig.flavor == Flavor.dev)
+                    SliverToBoxAdapter(
+                      child: FetchMoreButton(
+                        onPressed: _fetchMore,
+                      ),
+                    )
+                ],
+              );
+            },
+          );
         }
         if (state is PacksEmpty) {
           //TODO(Eric): Handle empty state
