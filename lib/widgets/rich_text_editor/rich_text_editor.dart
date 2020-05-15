@@ -119,8 +119,9 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
 
   void _onTextChanged(RichTextNode node) {
     if (_currentNode == node) {
-      _controlsMode.value =
-          (!node.selection.isCollapsed) ? RichTextControlsMode.SelectionMode : RichTextControlsMode.InsertMode;
+      _controlsMode.value = (!node.selection.isCollapsed)
+          ? RichTextControlsMode.SelectionMode
+          : RichTextControlsMode.InsertMode;
     }
   }
 
@@ -258,7 +259,9 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
                           return Container(
                             padding: const EdgeInsets.symmetric(vertical: 4.0),
                             decoration: BoxDecoration(
-                              border: Border(bottom: BorderSide(color: Colors.grey[200], width: 1.0)),
+                              border: Border(
+                                bottom: BorderSide(color: Colors.grey[200], width: 1.0),
+                              ),
                             ),
                             child: Builder(
                               builder: (BuildContext context) {
