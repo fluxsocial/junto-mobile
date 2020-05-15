@@ -64,20 +64,18 @@ class SingleColumnSliverListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).backgroundColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          for (int index = 0; index < data.length + 1; index++)
-            if (index == data.length)
-              const SizedBox()
-            else if (data[index].privacy == privacyLayer)
-              SingleColumnExpressionPreview(
-                key: ValueKey<String>(data[index].address),
-                expression: data[index],
-              )
-        ],
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          if (data[index].privacy == privacyLayer) {
+            return SingleColumnExpressionPreview(
+              key: ValueKey<String>(data[index].address),
+              expression: data[index],
+            );
+          }
+          return SizedBox();
+        },
+        childCount: data.length,
       ),
     );
   }
