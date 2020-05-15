@@ -20,7 +20,7 @@ class PhotoPreview extends StatelessWidget {
         placeholder: (BuildContext context, String _) {
           return Container(
             color: Theme.of(context).dividerColor,
-            height: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.shortestSide,
             width: MediaQuery.of(context).size.width,
           );
         },
