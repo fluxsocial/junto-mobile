@@ -68,22 +68,15 @@ enum RichTextNodeType {
   PhotoMedium,
   PhotoLarge,
 }
-
-class RichTextController {
-  void _nodeDeleted(RichTextNode node) {
-    //
-    print('DELETE node $this');
-  }
-}
-
 class RichTextNode {
-  RichTextNode(this._controller, this.type, [String text = '\u200B']) // Zero Width Space (ZWSP)
+  RichTextNode(this.controller, this.type,
+      [String text = '\u200B']) // Zero Width Space (ZWSP)
       : text = TextSpanEditingController(text),
         focus = FocusNode() {
     this.text.addListener(_onTextChanged);
   }
 
-  final RichTextController _controller;
+  final RichTextController controller;
   RichTextNodeType type;
   final TextSpanEditingController text;
   final FocusNode focus;
