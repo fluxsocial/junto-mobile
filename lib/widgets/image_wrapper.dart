@@ -16,11 +16,9 @@ class ImageWrapper extends StatelessWidget {
   final BoxFit fit;
   final double width;
   final double height;
-
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      key: ValueKey<String>(imageUrl),
       imageUrl: imageUrl,
       cacheManager: CustomCacheManager(),
       placeholder: placeholder,
