@@ -285,9 +285,14 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
                     ),
                   ),
                   SliverFillRemaining(
+                    hasScrollBody: false,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () => addNode(false),
+                      child: SizedBox(
+                        height: 96.0,
+                        child: Placeholder(color: Colors.grey.shade300),
+                      ),
                     ),
                   ),
                 ],
