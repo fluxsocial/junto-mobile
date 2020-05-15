@@ -666,6 +666,33 @@ class S {
       args: [],
     );
   }
+
+  String get count_me_in {
+    return Intl.message(
+      'COUNT ME IN',
+      name: 'count_me_in',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get reset_password {
+    return Intl.message(
+      'RESET PASSWORD',
+      name: 'reset_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get profile_picture {
+    return Intl.message(
+      'PROFILE PICTURE',
+      name: 'profile_picture',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

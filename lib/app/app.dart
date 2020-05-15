@@ -11,24 +11,13 @@ import 'package:junto_beta_mobile/screens/notifications/notifications_handler.da
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-class JuntoApp extends StatefulWidget {
+class JuntoApp extends StatelessWidget {
   const JuntoApp({
     Key key,
     @required this.backend,
-    @required this.loggedIn,
   }) : super(key: key);
 
   final Backend backend;
-  final bool loggedIn;
-
-  @override
-  State<StatefulWidget> createState() {
-    return JuntoAppState();
-  }
-}
-
-class JuntoAppState extends State<JuntoApp> {
-  Backend get backend => widget.backend;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +46,7 @@ class JuntoAppState extends State<JuntoApp> {
         ),
       ],
       child: BlocProviders(
-        child: MaterialAppWithTheme(
-          loggedIn: widget.loggedIn,
-        ),
+        child: MaterialAppWithTheme(),
       ),
     );
   }

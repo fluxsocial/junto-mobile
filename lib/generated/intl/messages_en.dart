@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m2(n) => "Your password must be greater than ${n} characters.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
+
   static _notInlinedMessages(_) => <String, Function>{
         "audio_title": MessageLookupByLibrary.simpleMessage("Title (optional)"),
         "collective_new_perspective":

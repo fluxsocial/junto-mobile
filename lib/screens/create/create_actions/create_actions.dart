@@ -379,6 +379,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
       builder: (BuildContext context) {
         return ChannelSearchModal(
           channels: _channels,

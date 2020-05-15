@@ -23,15 +23,19 @@ class AudioReview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(builder: (context, audio, child) {
-      return ListView(
+      return Column(
         children: <Widget>[
-          GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: _showAudioReviewTemplate(),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                _showAudioReviewTemplate(),
+              ],
             ),
           ),
+          if (captionFocus.hasFocus)
+            AudioUnfocus(
+              captionFocus: captionFocus,
+            ),
         ],
       );
     });
@@ -90,6 +94,10 @@ class AudioReviewDefault extends StatelessWidget {
           captionController: captionController,
           captionFocus: captionFocus,
         ),
+        // if (captionFocus.hasFocus)
+        //   AudioUnfocus(
+        //     captionFocus: captionFocus,
+        //   ),
       ],
     );
   }
@@ -133,6 +141,10 @@ class AudioReviewWithGradient extends StatelessWidget {
           captionController: captionController,
           captionFocus: captionFocus,
         ),
+        // if (captionFocus.hasFocus)
+        //   AudioUnfocus(
+        //     captionFocus: captionFocus,
+        //   ),
       ],
     );
   }
@@ -191,6 +203,10 @@ class AudioReviewWithPhoto extends StatelessWidget {
           captionController: captionController,
           captionFocus: captionFocus,
         ),
+        // if (captionFocus.hasFocus)
+        //   AudioUnfocus(
+        //     captionFocus: captionFocus,
+        //   ),
       ],
     );
   }
@@ -292,9 +308,7 @@ class AudioCaption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: TextField(
         controller: captionController,
         focusNode: captionFocus,
@@ -321,6 +335,32 @@ class AudioCaption extends StatelessWidget {
         textInputAction: TextInputAction.newline,
         keyboardAppearance: Theme.of(context).brightness,
         textCapitalization: TextCapitalization.sentences,
+      ),
+    );
+  }
+}
+
+class AudioUnfocus extends StatelessWidget {
+  const AudioUnfocus({this.captionFocus});
+  final FocusNode captionFocus;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: captionFocus.unfocus,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 15,
+        ),
+        alignment: Alignment.centerRight,
+        width: MediaQuery.of(context).size.width,
+        color: Colors.transparent,
+        child: Icon(
+          Icons.keyboard_arrow_down,
+          size: 24,
+          color: Theme.of(context).primaryColorLight,
+        ),
       ),
     );
   }

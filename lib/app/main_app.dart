@@ -15,13 +15,9 @@ Future<void> mainApp() async {
   ]);
   await Hive.initFlutter();
   final Backend backend = await Backend.init();
-  final bool _loggedIn = await backend.authRepo.isLoggedIn();
   runLoggedApp(
     DevicePreviewWrapper(
-      child: JuntoApp(
-        backend: backend,
-        loggedIn: _loggedIn ?? false,
-      ),
+      child: JuntoApp(backend: backend),
     ),
   );
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
@@ -11,7 +9,7 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
@@ -32,23 +30,30 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  bool twoColumnView;
+  bool twoColumnView = true;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    twoColumnView =
-        Provider.of<UserDataProvider>(context, listen: false).twoColumnView;
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      if (prefs.getBool('two-column-view') != null) {
+        twoColumnView = prefs.getBool('two-column-view');
+      }
+    });
   }
 
   Future<void> _switchColumnView(String columnType) async {
-    if (columnType == 'two') {
-      Provider.of<UserDataProvider>(context, listen: false)
-          .switchColumnLayout(ExpressionFeedLayout.two);
-    } else {
-      Provider.of<UserDataProvider>(context, listen: false)
-          .switchColumnLayout(ExpressionFeedLayout.single);
-    }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      if (columnType == 'two') {
+        twoColumnView = true;
+        prefs.setBool('two-column-view', true);
+      } else if (columnType == 'single') {
+        twoColumnView = false;
+        prefs.setBool('two-column-view', false);
+      }
+    });
   }
 
   @override
@@ -56,7 +61,7 @@ class _UserExpressionsState extends State<UserExpressions> {
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
         if (state is DenLoadingState) {
-          return JuntoProgressIndicator();
+          return JuntoProgressIndicator(); 
         }
         if (state is DenLoadedState) {
           final results = state.expressions;

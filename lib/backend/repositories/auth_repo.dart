@@ -61,7 +61,7 @@ class AuthRepo {
       final key =
           await expressionService.createPhoto(false, '.png', profilePicture);
 
-      //TODO: WHAT IS THAT? WHY ARE WE CREATING MAPS MANUALLY?
+      //TODO: Don't do it manually
       final _profilePictureKeys = <String, dynamic>{
         'profile_picture': <Map<String, dynamic>>[
           <String, dynamic>{'index': 0, 'key': key},

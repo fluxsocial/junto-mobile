@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m2(n) => "";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
+
   static _notInlinedMessages(_) => <String, Function>{
         "audio_title": MessageLookupByLibrary.simpleMessage(""),
         "collective_new_perspective": MessageLookupByLibrary.simpleMessage(""),

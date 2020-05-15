@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 
 class AudioPreview extends StatelessWidget {
   AudioPreview({@required this.expression});
@@ -8,7 +10,7 @@ class AudioPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final audioTitle = expression.expressionData.title;
+    final audioTitle = expression.expressionData.title.trim();
     final audioGradients = expression.expressionData.gradient;
     final audioPhoto = expression.expressionData.photo;
     Widget _displayAudioPreview() {
@@ -169,8 +171,9 @@ class AudioPreviewWithPhoto extends StatelessWidget {
             Colors.black38,
             BlendMode.srcOver,
           ),
-          image: NetworkImage(
+          image: CachedNetworkImageProvider(
             photo,
+            cacheManager: CustomCacheManager(),
           ),
           fit: BoxFit.cover,
         ),

@@ -21,11 +21,9 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/sign_up_arrows.dart';
@@ -48,49 +46,50 @@ class Welcome extends StatefulWidget {
   }
 }
 
+class ProfilePicture {
+  final ValueNotifier<File> file = ValueNotifier<File>(null);
+  final ValueNotifier<File> originalFile = ValueNotifier<File>(null);
+}
+
 class WelcomeState extends State<Welcome> {
   // Used when resetting password
   final ValueNotifier<String> _email = ValueNotifier("");
+  final ProfilePicture profilePicture = ProfilePicture();
   String _currentTheme;
 
   PageController _welcomeController;
   PageController _signInController;
 
   int _currentIndex;
-  String name;
-  String username;
-  String bio;
-  String location;
-  String gender;
-  String website;
-  File profilePicture;
-  String email;
-  String password;
-  String confirmPassword;
-  int verificationCode;
-
-  String imageOne = '';
-  String imageTwo = '';
-  String imageThree = '';
-
-  GlobalKey<SignUpAboutState> signUpAboutKey;
-  GlobalKey<SignUpPhotosState> signUpPhotosKey;
-  GlobalKey<SignUpRegisterState> signUpRegisterKey;
-  GlobalKey<SignUpVerifyState> signUpVerifyKey;
 
   UserRepo userRepository;
   UserDataProvider userDataProvider;
   AuthRepo authRepo;
+
+  TextEditingController nameController;
+  TextEditingController userNameController;
+  TextEditingController locationController;
+  TextEditingController pronounController;
+  TextEditingController websiteController;
+  TextEditingController emailController;
+  TextEditingController passwordController;
+  TextEditingController confirmPasswordController;
+  TextEditingController verificationCodeController;
 
   @override
   void initState() {
     super.initState();
     _getTheme();
 
-    signUpAboutKey = GlobalKey<SignUpAboutState>();
-    signUpPhotosKey = GlobalKey<SignUpPhotosState>();
-    signUpRegisterKey = GlobalKey<SignUpRegisterState>();
-    signUpVerifyKey = GlobalKey<SignUpVerifyState>();
+    nameController = TextEditingController();
+    userNameController = TextEditingController();
+    locationController = TextEditingController();
+    pronounController = TextEditingController();
+    websiteController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    confirmPasswordController = TextEditingController();
+    verificationCodeController = TextEditingController();
 
     _currentIndex = 0;
     _welcomeController = PageController(
@@ -104,7 +103,6 @@ class WelcomeState extends State<Welcome> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    //TODO: don't perform user signup in state of welcome.dart
     userRepository = Provider.of<UserRepo>(context, listen: false);
     userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
     authRepo = Provider.of<AuthRepo>(context, listen: false);
@@ -114,59 +112,44 @@ class WelcomeState extends State<Welcome> {
   void dispose() {
     _welcomeController.dispose();
     _signInController.dispose();
+    nameController?.dispose();
+    userNameController?.dispose();
+    locationController?.dispose();
+    pronounController?.dispose();
+    websiteController?.dispose();
+    emailController?.dispose();
+    passwordController?.dispose();
+    confirmPasswordController?.dispose();
+    verificationCodeController?.dispose();
     super.dispose();
   }
 
   Future<void> _handleSignUp() async {
-    setState(() {
-      verificationCode = signUpVerifyKey.currentState.returnDetails();
-    });
+    setState(() {});
+    final verificationCode = int.parse(verificationCodeController.text);
 
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
-      email: email,
-      name: name,
-      password: password,
-      confirmPassword: confirmPassword,
-      location: <String>[location],
-      username: username,
+      email: emailController.text,
+      name: nameController.text,
+      username: userNameController.text,
+      password: passwordController.text,
+      confirmPassword: confirmPasswordController.text,
+      location: <String>[locationController.text],
       profileImage: <String>[],
       backgroundPhoto: '',
-      website: <String>[website],
-      gender: <String>[gender],
+      website: <String>[websiteController.text],
+      gender: <String>[pronounController.text],
       verificationCode: verificationCode,
-      bio: bio,
+      bio: '',
     );
 
-    try {
-      JuntoLoader.showLoader(context);
-      //TODO this is workaround because we need to wait for the registration to complete
-      final completer = Completer();
-      context
-          .bloc<AuthBloc>()
-          .add(SignUpEvent(details, profilePicture, completer));
-      await completer.future;
-      JuntoLoader.hide();
-    } catch (error) {
-      JuntoLoader.hide();
-      logger.logException(error);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText: S.of(context).common_network_error,
-        ),
-      );
-    }
-
-    JuntoLoader.hide();
-    // Navigate to community agreements
-    Navigator.of(context).pushReplacement(
-      FadeRoute<void>(
-        child: SignUpAgreements(),
-      ),
-    );
+    context
+        .bloc<AuthBloc>()
+        .add(SignUpEvent(details, profilePicture.file.value));
   }
 
   void _userNameSubmission() async {
+    final username = userNameController.text.trim();
     bool _correctLength = username.length >= 1 && username.length <= 22;
     final exp = RegExp("^[a-z0-9_]+\$");
     if (username != null && exp.hasMatch(username) && _correctLength) {
@@ -183,6 +166,7 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _nameCheck() async {
+    final name = nameController.text.trim();
     bool _correctLength = name.length >= 1 && name.length <= 50;
     if (name != null && name.isNotEmpty && _correctLength) {
       await _nextSignUpPage();
@@ -233,86 +217,65 @@ class WelcomeState extends State<Welcome> {
                 scrollDirection: Axis.vertical,
                 physics: const NeverScrollableScrollPhysics(),
                 children: <Widget>[
-                  PageKeepAlive(
-                    child: PageView(
-                      controller: _signInController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        PageKeepAlive(
-                          child: WelcomeMain(
-                            onSignIn: _onSignIn,
-                            onSignUp: _onSignUp,
-                          ),
-                        ),
-                        PageKeepAlive(
-                          child: SignIn(_signInController),
-                        ),
-                        ResetPasswordRequest(
-                            signInController: _signInController, email: _email),
-                        ValueListenableBuilder<String>(
-                            valueListenable: _email,
-                            builder: (context, email, _) {
-                              return ResetPasswordConfirm(
-                                signInController: _signInController,
-                                email: email,
-                              );
-                            }),
-                      ],
-                    ),
+                  PageView(
+                    controller: _signInController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      WelcomeMain(
+                        onSignIn: _onSignIn,
+                        onSignUp: _onSignUp,
+                      ),
+                      SignIn(_signInController),
+                      ResetPasswordRequest(
+                        signInController: _signInController,
+                        email: _email,
+                      ),
+                      ValueListenableBuilder<String>(
+                          valueListenable: _email,
+                          builder: (context, email, _) {
+                            return ResetPasswordConfirm(
+                              signInController: _signInController,
+                              email: email,
+                            );
+                          }),
+                    ],
                   ),
-                  PageKeepAlive(
-                    // 1
-                    child: SignUpTextFieldWrapper(
-                      textInputActionType: TextInputAction.done,
-                      onValueChanged: (String value) => name = value,
-                      onSubmit: _nameCheck,
-                      maxLength: 50,
-                      hint: S.of(context).welcome_my_name_is,
-                      label: S.of(context).welcome_name_label,
-                      title: S.of(context).welcome_name_hint,
-                      textCapitalization: TextCapitalization.words,
-                    ),
+                  SignUpTextFieldWrapper(
+                    controller: nameController,
+                    textInputActionType: TextInputAction.done,
+                    onSubmit: _nameCheck,
+                    maxLength: 50,
+                    hint: S.of(context).welcome_my_name_is,
+                    label: S.of(context).welcome_name_label,
+                    title: S.of(context).welcome_name_hint,
+                    textCapitalization: TextCapitalization.words,
                   ),
-                  PageKeepAlive(
-                    // 2
-                    child: SignUpTextFieldWrapper(
-                      textInputActionType: TextInputAction.done,
-                      onValueChanged: (String value) {
-                        username = value.toLowerCase().trim();
-                      },
-                      onSubmit: _userNameSubmission,
-                      maxLength: 22,
-                      hint: S.of(context).welcome_username_ill_go,
-                      label: S.of(context).welcome_username_label,
-                      title: S.of(context).welcome_username_hint,
-                      textCapitalization: TextCapitalization.none,
-                    ),
+                  SignUpTextFieldWrapper(
+                    controller: userNameController,
+                    textInputActionType: TextInputAction.done,
+                    onSubmit: _userNameSubmission,
+                    maxLength: 22,
+                    hint: S.of(context).welcome_username_ill_go,
+                    label: S.of(context).welcome_username_label,
+                    title: S.of(context).welcome_username_hint,
+                    textCapitalization: TextCapitalization.none,
                   ),
-                  PageKeepAlive(
-                    // 3
-                    child: SignUpThemes(toggleTheme: _toggleTheme),
+                  SignUpThemes(toggleTheme: _toggleTheme),
+                  SignUpAbout(
+                    nextPage: _nextSignUpPage,
+                    pronounController: pronounController,
+                    locationController: locationController,
+                    websiteController: websiteController,
                   ),
-                  PageKeepAlive(
-                    // 4
-                    child: SignUpAbout(
-                      key: signUpAboutKey,
-                      nextPage: _nextSignUpPage,
-                    ),
+                  SignUpPhotos(profilePicture),
+                  SignUpRegister(
+                    emailController: emailController,
+                    passwordController: passwordController,
+                    confirmPasswordController: confirmPasswordController,
                   ),
-                  PageKeepAlive(
-                    // 5
-                    child: SignUpPhotos(key: signUpPhotosKey),
-                  ),
-                  PageKeepAlive(
-                    // 6
-                    child: SignUpRegister(key: signUpRegisterKey),
-                  ),
-                  PageKeepAlive(
-                    // 7
-                    child: SignUpVerify(
-                      key: signUpVerifyKey,
-                      handleSignUp: _handleSignUp,
-                    ),
+                  SignUpVerify(
+                    handleSignUp: _handleSignUp,
+                    verificationController: verificationCodeController,
                   )
                 ],
               ),
@@ -342,6 +305,9 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> _nextSignUpPage() async {
     try {
+      final name = nameController.text.trim();
+      final username = userNameController.text.trim();
+
       if (_currentIndex == 1) {
         if (name == null || name.isEmpty || name.length > 50) {
           return;
@@ -382,21 +348,14 @@ class WelcomeState extends State<Welcome> {
           }
         }
       } else if (_currentIndex == 4) {
-        final AboutPageModel _aboutPageModel =
-            signUpAboutKey.currentState.returnDetails();
-        bio = _aboutPageModel.bio;
-        location = _aboutPageModel.location;
-        gender = _aboutPageModel.gender;
-        website = _aboutPageModel.website;
-        print(bio.length);
+        //
       } else if (_currentIndex == 5) {
-        profilePicture = signUpPhotosKey.currentState.returnDetails();
-        print(profilePicture);
+        //
       } else if (_currentIndex == 6) {
-        email = signUpRegisterKey.currentState.returnDetails()['email'];
-        password = signUpRegisterKey.currentState.returnDetails()['password'];
-        confirmPassword =
-            signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
+        //
+        final email = emailController.text.trim();
+        final password = passwordController.text;
+        final confirmPassword = confirmPasswordController.text;
         if (email == null ||
             email.isEmpty ||
             password.isEmpty ||
@@ -434,7 +393,7 @@ class WelcomeState extends State<Welcome> {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText: S.of(context).welcome_username_taken,
+            dialogText: error.message,
           ),
         );
       }
@@ -538,29 +497,5 @@ class WelcomeState extends State<Welcome> {
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 300),
     );
-  }
-}
-
-class PageKeepAlive extends StatefulWidget {
-  const PageKeepAlive({
-    Key key,
-    @required this.child,
-  }) : super(key: key);
-
-  final Widget child;
-
-  @override
-  _PageKeepAliveState createState() => _PageKeepAliveState();
-}
-
-class _PageKeepAliveState extends State<PageKeepAlive>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return widget.child;
   }
 }

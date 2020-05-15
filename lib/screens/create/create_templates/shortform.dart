@@ -160,6 +160,7 @@ class CreateShortformState extends State<CreateShortform> {
                         minHeight: MediaQuery.of(context).size.width,
                       ),
                       width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.bottomLeft,
@@ -205,6 +206,7 @@ class CreateShortformState extends State<CreateShortform> {
                         maxLength: 220,
                         textAlign: TextAlign.center,
                         textInputAction: TextInputAction.done,
+                        textCapitalization: TextCapitalization.sentences,
                         keyboardAppearance: Theme.of(context).brightness,
                       ),
                     )

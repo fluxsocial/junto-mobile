@@ -8,13 +8,12 @@ class SingleColumnListView extends StatelessWidget {
     Key key,
     @required this.data,
     @required this.privacyLayer,
-    @required this.itemCount,
     this.scrollChanged,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
   final String privacyLayer;
-  final int itemCount;
+
   final ValueChanged<ScrollNotification> scrollChanged;
 
   bool _onScrollNotification(ScrollNotification scrollNotification) {
@@ -33,18 +32,20 @@ class SingleColumnListView extends StatelessWidget {
       onNotification: _onScrollNotification,
       child: Container(
         color: Theme.of(context).backgroundColor,
-        child: ListView.builder(
-          itemCount: itemCount,
-          cacheExtent: MediaQuery.of(context).size.longestSide * 1.5,
+        child: ListView(
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(0),
-          itemBuilder: (BuildContext context, int index) {
-            return SingleColumnExpressionPreview(
-              key: ValueKey<String>(data[index].address),
-              expression: data[index],
-            );
-          },
+          children: <Widget>[
+            for (int index = 0; index < data.length + 1; index++)
+              if (index == data.length)
+                const SizedBox()
+              else if (data[index].privacy == privacyLayer)
+                SingleColumnExpressionPreview(
+                  key: ValueKey<String>(data[index].address),
+                  expression: data[index],
+                )
+          ],
         ),
       ),
     );
