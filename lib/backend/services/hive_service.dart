@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -100,7 +101,7 @@ class HiveCache implements LocalCache {
           _supportedBox[DBBoxes.notifications]);
       box.delete(notificationKey);
     } catch (error) {
-      print(error);
+      logger.logException(error);
     }
   }
 

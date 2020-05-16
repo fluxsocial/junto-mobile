@@ -13,7 +13,7 @@ class UserProfilePicture extends StatelessWidget {
       notification: item,
       child: MemberAvatar(
         profilePicture:
-            item.notificationType == NotificationType.GroupJoinRequests
+            item.notificationType == NotificationType.GroupJoinRequest
                 ? item.creator.profilePicture
                 : item.user.profilePicture,
         diameter: 38,

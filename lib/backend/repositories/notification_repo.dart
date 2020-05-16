@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services/hive_service.dart';
@@ -64,6 +66,7 @@ class NotificationRepo {
       if (result.wasSuccessful) {
         logger.logInfo(
             'Retrieved ${result.results.length} notifications from API. Updating read status');
+        debugPrint(result.results.toString());
 
         await dbService.insertNotifications(result.results);
         final currentNotifications = await dbService.retrieveNotifications();
