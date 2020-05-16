@@ -9,8 +9,8 @@ class UsernameTextspan {
   TextSpan retrieveTextSpan(BuildContext context) {
     return TextSpan(
       recognizer: JuntoTextSpanNav().tapRecognizer(context, item),
-      text: item.notificationType == NotificationType.GroupJoinRequests
-          ? '${item.creator.username} '
+      text: item.notificationType == NotificationType.GroupJoinRequest
+          ? '${item.creator?.username} '
           : '${item.user?.username} ',
       style: TextStyle(
         fontSize: 14,

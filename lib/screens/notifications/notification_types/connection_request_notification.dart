@@ -36,6 +36,7 @@ class ConnectionRequestNotification extends StatelessWidget {
           ),
           ConnectionRequestResponse(
             userAddress: item.user.address,
+            notification: item,
           ),
         ],
       ),

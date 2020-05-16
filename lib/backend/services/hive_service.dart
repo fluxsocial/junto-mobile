@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -78,7 +79,7 @@ class HiveCache implements LocalCache {
       final box = await Hive.openLazyBox<JuntoNotification>(
           _supportedBox[DBBoxes.notifications]);
       List<JuntoNotification> items = [];
-      for (dynamic key in box.keys) {
+      for (String key in box.keys) {
         JuntoNotification res = await box.get(key);
         items.add(res);
       }
@@ -90,6 +91,17 @@ class HiveCache implements LocalCache {
     } catch (e) {
       logger.logException(e);
       return [];
+    }
+  }
+
+  @override
+  Future<void> deleteNotification(String notificationKey) async {
+    try {
+      final box = await Hive.openLazyBox<JuntoNotification>(
+          _supportedBox[DBBoxes.notifications]);
+      box.delete(notificationKey);
+    } catch (error) {
+      logger.logException(error);
     }
   }
 

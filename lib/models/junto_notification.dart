@@ -15,7 +15,7 @@ part 'junto_notification.g.dart';
 
 enum NotificationType {
   ConnectionNotification,
-  GroupJoinRequests,
+  GroupJoinRequest,
   NewComment,
   NewSubscription,
   NewConnection,

@@ -144,7 +144,7 @@ class CreateLongformState extends State<CreateLongform> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 children: <Widget>[
                   Container(
-                    color: Colors.orange,
+                    color: Theme.of(context).backgroundColor,
                     constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height * .7,
                     ),

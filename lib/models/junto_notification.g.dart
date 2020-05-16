@@ -79,7 +79,7 @@ T _$enumDecodeNullable<T>(
 
 const _$NotificationTypeEnumMap = {
   NotificationType.ConnectionNotification: 'ConnectionNotification',
-  NotificationType.GroupJoinRequests: 'GroupJoinRequests',
+  NotificationType.GroupJoinRequest: 'GroupJoinRequest',
   NotificationType.NewComment: 'NewComment',
   NotificationType.NewSubscription: 'NewSubscription',
   NotificationType.NewConnection: 'NewConnection',

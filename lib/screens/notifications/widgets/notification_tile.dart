@@ -29,7 +29,7 @@ class NotificationTile extends StatelessWidget {
       case NotificationType.ConnectionNotification:
         content = ConnectionRequestNotification(item: item);
         break;
-      case NotificationType.GroupJoinRequests:
+      case NotificationType.GroupJoinRequest:
         content = PackRequestNotification(item: item);
         break;
       case NotificationType.NewComment:
@@ -71,7 +71,7 @@ class NotificationTile extends StatelessWidget {
           JuntoLoader.hide();
         }
       } else {
-        if (item.notificationType == NotificationType.GroupJoinRequests) {
+        if (item.notificationType == NotificationType.GroupJoinRequest) {
           Navigator.push(
             context,
             CupertinoPageRoute(
