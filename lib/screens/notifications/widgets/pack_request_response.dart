@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/request_response_button.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class PackRequestResponse extends StatelessWidget {
@@ -18,17 +19,23 @@ class PackRequestResponse extends StatelessWidget {
   void _respondToRequest(BuildContext context, bool response) async {
     // show Junto loader
     JuntoLoader.showLoader(context);
-    // respond to request
-    await Provider.of<GroupRepo>(context, listen: false)
-        .respondToGroupRequest(notification.group.address, response);
-    // delete notification from cache
-    await Provider.of<LocalCache>(context, listen: false)
-        .deleteNotification(notification.address);
-    // refetch notifications
-    await Provider.of<NotificationsHandler>(context, listen: false)
-        .fetchNotifications();
-    // hide Junto loader
-    await JuntoLoader.hide();
+    try {
+      // respond to request
+      await Provider.of<GroupRepo>(context, listen: false)
+          .respondToGroupRequest(notification.group.address, response);
+      // delete notification from cache
+      await Provider.of<NotificationsHandler>(context, listen: false)
+          .deleteNotification(notification.address);
+      // refetch notifications
+      await Provider.of<NotificationsHandler>(context, listen: false)
+          .fetchNotifications();
+      // hide Junto loader
+      await JuntoLoader.hide();
+    } catch (error) {
+      logger.logException(error);
+      // hide Junto loader
+      await JuntoLoader.hide();
+    }
   }
 
   @override

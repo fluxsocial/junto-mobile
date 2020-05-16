@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/request_response_button.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class ConnectionRequestResponse extends StatelessWidget {
@@ -16,18 +17,24 @@ class ConnectionRequestResponse extends StatelessWidget {
   void _respondToRequest(BuildContext context, bool response) async {
     // show Junto loader
     JuntoLoader.showLoader(context);
-    // respond to request
-    await Provider.of<UserRepo>(context, listen: false)
-        .respondToConnection(userAddress, response);
-    // delete notification from cache
-    await Provider.of<NotificationsHandler>(context, listen: false)
-        .deleteNotification(notification.address);
-    // // refetch notifications
-    await Provider.of<NotificationsHandler>(context, listen: false)
-        .fetchNotifications();
+    try {
+      // respond to request
+      await Provider.of<UserRepo>(context, listen: false)
+          .respondToConnection(userAddress, response);
+      // delete notification from cache
+      await Provider.of<NotificationsHandler>(context, listen: false)
+          .deleteNotification(notification.address);
+      // // refetch notifications
+      await Provider.of<NotificationsHandler>(context, listen: false)
+          .fetchNotifications();
 
-    // hide Junto loader
-    await JuntoLoader.hide();
+      // hide Junto loader
+      await JuntoLoader.hide();
+    } catch (error) {
+      logger.logException(error);
+      // hide Junto loader
+      await JuntoLoader.hide();
+    }
   }
 
   @override
