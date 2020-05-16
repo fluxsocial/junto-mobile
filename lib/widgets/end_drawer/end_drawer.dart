@@ -20,6 +20,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
 import 'package:provider/provider.dart';
 
 class JuntoDrawer extends StatefulWidget {
@@ -74,6 +75,11 @@ class JuntoDrawerState extends State<JuntoDrawer> {
         return Stack(
           children: <Widget>[
             BackgroundTheme(),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: AppVersionLabel(),
+            ),
             SingleChildScrollView(
               physics: NeverScrollableScrollPhysics(),
               child: Container(
