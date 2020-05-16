@@ -24,7 +24,7 @@ class PendingPackMembers extends StatelessWidget {
                   item.notificationType == NotificationType.GroupJoinRequest) {
                 if (item.group.groupType == 'Pack') {
                   return PackRequest(
-                    userProfile: item.user,
+                    userProfile: item.creator,
                     pack: item.group,
                     refreshGroups: () async {
                       await context.bloc<GroupBloc>().add(
@@ -38,7 +38,6 @@ class PendingPackMembers extends StatelessWidget {
             },
           );
         }
-        print('yellow');
         return const SizedBox();
       },
     );
