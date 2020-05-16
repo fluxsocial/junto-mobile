@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/notification_placeholder.dart';
@@ -17,14 +17,12 @@ class NotificationsExpressionView extends StatelessWidget {
           builder: (context, data, child) {
             final notifications = data.notifications;
             List expressionNotifications = [];
-
-            notifications.forEach((notification) {
+            for (final notification in notifications) {
               if (notification.notificationType ==
                   NotificationType.NewComment) {
                 expressionNotifications.add(notification);
               }
-            });
-
+            }
             if (expressionNotifications.isNotEmpty) {
               return ListView.builder(
                 itemCount: notifications.length,

@@ -52,7 +52,6 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: 'PhotoForm',
       ExpressionType.event: 'EventForm',
       ExpressionType.audio: 'AudioForm',
-
     };
 
     return _expressionModelNames[this];

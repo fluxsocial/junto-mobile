@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
@@ -9,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Linear list of expressions created by the given [userProfile].
@@ -71,37 +73,37 @@ class _UserExpressionsState extends State<UserExpressions> {
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,
-              child: ListView(
-                padding: const EdgeInsets.all(0),
-                children: <Widget>[
-                  FilterColumnRow(
-                    twoColumnView: twoColumnView,
-                    switchColumnView: _switchColumnView,
-                  ),
-                  Container(
-                    color: Theme.of(context).colorScheme.background,
-                    child: AnimatedCrossFade(
-                      crossFadeState: twoColumnView
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                      duration: const Duration(milliseconds: 200),
-                      firstChild: TwoColumnListView(
-                        data: results,
-                        privacyLayer: 'Public',
-                      ),
-                      secondChild: SingleColumnListView(
-                        data: results,
-                        privacyLayer: 'Public',
-                      ),
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: FilterColumnRow(
+                      twoColumnView: twoColumnView,
+                      switchColumnView: _switchColumnView,
                     ),
                   ),
+                  Consumer<UserDataProvider>(
+                    builder: (BuildContext context, UserDataProvider data, _) {
+                      if (data.twoColumnView) {
+                        return TwoColumnList(
+                          data: results,
+                          useSliver: true,
+                        );
+                      }
+                      return SingleColumnSliverListView(
+                        data: results,
+                        privacyLayer: widget.privacy,
+                      );
+                    },
+                  ),
                   if (appConfig.flavor == Flavor.dev)
-                    FetchMoreButton(
-                      onPressed: () {
-                        context.bloc<DenBloc>().add(
-                              LoadMoreDen(),
-                            );
-                      },
+                    SliverToBoxAdapter(
+                      child: FetchMoreButton(
+                        onPressed: () {
+                          context.bloc<DenBloc>().add(
+                                LoadMoreDen(),
+                              );
+                        },
+                      ),
                     )
                 ],
               ),

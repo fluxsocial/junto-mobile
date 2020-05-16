@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/appbar_wrapper.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/collective_populated_list.dart';
+import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 
 import 'collective_error_label.dart';
-import 'collective_populated_list.dart';
 import 'expression_progress_indicator.dart';
 import 'expression_scroll_refresh.dart';
 
@@ -27,6 +28,8 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
     return ExpressionScrollRefresh(
       child: BlocBuilder<CollectiveBloc, CollectiveState>(
         builder: (BuildContext context, CollectiveState state) {
+          final canFetch = state is CollectivePopulated &&
+              (state.availableMore == true && state.loadingMore != true);
           if (state is CollectiveError) {
             return CollectiveErrorLabel();
           }
@@ -40,6 +43,14 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                 const ExpressionProgressIndicator(),
               if (state is CollectiveLoading)
                 const ExpressionProgressIndicator(),
+              if (canFetch)
+                SliverToBoxAdapter(
+                  child: FetchMoreButton(
+                    onPressed: () {
+                      context.bloc<CollectiveBloc>().add(FetchMoreCollective());
+                    },
+                  ),
+                ),
             ],
           );
         },

@@ -44,7 +44,7 @@ class NotificationsIcon extends StatelessWidget {
           );
         },
         child: Stack(
-          alignment: Alignment.bottomLeft, 
+          alignment: Alignment.bottomLeft,
           children: <Widget>[
             Container(
               color: Colors.transparent,
