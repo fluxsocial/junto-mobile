@@ -21,10 +21,6 @@ class Group {
   factory Group.fromMap(Map<String, dynamic> json) => Group(
         address: json['address'],
         creator: json['creator'],
-        // is Map
-        //     ? SlimUserResponse.fromMap(json['creator']).address
-        //     : json['creator'],
-//        incomingCreator: SlimUserResponse.fromMap(json['creator']),
         createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
         groupType: json['group_type'],
