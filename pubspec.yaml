@@ -47,6 +47,7 @@ dependencies:
   data_connection_checker: 0.3.4
   vibration: 1.2.4  
   custom_refresh_indicator: ^0.8.0+1
+  flutter_staggered_grid_view: 0.3.0
   
 dev_dependencies:
   test: any
@@ -54,7 +55,8 @@ dev_dependencies:
   hive_generator: 0.7.0+2
   freezed: 0.10.7
   effective_dart: 1.2.1
-
+dependency_overrides:
+  path: 1.7.0
 flutter:
   uses-material-design: true
 

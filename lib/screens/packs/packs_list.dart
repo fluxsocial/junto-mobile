@@ -1,3 +1,4 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
@@ -7,9 +8,8 @@ import 'package:junto_beta_mobile/screens/packs/pack_requests.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
-import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 
 class PacksList extends StatefulWidget {
   const PacksList();
@@ -97,6 +97,7 @@ class PacksListState extends State<PacksList> {
               ),
             ),
           ),
+          //TODO(Dominik): We didn't pass the inital group here
           floatingActionButton: PacksActionButtons(
             isVisible: ValueNotifier<bool>(true),
             actionsVisible: true,

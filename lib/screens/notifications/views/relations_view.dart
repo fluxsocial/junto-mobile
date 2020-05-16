@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
-import 'package:junto_beta_mobile/screens/notifications/widgets/notification_tile.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/notification_placeholder.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/notification_tile.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsRelationsView extends StatelessWidget {
@@ -17,14 +17,12 @@ class NotificationsRelationsView extends StatelessWidget {
           builder: (context, data, child) {
             final notifications = data.notifications;
             List relationsNotifications = [];
-
-            notifications.forEach((notification) {
+            for (final notification in notifications) {
               if (notification.notificationType !=
                   NotificationType.NewComment) {
                 relationsNotifications.add(notification);
               }
-            });
-
+            }
             if (relationsNotifications.isNotEmpty) {
               return ListView.builder(
                 itemCount: notifications.length,

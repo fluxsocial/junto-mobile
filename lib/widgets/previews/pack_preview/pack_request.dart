@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class PackRequest extends StatelessWidget {
@@ -34,7 +35,7 @@ class PackRequest extends StatelessWidget {
             ),
           );
         } catch (error) {
-          print(error);
+          logger.logException(error);
           JuntoLoader.hide();
         }
       },
@@ -69,12 +70,12 @@ class PackRequest extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            userProfile.name,
+                            userProfile.username,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Text(
-                            userProfile.username,
+                            userProfile.name,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
@@ -93,8 +94,8 @@ class PackRequest extends StatelessWidget {
                               refreshGroups();
                               JuntoLoader.hide();
                             } catch (error) {
-                              print(error);
                               JuntoLoader.hide();
+                              logger.logException(error);
                             }
                           },
                           child: Container(
@@ -126,7 +127,7 @@ class PackRequest extends StatelessWidget {
                               refreshGroups();
                               JuntoLoader.hide();
                             } catch (error) {
-                              print(error);
+                              logger.logException(error);
                               JuntoLoader.hide();
                             }
                           },

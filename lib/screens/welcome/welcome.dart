@@ -46,21 +46,21 @@ class Welcome extends StatefulWidget {
   }
 }
 
+class ProfilePicture {
+  final ValueNotifier<File> file = ValueNotifier<File>(null);
+  final ValueNotifier<File> originalFile = ValueNotifier<File>(null);
+}
+
 class WelcomeState extends State<Welcome> {
   // Used when resetting password
   final ValueNotifier<String> _email = ValueNotifier("");
+  final ProfilePicture profilePicture = ProfilePicture();
   String _currentTheme;
 
   PageController _welcomeController;
   PageController _signInController;
 
   int _currentIndex;
-  File profilePicture;
-
-  GlobalKey<SignUpAboutState> signUpAboutKey;
-  GlobalKey<SignUpPhotosState> signUpPhotosKey;
-  GlobalKey<SignUpRegisterState> signUpRegisterKey;
-  GlobalKey<SignUpVerifyState> signUpVerifyKey;
 
   UserRepo userRepository;
   UserDataProvider userDataProvider;
@@ -80,11 +80,6 @@ class WelcomeState extends State<Welcome> {
   void initState() {
     super.initState();
     _getTheme();
-
-    signUpAboutKey = GlobalKey<SignUpAboutState>();
-    signUpPhotosKey = GlobalKey<SignUpPhotosState>();
-    signUpRegisterKey = GlobalKey<SignUpRegisterState>();
-    signUpVerifyKey = GlobalKey<SignUpVerifyState>();
 
     nameController = TextEditingController();
     userNameController = TextEditingController();
@@ -148,7 +143,9 @@ class WelcomeState extends State<Welcome> {
       bio: '',
     );
 
-    context.bloc<AuthBloc>().add(SignUpEvent(details, profilePicture));
+    context
+        .bloc<AuthBloc>()
+        .add(SignUpEvent(details, profilePicture.file.value));
   }
 
   void _userNameSubmission() async {
@@ -265,21 +262,18 @@ class WelcomeState extends State<Welcome> {
                   ),
                   SignUpThemes(toggleTheme: _toggleTheme),
                   SignUpAbout(
-                    key: signUpAboutKey,
                     nextPage: _nextSignUpPage,
                     pronounController: pronounController,
                     locationController: locationController,
                     websiteController: websiteController,
                   ),
-                  SignUpPhotos(key: signUpPhotosKey),
+                  SignUpPhotos(profilePicture),
                   SignUpRegister(
-                    key: signUpRegisterKey,
                     emailController: emailController,
                     passwordController: passwordController,
                     confirmPasswordController: confirmPasswordController,
                   ),
                   SignUpVerify(
-                    key: signUpVerifyKey,
                     handleSignUp: _handleSignUp,
                     verificationController: verificationCodeController,
                   )
@@ -356,7 +350,7 @@ class WelcomeState extends State<Welcome> {
       } else if (_currentIndex == 4) {
         //
       } else if (_currentIndex == 5) {
-        profilePicture = signUpPhotosKey.currentState.returnDetails();
+        //
       } else if (_currentIndex == 6) {
         //
         final email = emailController.text.trim();

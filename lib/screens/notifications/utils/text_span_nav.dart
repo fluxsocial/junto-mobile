@@ -12,10 +12,7 @@ class JuntoTextSpanNav extends StatelessWidget {
             context,
             CupertinoPageRoute(
               builder: (context) => JuntoMember(
-                profile:
-                    item.notificationType == NotificationType.GroupJoinRequests
-                        ? item.creator
-                        : item.user,
+                profile: item.user,
               ),
             ),
           );
