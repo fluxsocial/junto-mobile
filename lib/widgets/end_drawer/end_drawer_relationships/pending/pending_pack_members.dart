@@ -21,7 +21,7 @@ class PendingPackMembers extends StatelessWidget {
             itemBuilder: (context, index) {
               final item = notifications[index];
               if (notifications.length > 0 &&
-                  item.notificationType == NotificationType.GroupJoinRequests) {
+                  item.notificationType == NotificationType.GroupJoinRequest) {
                 if (item.group.groupType == 'Pack') {
                   return PackRequest(
                     userProfile: item.user,

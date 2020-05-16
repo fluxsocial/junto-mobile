@@ -28,8 +28,8 @@ class Group {
         createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
         groupType: json['group_type'],
-        members: json['members'] ,
-        facilitators: json['facilitators'] ,
+        members: json['members'],
+        facilitators: json['facilitators'],
         groupData: json['group_type'] == 'Sphere'
             ? GroupDataSphere.fromJson(json['group_data'])
             : GroupDataPack.fromMap(json['group_data']),
@@ -51,8 +51,8 @@ class Group {
 
   /// Type of group. Ie: Sphere or Pack
   final String groupType;
-  final int facilitators;
-  final int members;
+  final dynamic facilitators;
+  final dynamic members;
 
   /// Object representation of group type. Value is based on [groupType].
   /// Please see [GroupDataPack] and [GroupDataSphere].
@@ -101,8 +101,8 @@ class Group {
     DateTime createdAt,
     String privacy,
     String groupType,
-    int facilitators,
-    int members,
+    dynamic facilitators,
+    dynamic members,
     dynamic groupData,
   }) {
     return Group(

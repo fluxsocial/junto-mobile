@@ -45,7 +45,7 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
       if (result.wasSuccessful) {
         final notifications = result.results
             .where((element) =>
-                element.notificationType == NotificationType.GroupJoinRequests)
+                element.notificationType == NotificationType.GroupJoinRequest)
             .toList();
         final requests = notifications.map((e) => e.group).toList();
         yield GroupLoaded(userPacks, requests);
