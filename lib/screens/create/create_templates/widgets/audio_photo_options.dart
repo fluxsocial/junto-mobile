@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:flutter/material.dart';
 
 class AudioPhotoOptions extends StatelessWidget {
   const AudioPhotoOptions({this.updatePhoto, this.resetPhoto, this.source});

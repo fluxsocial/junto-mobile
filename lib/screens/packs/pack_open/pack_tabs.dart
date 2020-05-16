@@ -19,34 +19,32 @@ class PackTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabBarView(children: <Widget>[
-      RefreshIndicator(
-        onRefresh: () => _fetchMore(context),
-        child: ListView(padding: const EdgeInsets.all(0), children: [
-          GroupExpressions(
+    return TabBarView(
+      children: <Widget>[
+        RefreshIndicator(
+          onRefresh: () => _fetchMore(context),
+          child: GroupExpressions(
             key: const PageStorageKey<String>('public-pack'),
             group: group,
             privacy: 'Public',
           ),
-        ]),
-      ),
-      RefreshIndicator(
-        onRefresh: () => _fetchMore(context),
-        child: ListView(padding: const EdgeInsets.all(0), children: [
-          GroupExpressions(
+        ),
+        RefreshIndicator(
+          onRefresh: () => _fetchMore(context),
+          child: GroupExpressions(
             key: const PageStorageKey<String>('private-pack'),
             group: group,
             privacy: 'Private',
           ),
-        ]),
-      ),
-      RefreshIndicator(
-        onRefresh: () => _fetchMore(context),
-        child: PackOpenMembers(
-          key: UniqueKey(),
-          packAddress: group.address,
         ),
-      )
-    ]);
+        RefreshIndicator(
+          onRefresh: () => _fetchMore(context),
+          child: PackOpenMembers(
+            key: UniqueKey(),
+            packAddress: group.address,
+          ),
+        )
+      ],
+    );
   }
 }

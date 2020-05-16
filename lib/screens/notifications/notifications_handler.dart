@@ -32,6 +32,16 @@ class NotificationsHandler extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteNotification(String notificationKey) async {
+    try {
+      await repository.deleteNotification(notificationKey);
+      logger.logInfo('notification deleted');
+      notifyListeners();
+    } catch (e) {
+      logger.logError(e);
+    }
+  }
+
   Future<void> markAllAsRead() async {
     try {
       final ids = _notifications?.map((e) => e.address)?.toList();

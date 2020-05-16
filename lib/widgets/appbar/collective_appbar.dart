@@ -1,13 +1,14 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 import 'notifications_lunar_icon.dart';

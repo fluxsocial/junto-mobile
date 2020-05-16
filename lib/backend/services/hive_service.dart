@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -78,18 +79,29 @@ class HiveCache implements LocalCache {
       final box = await Hive.openLazyBox<JuntoNotification>(
           _supportedBox[DBBoxes.notifications]);
       List<JuntoNotification> items = [];
-      for (dynamic key in box.keys) {
+      for (String key in box.keys) {
         JuntoNotification res = await box.get(key);
         items.add(res);
       }
       if (items.length > 0) {
         items.sort((a, b) => -a?.createdAt?.compareTo(b?.createdAt));
       }
-      //TODO: remove if number of items exceeds 100 
+      //TODO: remove if number of items exceeds 100
       return items;
     } catch (e) {
       logger.logException(e);
       return [];
+    }
+  }
+
+  @override
+  Future<void> deleteNotification(String notificationKey) async {
+    try {
+      final box = await Hive.openLazyBox<JuntoNotification>(
+          _supportedBox[DBBoxes.notifications]);
+      box.delete(notificationKey);
+    } catch (error) {
+      logger.logException(error);
     }
   }
 
@@ -125,7 +137,8 @@ class HiveCache implements LocalCache {
         final pack = await Hive.lazyBox<ExpressionResponse>(HiveBoxes.kPack);
         await pack.deleteAll(pack.keys);
       } else {
-        final pack = await Hive.openLazyBox<ExpressionResponse>(HiveBoxes.kPack);
+        final pack =
+            await Hive.openLazyBox<ExpressionResponse>(HiveBoxes.kPack);
         await pack.deleteAll(pack.keys);
       }
     } catch (e) {

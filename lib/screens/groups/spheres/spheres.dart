@@ -29,7 +29,6 @@ class Spheres extends StatefulWidget {
 class SpheresState extends State<Spheres> with ListDistinct {
   UserData _userProfile;
   GroupRepo _userProvider;
-  NotificationRepo _notificationProvider;
 
   Future<UserGroupsResponse> getSpheres;
 
@@ -47,8 +46,6 @@ class SpheresState extends State<Spheres> with ListDistinct {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _userProvider = Provider.of<GroupRepo>(context, listen: false);
-    _notificationProvider =
-        Provider.of<NotificationRepo>(context, listen: false);
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
   }
 

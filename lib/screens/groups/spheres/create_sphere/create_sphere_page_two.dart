@@ -72,6 +72,7 @@ class CreateSpherePageTwo extends StatelessWidget {
                           profile: member,
                           onSelect: addMember,
                           onDeselect: removeMember,
+                          isSelected: false, //TODO: Update with dynamic val
                         ),
                     ],
                   ),
@@ -84,6 +85,7 @@ class CreateSpherePageTwo extends StatelessWidget {
                           profile: connection,
                           onSelect: addMember,
                           onDeselect: removeMember,
+                          isSelected: false, //TODO: Update with dynamic val
                         ),
                     ],
                   ),

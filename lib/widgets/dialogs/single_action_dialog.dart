@@ -50,7 +50,8 @@ class SingleActionDialog extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Container(
-                    padding: const EdgeInsets.only(right: 25, left: 25, bottom: 25),
+                    padding:
+                        const EdgeInsets.only(right: 25, left: 25, bottom: 25),
                     color: Colors.transparent,
                     alignment: Alignment.center,
                     child: Text(
