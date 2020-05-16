@@ -10,19 +10,18 @@ import 'intl/messages_all.dart';
 
 class S {
   S();
-
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  
+  static const AppLocalizationDelegate delegate =
+    AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       return S();
     });
-  }
+  } 
 
   static S of(BuildContext context) {
     return Localizations.of<S>(context, S);
@@ -64,6 +63,15 @@ class S {
     );
   }
 
+  String get common_decline {
+    return Intl.message(
+      'Decline',
+      name: 'common_decline',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get common_network_error {
     return Intl.message(
       'Hmm, something went wrong.',
@@ -95,6 +103,15 @@ class S {
     return Intl.message(
       'Try again later',
       name: 'common_try_again_later',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get count_me_in {
+    return Intl.message(
+      'COUNT ME IN',
+      name: 'count_me_in',
       desc: '',
       args: [],
     );
@@ -226,6 +243,33 @@ class S {
     );
   }
 
+  String get notification_cat_all {
+    return Intl.message(
+      'ALL',
+      name: 'notification_cat_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get notification_cat_expression {
+    return Intl.message(
+      'EXPRESSION',
+      name: 'notification_cat_expression',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get notification_cat_relations {
+    return Intl.message(
+      'RELATIONS',
+      name: 'notification_cat_relations',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get notifications_connection {
     return Intl.message(
       'Connection',
@@ -271,6 +315,15 @@ class S {
     );
   }
 
+  String get notifications_nothing_new_yet {
+    return Intl.message(
+      'Nothing new yet!',
+      name: 'notifications_nothing_new_yet',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get notifications_title {
     return Intl.message(
       'Notifications',
@@ -302,6 +355,33 @@ class S {
     return Intl.message(
       'Packs',
       name: 'packs_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get profile_picture {
+    return Intl.message(
+      'PROFILE PICTURE',
+      name: 'profile_picture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get reset_password {
+    return Intl.message(
+      'RESET PASSWORD',
+      name: 'reset_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get toggle_filter_drawer {
+    return Intl.message(
+      'Toggle filter drawer',
+      name: 'toggle_filter_drawer',
       desc: '',
       args: [],
     );
@@ -608,87 +688,6 @@ class S {
     return Intl.message(
       'Wrong email or password',
       name: 'welcome_wrong_email_or_password',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get notification_cat_all {
-    return Intl.message(
-      'ALL',
-      name: 'notification_cat_all',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get notification_cat_expression {
-    return Intl.message(
-      'EXPRESSION',
-      name: 'notification_cat_expression',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get notification_cat_relations {
-    return Intl.message(
-      'RELATIONS',
-      name: 'notification_cat_relations',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get notifications_nothing_new_yet {
-    return Intl.message(
-      'Nothing new yet!',
-      name: 'notifications_nothing_new_yet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get common_decline {
-    return Intl.message(
-      'Decline',
-      name: 'common_decline',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get toggle_filter_drawer {
-    return Intl.message(
-      'Toggle filter drawer',
-      name: 'toggle_filter_drawer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get count_me_in {
-    return Intl.message(
-      'COUNT ME IN',
-      name: 'count_me_in',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get reset_password {
-    return Intl.message(
-      'RESET PASSWORD',
-      name: 'reset_password',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get profile_picture {
-    return Intl.message(
-      'PROFILE PICTURE',
-      name: 'profile_picture',
       desc: '',
       args: [],
     );
