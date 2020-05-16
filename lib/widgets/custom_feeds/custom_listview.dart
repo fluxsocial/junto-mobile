@@ -17,7 +17,7 @@ class TwoColumnList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (useSliver) {
       return SliverPadding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         sliver: SliverStaggeredGrid.countBuilder(
           key: ValueKey<String>('two-column'),
           crossAxisCount: 4,
