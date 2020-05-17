@@ -31,10 +31,17 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh>
     return BlocListener<CollectiveBloc, CollectiveState>(
       listener: _blocListener,
       child: CustomRefreshIndicator(
+        offsetToArmed: 25,
         onRefresh: () {
           context.bloc<CollectiveBloc>().add(RefreshCollective());
           return refreshCompleter.future;
         },
+        // onRefresh: () async {
+        //   await Future.delayed(
+        //     Duration(milliseconds: 1000),
+        //   );
+        //   print('refreshing');
+        // },
         builder: (
           BuildContext context,
           Widget child,
@@ -48,18 +55,16 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh>
                 children: <Widget>[
                   if (!controller.isIdle)
                     Positioned(
-                      top: 170.0 * controller.value,
+                      top: 25.0 * controller.value,
                       child: SpinKitFadingCircle(
                         color: Theme.of(context).dividerColor,
                         size: 38.0,
                       ),
                     ),
-                  child,
-                  // TODO:Eric
-                  // Transform.translate(
-                  //   offset: Offset(0, 140.0 * controller.value),
-                  //   child: child,
-                  // ),
+                  Transform.translate(
+                    offset: Offset(0, 80.0 * controller.value),
+                    child: child,
+                  ),
                 ],
               );
             },

@@ -16,6 +16,7 @@ class CollectivePopulatedList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.results.length == 0) {
+      // TODO:ERIC -- return empty state placeholder here
       return SliverToBoxAdapter(
         child: const SizedBox(),
       );

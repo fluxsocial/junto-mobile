@@ -17,7 +17,10 @@ class TwoColumnList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (useSliver) {
       return SliverPadding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 10,
+        ),
         sliver: SliverStaggeredGrid.countBuilder(
           key: ValueKey<String>('two-column'),
           crossAxisCount: 4,
@@ -38,7 +41,7 @@ class TwoColumnList extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       height: MediaQuery.of(context).size.height,
       child: StaggeredGridView.countBuilder(
         key: ValueKey<String>('two-column'),
