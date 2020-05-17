@@ -63,10 +63,11 @@ class _UserExpressionsState extends State<UserExpressions> {
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
         if (state is DenLoadingState) {
-          return JuntoProgressIndicator(); 
+          return JuntoProgressIndicator();
         }
         if (state is DenLoadedState) {
           final results = state.expressions;
+          // TODO:Eric - implement custom refresh indicator
           return RefreshIndicator(
             onRefresh: () async {
               context.bloc<DenBloc>().add(RefreshDen());

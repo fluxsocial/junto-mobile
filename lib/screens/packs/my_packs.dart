@@ -35,6 +35,7 @@ class MyPacks extends StatelessWidget {
                 if (state is GroupLoaded) {
                   print(state.groups);
                   return Expanded(
+                      // TODO:Eric - implement custom refresh indicator
                       child: RefreshIndicator(
                     onRefresh: () async {
                       context.bloc<GroupBloc>().add(RefreshPack());

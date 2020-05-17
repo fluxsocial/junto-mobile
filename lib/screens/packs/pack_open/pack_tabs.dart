@@ -21,6 +21,7 @@ class PackTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return TabBarView(
       children: <Widget>[
+        // TODO:Eric - implement custom refresh indicator
         RefreshIndicator(
           onRefresh: () => _fetchMore(context),
           child: GroupExpressions(
@@ -29,6 +30,8 @@ class PackTabs extends StatelessWidget {
             privacy: 'Public',
           ),
         ),
+        // TODO:Eric - implement custom refresh indicator
+
         RefreshIndicator(
           onRefresh: () => _fetchMore(context),
           child: GroupExpressions(
@@ -37,6 +40,8 @@ class PackTabs extends StatelessWidget {
             privacy: 'Private',
           ),
         ),
+        // TODO:Eric - implement custom refresh indicator
+
         RefreshIndicator(
           onRefresh: () => _fetchMore(context),
           child: PackOpenMembers(

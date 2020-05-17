@@ -200,6 +200,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onVerticalDragDown: _onDragDown,
+                  // TODO:Eric - implement custom refresh indicator
                     child: RefreshIndicator(
                       onRefresh: _refreshComments,
                       child: ListView(

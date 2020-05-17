@@ -36,12 +36,6 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh>
           context.bloc<CollectiveBloc>().add(RefreshCollective());
           return refreshCompleter.future;
         },
-        // onRefresh: () async {
-        //   await Future.delayed(
-        //     Duration(milliseconds: 1000),
-        //   );
-        //   print('refreshing');
-        // },
         builder: (
           BuildContext context,
           Widget child,
