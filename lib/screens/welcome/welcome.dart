@@ -73,8 +73,6 @@ class WelcomeState extends State<Welcome> {
   @override
   void initState() {
     super.initState();
-    // _getTheme();
-
     nameController = TextEditingController();
     userNameController = TextEditingController();
     locationController = TextEditingController();
