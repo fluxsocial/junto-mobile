@@ -3,12 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
@@ -23,12 +20,12 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/sign_up_arrows.dart';
 import 'widgets/sign_up_text_field_wrapper.dart';
-import 'widgets/welcome_background.dart';
 import 'widgets/welcome_main.dart';
 
 class Welcome extends StatefulWidget {
@@ -55,15 +52,12 @@ class WelcomeState extends State<Welcome> {
   // Used when resetting password
   final ValueNotifier<String> _email = ValueNotifier("");
   final ProfilePicture profilePicture = ProfilePicture();
-  String _currentTheme;
 
   PageController _welcomeController;
   PageController _signInController;
 
   int _currentIndex;
 
-  UserRepo userRepository;
-  UserDataProvider userDataProvider;
   AuthRepo authRepo;
 
   TextEditingController nameController;
@@ -79,7 +73,7 @@ class WelcomeState extends State<Welcome> {
   @override
   void initState() {
     super.initState();
-    _getTheme();
+    // _getTheme();
 
     nameController = TextEditingController();
     userNameController = TextEditingController();
@@ -93,19 +87,10 @@ class WelcomeState extends State<Welcome> {
 
     _currentIndex = 0;
     _welcomeController = PageController(
-      keepPage: true,
       //0.99 forces it to build next page
       viewportFraction: 0.99,
     );
-    _signInController = PageController(keepPage: true);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    userRepository = Provider.of<UserRepo>(context, listen: false);
-    userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
-    authRepo = Provider.of<AuthRepo>(context, listen: false);
+    _signInController = PageController();
   }
 
   @override
@@ -196,6 +181,7 @@ class WelcomeState extends State<Welcome> {
 
   @override
   Widget build(BuildContext context) {
+    authRepo = Provider.of<AuthRepo>(context, listen: false);
     return WillPopScope(
       onWillPop: _animateOnBackPress,
       child: GestureDetector(
@@ -210,7 +196,7 @@ class WelcomeState extends State<Welcome> {
           resizeToAvoidBottomInset: false,
           body: Stack(
             children: <Widget>[
-              WelcomeBackground(currentTheme: _currentTheme),
+              BackgroundTheme(),
               PageView(
                 onPageChanged: onPageChanged,
                 controller: _welcomeController,
@@ -260,7 +246,7 @@ class WelcomeState extends State<Welcome> {
                     title: S.of(context).welcome_username_hint,
                     textCapitalization: TextCapitalization.none,
                   ),
-                  SignUpThemes(toggleTheme: _toggleTheme),
+                  SignUpThemes(),
                   SignUpAbout(
                     nextPage: _nextSignUpPage,
                     pronounController: pronounController,
@@ -422,30 +408,6 @@ class WelcomeState extends State<Welcome> {
       return false;
     } else {
       return true;
-    }
-  }
-
-  void _toggleTheme(String theme) {
-    setState(() {
-      _currentTheme = theme;
-    });
-  }
-
-  Future<void> _getTheme() async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    final _theme = await box.get("current-theme") as String;
-
-    setState(() {
-      if (_theme == null) {
-        _currentTheme = 'rainbow';
-      } else {
-        _currentTheme = _theme;
-      }
-    });
-
-    final bool nightMode = await box.get('night-mode');
-    if (nightMode == null) {
-      await box.put('night-mode', false);
     }
   }
 
