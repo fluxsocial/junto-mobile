@@ -58,11 +58,6 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   logOut(BuildContext context) async {
     try {
       await context.bloc<AuthBloc>().add(LogoutEvent());
-      Navigator.of(context).pushReplacement(
-        FadeRoute<void>(
-          child: Welcome(),
-        ),
-      );
     } catch (e) {
       logger.logException(e);
     }
