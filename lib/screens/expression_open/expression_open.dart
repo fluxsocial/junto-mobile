@@ -45,6 +45,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   // Create a controller for the comment text field
   TextEditingController commentController;
 
+  // scroll controller for expression open list view
+  ScrollController _scrollController;
+
   /// [FocusNode] passed to Comments [TextField]
   FocusNode _focusNode;
 
@@ -54,6 +57,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   void initState() {
     super.initState();
     commentController = TextEditingController();
+    _scrollController = ScrollController();
     _focusNode = FocusNode();
   }
 
@@ -124,6 +128,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Future<void> _createComment() async {
     if (commentController.value.text != '') {
       JuntoLoader.showLoader(context);
+      await Future.delayed(Duration(milliseconds: 500));
       try {
         await Provider.of<ExpressionRepo>(context, listen: false)
             .postCommentExpression(
@@ -136,6 +141,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         );
         commentController.clear();
         JuntoLoader.hide();
+        _focusNode.unfocus();
         await showFeedback(
           context,
           icon: Icon(
@@ -146,7 +152,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           message: 'Comment Created',
         );
         await _refreshComments();
-        _openComments();
+        await _openComments();
+        await Future.delayed(Duration(milliseconds: 100));
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeIn,
+        );
       } catch (error) {
         debugPrint('Error posting comment $error');
         JuntoLoader.hide();
@@ -163,7 +175,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   Future<void> _refreshComments() async {
-    await setState(
+    setState(
       () {
         futureComments = Provider.of<ExpressionRepo>(context, listen: false)
             .getExpressionsComments(widget.expression.address);
@@ -204,6 +216,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       refresh: _refreshComments,
                       child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        controller: _scrollController,
                         children: <Widget>[
                           ExpressionOpenTop(
                             expression: widget.expression,
@@ -270,8 +283,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           ),
                                         ),
                                       ),
-                                      if (commentsVisible)
-                                        ListView.builder(
+                                      Visibility(
+                                        visible: commentsVisible,
+                                        child: ListView.builder(
                                           shrinkWrap: true,
                                           reverse: true,
                                           physics:
@@ -288,6 +302,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                             );
                                           },
                                         ),
+                                      ),
                                     ],
                                   );
                                 } else {
