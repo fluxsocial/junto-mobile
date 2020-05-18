@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -33,29 +34,13 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  bool twoColumnView = true;
+  ExpressionFeedLayout layout = ExpressionFeedLayout.two;
 
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
+  Future<void> _switchColumnView(ExpressionFeedLayout columnType) async {
+    await Provider.of<UserDataProvider>(context, listen: false)
+        .switchColumnLayout(columnType);
     setState(() {
-      if (prefs.getBool('two-column-view') != null) {
-        twoColumnView = prefs.getBool('two-column-view');
-      }
-    });
-  }
-
-  Future<void> _switchColumnView(String columnType) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      if (columnType == 'two') {
-        twoColumnView = true;
-        prefs.setBool('two-column-view', true);
-      } else if (columnType == 'single') {
-        twoColumnView = false;
-        prefs.setBool('two-column-view', false);
-      }
+      layout = columnType;
     });
   }
 
@@ -77,12 +62,15 @@ class _UserExpressionsState extends State<UserExpressions> {
               color: Theme.of(context).colorScheme.background,
               child: CustomScrollView(
                 slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: FilterColumnRow(
-                      twoColumnView: twoColumnView,
-                      switchColumnView: _switchColumnView,
-                    ),
-                  ),
+                  Consumer<UserDataProvider>(builder:
+                      (BuildContext context, UserDataProvider data, _) {
+                    return SliverToBoxAdapter(
+                      child: FilterColumnRow(
+                        layout: layout,
+                        switchColumnView: _switchColumnView,
+                      ),
+                    );
+                  }),
                   Consumer<UserDataProvider>(
                     builder: (BuildContext context, UserDataProvider data, _) {
                       if (data.twoColumnView) {

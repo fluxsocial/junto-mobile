@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 
 class FilterColumnRow extends StatelessWidget {
-  const FilterColumnRow({this.switchColumnView, this.twoColumnView});
+  const FilterColumnRow({this.switchColumnView, this.layout});
 
   final Function switchColumnView;
-  final bool twoColumnView;
+  final ExpressionFeedLayout layout;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +20,7 @@ class FilterColumnRow extends StatelessWidget {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: () => switchColumnView('two'),
+                onTap: () => switchColumnView(ExpressionFeedLayout.two),
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.symmetric(
@@ -29,15 +30,14 @@ class FilterColumnRow extends StatelessWidget {
                   child: Icon(
                     CustomIcons.twocolumn,
                     size: 20,
-                    color: twoColumnView
+                    color: layout == ExpressionFeedLayout.two
                         ? Theme.of(context).primaryColor
                         : Theme.of(context).primaryColorLight,
                   ),
                 ),
               ),
-              // const SizedBox(width: 10),
               GestureDetector(
-                onTap: () => switchColumnView('single'),
+                onTap: () => switchColumnView(ExpressionFeedLayout.single),
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.symmetric(
@@ -47,7 +47,7 @@ class FilterColumnRow extends StatelessWidget {
                   child: Icon(
                     CustomIcons.singlecolumn,
                     size: 20,
-                    color: twoColumnView
+                    color: layout == ExpressionFeedLayout.two
                         ? Theme.of(context).primaryColorLight
                         : Theme.of(context).primaryColor,
                   ),
