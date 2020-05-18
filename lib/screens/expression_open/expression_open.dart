@@ -53,7 +53,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   @override
   void initState() {
     super.initState();
-    print('expression open');
     commentController = TextEditingController();
     _focusNode = FocusNode();
   }
