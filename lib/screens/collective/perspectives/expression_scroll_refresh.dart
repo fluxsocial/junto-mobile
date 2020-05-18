@@ -6,25 +6,12 @@ import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class ExpressionScrollRefresh extends StatefulWidget {
+class ExpressionScrollRefresh extends StatelessWidget {
   ExpressionScrollRefresh({Key key, this.child}) : super(key: key);
 
   final Widget child;
 
-  @override
-  _ExpressionScrollRefreshState createState() =>
-      _ExpressionScrollRefreshState();
-}
-
-class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh>
-    with TickerProviderStateMixin {
-  Completer<void> refreshCompleter;
-
-  @override
-  void initState() {
-    super.initState();
-    refreshCompleter = Completer<void>();
-  }
+  Completer<void> refreshCompleter = Completer<void>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +21,7 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh>
         offsetToArmed: 25,
         onRefresh: () {
           context.bloc<CollectiveBloc>().add(RefreshCollective());
+
           return refreshCompleter.future;
         },
         builder: (
@@ -64,7 +52,7 @@ class _ExpressionScrollRefreshState extends State<ExpressionScrollRefresh>
             },
           );
         },
-        child: widget.child,
+        child: child,
       ),
     );
   }

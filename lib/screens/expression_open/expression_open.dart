@@ -11,12 +11,15 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import 'expressions/audio_open.dart';
@@ -200,9 +203,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onVerticalDragDown: _onDragDown,
-                  // TODO:Eric - implement custom refresh indicator
-                    child: RefreshIndicator(
-                      onRefresh: _refreshComments,
+                    // TODO:Eric - implement custom refresh indicator
+                    child: CustomRefresh(
+                      refresh: _refreshComments,
                       child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         children: <Widget>[
