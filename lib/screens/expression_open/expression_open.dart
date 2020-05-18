@@ -18,8 +18,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import 'expressions/audio_open.dart';
@@ -203,7 +201,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onVerticalDragDown: _onDragDown,
-                    // TODO:Eric - implement custom refresh indicator
                     child: CustomRefresh(
                       refresh: _refreshComments,
                       child: ListView(
