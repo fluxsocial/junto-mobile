@@ -164,7 +164,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   Future<void> _refreshComments() async {
-    setState(
+    await setState(
       () {
         futureComments = Provider.of<ExpressionRepo>(context, listen: false)
             .getExpressionsComments(widget.expression.address);
