@@ -43,7 +43,7 @@ class JuntoThemesState extends State<JuntoThemes> {
   Future<void> setTheme(String theme) async {
     if (await Vibration.hasVibrator()) {
       Vibration.vibrate(
-        duration: 500,
+        duration: 400,
       );
     }
     setState(() {
@@ -68,43 +68,52 @@ class JuntoThemesState extends State<JuntoThemes> {
   }
 
   Widget _themeSelector(BuildContext context, String theme) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * .15,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10),
-        onTap: () {
-          setState(() {
-            _currentTheme = theme;
-          });
-          Provider.of<JuntoThemesProvider>(context, listen: false)
-              .setTheme(_nightMode ? '$theme-night' : theme);
-        },
-        child: ClipRRect(
+    return GestureDetector(
+      onTap: () async {
+        if (await Vibration.hasVibrator()) {
+          Vibration.vibrate(
+            duration: 400,
+          );
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * .15,
+        child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          child: Stack(
-            children: <Widget>[
-              Image.asset(
-                'assets/images/junto-mobile__themes--$theme.png',
-                height: MediaQuery.of(context).size.height * .15,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                bottom: 10,
-                left: 10,
-                child: Text(
-                  theme == 'royal' ? 'PURPLE GOLD' : theme.toUpperCase(),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    letterSpacing: 1.7,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
+          onTap: () async {
+            setState(() {
+              _currentTheme = theme;
+            });
+            await Provider.of<JuntoThemesProvider>(context, listen: false)
+                .setTheme(_nightMode ? '$theme-night' : theme);
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Stack(
+              children: <Widget>[
+                Image.asset(
+                  'assets/images/junto-mobile__themes--$theme.png',
+                  height: MediaQuery.of(context).size.height * .15,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
                 ),
-              )
-            ],
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: Text(
+                    theme == 'royal' ? 'PURPLE GOLD' : theme.toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      letterSpacing: 1.7,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
