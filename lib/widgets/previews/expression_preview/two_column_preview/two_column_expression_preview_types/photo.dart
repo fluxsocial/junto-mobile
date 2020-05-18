@@ -18,17 +18,14 @@ class PhotoPreview extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.height * .4,
         width: MediaQuery.of(context).size.width,
-        child: Hero(
-          tag: 'two_column_photo_preview- ${expression.address}',
-          child: RepaintBoundary(
-            child: ImageWrapper(
-              imageUrl: expression.expressionData.image,
-              placeholder: (BuildContext context, String _) {
-                return Container(color: Theme.of(context).dividerColor);
-              },
-              fit: BoxFit.cover,
-            ),
-          ),
+        child: ImageWrapper(
+          imageUrl: expression.expressionData.image,
+          placeholder: (BuildContext context, String _) {
+            return Container(
+              color: Theme.of(context).dividerColor,
+            );
+          },
+          fit: BoxFit.cover,
         ),
       ),
     );

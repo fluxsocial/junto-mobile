@@ -14,16 +14,15 @@ class MemberAvatar extends StatelessWidget {
         ? Container(
             child: ClipOval(
               child: ImageWrapper(
-                imageUrl: profilePicture[0],
-                height: diameter,
-                width: diameter,
-                fit: BoxFit.cover,
-                placeholder: (BuildContext context, String _) {
-                  return MemberAvatarPlaceholder(
-                    diameter: diameter,
-                  );
-                },
-              ),
+                  imageUrl: profilePicture[0],
+                  height: diameter,
+                  width: diameter,
+                  fit: BoxFit.cover,
+                  placeholder: (BuildContext context, String _) {
+                    return MemberAvatarPlaceholder(
+                      diameter: diameter,
+                    );
+                  }),
             ),
           )
         : MemberAvatarPlaceholder(

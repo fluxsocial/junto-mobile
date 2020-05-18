@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
@@ -44,6 +45,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   // Create a controller for the comment text field
   TextEditingController commentController;
 
+  // scroll controller for expression open list view
+  ScrollController _scrollController;
+
   /// [FocusNode] passed to Comments [TextField]
   FocusNode _focusNode;
 
@@ -52,8 +56,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   @override
   void initState() {
     super.initState();
-    print('expression open');
     commentController = TextEditingController();
+    _scrollController = ScrollController();
     _focusNode = FocusNode();
   }
 
@@ -124,6 +128,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Future<void> _createComment() async {
     if (commentController.value.text != '') {
       JuntoLoader.showLoader(context);
+      await Future.delayed(Duration(milliseconds: 500));
       try {
         await Provider.of<ExpressionRepo>(context, listen: false)
             .postCommentExpression(
@@ -136,6 +141,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         );
         commentController.clear();
         JuntoLoader.hide();
+        _focusNode.unfocus();
         await showFeedback(
           context,
           icon: Icon(
@@ -146,7 +152,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           message: 'Comment Created',
         );
         await _refreshComments();
-        _openComments();
+        await _openComments();
+        await Future.delayed(Duration(milliseconds: 100));
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeIn,
+        );
       } catch (error) {
         debugPrint('Error posting comment $error');
         JuntoLoader.hide();
@@ -200,10 +212,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onVerticalDragDown: _onDragDown,
-                    child: RefreshIndicator(
-                      onRefresh: _refreshComments,
+                    child: CustomRefresh(
+                      refresh: _refreshComments,
                       child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        controller: _scrollController,
                         children: <Widget>[
                           ExpressionOpenTop(
                             expression: widget.expression,
@@ -270,8 +283,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           ),
                                         ),
                                       ),
-                                      if (commentsVisible)
-                                        ListView.builder(
+                                      Visibility(
+                                        visible: commentsVisible,
+                                        child: ListView.builder(
                                           shrinkWrap: true,
                                           reverse: true,
                                           physics:
@@ -288,6 +302,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                             );
                                           },
                                         ),
+                                      ),
                                     ],
                                   );
                                 } else {

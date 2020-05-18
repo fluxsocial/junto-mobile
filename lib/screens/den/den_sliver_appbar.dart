@@ -46,6 +46,8 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
   @override
   Widget build(BuildContext context) {
     final photo = widget.profile.user.backgroundPhoto;
+    final name = widget.profile.user.name.trim();
+
     return SliverAppBar(
       automaticallyImplyLeading: false,
       primary: false,
@@ -89,7 +91,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                           children: <Widget>[
                             Flexible(
                               child: Text(
-                                widget.profile.user.name,
+                                name,
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,

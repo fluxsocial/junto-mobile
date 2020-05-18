@@ -4,7 +4,6 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/audio.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/dynamic.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/event.dart';
@@ -28,25 +27,14 @@ class SingleColumnExpressionPreview extends StatelessWidget
       onTap: () {
         // pending - create conditional statement that renders ExpressionOpenCreated if
         // the expression was created by the user. Otherwise display ExpressionOpen
-        if (expression.type == 'PhotoForm') {
-          Navigator.of(context).push(
-            FadeRoute<void>(
-              child: ExpressionOpen(
-                expression,
-                userData.userAddress,
-              ),
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => ExpressionOpen(
+              expression,
+              userData.userAddress,
             ),
-          );
-        } else {
-          Navigator.of(context).push(
-            CupertinoPageRoute(
-              builder: (context) => ExpressionOpen(
-                expression,
-                userData.userAddress,
-              ),
-            ),
-          );
-        }
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),

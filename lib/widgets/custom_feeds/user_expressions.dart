@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -63,13 +64,14 @@ class _UserExpressionsState extends State<UserExpressions> {
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
         if (state is DenLoadingState) {
-          return JuntoProgressIndicator(); 
+          return JuntoProgressIndicator();
         }
         if (state is DenLoadedState) {
           final results = state.expressions;
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.bloc<DenBloc>().add(RefreshDen());
+          return CustomRefresh(
+            refresh: () async {
+              await Future.delayed(Duration(milliseconds: 500));
+              await context.bloc<DenBloc>().add(RefreshDen());
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,

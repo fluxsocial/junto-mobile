@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:provider/provider.dart';
 
 class MyPacks extends StatelessWidget {
@@ -33,11 +34,12 @@ class MyPacks extends StatelessWidget {
                   return _loader();
                 }
                 if (state is GroupLoaded) {
-                  print(state.groups);
                   return Expanded(
-                      child: RefreshIndicator(
-                    onRefresh: () async {
-                      context.bloc<GroupBloc>().add(RefreshPack());
+                      child: CustomRefresh(
+                    refresh: () async {
+                      context.bloc<GroupBloc>().add(
+                            RefreshPack(),
+                          );
                     },
                     child: ListView(
                       physics: AlwaysScrollableScrollPhysics(),

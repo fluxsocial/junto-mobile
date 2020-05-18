@@ -193,6 +193,7 @@ class ExpressionServiceCentralized implements ExpressionService {
         queryParams: <String, String>{
           'pagination_position': '0',
         });
+    logger.logInfo('comments fetched');
     final Map<String, dynamic> _listData = JuntoHttp.handleResponse(response);
     return QueryResults<Comment>(
       lastTimestamp: _listData['last_timestamp'],

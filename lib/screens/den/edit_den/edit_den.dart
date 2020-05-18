@@ -153,18 +153,18 @@ class JuntoEditDenState extends State<JuntoEditDen> {
 
     Map<String, dynamic> _newProfileBody;
 
+    final updatedName = _nameController.value.text.trim();
+    final updatedLocation = _locationController.value.text.trim();
+    final updatedBio = _bioController.value.text.trim();
+    final updatedWebsite = _websiteController.value.text.trim();
+    final updatedGender = _genderController.value.text.trim();
+
     _newProfileBody = <String, dynamic>{
-      'name': _nameController.value.text,
-      'location': _locationController.value.text == ''
-          ? null
-          : <String>[_locationController.value.text],
-      'bio': _bioController.value.text == '' ? null : _bioController.value.text,
-      'website': _websiteController.value.text == ''
-          ? null
-          : <String>[_websiteController.value.text],
-      'gender': _genderController.value.text == ''
-          ? null
-          : <String>[_genderController.value.text],
+      'name': updatedName,
+      'location': updatedLocation == '' ? null : <String>[updatedLocation],
+      'bio': updatedBio == '' ? null : updatedBio,
+      'website': updatedWebsite == '' ? null : <String>[updatedWebsite],
+      'gender': updatedGender == '' ? null : <String>[updatedGender],
     };
 
     // check if user uploaded profile pictures
