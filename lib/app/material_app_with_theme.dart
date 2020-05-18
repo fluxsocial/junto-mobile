@@ -48,20 +48,25 @@ class MaterialAppWithTheme extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        BackgroundTheme(),
-        BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) => state.map(
-            loading: (_) => HomeLoadingPage(),
-            agreementsRequired: (_) => SignUpAgreements(),
-            authenticated: (_) => HomePageContent(),
-            unauthenticated: (_) => Welcome(),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) => Stack(
+        children: <Widget>[
+          BackgroundTheme(),
+          AnimatedSwitcher(
+            duration: kThemeAnimationDuration,
+            child: state.map(
+              loading: (_) => HomeLoadingPage(),
+              agreementsRequired: (_) => SignUpAgreements(),
+              authenticated: (_) => HomePageContent(),
+              unauthenticated: (_) => Welcome(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
