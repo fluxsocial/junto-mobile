@@ -13,7 +13,6 @@ import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
@@ -34,14 +33,9 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  ExpressionFeedLayout layout = ExpressionFeedLayout.two;
-
   Future<void> _switchColumnView(ExpressionFeedLayout columnType) async {
     await Provider.of<UserDataProvider>(context, listen: false)
         .switchColumnLayout(columnType);
-    setState(() {
-      layout = columnType;
-    });
   }
 
   @override
@@ -66,7 +60,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                       (BuildContext context, UserDataProvider data, _) {
                     return SliverToBoxAdapter(
                       child: FilterColumnRow(
-                        layout: layout,
+                        twoColumnView: data.twoColumnView,
                         switchColumnView: _switchColumnView,
                       ),
                     );

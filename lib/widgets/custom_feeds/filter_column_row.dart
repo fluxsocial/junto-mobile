@@ -4,10 +4,10 @@ import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 
 class FilterColumnRow extends StatelessWidget {
-  const FilterColumnRow({this.switchColumnView, this.layout});
+  const FilterColumnRow({this.switchColumnView, this.twoColumnView});
 
   final Function switchColumnView;
-  final ExpressionFeedLayout layout;
+  final bool twoColumnView;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +30,7 @@ class FilterColumnRow extends StatelessWidget {
                   child: Icon(
                     CustomIcons.twocolumn,
                     size: 20,
-                    color: layout == ExpressionFeedLayout.two
+                    color: twoColumnView
                         ? Theme.of(context).primaryColor
                         : Theme.of(context).primaryColorLight,
                   ),
@@ -47,7 +47,7 @@ class FilterColumnRow extends StatelessWidget {
                   child: Icon(
                     CustomIcons.singlecolumn,
                     size: 20,
-                    color: layout == ExpressionFeedLayout.two
+                    color: twoColumnView
                         ? Theme.of(context).primaryColorLight
                         : Theme.of(context).primaryColor,
                   ),
