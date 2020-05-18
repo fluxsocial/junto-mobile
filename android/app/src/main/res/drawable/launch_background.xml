@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Modify this file to customize your launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/splash_background" />
+    <item android:drawable="@drawable/junto_rainbow" />
 
     <item
-        android:drawable="@drawable/ic_junto_splash"
+        android:drawable="@drawable/ic_wolf_logo"
         android:gravity="center"/>
 </layer-list>

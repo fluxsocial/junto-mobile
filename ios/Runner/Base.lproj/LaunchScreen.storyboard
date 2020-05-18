@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -19,30 +19,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JUNTO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eLf-a8-Zwj">
-                                <rect key="frame" x="119.5" y="431.5" width="175" height="65"/>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="54"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" image="junto_logo_500" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
-                                <rect key="frame" x="169.5" y="340.5" width="75" height="83"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="pZA-Gg-07c">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" image="junto_logo_500" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
+                                <rect key="frame" x="145" y="355" width="124" height="186"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="75" id="8rI-QU-OM2"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="83" id="98t-qk-0C3"/>
-                                    <constraint firstAttribute="height" constant="83" id="KuF-dH-uuX"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="raD-Em-jGX"/>
+                                    <constraint firstAttribute="width" secondItem="YRO-k0-Ey4" secondAttribute="height" multiplier="120:180" id="Kvf-Z3-9o4"/>
                                 </constraints>
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="thin"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="eLf-a8-Zwj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="8uL-R1-uQB"/>
-                            <constraint firstItem="eLf-a8-Zwj" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="16" id="Zp7-lf-cIA"/>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="mTQ-yO-t6X"/>
-                            <constraint firstItem="eLf-a8-Zwj" firstAttribute="top" secondItem="YRO-k0-Ey4" secondAttribute="bottom" constant="8" id="vly-2i-1HO"/>
+                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="GBB-Hc-wvY"/>
+                            <constraint firstItem="pZA-Gg-07c" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="Ux4-mj-hXY"/>
+                            <constraint firstItem="pZA-Gg-07c" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="fD7-uA-D38"/>
+                            <constraint firstItem="pZA-Gg-07c" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" id="gX7-D0-wuc"/>
+                            <constraint firstItem="pZA-Gg-07c" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="iOT-v7-6Vk"/>
+                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.3" id="mod-Fl-fnU"/>
+                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="rGI-Or-z26"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -52,6 +49,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="junto_logo_500" width="167" height="183"/>
+        <image name="LaunchBackground" width="375.33334350585938" height="818"/>
+        <image name="junto_logo_500" width="167" height="183.33332824707031"/>
     </resources>
 </document>
