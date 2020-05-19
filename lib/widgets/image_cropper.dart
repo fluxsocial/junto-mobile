@@ -6,7 +6,9 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/time_logger.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart' as pp;
 
@@ -290,7 +292,8 @@ class _ImageCropperState extends State<_ImageCropper>
     }
 
     // ENTER HERE AT YOUR OWN PERIL
-
+    final logger = TimeLogger('image_cropper')..startRecoder();
+    logger.logTime('starting cropping');
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
 
@@ -298,6 +301,7 @@ class _ImageCropperState extends State<_ImageCropper>
     final viewSize = context.size;
     final imageRect = _calculateAspectRect(imageSize, widget.aspectRatio);
     final viewRect = _calculateAspectRect(viewSize, widget.aspectRatio);
+    logger.logTime('calculated aspect ratio');
 
     final scale = math.max(
       imageRect.width / viewRect.width,
@@ -319,18 +323,36 @@ class _ImageCropperState extends State<_ImageCropper>
           filterQuality: FilterQuality.high,
         ),
     );
+    logger.logTime('drawing image');
 
     final picture = recorder.endRecording();
+    logger.logTime('ending recording');
     final outputImage = await picture.toImage(
         imageRect.width.toInt(), imageRect.height.toInt());
-    final bytes = await outputImage.toByteData(format: ui.ImageByteFormat.png);
+    logger.logTime('picture.toImage');
+
+    // We're using raw RGBA bytes instead of PNG as it's much faster
+    final bytes =
+        await outputImage.toByteData(format: ui.ImageByteFormat.rawRgba);
+    logger.logTime('toByteData with ui.ImageByteFormat.rawRgba');
+    // Using image library to create supported img.Image object
+    final image = img.Image.fromBytes(
+      imageRect.width.toInt(),
+      imageRect.height.toInt(),
+      bytes.buffer.asUint8List(),
+    );
+    logger.logTime('creating image from bytes');
 
     final timeStamp = DateTime.now().millisecondsSinceEpoch;
     final outputBase = p.basenameWithoutExtension(widget.sourceFile.path);
     final outputPath = p.join(
-        (await pp.getTemporaryDirectory()).path, '$outputBase-$timeStamp.png');
+        (await pp.getTemporaryDirectory()).path, '$outputBase-$timeStamp.jpg');
+    logger.logTime('creating file');
     final outputFile = File(outputPath);
-    await outputFile.writeAsBytes(bytes.buffer.asUint8List());
+    // Let's use 70% quality for now
+    final jpeg = img.encodeJpg(image, quality: 70);
+    await outputFile.writeAsBytes(jpeg);
+    logger.logTime('saving from bytes');
 
     return outputFile;
   }
