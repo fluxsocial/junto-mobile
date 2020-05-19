@@ -692,6 +692,78 @@ class S {
       args: [],
     );
   }
+
+  String get themes_night {
+    return Intl.message(
+      'Night',
+      name: 'themes_night',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get themes_light {
+    return Intl.message(
+      'Light',
+      name: 'themes_light',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get themes_title {
+    return Intl.message(
+      'Themes',
+      name: 'themes_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_logout {
+    return Intl.message(
+      'Log Out',
+      name: 'menu_logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_are_you_sure_to_logout {
+    return Intl.message(
+      'Are you sure you want to log out?',
+      name: 'menu_are_you_sure_to_logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_relations {
+    return Intl.message(
+      'Relations',
+      name: 'menu_relations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_search {
+    return Intl.message(
+      'Search',
+      name: 'menu_search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_my_den {
+    return Intl.message(
+      'My Den',
+      name: 'menu_my_den',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
