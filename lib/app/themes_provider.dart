@@ -39,6 +39,8 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     try {
       final box = await Hive.box(HiveBoxes.kAppBox);
       final theme = await box.get(HiveKeys.kTheme) as String;
+      final nightMode = await box.get(HiveKeys.kNightMode) as bool;
+      _nightMode = nightMode ?? false;
 
       if (theme != null && theme.isNotEmpty) {
         // don't store "-night" suffix in cache
@@ -83,7 +85,7 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     _nightMode = enabled;
     notifyListeners();
     final box = await Hive.box(HiveBoxes.kAppBox);
-    await box.put(HiveKeys.kNightMode, false);
+    await box.put(HiveKeys.kNightMode, enabled);
   }
 
   void _setSystemOverlay() {
