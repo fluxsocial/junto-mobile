@@ -1,12 +1,10 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
@@ -62,12 +60,10 @@ class _SignInState extends State<SignIn> {
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
     try {
-      final box = await Hive.box(HiveBoxes.kAppBox);
-      //TODO: dont use box for that
-      final bool nightMode = await box.get('night-mode');
-      if (nightMode == null) {
-        await box.put('night-mode', false);
-      }
+      final themesProvider =
+          Provider.of<JuntoThemesProvider>(context, listen: false);
+      await themesProvider.setNightMode(false);
+
       await Provider.of<AuthRepo>(context, listen: false)
           .loginUser(loginDetails);
       await Provider.of<UserDataProvider>(context, listen: false).initialize();
