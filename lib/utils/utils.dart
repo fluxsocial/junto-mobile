@@ -63,7 +63,7 @@ mixin RFC3339 {
 mixin MemberValidation {
   Future<bool> isHostUser(UserProfile incoming) async {
     final box = await Hive.box(HiveBoxes.kAppBox);
-    final id = await box.get("userId") as String;
+    final id = await box.get(HiveKeys.kUserId) as String;
     return incoming.address == id;
   }
 
