@@ -20,6 +20,9 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
   String _themeName = 'rainbow';
   String get themeName => _themeName;
 
+  bool _nightMode = false;
+  bool get nightMode => _nightMode;
+
   static final Map<String, ThemeData> _themes = <String, ThemeData>{
     'rainbow': JuntoThemes().rainbow,
     'aqueous': JuntoThemes().aqueous,
@@ -54,6 +57,13 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     _persistTheme(themeName);
     _setSystemOverlay();
     return currentTheme;
+  }
+
+  void setNightMode(bool enabled) async {
+    _nightMode = enabled;
+    notifyListeners();
+    final box = await Hive.box(HiveBoxes.kAppBox);
+    await box.put(HiveKeys.kNightMode, false);
   }
 
   void _setSystemOverlay() {
