@@ -8,6 +8,7 @@ class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
   const ExpressionPreviewBottom({this.expression});
 
   final expression;
+
   @override
   Widget build(BuildContext context) {
     return
@@ -46,8 +47,9 @@ class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
                   color: Colors.transparent,
                   child: ExpressionActionItems(
                     expression: expression,
-                    userAddress: userData.userAddress,
-                    isExpressionOpen: false,
+                    deleteExpression: (expression) {
+                      //TODO(Nash): Remove expression
+                    },
                   ),
                 ),
               );

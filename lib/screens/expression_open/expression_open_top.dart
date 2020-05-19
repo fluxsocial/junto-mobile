@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/action_items/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class ExpressionOpenTop extends StatelessWidget with MemberValidation {
   const ExpressionOpenTop({Key key, this.expression, this.userAddress})
@@ -59,8 +59,9 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
                 ),
                 builder: (BuildContext context) => ExpressionActionItems(
                   expression: expression,
-                  userAddress: userAddress,
-                  isExpressionOpen: true,
+                  deleteExpression: (expression) {
+                    //TODO(Nash): Handle delete expressions
+                  },
                 ),
               );
             },
