@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:vibration/vibration.dart';
 
 abstract class ThemesProvider {
   ThemeData get currentTheme;
@@ -15,10 +16,12 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
   }
 
   @override
-  ThemeData get currentTheme => _themes[_themeName];
+  ThemeData get currentTheme => _themes[themeName];
+
+  final String _nightSuffix = '-night';
 
   String _themeName = 'rainbow';
-  String get themeName => _themeName;
+  String get themeName => _nightMode ? '$_themeName$_nightSuffix' : _themeName;
 
   bool _nightMode = false;
   bool get nightMode => _nightMode;
@@ -35,10 +38,18 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
   Future<void> initialize() async {
     try {
       final box = await Hive.box(HiveBoxes.kAppBox);
-      final String theme = await box.get(HiveKeys.kTheme) as String;
+      final theme = await box.get(HiveKeys.kTheme) as String;
 
       if (theme != null && theme.isNotEmpty) {
-        _themeName = theme;
+        // don't store "-night" suffix in cache
+        if (theme.contains(_nightSuffix)) {
+          final themeTrimmed =
+              theme.substring(0, theme.length - _nightSuffix.length);
+          await box.put(HiveKeys.kTheme, themeTrimmed);
+          _themeName = themeTrimmed;
+        } else {
+          _themeName = theme;
+        }
       }
       logger.logDebug('Theme initialized to $themeName');
       notifyListeners();
@@ -51,12 +62,21 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
   }
 
   ThemeData setTheme(String themeName) {
-    logger.logDebug('Setting theme to $themeName');
+    logger.logDebug('Setting theme to $themeName with night mode $_nightMode');
     _themeName = themeName;
     notifyListeners();
     _persistTheme(themeName);
     _setSystemOverlay();
+    _vibrate();
     return currentTheme;
+  }
+
+  void _vibrate() async {
+    if (await Vibration.hasVibrator()) {
+      Vibration.vibrate(
+        duration: 200,
+      );
+    }
   }
 
   void setNightMode(bool enabled) async {

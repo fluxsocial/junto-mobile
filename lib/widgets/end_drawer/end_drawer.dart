@@ -13,10 +13,11 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
 import 'package:provider/provider.dart';
+
+import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
   @override
@@ -165,7 +166,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                               context,
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
-                                  return JuntoThemes();
+                                  return JuntoThemesPage();
                                 },
                               ),
                             );
