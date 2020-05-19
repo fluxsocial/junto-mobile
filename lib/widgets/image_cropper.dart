@@ -349,12 +349,24 @@ class _ImageCropperState extends State<_ImageCropper>
         (await pp.getTemporaryDirectory()).path, '$outputBase-$timeStamp.jpg');
     logger.logTime('creating file');
     final outputFile = File(outputPath);
-    // Let's use 70% quality for now
-    final jpeg = img.encodeJpg(image, quality: 70);
+    final jpeg = encodeImage(image, imageRect);
+    logger.logTime('encoding image');
     await outputFile.writeAsBytes(jpeg);
     logger.logTime('saving from bytes');
 
     return outputFile;
+  }
+
+  List<int> encodeImage(img.Image image, Rect imageRect) {
+    if (imageRect.width > 1600) {
+      final resized = img.copyResize(image, width: 1600);
+      final bytes = img.encodeJpg(resized, quality: 70);
+      return bytes;
+    } else {
+      // Let's use 70% quality for now
+      final bytes = img.encodeJpg(image, quality: 70);
+      return bytes;
+    }
   }
 
   @override
