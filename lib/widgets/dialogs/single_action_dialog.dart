@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SingleActionDialog extends StatelessWidget {
   const SingleActionDialog({
@@ -32,13 +32,16 @@ class SingleActionDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              dialogText,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 17,
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: Text(
+                dialogText,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             const SizedBox(height: 25),
