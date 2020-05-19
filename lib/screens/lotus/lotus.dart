@@ -60,7 +60,7 @@ class JuntoLotus extends StatelessWidget {
         child: JuntoDen(),
       );
     }
-    await Navigator.of(context).push(
+    Navigator.of(context).push(
       FadeRoute<void>(
         child: ReturnToLotusOnSwipe(
           expressionContext: expressionContext,
@@ -249,6 +249,7 @@ class ReturnToLotusOnSwipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return child;
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushAndRemoveUntil(

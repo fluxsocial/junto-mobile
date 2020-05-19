@@ -90,6 +90,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
           context,
           message: "Password successfully reset!",
         );
+        //TODO: don't replace with welcome route
         Navigator.of(context).pushReplacement(Welcome.route());
       } catch (error) {
         print(error.message);

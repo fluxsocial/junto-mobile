@@ -24,6 +24,7 @@ class JuntoDrawer extends StatelessWidget {
   _onLogOut(BuildContext context) async {
     try {
       await context.bloc<AuthBloc>().add(LogoutEvent());
+      Navigator.popUntil(context, (r) => r.isFirst);
     } catch (e) {
       logger.logException(e);
     }
