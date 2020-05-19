@@ -6,6 +6,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart' as pp;
@@ -284,13 +286,18 @@ class _ImageCropperState extends State<_ImageCropper>
     scheduleMicrotask(() => checkMatrixBounds(withScale: true));
   }
 
+  void printT(Duration time, String message) {
+    logger.logDebug('[${time.inMilliseconds}] $message');
+  }
+
   Future<File> performCrop() async {
     if (isNotLoaded) {
       return null;
     }
 
     // ENTER HERE AT YOUR OWN PERIL
-
+    final now = DateTime.now();
+    printT(now.difference(DateTime.now()), 'starting cropping');
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
 
@@ -298,6 +305,7 @@ class _ImageCropperState extends State<_ImageCropper>
     final viewSize = context.size;
     final imageRect = _calculateAspectRect(imageSize, widget.aspectRatio);
     final viewRect = _calculateAspectRect(viewSize, widget.aspectRatio);
+    printT(now.difference(DateTime.now()), 'calculated aspect ratio');
 
     final scale = math.max(
       imageRect.width / viewRect.width,
@@ -319,18 +327,37 @@ class _ImageCropperState extends State<_ImageCropper>
           filterQuality: FilterQuality.high,
         ),
     );
+    printT(now.difference(DateTime.now()), 'drawing image');
 
     final picture = recorder.endRecording();
+    printT(now.difference(DateTime.now()), 'ending recording');
     final outputImage = await picture.toImage(
         imageRect.width.toInt(), imageRect.height.toInt());
-    final bytes = await outputImage.toByteData(format: ui.ImageByteFormat.png);
+    printT(now.difference(DateTime.now()), 'picture.toImage');
+
+    // We're using raw RGBA bytes instead of PNG as it's much faster
+    final bytes =
+        await outputImage.toByteData(format: ui.ImageByteFormat.rawRgba);
+    printT(now.difference(DateTime.now()),
+        'toByteData with ui.ImageByteFormat.rawRgba');
+    // Using image library to create supported img.Image object
+    final image = img.Image.fromBytes(
+      imageRect.width.toInt(),
+      imageRect.height.toInt(),
+      bytes.buffer.asUint8List(),
+    );
+    printT(now.difference(DateTime.now()), 'creating image from bytes');
 
     final timeStamp = DateTime.now().millisecondsSinceEpoch;
     final outputBase = p.basenameWithoutExtension(widget.sourceFile.path);
     final outputPath = p.join(
-        (await pp.getTemporaryDirectory()).path, '$outputBase-$timeStamp.png');
+        (await pp.getTemporaryDirectory()).path, '$outputBase-$timeStamp.jpg');
+    printT(now.difference(DateTime.now()), 'creating file');
     final outputFile = File(outputPath);
-    await outputFile.writeAsBytes(bytes.buffer.asUint8List());
+    // Let's use 90% quality for now
+    final jpeg = img.encodeJpg(image, quality: 90);
+    await outputFile.writeAsBytes(jpeg);
+    printT(now.difference(DateTime.now()), 'saving from bytes');
 
     return outputFile;
   }
