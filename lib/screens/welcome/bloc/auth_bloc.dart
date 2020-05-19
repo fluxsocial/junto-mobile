@@ -110,7 +110,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
     yield AuthState.loading();
     try {
-      final box = await Hive.openLazyBox(HiveBoxes.kAppBox);
+      final box = await Hive.openBox(HiveBoxes.kAppBox);
       final data = await box.get(HiveKeys.kUserData);
       logger.logDebug(data);
       final user = UserData.fromMap(jsonDecode(data));

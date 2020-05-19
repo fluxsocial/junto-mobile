@@ -32,7 +32,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     if (response.statusCode == 200) {
       logger.logInfo('User logged in');
       final String authorization = response.headers['authorization'];
-      final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+      final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
       await box.put(HiveKeys.kAuth, authorization);
       final userData = JuntoHttp.handleResponse(response);
       final user = UserData.fromMap(userData);

@@ -32,7 +32,7 @@ class UserDataProvider extends ChangeNotifier {
   Future<void> getUserInformation() async {
     try {
       logger.logInfo('Fetching user information');
-      final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+      final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
       final userData = await box.get(HiveKeys.kUserData);
       if (userData != null && userData.isNotEmpty) {
         final decodedUserData = jsonDecode(userData);
@@ -52,7 +52,7 @@ class UserDataProvider extends ChangeNotifier {
 
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
     await box.delete(HiveKeys.kUserData);
     final userMap = user.toMap();
     final userData = jsonEncode(userMap);
