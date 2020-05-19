@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
@@ -19,19 +20,7 @@ import 'package:provider/provider.dart';
 
 import 'junto_themes_page.dart';
 
-class JuntoDrawer extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return JuntoDrawerState();
-  }
-}
-
-class JuntoDrawerState extends State<JuntoDrawer> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class JuntoDrawer extends StatelessWidget {
   _onLogOut(BuildContext context) async {
     try {
       await context.bloc<AuthBloc>().add(LogoutEvent());
@@ -79,7 +68,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                                 diameter: 28,
                               ),
                             ),
-                            title: 'My Den',
+                            title: S.of(context).menu_my_den,
                             onTap: () {
                               Navigator.of(context).push(
                                 FadeRoute<void>(
@@ -91,7 +80,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                         if (user.userProfile?.user == null)
                           JuntoDrawerItem(
                             icon: const SizedBox(),
-                            title: 'My Den',
+                            title: S.of(context).menu_my_den,
                             onTap: () {
                               Navigator.of(context).push(
                                 FadeRoute<void>(
@@ -110,7 +99,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                               size: 24,
                             ),
                           ),
-                          title: 'Search',
+                          title: S.of(context).menu_search,
                           onTap: () {
                             Navigator.push(
                               context,
@@ -132,7 +121,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                               size: 9,
                             ),
                           ),
-                          title: 'Relations',
+                          title: S.of(context).menu_relations,
                           onTap: () {
                             // open relationships
                             Navigator.push(
@@ -160,7 +149,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                               size: 24,
                             ),
                           ),
-                          title: 'Themes',
+                          title: S.of(context).themes_title,
                           onTap: () async {
                             await Navigator.push(
                               context,
@@ -185,7 +174,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                             size: 24,
                           ),
                         ),
-                        title: 'Log Out',
+                        title: S.of(context).menu_logout,
                         onTap: () async {
                           await showDialog(
                             context: context,
@@ -193,7 +182,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                               buildContext: context,
                               confirm: _onLogOut,
                               confirmationText:
-                                  'Are you sure you want to log out?',
+                                  S.of(context).menu_are_you_sure_to_logout,
                             ),
                           );
                         },

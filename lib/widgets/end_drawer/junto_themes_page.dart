@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 class JuntoThemesPage extends StatelessWidget {
@@ -40,7 +41,7 @@ class JuntoThemesPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Themes',
+                  S.of(context).themes_title,
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 const SizedBox(width: 42)
@@ -160,7 +161,9 @@ class _NightModeSwitch extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              theme.nightMode ? 'Night' : 'Light',
+              theme.nightMode
+                  ? S.of(context).themes_night
+                  : S.of(context).themes_light,
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
