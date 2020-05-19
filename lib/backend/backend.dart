@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_auth.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
@@ -35,10 +33,10 @@ class Backend {
     this.collectiveProvider,
     this.groupsProvider,
     this.expressionRepo,
-    this.currentTheme,
     this.notificationRepo,
     this.appRepo,
     this.db,
+    this.themesProvider,
   });
 
   // ignore: missing_return
@@ -46,7 +44,8 @@ class Backend {
     try {
       logger.logDebug('Initializing backend');
       final dbService = HiveCache();
-      final ThemeData currentTheme = await JuntoThemesProvider.initialize();
+      await dbService.init();
+      final themesProvider = JuntoThemesProvider();
       final JuntoHttp client = JuntoHttp(httpClient: IOClient());
       final AuthenticationService authService =
           AuthenticationServiceCentralized(client, dbService);
@@ -70,10 +69,10 @@ class Backend {
         collectiveProvider: CollectiveProviderCentralized(client),
         groupsProvider: GroupRepo(groupService, userService),
         expressionRepo: ExpressionRepo(expressionService, dbService),
-        currentTheme: currentTheme,
         notificationRepo: notificationRepo,
         appRepo: AppRepo(),
         db: dbService,
+        themesProvider: themesProvider,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -87,16 +86,17 @@ class Backend {
     final GroupService groupService = MockSphere();
     final SearchService searchService = MockSearch();
     return Backend._(
-        authRepo: AuthRepo(authService, null, expressionService),
-        userRepo: UserRepo(userService, null, null),
-        collectiveProvider: null,
-        groupsProvider: GroupRepo(groupService, userService),
-        //TODO(Nash): MockDB
-        expressionRepo: ExpressionRepo(expressionService, null),
-        searchRepo: SearchRepo(searchService),
-        currentTheme: JuntoThemes().aqueous,
-        appRepo: AppRepo(),
-        db: null);
+      authRepo: AuthRepo(authService, null, expressionService),
+      userRepo: UserRepo(userService, null, null),
+      collectiveProvider: null,
+      groupsProvider: GroupRepo(groupService, userService),
+      //TODO(Nash): MockDB
+      expressionRepo: ExpressionRepo(expressionService, null),
+      searchRepo: SearchRepo(searchService),
+      appRepo: AppRepo(),
+      db: null,
+      themesProvider: MockedThemesProvider(),
+    );
   }
 
   final SearchRepo searchRepo;
@@ -106,7 +106,7 @@ class Backend {
   final GroupRepo groupsProvider;
   final ExpressionRepo expressionRepo;
   final NotificationRepo notificationRepo;
-  final ThemeData currentTheme;
   final AppRepo appRepo;
   final LocalCache db;
+  final ThemesProvider themesProvider;
 }

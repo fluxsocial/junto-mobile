@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 
-class JuntoThemesProvider with ChangeNotifier {
-  JuntoThemesProvider(this._currentTheme) {
-    _themeName = _themes.keys
-        .firstWhere((k) => _themes[k] == _currentTheme, orElse: () => null);
+abstract class ThemesProvider {
+  ThemeData get currentTheme;
+}
+
+class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
+  JuntoThemesProvider() {
+    initialize();
   }
+
+  @override
+  ThemeData get currentTheme => _themes[_themeName];
+
+  String _themeName = 'rainbow';
+  String get themeName => _themeName;
 
   static final Map<String, ThemeData> _themes = <String, ThemeData>{
     'rainbow': JuntoThemes().rainbow,
@@ -21,44 +29,49 @@ class JuntoThemesProvider with ChangeNotifier {
     'royal-night': JuntoThemes().royalNight,
   };
 
-  static Future<ThemeData> initialize() async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    final String theme = await box.get("current-theme") as String;
+  Future<void> initialize() async {
+    try {
+      final box = await Hive.box(HiveBoxes.kAppBox);
+      final String theme = await box.get(HiveKeys.kTheme) as String;
 
-    if (theme != null && theme.isNotEmpty) {
-      return _themes[theme];
+      if (theme != null && theme.isNotEmpty) {
+        _themeName = theme;
+      }
+      logger.logDebug('Theme initialized to $themeName');
+      notifyListeners();
+    } on HiveError catch (e) {
+      logger.logException(e);
+      await Hive.deleteBoxFromDisk(HiveBoxes.kAppBox);
+    } catch (e) {
+      logger.logException(e);
     }
-    return _themes['rainbow'];
   }
-
-  ThemeData get currentTheme => _currentTheme;
-  ThemeData _currentTheme;
 
   ThemeData setTheme(String themeName) {
     logger.logDebug('Setting theme to $themeName');
     _themeName = themeName;
-    _currentTheme = _themes[themeName];
     notifyListeners();
     _persistTheme(themeName);
-    _setSystemOverlay(_currentTheme);
+    _setSystemOverlay();
     return currentTheme;
   }
 
-  void _setSystemOverlay(ThemeData theme) {
-    if (theme != null) {
-      theme.brightness == Brightness.dark
+  void _setSystemOverlay() {
+    if (currentTheme != null) {
+      currentTheme.brightness == Brightness.dark
           ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
           : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     }
   }
 
-  String _themeName;
-
-  String get themeName => _themeName;
-
   Future<void> _persistTheme(String value) async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     box.put(HiveKeys.kTheme, value);
     return;
   }
+}
+
+class MockedThemesProvider extends ThemesProvider {
+  @override
+  ThemeData get currentTheme => ThemeData.light();
 }
