@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
-import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
@@ -28,7 +27,7 @@ class CreatePhoto extends StatefulWidget {
 }
 
 // State for CreatePhoto class
-class CreatePhotoState extends State<CreatePhoto> with Compressor {
+class CreatePhotoState extends State<CreatePhoto> {
   File imageFile;
   TextEditingController _captionController;
   bool _showBottomNav = true;
@@ -68,8 +67,7 @@ class CreatePhotoState extends State<CreatePhoto> with Compressor {
         setState(() => imageFile = null);
         return;
       }
-      final _compressed = await compressImage(cropped);
-      setState(() => imageFile = _compressed);
+      setState(() => imageFile = cropped);
       _toggleBottomNav(false);
     } catch (e, s) {
       logger.logException(e, s);

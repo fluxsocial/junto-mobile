@@ -16,12 +16,13 @@ class TimeLogger {
     start = DateTime.now().millisecondsSinceEpoch;
   }
 
-  void logTime() {
+  void logTime([String message]) {
+    final msg = message ?? '';
     final diff = DateTime.now().millisecondsSinceEpoch - start;
     if (tag != "") {
-      logger.logDebug("$tag : $diff ms");
+      logger.logDebug("$tag : $diff ms $msg");
     } else {
-      logger.logDebug("run time $diff ms");
+      logger.logDebug("run time $diff ms $msg");
     }
   }
 }

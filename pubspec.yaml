@@ -40,7 +40,6 @@ dependencies:
   device_preview: 0.4.1+1
   intl: ^0.16.1
   audioplayers: 0.15.1
-  flutter_native_image: 0.0.5
   flutter_audio_recorder: 0.5.5
   hive: 1.4.1+1
   hive_flutter: 0.3.0+2
@@ -48,7 +47,6 @@ dependencies:
   vibration: 1.2.4
   custom_refresh_indicator: ^0.8.0+1
   flutter_staggered_grid_view: 0.3.0
-
   image: 2.1.12
 
 dev_dependencies:
