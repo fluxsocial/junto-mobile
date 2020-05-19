@@ -32,27 +32,17 @@ class JuntoDrawer extends StatefulWidget {
 
 class JuntoDrawerState extends State<JuntoDrawer> {
   String _userFollowPerspectiveId;
-  ThemeData _currentTheme;
 
   @override
   void initState() {
     super.initState();
     getUserInformation();
-    getTheme();
   }
 
   Future<void> getUserInformation() async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     final _Id = await box.get('userFollowPerspectiveId') as String;
     setState(() => _userFollowPerspectiveId = _Id);
-  }
-
-  Future<void> getTheme() async {
-    final theme = await Provider.of<JuntoThemesProvider>(context, listen: false)
-        .currentTheme;
-    setState(() {
-      _currentTheme = theme;
-    });
   }
 
   logOut(BuildContext context) async {
@@ -189,7 +179,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                               context,
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
-                                  return JuntoThemes(refreshTheme: getTheme);
+                                  return JuntoThemes();
                                 },
                               ),
                             );

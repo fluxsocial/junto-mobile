@@ -62,7 +62,8 @@ class _SignInState extends State<SignIn> {
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
     try {
-      final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
+      final box = await Hive.box(HiveBoxes.kAppBox);
+      //TODO: dont use box for that
       final bool nightMode = await box.get('night-mode');
       if (nightMode == null) {
         await box.put('night-mode', false);

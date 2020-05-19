@@ -62,7 +62,7 @@ mixin RFC3339 {
 /// the same as the user currently logged into the application.
 mixin MemberValidation {
   Future<bool> isHostUser(UserProfile incoming) async {
-    final box = await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     final id = await box.get("userId") as String;
     return incoming.address == id;
   }

@@ -8,9 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 class JuntoThemes extends StatefulWidget {
-  const JuntoThemes({this.refreshTheme});
-
-  final Function refreshTheme;
+  const JuntoThemes();
 
   @override
   State<StatefulWidget> createState() {
@@ -29,7 +27,8 @@ class JuntoThemesState extends State<JuntoThemes> {
   }
 
   Future<void> getThemeInfo() async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
+    //TODO: don't use box for that here
     final bool nightMode = await box.get('night-mode');
     final String theme = await box.get("current-theme") as String;
     if (nightMode != null) {
@@ -138,7 +137,6 @@ class JuntoThemesState extends State<JuntoThemes> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    widget.refreshTheme();
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -209,8 +207,8 @@ class JuntoThemesState extends State<JuntoThemes> {
                     child: Switch.adaptive(
                       value: _nightMode,
                       onChanged: (bool value) async {
-                        final box = await Hive.openLazyBox(HiveBoxes.kAppBox,
-                            encryptionKey: key);
+                        final box = await Hive.box(HiveBoxes.kAppBox);
+                        //TODO: don't use box here
                         await box.delete('night-mode');
                         await box.put('night-mode', value);
                         setState(() {

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart' show LocalCache;
@@ -7,11 +7,10 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class HiveCache implements LocalCache {
-  HiveCache() {
-    init();
-  }
+  HiveCache();
 
   Future<void> init() async {
+    await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
     Hive.registerAdapter(ExpressionResponseAdapter());
     Hive.registerAdapter(ShortFormExpressionAdapter());
     Hive.registerAdapter(PhotoFormExpressionAdapter());
