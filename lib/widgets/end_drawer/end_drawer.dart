@@ -2,18 +2,13 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -31,21 +26,12 @@ class JuntoDrawer extends StatefulWidget {
 }
 
 class JuntoDrawerState extends State<JuntoDrawer> {
-  String _userFollowPerspectiveId;
-
   @override
   void initState() {
     super.initState();
-    getUserInformation();
   }
 
-  Future<void> getUserInformation() async {
-    final box = await Hive.box(HiveBoxes.kAppBox);
-    final _Id = await box.get('userFollowPerspectiveId') as String;
-    setState(() => _userFollowPerspectiveId = _Id);
-  }
-
-  logOut(BuildContext context) async {
+  _onLogOut(BuildContext context) async {
     try {
       await context.bloc<AuthBloc>().add(LogoutEvent());
     } catch (e) {
@@ -56,7 +42,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserDataProvider>(
-      builder: (BuildContext context, UserDataProvider value, Widget child) {
+      builder: (BuildContext context, UserDataProvider user, Widget child) {
         return Stack(
           children: <Widget>[
             BackgroundTheme(),
@@ -82,13 +68,13 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        if (value.userProfile?.user != null)
+                        if (user.userProfile?.user != null)
                           JuntoDrawerItem(
                             icon: Container(
                               margin: const EdgeInsets.only(right: 32),
                               child: MemberAvatar(
                                 profilePicture:
-                                    value.userProfile.user.profilePicture,
+                                    user.userProfile.user.profilePicture,
                                 diameter: 28,
                               ),
                             ),
@@ -101,7 +87,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                               );
                             },
                           ),
-                        if (value.userProfile?.user == null)
+                        if (user.userProfile?.user == null)
                           JuntoDrawerItem(
                             icon: const SizedBox(),
                             title: 'My Den',
@@ -146,7 +132,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                             ),
                           ),
                           title: 'Relations',
-                          onTap: () async {
+                          onTap: () {
                             // open relationships
                             Navigator.push(
                               context,
@@ -154,8 +140,8 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                                 builder: (BuildContext context) {
                                   return FeatureDiscovery(
                                     child: JuntoRelationships(
-                                      value.userAddress,
-                                      _userFollowPerspectiveId,
+                                      user.userAddress,
+                                      user.userProfile.userPerspective.address,
                                     ),
                                   );
                                 },
@@ -200,11 +186,11 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                         ),
                         title: 'Log Out',
                         onTap: () async {
-                          showDialog(
+                          await showDialog(
                             context: context,
                             builder: (BuildContext context) => ConfirmDialog(
                               buildContext: context,
-                              confirm: logOut,
+                              confirm: _onLogOut,
                               confirmationText:
                                   'Are you sure you want to log out?',
                             ),
