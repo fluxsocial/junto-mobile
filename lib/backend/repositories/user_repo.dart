@@ -155,7 +155,7 @@ class UserRepo {
   Future<UserProfile> updateUser(
       Map<String, dynamic> user, String userAddress) async {
     final result = await _userService.updateUser(user, userAddress);
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     box.put(HiveKeys.kUserData, jsonEncode(result));
     final Map<String, dynamic> decodedUserData =
         jsonDecode(await box.get(HiveKeys.kUserData));

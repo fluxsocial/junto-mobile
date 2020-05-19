@@ -64,7 +64,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserProfile> queryUser(String param, QueryType queryType) async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     final authKey = await box.get("auth");
     final Uri _uri = Uri.http(
       END_POINT,

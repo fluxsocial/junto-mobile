@@ -1,24 +1,18 @@
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'bloc/bloc.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn(this.signInController);
@@ -47,9 +41,6 @@ class _SignInState extends State<SignIn> {
     super.dispose();
   }
 
-  /// Called when the user hits the `Sign In` button.
-  /// Makes a call to [SharedPreferences] then replaces the current route
-  /// with [JuntoCollective].
   Future<void> _handleSignIn(BuildContext context) async {
     logger.logInfo('User tapped sign in');
     final String email = _emailController.value.text.trim();
@@ -62,27 +53,13 @@ class _SignInState extends State<SignIn> {
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
     try {
-      final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-      final bool nightMode = await box.get('night-mode');
-      if (nightMode == null) {
-        await box.put('night-mode', false);
-      }
-      await Provider.of<AuthRepo>(context, listen: false)
-          .loginUser(loginDetails);
-      await Provider.of<UserDataProvider>(context, listen: false).initialize();
-      JuntoLoader.hide();
+      final themesProvider =
+          Provider.of<JuntoThemesProvider>(context, listen: false);
+      await themesProvider.setNightMode(false);
+
+      BlocProvider.of<AuthBloc>(context).add(LoginEvent(loginDetails));
       BlocProvider.of<PerspectivesBloc>(context).add(FetchPerspectives());
-      Navigator.of(context).pushReplacement(
-        FadeRoute<void>(
-          child: FeatureDiscovery(
-            child: const JuntoLotus(
-              address: null,
-              expressionContext: ExpressionContext.Collective,
-              source: null,
-            ),
-          ),
-        ),
-      );
+      JuntoLoader.hide();
     } catch (e, s) {
       logger.logException(e, s, 'Error during sign in');
       JuntoLoader.hide();

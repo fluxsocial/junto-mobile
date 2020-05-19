@@ -83,6 +83,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.loading();
     try {
       final user = await authRepo.loginUser(event.details);
+      await userDataProvider.initialize();
+
       yield AuthState.authenticated(user);
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
@@ -110,7 +112,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
     yield AuthState.loading();
     try {
-      final box = await Hive.openLazyBox(HiveBoxes.kAppBox);
+      final box = await Hive.box(HiveBoxes.kAppBox);
       final data = await box.get(HiveKeys.kUserData);
       logger.logDebug(data);
       final user = UserData.fromMap(jsonDecode(data));

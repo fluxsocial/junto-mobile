@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -62,8 +61,8 @@ mixin RFC3339 {
 /// the same as the user currently logged into the application.
 mixin MemberValidation {
   Future<bool> isHostUser(UserProfile incoming) async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
-    final id = await box.get("userId") as String;
+    final box = await Hive.box(HiveBoxes.kAppBox);
+    final id = await box.get(HiveKeys.kUserId) as String;
     return incoming.address == id;
   }
 

@@ -87,19 +87,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  FadeRoute<void>(
-                    child: FeatureDiscovery(
-                      child: JuntoLotus(
-                        address: address,
-                        expressionContext: expressionContext,
-                        source: source,
-                      ),
-                    ),
-                  ),
-                  (r) => r.isFirst,
-                );
+                Navigator.popUntil(context, (r) => r.isFirst);
               },
               child: Container(
                 alignment: Alignment.center,

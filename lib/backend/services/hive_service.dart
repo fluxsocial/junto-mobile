@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart' show LocalCache;
@@ -7,11 +7,10 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class HiveCache implements LocalCache {
-  HiveCache() {
-    init();
-  }
+  HiveCache();
 
   Future<void> init() async {
+    await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
     Hive.registerAdapter(ExpressionResponseAdapter());
     Hive.registerAdapter(ShortFormExpressionAdapter());
     Hive.registerAdapter(PhotoFormExpressionAdapter());
@@ -31,7 +30,7 @@ class HiveCache implements LocalCache {
   @override
   Future<void> insertExpressions(
       List<ExpressionResponse> expressions, DBBoxes db) async {
-    final box = await Hive.openLazyBox<ExpressionResponse>(_supportedBox[db]);
+    final box = await Hive.openBox<ExpressionResponse>(_supportedBox[db]);
     final _futures = <Future>[];
     for (ExpressionResponse expression in expressions) {
       if (!box.containsKey(expression.address)) {
@@ -43,7 +42,7 @@ class HiveCache implements LocalCache {
 
   @override
   Future<List<ExpressionResponse>> retrieveExpressions(DBBoxes db) async {
-    final box = await Hive.openLazyBox<ExpressionResponse>(_supportedBox[db]);
+    final box = await Hive.openBox<ExpressionResponse>(_supportedBox[db]);
     List<ExpressionResponse> items = [];
     for (dynamic key in box.keys) {
       ExpressionResponse res = await box.get(key);
@@ -57,7 +56,7 @@ class HiveCache implements LocalCache {
   Future<void> insertNotifications(List<JuntoNotification> notifications,
       {bool overwrite}) async {
     try {
-      final box = await Hive.openLazyBox<JuntoNotification>(
+      final box = await Hive.openBox<JuntoNotification>(
           _supportedBox[DBBoxes.notifications]);
       final _futures = <Future>[];
       for (JuntoNotification notification in notifications) {
@@ -76,7 +75,7 @@ class HiveCache implements LocalCache {
   @override
   Future<List<JuntoNotification>> retrieveNotifications() async {
     try {
-      final box = await Hive.openLazyBox<JuntoNotification>(
+      final box = await Hive.openBox<JuntoNotification>(
           _supportedBox[DBBoxes.notifications]);
       List<JuntoNotification> items = [];
       for (String key in box.keys) {
@@ -97,7 +96,7 @@ class HiveCache implements LocalCache {
   @override
   Future<void> deleteNotification(String notificationKey) async {
     try {
-      final box = await Hive.openLazyBox<JuntoNotification>(
+      final box = await Hive.openBox<JuntoNotification>(
           _supportedBox[DBBoxes.notifications]);
       box.delete(notificationKey);
     } catch (error) {
@@ -108,12 +107,11 @@ class HiveCache implements LocalCache {
   Future<void> wipe() async {
     try {
       if (Hive.isBoxOpen(HiveBoxes.kExpressions)) {
-        final exp =
-            await Hive.lazyBox<ExpressionResponse>(HiveBoxes.kExpressions);
+        final exp = await Hive.box<ExpressionResponse>(HiveBoxes.kExpressions);
         await exp.deleteAll(exp.keys);
       } else {
         final exp =
-            await Hive.openLazyBox<ExpressionResponse>(HiveBoxes.kExpressions);
+            await Hive.openBox<ExpressionResponse>(HiveBoxes.kExpressions);
         await exp.deleteAll(exp.keys);
       }
     } catch (e) {
@@ -122,10 +120,10 @@ class HiveCache implements LocalCache {
 
     try {
       if (Hive.isBoxOpen(HiveBoxes.kDen)) {
-        final den = await Hive.lazyBox<ExpressionResponse>(HiveBoxes.kDen);
+        final den = await Hive.box<ExpressionResponse>(HiveBoxes.kDen);
         await den.deleteAll(den.keys);
       } else {
-        final den = await Hive.openLazyBox<ExpressionResponse>(HiveBoxes.kDen);
+        final den = await Hive.openBox<ExpressionResponse>(HiveBoxes.kDen);
         await den.deleteAll(den.keys);
       }
     } catch (e) {
@@ -134,11 +132,10 @@ class HiveCache implements LocalCache {
 
     try {
       if (Hive.isBoxOpen(HiveBoxes.kPack)) {
-        final pack = await Hive.lazyBox<ExpressionResponse>(HiveBoxes.kPack);
+        final pack = await Hive.box<ExpressionResponse>(HiveBoxes.kPack);
         await pack.deleteAll(pack.keys);
       } else {
-        final pack =
-            await Hive.openLazyBox<ExpressionResponse>(HiveBoxes.kPack);
+        final pack = await Hive.openBox<ExpressionResponse>(HiveBoxes.kPack);
         await pack.deleteAll(pack.keys);
       }
     } catch (e) {
@@ -148,11 +145,11 @@ class HiveCache implements LocalCache {
     try {
       if (Hive.isBoxOpen(HiveBoxes.kNotifications)) {
         final notif =
-            await Hive.lazyBox<JuntoNotification>(HiveBoxes.kNotifications);
+            await Hive.box<JuntoNotification>(HiveBoxes.kNotifications);
         await notif.deleteAll(notif.keys);
       } else {
         final notif =
-            await Hive.openLazyBox<JuntoNotification>(HiveBoxes.kNotifications);
+            await Hive.openBox<JuntoNotification>(HiveBoxes.kNotifications);
         await notif.deleteAll(notif.keys);
       }
     } catch (e) {
@@ -161,10 +158,10 @@ class HiveCache implements LocalCache {
 
     try {
       if (Hive.isBoxOpen(HiveBoxes.kAppBox)) {
-        final app = await Hive.lazyBox(HiveBoxes.kAppBox);
+        final app = await Hive.box(HiveBoxes.kAppBox);
         await app.deleteAll(app.keys);
       } else {
-        final app = await Hive.openLazyBox(HiveBoxes.kAppBox);
+        final app = await Hive.openBox(HiveBoxes.kAppBox);
         await app.deleteAll(app.keys);
       }
     } catch (e) {
