@@ -108,7 +108,6 @@ class WelcomeState extends State<Welcome> {
   }
 
   Future<void> _handleSignUp() async {
-    setState(() {});
     final verificationCode = int.parse(verificationCodeController.text);
 
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
@@ -126,9 +125,9 @@ class WelcomeState extends State<Welcome> {
       bio: '',
     );
 
-    context
-        .bloc<AuthBloc>()
-        .add(SignUpEvent(details, profilePicture.file.value));
+    context.bloc<AuthBloc>().add(
+          SignUpEvent(details, profilePicture.file.value),
+        );
   }
 
   void _userNameSubmission() async {
