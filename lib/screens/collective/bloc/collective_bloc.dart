@@ -10,7 +10,9 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+
 import 'collective_state.dart';
+
 export 'collective_state.dart';
 
 part 'collective_event.dart';
@@ -44,9 +46,10 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   CollectiveState get initialState => CollectiveState.initial();
 
   @override
-  Stream<CollectiveState> mapEventToState(
-    CollectiveEvent event,
-  ) async* {
+  Stream<CollectiveState> mapEventToState(CollectiveEvent event) async* {
+    if (event is DeleteCollective) {
+      yield* _mapDeleteToState(event);
+    }
     if (event is FetchCollective) {
       yield* _mapFetchCollectiveToState(event);
     }
@@ -73,6 +76,26 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
           expressions.results.length == expressionsPerPage,
         );
       }
+    } on JuntoException catch (e, s) {
+      handleJuntoException(e, s);
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during refreshing the collective');
+      yield CollectiveState.error();
+    }
+  }
+
+  Stream<CollectiveState> _mapDeleteToState(DeleteCollective event) async* {
+    try {
+      await expressionRepository.deleteExpression(event.address);
+      final currentState = state as CollectivePopulated;
+      currentState.results
+          .removeWhere((element) => element.address == event.address);
+      yield CollectiveState.populated(
+        currentState.results,
+        false,
+        currentState.name,
+        currentState.results.length == expressionsPerPage,
+      );
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {

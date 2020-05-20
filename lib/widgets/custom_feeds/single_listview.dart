@@ -8,11 +8,13 @@ class SingleColumnListView extends StatelessWidget {
     Key key,
     @required this.data,
     @required this.privacyLayer,
+    @required this.deleteExpression,
     this.scrollChanged,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
   final String privacyLayer;
+  final ValueChanged<ExpressionResponse> deleteExpression;
 
   final ValueChanged<ScrollNotification> scrollChanged;
 
@@ -44,6 +46,7 @@ class SingleColumnListView extends StatelessWidget {
                 SingleColumnExpressionPreview(
                   key: ValueKey<String>(data[index].address),
                   expression: data[index],
+                  deleteExpression: deleteExpression,
                 )
           ],
         ),
@@ -58,10 +61,12 @@ class SingleColumnSliverListView extends StatelessWidget {
     Key key,
     @required this.data,
     @required this.privacyLayer,
+    @required this.deleteExpression,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
   final String privacyLayer;
+  final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +76,7 @@ class SingleColumnSliverListView extends StatelessWidget {
           if (data[index].privacy == privacyLayer) {
             return SingleColumnExpressionPreview(
               key: ValueKey<String>(data[index].address),
+              deleteExpression: deleteExpression,
               expression: data[index],
             );
           }

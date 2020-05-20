@@ -76,6 +76,11 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                     SingleColumnSliverListView(
                       data: _results,
                       privacyLayer: widget.privacy,
+                      deleteExpression: (expression) {
+                        context.bloc<PackBloc>().add(
+                              DeletePackExpression(expression.address),
+                            );
+                      },
                     ),
                   if (appConfig.flavor == Flavor.dev && _results.length > 50)
                     SliverToBoxAdapter(

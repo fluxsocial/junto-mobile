@@ -76,7 +76,10 @@ class SingleColumnExpressionPreview extends StatelessWidget
             // expression preview handle + more action items
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ExpressionPreviewBottom(expression: expression),
+              child: ExpressionPreviewBottom(
+                expression: expression,
+                deleteExpression: deleteExpression,
+              ),
             ),
           ],
         ),
