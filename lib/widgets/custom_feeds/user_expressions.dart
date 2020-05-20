@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +36,10 @@ class _UserExpressionsState extends State<UserExpressions> {
   Future<void> _switchColumnView(ExpressionFeedLayout columnType) async {
     await Provider.of<UserDataProvider>(context, listen: false)
         .switchColumnLayout(columnType);
+  }
+
+  void deleteDenExpression(ExpressionResponse expression) {
+    context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
   }
 
   @override
@@ -71,15 +75,17 @@ class _UserExpressionsState extends State<UserExpressions> {
                         return TwoColumnList(
                           data: results,
                           useSliver: true,
+                          deleteExpression: deleteDenExpression,
                         );
                       }
                       return SingleColumnSliverListView(
                         data: results,
                         privacyLayer: widget.privacy,
+                        deleteExpression: deleteDenExpression,
                       );
                     },
                   ),
-                  if (appConfig.flavor == Flavor.dev)
+                  if (appConfig.flavor == Flavor.dev && results.length > 50)
                     SliverToBoxAdapter(
                       child: FetchMoreButton(
                         onPressed: () {
