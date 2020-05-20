@@ -33,7 +33,8 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     Stream<CollectiveEvent> events,
     TransitionFunction<CollectiveEvent, CollectiveState> transitionFn,
   ) {
-    final nonDebounceStream = events.where((event) => event is FetchCollective);
+    final nonDebounceStream = events.where(
+        (event) => event is FetchCollective || event is DeleteCollective);
     final debounceStream = events
         .where((event) =>
             event is RefreshCollective || event is FetchMoreCollective)
@@ -88,10 +89,10 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     try {
       await expressionRepository.deleteExpression(event.address);
       final currentState = state as CollectivePopulated;
-      currentState.results
-          .removeWhere((element) => element.address == event.address);
+      final results = currentState.results.toList();
+      results.removeWhere((element) => element.address == event.address);
       yield CollectiveState.populated(
-        currentState.results,
+        results,
         false,
         currentState.name,
         currentState.results.length == expressionsPerPage,

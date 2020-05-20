@@ -25,7 +25,8 @@ class ExpressionFeed extends StatefulWidget {
 
 class _ExpressionFeedState extends State<ExpressionFeed> {
   void _removeExpression(ExpressionResponse expression) {
-    context.bloc<CollectiveBloc>().add(DeleteCollective(expression.address));
+    final bloc = context.bloc<CollectiveBloc>();
+    bloc.add(DeleteCollective(expression.address));
   }
 
   @override
