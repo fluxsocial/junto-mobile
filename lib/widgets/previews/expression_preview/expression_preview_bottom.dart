@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/action_items/expression_action_items.dart';
 
 class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
-  const ExpressionPreviewBottom({this.expression});
+  const ExpressionPreviewBottom({
+    @required this.deleteExpression,
+    @required this.expression,
+  });
 
   final expression;
+  final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +52,7 @@ class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
                   color: Colors.transparent,
                   child: ExpressionActionItems(
                     expression: expression,
-                    deleteExpression: (expression) {
-                      //TODO(Nash): Remove expression
-                    },
+                    deleteExpression: deleteExpression,
                   ),
                 ),
               );

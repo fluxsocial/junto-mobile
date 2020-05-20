@@ -7,10 +7,12 @@ class TwoColumnList extends StatelessWidget {
   const TwoColumnList({
     Key key,
     @required this.data,
+    @required this.deleteExpression,
     this.useSliver = false,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
+  final ValueChanged<ExpressionResponse> deleteExpression;
   final bool useSliver;
 
   @override
@@ -33,6 +35,7 @@ class TwoColumnList extends StatelessWidget {
             return TwoColumnExpressionPreview(
               key: ValueKey<String>(data[index].address),
               expression: data[index],
+              deleteExpression: deleteExpression,
             );
           },
           itemCount: data.length,
@@ -56,6 +59,7 @@ class TwoColumnList extends StatelessWidget {
           return TwoColumnExpressionPreview(
             key: ValueKey<String>(data[index].address),
             expression: data[index],
+            deleteExpression: deleteExpression,
           );
         },
         itemCount: data.length,

@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/models.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/backend/user_data_provider.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_connection_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_pack_notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/connection_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/pack_request_notification.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/backend/user_data_provider.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:provider/provider.dart';
 
 class NotificationTile extends StatelessWidget {
   const NotificationTile({
@@ -63,8 +63,11 @@ class NotificationTile extends StatelessWidget {
           Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) =>
-                  ExpressionOpen(sourceExpression, userAddress),
+              builder: (context) => ExpressionOpen(
+                (_) {},
+                sourceExpression,
+                userAddress,
+              ),
             ),
           );
         } catch (error) {

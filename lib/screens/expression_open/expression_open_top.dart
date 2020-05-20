@@ -7,11 +7,16 @@ import 'package:junto_beta_mobile/widgets/action_items/expression_action_items.d
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class ExpressionOpenTop extends StatelessWidget with MemberValidation {
-  const ExpressionOpenTop({Key key, this.expression, this.userAddress})
+  const ExpressionOpenTop(
+      {Key key,
+      @required this.deleteExpression,
+      this.expression,
+      this.userAddress})
       : super(key: key);
 
   final ExpressionResponse expression;
   final String userAddress;
+  final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +64,7 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
                 ),
                 builder: (BuildContext context) => ExpressionActionItems(
                   expression: expression,
-                  deleteExpression: (expression) {
-                    //TODO(Nash): Handle delete expressions
-                  },
+                  deleteExpression: deleteExpression,
                 ),
               );
             },
