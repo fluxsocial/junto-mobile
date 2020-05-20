@@ -19,6 +19,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
+import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
@@ -177,116 +178,120 @@ class WelcomeState extends State<Welcome> {
     authRepo = Provider.of<AuthRepo>(context, listen: false);
     return WillPopScope(
       onWillPop: _animateOnBackPress,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          if (FocusScope.of(context).hasFocus) {
-            FocusScope.of(context).unfocus();
-          }
-        },
-        child: Scaffold(
-          // setting this to true causes white background to be shown during keyboard opening
-          resizeToAvoidBottomInset: false,
-          body: Stack(
-            children: <Widget>[
-              BackgroundTheme(),
-              PageView(
-                onPageChanged: onPageChanged,
-                controller: _welcomeController,
-                scrollDirection: Axis.vertical,
-                physics: const NeverScrollableScrollPhysics(),
-                children: <Widget>[
-                  PageView(
-                    controller: _signInController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      WelcomeMain(
-                        onSignIn: _onSignIn,
-                        onSignUp: _onSignUp,
-                      ),
-                      SignIn(_signInController),
-                      ResetPasswordRequest(
-                        signInController: _signInController,
-                        email: _email,
-                      ),
-                      ValueListenableBuilder<String>(
-                          valueListenable: _email,
-                          builder: (context, email, _) {
-                            return ResetPasswordConfirm(
-                              signInController: _signInController,
-                              email: email,
-                            );
-                          }),
-                    ],
-                  ),
-                  SignUpTextFieldWrapper(
-                    controller: nameController,
-                    textInputActionType: TextInputAction.done,
-                    onSubmit: _nameCheck,
-                    maxLength: 50,
-                    hint: S.of(context).welcome_my_name_is,
-                    label: S.of(context).welcome_name_label,
-                    title: S.of(context).welcome_name_hint,
-                    textCapitalization: TextCapitalization.words,
-                  ),
-                  SignUpTextFieldWrapper(
-                    controller: userNameController,
-                    textInputActionType: TextInputAction.done,
-                    onSubmit: _userNameSubmission,
-                    maxLength: 22,
-                    hint: S.of(context).welcome_username_ill_go,
-                    label: S.of(context).welcome_username_label,
-                    title: S.of(context).welcome_username_hint,
-                    textCapitalization: TextCapitalization.none,
-                  ),
-                  SignUpThemes(),
-                  SignUpAbout(
-                    nextPage: _nextSignUpPage,
-                    pronounController: pronounController,
-                    locationController: locationController,
-                    websiteController: websiteController,
-                  ),
-                  SignUpPhotos(profilePicture),
-                  SignUpRegister(
-                    emailController: emailController,
-                    passwordController: passwordController,
-                    confirmPasswordController: confirmPasswordController,
-                  ),
-                  SignUpVerify(
-                    handleSignUp: _handleSignUp,
-                    verificationController: verificationCodeController,
-                  )
-                ],
-              ),
-              if (_currentIndex != 0 &&
-                  MediaQuery.of(context).viewInsets.bottom == 0)
-                SignUpArrows(
-                  welcomeController: _welcomeController,
-                  currentIndex: _currentIndex,
-                  onTap: _nextSignUpPage,
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: _onBlocStateChange,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            if (FocusScope.of(context).hasFocus) {
+              FocusScope.of(context).unfocus();
+            }
+          },
+          child: Scaffold(
+            // setting this to true causes white background to be shown during keyboard opening
+            resizeToAvoidBottomInset: false,
+            body: Stack(
+              children: <Widget>[
+                BackgroundTheme(),
+                PageView(
+                  onPageChanged: onPageChanged,
+                  controller: _welcomeController,
+                  scrollDirection: Axis.vertical,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: <Widget>[
+                    PageView(
+                      controller: _signInController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        WelcomeMain(
+                          onSignIn: _onSignIn,
+                          onSignUp: _onSignUp,
+                        ),
+                        SignIn(_signInController),
+                        ResetPasswordRequest(
+                          signInController: _signInController,
+                          email: _email,
+                        ),
+                        ValueListenableBuilder<String>(
+                            valueListenable: _email,
+                            builder: (context, email, _) {
+                              return ResetPasswordConfirm(
+                                signInController: _signInController,
+                                email: email,
+                              );
+                            }),
+                      ],
+                    ),
+                    SignUpTextFieldWrapper(
+                      controller: nameController,
+                      textInputActionType: TextInputAction.done,
+                      onSubmit: _nameCheck,
+                      maxLength: 50,
+                      hint: S.of(context).welcome_my_name_is,
+                      label: S.of(context).welcome_name_label,
+                      title: S.of(context).welcome_name_hint,
+                      textCapitalization: TextCapitalization.words,
+                    ),
+                    SignUpTextFieldWrapper(
+                      controller: userNameController,
+                      textInputActionType: TextInputAction.done,
+                      onSubmit: _userNameSubmission,
+                      maxLength: 22,
+                      hint: S.of(context).welcome_username_ill_go,
+                      label: S.of(context).welcome_username_label,
+                      title: S.of(context).welcome_username_hint,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    SignUpThemes(),
+                    SignUpAbout(
+                      nextPage: _nextSignUpPage,
+                      pronounController: pronounController,
+                      locationController: locationController,
+                      websiteController: websiteController,
+                    ),
+                    SignUpPhotos(profilePicture),
+                    SignUpRegister(
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      confirmPasswordController: confirmPasswordController,
+                    ),
+                    SignUpVerify(
+                      handleSignUp: _handleSignUp,
+                      verificationController: verificationCodeController,
+                    )
+                  ],
                 ),
-              if (_currentIndex != 0)
-                Positioned(
-                  top: MediaQuery.of(context).size.height * .08,
-                  left: 20,
-                  child: Image.asset(
-                    'assets/images/junto-mobile__logo.png',
-                    height: 38,
-                    color: Colors.white,
+                if (_currentIndex != 0 &&
+                    MediaQuery.of(context).viewInsets.bottom == 0)
+                  SignUpArrows(
+                    welcomeController: _welcomeController,
+                    currentIndex: _currentIndex,
+                    onTap: _nextSignUpPage,
                   ),
+                if (_currentIndex != 0)
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * .08,
+                    left: 20,
+                    child: Image.asset(
+                      'assets/images/junto-mobile__logo.png',
+                      height: 38,
+                      color: Colors.white,
+                    ),
+                  ),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthUnauthenticated && state.loading == true) {
+                      return Container(
+                        color:
+                            Theme.of(context).backgroundColor.withOpacity(.8),
+                        child: JuntoProgressIndicator(),
+                      );
+                    }
+                    return SizedBox();
+                  },
                 ),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  if (state is AuthUnauthenticated && state.loading == true) {
-                    return Container(
-                      color: Theme.of(context).backgroundColor.withOpacity(.8),
-                      child: JuntoProgressIndicator(),
-                    );
-                  }
-                  return SizedBox();
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -360,6 +365,10 @@ class WelcomeState extends State<Welcome> {
         if (!_passwordCheck(password)) {
           return;
         }
+        if (Validator.validateEmail(email) != null) {
+          _showEmailError();
+          return;
+        }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
         final result = await authRepo.verifyEmail(email);
@@ -415,6 +424,15 @@ class WelcomeState extends State<Welcome> {
     }
   }
 
+  void _showEmailError() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => SingleActionDialog(
+        dialogText: S.of(context).welcome_invalid_email,
+      ),
+    );
+  }
+
   void onPageChanged(int index) {
     setState(() {
       _currentIndex = index;
@@ -463,5 +481,28 @@ class WelcomeState extends State<Welcome> {
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 300),
     );
+  }
+
+  void _onBlocStateChange(BuildContext context, AuthState state) {
+    print(state);
+    if (state is AuthUnauthenticated) {
+      if (state.error == true) {
+        if (state.errorMessage != null && state.errorMessage.isNotEmpty) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              dialogText: state.errorMessage,
+            ),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              dialogText: S.of(context).welcome_wrong_email_or_password,
+            ),
+          );
+        }
+      }
+    }
   }
 }
