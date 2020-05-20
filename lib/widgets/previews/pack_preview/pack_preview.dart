@@ -46,7 +46,7 @@ class PackPreview extends StatelessWidget {
                   Text(
                     group.address == userProfile.pack.address
                         ? 'My Pack'
-                        : '${group.creator['name']?.trim()}\'s Pack',
+                        : '${group.creator['name']?.trim()}',
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.subtitle1,
                   ),

@@ -38,7 +38,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
     'SUBSCRIPTIONS',
     'SUBSCRIBERS',
     'CONNECTIONS',
-    'PACK',
+    'MY PACK',
   ];
 
   Future<void> getUserRelationships() async {
