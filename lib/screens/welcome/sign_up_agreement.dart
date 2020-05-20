@@ -54,6 +54,7 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
                       _currentIndex = index;
                     });
                   },
+                  physics: NeverScrollableScrollPhysics(),
                   children: <Widget>[
                     JuntoRules(),
                     JuntoTerms(),
