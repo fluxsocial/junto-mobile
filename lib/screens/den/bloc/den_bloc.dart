@@ -63,9 +63,9 @@ class DenBloc extends Bloc<DenEvent, DenState> {
       if (state is DenLoadedState) {
         final DenLoadedState data = state;
         await expressionRepo.deleteExpression(event.address);
-        data.expressions
-            .removeWhere((element) => element.address == event.address);
-        yield DenLoadedState(data.expressions);
+        final updatedList = data.expressions;
+        updatedList.removeWhere((element) => element.address == event.address);
+        yield DenLoadedState(updatedList);
       }
     } on JuntoException catch (e) {
       yield DenErrorState(e.message);
