@@ -188,14 +188,26 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     try {
       await expressionRepo.deleteExpression(event.expressionAddress);
       final currentState = state as PacksLoaded;
-      currentState.publicExpressions.results
+      final publicExpressions = currentState.publicExpressions.results.toList();
+      publicExpressions
           .removeWhere((element) => element.address == event.expressionAddress);
-      currentState.publicExpressions.results
+      final privateExpression = currentState.publicExpressions.results.toList();
+      privateExpression
           .removeWhere((element) => element.address == event.expressionAddress);
 
+      final publicResults = QueryResults<ExpressionResponse>(
+        lastTimestamp: currentState.publicExpressions.lastTimestamp,
+        results: publicExpressions,
+        resultCount: publicExpressions.length,
+      );
+      final privateResults = QueryResults<ExpressionResponse>(
+        lastTimestamp: currentState.privateExpressions.lastTimestamp,
+        results: privateExpression,
+        resultCount: privateExpression.length,
+      );
       yield PacksLoaded(
-        currentState.publicExpressions,
-        currentState.privateExpressions,
+        publicResults,
+        privateResults,
         currentState.groupMemebers,
         currentState.pack,
       );
