@@ -30,25 +30,15 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
       onTap: () {
         // pending - create conditional statement that renders ExpressionOpenCreated if
         // the expression was created by the user. Otherwise display ExpressionOpen
-        if (expression.type == 'PhotoForm') {
-          Navigator.of(context).push(
-            FadeRoute<void>(
-              child: ExpressionOpen(
-                expression,
-                userData.userAddress,
-              ),
+
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => ExpressionOpen(
+              expression,
+              userData.userAddress,
             ),
-          );
-        } else {
-          Navigator.of(context).push(
-            CupertinoPageRoute(
-              builder: (context) => ExpressionOpen(
-                expression,
-                userData.userAddress,
-              ),
-            ),
-          );
-        }
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),

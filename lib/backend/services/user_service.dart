@@ -437,6 +437,7 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.get(
       '/users/$userAddress/related/$targetAddress',
     );
+    logger.logInfo(_serverResponse.body);
     final Map<String, dynamic> result =
         JuntoHttp.handleResponse(_serverResponse);
 

@@ -13,7 +13,6 @@ class PendingPackMembers extends StatelessWidget {
     return Consumer<NotificationsHandler>(
       builder: (context, data, child) {
         final notifications = data.notifications;
-        print(notifications);
         if (notifications.length > 0) {
           return ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 10),
