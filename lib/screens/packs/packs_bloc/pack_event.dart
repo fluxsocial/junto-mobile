@@ -24,3 +24,9 @@ class FetchPacksMembers extends PackEvent {
 }
 
 class FetchMorePacksMembers extends PackEvent {}
+
+class DeletePackExpression extends PackEvent {
+  DeletePackExpression(this.expressionAddress);
+
+  final String expressionAddress;
+}

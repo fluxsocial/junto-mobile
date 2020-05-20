@@ -38,6 +38,9 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     if (event is RefreshPacks) {
       yield* _mapRefreshPacksToState(event);
     }
+    if (event is DeletePackExpression) {
+      yield* _mapDeletePackExpression(event);
+    }
     if (event is FetchMorePacks) {
       yield* _mapFetchMorePacksToState(event);
     }
@@ -178,6 +181,29 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       logger.logException(error, stack);
       yield PacksError();
     }
+  }
+
+  Stream<PackState> _mapDeletePackExpression(
+      DeletePackExpression event) async* {
+    try {
+      await expressionRepo.deleteExpression(event.expressionAddress);
+      final currentState = state as PacksLoaded;
+      currentState.publicExpressions.results
+          .removeWhere((element) => element.address == event.expressionAddress);
+      currentState.publicExpressions.results
+          .removeWhere((element) => element.address == event.expressionAddress);
+
+      yield PacksLoaded(
+        currentState.publicExpressions,
+        currentState.privateExpressions,
+        currentState.groupMemebers,
+        currentState.pack,
+      );
+    } catch (error, stack) {
+      logger.logException(error, stack);
+      yield PacksError();
+    }
+    ;
   }
 
   Future<List> _fetchExpressionAndMembers() async {
