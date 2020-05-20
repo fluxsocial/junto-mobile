@@ -13,7 +13,6 @@ import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -55,7 +54,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
     });
   }
 
-  logOut(BuildContext context) async {
+  Future<void> logOut() async {
     try {
       await context.bloc<AuthBloc>().add(LogoutEvent());
     } catch (e) {
