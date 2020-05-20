@@ -6,7 +6,12 @@ import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 class AcceptButton extends StatelessWidget {
   const AcceptButton({
     Key key,
+    @required this.pageView,
+    @required this.nextPage,
   }) : super(key: key);
+
+  final int pageView;
+  final Function nextPage;
 
   @override
   Widget build(BuildContext context) {
@@ -15,30 +20,29 @@ class AcceptButton extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 40),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            stops: const <double>[0.1, 0.9],
-            colors: <Color>[
-              Theme.of(context).colorScheme.secondary,
-              Theme.of(context).colorScheme.primary
-            ],
-          ),
+          color: Theme.of(context).colorScheme.primaryVariant,
           borderRadius: BorderRadius.circular(40.0),
         ),
         child: FlatButton(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40.0),
           ),
-          onPressed: () =>
-              BlocProvider.of<AuthBloc>(context).add(AcceptAgreements()),
+          onPressed: () {
+            if (pageView == 0) {
+              nextPage();
+            } else {
+              BlocProvider.of<AuthBloc>(context).add(
+                AcceptAgreements(),
+              );
+            }
+          },
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 20,
           ),
           color: Colors.transparent,
           child: Text(
-            S.of(context).count_me_in,
+            pageView == 0 ? 'NEXT' : S.of(context).count_me_in,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,

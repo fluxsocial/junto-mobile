@@ -62,6 +62,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield AuthState.agreementsRequired(user);
     } on JuntoException catch (e) {
       logger.logException(e);
+
       yield AuthState.unauthenticated();
     } catch (error) {
       logger.logException(error);

@@ -18,38 +18,70 @@ class JuntoRules extends StatelessWidget {
               margin: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height * .05,
               ),
-              child: Text(
-                'I. Express yourself freely. Be real and hold space for authenticity.',
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.left,
+              child: RichText(
+                text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'I. ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      TextSpan(
+                          text:
+                              'Express yourself freely. Be real and hold space for authenticity.'),
+                    ]),
               ),
             ),
             Container(
               margin: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height * .05,
               ),
-              child: Text(
-                "II. Accept everyone else's experience as valid, even if it doesn't look like yours.",
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w500,
-                ),
+              child: RichText(
+                text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'II. ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      TextSpan(
+                        text:
+                            "Accept everyone else's experience as valid, even if it doesn't look like yours.",
+                      ),
+                    ]),
               ),
             ),
-            Container(
-              child: Text(
-                'III. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+            RichText(
+              text: TextSpan(
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'III. ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    TextSpan(
+                      text:
+                          'Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
+                    ),
+                  ]),
             ),
           ],
         ),
