@@ -1,8 +1,8 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -82,9 +82,10 @@ class JuntoDenState extends State<JuntoDen>
               providers: [
                 BlocProvider<DenBloc>(
                   create: (context) => DenBloc(
-                      Provider.of<UserRepo>(context, listen: false),
-                      Provider.of<UserDataProvider>(context, listen: false))
-                    ..add(LoadDen(user.userAddress)),
+                    Provider.of<UserRepo>(context, listen: false),
+                    Provider.of<UserDataProvider>(context, listen: false),
+                    Provider.of<ExpressionRepo>(context, listen: false),
+                  )..add(LoadDen(user.userAddress)),
                 ),
                 BlocProvider<ChannelFilteringBloc>(
                   create: (ctx) => ChannelFilteringBloc(

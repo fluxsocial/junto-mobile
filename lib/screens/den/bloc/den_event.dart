@@ -13,3 +13,9 @@ class LoadDen extends DenEvent {
 class LoadMoreDen extends DenEvent {}
 
 class RefreshDen extends DenEvent {}
+
+class DeleteDenExpression extends DenEvent {
+  DeleteDenExpression(this.address);
+
+  final String address;
+}
