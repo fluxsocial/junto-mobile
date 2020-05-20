@@ -46,8 +46,6 @@ class ProfilePicture {
 }
 
 class WelcomeState extends State<Welcome> {
-  // Used when resetting password
-  final ValueNotifier<String> _email = ValueNotifier("");
   final ProfilePicture profilePicture = ProfilePicture();
 
   PageController _welcomeController;
@@ -207,19 +205,18 @@ class WelcomeState extends State<Welcome> {
                           onSignIn: _onSignIn,
                           onSignUp: _onSignUp,
                         ),
-                        SignIn(_signInController),
+                        SignIn(
+                          _signInController,
+                          emailController,
+                        ),
                         ResetPasswordRequest(
                           signInController: _signInController,
-                          email: _email,
+                          emailController: emailController,
                         ),
-                        ValueListenableBuilder<String>(
-                            valueListenable: _email,
-                            builder: (context, email, _) {
-                              return ResetPasswordConfirm(
-                                signInController: _signInController,
-                                email: email,
-                              );
-                            }),
+                        ResetPasswordConfirm(
+                          signInController: _signInController,
+                          email: emailController.text,
+                        ),
                       ],
                     ),
                     SignUpTextFieldWrapper(

@@ -12,35 +12,33 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'bloc/bloc.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn(this.signInController);
+  const SignIn(this.signInController, this.emailController);
 
   final PageController signInController;
+  final TextEditingController emailController;
 
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-  TextEditingController _emailController;
   TextEditingController _passwordController;
 
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
     _passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
   Future<void> _handleSignIn(BuildContext context) async {
     logger.logInfo('User tapped sign in');
-    final String email = _emailController.text.trim();
+    final String email = widget.emailController.text.trim();
     final String password = _passwordController.text;
     if (email.isEmpty || password.isEmpty) {
       _showValidationError();
@@ -84,7 +82,7 @@ class _SignInState extends State<SignIn> {
                     onSubmit: () {
                       FocusScope.of(context).nextFocus();
                     },
-                    valueController: _emailController,
+                    valueController: widget.emailController,
                     keyboardType: TextInputType.emailAddress,
                     textCapitalization: TextCapitalization.none,
                   ),
