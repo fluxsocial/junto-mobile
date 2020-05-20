@@ -1,22 +1,27 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:provider/provider.dart';
 
-class PackOpenActionItems extends StatelessWidget {
+class PackOpenActionItems extends StatefulWidget {
   const PackOpenActionItems({@required this.pack, this.userProfile});
 
   final Group pack;
   final UserData userProfile;
 
-  Future<void> leavePack(BuildContext context) async {
+  @override
+  _PackOpenActionItemsState createState() => _PackOpenActionItemsState();
+}
+
+class _PackOpenActionItemsState extends State<PackOpenActionItems> {
+  Future<void> leavePack() async {
     try {
       await Provider.of<GroupRepo>(context, listen: false).removeGroupMember(
-        pack.address,
-        userProfile.user.address,
+        widget.pack.address,
+        widget.userProfile.user.address,
       );
     } catch (e, s) {
       logger.logException(e, s);
