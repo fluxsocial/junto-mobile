@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_state.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
@@ -22,6 +23,7 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/sign_up_arrows.dart';
@@ -30,12 +32,6 @@ import 'widgets/welcome_main.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({Key key}) : super(key: key);
-
-  static Route<dynamic> route() {
-    return MaterialPageRoute<dynamic>(
-      builder: (BuildContext context) => Welcome(),
-    );
-  }
 
   @override
   State<StatefulWidget> createState() {
@@ -279,6 +275,17 @@ class WelcomeState extends State<Welcome> {
                     color: Colors.white,
                   ),
                 ),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthUnauthenticated && state.loading == true) {
+                    return Container(
+                      color: Theme.of(context).backgroundColor.withOpacity(.8),
+                      child: JuntoProgressIndicator(),
+                    );
+                  }
+                  return SizedBox();
+                },
+              ),
             ],
           ),
         ),
