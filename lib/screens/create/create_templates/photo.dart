@@ -86,6 +86,7 @@ class CreatePhotoState extends State<CreatePhoto> {
         setState(() {
           imageFile = null;
         });
+        _onPickPressed(source: imageSource);
         return;
       }
       setState(() {
