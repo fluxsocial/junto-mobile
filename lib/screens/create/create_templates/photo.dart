@@ -28,6 +28,7 @@ class CreatePhoto extends StatefulWidget {
 
 // State for CreatePhoto class
 class CreatePhotoState extends State<CreatePhoto> {
+  File preCroppedFile;
   File imageFile;
   TextEditingController _captionController;
   bool _showBottomNav = true;
@@ -48,26 +49,40 @@ class CreatePhotoState extends State<CreatePhoto> {
       }
 
       if (image == null) {
-        setState(() => imageFile = null);
+        setState(() {
+          imageFile = null;
+        });
         return;
+      } else {
+        setState(() {
+          preCroppedFile = image;
+        });
       }
-      final File cropped = await ImageCroppingDialog.show(context, image,
-          aspectRatios: <String>[
-            '1:1',
-            '2:3',
-            '3:2',
-            '3:4',
-            '4:3',
-            '4:5',
-            '5:4',
-            '9:16',
-            '16:9'
-          ]);
+
+      final File cropped = await ImageCroppingDialog.show(
+        context,
+        image,
+        aspectRatios: <String>[
+          '1:1',
+          '2:3',
+          '3:2',
+          '3:4',
+          '4:3',
+          '4:5',
+          '5:4',
+          '9:16',
+          '16:9'
+        ],
+      );
       if (cropped == null) {
-        setState(() => imageFile = null);
+        setState(() {
+          imageFile = null;
+        });
         return;
       }
-      setState(() => imageFile = cropped);
+      setState(() {
+        imageFile = cropped;
+      });
       _toggleBottomNav(false);
     } catch (e, s) {
       logger.logException(e, s);
@@ -75,7 +90,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   Future<void> _cropPhoto() async {
-    final File image = imageFile;
+    final File image = preCroppedFile;
     final File cropped = await ImageCroppingDialog.show(context, image,
         aspectRatios: <String>[
           '1:1',
