@@ -189,12 +189,11 @@ class AppBarFeatureDiscovery extends StatelessWidget {
       child: JuntoDescribedFeatureOverlay(
         icon: OverlayInfoIcon(),
         featureId: 'collective_info_id',
-        title:
-            'This is the Collective, where all public content is shown. Click on an expression to open it.',
+        title: 'This is the Collective, where all public content is shown.',
         learnMore: true,
         hasUpNext: true,
         upNextText: [
-          "Ethical, human-centered algorithms that filter content to create feeds according to high activity (not based on your previous activity)",
+          "Transparent, human-centered algorithms that filter content to create feeds according to high activity (not based on your previous activity)",
         ],
         learnMoreText: [
           "The Collective is a shared space that anyone on Junto can post into. Our hope is that people will discover meaningful content and relationships with those they may not know and help to maintain a positive culture.",
