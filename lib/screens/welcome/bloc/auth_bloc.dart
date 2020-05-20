@@ -51,7 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
-    yield AuthState.loading();
+    yield AuthState.unauthenticated(loading: true);
     try {
       logger.logInfo('User signed up');
       final user =
@@ -61,9 +61,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield AuthState.agreementsRequired(user);
     } on JuntoException catch (e) {
-      logger.logException(e);
+      logger.logError('Error during sign up: ${e.message}');
 
       yield AuthState.unauthenticated();
+      yield AuthState.unauthenticated(error: true, errorMessage: e.message);
     } catch (error) {
       logger.logException(error);
       yield AuthState.unauthenticated();

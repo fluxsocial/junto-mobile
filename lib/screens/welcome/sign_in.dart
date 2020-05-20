@@ -58,87 +58,84 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: _onBlocStateChange,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: SignInBackNav(signInController: widget.signInController),
-        ),
-        backgroundColor: Colors.transparent,
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SignUpTextField(
-                      hint: S.of(context).welcome_email_hint,
-                      maxLength: 100,
-                      textInputActionType: TextInputAction.next,
-                      onSubmit: () {
-                        FocusScope.of(context).nextFocus();
-                      },
-                      valueController: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                    const SizedBox(height: 30),
-                    SignUpTextField(
-                      hint: S.of(context).welcome_password_hint,
-                      maxLength: 100,
-                      textInputActionType: TextInputAction.done,
-                      onSubmit: () async {
-                        await _handleSignIn(context);
-                      },
-                      obscureText: true,
-                      valueController: _passwordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  CallToActionButton(
-                    callToAction: () {
-                      _handleSignIn(context);
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: SignInBackNav(signInController: widget.signInController),
+      ),
+      backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SignUpTextField(
+                    hint: S.of(context).welcome_email_hint,
+                    maxLength: 100,
+                    textInputActionType: TextInputAction.next,
+                    onSubmit: () {
+                      FocusScope.of(context).nextFocus();
                     },
-                    title: S.of(context).welcome_sign_in,
+                    valueController: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    textCapitalization: TextCapitalization.none,
                   ),
                   const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: () {
-                      widget.signInController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.decelerate,
-                      );
+                  SignUpTextField(
+                    hint: S.of(context).welcome_password_hint,
+                    maxLength: 100,
+                    textInputActionType: TextInputAction.done,
+                    onSubmit: () async {
+                      await _handleSignIn(context);
                     },
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 120),
-                      child: Text(
-                        S.of(context).reset_password,
-                        style: TextStyle(
-                          letterSpacing: 1.7,
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                    obscureText: true,
+                    valueController: _passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    textCapitalization: TextCapitalization.none,
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Column(
+              children: [
+                CallToActionButton(
+                  callToAction: () {
+                    _handleSignIn(context);
+                  },
+                  title: S.of(context).welcome_sign_in,
+                ),
+                const SizedBox(height: 30),
+                GestureDetector(
+                  onTap: () {
+                    widget.signInController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.decelerate,
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 120),
+                    child: Text(
+                      S.of(context).reset_password,
+                      style: TextStyle(
+                        letterSpacing: 1.7,
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -151,28 +148,5 @@ class _SignInState extends State<SignIn> {
         dialogText: message ?? S.of(context).welcome_wrong_email_or_password,
       ),
     );
-  }
-
-  void _onBlocStateChange(BuildContext context, AuthState state) {
-    print(state);
-    if (state is AuthUnauthenticated) {
-      if (state.error == true) {
-        if (state.errorMessage != null && state.errorMessage.isNotEmpty) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => SingleActionDialog(
-              dialogText: state.errorMessage,
-            ),
-          );
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => SingleActionDialog(
-              dialogText: S.of(context).welcome_wrong_email_or_password,
-            ),
-          );
-        }
-      }
-    }
   }
 }
