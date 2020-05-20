@@ -81,5 +81,6 @@
   "menu_are_you_sure_to_logout": "Are you sure you want to log out?",
   "menu_relations": "Relations",
   "menu_search": "Search",
-  "menu_my_den": "My Den"
+  "menu_my_den": "My Den",
+  "welcome_invalid_email": "Make sure you entered a correct e-mail"
 }

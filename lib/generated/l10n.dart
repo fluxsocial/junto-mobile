@@ -764,6 +764,15 @@ class S {
       args: [],
     );
   }
+
+  String get welcome_invalid_email {
+    return Intl.message(
+      'Make sure you entered a correct e-mail',
+      name: 'welcome_invalid_email',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
