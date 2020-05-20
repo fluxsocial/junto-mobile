@@ -74,7 +74,7 @@ class HomePage extends StatelessWidget {
               loading: (_) => HomeLoadingPage(),
               agreementsRequired: (_) => SignUpAgreements(),
               authenticated: (_) => HomePageContent(),
-              unauthenticated: (_) => Welcome(),
+              unauthenticated: (_) => const Welcome(),
             ),
           ),
         ],
