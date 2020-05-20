@@ -30,22 +30,30 @@ class CreatePhoto extends StatefulWidget {
 class CreatePhotoState extends State<CreatePhoto> {
   File preCroppedFile;
   File imageFile;
+  ImageSource imageSource;
   TextEditingController _captionController;
   bool _showBottomNav = true;
 
-  Future<void> _onPickPressed({@required String source}) async {
+  Future<void> _onPickPressed({@required ImageSource source}) async {
     try {
       File image;
-      if (source == 'Gallery') {
+      if (source == ImageSource.gallery) {
         image = await ImagePicker.pickImage(
           source: ImageSource.gallery,
           imageQuality: 70,
         );
-      } else if (source == 'Camera') {
+
+        setState(() {
+          imageSource = ImageSource.gallery;
+        });
+      } else if (source == ImageSource.camera) {
         image = await ImagePicker.pickImage(
           source: ImageSource.camera,
           imageQuality: 70,
         );
+        setState(() {
+          imageSource = ImageSource.camera;
+        });
       }
 
       if (image == null) {
@@ -190,7 +198,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                       width: MediaQuery.of(context).size.width,
                       child: GestureDetector(
                         onTap: () {
-                          _onPickPressed(source: 'Gallery');
+                          _onPickPressed(source: ImageSource.gallery);
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -227,7 +235,7 @@ class CreatePhotoState extends State<CreatePhoto> {
         children: <Widget>[
           InkWell(
             onTap: () {
-              _onPickPressed(source: 'Gallery');
+              _onPickPressed(source: ImageSource.gallery);
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 30),
@@ -246,7 +254,7 @@ class CreatePhotoState extends State<CreatePhoto> {
           ),
           InkWell(
             onTap: () {
-              _onPickPressed(source: 'Camera');
+              _onPickPressed(source: ImageSource.camera);
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 30),
@@ -308,6 +316,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                   setState(() {
                     imageFile = null;
                   });
+                  _onPickPressed(source: imageSource);
                   _toggleBottomNav(true);
                 },
                 child: Container(
