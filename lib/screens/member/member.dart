@@ -135,6 +135,7 @@ class _JuntoMemberState extends State<JuntoMember>
         create: (context) => DenBloc(
           Provider.of<UserRepo>(context, listen: false),
           Provider.of<UserDataProvider>(context, listen: false),
+          Provider.of<ExpressionRepo>(context, listen: false),
         )..add(
             LoadDen(widget.profile.address),
           ),

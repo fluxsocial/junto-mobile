@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/appbar_wrapper.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/collective_populated_list.dart';
@@ -24,6 +25,11 @@ class ExpressionFeed extends StatefulWidget {
 }
 
 class _ExpressionFeedState extends State<ExpressionFeed> {
+  void _removeExpression(ExpressionResponse expression) {
+    final bloc = context.bloc<CollectiveBloc>();
+    bloc.add(DeleteCollective(expression.address));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CollectiveBloc, CollectiveState>(
@@ -48,8 +54,10 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                 //  between single and two column layouts creates an issue.
                 const SliverToBoxAdapter(),
                 if (state is CollectivePopulated)
-                  // Collective Feed (either single or two column layout)
-                  CollectivePopulatedList(state),
+                  CollectivePopulatedList(
+                    state,
+                    deleteExpression: _removeExpression,
+                  ),
                 if (state is CollectivePopulated && state.loadingMore == true)
                   const ExpressionProgressIndicator(),
                 if (state is CollectiveLoading)

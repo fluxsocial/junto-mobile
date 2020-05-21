@@ -2,101 +2,83 @@ import 'dart:async' show Timer;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 
 class ExpressionActionItems extends StatelessWidget {
   const ExpressionActionItems({
-    this.expression,
-    this.userAddress,
-    this.isExpressionOpen,
+    @required this.deleteExpression,
+    @required this.expression,
   });
 
   final ExpressionResponse expression;
-  final String userAddress;
-  final bool isExpressionOpen;
-
-  Future<void> _deleteExpression(BuildContext context) async {
-    JuntoLoader.showLoader(context);
-    try {
-      await Provider.of<ExpressionRepo>(context, listen: false)
-          .deleteExpression(expression.address);
-
-      JuntoLoader.hide();
-      if (isExpressionOpen) {
-        Navigator.pop(context);
-      }
-    } catch (error) {
-      JuntoLoader.hide();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText: error.message,
-        ),
-      );
-    }
-  }
+  final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: Container(
-        height: MediaQuery.of(context).size.height * .4,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
+    return Consumer<UserDataProvider>(
+      builder: (BuildContext context, UserDataProvider data, Widget child) {
+        return Container(
+          color: Colors.transparent,
+          child: Container(
+            height: MediaQuery.of(context).size.height * .4,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+            ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      height: 5,
-                      width: MediaQuery.of(context).size.width * .1,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).dividerColor,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: 5,
+                          width: MediaQuery.of(context).size.width * .1,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).dividerColor,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 10),
+                    data.userAddress == expression.creator.address
+                        ? _myActionItems(context, expression)
+                        : _memberActionItems(context)
                   ],
                 ),
-                const SizedBox(height: 10),
-                userAddress == expression.creator.address
-                    ? _myActionItems(context)
-                    : _memberActionItems(context)
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   // show these action items if the expression was created by user
   Widget _myActionItems(
     BuildContext context,
+    ExpressionResponse expressionResponse,
   ) {
     return ListTile(
       onTap: () {
@@ -105,7 +87,7 @@ class ExpressionActionItems extends StatelessWidget {
           context: context,
           builder: (BuildContext context) => ConfirmDialog(
             buildContext: context,
-            confirm: _deleteExpression,
+            confirm: () => deleteExpression(expressionResponse),
             confirmationText:
                 'Are you sure you want to delete this expression?',
           ),

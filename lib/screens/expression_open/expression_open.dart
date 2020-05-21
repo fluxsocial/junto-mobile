@@ -1,3 +1,4 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -11,25 +12,26 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 import 'expressions/audio_open.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(
+    this.deleteExpression,
     this.expression,
     this.userAddress,
   );
 
   final ExpressionResponse expression;
   final String userAddress;
+  final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
   State<StatefulWidget> createState() => ExpressionOpenState();
@@ -221,6 +223,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           ExpressionOpenTop(
                             expression: widget.expression,
                             userAddress: widget.userAddress,
+                            deleteExpression: widget.deleteExpression,
                           ),
                           _buildExpression(),
                           ExpressionOpenBottom(

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -59,7 +59,7 @@ class PerspectiveItem extends StatelessWidget {
                 builder: (BuildContext context) => ConfirmDialog(
                   confirmationText:
                       'Are you sure you want to delete this perspective?',
-                  confirm: (_) {
+                  confirm: () {
                     context
                         .bloc<PerspectivesBloc>()
                         .add(RemovePerspective(perspective));

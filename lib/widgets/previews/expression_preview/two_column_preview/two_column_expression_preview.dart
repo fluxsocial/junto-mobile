@@ -5,11 +5,11 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_bottom.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/dynamic.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/event.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/shortform.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_bottom.dart';
 import 'package:provider/provider.dart';
 
 import 'two_column_expression_preview_types/audio.dart';
@@ -19,9 +19,11 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
   const TwoColumnExpressionPreview({
     Key key,
     @required this.expression,
+    @required this.deleteExpression,
   }) : super(key: key);
 
   final ExpressionResponse expression;
+  final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,25 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
       onTap: () {
         // pending - create conditional statement that renders ExpressionOpenCreated if
         // the expression was created by the user. Otherwise display ExpressionOpen
+        if (expression.type == 'PhotoForm') {
+          Navigator.of(context).push(
+            FadeRoute<void>(
+              child: ExpressionOpen(
+                deleteExpression,
+                expression,
+                userData.userAddress,
+              ),
+            ),
+          );
+        } else {
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => ExpressionOpen(
+                deleteExpression,
+                expression,
+                userData.userAddress,
+              ),
 
-        Navigator.of(context).push(
-          CupertinoPageRoute(
-            builder: (context) => ExpressionOpen(
-              expression,
-              userData.userAddress,
             ),
           ),
         );
@@ -68,7 +83,10 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
             ),
 
             // expression preview handle + more action items
-            ExpressionPreviewBottom(expression: expression)
+            ExpressionPreviewBottom(
+              expression: expression,
+              deleteExpression: deleteExpression,
+            )
           ],
         ),
       ),
