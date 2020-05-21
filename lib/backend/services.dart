@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
+import 'package:junto_beta_mobile/models/junto_notification_cache.dart';
 import 'package:junto_beta_mobile/models/junto_notification_results.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/notification_query.dart';
@@ -297,11 +298,17 @@ abstract class LocalCache {
   Future<void> insertNotifications(List<JuntoNotification> notifications,
       {bool overwrite});
 
-  /// Retrieves all cached notifications
-  Future<List<JuntoNotification>> retrieveNotifications();
+  /// Replaces list of notifications in database
+  Future<void> replaceNotifications(List<JuntoNotification> notifications);
 
-  //  Deletes a notification from cache
+  /// Retrieves all cached notifications
+  Future<JuntoNotificationCache> retrieveNotifications();
+
+  ///  Deletes a notification from cache
   Future<void> deleteNotification(String notificationKey);
+
+  /// Stores the last read notification time
+  Future<void> setLastReadNotificationTime(DateTime datetime);
 
   Future<void> wipe();
 }
