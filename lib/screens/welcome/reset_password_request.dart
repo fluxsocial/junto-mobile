@@ -10,29 +10,27 @@ import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:provider/provider.dart';
 
 class ResetPasswordRequest extends StatefulWidget {
-  const ResetPasswordRequest({@required this.email, this.signInController});
+  const ResetPasswordRequest(
+      {@required this.emailController, this.signInController});
 
   final PageController signInController;
-  final ValueNotifier<String> email;
+  final TextEditingController emailController;
 
   @override
   _ResetPasswordRequestState createState() => _ResetPasswordRequestState();
 }
 
 class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
-  TextEditingController _textEditingController;
   GlobalKey<FormState> _formKey;
 
   @override
   void initState() {
     super.initState();
-    _textEditingController = TextEditingController();
     _formKey = GlobalKey();
   }
 
   @override
   void dispose() {
-    _textEditingController.dispose();
     super.dispose();
   }
 
@@ -40,11 +38,10 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
   Future<void> _requestEmail() async {
     if (_formKey.currentState.validate()) {
       try {
-        final email = _textEditingController.value.text;
+        final email = widget.emailController.text;
         final int responseStatusCode =
             await Provider.of<AuthRepo>(context, listen: false)
                 .requestPasswordReset(email);
-        widget.email.value = email;
         // if 310, then continue as this status code represents that a verification
         // email has already been sent
         if (responseStatusCode == 310) {
@@ -100,7 +97,7 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SignUpTextField(
-                      valueController: _textEditingController,
+                      valueController: widget.emailController,
                       hint: S.of(context).welcome_email_hint,
                       maxLength: 100,
                       textInputActionType: TextInputAction.done,

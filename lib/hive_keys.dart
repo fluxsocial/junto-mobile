@@ -8,6 +8,7 @@ class HiveKeys {
   static const kLayoutView = 'twoColumnView';
   static const kAuth = 'auth';
   static const kTheme = 'current-theme';
+  static const kNightMode = 'night-mode';
 }
 
 /// Class containing the name of the different "boxes" used by the application.

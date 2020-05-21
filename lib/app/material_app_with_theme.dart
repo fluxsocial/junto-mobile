@@ -2,6 +2,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
@@ -16,7 +17,18 @@ import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-class MaterialAppWithTheme extends StatelessWidget {
+class MaterialAppWithTheme extends StatefulWidget {
+  @override
+  _MaterialAppWithThemeState createState() => _MaterialAppWithThemeState();
+}
+
+class _MaterialAppWithThemeState extends State<MaterialAppWithTheme> {
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
@@ -62,7 +74,7 @@ class HomePage extends StatelessWidget {
               loading: (_) => HomeLoadingPage(),
               agreementsRequired: (_) => SignUpAgreements(),
               authenticated: (_) => HomePageContent(),
-              unauthenticated: (_) => Welcome(),
+              unauthenticated: (_) => const Welcome(),
             ),
           ),
         ],

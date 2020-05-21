@@ -17,7 +17,7 @@ class JuntoHttp {
   http.Client httpClient;
 
   Future<String> _getAuthKey() async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     return await box.get(HiveKeys.kAuth) as String;
   }
 

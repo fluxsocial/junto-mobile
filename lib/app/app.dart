@@ -23,9 +23,8 @@ class JuntoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
-        ChangeNotifierProvider<JuntoThemesProvider>(
-          create: (_) => JuntoThemesProvider(backend.currentTheme),
-        ),
+        ChangeNotifierProvider<JuntoThemesProvider>.value(
+            value: backend.themesProvider),
         Provider<SearchService>.value(value: backend.searchRepo),
         Provider<AuthRepo>.value(value: backend.authRepo),
         Provider<UserRepo>.value(value: backend.userRepo),

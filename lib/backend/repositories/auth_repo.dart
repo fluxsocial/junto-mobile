@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
@@ -17,7 +16,7 @@ class AuthRepo {
   final UserRepo userRepo;
 
   Future<bool> isLoggedIn() async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     final isLoggedIn = await box.get(HiveKeys.kisLoggedIn);
     // Let's check if user is actually logged in
     if (isLoggedIn != null && isLoggedIn) {
@@ -74,7 +73,7 @@ class AuthRepo {
       );
     }
 
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     await box.put(HiveKeys.kisLoggedIn, true);
     await box.put(HiveKeys.kUserId, _data.user.address);
     await box.put(
@@ -90,7 +89,7 @@ class AuthRepo {
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
     try {
       final UserData _user = await authService.loginUser(details);
-      final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+      final box = await Hive.box(HiveBoxes.kAppBox);
       await box.put(HiveKeys.kisLoggedIn, true);
       await box.put(HiveKeys.kUserId, _user.user.address);
       await box.put(

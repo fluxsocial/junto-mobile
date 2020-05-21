@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
@@ -40,6 +41,8 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
         }
         return NestedScrollView(
           headerSliverBuilder: (context, innerBoxScrolled) => [
+            // SliverPersistentHeader made into custom appbar with pinned
+            // set to false and floating set to true
             AppBarWrapper(
               title: state is CollectivePopulated ? state.name : 'JUNTO',
             ),
@@ -48,7 +51,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
             child: CustomScrollView(
               slivers: <Widget>[
                 // Empty SliverToBoxAdaptor is necessary, otherwise switching
-                //  between layouts creates an issue.
+                //  between single and two column layouts creates an issue.
                 const SliverToBoxAdapter(),
                 if (state is CollectivePopulated)
                   CollectivePopulatedList(
@@ -60,6 +63,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                 if (state is CollectiveLoading)
                   const ExpressionProgressIndicator(),
                 if (canFetch)
+                  // pagination
                   SliverToBoxAdapter(
                     child: FetchMoreButton(
                       onPressed: () {

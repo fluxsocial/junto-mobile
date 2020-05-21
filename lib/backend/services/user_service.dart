@@ -64,7 +64,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserProfile> queryUser(String param, QueryType queryType) async {
-    final box = await Hive.openLazyBox(HiveBoxes.kAppBox, encryptionKey: key);
+    final box = await Hive.box(HiveBoxes.kAppBox);
     final authKey = await box.get("auth");
     final Uri _uri = Uri.http(
       END_POINT,
@@ -437,6 +437,7 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.get(
       '/users/$userAddress/related/$targetAddress',
     );
+    logger.logInfo(_serverResponse.body);
     final Map<String, dynamic> result =
         JuntoHttp.handleResponse(_serverResponse);
 

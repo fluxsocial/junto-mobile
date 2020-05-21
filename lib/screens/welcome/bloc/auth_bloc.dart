@@ -51,7 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
-    yield AuthState.loading();
+    yield AuthState.unauthenticated(loading: true);
     try {
       logger.logInfo('User signed up');
       final user =
@@ -61,8 +61,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield AuthState.agreementsRequired(user);
     } on JuntoException catch (e) {
-      logger.logException(e);
+      logger.logError('Error during sign up: ${e.message}');
+
       yield AuthState.unauthenticated();
+      yield AuthState.unauthenticated(error: true, errorMessage: e.message);
     } catch (error) {
       logger.logException(error);
       yield AuthState.unauthenticated();
@@ -80,13 +82,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _mapLoginEventState(LoginEvent event) async* {
-    yield AuthState.loading();
+    yield AuthState.unauthenticated(loading: true);
     try {
       final user = await authRepo.loginUser(event.details);
+      await userDataProvider.initialize();
+
       yield AuthState.authenticated(user);
     } on JuntoException catch (error) {
-      logger.logDebug(error.message);
+      logger.logError('Error during login: ${error.message}');
       yield AuthState.unauthenticated();
+      yield AuthState.unauthenticated(error: true, errorMessage: error.message);
     } catch (error) {
       logger.logException(error);
       yield AuthState.unauthenticated();
@@ -110,7 +115,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
     yield AuthState.loading();
     try {
-      final box = await Hive.openLazyBox(HiveBoxes.kAppBox);
+      final box = await Hive.box(HiveBoxes.kAppBox);
       final data = await box.get(HiveKeys.kUserData);
       logger.logDebug(data);
       final user = UserData.fromMap(jsonDecode(data));

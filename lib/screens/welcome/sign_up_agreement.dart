@@ -3,10 +3,34 @@ import 'package:flutter/material.dart';
 import 'widgets/junto_logo.dart';
 import 'widgets/junto_name.dart';
 import 'widgets/junto_rules.dart';
+import 'widgets/junto_terms.dart';
 import 'widgets/sign_up_accept_button.dart';
 
 /// Agreements screen shown to the user following registration
-class SignUpAgreements extends StatelessWidget {
+class SignUpAgreements extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return SignUpAgreementsState();
+  }
+}
+
+class SignUpAgreementsState extends State<SignUpAgreements> {
+  int _currentIndex = 0;
+  PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: 0);
+  }
+
+  _nextPage() {
+    pageController.nextPage(
+      curve: Curves.easeIn,
+      duration: Duration(milliseconds: 300),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,13 +43,28 @@ class SignUpAgreements extends StatelessWidget {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const <Widget>[
+            children: <Widget>[
               JuntoLogo(),
               JuntoName(),
               Expanded(
-                child: JuntoRules(),
+                child: PageView(
+                  controller: pageController,
+                  onPageChanged: (int index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  physics: NeverScrollableScrollPhysics(),
+                  children: <Widget>[
+                    JuntoRules(),
+                    JuntoTerms(),
+                  ],
+                ),
               ),
-              AcceptButton(),
+              AcceptButton(
+                nextPage: _nextPage,
+                pageView: _currentIndex,
+              ),
             ],
           ),
         ),

@@ -50,9 +50,10 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                 expression,
                 userData.userAddress,
               ),
+
             ),
-          );
-        }
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),

@@ -248,6 +248,7 @@ class MemberRelationships extends StatelessWidget {
         !hasPendingConnection &&
         !hasPendingPackRequest &&
         !isPackMember) {
+      logger.logInfo('No Relationship Action Items');
       return NoRelationshipActionItems(
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
@@ -259,6 +260,7 @@ class MemberRelationships extends StatelessWidget {
         !hasPendingConnection &&
         !hasPendingPackRequest &&
         !isPackMember) {
+      logger.logInfo('Subscribed Action Items');
       return SubscribedActionItems(
         buildContext: buildContext,
         unsubscribeToUser: unsubscribeToUser,
@@ -271,6 +273,7 @@ class MemberRelationships extends StatelessWidget {
         hasPendingConnection &&
             hasPendingPackRequest != true &&
             isPackMember != true) {
+      logger.logInfo('Connected Action Items');
       return ConnectedActionItems(
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
@@ -282,6 +285,7 @@ class MemberRelationships extends StatelessWidget {
         isFollowing: isFollowing,
       );
     } else if (hasPendingPackRequest || isPackMember) {
+      logger.logInfo('Pack Action Items');
       return PackActionItems(
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
@@ -296,6 +300,7 @@ class MemberRelationships extends StatelessWidget {
         leavePack: leavePack,
       );
     }
+    logger.logInfo('No Relationship Action Items');
     return NoRelationshipActionItems(
       buildContext: buildContext,
       subscribeToUser: subscribeToUser,

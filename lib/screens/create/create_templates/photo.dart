@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
-import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
@@ -28,48 +27,71 @@ class CreatePhoto extends StatefulWidget {
 }
 
 // State for CreatePhoto class
-class CreatePhotoState extends State<CreatePhoto> with Compressor {
+class CreatePhotoState extends State<CreatePhoto> {
+  File preCroppedFile;
   File imageFile;
+  ImageSource imageSource;
   TextEditingController _captionController;
   bool _showBottomNav = true;
 
-  Future<void> _onPickPressed({@required String source}) async {
+  Future<void> _onPickPressed({@required ImageSource source}) async {
     try {
       File image;
-      if (source == 'Gallery') {
+      if (source == ImageSource.gallery) {
         image = await ImagePicker.pickImage(
           source: ImageSource.gallery,
           imageQuality: 70,
         );
-      } else if (source == 'Camera') {
+
+        setState(() {
+          imageSource = ImageSource.gallery;
+        });
+      } else if (source == ImageSource.camera) {
         image = await ImagePicker.pickImage(
           source: ImageSource.camera,
           imageQuality: 70,
         );
+        setState(() {
+          imageSource = ImageSource.camera;
+        });
       }
 
       if (image == null) {
-        setState(() => imageFile = null);
+        setState(() {
+          imageFile = null;
+        });
         return;
+      } else {
+        setState(() {
+          preCroppedFile = image;
+        });
       }
-      final File cropped = await ImageCroppingDialog.show(context, image,
-          aspectRatios: <String>[
-            '1:1',
-            '2:3',
-            '3:2',
-            '3:4',
-            '4:3',
-            '4:5',
-            '5:4',
-            '9:16',
-            '16:9'
-          ]);
+
+      final File cropped = await ImageCroppingDialog.show(
+        context,
+        image,
+        aspectRatios: <String>[
+          '1:1',
+          '2:3',
+          '3:2',
+          '3:4',
+          '4:3',
+          '4:5',
+          '5:4',
+          '9:16',
+          '16:9'
+        ],
+      );
       if (cropped == null) {
-        setState(() => imageFile = null);
+        setState(() {
+          imageFile = null;
+        });
+        _onPickPressed(source: imageSource);
         return;
       }
-      final _compressed = await compressImage(cropped);
-      setState(() => imageFile = _compressed);
+      setState(() {
+        imageFile = cropped;
+      });
       _toggleBottomNav(false);
     } catch (e, s) {
       logger.logException(e, s);
@@ -77,7 +99,7 @@ class CreatePhotoState extends State<CreatePhoto> with Compressor {
   }
 
   Future<void> _cropPhoto() async {
-    final File image = imageFile;
+    final File image = preCroppedFile;
     final File cropped = await ImageCroppingDialog.show(context, image,
         aspectRatios: <String>[
           '1:1',
@@ -177,7 +199,7 @@ class CreatePhotoState extends State<CreatePhoto> with Compressor {
                       width: MediaQuery.of(context).size.width,
                       child: GestureDetector(
                         onTap: () {
-                          _onPickPressed(source: 'Gallery');
+                          _onPickPressed(source: ImageSource.gallery);
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -214,7 +236,7 @@ class CreatePhotoState extends State<CreatePhoto> with Compressor {
         children: <Widget>[
           InkWell(
             onTap: () {
-              _onPickPressed(source: 'Gallery');
+              _onPickPressed(source: ImageSource.gallery);
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 30),
@@ -233,7 +255,7 @@ class CreatePhotoState extends State<CreatePhoto> with Compressor {
           ),
           InkWell(
             onTap: () {
-              _onPickPressed(source: 'Camera');
+              _onPickPressed(source: ImageSource.camera);
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 30),
@@ -295,6 +317,7 @@ class CreatePhotoState extends State<CreatePhoto> with Compressor {
                   setState(() {
                     imageFile = null;
                   });
+                  _onPickPressed(source: imageSource);
                   _toggleBottomNav(true);
                 },
                 child: Container(

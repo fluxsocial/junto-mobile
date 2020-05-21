@@ -157,7 +157,7 @@ class SubscribedActionItems extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'INVITE TO PACK',
+                  'INVITE TO MY PACK',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
