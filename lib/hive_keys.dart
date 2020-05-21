@@ -9,6 +9,7 @@ class HiveKeys {
   static const kAuth = 'auth';
   static const kTheme = 'current-theme';
   static const kNightMode = 'night-mode';
+  static const kLastNotification = 'last_notification';
 }
 
 /// Class containing the name of the different "boxes" used by the application.
