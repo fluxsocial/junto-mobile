@@ -21,7 +21,7 @@ import 'package:provider/provider.dart';
 import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatelessWidget {
-  _onLogOut(BuildContext context) async {
+  Future<void> _onLogOut(BuildContext context) async {
     try {
       await context.bloc<AuthBloc>().add(LogoutEvent());
       Navigator.popUntil(context, (r) => r.isFirst);
@@ -181,7 +181,7 @@ class JuntoDrawer extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) => ConfirmDialog(
                               buildContext: context,
-                              confirm: _onLogOut(context),
+                              confirm:()=> _onLogOut(context),
                               confirmationText:
                                   S.of(context).menu_are_you_sure_to_logout,
                             ),
