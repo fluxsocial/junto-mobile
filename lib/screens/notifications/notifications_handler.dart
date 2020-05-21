@@ -44,8 +44,7 @@ class NotificationsHandler extends ChangeNotifier {
 
   Future<void> markAllAsRead() async {
     try {
-      final ids = _notifications?.map((e) => e.address)?.toList();
-      final result = await repository.markAsRead(ids);
+      final result = await repository.markAsRead();
       if (result == true) {
         logger.logInfo('Marked notifications as read');
         _unreadNotificationsCount = 0;
