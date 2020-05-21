@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 
 class CollectiveFeedRefresh extends StatelessWidget {
   CollectiveFeedRefresh({Key key, this.child}) : super(key: key);
@@ -20,6 +21,7 @@ class CollectiveFeedRefresh extends StatelessWidget {
       child: CustomRefreshIndicator(
         offsetToArmed: 25,
         onRefresh: () {
+          context.repository<NotificationsHandler>().fetchNotifications();
           context.bloc<CollectiveBloc>().add(RefreshCollective());
 
           return refreshCompleter.future;
