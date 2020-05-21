@@ -181,7 +181,7 @@ class JuntoDrawer extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) => ConfirmDialog(
                               buildContext: context,
-                              confirm: _onLogOut,
+                              confirm: _onLogOut(context),
                               confirmationText:
                                   S.of(context).menu_are_you_sure_to_logout,
                             ),

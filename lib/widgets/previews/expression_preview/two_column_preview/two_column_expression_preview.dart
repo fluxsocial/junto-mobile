@@ -52,8 +52,8 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
               ),
 
             ),
-          ),
-        );
+          );
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
