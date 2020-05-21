@@ -18,15 +18,14 @@ class ConnectionRequestResponse extends StatelessWidget {
     // show Junto loader
     JuntoLoader.showLoader(context);
     try {
-      // respond to request
-      await Provider.of<UserRepo>(context, listen: false)
-          .respondToConnection(userAddress, response);
-      // delete notification from cache
-      await Provider.of<NotificationsHandler>(context, listen: false)
-          .deleteNotification(notification.address);
-      // refetch notifications
-      await Provider.of<NotificationsHandler>(context, listen: false)
-          .fetchNotifications();
+      final futures = [
+        Provider.of<UserRepo>(context, listen: false)
+            .respondToConnection(userAddress, response),
+        Provider.of<NotificationsHandler>(context, listen: false)
+            .fetchNotifications(),
+      ];
+
+      await Future.wait(futures);
 
       // hide Junto loader
       await JuntoLoader.hide();
