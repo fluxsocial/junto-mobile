@@ -16,22 +16,11 @@ class NotificationRepo {
 
   final int maximumNotificationCount = 100;
 
-  Future<bool> markAsRead(List<String> addresses) async {
+  Future<bool> markAsRead() async {
     try {
-      if (addresses == null) {
-        return false;
-      }
-      logger.logInfo('Marking ${addresses.length} notifications as read');
-      final notifications = await dbService.retrieveNotifications();
-
-      for (var i = 0; i < notifications.length; i++) {
-        final notif = notifications[i];
-        if (addresses.contains(notif.address)) {
-          final newNotification = notif.copyWith(unread: false);
-          notifications[i] = newNotification;
-        }
-      }
-      await dbService.insertNotifications(notifications, overwrite: true);
+      final now = DateTime.now();
+      logger.logInfo('Marking notifications as read');
+      await dbService.setLastReadNotificationTime(now);
       return true;
     } catch (e, s) {
       logger.logException(e, s, 'Error while setting notifications as read');
@@ -65,21 +54,24 @@ class NotificationRepo {
 
       if (result.wasSuccessful) {
         logger.logInfo(
-            'Retrieved ${result.results.length} notifications from API. Updating read status');
-        debugPrint(result.results.toString());
+            'Retrieved ${result.results.length} notifications from API. '
+            'Updating read status.');
 
-        await dbService.insertNotifications(result.results);
-        final currentNotifications = await dbService.retrieveNotifications();
+        final cache = await dbService.retrieveNotifications();
+        final lastReadTime = cache.lastReadNotificationTimestamp;
+        final currentNotifications =
+            _updateReadStatus(result.results, lastReadTime);
+        await dbService.replaceNotifications(currentNotifications);
 
-        return result.copyWith(
-          results: currentNotifications.take(maximumNotificationCount).toList(),
-        );
+        return result.copyWith(results: currentNotifications);
       } else {
-        final current = await dbService.retrieveNotifications();
+        final cache = await dbService.retrieveNotifications();
+        final current = cache.notifications;
         if (current.isNotEmpty) {
+          final currentNotifications =
+              _updateReadStatus(current, cache.lastReadNotificationTimestamp);
           return JuntoNotificationResults(
-              wasSuccessful: true,
-              results: current.take(maximumNotificationCount).toList());
+              wasSuccessful: true, results: currentNotifications);
         } else {
           logger.logError('Couldn\'t retrieve notifications from cache');
           return JuntoNotificationResults(wasSuccessful: false);
@@ -89,5 +81,15 @@ class NotificationRepo {
       logger.logException(e, s, 'Error while retrieving notifications');
       return JuntoNotificationResults(wasSuccessful: false);
     }
+  }
+
+  List<JuntoNotification> _updateReadStatus(
+      List<JuntoNotification> results, DateTime lastReadTime) {
+    final currentNotifications = results
+        .map(
+          (e) => e.copyWith(unread: e.createdAt.isAfter(lastReadTime)),
+        )
+        .toList();
+    return currentNotifications;
   }
 }
