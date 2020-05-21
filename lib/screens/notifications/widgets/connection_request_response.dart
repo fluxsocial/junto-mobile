@@ -24,7 +24,7 @@ class ConnectionRequestResponse extends StatelessWidget {
       // delete notification from cache
       await Provider.of<NotificationsHandler>(context, listen: false)
           .deleteNotification(notification.address);
-      // // refetch notifications
+      // refetch notifications
       await Provider.of<NotificationsHandler>(context, listen: false)
           .fetchNotifications();
 
