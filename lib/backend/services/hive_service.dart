@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart' show LocalCache;
 import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:junto_beta_mobile/models/junto_notification_cache.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class HiveCache implements LocalCache {
@@ -73,7 +74,23 @@ class HiveCache implements LocalCache {
   }
 
   @override
-  Future<List<JuntoNotification>> retrieveNotifications() async {
+  Future<void> replaceNotifications(
+      List<JuntoNotification> notifications) async {
+    try {
+      final box = await Hive.openBox<JuntoNotification>(
+          _supportedBox[DBBoxes.notifications]);
+      await box.clear();
+      await box.putAll(
+        Map<String, JuntoNotification>.fromIterable(notifications,
+            key: (e) => e.address),
+      );
+    } catch (e) {
+      logger.logException(e);
+    }
+  }
+
+  @override
+  Future<JuntoNotificationCache> retrieveNotifications() async {
     try {
       final box = await Hive.openBox<JuntoNotification>(
           _supportedBox[DBBoxes.notifications]);
@@ -85,11 +102,18 @@ class HiveCache implements LocalCache {
       if (items.length > 0) {
         items.sort((a, b) => -a?.createdAt?.compareTo(b?.createdAt));
       }
-      //TODO: remove if number of items exceeds 100
-      return items;
+      final appBox = await Hive.openBox(HiveBoxes.kAppBox);
+      final lastRead = await appBox.get(HiveKeys.kLastNotification);
+      return JuntoNotificationCache(
+        notifications: items,
+        lastReadNotificationTimestamp: lastRead ?? DateTime(1970),
+      );
     } catch (e) {
       logger.logException(e);
-      return [];
+      return JuntoNotificationCache(
+        notifications: [],
+        lastReadNotificationTimestamp: null,
+      );
     }
   }
 
@@ -101,6 +125,17 @@ class HiveCache implements LocalCache {
       box.delete(notificationKey);
     } catch (error) {
       logger.logException(error);
+    }
+  }
+
+  @override
+  Future<void> setLastReadNotificationTime(DateTime datetime) async {
+    try {
+      final box = await Hive.box(HiveBoxes.kAppBox);
+      await box.put(HiveKeys.kLastNotification, datetime);
+    } catch (e) {
+      logger.logException(e);
+      return;
     }
   }
 
