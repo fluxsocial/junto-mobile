@@ -10,11 +10,6 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/perspectives.dart';
-
 import 'notifications_lunar_icon.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
@@ -24,10 +19,12 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar({
     @required this.expandedHeight,
     @required this.appbarTitle,
+    @required this.collectiveViewNav,
   });
 
   final double expandedHeight;
   final String appbarTitle;
+  final Function collectiveViewNav;
 
   @override
   Widget build(
@@ -65,17 +62,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       GestureDetector(
-                        onTap: () {
-                          context
-                              .bloc<PerspectivesBloc>()
-                              .add(FetchPerspectives());
-                          Navigator.push(
-                            context,
-                            FadeRoute(
-                              child: JuntoPerspectives(),
-                            ),
-                          );
-                        },
+                        onTap: collectiveViewNav,
                         child: Container(
                           alignment: Alignment.bottomLeft,
                           padding: const EdgeInsets.only(left: 10),

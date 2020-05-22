@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/appbar_wrapper.dart';
+import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/collective_populated_list.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/collective_feed_refresh.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
@@ -18,7 +18,10 @@ enum ExpressionFeedLayout { single, two }
 class ExpressionFeed extends StatefulWidget {
   const ExpressionFeed({
     Key key,
+    this.collectiveViewNav,
   }) : super(key: key);
+
+  final Function collectiveViewNav;
 
   @override
   _ExpressionFeedState createState() => _ExpressionFeedState();
@@ -43,8 +46,15 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
           headerSliverBuilder: (context, innerBoxScrolled) => [
             // SliverPersistentHeader made into custom appbar with pinned
             // set to false and floating set to true
-            AppBarWrapper(
-              title: state is CollectivePopulated ? state.name : 'JUNTO',
+            SliverPersistentHeader(
+              delegate: CollectiveAppBar(
+                expandedHeight: MediaQuery.of(context).size.height * .1 + 50,
+                appbarTitle:
+                    state is CollectivePopulated ? state.name : 'JUNTO',
+                collectiveViewNav: widget.collectiveViewNav,
+              ),
+              pinned: false,
+              floating: true,
             ),
           ],
           body: CollectiveFeedRefresh(

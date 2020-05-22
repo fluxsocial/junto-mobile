@@ -12,8 +12,8 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
 class JuntoPerspectives extends StatelessWidget {
-  const JuntoPerspectives({this.navigateBack});
-  final Function navigateBack;
+  const JuntoPerspectives({this.collectiveViewNav});
+  final Function collectiveViewNav;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class JuntoPerspectives extends StatelessWidget {
               preferredSize: Size.fromHeight(
                 MediaQuery.of(context).size.height * .1,
               ),
-              child: PerspectivesAppBar(navigateBack: navigateBack),
+              child: PerspectivesAppBar(collectiveViewNav: collectiveViewNav),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),

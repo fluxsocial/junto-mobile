@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class PerspectivesAppBar extends StatelessWidget {
-  PerspectivesAppBar({this.navigateBack});
+  PerspectivesAppBar({this.collectiveViewNav});
 
-  final Function navigateBack;
+  final Function collectiveViewNav;
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * .1,
       width: MediaQuery.of(context).size.width,
-      color: Colors.orange,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           GestureDetector(
-            onTap: navigateBack,
+            onTap: collectiveViewNav,
             child: Container(
               padding: const EdgeInsets.only(left: 10),
               width: 80,
