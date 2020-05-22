@@ -158,16 +158,6 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserData> readLocalUser() async {
-    final LocalStorage _storage = LocalStorage('user-details');
-    final bool isReady = await _storage.ready;
-    if (isReady) {
-      final dynamic data = _storage.getItem('data');
-      if (data != null) {
-        final UserData profile = UserData.fromMap(data);
-
-        return profile;
-      }
-    }
     throw const JuntoException('Unable to read local user', -1);
   }
 
