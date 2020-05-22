@@ -20,14 +20,11 @@ class PackRequestResponse extends StatelessWidget {
     // show Junto loader
     JuntoLoader.showLoader(context);
     try {
-      final futures = [
-        Provider.of<GroupRepo>(context, listen: false)
-            .respondToGroupRequest(notification.group.address, response),
-        Provider.of<NotificationsHandler>(context, listen: false)
-            .fetchNotifications(),
-      ];
+      await Provider.of<GroupRepo>(context, listen: false)
+          .respondToGroupRequest(notification.group.address, response);
+      await Provider.of<NotificationsHandler>(context, listen: false)
+          .fetchNotifications();
 
-      await Future.wait(futures);
       // hide Junto loader
       await JuntoLoader.hide();
     } catch (error) {
