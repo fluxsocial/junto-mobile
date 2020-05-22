@@ -1,19 +1,18 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_name.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_action_items.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_action_items.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_name.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
 

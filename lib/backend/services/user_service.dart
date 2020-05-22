@@ -12,7 +12,6 @@ import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -154,11 +153,6 @@ class UserServiceCentralized implements UserService {
           ExpressionResponse.fromMap(data)
       ],
     );
-  }
-
-  @override
-  Future<UserData> readLocalUser() async {
-    throw const JuntoException('Unable to read local user', -1);
   }
 
   @override

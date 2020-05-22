@@ -67,10 +67,6 @@ class UserRepo {
     );
   }
 
-  Future<UserData> readLocalUser() {
-    return _userService.readLocalUser();
-  }
-
   Future<List<PerspectiveModel>> userPerspectives(String userAddress) {
     return _userService.userPerspectives(userAddress);
   }

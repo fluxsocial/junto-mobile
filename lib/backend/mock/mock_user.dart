@@ -84,12 +84,6 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<UserData> readLocalUser() async {
-    await Future<void>.delayed(const Duration(milliseconds: 700));
-    return kUserData;
-  }
-
-  @override
   Future<List<PerspectiveModel>> userPerspectives(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives;
