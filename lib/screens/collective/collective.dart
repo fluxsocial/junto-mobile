@@ -76,8 +76,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final PageController _pageController = PageController(initialPage: 0);
   int _currentIndex = 0;
 
-  _navigateBack() {
-    print('yellow');
+  _collectiveViewNav() {
     if (_currentIndex == 0) {
       _pageController.nextPage(
         curve: Curves.easeIn,
@@ -133,8 +132,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
                     },
                     controller: _pageController,
                     children: <Widget>[
-                      ExpressionFeed(),
-                      JuntoPerspectives(navigateBack: _navigateBack),
+                      ExpressionFeed(
+                        collectiveViewNav: _collectiveViewNav,
+                      ),
+                      JuntoPerspectives(collectiveViewNav: _collectiveViewNav),
                     ],
                   ),
                 ],
