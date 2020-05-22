@@ -3,17 +3,24 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class AuthRepo {
-  const AuthRepo(this.authService, this.userRepo, this.expressionService);
+  const AuthRepo(
+    this.authService,
+    this.userRepo,
+    this.expressionService,
+    this.themesProvider,
+  );
 
   final AuthenticationService authService;
   final ExpressionService expressionService;
   final UserRepo userRepo;
+  final JuntoThemesProvider themesProvider;
 
   Future<bool> isLoggedIn() async {
     final box = await Hive.box(HiveBoxes.kAppBox);
@@ -119,6 +126,7 @@ class AuthRepo {
 
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser() async {
+    themesProvider.setTheme("rainbow");
     await authService.logoutUser();
   }
 }

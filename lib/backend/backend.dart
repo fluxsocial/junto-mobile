@@ -64,7 +64,12 @@ class Backend {
       );
       return Backend._(
         searchRepo: SearchRepo(searchService),
-        authRepo: AuthRepo(authService, userRepo, expressionService),
+        authRepo: AuthRepo(
+          authService,
+          userRepo,
+          expressionService,
+          themesProvider,
+        ),
         userRepo: userRepo,
         collectiveProvider: CollectiveProviderCentralized(client),
         groupsProvider: GroupRepo(groupService, userService),
@@ -86,7 +91,7 @@ class Backend {
     final GroupService groupService = MockSphere();
     final SearchService searchService = MockSearch();
     return Backend._(
-      authRepo: AuthRepo(authService, null, expressionService),
+      authRepo: AuthRepo(authService, null, expressionService, null),
       userRepo: UserRepo(userService, null, null),
       collectiveProvider: null,
       groupsProvider: GroupRepo(groupService, userService),
