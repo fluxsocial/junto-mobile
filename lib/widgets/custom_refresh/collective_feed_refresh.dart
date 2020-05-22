@@ -19,7 +19,7 @@ class CollectiveFeedRefresh extends StatelessWidget {
     return BlocListener<CollectiveBloc, CollectiveState>(
       listener: _blocListener,
       child: CustomRefreshIndicator(
-        offsetToArmed: 25,
+        offsetToArmed: 50,
         onRefresh: () {
           context.repository<NotificationsHandler>().fetchNotifications();
           context.bloc<CollectiveBloc>().add(RefreshCollective());

@@ -5,13 +5,15 @@ import 'package:junto_beta_mobile/screens/collective/collective_actions/on_persp
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_item.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives_header.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/perspectives_appbar.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
 class JuntoPerspectives extends StatelessWidget {
-  const JuntoPerspectives();
+  const JuntoPerspectives({this.navigateBack});
+  final Function navigateBack;
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +45,13 @@ class JuntoPerspectives extends StatelessWidget {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(60),
-              child: PerspectivesAppbar(),
+              preferredSize: Size.fromHeight(
+                MediaQuery.of(context).size.height * .1,
+              ),
+              child: PerspectivesAppBar(navigateBack: navigateBack),
             ),
             body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -55,6 +59,7 @@ class JuntoPerspectives extends StatelessWidget {
                     child: ListView(
                       padding: const EdgeInsets.all(0),
                       children: <Widget>[
+                        PerspectivesHeader(),
                         PerspectiveItem(
                           perspective: juntoPerspective,
                           onTap: () => onPerspectivesChanged(
