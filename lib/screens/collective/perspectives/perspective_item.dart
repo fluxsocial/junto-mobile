@@ -84,8 +84,8 @@ class PerspectiveItem extends StatelessWidget {
             children: <Widget>[
               Container(
                 alignment: Alignment.center,
-                height: 45.0,
-                width: 45.0,
+                height: 38.0,
+                width: 38.0,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomLeft,
@@ -100,7 +100,7 @@ class PerspectiveItem extends StatelessWidget {
                 ),
                 child: Icon(
                   CustomIcons.newperspective,
-                  size: 28,
+                  size: 24,
                   color: Colors.white,
                 ),
               ),
@@ -109,8 +109,12 @@ class PerspectiveItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(perspective.name,
-                        style: Theme.of(context).textTheme.subtitle1),
+                    Text(
+                      perspective.name,
+                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
                     if (perspective.name == 'JUNTO')
                       Text(
                         'Expressions from everyone on Junto.',
