@@ -213,9 +213,6 @@ abstract class UserService {
     String lastTimestamp,
   );
 
-  /// Reads the cached user from the device.
-  Future<UserData> readLocalUser();
-
   /// Returns a list of perspectives owned by the given user
   Future<List<PerspectiveModel>> userPerspectives(String userAddress);
 

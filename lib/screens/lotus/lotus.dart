@@ -8,15 +8,15 @@ import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
+import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatelessWidget {
@@ -250,25 +250,6 @@ class ReturnToLotusOnSwipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return child;
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pushAndRemoveUntil(
-          context,
-          FadeRoute<void>(
-            child: FeatureDiscovery(
-              child: JuntoLotus(
-                address: address,
-                expressionContext: expressionContext,
-                source: source,
-              ),
-            ),
-          ),
-          (r) => r.isFirst,
-        );
-        return false;
-      },
-      child: child,
-    );
   }
 }
 
