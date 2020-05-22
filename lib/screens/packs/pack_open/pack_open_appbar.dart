@@ -13,6 +13,11 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
+import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
+import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
 
@@ -63,28 +68,51 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                     children: <Widget>[
                       if (userProfile != null)
                         Flexible(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              MemberAvatar(
-                                diameter: 28,
-                                profilePicture:
-                                    pack.address == userProfile.pack.address
-                                        ? userProfile.user.profilePicture
-                                        : pack.creator['profile_picture'],
-                              ),
-                              const SizedBox(width: 10),
-                              Flexible(
-                                child: Text(
-                                  pack.address == userProfile.pack.address
-                                      ? 'My Pack'
-                                      : pack.creator['username'].trim(),
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                FadeRoute(
+                                  child: MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider<GroupBloc>.value(
+                                        value: context.bloc<GroupBloc>(),
+                                      ),
+                                      BlocProvider<PackBloc>.value(
+                                        value: context.bloc<PackBloc>(),
+                                      ),
+                                    ],
+                                    child: FeatureDiscovery(
+                                      child: PacksList(),
+                                    ),
+                                  ),
                                 ),
-                              )
-                            ],
+                              );
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                MemberAvatar(
+                                  diameter: 28,
+                                  profilePicture:
+                                      pack.address == userProfile.pack.address
+                                          ? userProfile.user.profilePicture
+                                          : pack.creator['profile_picture'],
+                                ),
+                                const SizedBox(width: 10),
+                                Flexible(
+                                  child: Text(
+                                    pack.address == userProfile.pack.address
+                                        ? 'My Pack'
+                                        : pack.creator['username'].trim(),
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       Row(

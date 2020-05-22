@@ -73,14 +73,33 @@ class JuntoCollectiveState extends State<JuntoCollective>
     }
   }
 
+  final PageController _pageController = PageController(initialPage: 0);
+  int _currentIndex = 0;
+
+  _navigateBack() {
+    print('yellow');
+    if (_currentIndex == 0) {
+      _pageController.nextPage(
+        curve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+      );
+    } else {
+      _pageController.previousPage(
+        curve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: JuntoFilterDrawer(
-          leftDrawer:
-              const FilterDrawerContent(ExpressionContextType.Collective),
+          leftDrawer: _currentIndex == 0
+              ? FilterDrawerContent(ExpressionContextType.Collective)
+              : null,
           rightMenu: JuntoDrawer(),
           scaffold: NotificationListener<ScrollUpdateNotification>(
             onNotification: (value) => hideOrShowFab(value, _isFabVisible),
@@ -103,7 +122,23 @@ class JuntoCollectiveState extends State<JuntoCollective>
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              body: ExpressionFeed(),
+              body: Stack(
+                children: <Widget>[
+                  PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    controller: _pageController,
+                    children: <Widget>[
+                      ExpressionFeed(),
+                      JuntoPerspectives(navigateBack: _navigateBack),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
