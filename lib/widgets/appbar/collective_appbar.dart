@@ -10,6 +10,10 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/perspectives.dart';
 
 import 'notifications_lunar_icon.dart';
 
@@ -60,24 +64,36 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Container(
-                        alignment: Alignment.bottomLeft,
-                        padding: const EdgeInsets.only(left: 10),
-                        color: Colors.transparent,
-                        height: 36,
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__logo.png',
-                              height: 22.0,
-                              color: Theme.of(context).primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          context
+                              .bloc<PerspectivesBloc>()
+                              .add(FetchPerspectives());
+                          Navigator.push(
+                            context,
+                            FadeRoute(
+                              child: JuntoPerspectives(),
                             ),
-                            const SizedBox(width: 7.5),
-                            Text(
-                              appbarTitle ?? 'JUNTO',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                          ],
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.bottomLeft,
+                          padding: const EdgeInsets.only(left: 10),
+                          color: Colors.transparent,
+                          height: 38,
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/junto-mobile__logo--rainbow.png',
+                                height: 22.0,
+                              ),
+                              const SizedBox(width: 7.5),
+                              Text(
+                                appbarTitle ?? 'JUNTO',
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Row(
