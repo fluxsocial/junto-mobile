@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
@@ -64,7 +65,16 @@ class BottomNav extends StatelessWidget {
               learnMore: false,
               isLastFeature: isLastFeature,
               child: GestureDetector(
-                onTap: onLeftButtonTap,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute<Widget>(
+                      builder: (BuildContext context) {
+                        return GlobalSearch();
+                      },
+                    ),
+                  );
+                },
                 child: Container(
                   width: 60,
                   height: 50,
@@ -73,8 +83,8 @@ class BottomNav extends StatelessWidget {
                   child: RotatedBox(
                     quarterTurns: actionsVisible ? 2 : 0,
                     child: Icon(
-                      CustomIcons.newdoubleuparrow,
-                      size: 33,
+                      Icons.search,
+                      size: 24,
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
