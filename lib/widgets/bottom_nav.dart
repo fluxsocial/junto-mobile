@@ -80,13 +80,10 @@ class BottomNav extends StatelessWidget {
                   height: 50,
                   color: Colors.transparent,
                   alignment: Alignment.center,
-                  child: RotatedBox(
-                    quarterTurns: actionsVisible ? 2 : 0,
-                    child: Icon(
-                      Icons.search,
-                      size: 24,
-                      color: Theme.of(context).primaryColor,
-                    ),
+                  child: Icon(
+                    Icons.search,
+                    size: 24,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),

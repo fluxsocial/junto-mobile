@@ -9,14 +9,20 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/er
 class PackOpen extends StatelessWidget {
   const PackOpen({
     Key key,
+    this.packsViewNav,
   }) : super(key: key);
+
+  final Function packsViewNav;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PackBloc, PackState>(
       builder: (context, state) {
         if (state is PacksLoaded) {
-          return PacksLoadedScaffold(state);
+          return PacksLoadedScaffold(
+            state,
+            packsViewNav: packsViewNav,
+          );
         }
         if (state is PacksError) {
           return JuntoErrorWidget(
@@ -34,10 +40,12 @@ class PacksLoadedScaffold extends StatelessWidget {
   const PacksLoadedScaffold(
     this.state, {
     Key key,
+    this.packsViewNav,
   }) : super(key: key);
 
   final PacksLoaded state;
   final List<String> _tabs = const <String>['Pack', 'Private', 'Members'];
+  final Function packsViewNav;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +61,7 @@ class PacksLoadedScaffold extends StatelessWidget {
                   pack: state.pack,
                   expandedHeight: MediaQuery.of(context).size.height * .11 + 50,
                   tabs: _tabs,
+                  packsViewNav: packsViewNav,
                 ),
                 floating: true,
                 pinned: false,

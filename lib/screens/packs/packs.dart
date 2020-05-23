@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_actions_button.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
+import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
@@ -32,6 +33,25 @@ class JuntoPacksState extends State<JuntoPacks>
     with HideFab, ListDistinct, TickerProviderStateMixin {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
+  int _currentIndex = 0;
+  final PageController _pageController = PageController(
+    initialPage: 0,
+  );
+
+  _packsViewNav() {
+    if (_currentIndex == 0) {
+      _pageController.nextPage(
+        curve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+      );
+    } else {
+      _pageController.previousPage(
+        curve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
@@ -46,15 +66,26 @@ class JuntoPacksState extends State<JuntoPacks>
                   const FilterDrawerContent(ExpressionContextType.Group),
               rightMenu: JuntoDrawer(),
               scaffold: Scaffold(
-                floatingActionButton: PacksActionButtons(
-                  isVisible: _isVisible,
-                  initialGroup: widget.initialGroup,
-                  actionsVisible: false,
-                ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                body: PackOpen(),
-              ),
+                  floatingActionButton: PacksActionButtons(
+                    isVisible: _isVisible,
+                    initialGroup: widget.initialGroup,
+                    actionsVisible: false,
+                  ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerDocked,
+                  body: PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    controller: _pageController,
+                    children: <Widget>[
+                      PackOpen(packsViewNav: _packsViewNav),
+                      PacksList(packsViewNav: _packsViewNav),
+                    ],
+                  )),
             ),
           ),
         ),
