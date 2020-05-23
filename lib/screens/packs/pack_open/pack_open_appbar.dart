@@ -27,11 +27,13 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
     @required this.expandedHeight,
     @required this.pack,
     @required this.tabs,
+    @required this.packsViewNav,
   });
 
   final double expandedHeight;
   final Group pack;
   final List<String> tabs;
+  final Function packsViewNav;
 
   @override
   Widget build(
@@ -69,26 +71,7 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                       if (userProfile != null)
                         Flexible(
                           child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                FadeRoute(
-                                  child: MultiBlocProvider(
-                                    providers: [
-                                      BlocProvider<GroupBloc>.value(
-                                        value: context.bloc<GroupBloc>(),
-                                      ),
-                                      BlocProvider<PackBloc>.value(
-                                        value: context.bloc<PackBloc>(),
-                                      ),
-                                    ],
-                                    child: FeatureDiscovery(
-                                      child: PacksList(),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
+                            onTap: packsViewNav,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
