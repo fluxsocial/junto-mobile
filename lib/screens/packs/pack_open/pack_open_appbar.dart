@@ -13,11 +13,6 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
-import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
-import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
 
