@@ -71,19 +71,7 @@ class JuntoDrawer extends StatelessWidget {
                             ),
                             title: S.of(context).menu_my_den,
                             onTap: () {
-                              Navigator.of(context).push(
-                                FadeRoute<void>(
-                                  child: JuntoDen(),
-                                ),
-                              );
-                            },
-                          ),
-                        if (user.userProfile?.user == null)
-                          JuntoDrawerItem(
-                            icon: const SizedBox(),
-                            title: S.of(context).menu_my_den,
-                            onTap: () {
-                              Navigator.of(context).push(
+                              Navigator.of(context).pushReplacement(
                                 FadeRoute<void>(
                                   child: JuntoDen(),
                                 ),
@@ -181,7 +169,7 @@ class JuntoDrawer extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) => ConfirmDialog(
                               buildContext: context,
-                              confirm:()=> _onLogOut(context),
+                              confirm: () => _onLogOut(context),
                               confirmationText:
                                   S.of(context).menu_are_you_sure_to_logout,
                             ),
