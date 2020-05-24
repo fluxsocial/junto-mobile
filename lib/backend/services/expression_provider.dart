@@ -39,7 +39,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<String> createPhoto(bool isPrivate, String fileType, File file) async {
     try {
-      logger.logDebug('Creating a photo');
+      logger.logDebug('Creating a photo on S3');
       String _serverUrl;
       if (isPrivate) {
         _serverUrl = '/auth/s3?private=true';
