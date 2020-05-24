@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 
 class PerspectivesAppBar extends StatelessWidget {
   PerspectivesAppBar({this.collectiveViewNav});
@@ -89,6 +89,7 @@ class PerspectivesAppBar extends StatelessWidget {
                               )),
                         ),
                       ),
+                      NotificationsLunarIcon(),
                       GestureDetector(
                         onTap: () {
                           FeatureDiscovery.clearPreferences(context, <String>{

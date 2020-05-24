@@ -71,7 +71,9 @@ class JuntoPerspectives extends StatelessWidget {
                                   );
                                 },
                               ),
-                              PerspectivesList(),
+                              PerspectivesList(
+                                collectiveViewNav: collectiveViewNav,
+                              ),
                             ],
                           ),
                           // Placeholder for future page views
