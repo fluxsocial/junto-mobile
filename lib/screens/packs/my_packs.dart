@@ -11,6 +11,10 @@ import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:provider/provider.dart';
 
 class MyPacks extends StatelessWidget {
+  const MyPacks({this.packsViewNav});
+
+  final Function packsViewNav;
+
   Widget _loader() {
     return Expanded(
       child: Center(
@@ -48,10 +52,10 @@ class MyPacks extends StatelessWidget {
                         for (Group group in state.groups)
                           GestureDetector(
                             onTap: () {
+                              packsViewNav();
                               context
                                   .bloc<PackBloc>()
                                   .add(FetchPacks(group: group.address));
-                              Navigator.pop(context);
                             },
                             child: PackPreview(
                               group: group,

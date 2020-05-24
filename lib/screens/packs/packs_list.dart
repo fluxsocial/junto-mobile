@@ -40,7 +40,6 @@ class PacksListState extends State<PacksList> {
               MediaQuery.of(context).size.height * .1 + 50,
             ),
             child: PacksListAppBar(
-              packsViewNav: widget.packsViewNav,
               currentIndex: _currentIndex,
             ),
           ),
@@ -70,7 +69,7 @@ class PacksListState extends State<PacksList> {
                       });
                     },
                     children: <Widget>[
-                      MyPacks(),
+                      MyPacks(packsViewNav: widget.packsViewNav,),
                       PackRequests(),
                     ],
                   ),
