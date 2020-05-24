@@ -36,7 +36,6 @@ class CollectiveActionButton extends StatelessWidget {
           actionsVisible: actionsVisible,
           onLeftButtonTap: onTap,
           iconNorth: iconNorth,
-          featureId: 'collective_toggle_id',
           featureTitle:
               'Click this icon to move between your list of perspectives and the current one you’re looking at.',
           isLastFeature: true,

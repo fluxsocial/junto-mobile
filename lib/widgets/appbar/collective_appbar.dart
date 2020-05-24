@@ -68,16 +68,38 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                           padding: const EdgeInsets.only(left: 10),
                           color: Colors.transparent,
                           height: 38,
+                          width: 38,
                           child: Row(
                             children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__logo--rainbow.png',
-                                height: 22.0,
+                              Icon(
+                                CustomIcons.back,
+                                size: 17,
+                                color: Theme.of(context).primaryColor,
                               ),
-                              const SizedBox(width: 7.5),
-                              Text(
-                                appbarTitle ?? 'JUNTO',
-                                style: Theme.of(context).textTheme.subtitle1,
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.only(left: 38),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Transform.translate(
+                                offset: Offset(0.0, 5),
+                                child:
+                                    Icon(CustomIcons.newperspective, size: 28),
+                              ),
+                              const SizedBox(width: 2.5),
+                              Flexible(
+                                child: Text(
+                                  appbarTitle ?? 'JUNTO Custom Perspectives',
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ],
                           ),
@@ -178,14 +200,12 @@ class AppBarFeatureDiscovery extends StatelessWidget {
         FeatureDiscovery.clearPreferences(context, <String>{
           'collective_info_id',
           'collective_filter_id',
-          'collective_toggle_id',
         });
         FeatureDiscovery.discoverFeatures(
           context,
           const <String>{
             'collective_info_id',
             'collective_filter_id',
-            'collective_toggle_id',
           },
         );
       },

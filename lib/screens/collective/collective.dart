@@ -91,7 +91,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: JuntoFilterDrawer(
-          leftDrawer: _currentIndex == 0
+          leftDrawer: _currentIndex == 1
               ? FilterDrawerContent(ExpressionContextType.Collective)
               : null,
           rightMenu: JuntoDrawer(),
