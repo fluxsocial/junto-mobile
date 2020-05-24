@@ -138,6 +138,18 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     );
   }
 
+  Future<ExpressionModel> getAudioExpression(ExpressionRepo repository) async {
+    final audio = widget.expression as AudioFormExpression;
+    final AudioFormExpression expression = await repository.createAudio(audio);
+
+    return ExpressionModel(
+      type: widget.expressionType.modelName(),
+      expressionData: expression.toMap(),
+      context: _expressionContext,
+      channels: channel,
+    );
+  }
+
   Future<void> _createExpression() async {
     try {
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
@@ -173,18 +185,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         );
       } else if (widget.expressionType == ExpressionType.audio) {
         JuntoLoader.showLoader(context);
-        final audio = widget.expression as AudioFormExpression;
-        print(widget.expression.caption);
-        final AudioFormExpression expression =
-            await repository.createAudio(audio);
-
+        _expression = await getAudioExpression(repository);
         JuntoLoader.hide();
-        _expression = ExpressionModel(
-          type: widget.expressionType.modelName(),
-          expressionData: expression.toMap(),
-          context: _expressionContext,
-          channels: channel,
-        );
       } else {
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),

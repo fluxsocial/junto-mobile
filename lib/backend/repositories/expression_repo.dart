@@ -84,17 +84,22 @@ class ExpressionRepo {
     final audio = _expressionService.createAudio(true, expression);
     futures.add(audio);
     if (expression.photo != null && expression.photo.isNotEmpty) {
-      final photo =
-          _expressionService.createPhoto(true, '.png', File(expression.photo));
-      futures.add(photo);
+      final photos = createPhotoThumbnails(File(expression.photo));
+      futures.add(photos);
     }
 
     final result = await Future.wait(futures);
+    final thumbnails = result.length > 1 ? result[1] as ImageThumbnails : null;
+    final photo = thumbnails?.keyPhoto;
+    final thumbSmall = thumbnails?.key300;
+    final thumbLarge = thumbnails?.key600;
 
     return AudioFormExpression(
       title: expression.title,
       audio: result[0],
-      photo: result.length > 1 ? result[1] : null,
+      photo: photo,
+      thumbnail300: thumbSmall,
+      thumbnail600: thumbLarge,
       gradient: expression.gradient,
       caption: expression.caption,
     );
