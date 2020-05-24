@@ -6,7 +6,12 @@ import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 
 class PacksListAppBar extends StatelessWidget {
-  PacksListAppBar({this.currentIndex});
+  PacksListAppBar({
+    this.currentIndex,
+    this.packsListNav,
+  });
+
+  final Function packsListNav;
 
   final int currentIndex;
   @override
@@ -100,31 +105,50 @@ class PacksListAppBar extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  child: Text(
-                    'PACKS',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight:
-                          currentIndex == 0 ? FontWeight.w700 : FontWeight.w500,
-                      color: currentIndex == 0
-                          ? Theme.of(context).primaryColorDark
-                          : Theme.of(context).primaryColorLight,
+                GestureDetector(
+                  onTap: packsListNav,
+                  child: Container(
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.only(
+                      right: 20,
+                      top: 10,
+                      bottom: 10,
+                    ),
+                    child: Text(
+                      'PACKS',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: currentIndex == 0
+                            ? FontWeight.w700
+                            : FontWeight.w500,
+                        color: currentIndex == 0
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight,
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  child: Text(
-                    'REQUESTS',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight:
-                          currentIndex == 1 ? FontWeight.w700 : FontWeight.w500,
-                      color: currentIndex == 1
-                          ? Theme.of(context).primaryColorDark
-                          : Theme.of(context).primaryColorLight,
+                GestureDetector(
+                  onTap: packsListNav,
+                  child: Container(
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.only(
+                      right: 20,
+                      top: 10,
+                      bottom: 10,
+                    ),
+                    margin: const EdgeInsets.only(right: 20),
+                    child: Text(
+                      'REQUESTS',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: currentIndex == 1
+                            ? FontWeight.w700
+                            : FontWeight.w500,
+                        color: currentIndex == 1
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight,
+                      ),
                     ),
                   ),
                 ),
