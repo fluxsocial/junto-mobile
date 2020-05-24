@@ -16,6 +16,7 @@ import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
 import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
 import 'package:junto_beta_mobile/backend/services/group_service.dart';
 import 'package:junto_beta_mobile/backend/services/hive_service.dart';
+import 'package:junto_beta_mobile/backend/services/image_handler.dart';
 import 'package:junto_beta_mobile/backend/services/notification_service.dart';
 import 'package:junto_beta_mobile/backend/services/search_service.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
@@ -62,6 +63,7 @@ class Backend {
         notificationRepo,
         dbService,
       );
+      final ImageHandler imageHandler = DeviceImageHandler();
       return Backend._(
         searchRepo: SearchRepo(searchService),
         authRepo: AuthRepo(
@@ -73,7 +75,8 @@ class Backend {
         userRepo: userRepo,
         collectiveProvider: CollectiveProviderCentralized(client),
         groupsProvider: GroupRepo(groupService, userService),
-        expressionRepo: ExpressionRepo(expressionService, dbService),
+        expressionRepo:
+            ExpressionRepo(expressionService, dbService, imageHandler),
         notificationRepo: notificationRepo,
         appRepo: AppRepo(),
         db: dbService,
@@ -90,13 +93,14 @@ class Backend {
     final ExpressionService expressionService = MockExpressionService();
     final GroupService groupService = MockSphere();
     final SearchService searchService = MockSearch();
+    final ImageHandler imageHandler = MockedImageHandler();
     return Backend._(
       authRepo: AuthRepo(authService, null, expressionService, null),
       userRepo: UserRepo(userService, null, null),
       collectiveProvider: null,
       groupsProvider: GroupRepo(groupService, userService),
       //TODO(Nash): MockDB
-      expressionRepo: ExpressionRepo(expressionService, null),
+      expressionRepo: ExpressionRepo(expressionService, null, imageHandler),
       searchRepo: SearchRepo(searchService),
       appRepo: AppRepo(),
       db: null,
