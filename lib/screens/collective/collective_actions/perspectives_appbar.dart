@@ -63,24 +63,26 @@ class PerspectivesAppBar extends StatelessWidget {
                             ),
                           );
                         },
-                        child: JuntoDescribedFeatureOverlay(
-                          icon: Icon(
-                            Icons.add,
-                            size: 24,
-                            color: Theme.of(context).primaryColor,
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 5,
                           ),
-                          featureId: 'create_perspective_id',
-                          title: 'Click this icon to create a new perspective.',
-                          learnMore: false,
-                          hasUpNext: false,
-                          child: Container(
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            alignment: Alignment.bottomCenter,
-                            child: Transform.translate(
-                              offset: Offset(0.0, 4),
+                          alignment: Alignment.bottomCenter,
+                          child: Transform.translate(
+                            offset: Offset(0.0, 4),
+                            child: JuntoDescribedFeatureOverlay(
+                              icon: Icon(
+                                Icons.add,
+                                size: 25,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              featureId: 'create_perspective_id',
+                              title:
+                                  'Click this icon to create a new perspective.',
+                              learnMore: false,
+                              hasUpNext: false,
+                              isLastFeature: true,
                               child: Icon(
                                 Icons.add,
                                 size: 25,

@@ -34,11 +34,6 @@ class CollectiveActionButton extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(
           actionsVisible: actionsVisible,
-          onLeftButtonTap: onTap,
-          iconNorth: iconNorth,
-          featureTitle:
-              'Click this icon to move between your list of perspectives and the current one you’re looking at.',
-          isLastFeature: true,
           source: Screen.collective,
         ),
       ),

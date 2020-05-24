@@ -16,7 +16,6 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -148,16 +147,6 @@ class DenActionButton extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(
           actionsVisible: false,
-          onLeftButtonTap: () {
-            // open about page
-            Navigator.push(
-              context,
-              CupertinoPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    AboutMember(profile: user.userProfile),
-              ),
-            );
-          },
           source: Screen.den,
         ),
       ),
