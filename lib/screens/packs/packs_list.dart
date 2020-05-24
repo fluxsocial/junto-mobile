@@ -28,6 +28,22 @@ class PacksListState extends State<PacksList> {
     packsListController = PageController(initialPage: 0);
   }
 
+  void _packsListNav() {
+    setState(() {
+      if (_currentIndex == 0) {
+        packsListController.nextPage(
+          curve: Curves.easeIn,
+          duration: Duration(milliseconds: 300),
+        );
+      } else {
+        packsListController.previousPage(
+          curve: Curves.easeIn,
+          duration: Duration(milliseconds: 300),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +57,7 @@ class PacksListState extends State<PacksList> {
             ),
             child: PacksListAppBar(
               currentIndex: _currentIndex,
+              packsListNav: _packsListNav,
             ),
           ),
 
@@ -69,7 +86,9 @@ class PacksListState extends State<PacksList> {
                       });
                     },
                     children: <Widget>[
-                      MyPacks(packsViewNav: widget.packsViewNav,),
+                      MyPacks(
+                        packsViewNav: widget.packsViewNav,
+                      ),
                       PackRequests(),
                     ],
                   ),
