@@ -126,6 +126,8 @@ class PackActionItems extends StatelessWidget {
                   confirm: disconnectWithUser,
                 ),
               );
+            } else {
+              return;
             }
           },
           child: Container(

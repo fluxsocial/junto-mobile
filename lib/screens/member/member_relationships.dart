@@ -104,9 +104,8 @@ class MemberRelationships extends StatelessWidget {
     try {
       await userProvider.removeUserConnection(memberProfile.address);
       refreshRelations();
-      print(isConnected);
     } on JuntoException catch (error) {
-      print(error.message);
+      logger.logException(error);
       showDialog(
         context: buildContext,
         builder: (BuildContext context) => SingleActionDialog(
