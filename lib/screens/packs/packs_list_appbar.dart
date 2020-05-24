@@ -44,10 +44,9 @@ class PacksListAppBar extends StatelessWidget {
                     height: 42,
                     alignment: Alignment.bottomLeft,
                     color: Colors.transparent,
-                    child: Icon(
-                      CustomIcons.back,
-                      color: Theme.of(context).primaryColorDark,
-                      size: 17,
+                    child: Image.asset(
+                      'assets/images/junto-mobile__logo--rainbow.png',
+                      height: 24,
                     ),
                   ),
                 ),
@@ -114,7 +113,9 @@ class PacksListAppBar extends StatelessWidget {
                       fontSize: 12,
                       fontWeight:
                           currentIndex == 0 ? FontWeight.w700 : FontWeight.w500,
-                      color: Theme.of(context).primaryColor,
+                      color: currentIndex == 0
+                          ? Theme.of(context).primaryColorDark
+                          : Theme.of(context).primaryColorLight,
                     ),
                   ),
                 ),
@@ -126,7 +127,9 @@ class PacksListAppBar extends StatelessWidget {
                       fontSize: 12,
                       fontWeight:
                           currentIndex == 1 ? FontWeight.w700 : FontWeight.w500,
-                      color: Theme.of(context).primaryColor,
+                      color: currentIndex == 1
+                          ? Theme.of(context).primaryColorDark
+                          : Theme.of(context).primaryColorLight,
                     ),
                   ),
                 ),

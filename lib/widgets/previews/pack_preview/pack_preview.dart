@@ -22,7 +22,7 @@ class PackPreview extends StatelessWidget {
       child: Row(
         children: <Widget>[
           MemberAvatar(
-            diameter: 45,
+            diameter: 38,
             profilePicture: group.address == userProfile.pack.address
                 ? userProfile.user.profilePicture
                 : group.creator['profile_picture'],
@@ -48,7 +48,10 @@ class PackPreview extends StatelessWidget {
                         ? 'My Pack'
                         : '${group.creator['name']?.trim()}',
                     textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                   Text(
                     group.address == userProfile.pack.address
