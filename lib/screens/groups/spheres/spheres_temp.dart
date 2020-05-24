@@ -4,11 +4,8 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:feature_discovery/feature_discovery.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
+import 'spheres_temp_appbar.dart';
 
 // This screen displays the temporary page we'll display until groups are released
 class SpheresTemp extends StatelessWidget {
@@ -20,52 +17,10 @@ class SpheresTemp extends StatelessWidget {
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: AppBar(
-              brightness: Theme.of(context).brightness,
-              automaticallyImplyLeading: false,
-              elevation: 0,
-              titleSpacing: 0,
-              backgroundColor: Theme.of(context).backgroundColor,
-              title: Container(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 10,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      'Groups',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        FeatureDiscovery.clearPreferences(context, <String>{
-                          'groups_info_id',
-                        });
-                        FeatureDiscovery.discoverFeatures(
-                          context,
-                          const <String>{
-                            'groups_info_id',
-                          },
-                        );
-                      },
-                      child: JuntoDescribedFeatureOverlay(
-                        icon: OverlayInfoIcon(),
-                        featureId: 'groups_info_id',
-                        isLastFeature: true,
-                        title:
-                            'Groups are public, private, or secret communities you can create on Junto. We will open this layer soon.',
-                        learnMore: false,
-                        child: JuntoInfoIcon(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            preferredSize: Size.fromHeight(
+              MediaQuery.of(context).size.height * .1 + 50,
             ),
+            child: SpheresTempAppBar(),
           ),
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 25),
