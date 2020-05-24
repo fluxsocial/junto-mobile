@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
@@ -79,6 +80,8 @@ class AudioFormExpression {
     this.audio,
     this.gradient,
     this.caption,
+    this.thumbnail300,
+    this.thumbnail600,
   });
 
   factory AudioFormExpression.fromMap(Map<String, dynamic> json) {
@@ -88,6 +91,8 @@ class AudioFormExpression {
       audio: json['audio'] ?? '',
       gradient: json['gradient']?.cast<String>() ?? [],
       caption: json['caption'] ?? '',
+      thumbnail300: json['thumbnail300'],
+      thumbnail600: json['thumbnail600'],
     );
   }
 
@@ -101,6 +106,10 @@ class AudioFormExpression {
   final List<String> gradient;
   @HiveField(4)
   final String caption;
+  @HiveField(5)
+  String thumbnail300;
+  @HiveField(6)
+  String thumbnail600;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'title': title ?? '',
@@ -108,6 +117,8 @@ class AudioFormExpression {
         'audio': audio ?? '',
         'gradient': gradient ?? [],
         'caption': caption ?? '',
+        'thumbnail300': thumbnail300 ?? '',
+        'thumbnail600': thumbnail600 ?? '',
       };
 }
 
@@ -166,12 +177,16 @@ class PhotoFormExpression {
   PhotoFormExpression({
     this.image,
     this.caption,
+    this.thumbnail300,
+    this.thumbnail600,
   });
 
   factory PhotoFormExpression.fromMap(Map<String, dynamic> json) {
     return PhotoFormExpression(
       image: json['image'],
       caption: json['caption'],
+      thumbnail300: json['thumbnail300'],
+      thumbnail600: json['thumbnail600'],
     );
   }
 
@@ -179,34 +194,46 @@ class PhotoFormExpression {
   String image;
   @HiveField(1)
   String caption;
+  @HiveField(2)
+  String thumbnail300;
+  @HiveField(3)
+  String thumbnail600;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'image': image,
         'caption': caption,
+        'thumbnail300': thumbnail300,
+        'thumbnail600': thumbnail600,
       };
 }
 
 class EventFormExpression {
-  EventFormExpression(
-      {this.title,
-      this.description,
-      this.photo,
-      this.location,
-      this.startTime,
-      this.endTime,
-      this.facilitators,
-      this.members});
+  EventFormExpression({
+    this.title,
+    this.description,
+    this.photo,
+    this.location,
+    this.startTime,
+    this.endTime,
+    this.facilitators,
+    this.members,
+    this.thumbnail300,
+    this.thumbnail600,
+  });
 
   factory EventFormExpression.fromMap(Map<String, dynamic> json) {
     return EventFormExpression(
-        title: json['title'],
-        description: json['description'],
-        photo: json['photo'],
-        location: json['location'],
-        startTime: json['start_time'],
-        endTime: json['end_time'],
-        facilitators: json['facilitators'],
-        members: json['members']);
+      title: json['title'],
+      description: json['description'],
+      photo: json['photo'],
+      location: json['location'],
+      startTime: json['start_time'],
+      endTime: json['end_time'],
+      facilitators: json['facilitators'],
+      members: json['members'],
+      thumbnail300: json['thumbnail300'],
+      thumbnail600: json['thumbnail600'],
+    );
   }
 
   final String title;
@@ -217,6 +244,8 @@ class EventFormExpression {
   final String endTime;
   final List<String> facilitators;
   final List<String> members;
+  final String thumbnail300;
+  final String thumbnail600;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'title': title,
@@ -226,7 +255,9 @@ class EventFormExpression {
         'start_time': startTime,
         'end_time': endTime,
         'facilitators': facilitators,
-        'members': members
+        'members': members,
+        'thumbnail300': thumbnail300,
+        'thumbnail600': thumbnail600,
       };
 }
 
@@ -369,6 +400,67 @@ class ExpressionResponse extends HiveObject {
     }
     if (type == 'AudioForm') {
       return AudioFormExpression.fromMap(json);
+    }
+  }
+}
+
+extension ExpressionResponseExt on ExpressionResponse {
+  String get thumbnailSmall {
+    if (expressionData is PhotoFormExpression) {
+      final data = expressionData as PhotoFormExpression;
+      if (data.thumbnail300 != null && data.thumbnail300.isNotEmpty) {
+        return data.thumbnail300;
+      }
+      if (data.thumbnail600 != null && data.thumbnail600.isNotEmpty) {
+        return data.thumbnail600;
+      }
+      return data.image;
+    }
+    if (expressionData is AudioFormExpression) {
+      final data = expressionData as AudioFormExpression;
+      if (data.thumbnail300 != null && data.thumbnail300.isNotEmpty) {
+        return data.thumbnail300;
+      }
+      if (data.thumbnail600 != null && data.thumbnail600.isNotEmpty) {
+        return data.thumbnail600;
+      }
+      return data.photo;
+    }
+    if (expressionData is EventFormExpression) {
+      final data = expressionData as EventFormExpression;
+      if (data.thumbnail300 != null && data.thumbnail300.isNotEmpty) {
+        return data.thumbnail300;
+      }
+      if (data.thumbnail600 != null && data.thumbnail600.isNotEmpty) {
+        return data.thumbnail600;
+      }
+      return data.photo;
+    }
+  }
+
+  String get thumbnailLarge {
+    if (expressionData is PhotoFormExpression) {
+      final data = expressionData as PhotoFormExpression;
+      if (data.thumbnail600 != null && data.thumbnail600.isNotEmpty) {
+        return data.thumbnail600;
+      }
+      return data.image;
+    }
+    if (expressionData is AudioFormExpression) {
+      final data = expressionData as AudioFormExpression;
+
+      if (data.thumbnail600 != null && data.thumbnail600.isNotEmpty) {
+        return data.thumbnail600;
+      }
+      return data.photo;
+    }
+    if (expressionData is EventFormExpression) {
+      final data = expressionData as EventFormExpression;
+
+      if (data.thumbnail600 != null && data.thumbnail600.isNotEmpty) {
+        return data.thumbnail600;
+      }
+      return data.photo;
     }
   }
 }
