@@ -121,29 +121,30 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     );
   }
 
+  Future<ExpressionModel> getPhotoExpression(ExpressionRepo repository) async {
+    final image = widget.expression['image'];
+
+    final photoKeys = await repository.createPhotoThumbnails(image);
+    return ExpressionModel(
+      type: widget.expressionType.modelName(),
+      expressionData: PhotoFormExpression(
+        image: photoKeys.keyPhoto,
+        caption: widget.expression['caption'],
+        thumbnail300: photoKeys.key300,
+        thumbnail600: photoKeys.key600,
+      ).toMap(),
+      context: _expressionContext,
+      channels: channel,
+    );
+  }
+
   Future<void> _createExpression() async {
     try {
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
       if (widget.expressionType == ExpressionType.photo) {
-        JuntoLoader.showLoader(
-          context,
-          color: Colors.white54,
-        );
-        final String _photoKey = await repository.createPhoto(
-          true,
-          '.png',
-          widget.expression['image'],
-        );
+        JuntoLoader.showLoader(context, color: Colors.white54);
+        _expression = await getPhotoExpression(repository);
         JuntoLoader.hide();
-        _expression = ExpressionModel(
-          type: widget.expressionType.modelName(),
-          expressionData: PhotoFormExpression(
-            image: _photoKey,
-            caption: widget.expression['caption'],
-          ).toMap(),
-          context: _expressionContext,
-          channels: channel,
-        );
       } else if (widget.expressionType == ExpressionType.event) {
         String eventPhoto = '';
         if (widget.expression['photo'] != null) {
