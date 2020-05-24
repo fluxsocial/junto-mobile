@@ -74,35 +74,37 @@ class PerspectivesAppBar extends StatelessWidget {
                           learnMore: false,
                           hasUpNext: false,
                           child: Container(
-                              color: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                            ),
+                            alignment: Alignment.bottomCenter,
+                            child: Transform.translate(
+                              offset: Offset(0.0, 4),
+                              child: Icon(
+                                Icons.add,
+                                size: 25,
+                                color: Theme.of(context).primaryColor,
                               ),
-                              alignment: Alignment.bottomCenter,
-                              child: Transform.translate(
-                                offset: Offset(0.0, 2.5),
-                                child: Icon(
-                                  Icons.add,
-                                  size: 25,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              )),
+                            ),
+                          ),
                         ),
                       ),
-                      NotificationsLunarIcon(),
+                      Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: NotificationsLunarIcon(),
+                      ),
                       GestureDetector(
                         onTap: () {
                           FeatureDiscovery.clearPreferences(context, <String>{
                             'perspectives_info_id',
                             'create_perspective_id',
-                            'collective_toggle_id',
                           });
                           FeatureDiscovery.discoverFeatures(
                             context,
                             const <String>{
                               'perspectives_info_id',
                               'create_perspective_id',
-                              'collective_toggle_id',
                             },
                           );
                         },
