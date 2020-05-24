@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar({Key key, @required this.profile})
@@ -138,7 +139,20 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                 ],
               ),
             ),
-            MemberProfilePictureAvatar(profile: widget.profile),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute<dynamic>(
+                    builder: (BuildContext context) =>
+                        AboutMember(profile: widget.profile),
+                  ),
+                );
+              },
+              child: MemberProfilePictureAvatar(
+                profile: widget.profile,
+              ),
+            ),
           ],
         ),
       ),

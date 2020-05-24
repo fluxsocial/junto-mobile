@@ -4,6 +4,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 
 class PacksListAppBar extends StatelessWidget {
   PacksListAppBar({
@@ -54,6 +55,7 @@ class PacksListAppBar extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
+                      NotificationsLunarIcon(),
                       GestureDetector(
                         onTap: () {
                           FeatureDiscovery.clearPreferences(context, <String>{

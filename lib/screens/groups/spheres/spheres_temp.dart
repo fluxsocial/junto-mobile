@@ -74,7 +74,6 @@ class SpheresTemp extends StatelessWidget {
               expressionContext: ExpressionContext.Group,
               actionsVisible: false,
               source: Screen.groups,
-              onLeftButtonTap: () {},
             ),
           ),
           floatingActionButtonLocation:

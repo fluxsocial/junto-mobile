@@ -44,35 +44,6 @@ class PacksActionButtons extends StatelessWidget {
           expressionContext: ExpressionContext.Group,
           actionsVisible: actionsVisible ?? true,
           source: Screen.packs,
-          featureTitle:
-              "Click this icon to move between the Packs you're in and the current Pack you’re viewing.",
-          featureId: 'packs_toggle_id',
-          isLastFeature: true,
-          iconNorth: iconNorth,
-          onLeftButtonTap: () {
-            if (actionsVisible) {
-              Navigator.pop(context);
-            } else {
-              Navigator.push(
-                context,
-                FadeRoute(
-                  child: MultiBlocProvider(
-                    providers: [
-                      BlocProvider<GroupBloc>.value(
-                        value: context.bloc<GroupBloc>(),
-                      ),
-                      BlocProvider<PackBloc>.value(
-                        value: context.bloc<PackBloc>(),
-                      ),
-                    ],
-                    child: FeatureDiscovery(
-                      child: PacksList(),
-                    ),
-                  ),
-                ),
-              );
-            }
-          },
         ),
       ),
     );
