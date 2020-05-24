@@ -2,15 +2,25 @@ import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/services/image_handler.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 enum ExpressionContext { Group, Collection, Collective }
 
+class ImageThumbnails {
+  final String keyPhoto;
+  final String key300;
+  final String key600;
+
+  ImageThumbnails(this.keyPhoto, this.key300, this.key600);
+}
+
 class ExpressionRepo {
-  ExpressionRepo(this._expressionService, this.db);
+  ExpressionRepo(this._expressionService, this.db, this.imageHandler);
 
   final LocalCache db;
   final ExpressionService _expressionService;
+  final ImageHandler imageHandler;
   QueryResults<ExpressionResponse> cachedResults;
   QueryResults<ExpressionResponse> packCachedResults;
 
@@ -51,6 +61,21 @@ class ExpressionRepo {
 
   Future<String> createPhoto(bool isPrivate, String fileType, File file) {
     return _expressionService.createPhoto(isPrivate, fileType, file);
+  }
+
+  Future<ImageThumbnails> createPhotoThumbnails(File file) async {
+    final img300 = await imageHandler.resizeImage(file, 300);
+    final img600 = await imageHandler.resizeImage(file, 600);
+    final futures = <Future<String>>[
+      _expressionService.createPhoto(true, '.png', file),
+      _expressionService.createPhoto(true, '.png', img300),
+      _expressionService.createPhoto(true, '.png', img600),
+    ];
+    final result = await Future.wait(futures);
+    final keyPhoto = result[0];
+    final key300 = result[1];
+    final key600 = result[2];
+    return ImageThumbnails(keyPhoto, key300, key600);
   }
 
   Future<AudioFormExpression> createAudio(
