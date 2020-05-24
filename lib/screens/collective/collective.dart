@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
-import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
@@ -12,6 +11,8 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 
 import 'collective_actions/perspectives.dart';
 
@@ -37,7 +38,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  PageController _pageController;
+  final PageController _pageController = PageController(initialPage: 0);
   int _currentIndex = 0;
 
   @override
@@ -45,7 +46,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.initState();
 
     _collectiveController = ScrollController();
-    _pageController = PageController(initialPage: 0);
     initializeBloc();
   }
 
@@ -71,7 +71,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   _collectiveViewNav() {
-    print('heyo');
     if (_currentIndex == 0) {
       _pageController.nextPage(
         curve: Curves.easeIn,
@@ -116,30 +115,27 @@ class JuntoCollectiveState extends State<JuntoCollective>
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              body: BlocBuilder<CollectiveBloc, CollectiveState>(
-                  builder: (context, state) {
-                return Stack(
-                  children: <Widget>[
-                    PageView(
-                      physics: NeverScrollableScrollPhysics(),
-                      onPageChanged: (int index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      },
-                      controller: _pageController,
-                      children: <Widget>[
-                        JuntoPerspectives(
-                          collectiveViewNav: _collectiveViewNav,
-                        ),
-                        ExpressionFeed(
-                          collectiveViewNav: _collectiveViewNav,
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              }),
+              body: Stack(
+                children: <Widget>[
+                  PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    controller: _pageController,
+                    children: <Widget>[
+                      JuntoPerspectives(
+                        collectiveViewNav: _collectiveViewNav,
+                      ),
+                      ExpressionFeed(
+                        collectiveViewNav: _collectiveViewNav,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

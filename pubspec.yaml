@@ -89,6 +89,9 @@ flutter:
     - assets/images/junto-mobile__themes--royal.png
     - assets/images/junto-mobile__themes--night.png
     - assets/images/junto-mobile__logo.png
+    - assets/images/junto-mobile__logo--rainbow.png
+    - assets/images/junto-mobile__logo--aqueous.png
+    - assets/images/junto-mobile__logo--purpgold.png
     - assets/images/junto-mobile__outlinelogo--gradient.png
     - assets/images/junto-mobile__infinity.png
     - assets/images/junto-mobile__location.png
