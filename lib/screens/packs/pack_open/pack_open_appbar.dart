@@ -48,7 +48,6 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.only(
                     bottom: 10,
-                    left: 10,
                   ),
                   decoration: BoxDecoration(
                     border: Border(
@@ -63,48 +62,34 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      if (userProfile != null)
-                        Flexible(
-                          child: GestureDetector(
-                            onTap: packsViewNav,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                MemberAvatar(
-                                  diameter: 28,
-                                  profilePicture:
-                                      pack.address == userProfile.pack.address
-                                          ? userProfile.user.profilePicture
-                                          : pack.creator['profile_picture'],
-                                ),
-                                const SizedBox(width: 10),
-                                Flexible(
-                                  child: Text(
-                                    pack.address == userProfile.pack.address
-                                        ? 'My Pack'
-                                        : pack.creator['username'].trim(),
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )
-                              ],
-                            ),
+                      GestureDetector(
+                        onTap: packsViewNav,
+                        child: Container(
+                          alignment: Alignment.bottomLeft,
+                          color: Colors.transparent,
+                          height: 38,
+                          width: 38,
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                CustomIcons.back,
+                                size: 17,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ],
                           ),
                         ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            height: 28,
-                            alignment: Alignment.center,
-                            child: NotificationsLunarIcon(),
-                          ),
-                          if (userProfile != null &&
-                              userProfile.pack.address != pack.address)
-                            GestureDetector(
-                              onTap: () {
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 38),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (userProfile != null &&
+                                  userProfile.pack.address != pack.address) {
                                 showModalBottomSheet(
                                   context: context,
                                   shape: RoundedRectangleBorder(
@@ -116,20 +101,44 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                                     userProfile: userProfile,
                                   ),
                                 );
-                              },
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                height: 28,
-                                alignment: Alignment.center,
-                                color: Colors.transparent,
-                                child: Icon(
-                                  CustomIcons.morevertical,
-                                  size: 20,
-                                  color: Theme.of(context).primaryColor,
+                              } else {
+                                return;
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                MemberAvatar(
+                                  diameter: 18,
+                                  profilePicture:
+                                      pack.address == userProfile.pack.address
+                                          ? userProfile.user.profilePicture
+                                          : pack.creator['profile_picture'],
                                 ),
-                              ),
+                                const SizedBox(width: 5),
+                                Flexible(
+                                  child: Text(
+                                    pack.creator['username'].trim(),
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
                             ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                            height: 28,
+                            width: 38,
+                            alignment: Alignment.center,
+                            child: NotificationsLunarIcon(),
+                          ),
                           GestureDetector(
                             onTap: () {
                               FeatureDiscovery.clearPreferences(
@@ -157,6 +166,7 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                               ],
                               child: Container(
                                 height: 24,
+                                width: 38,
                                 padding: const EdgeInsets.only(bottom: 4),
                                 color: Colors.transparent,
                                 child: JuntoInfoIcon(),

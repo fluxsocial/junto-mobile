@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 
 class PacksListAppBar extends StatelessWidget {
-  PacksListAppBar({this.packsViewNav, this.currentIndex});
+  PacksListAppBar({this.currentIndex});
 
-  final Function packsViewNav;
   final int currentIndex;
   @override
   Widget build(BuildContext context) {
@@ -37,17 +35,14 @@ class PacksListAppBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                GestureDetector(
-                  onTap: packsViewNav,
-                  child: Container(
-                    width: 42,
-                    height: 42,
-                    alignment: Alignment.bottomLeft,
-                    color: Colors.transparent,
-                    child: Image.asset(
-                      'assets/images/junto-mobile__logo--rainbow.png',
-                      height: 24,
-                    ),
+                Container(
+                  width: 42,
+                  height: 42,
+                  alignment: Alignment.bottomLeft,
+                  color: Colors.transparent,
+                  child: Image.asset(
+                    'assets/images/junto-mobile__logo--rainbow.png',
+                    height: 24,
                   ),
                 ),
                 Container(

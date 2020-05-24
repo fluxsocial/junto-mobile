@@ -108,8 +108,17 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          NotificationsLunarIcon(),
-                          AppBarFeatureDiscovery(),
+                          Container(
+                            color: Colors.transparent,
+                            alignment: Alignment.bottomRight,
+                            width: 38,
+                            child: NotificationsLunarIcon(),
+                          ),
+                          Container(
+                            color: Colors.transparent,
+                            width: 38,
+                            child: AppBarFeatureDiscovery(),
+                          ),
                         ],
                       )
                     ],

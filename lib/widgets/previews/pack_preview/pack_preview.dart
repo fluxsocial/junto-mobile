@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
@@ -17,12 +18,13 @@ class PackPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double diameter = 38.0;
     return Container(
       color: Colors.transparent,
       child: Row(
         children: <Widget>[
           MemberAvatar(
-            diameter: 38,
+            diameter: diameter,
             profilePicture: group.address == userProfile.pack.address
                 ? userProfile.user.profilePicture
                 : group.creator['profile_picture'],
