@@ -44,10 +44,9 @@ class PerspectivesAppBar extends StatelessWidget {
                     height: 42,
                     alignment: Alignment.bottomLeft,
                     color: Colors.transparent,
-                    child: Icon(
-                      CustomIcons.back,
-                      color: Theme.of(context).primaryColorDark,
-                      size: 17,
+                    child: Image.asset(
+                      'assets/images/junto-mobile__logo--rainbow.png',
+                      height: 24,
                     ),
                   ),
                 ),
@@ -152,7 +151,7 @@ class PerspectivesAppBar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   ),
                 ),
