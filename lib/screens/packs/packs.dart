@@ -62,8 +62,9 @@ class JuntoPacksState extends State<JuntoPacks>
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: JuntoFilterDrawer(
-              leftDrawer:
-                  const FilterDrawerContent(ExpressionContextType.Group),
+              leftDrawer: _currentIndex == 1
+                  ? const FilterDrawerContent(ExpressionContextType.Group)
+                  : null,
               rightMenu: JuntoDrawer(),
               scaffold: Scaffold(
                   floatingActionButton: PacksActionButtons(
@@ -82,8 +83,8 @@ class JuntoPacksState extends State<JuntoPacks>
                     },
                     controller: _pageController,
                     children: <Widget>[
-                      PackOpen(packsViewNav: _packsViewNav),
                       PacksList(packsViewNav: _packsViewNav),
+                      PackOpen(packsViewNav: _packsViewNav),
                     ],
                   )),
             ),
