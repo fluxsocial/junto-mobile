@@ -7,13 +7,13 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/junto_resources.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
 import 'package:provider/provider.dart';
@@ -78,28 +78,31 @@ class JuntoDrawer extends StatelessWidget {
                               );
                             },
                           ),
-                        JuntoDrawerItem(
-                          icon: Container(
-                            width: 60,
-                            alignment: Alignment.centerLeft,
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                          title: S.of(context).menu_search,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<Widget>(
-                                builder: (BuildContext context) {
-                                  return GlobalSearch();
-                                },
-                              ),
-                            );
-                          },
-                        ),
+                        // Eric - Leaving this here while we test out global search
+                        // in bottom nav
+
+                        // JuntoDrawerItem(
+                        //   icon: Container(
+                        //     width: 60,
+                        //     alignment: Alignment.centerLeft,
+                        //     child: Icon(
+                        //       Icons.search,
+                        //       color: Colors.white,
+                        //       size: 24,
+                        //     ),
+                        //   ),
+                        //   title: S.of(context).menu_search,
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       CupertinoPageRoute<Widget>(
+                        //         builder: (BuildContext context) {
+                        //           return GlobalSearch();
+                        //         },
+                        //       ),
+                        //     );
+                        //   },
+                        // ),
                         JuntoDrawerItem(
                           icon: Container(
                             width: 60,
@@ -150,6 +153,29 @@ class JuntoDrawer extends StatelessWidget {
                             );
                           },
                         ),
+                        // To Do: Eric
+                        // JuntoDrawerItem(
+                        //   icon: Container(
+                        //     width: 60,
+                        //     alignment: Alignment.centerLeft,
+                        //     child: Icon(
+                        //       Icons.book,
+                        //       color: Colors.white,
+                        //       size: 24,
+                        //     ),
+                        //   ),
+                        //   title: 'Resources',
+                        //   onTap: () async {
+                        //     await Navigator.push(
+                        //       context,
+                        //       CupertinoPageRoute<dynamic>(
+                        //         builder: (BuildContext context) {
+                        //           return JuntoResources();
+                        //         },
+                        //       ),
+                        //     );
+                        //   },
+                        // ),
                       ],
                     ),
                     Container(
