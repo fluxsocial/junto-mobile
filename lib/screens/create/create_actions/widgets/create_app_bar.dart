@@ -30,13 +30,18 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(
-                expressionType.appBarName().toUpperCase(),
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColor,
-                  letterSpacing: 1.7,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  expressionType.appBarName().toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).primaryColor,
+                    letterSpacing: 1.7,
+                  ),
                 ),
               ),
               CreateCTAButton(cta: onNext, title: 'Next'),
