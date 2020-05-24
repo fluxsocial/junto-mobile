@@ -113,6 +113,7 @@ class PerspectiveItem extends StatelessWidget {
                       perspective.name,
                       style: Theme.of(context).textTheme.bodyText1.copyWith(
                             fontWeight: FontWeight.w700,
+                            color: Theme.of(context).primaryColor,
                           ),
                     ),
                     if (perspective.name == 'JUNTO')

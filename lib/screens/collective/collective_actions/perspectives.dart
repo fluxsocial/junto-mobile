@@ -63,10 +63,13 @@ class JuntoPerspectives extends StatelessWidget {
                             children: <Widget>[
                               PerspectiveItem(
                                 perspective: juntoPerspective,
-                                onTap: () => onPerspectivesChanged(
-                                  juntoPerspective,
-                                  context,
-                                ),
+                                onTap: () {
+                                  collectiveViewNav();
+                                  onPerspectivesChanged(
+                                    juntoPerspective,
+                                    context,
+                                  );
+                                },
                               ),
                               PerspectivesList(),
                             ],

@@ -37,12 +37,15 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
+  PageController _pageController;
+  int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
 
     _collectiveController = ScrollController();
+    _pageController = PageController(initialPage: 0);
     initializeBloc();
   }
 
@@ -60,6 +63,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   @override
   void dispose() {
     _collectiveController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -72,9 +76,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
       );
     }
   }
-
-  final PageController _pageController = PageController(initialPage: 0);
-  int _currentIndex = 0;
 
   _collectiveViewNav() {
     if (_currentIndex == 0) {
@@ -121,25 +122,30 @@ class JuntoCollectiveState extends State<JuntoCollective>
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              body: Stack(
-                children: <Widget>[
-                  PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                    controller: _pageController,
-                    children: <Widget>[
-                      ExpressionFeed(
-                        collectiveViewNav: _collectiveViewNav,
-                      ),
-                      JuntoPerspectives(collectiveViewNav: _collectiveViewNav),
-                    ],
-                  ),
-                ],
-              ),
+              body: BlocBuilder<CollectiveBloc, CollectiveState>(
+                  builder: (context, state) {
+                return Stack(
+                  children: <Widget>[
+                    PageView(
+                      physics: NeverScrollableScrollPhysics(),
+                      onPageChanged: (int index) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                      controller: _pageController,
+                      children: <Widget>[
+                        JuntoPerspectives(
+                          collectiveViewNav: _collectiveViewNav,
+                        ),
+                        ExpressionFeed(
+                          collectiveViewNav: _collectiveViewNav,
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }),
             ),
           ),
         ),
