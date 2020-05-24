@@ -51,13 +51,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   void initializeBloc() {
     context.bloc<PerspectivesBloc>().add(FetchPerspectives());
-    context.bloc<CollectiveBloc>().add(
-          FetchCollective(
-            ExpressionQueryParams(
-              contextType: ExpressionContextType.Collective,
-            ),
-          ),
-        );
   }
 
   @override
@@ -78,6 +71,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   _collectiveViewNav() {
+    print('heyo');
     if (_currentIndex == 0) {
       _pageController.nextPage(
         curve: Curves.easeIn,
