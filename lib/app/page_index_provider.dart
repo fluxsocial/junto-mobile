@@ -6,6 +6,7 @@ class PageIndexProvider extends ChangeNotifier {
 
   void setCollectivePageIndex(int index) {
     _collectivePageIndex = index;
+    print(_collectivePageIndex);
     notifyListeners();
   }
 }
