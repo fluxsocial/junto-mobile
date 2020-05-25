@@ -158,6 +158,18 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     );
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    print(_responseMap);
+  }
+
+  Future<void> deleteUserAccount(String userAddress, String password) async {
+    final Map<String, dynamic> _body = <String, dynamic>{
+      'password': password,
+    };
+
+    final http.Response response = await client.postWithoutEncoding(
+      '/users/$userAddress',
+      body: _body,
+    );
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
   }
 }

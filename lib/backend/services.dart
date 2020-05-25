@@ -55,6 +55,9 @@ abstract class AuthenticationService {
 
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser();
+
+  // Deletes user account
+  Future<void> deleteUserAccount(String userAddress, String password);
 }
 
 abstract class CollectiveService {
