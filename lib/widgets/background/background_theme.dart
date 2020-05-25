@@ -13,7 +13,7 @@ class BackgroundTheme extends StatelessWidget {
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     }
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
