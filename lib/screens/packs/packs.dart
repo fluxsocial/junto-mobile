@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
@@ -16,7 +18,6 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:provider/provider.dart';
 
 class JuntoPacks extends StatefulWidget {
   const JuntoPacks({@required this.initialGroup});
@@ -34,9 +35,7 @@ class JuntoPacksState extends State<JuntoPacks>
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   int _currentIndex = 0;
-  final PageController _pageController = PageController(
-    initialPage: 0,
-  );
+  PageController _pageController;
 
   _packsViewNav() {
     if (_currentIndex == 0) {
@@ -50,6 +49,15 @@ class JuntoPacksState extends State<JuntoPacks>
         duration: Duration(milliseconds: 300),
       );
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final packsPageIndex =
+        Provider.of<PageIndexProvider>(context, listen: false).packsPageIndex;
+    _currentIndex = packsPageIndex;
+    _pageController = PageController(initialPage: packsPageIndex);
   }
 
   @override
@@ -80,6 +88,8 @@ class JuntoPacksState extends State<JuntoPacks>
                       setState(() {
                         _currentIndex = index;
                       });
+                      Provider.of<PageIndexProvider>(context, listen: false)
+                          .setPacksPageIndex(index);
                     },
                     controller: _pageController,
                     children: <Widget>[
