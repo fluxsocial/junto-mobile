@@ -97,64 +97,62 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PageIndexProvider>(
-        builder: (context, collectivePage, child) {
-      return FeatureDiscovery(
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: JuntoFilterDrawer(
-            leftDrawer: _currentIndex == 1
-                ? FilterDrawerContent(ExpressionContextType.Collective)
-                : null,
-            rightMenu: JuntoDrawer(),
-            scaffold: NotificationListener<ScrollUpdateNotification>(
-              onNotification: (value) => hideOrShowFab(value, _isFabVisible),
-              child: Scaffold(
-                key: _juntoCollectiveKey,
-                floatingActionButton: CollectiveActionButton(
-                  isVisible: _isFabVisible,
-                  onUpTap: _scrollToTop,
-                  actionsVisible: false,
-                  iconNorth: true,
-                  onTap: () {
-                    context.bloc<PerspectivesBloc>().add(FetchPerspectives());
-                    Navigator.push(
-                      context,
-                      FadeRoute(
-                        child: JuntoPerspectives(),
-                      ),
-                    );
-                  },
-                ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                body: Stack(
-                  children: <Widget>[
-                    PageView(
-                      physics: NeverScrollableScrollPhysics(),
-                      onPageChanged: (int index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                        collectivePage.setCollectivePageIndex(index);
-                      },
-                      controller: _pageController,
-                      children: <Widget>[
-                        JuntoPerspectives(
-                          collectiveViewNav: _collectiveViewNav,
-                        ),
-                        ExpressionFeed(
-                          collectiveViewNav: _collectiveViewNav,
-                        ),
-                      ],
+    return FeatureDiscovery(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: JuntoFilterDrawer(
+          leftDrawer: _currentIndex == 1
+              ? FilterDrawerContent(ExpressionContextType.Collective)
+              : null,
+          rightMenu: JuntoDrawer(),
+          scaffold: NotificationListener<ScrollUpdateNotification>(
+            onNotification: (value) => hideOrShowFab(value, _isFabVisible),
+            child: Scaffold(
+              key: _juntoCollectiveKey,
+              floatingActionButton: CollectiveActionButton(
+                isVisible: _isFabVisible,
+                onUpTap: _scrollToTop,
+                actionsVisible: false,
+                iconNorth: true,
+                onTap: () {
+                  context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+                  Navigator.push(
+                    context,
+                    FadeRoute(
+                      child: JuntoPerspectives(),
                     ),
-                  ],
-                ),
+                  );
+                },
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              body: Stack(
+                children: <Widget>[
+                  PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                      Provider.of<PageIndexProvider>(context, listen: false)
+                          .setCollectivePageIndex(index);
+                    },
+                    controller: _pageController,
+                    children: <Widget>[
+                      JuntoPerspectives(
+                        collectiveViewNav: _collectiveViewNav,
+                      ),
+                      ExpressionFeed(
+                        collectiveViewNav: _collectiveViewNav,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
