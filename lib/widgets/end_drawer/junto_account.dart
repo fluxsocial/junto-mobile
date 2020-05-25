@@ -68,7 +68,7 @@ class JuntoAccount extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.all(0),
                 children: <Widget>[
                   JuntoAccountDetail(
                     title: 'Name',
@@ -117,11 +117,32 @@ class JuntoAccountDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: .75,
+          ),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(title),
-          if (user.userProfile.user.email != null) Text(_buildItem()),
+          Flexible(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+          ),
+          if (user.userProfile.user.email != null)
+            Flexible(
+              child: Text(
+                _buildItem(),
+                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+            ),
         ],
       ),
     );
