@@ -133,6 +133,7 @@ class DeleteAccountDialog extends StatelessWidget {
                                   'Unable to delete your account. Double check your password.',
                             ),
                           );
+                          logger.logException(error);
                         }
                       },
                       child: Container(
