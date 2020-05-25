@@ -164,11 +164,12 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     final Map<String, dynamic> _body = <String, dynamic>{
       'password': password,
     };
-
+    print('first step');
     final http.Response response = await client.postWithoutEncoding(
       '/users/$userAddress',
       body: _body,
     );
+
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
   }
