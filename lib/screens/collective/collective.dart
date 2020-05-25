@@ -11,6 +11,8 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/app/page_index_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 
@@ -38,7 +40,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  final PageController _pageController = PageController(initialPage: 0);
+  PageController _pageController;
   int _currentIndex = 0;
 
   @override
@@ -46,6 +48,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.initState();
 
     _collectiveController = ScrollController();
+    _pageController = PageController(initialPage: 1);
     initializeBloc();
   }
 
@@ -86,60 +89,64 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   @override
   Widget build(BuildContext context) {
-    return FeatureDiscovery(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: JuntoFilterDrawer(
-          leftDrawer: _currentIndex == 1
-              ? FilterDrawerContent(ExpressionContextType.Collective)
-              : null,
-          rightMenu: JuntoDrawer(),
-          scaffold: NotificationListener<ScrollUpdateNotification>(
-            onNotification: (value) => hideOrShowFab(value, _isFabVisible),
-            child: Scaffold(
-              key: _juntoCollectiveKey,
-              floatingActionButton: CollectiveActionButton(
-                isVisible: _isFabVisible,
-                onUpTap: _scrollToTop,
-                actionsVisible: false,
-                iconNorth: true,
-                onTap: () {
-                  context.bloc<PerspectivesBloc>().add(FetchPerspectives());
-                  Navigator.push(
-                    context,
-                    FadeRoute(
-                      child: JuntoPerspectives(),
+    return Consumer<PageIndexProvider>(
+        builder: (context, collectivePage, child) {
+      return FeatureDiscovery(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: JuntoFilterDrawer(
+            leftDrawer: _currentIndex == 1
+                ? FilterDrawerContent(ExpressionContextType.Collective)
+                : null,
+            rightMenu: JuntoDrawer(),
+            scaffold: NotificationListener<ScrollUpdateNotification>(
+              onNotification: (value) => hideOrShowFab(value, _isFabVisible),
+              child: Scaffold(
+                key: _juntoCollectiveKey,
+                floatingActionButton: CollectiveActionButton(
+                  isVisible: _isFabVisible,
+                  onUpTap: _scrollToTop,
+                  actionsVisible: false,
+                  iconNorth: true,
+                  onTap: () {
+                    context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+                    Navigator.push(
+                      context,
+                      FadeRoute(
+                        child: JuntoPerspectives(),
+                      ),
+                    );
+                  },
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                body: Stack(
+                  children: <Widget>[
+                    PageView(
+                      physics: NeverScrollableScrollPhysics(),
+                      onPageChanged: (int index) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                        // collectivePage.setCollectivePageIndex(index);
+                      },
+                      controller: _pageController,
+                      children: <Widget>[
+                        JuntoPerspectives(
+                          collectiveViewNav: _collectiveViewNav,
+                        ),
+                        ExpressionFeed(
+                          collectiveViewNav: _collectiveViewNav,
+                        ),
+                      ],
                     ),
-                  );
-                },
-              ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              body: Stack(
-                children: <Widget>[
-                  PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                    controller: _pageController,
-                    children: <Widget>[
-                      JuntoPerspectives(
-                        collectiveViewNav: _collectiveViewNav,
-                      ),
-                      ExpressionFeed(
-                        collectiveViewNav: _collectiveViewNav,
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
