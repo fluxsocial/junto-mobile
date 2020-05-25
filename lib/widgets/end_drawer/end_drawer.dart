@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_resources.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/junto_account.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
 import 'package:provider/provider.dart';
@@ -142,8 +143,8 @@ class JuntoDrawer extends StatelessWidget {
                             ),
                           ),
                           title: S.of(context).themes_title,
-                          onTap: () async {
-                            await Navigator.push(
+                          onTap: () {
+                            Navigator.push(
                               context,
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
@@ -179,30 +180,54 @@ class JuntoDrawer extends StatelessWidget {
                         // ),
                       ],
                     ),
-                    Container(
-                      child: JuntoDrawerItem(
-                        icon: Container(
-                          width: 60,
-                          alignment: Alignment.centerLeft,
-                          child: Icon(
-                            Icons.settings,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                        title: S.of(context).menu_logout,
-                        onTap: () async {
-                          await showDialog(
-                            context: context,
-                            builder: (BuildContext context) => ConfirmDialog(
-                              buildContext: context,
-                              confirm: () => _onLogOut(context),
-                              confirmationText:
-                                  S.of(context).menu_are_you_sure_to_logout,
+                    Column(
+                      children: <Widget>[
+                        JuntoDrawerItem(
+                          icon: Container(
+                            width: 60,
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              Icons.person_outline,
+                              color: Colors.white,
+                              size: 24,
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                          title: 'Account',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute<dynamic>(
+                                builder: (BuildContext context) {
+                                  return JuntoAccount();
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                        JuntoDrawerItem(
+                          icon: Container(
+                            width: 60,
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              Icons.settings,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          title: S.of(context).menu_logout,
+                          onTap: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) => ConfirmDialog(
+                                buildContext: context,
+                                confirm: () => _onLogOut(context),
+                                confirmationText:
+                                    S.of(context).menu_are_you_sure_to_logout,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
