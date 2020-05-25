@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   const DeleteAccountDialog({this.buildContext, this.user});
@@ -107,14 +112,19 @@ class DeleteAccountDialog extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () async {
+                        JuntoLoader.showLoader(context);
+                        print(passwordController.value.text);
                         try {
                           await Provider.of<AuthRepo>(context, listen: false)
                               .deleteUserAccount(
                             user.userAddress,
                             passwordController.value.text,
                           );
-                          Navigator.pop(context);
+                          JuntoLoader.hide();
+                          await context.bloc<AuthBloc>().add(LogoutEvent());
+                          Navigator.popUntil(context, (r) => r.isFirst);
                         } catch (error) {
+                          JuntoLoader.hide();
                           showDialog(
                             context: context,
                             builder: (BuildContext context) =>
