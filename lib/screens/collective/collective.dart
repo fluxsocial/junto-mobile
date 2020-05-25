@@ -13,8 +13,6 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
 
 import 'collective_actions/perspectives.dart';
 
@@ -48,8 +46,18 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.initState();
 
     _collectiveController = ScrollController();
-    _pageController = PageController(initialPage: 1);
     initializeBloc();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final collectivePageIndex =
+        Provider.of<PageIndexProvider>(context, listen: false)
+            .collectivePageIndex;
+    _currentIndex = collectivePageIndex;
+    _pageController = PageController(initialPage: collectivePageIndex);
   }
 
   void initializeBloc() {
@@ -128,7 +136,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                         setState(() {
                           _currentIndex = index;
                         });
-                        // collectivePage.setCollectivePageIndex(index);
+                        collectivePage.setCollectivePageIndex(index);
                       },
                       controller: _pageController,
                       children: <Widget>[
