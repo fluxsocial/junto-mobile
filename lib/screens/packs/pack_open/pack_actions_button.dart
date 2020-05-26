@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
-import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
-import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 
 class PacksActionButtons extends StatelessWidget {
