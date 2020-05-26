@@ -161,16 +161,20 @@ class AuthenticationServiceCentralized implements AuthenticationService {
   }
 
   Future<void> deleteUserAccount(String userAddress, String password) async {
-    final Map<String, dynamic> _body = <String, String>{
-      'password': password,
-    };
-    print('first step');
-    final http.Response response = await client.delete(
-      '/users/$userAddress',
-      body: _body,
-    );
+    if (userAddress.isNotEmpty &&
+        userAddress != null &&
+        password.isNotEmpty &&
+        password != null) {
+      final Map<String, dynamic> _body = <String, String>{
+        'password': password,
+      };
+      final http.Response response = await client.delete(
+        '/users/$userAddress',
+        body: _body,
+      );
 
-    final Map<String, dynamic> _responseMap =
-        JuntoHttp.handleResponse(response);
+      final Map<String, dynamic> _responseMap =
+          JuntoHttp.handleResponse(response);
+    }
   }
 }
