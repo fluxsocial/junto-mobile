@@ -58,7 +58,7 @@ class JuntoRules extends StatelessWidget {
                       ),
                       TextSpan(
                         text:
-                            "Accept everyone else's experience as valid, even if it doesn't look like yours.",
+                            "Accept others' experiences as valid, even if they don't look like yours.",
                       ),
                     ]),
               ),
@@ -79,7 +79,7 @@ class JuntoRules extends StatelessWidget {
                     ),
                     TextSpan(
                       text:
-                          'Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
+                          'Embrace kindness and be aware of the impact your words and actions have.',
                     ),
                   ]),
             ),
