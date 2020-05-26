@@ -16,7 +16,7 @@ class NotificationPhotoPreview extends StatelessWidget {
         height: MediaQuery.of(context).size.width / 3 * 2 - 68,
         width: MediaQuery.of(context).size.width - 68,
         child: ImageWrapper(
-          imageUrl: sourceExpression.expressionData['image'],
+          imageUrl: sourceExpression.imageUrl,
           placeholder: (BuildContext context, String _) {
             return Container(
               color: Theme.of(context).dividerColor,
