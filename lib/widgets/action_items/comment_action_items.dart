@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
@@ -11,7 +12,7 @@ import 'package:provider/provider.dart';
 class CommentActionItems extends StatelessWidget {
   const CommentActionItems({this.comment, this.userAddress, this.source});
 
-  final dynamic comment;
+  final Comment comment;
   final String userAddress;
   final String source;
 
