@@ -12,7 +12,7 @@ class AudioPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioTitle = expression.expressionData.title.trim();
     final audioGradients = expression.expressionData.gradient;
-    final audioPhoto = expression.expressionData.photo;
+    final audioPhoto = expression.thumbnailLarge;
     Widget _displayAudioPreview() {
       if (audioGradients.isEmpty && audioPhoto.isEmpty) {
         return AudioPreviewDefault(

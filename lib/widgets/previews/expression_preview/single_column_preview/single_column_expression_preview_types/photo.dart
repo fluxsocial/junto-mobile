@@ -16,7 +16,7 @@ class PhotoPreview extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: ImageWrapper(
-        imageUrl: expression.expressionData.image,
+        imageUrl: expression.thumbnailLarge,
         placeholder: (BuildContext context, String _) {
           return Container(
             color: Theme.of(context).dividerColor,
