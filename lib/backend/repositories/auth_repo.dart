@@ -129,4 +129,9 @@ class AuthRepo {
     themesProvider.setTheme("rainbow");
     await authService.logoutUser();
   }
+
+  // Delete user account
+  Future<void> deleteUserAccount(String userAddress, String password) async {
+    return authService.deleteUserAccount(userAddress, password);
+  }
 }

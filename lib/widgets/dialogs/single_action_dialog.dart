@@ -32,16 +32,14 @@ class SingleActionDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Expanded(
-              child: Text(
-                dialogText,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.fade,
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w500,
-                ),
+            Text(
+              dialogText,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                fontSize: 17,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 25),
