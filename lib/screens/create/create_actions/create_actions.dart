@@ -8,16 +8,19 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
+import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({
@@ -107,10 +110,13 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   void _postCreateAction() {
     Widget child;
     if (_expressionContext == ExpressionContext.Collective) {
+      context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
     } else if (_expressionContext == ExpressionContext.Group) {
+      context.bloc<PackBloc>().add(RefreshPacks());
       child = JuntoPacks(initialGroup: _address);
     } else {
+      context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
     }
     Navigator.of(context).pushAndRemoveUntil(
