@@ -109,23 +109,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
             onNotification: (value) => hideOrShowFab(value, _isFabVisible),
             child: Scaffold(
               key: _juntoCollectiveKey,
-              floatingActionButton: CollectiveActionButton(
-                isVisible: _isFabVisible,
-                onUpTap: _scrollToTop,
-                actionsVisible: false,
-                iconNorth: true,
-                onTap: () {
-                  context.bloc<PerspectivesBloc>().add(FetchPerspectives());
-                  Navigator.push(
-                    context,
-                    FadeRoute(
-                      child: JuntoPerspectives(),
-                    ),
-                  );
-                },
-              ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
               body: Stack(
                 children: <Widget>[
                   PageView(
@@ -142,8 +125,21 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       JuntoPerspectives(
                         collectiveViewNav: _collectiveViewNav,
                       ),
-                      ExpressionFeed(
-                        collectiveViewNav: _collectiveViewNav,
+                      Scaffold(
+                        floatingActionButton: CollectiveActionButton(
+                          isVisible: ValueNotifier(true),
+                          actionsVisible: true,
+                          iconNorth: false,
+                          onTap: () {
+                            Navigator.maybePop(context);
+                          },
+                          onUpTap: () {},
+                        ),
+                        floatingActionButtonLocation:
+                            FloatingActionButtonLocation.centerDocked,
+                        body: ExpressionFeed(
+                          collectiveViewNav: _collectiveViewNav,
+                        ),
                       ),
                     ],
                   ),
