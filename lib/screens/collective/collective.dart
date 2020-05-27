@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/screens/collective/perspectives/expression_fee
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:provider/provider.dart';
@@ -127,13 +126,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       ),
                       Scaffold(
                         floatingActionButton: CollectiveActionButton(
-                          isVisible: ValueNotifier(true),
-                          actionsVisible: true,
-                          iconNorth: false,
-                          onTap: () {
-                            Navigator.maybePop(context);
-                          },
-                          onUpTap: () {},
+                          isVisible: _isFabVisible,
                         ),
                         floatingActionButtonLocation:
                             FloatingActionButtonLocation.centerDocked,

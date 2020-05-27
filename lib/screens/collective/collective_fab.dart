@@ -8,16 +8,8 @@ class CollectiveActionButton extends StatelessWidget {
   const CollectiveActionButton({
     Key key,
     @required this.isVisible,
-    @required this.actionsVisible,
-    @required this.onTap,
-    @required this.onUpTap,
-    @required this.iconNorth,
   }) : super(key: key);
   final ValueNotifier<bool> isVisible;
-  final bool actionsVisible;
-  final VoidCallback onTap;
-  final VoidCallback onUpTap;
-  final bool iconNorth;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +25,6 @@ class CollectiveActionButton extends StatelessWidget {
         key: ValueKey('Down-Button'),
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(
-          actionsVisible: actionsVisible,
           source: Screen.collective,
         ),
       ),
