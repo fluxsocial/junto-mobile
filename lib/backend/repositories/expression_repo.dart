@@ -64,8 +64,8 @@ class ExpressionRepo {
   }
 
   Future<ImageThumbnails> createPhotoThumbnails(File file) async {
-    final img300 = await imageHandler.resizeImage(file, 300);
-    final img600 = await imageHandler.resizeImage(file, 600);
+    final img300 = await imageHandler.resizeImage(file, 480);
+    final img600 = await imageHandler.resizeImage(file, 960);
     final futures = <Future<String>>[
       _expressionService.createPhoto(true, '.png', file),
       _expressionService.createPhoto(true, '.png', img300),
