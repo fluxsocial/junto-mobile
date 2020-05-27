@@ -109,14 +109,6 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                MemberAvatar(
-                                  diameter: 20,
-                                  profilePicture:
-                                      pack.address == userProfile.pack.address
-                                          ? userProfile.user.profilePicture
-                                          : pack.creator['profile_picture'],
-                                ),
-                                const SizedBox(width: 5),
                                 Flexible(
                                   child: Text(
                                     pack.creator['username'].trim(),
