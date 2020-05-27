@@ -53,17 +53,14 @@ class PerspectivesAppBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: collectiveViewNav,
-                    child: Container(
-                      width: 42,
-                      height: 42,
-                      alignment: Alignment.bottomLeft,
-                      color: Colors.transparent,
-                      child: Image.asset(
-                        logo(theme.themeName),
-                        height: 24,
-                      ),
+                  Container(
+                    width: 42,
+                    height: 42,
+                    alignment: Alignment.bottomLeft,
+                    color: Colors.transparent,
+                    child: Image.asset(
+                      logo(theme.themeName),
+                      height: 24,
                     ),
                   ),
                   Container(
