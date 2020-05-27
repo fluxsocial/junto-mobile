@@ -225,7 +225,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   void _move(DragUpdateDetails details) {
     double delta = details.primaryDelta / _width;
 
-    if (delta > 0 && _controller.value == 1 && widget.leftDrawer != null) {
+    if (delta >= 0 && _controller.value == 1 && widget.leftDrawer != null) {
       // If false we don't want to open [leftDrawer]
       if (!swipeLeftDrawer) {
         return;
@@ -289,6 +289,9 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
           break;
         case DrawerPosition.start:
           visualVelocity = -visualVelocity;
+          if (!swipeLeftDrawer) {
+            return;
+          }
           break;
       }
 
