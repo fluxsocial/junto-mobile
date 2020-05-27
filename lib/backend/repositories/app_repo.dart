@@ -7,7 +7,7 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 class AppRepo {
   Box _appBox;
 
-  bool _twoColumn = false;
+  bool _twoColumn = true;
 
   /// Exposes the current layout config.
   bool get twoColumnLayout => _twoColumn;
