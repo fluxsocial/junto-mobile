@@ -45,6 +45,7 @@ class JuntoFilterDrawer extends StatefulWidget {
     this.borderRadius = 0,
     this.onTapClose = false,
     this.swipe = true,
+    this.swipeLeftDrawer = true,
     this.duration,
     this.animationType = InnerDrawerAnimation.static,
     this.innerDrawerCallback,
@@ -72,6 +73,9 @@ class JuntoFilterDrawer extends StatefulWidget {
 
   /// activate or deactivate the swipe. NOTE: when deactivate, onTap Close is implicitly activated
   final bool swipe;
+
+  /// activate or deactivate the swipe to open [leftDrawer]
+  final bool swipeLeftDrawer;
 
   /// duration animation controller
   final Duration duration;
@@ -222,6 +226,10 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     double delta = details.primaryDelta / _width;
 
     if (delta > 0 && _controller.value == 1 && widget.leftDrawer != null) {
+      // If false we don't want to open [leftDrawer]
+      if (!swipeLeftDrawer) {
+        return;
+      }
       _position = DrawerPosition.start;
     } else if (delta < 0 &&
         _controller.value == 1 &&
@@ -391,10 +399,8 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     return (_width / 2) - (_width / 2) * _offset;
   }
 
-  /// return swipe
-  bool get _swipe {
-    return widget.swipe;
-  }
+  bool get swipe => widget.swipe;
+  bool get swipeLeftDrawer => widget.swipeLeftDrawer;
 
   /// return widget with specific animation
   Widget _animatedChild() {
@@ -436,7 +442,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         child: GestureDetector(
           // On Android, the back button is used to dismiss a modal.
           excludeFromSemantics: defaultTargetPlatform == TargetPlatform.android,
-          onTap: widget.onTapClose || !_swipe ? _close : null,
+          onTap: widget.onTapClose || !swipe ? _close : null,
           child: Semantics(
             label: MaterialLocalizations.of(context)?.modalBarrierDismissLabel,
             child: container,
@@ -509,17 +515,17 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
             child: RepaintBoundary(
               child: _animatedChild(),
             ),
-            onHorizontalDragDown: _swipe ? _handleDragDown : null,
-            onHorizontalDragUpdate: _swipe ? _move : null,
-            onHorizontalDragEnd: _swipe ? _settle : null,
+            onHorizontalDragDown: swipe ? _handleDragDown : null,
+            onHorizontalDragUpdate: swipe ? _move : null,
+            onHorizontalDragEnd: swipe ? _settle : null,
             excludeFromSemantics: true,
           ),
           GestureDetector(
             key: _gestureDetectorKey,
             onTap: () {},
-            onHorizontalDragDown: _swipe ? _handleDragDown : null,
-            onHorizontalDragUpdate: _swipe ? _move : null,
-            onHorizontalDragEnd: _swipe ? _settle : null,
+            onHorizontalDragDown: swipe ? _handleDragDown : null,
+            onHorizontalDragUpdate: swipe ? _move : null,
+            onHorizontalDragEnd: swipe ? _settle : null,
             excludeFromSemantics: true,
             child: RepaintBoundary(
               child: Stack(

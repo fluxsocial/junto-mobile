@@ -104,6 +104,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
               ? FilterDrawerContent(ExpressionContextType.Collective)
               : null,
           rightMenu: JuntoDrawer(),
+          swipeLeftDrawer: false,
           scaffold: NotificationListener<ScrollUpdateNotification>(
             onNotification: (value) => hideOrShowFab(value, _isFabVisible),
             child: Scaffold(
