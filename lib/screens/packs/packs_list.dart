@@ -8,9 +8,10 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 class PacksList extends StatefulWidget {
-  const PacksList({this.packsViewNav});
+  const PacksList({this.packsViewNav, this.isVisible});
 
   final Function packsViewNav;
+  final ValueNotifier<bool> isVisible;
 
   @override
   State<StatefulWidget> createState() {
@@ -60,12 +61,8 @@ class PacksListState extends State<PacksList> {
               packsListNav: _packsListNav,
             ),
           ),
-
-          //TODO(Dominik): We didn't pass the inital group here
           floatingActionButton: PacksActionButtons(
-            isVisible: ValueNotifier<bool>(true),
-            actionsVisible: true,
-            iconNorth: false,
+            isVisible: widget.isVisible,
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,

@@ -27,7 +27,6 @@ class SpheresTemp extends StatelessWidget {
             child: BottomNav(
               address: null,
               expressionContext: ExpressionContext.Group,
-              actionsVisible: false,
               source: Screen.groups,
             ),
           ),

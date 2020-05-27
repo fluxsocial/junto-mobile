@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_actions_button.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
@@ -75,28 +74,27 @@ class JuntoPacksState extends State<JuntoPacks>
                   : null,
               rightMenu: JuntoDrawer(),
               scaffold: Scaffold(
-                  floatingActionButton: PacksActionButtons(
-                    isVisible: _isVisible,
-                    initialGroup: widget.initialGroup,
-                    actionsVisible: false,
-                  ),
-                  floatingActionButtonLocation:
-                      FloatingActionButtonLocation.centerDocked,
                   body: PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                      Provider.of<PageIndexProvider>(context, listen: false)
-                          .setPacksPageIndex(index);
-                    },
-                    controller: _pageController,
-                    children: <Widget>[
-                      PacksList(packsViewNav: _packsViewNav),
-                      PackOpen(packsViewNav: _packsViewNav),
-                    ],
-                  )),
+                physics: NeverScrollableScrollPhysics(),
+                onPageChanged: (int index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                  Provider.of<PageIndexProvider>(context, listen: false)
+                      .setPacksPageIndex(index);
+                },
+                controller: _pageController,
+                children: <Widget>[
+                  PacksList(
+                    packsViewNav: _packsViewNav,
+                    isVisible: _isVisible,
+                  ),
+                  PackOpen(
+                    packsViewNav: _packsViewNav,
+                    isVisible: _isVisible,
+                  ),
+                ],
+              )),
             ),
           ),
         ),

@@ -7,18 +7,10 @@ class PacksActionButtons extends StatelessWidget {
   const PacksActionButtons({
     Key key,
     @required ValueNotifier<bool> isVisible,
-    @required this.initialGroup,
-    this.onTap,
-    this.iconNorth = true,
-    this.actionsVisible,
   })  : _isVisible = isVisible,
         super(key: key);
 
   final ValueNotifier<bool> _isVisible;
-  final bool actionsVisible;
-  final String initialGroup;
-  final bool iconNorth;
-  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +26,7 @@ class PacksActionButtons extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(
-          address: initialGroup,
           expressionContext: ExpressionContext.Group,
-          actionsVisible: actionsVisible ?? true,
           source: Screen.packs,
         ),
       ),

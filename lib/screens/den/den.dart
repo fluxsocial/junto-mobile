@@ -146,7 +146,6 @@ class DenActionButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(
-          actionsVisible: false,
           source: Screen.den,
         ),
       ),

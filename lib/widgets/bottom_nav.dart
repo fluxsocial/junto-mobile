@@ -9,13 +9,11 @@ import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
-    @required this.actionsVisible,
     this.address,
     this.expressionContext = ExpressionContext.Collective,
     this.source,
   });
 
-  final bool actionsVisible;
   final String address;
   final ExpressionContext expressionContext;
   final Screen source;

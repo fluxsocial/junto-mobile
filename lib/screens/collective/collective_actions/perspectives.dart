@@ -34,12 +34,6 @@ class JuntoPerspectives extends StatelessWidget {
           scaffold: Scaffold(
             floatingActionButton: CollectiveActionButton(
               isVisible: ValueNotifier(true),
-              actionsVisible: true,
-              iconNorth: false,
-              onTap: () {
-                Navigator.maybePop(context);
-              },
-              onUpTap: () {},
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,

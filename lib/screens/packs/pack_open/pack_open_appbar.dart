@@ -110,7 +110,7 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 MemberAvatar(
-                                  diameter: 18,
+                                  diameter: 20,
                                   profilePicture:
                                       pack.address == userProfile.pack.address
                                           ? userProfile.user.profilePicture
