@@ -88,15 +88,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Transform.translate(
-                                offset: Offset(0.0, 5),
-                                child:
-                                    Icon(CustomIcons.newperspective, size: 28),
-                              ),
-                              const SizedBox(width: 2.5),
                               Flexible(
                                 child: Text(
-                                  appbarTitle ?? 'JUNTO Custom Perspectives',
+                                  appbarTitle ?? 'JUNTO',
                                   style: Theme.of(context).textTheme.subtitle1,
                                   textAlign: TextAlign.center,
                                 ),
