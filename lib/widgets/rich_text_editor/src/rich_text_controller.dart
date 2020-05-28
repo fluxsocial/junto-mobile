@@ -29,6 +29,7 @@ class RichTextController extends ChangeNotifier {
 
   void addNode({bool inPlaceInsert = false}) {
     print('addNode(inPlace: $inPlaceInsert)');
+
     final RichTextNode focusedNode = currentNode;
     RichTextNode node;
     if (inPlaceInsert && !(focusedNode?.isEmpty ?? true)) {
@@ -36,7 +37,7 @@ class RichTextController extends ChangeNotifier {
       _nodes.insert(_nodes.indexOf(focusedNode) + 1, node);
     } else {
       node = _nodes.isNotEmpty ? _nodes[_nodes.length - 1] : null;
-      if (node == null || node.text.value.text.isNotEmpty) {
+      if (node == null || !node.isEmpty) {
         node = RichTextNode(RichTextNodeType.Text);
         _nodes.add(node);
       } else {
@@ -44,7 +45,7 @@ class RichTextController extends ChangeNotifier {
         return;
       }
     }
-    node.text.addListener(() => onTextChanged(node));
+    node.controller.addListener(() => onTextChanged(node));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       node.focus.requestFocus();
     });
@@ -134,16 +135,17 @@ class RichTextController extends ChangeNotifier {
   }
 
   void onTextChanged(RichTextNode node) {
+    print('onTextChanged');
     if (currentNode == node) {
       _controlsMode = (!node.selection.isCollapsed)
           ? RichTextControlsMode.SelectionMode
           : RichTextControlsMode.InsertMode;
       notifyListeners();
-    }
 
-    if (node.text.value.text.isEmpty) {
-      if (nodes.length > 1) {
-        _deleteNode(node);
+      if (node.isReallyEmpty) {
+        if (nodes.length > 1) {
+          _deleteNode(node);
+        }
       }
     }
   }

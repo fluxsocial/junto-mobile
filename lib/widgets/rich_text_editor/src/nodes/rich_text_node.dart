@@ -8,20 +8,22 @@ const zeroWidthSpace = '\u200B';
 class RichTextNode {
   RichTextNode(this.type,
       [String text = zeroWidthSpace]) // Zero Width Space (ZWSP)
-      : text = TextSpanEditingController(text),
+      : controller = TextSpanEditingController(text),
         focus = FocusNode();
 
   RichTextNodeType type;
-  final TextSpanEditingController text;
+  final TextSpanEditingController controller;
   final FocusNode focus;
 
-  TextSelection get selection => text.value.selection;
+  TextSelection get selection => controller.value.selection;
 
   bool get isEmpty =>
-      text.value.text.isEmpty || text.value.text == zeroWidthSpace;
+      controller.value.text.isEmpty || controller.value.text == zeroWidthSpace;
+
+  bool get isReallyEmpty => controller.value.text.isEmpty;
 
   void dispose() {
-    text.dispose();
+    controller.dispose();
     focus.dispose();
   }
 }

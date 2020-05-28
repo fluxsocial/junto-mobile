@@ -29,7 +29,7 @@ class BulletListNode extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 24.0, top: 4.0, bottom: 4.0),
         child: TextField(
-          controller: node.text,
+          controller: node.controller,
           focusNode: node.focus,
           decoration: null,
           style: style,
