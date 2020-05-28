@@ -11,10 +11,10 @@ class NotificationNavigationObserver extends NavigatorObserver {
     super.didPush(route, previousRoute);
     logger.logDebug(
         'push ${route?.settings?.name} from ${previousRoute?.settings?.name}');
-    if (route.settings?.name == 'JuntoCollective') {
+    if (route?.settings?.name == 'JuntoCollective') {
       notificationsHandler.fetchNotifications();
     }
-    if (route.settings?.name == 'notifications') {
+    if (route?.settings?.name == 'notifications') {
       notificationsHandler.fetchNotifications();
     }
   }
@@ -23,11 +23,11 @@ class NotificationNavigationObserver extends NavigatorObserver {
   void didPop(Route route, Route previousRoute) {
     logger.logDebug(
         'pop ${route?.settings?.name} from ${previousRoute?.settings?.name}');
-    if (previousRoute.settings?.name == 'JuntoCollective' &&
-        route.settings?.name != null) {
+    if (previousRoute?.settings?.name == 'JuntoCollective' &&
+        route?.settings?.name != null) {
       notificationsHandler.fetchNotifications();
     }
-    if (route.settings?.name == 'notifications') {
+    if (route?.settings?.name == 'notifications') {
       logger.logDebug(
           'Marking notifications as read because popping from notifications screen');
       notificationsHandler.markAllAsRead();
