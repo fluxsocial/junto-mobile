@@ -22,7 +22,7 @@ Future<void> main() async {
   //final bool _loggedIn = await backend.authRepo.isLoggedIn();
   runLoggedApp(
     ChangeNotifierProvider<JuntoThemesProvider>(
-      create: (_) => JuntoThemesProvider(backend.currentTheme),
+      create: (_) => JuntoThemesProvider(),
       child: Consumer<JuntoThemesProvider>(
         builder: (BuildContext context, JuntoThemesProvider theme, _) {
           return MaterialApp(
