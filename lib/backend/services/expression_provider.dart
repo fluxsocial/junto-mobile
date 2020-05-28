@@ -38,47 +38,55 @@ class ExpressionServiceCentralized implements ExpressionService {
 
   @override
   Future<String> createPhoto(bool isPrivate, String fileType, File file) async {
-    String _serverUrl;
-    if (isPrivate) {
-      _serverUrl = '/auth/s3?private=true';
-    } else if (isPrivate == false) {
-      _serverUrl = '/auth/s3?private=false';
-    }
-    // denote file type and get url, headers, and key of s3 bucket
-    final http.Response _serverResponse =
-        await client.postWithoutEncoding(_serverUrl, body: fileType);
-    logger.logDebug(_serverResponse.body);
-    logger.logDebug(_serverResponse.statusCode.toString());
+    try {
+      logger.logDebug('Creating a photo on S3');
+      String _serverUrl;
+      if (isPrivate) {
+        _serverUrl = '/auth/s3?private=true';
+      } else if (isPrivate == false) {
+        _serverUrl = '/auth/s3?private=false';
+      }
+      final contentLength = file.lengthSync();
 
-    // parse response
-    final Map<String, dynamic> parseData =
-        JuntoHttp.handleResponse(_serverResponse);
-
-    // seralize into new headers
-    final Map<String, String> newHeaders = <String, String>{
-      'x-amz-acl': parseData['headers']['x-amz-acl'],
-      'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
-    };
-
-    // turn file into bytes
-    final Uint8List fileAsBytes = file.readAsBytesSync();
-
-    // send put request to s3 bucket with url, new headers, and file as bytes
-    final http.Response _serverResponseTwo = await http.put(
-      parseData['signed_url'],
-      headers: newHeaders,
-      body: fileAsBytes,
-    );
-
-    // if successful, return the key for next steps
-    if (_serverResponseTwo.statusCode == 200) {
-      return parseData['key'];
-    } else {
-      print('hello');
-      throw JuntoException(
-        _serverResponse.reasonPhrase,
-        _serverResponse.statusCode,
+      // denote file type and get url, headers, and key of s3 bucket
+      final http.Response _serverResponse = await client.postWithoutEncoding(
+        _serverUrl,
+        body: {'content_type': fileType, 'content_length': contentLength},
       );
+      logger.logDebug(_serverResponse.body);
+      logger.logDebug(_serverResponse.statusCode.toString());
+
+      // parse response
+      final Map<String, dynamic> parseData =
+          JuntoHttp.handleResponse(_serverResponse);
+
+      // seralize into new headers
+      final Map<String, String> newHeaders = <String, String>{
+        'x-amz-acl': parseData['headers']['x-amz-acl'],
+        'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
+      };
+
+      // turn file into bytes
+      final Uint8List fileAsBytes = file.readAsBytesSync();
+
+      // send put request to s3 bucket with url, new headers, and file as bytes
+      final http.Response _serverResponseTwo = await http.put(
+        parseData['signed_url'],
+        headers: newHeaders,
+        body: fileAsBytes,
+      );
+
+      // if successful, return the key for next steps
+      if (_serverResponseTwo.statusCode == 200) {
+        return parseData['key'];
+      } else {
+        throw JuntoException(
+          _serverResponse.reasonPhrase,
+          _serverResponse.statusCode,
+        );
+      }
+    } catch (e) {
+      logger.logException(e);
     }
   }
 
@@ -87,14 +95,22 @@ class ExpressionServiceCentralized implements ExpressionService {
       bool isPrivate, AudioFormExpression expression) async {
     logger.logDebug('Sending request to store audio file in api storage');
     String _serverUrl;
+    // turn file into bytes
+    final File file = File(expression.audio);
+    final Uint8List fileAsBytes = file.readAsBytesSync();
     if (isPrivate) {
       _serverUrl = '/auth/s3?private=true';
     } else if (isPrivate == false) {
       _serverUrl = '/auth/s3?private=false';
     }
     // denote file type and get url, headers, and key of s3 bucket
-    final http.Response _serverResponse =
-        await client.postWithoutEncoding(_serverUrl, body: '.aac');
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      _serverUrl,
+      body: {
+        'content_type': '.aac',
+        'content_length': file.lengthSync(),
+      },
+    );
     logger.logDebug(_serverResponse.body);
     logger.logDebug(
         'Received response from api storage, code: ${_serverResponse.statusCode}');
@@ -108,10 +124,6 @@ class ExpressionServiceCentralized implements ExpressionService {
       'x-amz-acl': parseData['headers']['x-amz-acl'],
       'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
     };
-
-    // turn file into bytes
-    final File file = File(expression.audio);
-    final Uint8List fileAsBytes = file.readAsBytesSync();
 
     logger.logDebug('Uploading audio file to api storage');
     // send put request to s3 bucket with url, new headers, and file as bytes
@@ -181,6 +193,7 @@ class ExpressionServiceCentralized implements ExpressionService {
         queryParams: <String, String>{
           'pagination_position': '0',
         });
+    logger.logInfo('comments fetched');
     final Map<String, dynamic> _listData = JuntoHttp.handleResponse(response);
     return QueryResults<Comment>(
       lastTimestamp: _listData['last_timestamp'],

@@ -80,6 +80,7 @@ class UserProfile extends HiveObject {
     @required this.username,
     @required this.website,
     @required this.gender,
+    this.email,
   });
 
   factory UserProfile.fromMap(Map<String, dynamic> map) {
@@ -98,6 +99,7 @@ class UserProfile extends HiveObject {
       website:
           map['website'] != null ? List<String>.from(map['website']) : null,
       gender: map['gender'] != null ? List<String>.from(map['gender']) : null,
+      email: map['email'] as String,
     );
   }
 
@@ -141,6 +143,10 @@ class UserProfile extends HiveObject {
   @HiveField(9)
   final List<String> gender;
 
+  // Email of the user
+  @HiveField(10)
+  final String email;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -155,7 +161,8 @@ class UserProfile extends HiveObject {
           verified == other.verified &&
           username == other.username &&
           website == other.website &&
-          gender == other.gender);
+          gender == other.gender &&
+          email == other.email);
 
   @override
   int get hashCode =>
@@ -168,7 +175,8 @@ class UserProfile extends HiveObject {
       verified.hashCode ^
       username.hashCode ^
       website.hashCode ^
-      gender.hashCode;
+      gender.hashCode ^
+      email.hashCode;
 
   @override
   String toString() {
@@ -183,6 +191,7 @@ class UserProfile extends HiveObject {
         ' username: $username,'
         ' website: $website,'
         ' gender: $gender,'
+        ' email: $email,'
         '}';
   }
 
@@ -198,6 +207,7 @@ class UserProfile extends HiveObject {
     String username,
     List<String> website,
     List<String> gender,
+    String email,
   }) {
     return UserProfile(
       address: address ?? this.address,
@@ -210,6 +220,7 @@ class UserProfile extends HiveObject {
       username: username ?? this.username,
       website: website ?? this.website,
       gender: gender ?? this.gender,
+      email: email ?? this.email,
     );
   }
 
@@ -225,6 +236,7 @@ class UserProfile extends HiveObject {
       'username': username,
       'website': website,
       'gender': gender,
+      'email': email
     };
   }
 }
@@ -301,7 +313,8 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
       'background_photo': backgroundPhoto,
       'gender': gender,
       'website': website,
-      'location': location
+      'location': location,
+      'email': email
     };
   }
 }

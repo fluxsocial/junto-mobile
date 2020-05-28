@@ -9,6 +9,8 @@ class ShortformOpen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String _hexOne = expression.expressionData.background[0];
+    final String _hexTwo = expression.expressionData.background[1];
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -16,8 +18,8 @@ class ShortformOpen extends StatelessWidget {
           end: Alignment.topRight,
           stops: const <double>[0.1, 0.9],
           colors: <Color>[
-            HexColor.fromHex(expression.expressionData.background[0]),
-            HexColor.fromHex(expression.expressionData.background[1]),
+            HexColor.fromHex(_hexOne),
+            HexColor.fromHex(_hexTwo),
           ],
         ),
       ),
@@ -30,12 +32,14 @@ class ShortformOpen extends StatelessWidget {
         vertical: 50.0,
       ),
       child: SelectableText(
-        expression.expressionData.body,
+        expression.expressionData.body.trim(),
         textAlign: TextAlign.center,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 20.0,
           fontWeight: FontWeight.w700,
-          color: Colors.white,
+          color: _hexOne.contains('fff') || _hexTwo.contains('fff')
+              ? Color(0xff333333)
+              : Colors.white,
         ),
       ),
     );

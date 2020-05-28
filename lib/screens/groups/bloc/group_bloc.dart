@@ -34,17 +34,24 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
 
   Stream<GroupBlocState> _mapFetchPacksToState(FetchMyPack event) async* {
     final String uid = userDataProvider.userProfile.user.address;
-    final NotificationQuery params = NotificationQuery(
-      connectionRequests: false,
-      groupJoinRequests: true,
-      paginationPosition: 0,
-    );
+
     try {
       yield GroupLoading();
       final groups = await groupRepo.getUserGroups(uid);
-      final users = await notificationRepo.getNotifications(params);
       final userPacks = _buildUserPack(groups);
-      yield GroupLoaded(userPacks, users);
+      final result =
+          await notificationRepo.getJuntoNotifications(groupJoinRequests: true);
+
+      if (result.wasSuccessful) {
+        final notifications = result.results
+            .where((element) =>
+                element.notificationType == NotificationType.GroupJoinRequest)
+            .toList();
+        final requests = notifications.map((e) => e.group).toList();
+        yield GroupLoaded(userPacks, requests);
+      } else {
+        yield GroupLoaded(userPacks, []);
+      }
     } on JuntoException catch (error) {
       yield GroupError(error.message);
     } catch (e, s) {
@@ -55,16 +62,16 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
 
   Stream<GroupBlocState> _mapRefreshPacksToState(RefreshPack event) async* {
     final String uid = userDataProvider.userProfile.user.address;
-    final NotificationQuery params = NotificationQuery(
-      connectionRequests: false,
-      groupJoinRequests: true,
-      paginationPosition: 0,
-    );
+
     try {
       final groups = await groupRepo.getUserGroups(uid);
-      final users = await notificationRepo.getNotifications(params);
-      final userPacks = _buildUserPack(groups);
-      yield GroupLoaded(userPacks, users);
+      final result = await notificationRepo.getJuntoNotifications(
+          connectionRequests: true);
+      if (result.wasSuccessful) {
+      } else {
+        final userPacks = _buildUserPack(groups);
+        yield GroupLoaded(userPacks, []);
+      }
     } on JuntoException catch (error) {
       yield GroupError(error.message);
     } catch (e, s) {

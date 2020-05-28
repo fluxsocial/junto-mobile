@@ -1,8 +1,8 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -16,7 +16,6 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -82,9 +81,10 @@ class JuntoDenState extends State<JuntoDen>
               providers: [
                 BlocProvider<DenBloc>(
                   create: (context) => DenBloc(
-                      Provider.of<UserRepo>(context, listen: false),
-                      Provider.of<UserDataProvider>(context, listen: false))
-                    ..add(LoadDen(user.userAddress)),
+                    Provider.of<UserRepo>(context, listen: false),
+                    Provider.of<UserDataProvider>(context, listen: false),
+                    Provider.of<ExpressionRepo>(context, listen: false),
+                  )..add(LoadDen(user.userAddress)),
                 ),
                 BlocProvider<ChannelFilteringBloc>(
                   create: (ctx) => ChannelFilteringBloc(
@@ -146,17 +146,6 @@ class DenActionButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(
-          actionsVisible: false,
-          onLeftButtonTap: () {
-            // open about page
-            Navigator.push(
-              context,
-              CupertinoPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    AboutMember(profile: user.userProfile),
-              ),
-            );
-          },
           source: Screen.den,
         ),
       ),

@@ -28,40 +28,70 @@ class CreatePhoto extends StatefulWidget {
 
 // State for CreatePhoto class
 class CreatePhotoState extends State<CreatePhoto> {
+  File preCroppedFile;
   File imageFile;
+  ImageSource imageSource;
   TextEditingController _captionController;
   bool _showBottomNav = true;
 
-  Future<void> _onPickPressed({@required String source}) async {
+  Future<void> _onPickPressed({@required ImageSource source}) async {
     try {
       File image;
-      if (source == 'Gallery') {
-        image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      } else if (source == 'Camera') {
-        image = await ImagePicker.pickImage(source: ImageSource.camera);
+      if (source == ImageSource.gallery) {
+        image = await ImagePicker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 70,
+        );
+
+        setState(() {
+          imageSource = ImageSource.gallery;
+        });
+      } else if (source == ImageSource.camera) {
+        image = await ImagePicker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 70,
+        );
+        setState(() {
+          imageSource = ImageSource.camera;
+        });
       }
 
       if (image == null) {
-        setState(() => imageFile = null);
+        setState(() {
+          imageFile = null;
+        });
         return;
+      } else {
+        setState(() {
+          preCroppedFile = image;
+        });
       }
-      final File cropped = await ImageCroppingDialog.show(context, image,
-          aspectRatios: <String>[
-            '1:1',
-            '2:3',
-            '3:2',
-            '3:4',
-            '4:3',
-            '4:5',
-            '5:4',
-            '9:16',
-            '16:9'
-          ]);
+
+      final File cropped = await ImageCroppingDialog.show(
+        context,
+        image,
+        aspectRatios: <String>[
+          '1:1',
+          '2:3',
+          '3:2',
+          '3:4',
+          '4:3',
+          '4:5',
+          '5:4',
+          '9:16',
+          '16:9'
+        ],
+      );
       if (cropped == null) {
-        setState(() => imageFile = null);
+        setState(() {
+          imageFile = null;
+        });
+        _onPickPressed(source: imageSource);
         return;
       }
-      setState(() => imageFile = cropped);
+      setState(() {
+        imageFile = cropped;
+      });
       _toggleBottomNav(false);
     } catch (e, s) {
       logger.logException(e, s);
@@ -69,7 +99,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   Future<void> _cropPhoto() async {
-    final File image = imageFile;
+    final File image = preCroppedFile;
     final File cropped = await ImageCroppingDialog.show(context, image,
         aspectRatios: <String>[
           '1:1',
@@ -94,7 +124,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   Map<String, dynamic> createExpression() {
     return <String, dynamic>{
       'image': imageFile,
-      'caption': _captionController.value.text
+      'caption': _captionController.value.text.trim()
     };
   }
 
@@ -169,7 +199,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                       width: MediaQuery.of(context).size.width,
                       child: GestureDetector(
                         onTap: () {
-                          _onPickPressed(source: 'Gallery');
+                          _onPickPressed(source: ImageSource.gallery);
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -206,7 +236,7 @@ class CreatePhotoState extends State<CreatePhoto> {
         children: <Widget>[
           InkWell(
             onTap: () {
-              _onPickPressed(source: 'Gallery');
+              _onPickPressed(source: ImageSource.gallery);
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 30),
@@ -225,7 +255,7 @@ class CreatePhotoState extends State<CreatePhoto> {
           ),
           InkWell(
             onTap: () {
-              _onPickPressed(source: 'Camera');
+              _onPickPressed(source: ImageSource.camera);
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 30),
@@ -261,15 +291,18 @@ class CreatePhotoState extends State<CreatePhoto> {
                 ),
                 child: TextField(
                   controller: _captionController,
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.newline,
+                  textCapitalization: TextCapitalization.sentences,
                   decoration: const InputDecoration(
-                    hintText: 'write a caption..',
+                    hintText: 'Write a caption...',
                     border: InputBorder.none,
                   ),
                   cursorColor: Theme.of(context).primaryColor,
                   cursorWidth: 1,
                   maxLines: null,
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: 17,
+                      ),
                   keyboardAppearance: Theme.of(context).brightness,
                 ),
               )
@@ -284,6 +317,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                   setState(() {
                     imageFile = null;
                   });
+                  _onPickPressed(source: imageSource);
                   _toggleBottomNav(true);
                 },
                 child: Container(

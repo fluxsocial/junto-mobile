@@ -22,7 +22,7 @@ class AboutItem extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () async {
                       if (isWebsite) {
-                        String url = item[0];
+                        String url = item[0].trim();
                         if (!item[0].startsWith('https://') ||
                             !item[0].startsWith('http:') ||
                             !item[0].startsWith('https:')) {
@@ -45,8 +45,7 @@ class AboutItem extends StatelessWidget {
                       }
                     },
                     child: Text(
-                      item[0],
-                      // maxLines: 2,
+                      item[0].trim(),
                       style: TextStyle(
                         color: isWebsite
                             ? Colors.blue

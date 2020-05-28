@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
@@ -28,11 +27,18 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
   TextEditingController _newPassword;
   TextEditingController _confirmPassword;
 
+  FocusNode _codeNode;
+  FocusNode _passwordNode;
+  FocusNode _confirmNode;
+
   @override
   void initState() {
     _verificationCode = TextEditingController();
     _newPassword = TextEditingController();
     _confirmPassword = TextEditingController();
+    _codeNode = FocusNode();
+    _passwordNode = FocusNode();
+    _confirmNode = FocusNode();
     super.initState();
   }
 
@@ -41,6 +47,9 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
     _verificationCode.dispose();
     _newPassword.dispose();
     _confirmPassword.dispose();
+    _codeNode.dispose();
+    _passwordNode.dispose();
+    _confirmNode.dispose();
     super.dispose();
   }
 
@@ -90,7 +99,9 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
           context,
           message: "Password successfully reset!",
         );
-        Navigator.of(context).pushReplacement(Welcome.route());
+        //TODO: don't replace with welcome route
+        widget.signInController.animateToPage(0,
+            duration: Duration(milliseconds: 300), curve: Curves.decelerate);
       } catch (error) {
         print(error.message);
         showDialog(
@@ -126,24 +137,26 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SignUpTextField(
+                      focusNode: _codeNode,
                       valueController: _verificationCode,
                       hint: S.of(context).welcome_verification_code,
                       maxLength: 100,
                       textInputActionType: TextInputAction.next,
                       onSubmit: () {
-                        FocusScope.of(context).nextFocus();
+                        _passwordNode.requestFocus();
                       },
                       keyboardType: TextInputType.number,
                       textCapitalization: TextCapitalization.none,
                     ),
                     const SizedBox(height: 45),
                     SignUpTextField(
+                      focusNode: _passwordNode,
                       valueController: _newPassword,
                       hint: S.of(context).new_password_hint,
                       maxLength: 100,
                       textInputActionType: TextInputAction.next,
                       onSubmit: () {
-                        FocusScope.of(context).nextFocus();
+                        _confirmNode.requestFocus();
                       },
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.none,
@@ -151,6 +164,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                     ),
                     const SizedBox(height: 45),
                     SignUpTextField(
+                      focusNode: _confirmNode,
                       valueController: _confirmPassword,
                       hint: S.of(context).welcome_confirm_password,
                       maxLength: 100,

@@ -15,8 +15,8 @@ class S {
     AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final String name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       return S();
@@ -63,6 +63,15 @@ class S {
     );
   }
 
+  String get common_decline {
+    return Intl.message(
+      'Decline',
+      name: 'common_decline',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get common_network_error {
     return Intl.message(
       'Hmm, something went wrong.',
@@ -94,6 +103,15 @@ class S {
     return Intl.message(
       'Try again later',
       name: 'common_try_again_later',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get count_me_in {
+    return Intl.message(
+      'COUNT ME IN',
+      name: 'count_me_in',
       desc: '',
       args: [],
     );
@@ -225,6 +243,33 @@ class S {
     );
   }
 
+  String get notification_cat_all {
+    return Intl.message(
+      'ALL',
+      name: 'notification_cat_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get notification_cat_expression {
+    return Intl.message(
+      'EXPRESSION',
+      name: 'notification_cat_expression',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get notification_cat_relations {
+    return Intl.message(
+      'RELATIONS',
+      name: 'notification_cat_relations',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get notifications_connection {
     return Intl.message(
       'Connection',
@@ -270,6 +315,15 @@ class S {
     );
   }
 
+  String get notifications_nothing_new_yet {
+    return Intl.message(
+      'Nothing new yet!',
+      name: 'notifications_nothing_new_yet',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get notifications_title {
     return Intl.message(
       'Notifications',
@@ -301,6 +355,33 @@ class S {
     return Intl.message(
       'Packs',
       name: 'packs_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get profile_picture {
+    return Intl.message(
+      'PROFILE PICTURE',
+      name: 'profile_picture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get reset_password {
+    return Intl.message(
+      'RESET PASSWORD',
+      name: 'reset_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get toggle_filter_drawer {
+    return Intl.message(
+      'Toggle filter drawer',
+      name: 'toggle_filter_drawer',
       desc: '',
       args: [],
     );
@@ -611,6 +692,87 @@ class S {
       args: [],
     );
   }
+
+  String get themes_night {
+    return Intl.message(
+      'Night',
+      name: 'themes_night',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get themes_light {
+    return Intl.message(
+      'Light',
+      name: 'themes_light',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get themes_title {
+    return Intl.message(
+      'Themes',
+      name: 'themes_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_logout {
+    return Intl.message(
+      'Log Out',
+      name: 'menu_logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_are_you_sure_to_logout {
+    return Intl.message(
+      'Are you sure you want to log out?',
+      name: 'menu_are_you_sure_to_logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_relations {
+    return Intl.message(
+      'Relations',
+      name: 'menu_relations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_search {
+    return Intl.message(
+      'Search',
+      name: 'menu_search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get menu_my_den {
+    return Intl.message(
+      'My Den',
+      name: 'menu_my_den',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get welcome_invalid_email {
+    return Intl.message(
+      'Make sure you entered a correct e-mail',
+      name: 'welcome_invalid_email',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -618,7 +780,10 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en'), Locale.fromSubtags(languageCode: 'pt'), Locale.fromSubtags(languageCode: 'de'), Locale.fromSubtags(languageCode: 'pl'),
+      Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'pl'),
+      Locale.fromSubtags(languageCode: 'pt'),
     ];
   }
 
@@ -631,7 +796,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   bool _isSupported(Locale locale) {
     if (locale != null) {
-      for (Locale supportedLocale in supportedLocales) {
+      for (var supportedLocale in supportedLocales) {
         if (supportedLocale.languageCode == locale.languageCode) {
           return true;
         }

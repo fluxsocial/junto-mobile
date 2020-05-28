@@ -112,7 +112,18 @@ class AudioService with ChangeNotifier {
           event == AudioPlayerState.PAUSED) {
         _playbackTimer?.cancel();
       }
+      if (event == AudioPlayerState.PLAYING) {
+        _getDuration();
+      }
     });
+    _audioPlayer.onDurationChanged.listen(print);
+    _audioPlayer.onNotificationPlayerStateChanged.listen(print);
+  }
+
+  Future _getDuration() async {
+    final duration = await _audioPlayer.getDuration();
+    _duration = Duration(milliseconds: duration);
+    notifyListeners();
   }
 
   void _updateCurrentPlaybackPosition(time) async {
@@ -194,10 +205,15 @@ class AudioService with ChangeNotifier {
 
   @override
   void dispose() {
+    _disposeAudioPlayer();
     _playbackTimer?.cancel();
-    _audioPlayer?.dispose();
     _recorder?.stop();
     super.dispose();
+  }
+
+  void _disposeAudioPlayer() async {
+    await _audioPlayer?.stop();
+    await _audioPlayer?.dispose();
   }
 
   initializeFromWeb(String audio) async {

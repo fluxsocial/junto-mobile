@@ -3,7 +3,6 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
 class BackgroundTheme extends StatelessWidget {
-
   String background(String theme) {
     if (theme == 'rainbow' || theme == 'rainbow-night') {
       return 'assets/images/junto-mobile__themes--rainbow.png';

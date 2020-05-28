@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
+import 'package:junto_beta_mobile/models/junto_notification_cache.dart';
+import 'package:junto_beta_mobile/models/junto_notification_results.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/models/notification_query.dart';
 
 abstract class SearchService {
   /// Returns a [QueryResults] contains a list of [UserProfile] matching the [query]
@@ -52,6 +55,9 @@ abstract class AuthenticationService {
 
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser();
+
+  // Deletes user account
+  Future<void> deleteUserAccount(String userAddress, String password);
 }
 
 abstract class CollectiveService {
@@ -211,9 +217,6 @@ abstract class UserService {
     String lastTimestamp,
   );
 
-  /// Reads the cached user from the device.
-  Future<UserData> readLocalUser();
-
   /// Returns a list of perspectives owned by the given user
   Future<List<PerspectiveModel>> userPerspectives(String userAddress);
 
@@ -272,10 +275,16 @@ abstract class UserService {
 
 /// App wide notification service
 abstract class NotificationService {
-  Future<NotificationResultsModel> getNotifications(NotificationQuery params);
+  Future<JuntoNotificationResults> getJuntoNotifications(
+      NotificationQuery params);
 }
 
-enum DBBoxes { collectiveExpressions, denExpressions, packExpressions }
+enum DBBoxes {
+  collectiveExpressions,
+  denExpressions,
+  packExpressions,
+  notifications,
+}
 
 /// Interface for managing the application's local cache.
 abstract class LocalCache {
@@ -287,4 +296,22 @@ abstract class LocalCache {
 
   /// Retrieves all expressions in the database.
   Future<List<ExpressionResponse>> retrieveExpressions(DBBoxes box);
+
+  /// Adds list of notifications to database
+  Future<void> insertNotifications(List<JuntoNotification> notifications,
+      {bool overwrite});
+
+  /// Replaces list of notifications in database
+  Future<void> replaceNotifications(List<JuntoNotification> notifications);
+
+  /// Retrieves all cached notifications
+  Future<JuntoNotificationCache> retrieveNotifications();
+
+  ///  Deletes a notification from cache
+  Future<void> deleteNotification(String notificationKey);
+
+  /// Stores the last read notification time
+  Future<void> setLastReadNotificationTime(DateTime datetime);
+
+  Future<void> wipe();
 }

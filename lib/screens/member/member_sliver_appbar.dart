@@ -1,17 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/screens/member/member_relation_button.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
-import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
-import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 
 class MemberDenAppbar extends StatefulWidget {
   const MemberDenAppbar(
@@ -37,14 +34,12 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
   final GlobalKey<MemberDenAppbarState> _keyFlexibleSpace =
       GlobalKey<MemberDenAppbarState>();
 
-  String _currentTheme;
   UserData _memberProfile;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
-    getCurrentTheme();
     _memberProfile = UserData(
       user: widget.profile,
       pack: null,
@@ -65,13 +60,6 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
 
     setState(() {
       _flexibleHeightSpace = heightFlexibleSpace;
-    });
-  }
-
-  Future<void> getCurrentTheme() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _currentTheme = prefs.getString('current-theme');
     });
   }
 
@@ -106,7 +94,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                   _memberProfile.user.backgroundPhoto.isNotEmpty ||
                           _memberProfile.user.backgroundPhoto != ''
                       ? MemberBackgroundPhoto(profile: _memberProfile)
-                      : MemberBackgroundPlaceholder(theme: _currentTheme),
+                      : MemberBackgroundPlaceholder(),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),
@@ -122,7 +110,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                             children: <Widget>[
                               Flexible(
                                 child: Text(
-                                  widget.profile.name,
+                                  widget.profile.name.trim(),
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w700,

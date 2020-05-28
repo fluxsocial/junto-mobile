@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
+import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
@@ -30,30 +33,13 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  bool twoColumnView = true;
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      if (prefs.getBool('two-column-view') != null) {
-        twoColumnView = prefs.getBool('two-column-view');
-      }
-    });
+  Future<void> _switchColumnView(ExpressionFeedLayout columnType) async {
+    await Provider.of<UserDataProvider>(context, listen: false)
+        .switchColumnLayout(columnType);
   }
 
-  Future<void> _switchColumnView(String columnType) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      if (columnType == 'two') {
-        twoColumnView = true;
-        prefs.setBool('two-column-view', true);
-      } else if (columnType == 'single') {
-        twoColumnView = false;
-        prefs.setBool('two-column-view', false);
-      }
-    });
+  void deleteDenExpression(ExpressionResponse expression) {
+    context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
   }
 
   @override
@@ -65,43 +51,49 @@ class _UserExpressionsState extends State<UserExpressions> {
         }
         if (state is DenLoadedState) {
           final results = state.expressions;
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.bloc<DenBloc>().add(RefreshDen());
+          return CustomRefresh(
+            refresh: () async {
+              await Future.delayed(Duration(milliseconds: 500));
+              await context.bloc<DenBloc>().add(RefreshDen());
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,
-              child: ListView(
-                padding: const EdgeInsets.all(0),
-                children: <Widget>[
-                  FilterColumnRow(
-                    twoColumnView: twoColumnView,
-                    switchColumnView: _switchColumnView,
-                  ),
-                  Container(
-                    color: Theme.of(context).colorScheme.background,
-                    child: AnimatedCrossFade(
-                      crossFadeState: twoColumnView
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                      duration: const Duration(milliseconds: 200),
-                      firstChild: TwoColumnListView(
-                        data: results,
-                        privacyLayer: 'Public',
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  Consumer<UserDataProvider>(builder:
+                      (BuildContext context, UserDataProvider data, _) {
+                    return SliverToBoxAdapter(
+                      child: FilterColumnRow(
+                        twoColumnView: data.twoColumnView,
+                        switchColumnView: _switchColumnView,
                       ),
-                      secondChild: SingleColumnListView(
+                    );
+                  }),
+                  Consumer<UserDataProvider>(
+                    builder: (BuildContext context, UserDataProvider data, _) {
+                      if (data.twoColumnView) {
+                        return TwoColumnList(
+                          data: results,
+                          useSliver: true,
+                          deleteExpression: deleteDenExpression,
+                        );
+                      }
+                      return SingleColumnSliverListView(
                         data: results,
-                        privacyLayer: 'Public',
-                      ),
-                    ),
+                        privacyLayer: widget.privacy,
+                        deleteExpression: deleteDenExpression,
+                      );
+                    },
                   ),
-                  if (appConfig.flavor == Flavor.dev)
-                    FetchMoreButton(
-                      onPressed: () {
-                        context.bloc<DenBloc>().add(
-                              LoadMoreDen(),
-                            );
-                      },
+                  if (appConfig.flavor == Flavor.dev && results.length > 50)
+                    SliverToBoxAdapter(
+                      child: FetchMoreButton(
+                        onPressed: () {
+                          context.bloc<DenBloc>().add(
+                                LoadMoreDen(),
+                              );
+                        },
+                      ),
                     )
                 ],
               ),

@@ -1,15 +1,16 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
+import 'notifications_lunar_icon.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
 
@@ -18,10 +19,12 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar({
     @required this.expandedHeight,
     @required this.appbarTitle,
+    @required this.collectiveViewNav,
   });
 
   final double expandedHeight;
   final String appbarTitle;
+  final Function collectiveViewNav;
 
   @override
   Widget build(
@@ -29,13 +32,20 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
     return Consumer<UserDataProvider>(
       builder: (BuildContext context, UserDataProvider data, Widget child) {
         return Container(
-          height: MediaQuery.of(context).size.height * .1 + 50,
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
+              ),
+            ),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * .1,
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
@@ -51,88 +61,57 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Container(
-                        alignment: Alignment.bottomLeft,
-                        padding: const EdgeInsets.only(left: 10),
-                        color: Colors.transparent,
-                        height: 36,
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__logo.png',
-                              height: 22.0,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            const SizedBox(width: 7.5),
-                            Text(
-                              appbarTitle ?? 'JUNTO',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                          ],
+                      GestureDetector(
+                        onTap: collectiveViewNav,
+                        child: Container(
+                          alignment: Alignment.bottomLeft,
+                          padding: const EdgeInsets.only(left: 10),
+                          color: Colors.transparent,
+                          height: 38,
+                          width: 38,
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                CustomIcons.back,
+                                size: 17,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.only(left: 38),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Flexible(
+                                child: Text(
+                                  appbarTitle ?? 'JUNTO',
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => NotificationsScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              alignment: Alignment.bottomCenter,
-                              padding: const EdgeInsets.only(
-                                left: 10,
-                                right: 10,
-                              ),
-                              child: Icon(
-                                CustomIcons.moon,
-                                size: 22,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
+                          Container(
+                            color: Colors.transparent,
+                            alignment: Alignment.bottomRight,
+                            width: 38,
+                            child: NotificationsLunarIcon(),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              FeatureDiscovery.clearPreferences(
-                                  context, <String>{
-                                'collective_info_id',
-                                'collective_filter_id',
-                                'collective_toggle_id',
-                              });
-                              FeatureDiscovery.discoverFeatures(
-                                context,
-                                const <String>{
-                                  'collective_info_id',
-                                  'collective_filter_id',
-                                  'collective_toggle_id',
-                                },
-                              );
-                            },
-                            child: JuntoDescribedFeatureOverlay(
-                              icon: OverlayInfoIcon(),
-                              featureId: 'collective_info_id',
-                              title:
-                                  'This is the Collective, where all public content is shown. Click on an expression to open it.',
-                              learnMore: true,
-                              hasUpNext: true,
-                              upNextText: [
-                                "Ethical, human-centered algorithms that filter content to create feeds according to high activity (not based on your previous activity)",
-                              ],
-                              learnMoreText: [
-                                "The Collective is a shared space that anyone on Junto can post into. Our hope is that people will discover meaningful content and relationships with those they may not know and help to maintain a positive culture.",
-                                'You can view content in this layer through "Perspectives". Perspectives are feeds that show filtered content from the Collective. They display previews of content, where you open an expression to view its full scope, rather than see the expression and its captions, comments, and activity all at once.'
-                              ],
-                              child: Container(
-                                height: 24,
-                                child: JuntoInfoIcon(),
-                              ),
-                            ),
+                          Container(
+                            color: Colors.transparent,
+                            width: 38,
+                            child: AppBarFeatureDiscovery(),
                           ),
                         ],
                       )
@@ -142,15 +121,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               ),
               Container(
                 height: 50,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                      width: .75,
-                    ),
-                  ),
-                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -161,7 +131,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         color: Theme.of(context).primaryColor,
                       ),
                       featureId: 'collective_filter_id',
-                      title: 'Click this icon to filter this perspective by channel.',
+                      title:
+                          'Click this icon to filter this perspective by channel.',
+                      isLastFeature: true,
                       child: const FilterDrawerButton(),
                     ),
                     Row(
@@ -218,4 +190,47 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
+}
+
+class AppBarFeatureDiscovery extends StatelessWidget {
+  const AppBarFeatureDiscovery({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        FeatureDiscovery.clearPreferences(context, <String>{
+          'collective_info_id',
+          'collective_filter_id',
+        });
+        FeatureDiscovery.discoverFeatures(
+          context,
+          const <String>{
+            'collective_info_id',
+            'collective_filter_id',
+          },
+        );
+      },
+      child: JuntoDescribedFeatureOverlay(
+        icon: OverlayInfoIcon(),
+        featureId: 'collective_info_id',
+        title: 'This is the Collective, where all public content is shown.',
+        learnMore: true,
+        hasUpNext: true,
+        upNextText: [
+          "Transparent, human-centered algorithms that filter content to create feeds according to high activity (not based on your previous activity)",
+        ],
+        learnMoreText: [
+          "The Collective is a shared space that anyone on Junto can post into. Our hope is that people will discover meaningful content and relationships with those they may not know and help to maintain a positive culture.",
+          'You can view content in this layer through "Perspectives". Perspectives are feeds that show filtered content from the Collective. They display previews of content, where you open an expression to view its full scope, rather than see the expression and its captions, comments, and activity all at once.'
+        ],
+        child: Container(
+          height: 24,
+          child: JuntoInfoIcon(),
+        ),
+      ),
+    );
+  }
 }

@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den.dart';
 
 class EditDenButton extends StatelessWidget {
-  const EditDenButton({this.currentTheme});
-
-  final String currentTheme;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -13,9 +10,7 @@ class EditDenButton extends StatelessWidget {
         Navigator.push(
           context,
           CupertinoPageRoute<dynamic>(
-            builder: (BuildContext context) => JuntoEditDen(
-              currentTheme: currentTheme,
-            ),
+            builder: (BuildContext context) => JuntoEditDen(),
           ),
         );
       },

@@ -24,8 +24,8 @@ class PackMembers extends StatefulWidget {
 class PackMembersState extends State<PackMembers> {
   //TODO(Nash): Replace with bloc
   Future<List<Users>> getPackMembers() async {
-    final userData =
-        await Provider.of<UserRepo>(context).getUser(widget.userAddress);
+    final userData = await Provider.of<UserRepo>(context, listen: false)
+        .getUser(widget.userAddress);
     final query = await Provider.of<GroupRepo>(context, listen: false)
         .getGroupMembers(userData.pack.address,
             ExpressionQueryParams(paginationPosition: '0'));

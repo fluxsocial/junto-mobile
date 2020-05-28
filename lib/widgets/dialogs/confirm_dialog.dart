@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ConfirmDialog extends StatelessWidget {
   const ConfirmDialog({this.buildContext, this.confirmationText, this.confirm});
 
   final BuildContext buildContext;
   final String confirmationText;
-  final dynamic confirm;
+  final Function confirm;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class ConfirmDialog extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        confirm(buildContext);
+                        confirm();
                         Navigator.pop(context);
                       },
                       child: Container(

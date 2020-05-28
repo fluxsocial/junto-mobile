@@ -17,12 +17,13 @@ class PackPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double diameter = 38.0;
     return Container(
       color: Colors.transparent,
       child: Row(
         children: <Widget>[
           MemberAvatar(
-            diameter: 45,
+            diameter: diameter,
             profilePicture: group.address == userProfile.pack.address
                 ? userProfile.user.profilePicture
                 : group.creator['profile_picture'],
@@ -46,9 +47,12 @@ class PackPreview extends StatelessWidget {
                   Text(
                     group.address == userProfile.pack.address
                         ? 'My Pack'
-                        : '${group.creator['name']?.trim()}\'s Pack',
+                        : '${group.creator['name']?.trim()}',
                     textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                   Text(
                     group.address == userProfile.pack.address

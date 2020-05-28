@@ -10,7 +10,9 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+
 import 'collective_state.dart';
+
 export 'collective_state.dart';
 
 part 'collective_event.dart';
@@ -27,26 +29,28 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   String _lastTimeStamp;
 
   @override
-  Stream<CollectiveState> transformEvents(
+  Stream<Transition<CollectiveEvent, CollectiveState>> transformEvents(
     Stream<CollectiveEvent> events,
-    Stream<CollectiveState> Function(CollectiveEvent event) next,
+    TransitionFunction<CollectiveEvent, CollectiveState> transitionFn,
   ) {
-    final nonDebounceStream = events.where((event) => event is FetchCollective);
+    final nonDebounceStream = events.where(
+        (event) => event is FetchCollective || event is DeleteCollective);
     final debounceStream = events
         .where((event) =>
             event is RefreshCollective || event is FetchMoreCollective)
         .debounceTime(const Duration(milliseconds: 1000));
     return super.transformEvents(
-        MergeStream([nonDebounceStream, debounceStream]), next);
+        MergeStream([nonDebounceStream, debounceStream]), transitionFn);
   }
 
   @override
   CollectiveState get initialState => CollectiveState.initial();
 
   @override
-  Stream<CollectiveState> mapEventToState(
-    CollectiveEvent event,
-  ) async* {
+  Stream<CollectiveState> mapEventToState(CollectiveEvent event) async* {
+    if (event is DeleteCollective) {
+      yield* _mapDeleteToState(event);
+    }
     if (event is FetchCollective) {
       yield* _mapFetchCollectiveToState(event);
     }
@@ -73,6 +77,26 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
           expressions.results.length == expressionsPerPage,
         );
       }
+    } on JuntoException catch (e, s) {
+      handleJuntoException(e, s);
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during refreshing the collective');
+      yield CollectiveState.error();
+    }
+  }
+
+  Stream<CollectiveState> _mapDeleteToState(DeleteCollective event) async* {
+    try {
+      await expressionRepository.deleteExpression(event.address);
+      final currentState = state as CollectivePopulated;
+      final results = currentState.results.toList();
+      results.removeWhere((element) => element.address == event.address);
+      yield CollectiveState.populated(
+        results,
+        false,
+        currentState.name,
+        currentState.results.length == expressionsPerPage,
+      );
     } on JuntoException catch (e, s) {
       handleJuntoException(e, s);
     } catch (e, s) {
@@ -162,8 +186,11 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     final expressions =
         await expressionRepository.getCollectiveExpressions(_params);
     logger.logDebug(
-        'Fetched ${expressions.results.length} expressions from API, last_timestamp: ${expressions.lastTimestamp}. '
-        'First: ${expressions.results.first}, Last: ${expressions.results.last}');
+        'Fetched ${expressions.results.length} expressions from API, last_timestamp: ${expressions.lastTimestamp}. ');
+    if (expressions.results.length > 1) {
+      logger.logDebug(
+          'First: ${expressions.results?.first}, Last: ${expressions.results?.last}');
+    }
     _lastTimeStamp = expressions.lastTimestamp;
     return expressions;
   }

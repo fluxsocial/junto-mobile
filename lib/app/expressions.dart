@@ -17,7 +17,7 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.shortform: CustomIcons.feather,
       ExpressionType.photo: CustomIcons.camera,
       ExpressionType.event: CustomIcons.event,
-      ExpressionType.audio: Icons.play_circle_outline,
+      ExpressionType.audio: Icons.mic,
     };
     return _expressionIcon[this];
   }
@@ -52,7 +52,6 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: 'PhotoForm',
       ExpressionType.event: 'EventForm',
       ExpressionType.audio: 'AudioForm',
-
     };
 
     return _expressionModelNames[this];

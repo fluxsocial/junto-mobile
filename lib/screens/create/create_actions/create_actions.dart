@@ -1,26 +1,26 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
+import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({
@@ -86,24 +86,19 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _currentExpressionContext = 'My Pack';
       _currentExpressionContextDescription = 'shared to just your pack members';
     }
-    getUserInformation();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userAddress = Provider.of<UserDataProvider>(context).userAddress;
+    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
   }
 
   @override
   void dispose() {
     super.dispose();
     _channelController.dispose();
-  }
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
-
-    setState(() {
-      _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
-    });
   }
 
   Future<UserGroupsResponse> getUserGroups() async {
@@ -115,10 +110,13 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   void _postCreateAction() {
     Widget child;
     if (_expressionContext == ExpressionContext.Collective) {
+      context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
     } else if (_expressionContext == ExpressionContext.Group) {
+      context.bloc<PackBloc>().add(RefreshPacks());
       child = JuntoPacks(initialGroup: _address);
     } else {
+      context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
     }
     Navigator.of(context).pushAndRemoveUntil(
@@ -129,26 +127,42 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     );
   }
 
+  Future<ExpressionModel> getPhotoExpression(ExpressionRepo repository) async {
+    final image = widget.expression['image'];
+
+    final photoKeys = await repository.createPhotoThumbnails(image);
+    return ExpressionModel(
+      type: widget.expressionType.modelName(),
+      expressionData: PhotoFormExpression(
+        image: photoKeys.keyPhoto,
+        caption: widget.expression['caption'],
+        thumbnail300: photoKeys.key300,
+        thumbnail600: photoKeys.key600,
+      ).toMap(),
+      context: _expressionContext,
+      channels: channel,
+    );
+  }
+
+  Future<ExpressionModel> getAudioExpression(ExpressionRepo repository) async {
+    final audio = widget.expression as AudioFormExpression;
+    final AudioFormExpression expression = await repository.createAudio(audio);
+
+    return ExpressionModel(
+      type: widget.expressionType.modelName(),
+      expressionData: expression.toMap(),
+      context: _expressionContext,
+      channels: channel,
+    );
+  }
+
   Future<void> _createExpression() async {
     try {
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
       if (widget.expressionType == ExpressionType.photo) {
-        JuntoLoader.showLoader(context);
-        final String _photoKey = await repository.createPhoto(
-          true,
-          '.png',
-          widget.expression['image'],
-        );
+        JuntoLoader.showLoader(context, color: Colors.white54);
+        _expression = await getPhotoExpression(repository);
         JuntoLoader.hide();
-        _expression = ExpressionModel(
-          type: widget.expressionType.modelName(),
-          expressionData: PhotoFormExpression(
-            image: _photoKey,
-            caption: widget.expression['caption'],
-          ).toMap(),
-          context: _expressionContext,
-          channels: channel,
-        );
       } else if (widget.expressionType == ExpressionType.event) {
         String eventPhoto = '';
         if (widget.expression['photo'] != null) {
@@ -177,17 +191,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         );
       } else if (widget.expressionType == ExpressionType.audio) {
         JuntoLoader.showLoader(context);
-        final audio = widget.expression as AudioFormExpression;
-        final AudioFormExpression expression =
-            await repository.createAudio(audio);
-
+        _expression = await getAudioExpression(repository);
         JuntoLoader.hide();
-        _expression = ExpressionModel(
-          type: widget.expressionType.modelName(),
-          expressionData: expression.toMap(),
-          context: _expressionContext,
-          channels: channel,
-        );
       } else {
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
@@ -310,8 +315,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _setExpressionContextDescription = () {
         setState(() {
           _expressionContext = ExpressionContext.Collective;
-          _currentExpressionContextDescription =
-              'shared to the public of Junto';
+          _currentExpressionContextDescription = 'share publicly on Junto';
           _address = null;
         });
       };
@@ -327,7 +331,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         setState(() {
           _expressionContext = ExpressionContext.Group;
           _currentExpressionContextDescription =
-              'shared to just your pack members';
+              'share to just your Pack members';
           _address = _userProfile.pack.address;
         });
       };
@@ -384,6 +388,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
       builder: (BuildContext context) {
         return ChannelSearchModal(
           channels: _channels,

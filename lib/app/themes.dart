@@ -19,14 +19,14 @@ class JuntoThemes {
       secondary: Color(0xFF307FAA),
       secondaryVariant: Color(0xFF4687A2),
 
-      surface: Color(0xfff9f9f9),
+      surface: Color(0xff555555),
       background: Colors.white,
       error: Color(0xff333333),
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onBackground: Color(0xff333333),
       onError: Color(0xff333333),
-      onSurface: Color(0xff333333),
+      onSurface: Color(0xfff9f9f9),
       brightness: Brightness.light,
     ),
     scaffoldBackgroundColor: Colors.white,
@@ -46,7 +46,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.blue,
+    bottomAppBarColor: Colors.white,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -118,14 +118,14 @@ class JuntoThemes {
       secondary: Color(0xff2B5583),
       secondaryVariant: Color(0xff2B5583),
 
-      surface: Color(0xfff9f9f9),
+      surface: Color(0xff555555),
       background: Colors.white,
       error: Color(0xff333333),
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onBackground: Color(0xff333333),
       onError: Color(0xff333333),
-      onSurface: Color(0xff333333),
+      onSurface: Color(0xfff9f9f9),
       brightness: Brightness.light,
     ),
     scaffoldBackgroundColor: Colors.white,
@@ -145,7 +145,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.blue,
+    bottomAppBarColor: Colors.white,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -215,14 +215,14 @@ class JuntoThemes {
         // Junto gold
         secondary: Color(0xFFE8B974),
         secondaryVariant: Color(0xFFE8B974),
-        surface: Color(0xfff9f9f9),
+        surface: Color(0xff555555),
         background: Colors.white,
         error: Color(0xff333333),
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onBackground: Color(0xff333333),
         onError: Color(0xff333333),
-        onSurface: Color(0xff333333),
+        onSurface: Color(0xfff9f9f9),
         brightness: Brightness.light),
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(
@@ -241,7 +241,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.blue,
+    bottomAppBarColor: Colors.white,
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -312,14 +312,14 @@ class JuntoThemes {
       secondary: Color(0xFF307FAA),
       secondaryVariant: Color(0xFF4687A2),
 
-      surface: Color(0xff393939),
+      surface: Color(0xff444444),
       background: Color(0xff333333),
       error: Color(0xff333333),
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onBackground: Color(0xff333333),
       onError: Color(0xff333333),
-      onSurface: Color(0xff333333),
+      onSurface: Color(0xff393939),
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: const Color(0xff333333),
@@ -339,7 +339,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.blue,
+    bottomAppBarColor: const Color(0xff333333),
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -411,14 +411,15 @@ class JuntoThemes {
       secondary: Color(0xff2B5583),
       secondaryVariant: Color(0xff2B5583),
 
-      surface: Color(0xff393939),
+      surface: Color(0xff444444),
+
       background: Color(0xff333333),
       error: Color(0xff333333),
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onBackground: Color(0xff333333),
       onError: Color(0xff333333),
-      onSurface: Color(0xff333333),
+      onSurface: Color(0xff393939),
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: const Color(0xff333333),
@@ -438,7 +439,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.blue,
+    bottomAppBarColor: const Color(0xff333333),
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -508,14 +509,14 @@ class JuntoThemes {
       // Junto gold
       secondary: Color(0xFFE8B974),
       secondaryVariant: Color(0xFFE8B974),
-      surface: Color(0xff393939),
+      surface: Color(0xff444444),
       background: Color(0xff333333),
       error: Color(0xff333333),
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onBackground: Color(0xff333333),
       onError: Color(0xff333333),
-      onSurface: Color(0xff333333),
+      onSurface: Color(0xff393939),
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: const Color(0xff333333),
@@ -535,7 +536,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.blue,
+    bottomAppBarColor: const Color(0xff333333),
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,
@@ -603,14 +604,14 @@ class JuntoThemes {
       primaryVariant: Color(0xff2B2B2B),
       secondary: Color(0xFF3C3C3C),
       secondaryVariant: Color(0xff3C3C3C),
-      surface: Color(0xff393939),
+      surface: Color(0xff444444),
       background: Color(0xff333333),
       error: Color(0xff333333),
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onBackground: Color(0xff333333),
       onError: Color(0xff333333),
-      onSurface: Color(0xff333333),
+      onSurface: Color(0xff393939),
       brightness: Brightness.dark,
     ),
     scaffoldBackgroundColor: const Color(0xff333333),
@@ -630,7 +631,7 @@ class JuntoThemes {
         size: 22,
       ),
     ),
-    bottomAppBarColor: Colors.blue,
+    bottomAppBarColor: const Color(0xff333333),
     textTheme: const TextTheme(
       headline4: TextStyle(
         fontSize: 20,

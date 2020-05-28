@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'sign_up_page_title.dart';
 import 'sign_up_text_field.dart';
 import 'sign_up_text_field_counter.dart';
 
 class SignUpTextFieldWrapper extends StatefulWidget {
   const SignUpTextFieldWrapper({
     Key key,
-    @required this.onValueChanged,
+    @required this.controller,
     @required this.onSubmit,
     @required this.maxLength,
     @required this.hint,
@@ -19,7 +18,6 @@ class SignUpTextFieldWrapper extends StatefulWidget {
 
   /// Called when the user enters a value in the textfield.
   /// Value will always be the latest value of `TextController.text.value`.
-  final ValueChanged<String> onValueChanged;
   final VoidCallback onSubmit;
   final int maxLength;
   final String hint;
@@ -27,6 +25,7 @@ class SignUpTextFieldWrapper extends StatefulWidget {
   final String title;
   final TextInputAction textInputActionType;
   final TextCapitalization textCapitalization;
+  final TextEditingController controller;
 
   @override
   State<StatefulWidget> createState() {
@@ -35,24 +34,6 @@ class SignUpTextFieldWrapper extends StatefulWidget {
 }
 
 class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
-  TextEditingController valueController;
-
-  @override
-  void initState() {
-    super.initState();
-    valueController = TextEditingController();
-    valueController.addListener(returnDetails);
-  }
-
-  @override
-  void dispose() {
-    valueController.removeListener(returnDetails);
-    valueController.dispose();
-    super.dispose();
-  }
-
-  void returnDetails() => widget.onValueChanged(valueController.value.text);
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -69,7 +50,7 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
             Column(
               children: <Widget>[
                 SignUpTextField(
-                  valueController: valueController,
+                  valueController: widget.controller,
                   onSubmit: widget.onSubmit,
                   hint: widget.hint,
                   maxLength: widget.maxLength,
@@ -80,7 +61,7 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
                 SignUpTextFieldLabelAndCounter(
                   label: widget.label,
                   maxLength: widget.maxLength,
-                  valueController: valueController,
+                  valueController: widget.controller,
                 )
               ],
             ),

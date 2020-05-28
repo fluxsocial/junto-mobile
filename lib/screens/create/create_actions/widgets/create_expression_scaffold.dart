@@ -39,11 +39,6 @@ class CreateExpressionScaffold extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 25),
                     child: BottomNav(
-                      actionsVisible: false,
-                      onLeftButtonTap: () => Navigator.pop(
-                        context,
-                        expressionType,
-                      ),
                       source: Screen.create,
                     ),
                   )

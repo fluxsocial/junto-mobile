@@ -21,15 +21,11 @@ class Group {
   factory Group.fromMap(Map<String, dynamic> json) => Group(
         address: json['address'],
         creator: json['creator'],
-        // is Map
-        //     ? SlimUserResponse.fromMap(json['creator']).address
-        //     : json['creator'],
-//        incomingCreator: SlimUserResponse.fromMap(json['creator']),
         createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
         groupType: json['group_type'],
-        members: json['members'] as int,
-        facilitators: json['facilitators'] as int,
+        members: json['members'],
+        facilitators: json['facilitators'],
         groupData: json['group_type'] == 'Sphere'
             ? GroupDataSphere.fromJson(json['group_data'])
             : GroupDataPack.fromMap(json['group_data']),
@@ -51,8 +47,8 @@ class Group {
 
   /// Type of group. Ie: Sphere or Pack
   final String groupType;
-  final int facilitators;
-  final int members;
+  final dynamic facilitators;
+  final dynamic members;
 
   /// Object representation of group type. Value is based on [groupType].
   /// Please see [GroupDataPack] and [GroupDataSphere].
@@ -101,8 +97,8 @@ class Group {
     DateTime createdAt,
     String privacy,
     String groupType,
-    int facilitators,
-    int members,
+    dynamic facilitators,
+    dynamic members,
     dynamic groupData,
   }) {
     return Group(
@@ -132,6 +128,12 @@ class GroupDataPack {
   final String name;
 
   Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+    };
+  }
+
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
     };

@@ -1,20 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_search.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_request.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Spheres extends StatefulWidget {
   const Spheres({
@@ -32,10 +29,8 @@ class Spheres extends StatefulWidget {
 class SpheresState extends State<Spheres> with ListDistinct {
   UserData _userProfile;
   GroupRepo _userProvider;
-  NotificationRepo _notificationProvider;
 
   Future<UserGroupsResponse> getSpheres;
-  Future<NotificationResultsModel> getSphereRequests;
 
   PageController circlesPageController;
   int _currentIndex = 0;
@@ -51,17 +46,15 @@ class SpheresState extends State<Spheres> with ListDistinct {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _userProvider = Provider.of<GroupRepo>(context, listen: false);
-    _notificationProvider =
-        Provider.of<NotificationRepo>(context, listen: false);
-    _refreshSpheres();
+    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
   }
 
   Future<void> _refreshSpheres() async {
     try {
-      await getUserInformation();
+      _userProfile =
+          Provider.of<UserDataProvider>(context, listen: false).userProfile;
       setState(() {
         getSpheres = getUserGroups();
-        getSphereRequests = getGroupNotifications();
       });
     } on JuntoException catch (error) {
       showDialog(
@@ -73,41 +66,11 @@ class SpheresState extends State<Spheres> with ListDistinct {
     }
   }
 
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      prefs.getString('user_data'),
-    );
-    setState(() {
-      _userProfile = UserData.fromMap(decodedUserData);
-    });
-  }
-
   Future<UserGroupsResponse> getUserGroups() async {
     try {
       return _userProvider.getUserGroups(_userProfile.user.address);
     } catch (error) {
       print(error);
-      return null;
-    }
-  }
-
-  Future<NotificationResultsModel> getGroupNotifications() async {
-    try {
-      return _notificationProvider.getNotifications(
-        const NotificationQuery(
-          connectionRequests: false,
-          groupJoinRequests: true,
-          paginationPosition: 0,
-        ),
-      );
-    } catch (error) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
-        ),
-      );
       return null;
     }
   }
@@ -249,7 +212,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                                 child: Transform.translate(
                                   offset: const Offset(0.0, -50),
                                   child: const Text(
-                                    'Hmm, something is up with our server',
+                                    'Hmm, something is up...',
                                   ),
                                 ),
                               ),
@@ -281,52 +244,6 @@ class SpheresState extends State<Spheres> with ListDistinct {
                                       group: group,
                                     ),
                                   ),
-                              ],
-                            ));
-                          }
-                          return Expanded(
-                            child: Center(
-                              child: Transform.translate(
-                                offset: const Offset(0.0, -50),
-                                child: JuntoProgressIndicator(),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    if (_userProfile != null)
-                      FutureBuilder<NotificationResultsModel>(
-                        future: getSphereRequests,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<NotificationResultsModel> snapshot) {
-                          if (snapshot.hasError) {
-                            print(snapshot.error);
-                            return Expanded(
-                              child: Center(
-                                child: Transform.translate(
-                                  offset: const Offset(0.0, -50),
-                                  child: const Text(
-                                      'Hmm, something is up with our server'),
-                                ),
-                              ),
-                            );
-                          }
-                          if (snapshot.hasData) {
-                            return Expanded(
-                                child: ListView(
-                              padding: const EdgeInsets.all(0),
-                              children: <Widget>[
-                                for (Group sphereRequest
-                                    in snapshot.data.groupJoinNotifications)
-                                  if (sphereRequest.groupType == 'Sphere')
-                                    SphereRequest(
-                                      sphere: sphereRequest,
-                                      refreshGroups: _refreshSpheres,
-                                    )
                               ],
                             ));
                           }

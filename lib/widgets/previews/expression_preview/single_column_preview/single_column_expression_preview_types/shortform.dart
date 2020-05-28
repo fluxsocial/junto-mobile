@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
-class ShortformPreview extends StatefulWidget {
+class ShortformPreview extends StatelessWidget {
   const ShortformPreview({
     @required this.expression,
   });
@@ -13,24 +13,11 @@ class ShortformPreview extends StatefulWidget {
   final ExpressionResponse expression;
 
   @override
-  State<StatefulWidget> createState() => ShortformPreviewState();
-}
-
-class ShortformPreviewState extends State<ShortformPreview> {
-  String _hexOne;
-  String _hexTwo;
-  String shortformBody = '';
-
-  @override
-  void initState() {
-    super.initState();
-    shortformBody = widget.expression.expressionData.body;
-    _hexOne = widget.expression.expressionData.background[0];
-    _hexTwo = widget.expression.expressionData.background[1];
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final String shortformBody = expression.expressionData.body.trim();
+    final String _hexOne = expression.expressionData.background[0];
+    final String _hexTwo = expression.expressionData.background[1];
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -50,8 +37,13 @@ class ShortformPreviewState extends State<ShortformPreview> {
         shortformBody,
         maxLines: 5,
         textAlign: TextAlign.center,
-        style: const TextStyle(
-            fontSize: 20, color: Colors.white, fontWeight: FontWeight.w700),
+        style: TextStyle(
+          fontSize: 20,
+          color: _hexOne.contains('fff') || _hexTwo.contains('fff')
+              ? Color(0xff333333)
+              : Colors.white,
+          fontWeight: FontWeight.w700,
+        ),
         overflow: TextOverflow.ellipsis,
       ),
     );

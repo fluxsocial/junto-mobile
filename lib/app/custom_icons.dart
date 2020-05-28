@@ -40,20 +40,25 @@ class CustomIcons {
   static const IconData twocolumn = IconData(0xe903, fontFamily: 'j_home_two');
   static const IconData singlecolumn =
       IconData(0xe904, fontFamily: 'j_home_two');
-  static const IconData infinity = IconData(0xe90a, fontFamily: 'j_home_two');
+  static const IconData infinity = IconData(0xe90f, fontFamily: 'j_home_two');
   static const IconData request = IconData(0xe906, fontFamily: 'j_home_two');
-  static const IconData newcircles = IconData(0xe907, fontFamily: 'j_home_two');
+  static const IconData newcircles = IconData(0xe90a, fontFamily: 'j_home_two');
   static const IconData newcreate = IconData(0xe908, fontFamily: 'j_home_two');
   static const IconData newdoubleuparrow =
       IconData(0xe909, fontFamily: 'j_home_two');
   static const IconData newflower = IconData(0xe90c, fontFamily: 'j_home_two');
   static const IconData newconnect = IconData(0xe90d, fontFamily: 'j_home_two');
   static const IconData newmoon = IconData(0xe910, fontFamily: 'j_home_two');
-  static const IconData newpacks = IconData(0xe911, fontFamily: 'j_home_two');
+  static const IconData newpacks = IconData(0xe907, fontFamily: 'j_home_two');
   static const IconData newcollective =
-      IconData(0xe913, fontFamily: 'j_home_two');
+      IconData(0xe916, fontFamily: 'j_home_two');
   static const IconData newbinoculars =
       IconData(0xe912, fontFamily: 'j_home_two');
   static const IconData drawermenu = IconData(0xe90b, fontFamily: 'j_home_two');
   static const IconData newhashtag = IconData(0xe90e, fontFamily: 'j_home_two');
+  static const IconData pause = IconData(0xe911, fontFamily: 'j_home_two');
+  static const IconData newperspective =
+      IconData(0xe913, fontFamily: 'j_home_two');
+  static const IconData stop = IconData(0xe914, fontFamily: 'j_home_two');
+  static const IconData play = IconData(0xe915, fontFamily: 'j_home_two');
 }

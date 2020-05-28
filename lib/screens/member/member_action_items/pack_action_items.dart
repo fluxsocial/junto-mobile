@@ -126,6 +126,8 @@ class PackActionItems extends StatelessWidget {
                   confirm: disconnectWithUser,
                 ),
               );
+            } else {
+              return;
             }
           },
           child: Container(
@@ -145,7 +147,7 @@ class PackActionItems extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      hasPendingConnection ? 'CONNECT' : 'CONNECTED',
+                      isConnected ? 'CONNECTED' : 'CONNECT',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -154,15 +156,15 @@ class PackActionItems extends StatelessWidget {
                         letterSpacing: 1.2,
                       ),
                     ),
-                    hasPendingConnection
-                        ? Container(
+                    isConnected
+                        ? const SizedBox()
+                        : Container(
                             margin: const EdgeInsets.only(top: 2.5),
                             child: Text(
                               'PENDING',
                               style: Theme.of(context).textTheme.overline,
                             ),
                           )
-                        : const SizedBox()
                   ],
                 ),
                 Container(
@@ -240,8 +242,8 @@ class PackActionItems extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       hasPendingPackRequest && !isPackMember
-                          ? 'INVITED TO PACK'
-                          : 'IN PACK',
+                          ? 'INVITED TO MY PACK'
+                          : 'IN MY PACK',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,

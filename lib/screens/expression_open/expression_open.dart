@@ -1,3 +1,4 @@
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -12,23 +13,25 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_o
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 import 'expressions/audio_open.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(
+    this.deleteExpression,
     this.expression,
     this.userAddress,
   );
 
   final ExpressionResponse expression;
   final String userAddress;
+  final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
   State<StatefulWidget> createState() => ExpressionOpenState();
@@ -44,6 +47,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   // Create a controller for the comment text field
   TextEditingController commentController;
 
+  // scroll controller for expression open list view
+  ScrollController _scrollController;
+
   /// [FocusNode] passed to Comments [TextField]
   FocusNode _focusNode;
 
@@ -52,8 +58,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   @override
   void initState() {
     super.initState();
-
     commentController = TextEditingController();
+    _scrollController = ScrollController();
     _focusNode = FocusNode();
   }
 
@@ -124,6 +130,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Future<void> _createComment() async {
     if (commentController.value.text != '') {
       JuntoLoader.showLoader(context);
+      await Future.delayed(Duration(milliseconds: 500));
       try {
         await Provider.of<ExpressionRepo>(context, listen: false)
             .postCommentExpression(
@@ -131,11 +138,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           'LongForm',
           LongFormExpression(
             title: 'Expression Comment',
-            body: commentController.value.text,
+            body: commentController.value.text.trim(),
           ).toMap(),
         );
         commentController.clear();
         JuntoLoader.hide();
+        _focusNode.unfocus();
         await showFeedback(
           context,
           icon: Icon(
@@ -146,7 +154,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           message: 'Comment Created',
         );
         await _refreshComments();
-        _openComments();
+        await _openComments();
+        await Future.delayed(Duration(milliseconds: 100));
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeIn,
+        );
       } catch (error) {
         debugPrint('Error posting comment $error');
         JuntoLoader.hide();
@@ -200,14 +214,16 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onVerticalDragDown: _onDragDown,
-                    child: RefreshIndicator(
-                      onRefresh: _refreshComments,
+                    child: CustomRefresh(
+                      refresh: _refreshComments,
                       child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        controller: _scrollController,
                         children: <Widget>[
                           ExpressionOpenTop(
                             expression: widget.expression,
                             userAddress: widget.userAddress,
+                            deleteExpression: widget.deleteExpression,
                           ),
                           _buildExpression(),
                           ExpressionOpenBottom(
@@ -270,9 +286,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           ),
                                         ),
                                       ),
-                                      if (commentsVisible)
-                                        ListView.builder(
+                                      Visibility(
+                                        visible: commentsVisible,
+                                        child: ListView.builder(
                                           shrinkWrap: true,
+                                          reverse: true,
                                           physics:
                                               const ClampingScrollPhysics(),
                                           itemCount:
@@ -287,6 +305,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                             );
                                           },
                                         ),
+                                      ),
                                     ],
                                   );
                                 } else {
@@ -434,7 +453,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
               child: Container(
                 padding: const EdgeInsets.only(left: 15),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: Theme.of(context).colorScheme.onSurface,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 constraints: const BoxConstraints(maxHeight: 180),
@@ -458,6 +477,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                         cursorWidth: 2,
                         style: Theme.of(context).textTheme.caption,
                         textInputAction: TextInputAction.newline,
+                        textCapitalization: TextCapitalization.sentences,
                         keyboardAppearance: Theme.of(context).brightness,
                       ),
                     ),

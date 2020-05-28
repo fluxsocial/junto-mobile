@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/notification_signal.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending/pending_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
@@ -37,7 +38,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
     'SUBSCRIPTIONS',
     'SUBSCRIBERS',
     'CONNECTIONS',
-    'PACK',
+    'MY PACK',
   ];
 
   Future<void> getUserRelationships() async {
@@ -49,21 +50,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
       pendingPackRequests =
           userRelations['pending_group_join_requests']['results'];
     });
-  }
-
-  Widget _notificationSignal() {
-    return Positioned(
-      top: 10,
-      right: 5,
-      child: Container(
-        height: 7,
-        width: 7,
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          borderRadius: BorderRadius.circular(100),
-        ),
-      ),
-    );
   }
 
   @override
@@ -149,7 +135,10 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                                 pendingPackRequests != null)
                               if (pendingConnectionRequests.isNotEmpty ||
                                   pendingPackRequests.isNotEmpty)
-                                _notificationSignal()
+                                NotificationSignal(
+                                  top: 10,
+                                  right: 5,
+                                ),
                           ],
                         ),
                       ),
@@ -180,7 +169,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                           '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
                           '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
                           '"Connections" are your first degree friendships. Choosing to connect with someone is like friending them (mutual).',
-                          'Your "Pack" is your closet group of friends (mutual). Visit the tutorial in your Pack feed for more information.'
+                          'Your "Pack" is your closest group of friends (not mutual). Visit the tutorial in your Pack feed for more information.'
                         ],
                         child: JuntoInfoIcon(),
                       ),

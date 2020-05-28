@@ -1,36 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
-    this.onLeftButtonTap,
-    @required this.actionsVisible,
     this.address,
     this.expressionContext = ExpressionContext.Collective,
-    this.featureTitle = '',
-    this.iconNorth = true,
-    this.isLastFeature = true,
-    this.featureId = '',
     this.source,
   });
 
-  final VoidCallback onLeftButtonTap;
-  final bool actionsVisible;
   final String address;
   final ExpressionContext expressionContext;
-  final bool iconNorth;
-  final String featureTitle;
-  final String featureId;
-  final bool isLastFeature;
   final Screen source;
 
   @override
@@ -51,35 +36,26 @@ class BottomNav extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: JuntoDescribedFeatureOverlay(
-              icon: RotatedBox(
-                quarterTurns: iconNorth ? 0 : 2,
-                child: Icon(
-                  CustomIcons.newdoubleuparrow,
-                  size: 33,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-              featureId: featureId,
-              title: featureTitle,
-              contentLocation: ContentLocation.above,
-              learnMore: false,
-              isLastFeature: isLastFeature,
-              child: GestureDetector(
-                onTap: onLeftButtonTap,
-                child: Container(
-                  width: 60,
-                  height: 50,
-                  color: Colors.transparent,
-                  alignment: Alignment.center,
-                  child: RotatedBox(
-                    quarterTurns: actionsVisible ? 2 : 0,
-                    child: Icon(
-                      CustomIcons.newdoubleuparrow,
-                      size: 33,
-                      color: Theme.of(context).primaryColor,
-                    ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute<Widget>(
+                    builder: (BuildContext context) {
+                      return GlobalSearch();
+                    },
                   ),
+                );
+              },
+              child: Container(
+                width: 60,
+                height: 50,
+                color: Colors.transparent,
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.search,
+                  size: 24,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
@@ -87,19 +63,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  FadeRoute<void>(
-                    child: FeatureDiscovery(
-                      child: JuntoLotus(
-                        address: address,
-                        expressionContext: expressionContext,
-                        source: source,
-                      ),
-                    ),
-                  ),
-                  (r) => r.isFirst,
-                );
+                Navigator.popUntil(context, (r) => r.isFirst);
               },
               child: Container(
                 alignment: Alignment.center,
@@ -111,7 +75,7 @@ class BottomNav extends StatelessWidget {
                 ),
                 child: Icon(
                   CustomIcons.newflower,
-                  size: 33,
+                  size: 38,
                   color: Theme.of(context).primaryColor,
                 ),
               ),

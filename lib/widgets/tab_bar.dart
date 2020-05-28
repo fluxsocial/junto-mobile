@@ -23,7 +23,7 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
         ),
       ),
       width: MediaQuery.of(context).size.width,
-      child: ListView(        
+      child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
           _tabBar,

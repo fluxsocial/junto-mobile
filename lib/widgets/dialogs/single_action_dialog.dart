@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SingleActionDialog extends StatelessWidget {
   const SingleActionDialog({
@@ -35,6 +35,7 @@ class SingleActionDialog extends StatelessWidget {
             Text(
               dialogText,
               textAlign: TextAlign.center,
+              overflow: TextOverflow.fade,
               style: TextStyle(
                 fontSize: 17,
                 color: Theme.of(context).primaryColor,
@@ -50,7 +51,8 @@ class SingleActionDialog extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Container(
-                    padding: const EdgeInsets.only(right: 25, left: 25, bottom: 25),
+                    padding:
+                        const EdgeInsets.only(right: 25, left: 25, bottom: 25),
                     color: Colors.transparent,
                     alignment: Alignment.center,
                     child: Text(

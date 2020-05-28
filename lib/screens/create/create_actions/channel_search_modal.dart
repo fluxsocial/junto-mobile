@@ -219,6 +219,10 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+            ),
           ),
           child: Stack(
             children: <Widget>[
@@ -243,6 +247,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
                                   onTap: () => _addItem(item.name),
                                   child: ChannelPreview(
                                     channel: item,
+                                    resultCount: snapshot.data.resultCount,
                                   ),
                                 );
                               },

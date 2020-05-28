@@ -50,8 +50,8 @@ class CreateShortformState extends State<CreateShortform> {
   @override
   void initState() {
     super.initState();
-    gradientOne = '8E8098';
-    gradientTwo = '307FAA';
+    gradientOne = 'fefefe';
+    gradientTwo = 'fff4e6';
     _bodyController = TextEditingController();
     _focus.addListener(toggleBottomNav);
   }
@@ -130,13 +130,19 @@ class CreateShortformState extends State<CreateShortform> {
                 horizontal: 10,
                 vertical: 10,
               ),
-              child: Row(
+              height: 58,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  _gradientSelector('8E8098', '307FAA'),
-                  _gradientSelector('6F51A8', 'E8B974'),
+                  _gradientSelector('fefefe', 'fff4e6'),
+                  _gradientSelector('222222', '555555'),
                   _gradientSelector('2E4F78', '6397C7'),
+                  _gradientSelector('2034BC', 'BD96D6'),
+                  _gradientSelector('6F51A8', 'E8B974'),
                   _gradientSelector('719cf4', 'ffc7e4'),
                   _gradientSelector('639acf', '7bdaa5'),
+                  _gradientSelector('E7E26E', '2CBAB1'),
+                  _gradientSelector('FC6073', 'FFD391'),
                 ],
               ),
             ),
@@ -154,6 +160,7 @@ class CreateShortformState extends State<CreateShortform> {
                         minHeight: MediaQuery.of(context).size.width,
                       ),
                       width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.bottomLeft,
@@ -180,24 +187,26 @@ class CreateShortformState extends State<CreateShortform> {
                         }) =>
                             null,
                         decoration: InputDecoration(
-                          hintMaxLines: 25,
-                          hintStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.5),
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
                           border: InputBorder.none,
                         ),
-                        cursorColor: Colors.white,
+                        cursorColor: gradientOne.contains('fff') ||
+                                gradientTwo.contains('fff')
+                            ? Color(0xff333333)
+                            : Colors.white,
                         cursorWidth: 2,
                         maxLines: null,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                          color: gradientOne.contains('fff') ||
+                                  gradientTwo.contains('fff')
+                              ? Color(0xff333333)
+                              : Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                        ),
                         maxLength: 220,
                         textAlign: TextAlign.center,
                         textInputAction: TextInputAction.done,
+                        textCapitalization: TextCapitalization.sentences,
                         keyboardAppearance: Theme.of(context).brightness,
                       ),
                     )

@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_actions_button.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
+import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:provider/provider.dart';
 
 class JuntoPacks extends StatefulWidget {
   const JuntoPacks({@required this.initialGroup});
@@ -32,6 +33,32 @@ class JuntoPacksState extends State<JuntoPacks>
     with HideFab, ListDistinct, TickerProviderStateMixin {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
+  int _currentIndex = 0;
+  PageController _pageController;
+
+  _packsViewNav() {
+    if (_currentIndex == 0) {
+      _pageController.nextPage(
+        curve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+      );
+    } else {
+      _pageController.previousPage(
+        curve: Curves.easeIn,
+        duration: Duration(milliseconds: 300),
+      );
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final packsPageIndex =
+        Provider.of<PageIndexProvider>(context, listen: false).packsPageIndex;
+    _currentIndex = packsPageIndex;
+    _pageController = PageController(initialPage: packsPageIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
@@ -42,19 +69,32 @@ class JuntoPacksState extends State<JuntoPacks>
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: JuntoFilterDrawer(
-              leftDrawer:
-                  const FilterDrawerContent(ExpressionContextType.Group),
+              leftDrawer: _currentIndex == 1
+                  ? const FilterDrawerContent(ExpressionContextType.Group)
+                  : null,
               rightMenu: JuntoDrawer(),
               scaffold: Scaffold(
-                floatingActionButton: PacksActionButtons(
-                  isVisible: _isVisible,
-                  initialGroup: widget.initialGroup,
-                  actionsVisible: false,
-                ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                body: PackOpen(),
-              ),
+                  body: PageView(
+                physics: NeverScrollableScrollPhysics(),
+                onPageChanged: (int index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                  Provider.of<PageIndexProvider>(context, listen: false)
+                      .setPacksPageIndex(index);
+                },
+                controller: _pageController,
+                children: <Widget>[
+                  PacksList(
+                    packsViewNav: _packsViewNav,
+                    isVisible: _isVisible,
+                  ),
+                  PackOpen(
+                    packsViewNav: _packsViewNav,
+                    isVisible: _isVisible,
+                  ),
+                ],
+              )),
             ),
           ),
         ),
