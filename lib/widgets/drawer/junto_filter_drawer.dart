@@ -45,8 +45,6 @@ class JuntoFilterDrawer extends StatefulWidget {
     this.borderRadius = 0,
     this.onTapClose = false,
     this.swipe = true,
-    this.swipeLeftDrawer = true,
-    this.customSwipeRight,
     this.duration,
     this.animationType = InnerDrawerAnimation.static,
     this.innerDrawerCallback,
@@ -74,12 +72,6 @@ class JuntoFilterDrawer extends StatefulWidget {
 
   /// activate or deactivate the swipe. NOTE: when deactivate, onTap Close is implicitly activated
   final bool swipe;
-
-  /// activate or deactivate the swipe to open [leftDrawer]
-  final bool swipeLeftDrawer;
-
-  // custom swipe right gesture; set as null as default
-  final Function customSwipeRight;
 
   /// duration animation controller
   final Duration duration;
@@ -230,11 +222,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     double delta = details.primaryDelta / _width;
 
     if (delta >= 0 && _controller.value == 1 && widget.leftDrawer != null) {
-      // If false we don't want to open [leftDrawer]
-      if (!swipeLeftDrawer) {
-        return;
-      }
-
       _position = DrawerPosition.start;
     } else if (delta < 0 &&
         _controller.value == 1 &&
@@ -283,11 +270,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   }
 
   void _settle(DragEndDetails details) {
-    if (widget.customSwipeRight != null && _controller.value == 1) {
-      widget.customSwipeRight();
-      return;
-    }
-
     if (_controller.isDismissed) {
       return;
     }
@@ -299,9 +281,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
           break;
         case DrawerPosition.start:
           visualVelocity = -visualVelocity;
-          if (!swipeLeftDrawer) {
-            return;
-          }
+
           break;
       }
 
@@ -413,7 +393,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   }
 
   bool get swipe => widget.swipe;
-  bool get swipeLeftDrawer => widget.swipeLeftDrawer;
 
   /// return widget with specific animation
   Widget _animatedChild() {
