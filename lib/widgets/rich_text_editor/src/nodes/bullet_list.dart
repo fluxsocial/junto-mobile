@@ -1,8 +1,8 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/widgets/rich_text_editor/rich_text_editor.dart';
 
+import 'rich_text_node.dart';
 import 'types.dart';
 
 class BulletListNode extends StatelessWidget {

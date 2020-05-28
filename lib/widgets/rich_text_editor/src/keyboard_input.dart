@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
-    show TextInput, TextInputClient, TextInputConnection, TextInputConfiguration, RawFloatingCursorPoint;
-import 'package:junto_beta_mobile/widgets/rich_text_editor/text_span_controller.dart';
+    show
+        TextInput,
+        TextInputClient,
+        TextInputConnection,
+        TextInputConfiguration,
+        RawFloatingCursorPoint;
 
-mixin KeyboardInput<T extends StatefulWidget> on State<T> implements TextInputClient {
+import 'text_span_controller.dart';
+
+mixin KeyboardInput<T extends StatefulWidget> on State<T>
+    implements TextInputClient {
   TextSpanEditingController text = TextSpanEditingController();
 
   FocusScopeNode focusScopeNode;
@@ -14,7 +21,8 @@ mixin KeyboardInput<T extends StatefulWidget> on State<T> implements TextInputCl
   @override
   void initState() {
     super.initState();
-    focusScopeNode = FocusScopeNode(debugLabel: 'Rich Text Editor Content Focus Scope');
+    focusScopeNode =
+        FocusScopeNode(debugLabel: 'Rich Text Editor Content Focus Scope');
     focusScopeNode.addListener(_onFocusChanged);
     text.addListener(_onTextChanged);
   }

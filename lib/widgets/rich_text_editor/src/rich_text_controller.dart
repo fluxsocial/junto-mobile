@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'nodes/types.dart';
+import 'nodes/nodes.dart';
 import 'rich_text_controls.dart';
-import 'rich_text_editor.dart';
 
 class RichTextController extends ChangeNotifier {
   final List<RichTextNode> _nodes = <RichTextNode>[];

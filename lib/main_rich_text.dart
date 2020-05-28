@@ -38,3 +38,38 @@ Future<void> main() async {
     ),
   );
 }
+
+class RichTextEditorExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Focus(
+              onFocusChange: (bool hasFocus) {
+                print('focus other $hasFocus');
+              },
+              child: Builder(
+                builder: (BuildContext context) {
+                  return GestureDetector(
+                    onTap: () => Focus.of(context).requestFocus(),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        // fillColor: Colors.red,
+                        filled: true,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Expanded(
+              child: RichTextEditor(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
