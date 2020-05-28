@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 
 class PackActionItems extends StatelessWidget {
   const PackActionItems({
@@ -35,16 +36,19 @@ class PackActionItems extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            isFollowing
-                ? showDialog(
-                    context: context,
-                    builder: (BuildContext context) => ConfirmDialog(
-                      buildContext: buildContext,
-                      confirmationText: 'Are you sure you want to unsubscribe?',
-                      confirm: unsubscribeToUser,
-                    ),
-                  )
-                : subscribeToUser(buildContext);
+            if (isFollowing) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => ConfirmDialog(
+                  buildContext: buildContext,
+                  confirmationText: 'Are you sure you want to unsubscribe?',
+                  confirm: unsubscribeToUser,
+                  errorMessage: S.of(context).common_network_error,
+                ),
+              );
+            } else {
+              subscribeToUser(buildContext);
+            }
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -124,6 +128,7 @@ class PackActionItems extends StatelessWidget {
                   buildContext: buildContext,
                   confirmationText: 'Are you sure you want to disconnect?',
                   confirm: disconnectWithUser,
+                  errorMessage: S.of(context).common_network_error,
                 ),
               );
             } else {
@@ -218,8 +223,10 @@ class PackActionItems extends StatelessWidget {
                 context: buildContext,
                 builder: (BuildContext context) => ConfirmDialog(
                   buildContext: buildContext,
-                  confirmationText: 'Are you sure you want to leave this pack?',
+                  confirmationText:
+                      'Are you sure you want to remove this user from your pack?',
                   confirm: leavePack,
+                  errorMessage: S.of(context).common_network_error,
                 ),
               );
             }

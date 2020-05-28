@@ -1,12 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 
 class ConfirmDialog extends StatelessWidget {
-  const ConfirmDialog({this.buildContext, this.confirmationText, this.confirm});
+  const ConfirmDialog(
+      {this.buildContext,
+      this.confirmationText,
+      this.confirm,
+      this.errorMessage});
 
   final BuildContext buildContext;
   final String confirmationText;
   final Function confirm;
+  final String errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +77,21 @@ class ConfirmDialog extends StatelessWidget {
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        confirm();
-                        Navigator.pop(context);
+                      onTap: () async {
+                        try {
+                          await confirm();
+                          Navigator.pop(context);
+                        } catch (error) {
+                          logger.logException(error);
+                          Navigator.pop(context);
+                          await showDialog(
+                            context: buildContext,
+                            builder: (BuildContext context) =>
+                                SingleActionDialog(
+                              dialogText: errorMessage,
+                            ),
+                          );
+                        }
                       },
                       child: Container(
                         color: Colors.transparent,

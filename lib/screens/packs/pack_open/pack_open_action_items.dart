@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -18,14 +18,10 @@ class PackOpenActionItems extends StatefulWidget {
 
 class _PackOpenActionItemsState extends State<PackOpenActionItems> {
   Future<void> leavePack() async {
-    try {
-      await Provider.of<GroupRepo>(context, listen: false).removeGroupMember(
-        widget.pack.address,
-        widget.userProfile.user.address,
-      );
-    } catch (e, s) {
-      logger.logException(e, s);
-    }
+    await Provider.of<GroupRepo>(context, listen: false).removeGroupMember(
+      widget.pack.address,
+      widget.userProfile.user.address,
+    );
     Navigator.pop(context);
   }
 
@@ -77,6 +73,7 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
                         confirm: leavePack,
                         confirmationText:
                             'Are you sure you want to leave this pack?',
+                        errorMessage: S.of(context).common_network_error,
                       ),
                     );
                   },
