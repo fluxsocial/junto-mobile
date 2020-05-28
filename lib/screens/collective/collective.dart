@@ -125,14 +125,21 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       JuntoPerspectives(
                         collectiveViewNav: _collectiveViewNav,
                       ),
-                      Scaffold(
-                        floatingActionButton: CollectiveActionButton(
-                          isVisible: _isFabVisible,
-                        ),
-                        floatingActionButtonLocation:
-                            FloatingActionButtonLocation.centerDocked,
-                        body: ExpressionFeed(
-                          collectiveViewNav: _collectiveViewNav,
+                      GestureDetector(
+                        onHorizontalDragUpdate: (dx) {
+                          if (dx.delta.dx > 0) {
+                            _collectiveViewNav();
+                          }
+                        },
+                        child: Scaffold(
+                          floatingActionButton: CollectiveActionButton(
+                            isVisible: _isFabVisible,
+                          ),
+                          floatingActionButtonLocation:
+                              FloatingActionButtonLocation.centerDocked,
+                          body: ExpressionFeed(
+                            collectiveViewNav: _collectiveViewNav,
+                          ),
                         ),
                       ),
                     ],
