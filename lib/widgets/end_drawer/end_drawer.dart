@@ -79,31 +79,6 @@ class JuntoDrawer extends StatelessWidget {
                               );
                             },
                           ),
-                        // Eric - Leaving this here while we test out global search
-                        // in bottom nav
-
-                        // JuntoDrawerItem(
-                        //   icon: Container(
-                        //     width: 60,
-                        //     alignment: Alignment.centerLeft,
-                        //     child: Icon(
-                        //       Icons.search,
-                        //       color: Colors.white,
-                        //       size: 24,
-                        //     ),
-                        //   ),
-                        //   title: S.of(context).menu_search,
-                        //   onTap: () {
-                        //     Navigator.push(
-                        //       context,
-                        //       CupertinoPageRoute<Widget>(
-                        //         builder: (BuildContext context) {
-                        //           return GlobalSearch();
-                        //         },
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
                         JuntoDrawerItem(
                           icon: Container(
                             width: 60,
