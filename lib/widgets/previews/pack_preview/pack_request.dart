@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class PackRequest extends StatelessWidget {
@@ -18,7 +17,7 @@ class PackRequest extends StatelessWidget {
 
   final Group pack;
   final Function refreshGroups;
-  final UserProfile userProfile;
+  final UserData userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +25,22 @@ class PackRequest extends StatelessWidget {
       onTap: () async {
         JuntoLoader.showLoader(context);
         try {
+          final UserData packOwnerUserData =
+              await Provider.of<UserRepo>(context, listen: false).getUser(
+            pack.creator['address'],
+          );
+
           JuntoLoader.hide();
           Navigator.push(
             context,
             CupertinoPageRoute<dynamic>(
-              builder: (BuildContext context) =>
-                  JuntoMember(profile: userProfile),
+              builder: (BuildContext context) => JuntoMember(
+                profile: packOwnerUserData.user,
+              ),
             ),
           );
         } catch (error) {
-          logger.logException(error);
+          print(error);
           JuntoLoader.hide();
         }
       },
@@ -45,7 +50,9 @@ class PackRequest extends StatelessWidget {
           children: <Widget>[
             MemberAvatar(
               diameter: 45,
-              profilePicture: userProfile.profilePicture,
+              profilePicture: pack.address == userProfile.pack.address
+                  ? userProfile.user.profilePicture
+                  : pack.creator['profile_picture'],
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -70,12 +77,16 @@ class PackRequest extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            userProfile.username,
+                            pack.address == userProfile.pack.address
+                                ? 'My Pack'
+                                : '${pack.creator['name']?.trim()}\'s Pack',
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Text(
-                            userProfile.name,
+                            pack.address == userProfile.pack.address
+                                ? userProfile.user.username
+                                : pack.creator['username'],
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
@@ -94,8 +105,8 @@ class PackRequest extends StatelessWidget {
                               refreshGroups();
                               JuntoLoader.hide();
                             } catch (error) {
+                              print(error);
                               JuntoLoader.hide();
-                              logger.logException(error);
                             }
                           },
                           child: Container(
@@ -103,9 +114,8 @@ class PackRequest extends StatelessWidget {
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(100),
                               border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 1.2,
-                              ),
+                                  color: Theme.of(context).primaryColor,
+                                  width: 1),
                             ),
                             height: 38,
                             width: 38,
@@ -127,7 +137,7 @@ class PackRequest extends StatelessWidget {
                               refreshGroups();
                               JuntoLoader.hide();
                             } catch (error) {
-                              logger.logException(error);
+                              print(error);
                               JuntoLoader.hide();
                             }
                           },
@@ -137,7 +147,7 @@ class PackRequest extends StatelessWidget {
                               borderRadius: BorderRadius.circular(100),
                               border: Border.all(
                                 color: Theme.of(context).primaryColor,
-                                width: 1.2,
+                                width: 1,
                               ),
                             ),
                             height: 38,

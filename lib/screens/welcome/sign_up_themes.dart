@@ -5,18 +5,24 @@ import 'package:provider/provider.dart';
 class SignUpThemes extends StatelessWidget {
   const SignUpThemes({
     Key key,
+    @required this.toggleTheme,
   }) : super(key: key);
+
+  final Function toggleTheme;
 
   void _setTheme(String theme, BuildContext context) {
     if (theme == 'AQUEOUS') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('aqueous');
+      toggleTheme('aqueous');
     } else if (theme == 'PURPLE GOLD') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('royal');
+      toggleTheme('royal');
     } else if (theme == 'RAINBOW') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('rainbow');
+      toggleTheme('rainbow');
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 
 class FilterColumnRow extends StatelessWidget {
   const FilterColumnRow({this.switchColumnView, this.twoColumnView});
@@ -20,7 +19,7 @@ class FilterColumnRow extends StatelessWidget {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: () => switchColumnView(ExpressionFeedLayout.two),
+                onTap: () => switchColumnView('two'),
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.symmetric(
@@ -36,8 +35,9 @@ class FilterColumnRow extends StatelessWidget {
                   ),
                 ),
               ),
+              // const SizedBox(width: 10),
               GestureDetector(
-                onTap: () => switchColumnView(ExpressionFeedLayout.single),
+                onTap: () => switchColumnView('single'),
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.symmetric(

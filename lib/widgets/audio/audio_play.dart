@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:provider/provider.dart';
 
 class AudioPlayButton extends StatelessWidget {
   const AudioPlayButton({
     Key key,
-    this.hasBackground,
   }) : super(key: key);
-
-  final bool hasBackground;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +30,7 @@ class AudioPlayButton extends StatelessWidget {
           ),
         );
       },
-      child: AudioPlayIcon(
-        hasBackground: hasBackground,
-      ),
+      child: AudioPlayIcon(),
     );
   }
 
@@ -48,47 +42,33 @@ class AudioPlayButton extends StatelessWidget {
     } else if (audio.playBackAvailable && audio.isPlaying) {
       return 'Pause playing';
     } else {
-      return 'Start playing';
+      return 'Pause recording';
     }
   }
 }
 
 class AudioPlayIcon extends StatelessWidget {
-  AudioPlayIcon({this.hasBackground});
-  final bool hasBackground;
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(
       builder: (context, audio, child) {
         if (audio.playBackAvailable && !audio.isPlaying) {
-          return Container(
-            color: Colors.transparent,
-            child: Icon(
-              CustomIcons.play,
-              size: 33,
-              color:
-                  hasBackground ? Colors.white : Theme.of(context).primaryColor,
-            ),
+          return Icon(
+            Icons.play_arrow,
+            size: 33,
+            color: Colors.white,
           );
         } else if (audio.playBackAvailable && audio.isPlaying) {
-          return Container(
-            color: Colors.transparent,
-            child: Icon(
-              CustomIcons.pause,
-              size: 33,
-              color:
-                  hasBackground ? Colors.white : Theme.of(context).primaryColor,
-            ),
+          return Icon(
+            Icons.pause,
+            size: 33,
+            color: Colors.white,
           );
         } else {
-          return Container(
-            color: Colors.transparent,
-            child: Icon(
-              CustomIcons.play,
-              size: 33,
-              color:
-                  hasBackground ? Colors.white : Theme.of(context).primaryColor,
-            ),
+          return Icon(
+            Icons.play_arrow,
+            size: 33,
+            color: Colors.white,
           );
         }
       },

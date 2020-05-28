@@ -11,7 +11,6 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
-import 'widgets/audio_photo_options.dart';
 import 'widgets/audio_record.dart';
 import 'widgets/audio_review.dart';
 
@@ -28,24 +27,13 @@ class CreateAudio extends StatefulWidget {
 }
 
 class CreateAudioState extends State<CreateAudio> {
-  bool _showBottomTools = true;
-  final FocusNode captionFocus = FocusNode();
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController captionController = TextEditingController();
   File audioPhotoBackground;
-  List<String> audioGradientValues = [];
 
-  Future<void> _onPickPressed({String source}) async {
+  Future<void> _onPickPressed() async {
     try {
-      File image;
-      if (source == 'Camera') {
-        image = await ImagePicker.pickImage(source: ImageSource.camera);
-      } else if (source == 'Gallery') {
-        image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      } else {
-        image = await ImagePicker.pickImage(source: ImageSource.camera);
-      }
-
+      final File image =
+          await ImagePicker.pickImage(source: ImageSource.gallery);
       if (image == null && audioPhotoBackground == null) {
         setState(() => audioPhotoBackground = null);
         return;
@@ -57,15 +45,7 @@ class CreateAudioState extends State<CreateAudio> {
         context,
         image,
         aspectRatios: <String>[
-          '1:1',
-          '2:3',
           '3:2',
-          '3:4',
-          '4:3',
-          '4:5',
-          '5:4',
-          '9:16',
-          '16:9'
         ],
       );
       Navigator.of(context).focusScopeNode.unfocus();
@@ -74,11 +54,7 @@ class CreateAudioState extends State<CreateAudio> {
 
         return;
       }
-
-      setState(() {
-        audioPhotoBackground = cropped;
-        audioGradientValues = [];
-      });
+      setState(() => audioPhotoBackground = cropped);
     } catch (error) {
       print(error);
     }
@@ -88,44 +64,6 @@ class CreateAudioState extends State<CreateAudio> {
     setState(() {
       audioPhotoBackground = null;
     });
-  }
-
-  void _resetAudioGradientValues() {
-    setState(() {
-      audioGradientValues = [];
-    });
-  }
-
-  void _setAudioGradientValues(String hexOne, String hexTwo) {
-    _resetAudioPhotoBackground();
-    setState(() {
-      audioGradientValues = [hexOne, hexTwo];
-    });
-  }
-
-  void _audioPhotoOptions() {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      builder: (BuildContext context) => AudioPhotoOptions(
-        updatePhoto: _onPickPressed,
-        resetPhoto: _resetAudioPhotoBackground,
-      ),
-    );
-  }
-
-  void _toggleBottomTools() {
-    setState(() {
-      _showBottomTools = !_showBottomTools;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    captionFocus.addListener(_toggleBottomTools);
   }
 
   @override
@@ -144,18 +82,13 @@ class CreateAudioState extends State<CreateAudio> {
                     ? AudioRecord()
                     : AudioReview(
                         audioPhotoBackground: audioPhotoBackground,
-                        audioGradientValues: audioGradientValues,
                         titleController: titleController,
-                        captionController: captionController,
-                        captionFocus: captionFocus,
                       ),
-                if (audio.playBackAvailable && _showBottomTools)
+                if (audio.playBackAvailable)
                   AudioBottomTools(
-                    openPhotoOptions: _audioPhotoOptions,
+                    onPickPressed: _onPickPressed,
                     resetAudioPhotoBackground: _resetAudioPhotoBackground,
-                    resetAudioGradientValues: _resetAudioGradientValues,
-                    setAudioGradientValues: _setAudioGradientValues,
-                  )
+                  ),
               ],
             ),
           ),
@@ -167,13 +100,10 @@ class CreateAudioState extends State<CreateAudio> {
   void _onNext(AudioService audio) {
     if (_validate(audio)) {
       final audioExpression = AudioFormExpression(
-        title: titleController.text.trim(),
+        title: titleController.text,
         photo: audioPhotoBackground?.path,
         audio: audio.recordingPath,
-        gradient: audioGradientValues,
-        caption: captionController.text.trim(),
       );
-
       Navigator.push(
         context,
         MaterialPageRoute<dynamic>(

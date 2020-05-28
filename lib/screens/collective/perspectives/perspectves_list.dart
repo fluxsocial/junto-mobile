@@ -9,10 +9,8 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 class PerspectivesList extends StatelessWidget {
   const PerspectivesList({
     Key key,
-    this.collectiveViewNav,
   }) : super(key: key);
 
-  final Function collectiveViewNav;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PerspectivesBloc, PerspectivesState>(
@@ -41,10 +39,7 @@ class PerspectivesList extends StatelessWidget {
                   if (perspective.isDefault == true) {
                     return PerspectiveItem(
                       perspective: perspective,
-                      onTap: () {
-                        collectiveViewNav();
-                        onPerspectivesChanged(perspective, context);
-                      },
+                      onTap: () => onPerspectivesChanged(perspective, context),
                     );
                   } else {
                     return const SizedBox();
@@ -63,10 +58,8 @@ class PerspectivesList extends StatelessWidget {
                       return GestureDetector(
                         child: PerspectiveItem(
                           perspective: perspective,
-                          onTap: () {
-                            collectiveViewNav();
-                            onPerspectivesChanged(perspective, context);
-                          },
+                          onTap: () =>
+                              onPerspectivesChanged(perspective, context),
                         ),
                       );
                     } else {

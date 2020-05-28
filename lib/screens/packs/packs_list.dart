@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/packs/my_packs.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_actions_button.dart';
-import 'package:junto_beta_mobile/screens/packs/packs_list_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_requests.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 class PacksList extends StatefulWidget {
-  const PacksList({this.packsViewNav, this.isVisible});
-
-  final Function packsViewNav;
-  final ValueNotifier<bool> isVisible;
+  const PacksList();
 
   @override
   State<StatefulWidget> createState() {
@@ -29,22 +30,6 @@ class PacksListState extends State<PacksList> {
     packsListController = PageController(initialPage: 0);
   }
 
-  void _packsListNav() {
-    setState(() {
-      if (_currentIndex == 0) {
-        packsListController.nextPage(
-          curve: Curves.easeIn,
-          duration: Duration(milliseconds: 300),
-        );
-      } else {
-        packsListController.previousPage(
-          curve: Curves.easeIn,
-          duration: Duration(milliseconds: 300),
-        );
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,27 +38,131 @@ class PacksListState extends State<PacksList> {
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(
-              MediaQuery.of(context).size.height * .1 + 50,
-            ),
-            child: PacksListAppBar(
-              currentIndex: _currentIndex,
-              packsListNav: _packsListNav,
+            preferredSize: Size.fromHeight(60),
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              elevation: 0,
+              backgroundColor: Theme.of(context).backgroundColor,
+              brightness: Theme.of(context).brightness,
+              titleSpacing: 0,
+              title: Container(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        S.of(context).packs_title,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        FeatureDiscovery.clearPreferences(context, <String>{
+                          'packs_list_info_id',
+                          'packs_toggle_id',
+                        });
+                        FeatureDiscovery.discoverFeatures(
+                          context,
+                          const <String>{
+                            'packs_list_info_id',
+                            'packs_toggle_id',
+                          },
+                        );
+                      },
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: OverlayInfoIcon(),
+                        featureId: 'packs_list_info_id',
+                        title:
+                            'This is the list of Packs you belong to. Each person can only create one pack, but can belong to many others.',
+                        learnMore: true,
+                        learnMoreText: [
+                          "Your Pack is your group of close friends who evoke the most unfiltered version of you and reflect an extension of you. The people you invite to your Pack will have access to your Pack feed, which displays the public content of everyone in it. In this light, you are the common thread between all the people you invite, facilitating a more organic way for them to hear from or discover one another through their mutual connection - you. You can also share private expressions to just your pack members.",
+                          'Also note that connecting by Packs is not mutual. If someone accepts your pack invitation, you will not be able to see their Pack feed unless they choose to send you an invitation.'
+                        ],
+                        child: Container(
+                          color: Colors.transparent,
+                          alignment: Alignment.bottomRight,
+                          child: JuntoInfoIcon(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           floatingActionButton: PacksActionButtons(
-            isVisible: widget.isVisible,
+            isVisible: ValueNotifier<bool>(true),
+            actionsVisible: true,
+            iconNorth: false,
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           body: Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 10,
+              horizontal: 20,
             ),
             color: Theme.of(context).backgroundColor,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  color: Theme.of(context).backgroundColor,
+                  child: Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          packsListController.animateToPage(
+                            0,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeIn,
+                          );
+                        },
+                        child: Container(
+                          child: Text(
+                            S.of(context).packs_my_packs,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: _currentIndex == 0
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight,
+                              decoration: TextDecoration.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () {
+                          packsListController.animateToPage(1,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeIn);
+                        },
+                        child: Container(
+                          child: Text(
+                            S.of(context).packs_requests,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: _currentIndex == 1
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight,
+                              decoration: TextDecoration.none,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 Expanded(
                   child: PageView(
                     controller: packsListController,
@@ -83,9 +172,7 @@ class PacksListState extends State<PacksList> {
                       });
                     },
                     children: <Widget>[
-                      MyPacks(
-                        packsViewNav: widget.packsViewNav,
-                      ),
+                      MyPacks(),
                       PackRequests(),
                     ],
                   ),

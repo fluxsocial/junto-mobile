@@ -4,11 +4,9 @@ class EditDenTextField extends StatelessWidget {
   const EditDenTextField({
     this.controller,
     this.hintText,
-    this.textCapitalization = TextCapitalization.words,
   });
   final TextEditingController controller;
   final String hintText;
-  final TextCapitalization textCapitalization;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,6 @@ class EditDenTextField extends StatelessWidget {
         maxLines: null,
         style: Theme.of(context).textTheme.caption,
         textInputAction: TextInputAction.done,
-        textCapitalization: textCapitalization,
       ),
     );
   }

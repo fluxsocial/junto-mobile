@@ -41,7 +41,8 @@ class WelcomeBackground extends StatelessWidget {
               // and we don't go through white background
               defaultBackground,
               ...previousChildren,
-              if (currentChild != null) currentChild,
+              if (currentChild != null)
+                currentChild,
             ],
             alignment: Alignment.center,
           );

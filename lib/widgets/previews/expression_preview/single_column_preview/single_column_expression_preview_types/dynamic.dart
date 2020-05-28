@@ -22,7 +22,7 @@ class DynamicPreview extends StatelessWidget {
   }
 
   Widget _buildTitle(BuildContext context) {
-    final String expressionTitle = expression.expressionData.title.trim();
+    final String expressionTitle = expression.expressionData.title;
     if (expressionTitle.isNotEmpty) {
       return Container(
         margin: const EdgeInsets.only(bottom: 5),
@@ -44,7 +44,7 @@ class DynamicPreview extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    final String expressionBody = expression.expressionData.body.trim();
+    final String expressionBody = expression.expressionData.body;
     if (expressionBody.isNotEmpty) {
       return Text(
         expressionBody,

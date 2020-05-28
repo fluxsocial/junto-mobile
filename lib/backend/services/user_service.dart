@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class UserServiceCentralized implements UserService {
@@ -63,8 +63,9 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserProfile> queryUser(String param, QueryType queryType) async {
-    final box = await Hive.box(HiveBoxes.kAppBox);
-    final authKey = await box.get("auth");
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final String authKey = _prefs.getString('auth');
+
     final Uri _uri = Uri.http(
       END_POINT,
       '/users',
@@ -153,6 +154,21 @@ class UserServiceCentralized implements UserService {
           ExpressionResponse.fromMap(data)
       ],
     );
+  }
+
+  @override
+  Future<UserData> readLocalUser() async {
+    final LocalStorage _storage = LocalStorage('user-details');
+    final bool isReady = await _storage.ready;
+    if (isReady) {
+      final dynamic data = _storage.getItem('data');
+      if (data != null) {
+        final UserData profile = UserData.fromMap(data);
+
+        return profile;
+      }
+    }
+    throw const JuntoException('Unable to read local user', -1);
   }
 
   @override
@@ -369,14 +385,13 @@ class UserServiceCentralized implements UserService {
         'status': response,
       },
     );
-    print(_serverResponse.body);
-    print(_serverResponse.statusCode);
     JuntoHttp.handleResponse(_serverResponse);
   }
 
   @override
   Future<Map<String, dynamic>> updateUser(
       Map<String, dynamic> body, String userAddress) async {
+    print(body);
     // make request to api with encoded json body
     final http.Response _serverResponse =
         await client.patch('/users/$userAddress', body: body);
@@ -384,6 +399,16 @@ class UserServiceCentralized implements UserService {
     // handle response
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
+
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    // get existing user data from shared prefs
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      _prefs.getString('user_data'),
+    );
+    // replace user with response and update shared prefs
+    decodedUserData['user'] = _data;
+    final String _userMapToString = json.encode(decodedUserData);
+    _prefs..setString('user_data', _userMapToString);
 
     return _data;
   }
@@ -421,7 +446,6 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.get(
       '/users/$userAddress/related/$targetAddress',
     );
-    logger.logInfo(_serverResponse.body);
     final Map<String, dynamic> result =
         JuntoHttp.handleResponse(_serverResponse);
 

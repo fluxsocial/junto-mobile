@@ -61,7 +61,6 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       '/search/channels',
       queryParams: _queryParam,
     );
-    print(_serverResponse.body);
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );
@@ -69,9 +68,9 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       for (dynamic data in _results['results']) Channel.fromMap(data)
     ];
     return QueryResults<Channel>(
-        results: _users,
-        lastTimestamp: _results['last_timestamp'],
-        resultCount: _results['result_count']);
+      results: _users,
+      lastTimestamp: _results['last_timestamp'],
+    );
   }
 
   @override

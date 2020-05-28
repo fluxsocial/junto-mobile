@@ -1,21 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/action_items/expression_action_items.dart';
+import 'package:provider/provider.dart';
 
 class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
-  const ExpressionPreviewBottom({
-    @required this.deleteExpression,
-    @required this.expression,
-  });
+  const ExpressionPreviewBottom({this.expression});
 
   final expression;
-  final ValueChanged<ExpressionResponse> deleteExpression;
-
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<UserDataProvider>(context, listen: false);
     return
         // expression preview handle + more action items
         Container(
@@ -52,7 +49,7 @@ class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
                   color: Colors.transparent,
                   child: ExpressionActionItems(
                     expression: expression,
-                    deleteExpression: deleteExpression,
+                    userAddress: userData.userAddress,
                   ),
                 ),
               );

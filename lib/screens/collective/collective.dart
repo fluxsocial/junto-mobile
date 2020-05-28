@@ -3,15 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/app/page_index_provider.dart';
-import 'package:provider/provider.dart';
 
 import 'collective_actions/perspectives.dart';
 
@@ -37,8 +37,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  PageController _pageController;
-  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -48,25 +46,20 @@ class JuntoCollectiveState extends State<JuntoCollective>
     initializeBloc();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final collectivePageIndex =
-        Provider.of<PageIndexProvider>(context, listen: false)
-            .collectivePageIndex;
-    _currentIndex = collectivePageIndex;
-    _pageController = PageController(initialPage: collectivePageIndex);
-  }
-
   void initializeBloc() {
     context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+    context.bloc<CollectiveBloc>().add(
+          FetchCollective(
+            ExpressionQueryParams(
+              contextType: ExpressionContextType.Collective,
+            ),
+          ),
+        );
   }
 
   @override
   void dispose() {
     _collectiveController.dispose();
-    _pageController.dispose();
     super.dispose();
   }
 
@@ -80,72 +73,37 @@ class JuntoCollectiveState extends State<JuntoCollective>
     }
   }
 
-  _collectiveViewNav() {
-    if (_currentIndex == 0) {
-      _pageController.nextPage(
-        curve: Curves.easeIn,
-        duration: Duration(milliseconds: 300),
-      );
-    } else {
-      _pageController.previousPage(
-        curve: Curves.easeIn,
-        duration: Duration(milliseconds: 300),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: JuntoFilterDrawer(
-          leftDrawer: _currentIndex == 1
-              ? FilterDrawerContent(ExpressionContextType.Collective)
-              : null,
+          leftDrawer:
+              const FilterDrawerContent(ExpressionContextType.Collective),
           rightMenu: JuntoDrawer(),
-          swipeLeftDrawer: false,
           scaffold: NotificationListener<ScrollUpdateNotification>(
             onNotification: (value) => hideOrShowFab(value, _isFabVisible),
             child: Scaffold(
               key: _juntoCollectiveKey,
-              body: Stack(
-                children: <Widget>[
-                  PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                      Provider.of<PageIndexProvider>(context, listen: false)
-                          .setCollectivePageIndex(index);
-                    },
-                    controller: _pageController,
-                    children: <Widget>[
-                      JuntoPerspectives(
-                        collectiveViewNav: _collectiveViewNav,
-                      ),
-                      GestureDetector(
-                        onHorizontalDragUpdate: (dx) {
-                          if (dx.delta.dx > 0) {
-                            _collectiveViewNav();
-                          }
-                        },
-                        child: Scaffold(
-                          floatingActionButton: CollectiveActionButton(
-                            isVisible: _isFabVisible,
-                          ),
-                          floatingActionButtonLocation:
-                              FloatingActionButtonLocation.centerDocked,
-                          body: ExpressionFeed(
-                            collectiveViewNav: _collectiveViewNav,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              floatingActionButton: CollectiveActionButton(
+                isVisible: _isFabVisible,
+                onUpTap: _scrollToTop,
+                actionsVisible: false,
+                iconNorth: true,
+                onTap: () {
+                  context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+                  Navigator.push(
+                    context,
+                    FadeRoute(
+                      child: JuntoPerspectives(),
+                    ),
+                  );
+                },
               ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              body: ExpressionFeed(),
             ),
           ),
         ),

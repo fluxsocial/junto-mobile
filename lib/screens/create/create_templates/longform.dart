@@ -144,7 +144,6 @@ class CreateLongformState extends State<CreateLongform> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 children: <Widget>[
                   Container(
-                    color: Theme.of(context).backgroundColor,
                     constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height * .7,
                     ),
@@ -154,7 +153,7 @@ class CreateLongformState extends State<CreateLongform> {
                       textInputAction: TextInputAction.newline,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Write here...',
+                        hintText: 'Share your story...',
                       ),
                       cursorColor: Theme.of(context).primaryColorLight,
                       cursorWidth: 2,

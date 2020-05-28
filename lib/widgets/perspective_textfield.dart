@@ -34,13 +34,9 @@ class PerspectiveTextField extends StatelessWidget {
         keyboardAppearance: theme.brightness,
         validator: validator,
         decoration: InputDecoration(
-          errorStyle: TextStyle(
-            color: Colors.red,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-          counterText: '',
+          errorStyle: TextStyle(color: Colors.redAccent),
           contentPadding: const EdgeInsets.all(0),
+          counter: Container(),
           border: InputBorder.none,
           hintText: name,
           hintStyle: TextStyle(

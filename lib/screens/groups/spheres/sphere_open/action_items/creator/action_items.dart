@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/action_items/creator/edit_group.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
-import 'package:provider/provider.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
 // available for each expression
-class OwnerActionItems extends StatefulWidget {
+class OwnerActionItems extends StatelessWidget {
   const OwnerActionItems({
     Key key,
     @required this.sphere,
@@ -18,15 +18,10 @@ class OwnerActionItems extends StatefulWidget {
 
   final Group sphere;
 
-  @override
-  _OwnerActionItemsState createState() => _OwnerActionItemsState();
-}
-
-class _OwnerActionItemsState extends State<OwnerActionItems> {
-  Future<void> deleteCircle() async {
+  Future<void> deleteCircle(BuildContext context) async {
     try {
       Provider.of<GroupRepo>(context, listen: false)
-          .deleteGroup(widget.sphere.address);
+          .deleteGroup(sphere.address);
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -69,7 +64,7 @@ class _OwnerActionItemsState extends State<OwnerActionItems> {
                     Navigator.pop(context);
                     Navigator.push(
                       context,
-                      EditGroup.route(widget.sphere),
+                      EditGroup.route(sphere),
                     );
                   },
                   title: Row(
@@ -95,7 +90,7 @@ class _OwnerActionItemsState extends State<OwnerActionItems> {
                       context: context,
                       builder: (BuildContext context) => ConfirmDialog(
                         buildContext: context,
-                        confirm: () => deleteCircle,
+                        confirm: deleteCircle,
                         confirmationText:
                             'Are you sure you want to delete this circle?',
                       ),

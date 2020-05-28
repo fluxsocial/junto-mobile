@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 // Displays the given [image] and [imageCaption]
 class PhotoPreview extends StatelessWidget {
@@ -15,16 +15,21 @@ class PhotoPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: ImageWrapper(
-        imageUrl: expression.thumbnailLarge,
-        placeholder: (BuildContext context, String _) {
-          return Container(
-            color: Theme.of(context).dividerColor,
-            height: MediaQuery.of(context).size.width / 3 * 2,
-            width: MediaQuery.of(context).size.width,
-          );
-        },
-        fit: BoxFit.cover,
+      child: Hero(
+        tag: 'single_column_photo_preview-${expression.address}',
+        child: RepaintBoundary(
+          child: CachedNetworkImage(
+            imageUrl: expression.expressionData.image,
+            placeholder: (BuildContext context, String _) {
+              return Container(
+                color: Theme.of(context).dividerColor,
+                height: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width,
+              );
+            },
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }

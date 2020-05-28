@@ -16,12 +16,12 @@ class MemberAvatarPlaceholder extends StatelessWidget {
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           stops: const <double>[
-            0.1,
+            0.3,
             0.9,
           ],
           colors: <Color>[
+            Theme.of(context).colorScheme.primary,
             Theme.of(context).colorScheme.secondary,
-            Theme.of(context).colorScheme.primaryVariant,
           ],
         ),
         borderRadius: BorderRadius.circular(100),

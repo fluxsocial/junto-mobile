@@ -11,8 +11,8 @@ class LongformOpen extends StatelessWidget {
     final LongFormExpression _expression =
         longformExpression.expressionData as LongFormExpression;
 
-    final String longformTitle = _expression.title.trim();
-    final String longformBody = _expression.body.trim();
+    final String longformTitle = _expression.title;
+    final String longformBody = _expression.body;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),

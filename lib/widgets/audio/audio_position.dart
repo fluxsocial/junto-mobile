@@ -5,10 +5,8 @@ import 'package:provider/provider.dart';
 class AudioPosition extends StatelessWidget {
   const AudioPosition({
     Key key,
-    this.hasBackground = false,
   }) : super(key: key);
 
-  final bool hasBackground;
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(
@@ -16,9 +14,8 @@ class AudioPosition extends StatelessWidget {
         return Text(
           '${getCurrentPosition(audio)} / ${getMaxDuration(audio)}',
           style: TextStyle(
-            fontSize: 14,
-            color:
-                hasBackground ? Colors.white : Theme.of(context).primaryColor,
+            fontSize: 12,
+            color: Colors.white,
             fontWeight: FontWeight.w700,
           ),
         );

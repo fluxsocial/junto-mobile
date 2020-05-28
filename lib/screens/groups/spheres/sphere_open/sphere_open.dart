@@ -1,20 +1,21 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
-import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -61,22 +62,29 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userAddress = Provider.of<UserDataProvider>(context).userAddress;
-    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
-    _loadRelationship();
+    getUserInformation();
   }
 
-  Future<void> _loadRelationship() async {
-    final Map<String, dynamic> _relationToGroup =
-        await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
-      widget.group.address,
-      _userAddress,
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      prefs.getString('user_data'),
     );
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
+    });
+
+    final Map<String, dynamic> _relationToGroup =
+        await Provider.of<GroupRepo>(context, listen: false)
+            .getRelationToGroup(widget.group.address, _userAddress);
     setState(() {
       relationToGroup = _relationToGroup;
     });
+    print(relationToGroup);
   }
 
+//TODO(Nash): Replace with bloc
   Future<List<Users>> _getMembers() async {
     final query =
         await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
@@ -156,7 +164,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 color: Theme.of(context).colorScheme.onPrimary,
                               ),
                             )
-                          : ImageWrapper(
+                          : CachedNetworkImage(
                               imageUrl: widget.group.groupData.photo,
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height * .3,
@@ -258,7 +266,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           borderRadius: BorderRadius.circular(50),
         ),
         child: Text(
-          'JOIN',
+          'JOiN',
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w700,

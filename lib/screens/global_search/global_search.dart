@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
@@ -252,13 +253,19 @@ class __SearchBodyState extends State<_SearchBody> {
                   }
                   if (state is EmptySearchState ||
                       state is InitialSearchState) {
-                    return SizedBox();
+                    return Container(
+                      child: Center(
+                        child: Text(
+                          'No results, get started by searching something',
+                        ),
+                      ),
+                    );
                   }
                   if (state is ErrorSearchState) {
                     return Center(
                       child: Transform.translate(
                         offset: const Offset(0.0, -50),
-                        child: Text('Hmm, something is up...'),
+                        child: Text(S.of(context).common_network_error),
                       ),
                     );
                   }

@@ -20,16 +20,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchState get initialState => InitialSearchState();
 
   @override
-  Stream<Transition<SearchEvent, SearchState>> transformEvents(
+  Stream<SearchState> transformEvents(
     Stream<SearchEvent> events,
-    TransitionFunction<SearchEvent, SearchState> transitionFn,
+    Stream<SearchState> Function(SearchEvent p1) next,
   ) {
     final nonDebounceStream = events.where((event) => event is! SearchingEvent);
     final debounceStream = events
         .where((event) => event is SearchingEvent)
         .debounceTime(const Duration(milliseconds: 600));
     return super.transformEvents(
-        MergeStream([nonDebounceStream, debounceStream]), transitionFn);
+        MergeStream([nonDebounceStream, debounceStream]), next);
   }
 
   @override

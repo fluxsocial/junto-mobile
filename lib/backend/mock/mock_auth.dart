@@ -47,10 +47,4 @@ class MockAuth implements AuthenticationService {
       const Duration(milliseconds: 500),
     );
   }
-
-  Future<void> deleteUserAccount(String userAddress, String password) async {
-    await Future<void>.delayed(
-      const Duration(milliseconds: 500),
-    );
-  }
 }

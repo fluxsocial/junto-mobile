@@ -3,20 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/action_items/expression_action_items.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/widgets/action_items/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget with MemberValidation {
-  const ExpressionOpenTop(
-      {Key key,
-      @required this.deleteExpression,
-      this.expression,
-      this.userAddress})
+  const ExpressionOpenTop({Key key, this.expression, this.userAddress})
       : super(key: key);
 
   final ExpressionResponse expression;
   final String userAddress;
-  final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +59,7 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
                 ),
                 builder: (BuildContext context) => ExpressionActionItems(
                   expression: expression,
-                  deleteExpression: deleteExpression,
+                  userAddress: userAddress,
                 ),
               );
             },

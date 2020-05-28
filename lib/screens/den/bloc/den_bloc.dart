@@ -13,9 +13,8 @@ part 'den_state.dart';
 class DenBloc extends Bloc<DenEvent, DenState> {
   final UserRepo userRepo;
   final UserDataProvider userData;
-  final ExpressionRepo expressionRepo;
 
-  DenBloc(this.userRepo, this.userData, this.expressionRepo);
+  DenBloc(this.userRepo, this.userData);
 
   String userAddress;
   int currentPage = 0;
@@ -35,9 +34,6 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     if (event is RefreshDen) {
       yield* _refreshUserDenExpressions(event);
     }
-    if (event is DeleteDenExpression) {
-      yield* _deleteUserExpression(event);
-    }
   }
 
   Stream<DenState> _fetchUserDenExpressions(LoadDen event) async* {
@@ -52,20 +48,6 @@ class DenBloc extends Bloc<DenEvent, DenState> {
         yield DenEmptyState();
       } else {
         yield DenLoadedState(userExpressions.results);
-      }
-    } on JuntoException catch (e) {
-      yield DenErrorState(e.message);
-    }
-  }
-
-  Stream<DenState> _deleteUserExpression(DeleteDenExpression event) async* {
-    try {
-      if (state is DenLoadedState) {
-        final DenLoadedState data = state;
-        await expressionRepo.deleteExpression(event.address);
-        final updatedList = data.expressions;
-        updatedList.removeWhere((element) => element.address == event.address);
-        yield DenLoadedState(updatedList);
       }
     } on JuntoException catch (e) {
       yield DenErrorState(e.message);

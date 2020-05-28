@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_counter.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpAbout extends StatefulWidget {
-  final TextEditingController pronounController;
-  final TextEditingController locationController;
-  final TextEditingController websiteController;
-  final Function nextPage;
+  const SignUpAbout({Key key, this.nextPage}) : super(key: key);
 
-  const SignUpAbout({
-    Key key,
-    this.nextPage,
-    this.pronounController,
-    this.locationController,
-    this.websiteController,
-  }) : super(key: key);
+  final Function nextPage;
 
   @override
   State<StatefulWidget> createState() {
@@ -26,19 +18,38 @@ class SignUpAbout extends StatefulWidget {
 }
 
 class SignUpAboutState extends State<SignUpAbout> {
+  TextEditingController bioController;
+  TextEditingController locationController;
+  TextEditingController genderController;
+  TextEditingController websiteController;
   ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    bioController = TextEditingController();
+    locationController = TextEditingController();
+    genderController = TextEditingController();
+    websiteController = TextEditingController();
   }
 
   @override
   void dispose() {
+    bioController.dispose();
+    locationController.dispose();
+    genderController.dispose();
+    websiteController.dispose();
     scrollController.dispose();
     super.dispose();
   }
+
+  AboutPageModel returnDetails() => AboutPageModel(
+        bio: bioController.value.text,
+        location: locationController.value.text,
+        gender: genderController.value.text,
+        website: websiteController.value.text,
+      );
 
   bool _lengthValidator(String text, [int charCount = 30]) {
     bool lengthOk = text.length <= charCount;
@@ -70,9 +81,9 @@ class SignUpAboutState extends State<SignUpAbout> {
                   children: <Widget>[
                     SizedBox(height: MediaQuery.of(context).size.height * .24),
                     SignUpTextField(
-                      valueController: widget.locationController,
+                      valueController: locationController,
                       onSubmit: () =>
-                          _lengthValidator(widget.locationController.text),
+                          _lengthValidator(locationController.value.text),
                       textInputActionType: TextInputAction.next,
                       hint: S.of(context).welcome_location_hint,
                       maxLength: 30,
@@ -81,14 +92,14 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_location_label,
                       maxLength: 30,
-                      valueController: widget.locationController,
+                      valueController: locationController,
                       compact: true,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * .08),
                     SignUpTextField(
-                      valueController: widget.pronounController,
+                      valueController: genderController,
                       onSubmit: () =>
-                          _lengthValidator(widget.pronounController.text),
+                          _lengthValidator(genderController.value.text),
                       textInputActionType: TextInputAction.next,
                       hint: S.of(context).welcome_gender_hints,
                       maxLength: 30,
@@ -96,16 +107,16 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_gender_label,
                       maxLength: 30,
-                      valueController: widget.pronounController,
+                      valueController: locationController,
                       compact: true,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * .08),
                     SignUpTextField(
-                      valueController: widget.websiteController,
+                      valueController: websiteController,
                       textInputActionType: TextInputAction.done,
                       onSubmit: () {
                         if (_lengthValidator(
-                            widget.websiteController.text, 100)) {
+                            websiteController.value.text, 100)) {
                           widget.nextPage();
                         }
                       },
@@ -117,7 +128,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_website_label,
                       maxLength: 100,
-                      valueController: widget.websiteController,
+                      valueController: locationController,
                       compact: true,
                     ),
                   ],

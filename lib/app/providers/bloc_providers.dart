@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
-import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 
 class BlocProviders extends StatelessWidget {
   final Widget child;
@@ -16,12 +15,6 @@ class BlocProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(
-          create: (ctx) => AuthBloc(
-            ctx.repository<AuthRepo>(),
-            ctx.repository<UserDataProvider>(),
-          ),
-        ),
         BlocProvider<PerspectivesBloc>(
           create: (ctx) => PerspectivesBloc(
             ctx.repository<UserRepo>(),

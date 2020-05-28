@@ -42,7 +42,7 @@ class SphereOpenAppbar extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(right: 5),
                   child: Text(
-                    's/ ${group.groupData.sphereHandle}',
+                    's/' + group.groupData.sphereHandle,
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -57,8 +57,8 @@ class SphereOpenAppbar extends StatelessWidget {
                     color: Colors.transparent,
                     alignment: Alignment.centerRight,
                     child: Icon(
-                      CustomIcons.newmoon,
-                      size: 20,
+                      CustomIcons.moon,
+                      size: 22,
                       color: Theme.of(context).primaryColor,
                     ),
                   ),

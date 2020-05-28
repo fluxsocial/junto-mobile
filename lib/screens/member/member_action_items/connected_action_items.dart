@@ -208,7 +208,7 @@ class ConnectedActionItems extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'INVITE TO MY PACK',
+                  'INVITE TO PACK',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,

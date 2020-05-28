@@ -43,4 +43,5 @@ void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
     );
   }
   context.bloc<ChannelFilteringBloc>().add(FilterClear());
+  Navigator.pop(context);
 }

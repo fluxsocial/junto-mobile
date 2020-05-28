@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/cta_button.dart';
 
 class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CreateAppBar({
@@ -30,21 +29,29 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  expressionType.appBarName().toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColor,
-                    letterSpacing: 1.7,
-                  ),
+              Text(
+                expressionType.appBarName().toUpperCase(),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  letterSpacing: 1.7,
                 ),
               ),
-              CreateCTAButton(cta: onNext, title: 'Next'),
+              InkWell(
+                onTap: onNext,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8.0,
+                    top: 8.0,
+                    bottom: 8.0,
+                  ),
+                  child: Text(
+                    'next',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ),
+              )
             ],
           ),
         ),

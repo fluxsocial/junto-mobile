@@ -1,17 +1,18 @@
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_name.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_action_items.dart';
-import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_action_items.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_name.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
 
@@ -21,13 +22,11 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
     @required this.expandedHeight,
     @required this.pack,
     @required this.tabs,
-    @required this.packsViewNav,
   });
 
   final double expandedHeight;
   final Group pack;
   final List<String> tabs;
-  final Function packsViewNav;
 
   @override
   Widget build(
@@ -36,17 +35,18 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
       builder: (context, user, child) {
         final userProfile = user.userProfile;
         return Container(
-          height: MediaQuery.of(context).size.height * .11 + 50,
+          height: MediaQuery.of(context).size.height * .1 + 50,
           width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * .11,
+                  height: MediaQuery.of(context).size.height * .1,
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.only(
                     bottom: 10,
+                    left: 10,
                   ),
                   decoration: BoxDecoration(
                     border: Border(
@@ -61,85 +61,96 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      GestureDetector(
-                        onTap: packsViewNav,
-                        child: Container(
-                          alignment: Alignment.bottomLeft,
-                          color: Colors.transparent,
-                          height: 38,
-                          width: 38,
-                          padding: const EdgeInsets.only(
-                            left: 10,
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                CustomIcons.back,
-                                size: 17,
-                                color: Theme.of(context).primaryColor,
+                      userProfile != null
+                          ? Flexible(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  MemberAvatar(
+                                    diameter: 28,
+                                    profilePicture:
+                                        pack.address == userProfile.pack.address
+                                            ? userProfile.user.profilePicture
+                                            : pack.creator['profile_picture'],
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Flexible(
+                                    child: Text(
+                                      pack.address == userProfile.pack.address
+                                          ? 'My Pack'
+                                          : pack.groupData.name,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                      maxLines: 1,
+                                    ),
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 38),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (userProfile != null &&
-                                  userProfile.pack.address != pack.address) {
-                                showModalBottomSheet(
-                                  context: context,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  builder: (BuildContext context) =>
-                                      PackOpenActionItems(
-                                    pack: pack,
-                                    userProfile: userProfile,
-                                  ),
-                                );
-                              } else {
-                                return;
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Flexible(
-                                  child: Text(
-                                    pack.creator['username'].trim(),
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                            )
+                          : const SizedBox(),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Container(
-                            height: 28,
-                            width: 38,
-                            alignment: Alignment.center,
-                            child: NotificationsLunarIcon(),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => NotificationsScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: 38,
+                              color: Colors.transparent,
+                              alignment: Alignment.bottomCenter,
+                              child: Icon(
+                                CustomIcons.moon,
+                                size: 22,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
                           ),
+                          userProfile != null &&
+                                  userProfile.pack.address != pack.address
+                              ? GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      builder: (BuildContext context) =>
+                                          PackOpenActionItems(
+                                        pack: pack,
+                                        userProfile: userProfile,
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 38,
+                                    alignment: Alignment.bottomCenter,
+                                    color: Colors.transparent,
+                                    child: Icon(
+                                      CustomIcons.morevertical,
+                                      size: 22,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
                           GestureDetector(
                             onTap: () {
                               FeatureDiscovery.clearPreferences(
                                   context, <String>{
                                 'packs_info_id',
+                                'packs_toggle_id',
                               });
                               FeatureDiscovery.discoverFeatures(
                                 context,
                                 const <String>{
                                   'packs_info_id',
+                                  'packs_toggle_id',
                                 },
                               );
                             },
@@ -153,12 +164,8 @@ class PackOpenAppbar extends SliverPersistentHeaderDelegate {
                                 "Your Pack is meant for a group of close friends who evoke the most unfiltered version of you and reflect an extension of you. The people you invite to your Pack will have access to your Pack feed, which displays the public content of everyone you've invited. You are the common thread between all the people you invite, facilitating a more organic way for them to hear from or discover one another through their mutual connection - you. You can also share private expressions to just your pack members.",
                                 'Also note that connecting by Packs is not mutual. If someone accepts your pack invitation, you will not be able to see their Pack feed unless they choose to send you an invite.'
                               ],
-                              isLastFeature: true,
                               child: Container(
                                 height: 24,
-                                width: 38,
-                                padding: const EdgeInsets.only(bottom: 4),
-                                color: Colors.transparent,
                                 child: JuntoInfoIcon(),
                               ),
                             ),

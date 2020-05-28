@@ -21,14 +21,13 @@ class AudioFormExpressionAdapter extends TypeAdapter<AudioFormExpression> {
       photo: fields[1] as String,
       audio: fields[2] as String,
       gradient: (fields[3] as List)?.cast<String>(),
-      caption: fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, AudioFormExpression obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -36,9 +35,7 @@ class AudioFormExpressionAdapter extends TypeAdapter<AudioFormExpression> {
       ..writeByte(2)
       ..write(obj.audio)
       ..writeByte(3)
-      ..write(obj.gradient)
-      ..writeByte(4)
-      ..write(obj.caption);
+      ..write(obj.gradient);
   }
 }
 

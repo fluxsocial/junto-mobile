@@ -8,10 +8,11 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere_page_one.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere_page_two.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateSphere extends StatefulWidget {
   const CreateSphere({
@@ -65,8 +66,9 @@ class CreateSphereState extends State<CreateSphere> {
       }
     }
 
-    //TODO: remove usage of shared prefs
     // get user address from shared preferences
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userAddress = await prefs.get('user_id');
 
     // create sphere body
     final SphereModel sphere = SphereModel(

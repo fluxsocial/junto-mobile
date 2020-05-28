@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -59,7 +59,7 @@ class PerspectiveItem extends StatelessWidget {
                 builder: (BuildContext context) => ConfirmDialog(
                   confirmationText:
                       'Are you sure you want to delete this perspective?',
-                  confirm: () {
+                  confirm: (_) {
                     context
                         .bloc<PerspectivesBloc>()
                         .add(RemovePerspective(perspective));
@@ -84,8 +84,8 @@ class PerspectiveItem extends StatelessWidget {
             children: <Widget>[
               Container(
                 alignment: Alignment.center,
-                height: 38.0,
-                width: 38.0,
+                height: 45.0,
+                width: 45.0,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomLeft,
@@ -99,8 +99,8 @@ class PerspectiveItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Icon(
-                  CustomIcons.newperspective,
-                  size: 24,
+                  CustomIcons.newbinoculars,
+                  size: 28,
                   color: Colors.white,
                 ),
               ),
@@ -109,13 +109,8 @@ class PerspectiveItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      perspective.name,
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                    ),
+                    Text(perspective.name,
+                        style: Theme.of(context).textTheme.subtitle1),
                     if (perspective.name == 'JUNTO')
                       Text(
                         'Expressions from everyone on Junto.',

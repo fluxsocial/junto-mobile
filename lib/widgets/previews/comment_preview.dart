@@ -33,11 +33,8 @@ class CommentPreview extends StatelessWidget with MemberValidation {
         Navigator.push(
           context,
           CupertinoPageRoute<dynamic>(
-            builder: (BuildContext context) => CommentOpen(
-              comment: comment,
-              parent: parent,
-              userAddress: userAddress,
-            ),
+            builder: (BuildContext context) =>
+                CommentOpen(comment, parent, userAddress),
           ),
         );
       },
@@ -112,7 +109,7 @@ class CommentPreview extends StatelessWidget with MemberValidation {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                comment.expressionData.body.trim(),
+                comment.expressionData.body,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
                 style: TextStyle(

@@ -10,10 +10,12 @@ import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.
 import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
-  const JuntoDenSliverAppbar({Key key, @required this.profile})
+  const JuntoDenSliverAppbar(
+      {Key key, @required this.profile, @required this.currentTheme})
       : super(key: key);
 
   final UserData profile;
+  final String currentTheme;
 
   @override
   State<StatefulWidget> createState() {
@@ -46,8 +48,6 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
   @override
   Widget build(BuildContext context) {
     final photo = widget.profile.user.backgroundPhoto;
-    final name = widget.profile.user.name.trim();
-
     return SliverAppBar(
       automaticallyImplyLeading: false,
       primary: false,
@@ -74,7 +74,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                   if (photo != null && (photo.isNotEmpty || photo != ''))
                     MemberBackgroundPhoto(profile: widget.profile),
                   if (photo == null || photo.isEmpty)
-                    MemberBackgroundPlaceholder(),
+                    MemberBackgroundPlaceholder(theme: widget.currentTheme),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),
@@ -91,7 +91,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                           children: <Widget>[
                             Flexible(
                               child: Text(
-                                name,
+                                widget.profile.user.name,
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
@@ -99,7 +99,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 ),
                               ),
                             ),
-                            EditDenButton(),
+                            EditDenButton(currentTheme: widget.currentTheme),
                           ],
                         ),
                         if (widget.profile.user.gender.isNotEmpty ||
@@ -138,9 +138,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                 ],
               ),
             ),
-            MemberProfilePictureAvatar(
-              profile: widget.profile,
-            ),
+            MemberProfilePictureAvatar(profile: widget.profile),
           ],
         ),
       ),

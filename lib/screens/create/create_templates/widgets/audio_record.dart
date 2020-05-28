@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/widgets/audio/audio_seek.dart';
 import 'package:provider/provider.dart';
 import '../audio_service.dart';
 import 'audio_button.dart';
@@ -22,8 +23,10 @@ class AudioRecord extends StatelessWidget {
                       AudioButtonDecoration(
                         child: AudioButtonStack(),
                       ),
-                      const SizedBox(height: 20),
-                      AudioTimer(audio: audio)
+                      const SizedBox(height: 15),
+                      audio.playBackAvailable
+                          ? AudioSeek()
+                          : AudioTimer(audio: audio)
                     ],
                   ),
                 ],

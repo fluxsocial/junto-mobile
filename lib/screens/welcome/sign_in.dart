@@ -1,57 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
-import 'package:junto_beta_mobile/utils/form_validation.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-
-import 'bloc/bloc.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:feature_discovery/feature_discovery.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn(this.signInController, this.emailController);
+  const SignIn(this.signInController);
 
   final PageController signInController;
-  final TextEditingController emailController;
 
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
+  TextEditingController _emailController;
   TextEditingController _passwordController;
 
   @override
   void initState() {
     super.initState();
+    _emailController = TextEditingController();
     _passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
+  /// Called when the user hits the `Sign In` button.
+  /// Makes a call to [SharedPreferences] then replaces the current route
+  /// with [JuntoCollective].
   Future<void> _handleSignIn(BuildContext context) async {
     logger.logInfo('User tapped sign in');
-    final String email = widget.emailController.text.trim();
-    final String password = _passwordController.text;
+    final String email = _emailController.value.text.trim();
+    final String password = _passwordController.value.text;
     if (email.isEmpty || password.isEmpty) {
       _showValidationError();
       return;
     }
-    if (Validator.validateEmail(email) != null) {
-      _showValidationError(S.of(context).welcome_invalid_email);
-      return;
-    }
     final UserAuthLoginDetails loginDetails =
         UserAuthLoginDetails(email: email, password: password);
-
-    BlocProvider.of<AuthBloc>(context).add(LoginEvent(loginDetails));
+    JuntoLoader.showLoader(context);
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final bool nightMode = await prefs.getBool('night-mode');
+      if (nightMode == null) {
+        await prefs.setBool('night-mode', false);
+      }
+      await Provider.of<AuthRepo>(context, listen: false)
+          .loginUser(loginDetails);
+      Provider.of<UserDataProvider>(context, listen: false).initialize();
+      JuntoLoader.hide();
+      BlocProvider.of<PerspectivesBloc>(context).add(FetchPerspectives());
+      Navigator.of(context).pushReplacement(
+        FadeRoute<void>(
+          child: FeatureDiscovery(
+            child: const JuntoLotus(
+              address: null,
+              expressionContext: ExpressionContext.Collective,
+              source: null,
+            ),
+          ),
+        ),
+      );
+    } catch (e, s) {
+      logger.logException(e, s, 'Error during sign in');
+      JuntoLoader.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: S.of(context).welcome_unable_to_login,
+        ),
+      );
+    }
   }
 
   @override
@@ -82,7 +120,7 @@ class _SignInState extends State<SignIn> {
                     onSubmit: () {
                       FocusScope.of(context).nextFocus();
                     },
-                    valueController: widget.emailController,
+                    valueController: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     textCapitalization: TextCapitalization.none,
                   ),
@@ -91,8 +129,8 @@ class _SignInState extends State<SignIn> {
                     hint: S.of(context).welcome_password_hint,
                     maxLength: 100,
                     textInputActionType: TextInputAction.done,
-                    onSubmit: () async {
-                      await _handleSignIn(context);
+                    onSubmit: () {
+                      // FocusScope.of(context).unfocus();
                     },
                     obscureText: true,
                     valueController: _passwordController,
@@ -121,7 +159,7 @@ class _SignInState extends State<SignIn> {
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 120),
                     child: Text(
-                      S.of(context).reset_password,
+                      'RESET PASSWORD',
                       style: TextStyle(
                         letterSpacing: 1.7,
                         color: Colors.white,
@@ -139,11 +177,11 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  void _showValidationError([String message]) {
+  void _showValidationError() {
     showDialog(
       context: context,
       builder: (BuildContext context) => SingleActionDialog(
-        dialogText: message ?? S.of(context).welcome_wrong_email_or_password,
+        dialogText: S.of(context).welcome_wrong_email_or_password,
       ),
     );
   }

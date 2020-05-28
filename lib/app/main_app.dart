@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:junto_beta_mobile/app/app.dart';
 import 'package:junto_beta_mobile/app/logger/sentry.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/utils/bloc_delegate.dart';
 import 'package:junto_beta_mobile/utils/device_preview.dart';
 
 Future<void> mainApp() async {
@@ -15,12 +11,14 @@ Future<void> mainApp() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  await Hive.initFlutter();
-  BlocSupervisor.delegate = SimpleBlocDelegate();
   final Backend backend = await Backend.init();
+  final bool _loggedIn = await backend.authRepo.isLoggedIn();
   runLoggedApp(
     DevicePreviewWrapper(
-      child: JuntoApp(backend: backend),
+      child: JuntoApp(
+        backend: backend,
+        loggedIn: _loggedIn ?? false,
+      ),
     ),
   );
 }

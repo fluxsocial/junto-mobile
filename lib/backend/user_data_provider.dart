@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,59 +23,48 @@ class UserDataProvider extends ChangeNotifier {
   SharedPreferences sharedPreferences;
 
   Future<void> initialize() async {
+    sharedPreferences = await SharedPreferences.getInstance();
     await getUserInformation();
+    return;
   }
 
   Future<void> getUserInformation() async {
-    try {
-      logger.logInfo('Fetching user information');
-      final box = await Hive.box(HiveBoxes.kAppBox);
-      final userData = await box.get(HiveKeys.kUserData);
-      if (userData != null && userData.isNotEmpty) {
-        final decodedUserData = jsonDecode(userData);
-        userProfile = UserData.fromMap(decodedUserData);
-        userAddress = userProfile.user.address;
-        final cachedLayoutView = await box.get(HiveKeys.kLayoutView);
-        if (cachedLayoutView != null) {
-          twoColumnView = cachedLayoutView;
-        }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userData = prefs.getString('user_data');
+    if (userData != null && userData.isNotEmpty) {
+      final Map<String, dynamic> decodedUserData = jsonDecode(userData);
 
-        notifyListeners();
+      userAddress = prefs.getString('user_id');
+      userProfile = UserData.fromMap(decodedUserData);
+      if (prefs.getBool('twoColumnView') != null) {
+        twoColumnView = prefs.getBool('twoColumnView');
       }
-    } catch (e) {
-      logger.logException(e);
+
+      notifyListeners();
     }
+    return;
   }
 
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
-    final box = await Hive.box(HiveBoxes.kAppBox);
-    await box.delete(HiveKeys.kUserData);
-    final userMap = user.toMap();
-    final userData = jsonEncode(userMap);
-    await box.put(HiveKeys.kUserData, userData);
-    await box.delete(HiveKeys.kUserId);
-    await box.put(HiveKeys.kUserId, user.user.address);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_data', json.encode(user.toMap()));
+    await prefs.setString('user_id', user.user.address);
   }
 
   /// Updates the user information with [user]
   void updateUser(UserData user) {
-    try {
-      assert(user.user.address == userAddress);
-      logger.logDebug(
-          'Current user address is equal to the updated user address: ${user.user.address == userAddress}');
-      _setUserInformation(user);
-      userProfile = user;
-      notifyListeners();
-    } catch (e) {
-      logger.logException(e);
-    }
+    assert(user.user.address == userAddress);
+    logger.logDebug(
+        'Current user address is equal to the upadted user address: ${user.user.address == userAddress}');
+    _setUserInformation(user);
+    userProfile = user;
+    notifyListeners();
   }
 
   Future<void> switchColumnLayout(ExpressionFeedLayout layout) async {
-    twoColumnView = !twoColumnView;
-    notifyListeners();
     await appRepository?.setLayout(layout == ExpressionFeedLayout.two);
     await getUserInformation();
+    notifyListeners();
   }
 }

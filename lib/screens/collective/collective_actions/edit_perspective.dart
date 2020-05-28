@@ -68,10 +68,8 @@ class EditPerspectiveState extends State<EditPerspective> {
   @override
   void initState() {
     super.initState();
-    _nameController =
-        TextEditingController(text: widget.perspective.name.trim());
-    _aboutController =
-        TextEditingController(text: widget.perspective.about.trim());
+    _nameController = TextEditingController(text: widget.perspective.name);
+    _aboutController = TextEditingController(text: widget.perspective.about);
     _pageController = PageController(initialPage: 0);
   }
 
@@ -144,27 +142,24 @@ class EditPerspectiveState extends State<EditPerspective> {
                     _currentIndex == 0
                         ? GestureDetector(
                             onTap: () async {
-                              // trimmed name
-                              final String name =
-                                  // trimmed about
-                                  _nameController.value.text.trim();
-                              final String about =
-                                  _aboutController.value.text.trim();
-                              // updated perspective details
                               final Map<String, String> updatedPerspective =
                                   <String, String>{
-                                if (name != widget.perspective.name &&
-                                    name != '')
-                                  'name': name,
-                                if (about != widget.perspective.about &&
-                                    about != '')
-                                  'about': about
+                                if (_nameController.value.text !=
+                                        widget.perspective.name &&
+                                    _nameController.value.text != '')
+                                  'name': _nameController.value.text,
+                                if (_aboutController.value.text !=
+                                        widget.perspective.about &&
+                                    _nameController.value.text != '')
+                                  'about': _aboutController.value.text
                               };
 
-                              if (name == widget.perspective.name &&
-                                      about == widget.perspective.about ||
-                                  name == '' ||
-                                  about == '') {
+                              if (_nameController.value.text ==
+                                      widget.perspective.name &&
+                                  _aboutController.value.text ==
+                                      widget.perspective.about &&
+                                  _nameController.value.text != '' &&
+                                  _aboutController.value.text != '') {
                                 return;
                               } else {
                                 JuntoLoader.showLoader(context);

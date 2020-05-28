@@ -67,7 +67,7 @@ class SphereOpenAbout extends StatelessWidget {
                         ),
                         Container(
                           child: Text(
-                            '${snapshot.data.length.toString()} Members',
+                            snapshot.data.length.toString() + ' Members',
                             style: Theme.of(context).textTheme.subtitle2,
                           ),
                         ),

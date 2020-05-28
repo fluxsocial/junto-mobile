@@ -38,9 +38,6 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     if (event is RefreshPacks) {
       yield* _mapRefreshPacksToState(event);
     }
-    if (event is DeletePackExpression) {
-      yield* _mapDeletePackExpression(event);
-    }
     if (event is FetchMorePacks) {
       yield* _mapFetchMorePacksToState(event);
     }
@@ -181,41 +178,6 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       logger.logException(error, stack);
       yield PacksError();
     }
-  }
-
-  Stream<PackState> _mapDeletePackExpression(
-      DeletePackExpression event) async* {
-    try {
-      await expressionRepo.deleteExpression(event.expressionAddress);
-      final currentState = state as PacksLoaded;
-      final publicExpressions = currentState.publicExpressions.results.toList();
-      publicExpressions
-          .removeWhere((element) => element.address == event.expressionAddress);
-      final privateExpression = currentState.publicExpressions.results.toList();
-      privateExpression
-          .removeWhere((element) => element.address == event.expressionAddress);
-
-      final publicResults = QueryResults<ExpressionResponse>(
-        lastTimestamp: currentState.publicExpressions.lastTimestamp,
-        results: publicExpressions,
-        resultCount: publicExpressions.length,
-      );
-      final privateResults = QueryResults<ExpressionResponse>(
-        lastTimestamp: currentState.privateExpressions.lastTimestamp,
-        results: privateExpression,
-        resultCount: privateExpression.length,
-      );
-      yield PacksLoaded(
-        publicResults,
-        privateResults,
-        currentState.groupMemebers,
-        currentState.pack,
-      );
-    } catch (error, stack) {
-      logger.logException(error, stack);
-      yield PacksError();
-    }
-    ;
   }
 
   Future<List> _fetchExpressionAndMembers() async {

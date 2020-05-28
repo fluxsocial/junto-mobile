@@ -11,10 +11,12 @@ class EditDenBackgroundPhoto extends StatelessWidget {
     this.profile,
     this.onPressed,
     this.backgroundPhotoFile,
+    this.currentTheme,
   });
   final UserData profile;
   final File backgroundPhotoFile;
   final Function onPressed;
+  final String currentTheme;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -28,7 +30,7 @@ class EditDenBackgroundPhoto extends StatelessWidget {
               profile.user.backgroundPhoto.isNotEmpty ||
                       profile.user.backgroundPhoto != ''
                   ? MemberBackgroundPhoto(profile: profile)
-                  : MemberBackgroundPlaceholder()
+                  : MemberBackgroundPlaceholder(theme: currentTheme)
             else
               Container(
                 height: MediaQuery.of(context).size.width / 2,

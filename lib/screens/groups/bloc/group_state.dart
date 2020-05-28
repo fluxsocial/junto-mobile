@@ -20,8 +20,8 @@ class GroupError extends GroupBlocState {
 
 /// State containing groups data
 class GroupLoaded extends GroupBlocState {
-  GroupLoaded(this.groups, this.groupJoinNotifications);
+  GroupLoaded(this.groups, this.notifications);
 
   final List<Group> groups;
-  final List<Group> groupJoinNotifications;
+  final NotificationResultsModel notifications;
 }

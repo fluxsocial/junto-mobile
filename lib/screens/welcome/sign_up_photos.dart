@@ -3,74 +3,108 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
-import 'widgets/sign_up_profile_picture.dart';
-
-class SignUpPhotos extends StatelessWidget {
-  const SignUpPhotos(this.profilePicture);
-  final ProfilePicture profilePicture;
+class SignUpPhotos extends StatefulWidget {
+  const SignUpPhotos({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
+  State<StatefulWidget> createState() {
+    return SignUpPhotosState();
+  }
+}
+
+class SignUpPhotosState extends State<SignUpPhotos> {
+  File profilePictureOne;
+
+  List<File> returnDetails() {
+    return <File>[profilePictureOne];
+  }
+
+  Widget _buildPhotoSelector({File profilePicture}) {
+    return GestureDetector(
+      onTap: () async {
+        await _onPickPressed();
+      },
       child: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .2),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        color: Colors.transparent,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: MediaQuery.of(context).size.height * .1),
-            Expanded(
-              child: Center(
-                child: GestureDetector(
-                  onTap: () => _onImageSelect(context),
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 50),
-                      ProfilePictureImage(profilePicture: profilePicture),
-                      if (profilePicture.file.value != null)
-                        RemovePhoto(onTap: _onRemovePhoto)
-                      else
-                        ProfilePictureLabel(),
-                    ],
+            const SizedBox(height: 50),
+            Container(
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.width * .5,
+              width: MediaQuery.of(context).size.width * .5,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                  width: 3,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: profilePicture == null
+                  ? Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 45,
+                    )
+                  : Image.file(
+                      profilePicture,
+                      fit: BoxFit.fitHeight,
+                    ),
+            ),
+            if (profilePictureOne != null)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    profilePictureOne = null;
+                  });
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  child: Text(
+                    S.of(context).welcome_remove_photo,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      letterSpacing: 1.7,
+                    ),
+                  ),
+                ),
+              )
+            else
+              Container(
+                color: Colors.transparent,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                child: Text(
+                  'PROFILE PICTURE',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    letterSpacing: 1.7,
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  void _onRemovePhoto() {
-    profilePicture.file.value = null;
-    profilePicture.originalFile.value = null;
-  }
-
-  Future<void> _onImageSelect(BuildContext context) async {
-    {
-      if (profilePicture.file.value == null) {
-        await _onPickPressed(context);
-      } else {
-        await _cropPhoto(context);
-      }
-    }
-  }
-
-  Future<void> _onPickPressed(BuildContext context) async {
+  Future<void> _onPickPressed() async {
     try {
       final File image =
           await ImagePicker.pickImage(source: ImageSource.gallery);
-      if (image == null && profilePicture.file.value == null) {
-        logger.logDebug('No image selected and no profile picture exists');
+      if (image == null && profilePictureOne == null) {
+        setState(() => profilePictureOne = null);
         return;
-      } else if (image == null && profilePicture.file.value != null) {
-        logger.logDebug(
-            'No new image selected but profile picture already exists');
+      } else if (image == null && profilePictureOne != null) {
         return;
       }
 
@@ -83,27 +117,36 @@ class SignUpPhotos extends StatelessWidget {
       );
       Navigator.of(context).focusScopeNode.unfocus();
       if (cropped == null) {
-        logger.logDebug('No new image selected and cropping cancelled');
+        setState(() => profilePictureOne = null);
+
         return;
       }
-      profilePicture.file.value = cropped;
-      profilePicture.originalFile.value = image;
+      setState(() => profilePictureOne = cropped);
     } catch (error) {
       logger.logException(error);
     }
   }
 
-  Future<void> _cropPhoto(BuildContext context) async {
-    final File cropped = await ImageCroppingDialog.show(
-      context,
-      profilePicture.originalFile.value,
-      aspectRatios: <String>[
-        '1:1',
-      ],
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .2),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height * .1),
+              Expanded(
+                child: Center(
+                  child: _buildPhotoSelector(
+                    profilePicture: profilePictureOne,
+                  ),
+                ),
+              ),
+            ]),
+      ),
     );
-    if (cropped == null) {
-      return;
-    }
-    profilePicture.file.value = cropped;
   }
 }

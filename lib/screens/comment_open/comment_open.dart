@@ -2,21 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 class CommentOpen extends StatelessWidget {
-  const CommentOpen({
-    @required this.comment,
-    @required this.parent,
-    @required this.userAddress,
-  });
+  const CommentOpen(this.comment, this.parent, this.userAddress);
 
-  final Comment comment;
-  final ExpressionResponse parent;
+  final dynamic comment;
+  final dynamic parent;
   final String userAddress;
 
   @override
@@ -116,7 +111,7 @@ class CommentOpen extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Text(
-                          comment.expressionData.body.trim(),
+                          comment.expressionData.body,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 17,

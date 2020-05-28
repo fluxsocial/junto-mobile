@@ -1,16 +1,10 @@
-import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
-import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
-import 'package:junto_beta_mobile/screens/welcome/bloc/auth_state.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
@@ -19,20 +13,25 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
-import 'package:junto_beta_mobile/utils/form_validation.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widgets/sign_up_arrows.dart';
 import 'widgets/sign_up_text_field_wrapper.dart';
+import 'widgets/welcome_background.dart';
 import 'widgets/welcome_main.dart';
 
 class Welcome extends StatefulWidget {
-  const Welcome({Key key}) : super(key: key);
+  static Route<dynamic> route() {
+    return MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) => Welcome(),
+    );
+  }
 
   @override
   State<StatefulWidget> createState() {
@@ -40,93 +39,168 @@ class Welcome extends StatefulWidget {
   }
 }
 
-class ProfilePicture {
-  final ValueNotifier<File> file = ValueNotifier<File>(null);
-  final ValueNotifier<File> originalFile = ValueNotifier<File>(null);
-}
-
 class WelcomeState extends State<Welcome> {
-  final ProfilePicture profilePicture = ProfilePicture();
+  // Used when resetting password
+  final ValueNotifier<String> _email = ValueNotifier("");
+  String _currentTheme;
+  String _userAddress;
 
   PageController _welcomeController;
   PageController _signInController;
 
   int _currentIndex;
+  String name;
+  String username;
+  String bio;
+  String location;
+  String gender;
+  String website;
+  List<dynamic> profilePictures;
+  String email;
+  String password;
+  String confirmPassword;
+  int verificationCode;
 
-  AuthRepo authRepo;
+  String imageOne = '';
+  String imageTwo = '';
+  String imageThree = '';
 
-  TextEditingController nameController;
-  TextEditingController userNameController;
-  TextEditingController locationController;
-  TextEditingController pronounController;
-  TextEditingController websiteController;
-  TextEditingController emailController;
-  TextEditingController passwordController;
-  TextEditingController confirmPasswordController;
-  TextEditingController verificationCodeController;
+  GlobalKey<SignUpAboutState> signUpAboutKey;
+  GlobalKey<SignUpPhotosState> signUpPhotosKey;
+  GlobalKey<SignUpRegisterState> signUpRegisterKey;
+  GlobalKey<SignUpVerifyState> signUpVerifyKey;
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController();
-    userNameController = TextEditingController();
-    locationController = TextEditingController();
-    pronounController = TextEditingController();
-    websiteController = TextEditingController();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    confirmPasswordController = TextEditingController();
-    verificationCodeController = TextEditingController();
+    _getTheme();
+
+    signUpAboutKey = GlobalKey<SignUpAboutState>();
+    signUpPhotosKey = GlobalKey<SignUpPhotosState>();
+    signUpRegisterKey = GlobalKey<SignUpRegisterState>();
+    signUpVerifyKey = GlobalKey<SignUpVerifyState>();
 
     _currentIndex = 0;
     _welcomeController = PageController(
+      keepPage: true,
       //0.99 forces it to build next page
       viewportFraction: 0.99,
     );
-    _signInController = PageController();
+    _signInController = PageController(keepPage: true);
   }
 
   @override
   void dispose() {
     _welcomeController.dispose();
     _signInController.dispose();
-    nameController?.dispose();
-    userNameController?.dispose();
-    locationController?.dispose();
-    pronounController?.dispose();
-    websiteController?.dispose();
-    emailController?.dispose();
-    passwordController?.dispose();
-    confirmPasswordController?.dispose();
-    verificationCodeController?.dispose();
     super.dispose();
   }
 
   Future<void> _handleSignUp() async {
-    final verificationCode = int.parse(verificationCodeController.text);
+    setState(() {
+      verificationCode = signUpVerifyKey.currentState.returnDetails();
+    });
 
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
-      email: emailController.text.trim(),
-      name: nameController.text.trim(),
-      username: userNameController.text.trim(),
-      password: passwordController.text,
-      confirmPassword: confirmPasswordController.text,
-      location: <String>[locationController.text.trim()],
+      email: email,
+      name: name,
+      password: password,
+      location: <String>[location],
+      username: username,
       profileImage: <String>[],
       backgroundPhoto: '',
-      website: <String>[websiteController.text.trim()],
-      gender: <String>[pronounController.text.trim()],
+      website: <String>[website],
+      gender: <String>[gender],
       verificationCode: verificationCode,
-      bio: '',
+      bio: bio,
     );
 
-    context.bloc<AuthBloc>().add(
-          SignUpEvent(details, profilePicture.file.value),
-        );
+    try {
+      JuntoLoader.showLoader(context);
+
+      // create user account
+      final UserData results =
+          await Provider.of<AuthRepo>(context, listen: false)
+              .registerUser(details);
+      final Map<String, dynamic> resultsMap = results.toMap();
+      final String resultsMapToString = json.encode(resultsMap);
+
+      // save user to shared prefs
+      await SharedPreferences.getInstance()
+        ..setBool(
+          'isLoggedIn',
+          true,
+        )
+        ..setString('user_id', results.user.address)
+        ..setString('user_data', resultsMapToString);
+      setState(() {
+        _userAddress = results.user.address;
+      });
+      Provider.of<UserDataProvider>(context, listen: false).initialize();
+    } catch (error) {
+      JuntoLoader.hide();
+      print(error);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
+      );
+    }
+
+    // Update user with profile photos
+    if (profilePictures[0] != null) {
+      // instantiate list to store photo keys retrieve from /s3
+      final List<String> _photoKeys = <String>[];
+      for (final dynamic image in profilePictures) {
+        if (image != null) {
+          try {
+            final String key =
+                await Provider.of<ExpressionRepo>(context, listen: false)
+                    .createPhoto(
+              false,
+              '.png',
+              image,
+            );
+            _photoKeys.add(key);
+          } catch (error) {
+            print(error);
+            JuntoLoader.hide();
+          }
+        }
+      }
+
+      Map<String, dynamic> _profilePictureKeys;
+
+      // instantiate data structure to update user with profile pictures
+      _profilePictureKeys = <String, dynamic>{
+        'profile_picture': <Map<String, dynamic>>[
+          <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
+          if (_photoKeys.length == 2)
+            <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
+        ]
+      };
+      // update user with profile photos
+      try {
+        await Provider.of<UserRepo>(context, listen: false).updateUser(
+            profilePictures[0] == null ? _photoKeys : _profilePictureKeys,
+            _userAddress);
+      } catch (error) {
+        print(error);
+        JuntoLoader.hide();
+      }
+    }
+
+    JuntoLoader.hide();
+    // Navigate to community agreements
+    Navigator.of(context).pushReplacement(
+      FadeRoute<void>(
+        child: SignUpAgreements(),
+      ),
+    );
   }
 
   void _userNameSubmission() async {
-    final username = userNameController.text.trim();
     bool _correctLength = username.length >= 1 && username.length <= 22;
     final exp = RegExp("^[a-z0-9_]+\$");
     if (username != null && exp.hasMatch(username) && _correctLength) {
@@ -143,7 +217,6 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _nameCheck() async {
-    final name = nameController.text.trim();
     bool _correctLength = name.length >= 1 && name.length <= 50;
     if (name != null && name.isNotEmpty && _correctLength) {
       await _nextSignUpPage();
@@ -173,55 +246,59 @@ class WelcomeState extends State<Welcome> {
 
   @override
   Widget build(BuildContext context) {
-    authRepo = Provider.of<AuthRepo>(context, listen: false);
     return WillPopScope(
       onWillPop: _animateOnBackPress,
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: _onBlocStateChange,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            if (FocusScope.of(context).hasFocus) {
-              FocusScope.of(context).unfocus();
-            }
-          },
-          child: Scaffold(
-            // setting this to true causes white background to be shown during keyboard opening
-            resizeToAvoidBottomInset: false,
-            body: Stack(
-              children: <Widget>[
-                BackgroundTheme(),
-                PageView(
-                  onPageChanged: onPageChanged,
-                  controller: _welcomeController,
-                  scrollDirection: Axis.vertical,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    PageView(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          if (FocusScope.of(context).hasFocus) {
+            FocusScope.of(context).unfocus();
+          }
+        },
+        child: Scaffold(
+          // setting this to true causes white background to be shown during keyboard opening
+          resizeToAvoidBottomInset: false,
+          body: Stack(
+            children: <Widget>[
+              WelcomeBackground(currentTheme: _currentTheme),
+              PageView(
+                onPageChanged: onPageChanged,
+                controller: _welcomeController,
+                scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  PageKeepAlive(
+                    child: PageView(
                       controller: _signInController,
                       physics: const NeverScrollableScrollPhysics(),
                       children: <Widget>[
-                        WelcomeMain(
-                          onSignIn: _onSignIn,
-                          onSignUp: _onSignUp,
+                        PageKeepAlive(
+                          child: WelcomeMain(
+                            onSignIn: _onSignIn,
+                            onSignUp: _onSignUp,
+                          ),
                         ),
-                        SignIn(
-                          _signInController,
-                          emailController,
+                        PageKeepAlive(
+                          child: SignIn(_signInController),
                         ),
                         ResetPasswordRequest(
-                          signInController: _signInController,
-                          emailController: emailController,
-                        ),
-                        ResetPasswordConfirm(
-                          signInController: _signInController,
-                          email: emailController.text,
-                        ),
+                            signInController: _signInController, email: _email),
+                        ValueListenableBuilder<String>(
+                            valueListenable: _email,
+                            builder: (context, email, _) {
+                              return ResetPasswordConfirm(
+                                signInController: _signInController,
+                                email: email,
+                              );
+                            }),
                       ],
                     ),
-                    SignUpTextFieldWrapper(
-                      controller: nameController,
+                  ),
+                  PageKeepAlive(
+                    // 1
+                    child: SignUpTextFieldWrapper(
                       textInputActionType: TextInputAction.done,
+                      onValueChanged: (String value) => name = value,
                       onSubmit: _nameCheck,
                       maxLength: 50,
                       hint: S.of(context).welcome_my_name_is,
@@ -229,9 +306,14 @@ class WelcomeState extends State<Welcome> {
                       title: S.of(context).welcome_name_hint,
                       textCapitalization: TextCapitalization.words,
                     ),
-                    SignUpTextFieldWrapper(
-                      controller: userNameController,
+                  ),
+                  PageKeepAlive(
+                    // 2
+                    child: SignUpTextFieldWrapper(
                       textInputActionType: TextInputAction.done,
+                      onValueChanged: (String value) {
+                        username = value.toLowerCase().trim();
+                      },
                       onSubmit: _userNameSubmission,
                       maxLength: 22,
                       hint: S.of(context).welcome_username_ill_go,
@@ -239,56 +321,53 @@ class WelcomeState extends State<Welcome> {
                       title: S.of(context).welcome_username_hint,
                       textCapitalization: TextCapitalization.none,
                     ),
-                    SignUpThemes(),
-                    SignUpAbout(
+                  ),
+                  PageKeepAlive(
+                    // 3
+                    child: SignUpThemes(toggleTheme: _toggleTheme),
+                  ),
+                  PageKeepAlive(
+                    // 4
+                    child: SignUpAbout(
+                      key: signUpAboutKey,
                       nextPage: _nextSignUpPage,
-                      pronounController: pronounController,
-                      locationController: locationController,
-                      websiteController: websiteController,
                     ),
-                    SignUpPhotos(profilePicture),
-                    SignUpRegister(
-                      emailController: emailController,
-                      passwordController: passwordController,
-                      confirmPasswordController: confirmPasswordController,
-                    ),
-                    SignUpVerify(
+                  ),
+                  PageKeepAlive(
+                    // 5
+                    child: SignUpPhotos(key: signUpPhotosKey),
+                  ),
+                  PageKeepAlive(
+                    // 6
+                    child: SignUpRegister(key: signUpRegisterKey),
+                  ),
+                  PageKeepAlive(
+                    // 7
+                    child: SignUpVerify(
+                      key: signUpVerifyKey,
                       handleSignUp: _handleSignUp,
-                      verificationController: verificationCodeController,
-                    )
-                  ],
-                ),
-                if (_currentIndex != 0 &&
-                    MediaQuery.of(context).viewInsets.bottom == 0)
-                  SignUpArrows(
-                    welcomeController: _welcomeController,
-                    currentIndex: _currentIndex,
-                    onTap: _nextSignUpPage,
-                  ),
-                if (_currentIndex != 0)
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * .08,
-                    left: 20,
-                    child: Image.asset(
-                      'assets/images/junto-mobile__logo.png',
-                      height: 38,
-                      color: Colors.white,
                     ),
-                  ),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if (state is AuthUnauthenticated && state.loading == true) {
-                      return Container(
-                        color:
-                            Theme.of(context).backgroundColor.withOpacity(.8),
-                        child: JuntoProgressIndicator(),
-                      );
-                    }
-                    return SizedBox();
-                  },
+                  )
+                ],
+              ),
+              if (_currentIndex != 0 &&
+                  MediaQuery.of(context).viewInsets.bottom == 0)
+                SignUpArrows(
+                  welcomeController: _welcomeController,
+                  currentIndex: _currentIndex,
+                  onTap: _nextSignUpPage,
                 ),
-              ],
-            ),
+              if (_currentIndex != 0)
+                Positioned(
+                  top: MediaQuery.of(context).size.height * .08,
+                  left: 20,
+                  child: Image.asset(
+                    'assets/images/junto-mobile__logo.png',
+                    height: 38,
+                    color: Colors.white,
+                  ),
+                ),
+            ],
           ),
         ),
       ),
@@ -297,9 +376,6 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> _nextSignUpPage() async {
     try {
-      final name = nameController.text.trim();
-      final username = userNameController.text.trim();
-
       if (_currentIndex == 1) {
         if (name == null || name.isEmpty || name.length > 50) {
           return;
@@ -325,7 +401,8 @@ class WelcomeState extends State<Welcome> {
           JuntoLoader.showLoader(context, color: Colors.transparent);
           // ensure username is not taken or reserved
           final Map<String, dynamic> validateUserResponse =
-              await authRepo.validateUser(username: username);
+              await Provider.of<AuthRepo>(context, listen: false)
+                  .validateUser(username: username);
           JuntoLoader.hide();
           final bool usernameIsAvailable =
               validateUserResponse['valid_username'];
@@ -333,21 +410,28 @@ class WelcomeState extends State<Welcome> {
             showDialog(
               context: context,
               builder: (BuildContext context) => SingleActionDialog(
-                dialogText: S.of(context).welcome_username_taken,
+                dialogText: 'Sorry, that username is taken.',
               ),
             );
             return;
           }
         }
       } else if (_currentIndex == 4) {
-        //
+        final AboutPageModel _aboutPageModel =
+            signUpAboutKey.currentState.returnDetails();
+        bio = _aboutPageModel.bio;
+        location = _aboutPageModel.location;
+        gender = _aboutPageModel.gender;
+        website = _aboutPageModel.website;
+        print(bio.length);
       } else if (_currentIndex == 5) {
-        //
+        profilePictures = signUpPhotosKey.currentState.returnDetails();
+        print(profilePictures);
       } else if (_currentIndex == 6) {
-        //
-        final email = emailController.text.trim();
-        final password = passwordController.text;
-        final confirmPassword = confirmPasswordController.text;
+        email = signUpRegisterKey.currentState.returnDetails()['email'];
+        password = signUpRegisterKey.currentState.returnDetails()['password'];
+        confirmPassword =
+            signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
         if (email == null ||
             email.isEmpty ||
             password.isEmpty ||
@@ -362,14 +446,9 @@ class WelcomeState extends State<Welcome> {
         if (!_passwordCheck(password)) {
           return;
         }
-        if (Validator.validateEmail(email) != null) {
-          _showEmailError();
-          return;
-        }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
-        final result = await authRepo.verifyEmail(email);
-        logger.logDebug(result);
+        await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
         JuntoLoader.hide();
       }
       // transition to next page of sign up flow
@@ -389,7 +468,7 @@ class WelcomeState extends State<Welcome> {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText: error.message,
+            dialogText: S.of(context).welcome_username_taken,
           ),
         );
       }
@@ -421,13 +500,28 @@ class WelcomeState extends State<Welcome> {
     }
   }
 
-  void _showEmailError() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => SingleActionDialog(
-        dialogText: S.of(context).welcome_invalid_email,
-      ),
-    );
+  void _toggleTheme(String theme) {
+    setState(() {
+      _currentTheme = theme;
+    });
+  }
+
+  Future<void> _getTheme() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String theme = prefs.getString('current-theme');
+
+    setState(() {
+      if (theme == null) {
+        _currentTheme = 'rainbow';
+      } else {
+        _currentTheme = theme;
+      }
+    });
+
+    final bool nightMode = await prefs.getBool('night-mode');
+    if (nightMode == null) {
+      await prefs.setBool('night-mode', false);
+    }
   }
 
   void onPageChanged(int index) {
@@ -479,27 +573,28 @@ class WelcomeState extends State<Welcome> {
       duration: const Duration(milliseconds: 300),
     );
   }
+}
 
-  void _onBlocStateChange(BuildContext context, AuthState state) {
-    print(state);
-    if (state is AuthUnauthenticated) {
-      if (state.error == true) {
-        if (state.errorMessage != null && state.errorMessage.isNotEmpty) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => SingleActionDialog(
-              dialogText: state.errorMessage,
-            ),
-          );
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => SingleActionDialog(
-              dialogText: S.of(context).welcome_wrong_email_or_password,
-            ),
-          );
-        }
-      }
-    }
+class PageKeepAlive extends StatefulWidget {
+  const PageKeepAlive({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  _PageKeepAliveState createState() => _PageKeepAliveState();
+}
+
+class _PageKeepAliveState extends State<PageKeepAlive>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return widget.child;
   }
 }

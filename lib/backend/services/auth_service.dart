@@ -1,22 +1,17 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class AuthenticationServiceCentralized implements AuthenticationService {
-  const AuthenticationServiceCentralized(this.client, this.dbService);
+  const AuthenticationServiceCentralized(this.client);
 
   final JuntoHttp client;
-  final LocalCache dbService;
 
   @override
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
@@ -29,16 +24,12 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       },
     );
     if (response.statusCode == 200) {
-      logger.logInfo('User logged in');
       final String authorization = response.headers['authorization'];
-      final box = await Hive.box(HiveBoxes.kAppBox);
-      await box.put(HiveKeys.kAuth, authorization);
-      final userData = JuntoHttp.handleResponse(response);
-      final user = UserData.fromMap(userData);
-      final userMap = jsonEncode(userData);
-      logger.logInfo('Storing user data');
-      await box.put(HiveKeys.kUserData, userMap);
-      return user;
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('auth', authorization);
+      logger.logInfo('User logged in');
+
+      return UserData.fromMap(JuntoHttp.handleResponse(response));
     } else {
       final Map<String, dynamic> errorResponse =
           JuntoHttp.handleResponse(response);
@@ -49,9 +40,10 @@ class AuthenticationServiceCentralized implements AuthenticationService {
 
   @override
   Future<void> logoutUser() async {
-    await dbService.wipe();
-
-    logger.logInfo('User logged out, cache cleaned');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    await prefs.remove('auth');
+    logger.logInfo('User logged out');
   }
 
   @override
@@ -80,7 +72,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     logger.logDebug(_body.toString());
     final http.Response response =
         await client.postWithoutEncoding('/auth/register', body: _body);
-    logger.logDebug('${response.statusCode} ${response.body}');
+    logger.logDebug(response.body);
+    print(response.statusCode);
     if (response.statusCode == 310) {
       print('yeo');
       return 'follow the white rabbit';
@@ -158,23 +151,6 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     );
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-  }
-
-  Future<void> deleteUserAccount(String userAddress, String password) async {
-    if (userAddress.isNotEmpty &&
-        userAddress != null &&
-        password.isNotEmpty &&
-        password != null) {
-      final Map<String, dynamic> _body = <String, String>{
-        'password': password,
-      };
-      final http.Response response = await client.delete(
-        '/users/$userAddress',
-        body: _body,
-      );
-
-      final Map<String, dynamic> _responseMap =
-          JuntoHttp.handleResponse(response);
-    }
+    print(_responseMap);
   }
 }

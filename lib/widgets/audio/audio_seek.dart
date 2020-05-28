@@ -5,10 +5,7 @@ import 'package:provider/provider.dart';
 class AudioSeek extends StatelessWidget {
   const AudioSeek({
     Key key,
-    this.hasBackground,
   }) : super(key: key);
-
-  final bool hasBackground;
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +16,9 @@ class AudioSeek extends StatelessWidget {
             height: 36,
             child: SliderTheme(
               data: SliderThemeData(
-                inactiveTrackColor: hasBackground
-                    ? Colors.white
-                    : Theme.of(context).dividerColor,
-                activeTrackColor: hasBackground
-                    ? Colors.white
-                    : Theme.of(context).primaryColor,
-                thumbColor: hasBackground
-                    ? Colors.white
-                    : Theme.of(context).primaryColor,
+                inactiveTrackColor: Theme.of(context).dividerColor,
+                activeTrackColor: Theme.of(context).backgroundColor,
+                thumbColor: Theme.of(context).colorScheme.primaryVariant,
                 trackHeight: 5,
               ),
               child: Slider(

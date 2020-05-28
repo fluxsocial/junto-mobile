@@ -3,11 +3,9 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class ChannelPreview extends StatelessWidget {
-  const ChannelPreview({Key key, this.channel, this.resultCount})
-      : super(key: key);
+  const ChannelPreview({Key key, this.channel}) : super(key: key);
 
   final Channel channel;
-  final int resultCount;
 
   @override
   Widget build(BuildContext context) {
@@ -53,23 +51,12 @@ class ChannelPreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    channel.name,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        .copyWith(color: Theme.of(context).primaryColor),
-                  ),
-                  // const SizedBox(height: 2.5),
-                  // Text(
-                  //   _expressionText(),
-                  //   textAlign: TextAlign.start,
-                  //   style: Theme.of(context).textTheme.subtitle1.copyWith(
-                  //         color: Theme.of(context).primaryColorLight,
-                  //         fontWeight: FontWeight.w500,
-                  //       ),
-                  // ),
+                  Text(channel.name,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.subtitle1),
+                  Text('x expressions',
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.bodyText1)
                 ],
               ),
             ),

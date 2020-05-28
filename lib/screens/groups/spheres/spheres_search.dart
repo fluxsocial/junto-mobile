@@ -57,13 +57,15 @@ class _SpheresSearchState extends State<SpheresSearch> {
 
   void onTextChange(String query) {
     debounceTimer?.cancel();
-    debounceTimer = Timer(const Duration(milliseconds: 600), () async {
-      if (mounted) {
-        setState(() {
-          _searchFuture = searchSphere(query);
-        });
-      }
-    });
+    debounceTimer = Timer(
+      const Duration(milliseconds: 600),
+      () async {
+        if (mounted)
+          setState(() {
+            _searchFuture = searchSphere(query);
+          });
+      },
+    );
   }
 
   @override
