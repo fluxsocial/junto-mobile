@@ -81,6 +81,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   _collectiveViewNav() {
+    print('yooo');
     if (_currentIndex == 0) {
       _pageController.nextPage(
         curve: Curves.easeIn,
@@ -105,6 +106,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
               : null,
           rightMenu: JuntoDrawer(),
           swipeLeftDrawer: false,
+          customSwipeRight: _currentIndex == 1 ? _collectiveViewNav : null,
           scaffold: NotificationListener<ScrollUpdateNotification>(
             onNotification: (value) => hideOrShowFab(value, _isFabVisible),
             child: Scaffold(
@@ -125,21 +127,14 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       JuntoPerspectives(
                         collectiveViewNav: _collectiveViewNav,
                       ),
-                      GestureDetector(
-                        onHorizontalDragUpdate: (dx) {
-                          if (dx.delta.dx > 0) {
-                            _collectiveViewNav();
-                          }
-                        },
-                        child: Scaffold(
-                          floatingActionButton: CollectiveActionButton(
-                            isVisible: _isFabVisible,
-                          ),
-                          floatingActionButtonLocation:
-                              FloatingActionButtonLocation.centerDocked,
-                          body: ExpressionFeed(
-                            collectiveViewNav: _collectiveViewNav,
-                          ),
+                      Scaffold(
+                        floatingActionButton: CollectiveActionButton(
+                          isVisible: _isFabVisible,
+                        ),
+                        floatingActionButtonLocation:
+                            FloatingActionButtonLocation.centerDocked,
+                        body: ExpressionFeed(
+                          collectiveViewNav: _collectiveViewNav,
                         ),
                       ),
                     ],
