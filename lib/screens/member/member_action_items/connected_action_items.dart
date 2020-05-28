@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 
 class ConnectedActionItems extends StatelessWidget {
   const ConnectedActionItems({
@@ -36,6 +37,7 @@ class ConnectedActionItems extends StatelessWidget {
                       buildContext: buildContext,
                       confirmationText: 'Are you sure you want to unsubscribe?',
                       confirm: unsubscribeToUser,
+                      errorMessage: S.of(context).common_network_error,
                     ),
                   )
                 : subscribeToUser(buildContext);
@@ -116,8 +118,11 @@ class ConnectedActionItems extends StatelessWidget {
                   buildContext: buildContext,
                   confirmationText: 'Are you sure you want to disconnect?',
                   confirm: disconnectWithUser,
+                  errorMessage: S.of(context).common_network_error,
                 ),
               );
+            } else {
+              return;
             }
           },
           child: Container(
@@ -137,7 +142,9 @@ class ConnectedActionItems extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      hasPendingConnection ? 'CONNECT' : 'CONNECTED',
+                      hasPendingConnection && !isConnected
+                          ? 'CONNECT'
+                          : 'CONNECTED',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -146,7 +153,7 @@ class ConnectedActionItems extends StatelessWidget {
                         letterSpacing: 1.2,
                       ),
                     ),
-                    hasPendingConnection
+                    hasPendingConnection && !isConnected
                         ? Container(
                             margin: const EdgeInsets.only(top: 2.5),
                             child: Text(

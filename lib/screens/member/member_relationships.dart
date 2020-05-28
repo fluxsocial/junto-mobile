@@ -47,7 +47,7 @@ class MemberRelationships extends StatelessWidget {
           userProfile.userPerspective.address, <String>[memberProfile.address]);
       refreshRelations();
     } on JuntoException catch (error) {
-      print(error.message);
+      logger.logException(error);
       showDialog(
         context: buildContext,
         builder: (BuildContext context) => SingleActionDialog(
@@ -58,24 +58,14 @@ class MemberRelationships extends StatelessWidget {
   }
 
   // unsubscribe
-  Future<void> unsubscribeToUser(BuildContext buildContext) async {
-    try {
-      await userProvider.deleteUsersFromPerspective(
-        <Map<String, String>>[
-          <String, String>{'user_address': memberProfile.address}
-        ],
-        userProfile.userPerspective.address,
-      );
-      refreshRelations();
-    } on JuntoException catch (error) {
-      print(error);
-      showDialog(
-        context: buildContext,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText: S.of(context).common_network_error,
-        ),
-      );
-    }
+  Future<void> unsubscribeToUser({buildContext}) async {
+    await userProvider.deleteUsersFromPerspective(
+      <Map<String, String>>[
+        <String, String>{'user_address': memberProfile.address}
+      ],
+      userProfile.userPerspective.address,
+    );
+    refreshRelations();
   }
 
   Future<void> connectWithUser(
@@ -90,7 +80,7 @@ class MemberRelationships extends StatelessWidget {
       await userProvider.connectUser(memberProfile.address);
       refreshRelations();
     } on JuntoException catch (error) {
-      print(error);
+      logger.logException(error);
       showDialog(
         context: buildContext,
         builder: (BuildContext context) => SingleActionDialog(
@@ -100,19 +90,9 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> disconnectWithUser(BuildContext buildContext) async {
-    try {
-      await userProvider.removeUserConnection(memberProfile.address);
-      refreshRelations();
-    } on JuntoException catch (error) {
-      logger.logException(error);
-      showDialog(
-        context: buildContext,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText: S.of(context).common_network_error,
-        ),
-      );
-    }
+  Future<void> disconnectWithUser() async {
+    await userProvider.removeUserConnection(memberProfile.address);
+    refreshRelations();
   }
 
   Future<void> inviteToPack(BuildContext buildContext) async {
@@ -126,8 +106,6 @@ class MemberRelationships extends StatelessWidget {
 
       // send connection to user if there isn't an existing request of connection
       if (!hasPendingConnection && !isConnected) {
-        print('mhm');
-
         await userProvider.connectUser(memberProfile.address);
       }
 
@@ -158,23 +136,12 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> leavePack(BuildContext buildContext) async {
-    try {
-      await Provider.of<GroupRepo>(buildContext, listen: false)
-          .removeGroupMember(
-        userProfile.pack.address,
-        memberProfile.address,
-      );
-      refreshRelations();
-    } catch (error) {
-      print(error);
-      showDialog(
-        context: buildContext,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText: S.of(context).common_network_error,
-        ),
-      );
-    }
+  Future<void> leavePack({BuildContext buildContext}) async {
+    await Provider.of<GroupRepo>(buildContext, listen: false).removeGroupMember(
+      userProfile.pack.address,
+      memberProfile.address,
+    );
+    refreshRelations();
   }
 
   @override
