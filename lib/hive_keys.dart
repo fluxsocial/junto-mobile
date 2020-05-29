@@ -10,6 +10,10 @@ class HiveKeys {
   static const kTheme = 'current-theme';
   static const kNightMode = 'night-mode';
   static const kLastNotification = 'last_notification';
+  static const kShowLotusTutorial = "show-lotus-tutorial";
+  static const kShowCollectiveTutorial = "show-collective-tutorial";
+  static const kShowPackTutorial = "show-pack-tutorial";
+  static const kShowDenTutorial = "show-den-tutorial";
 }
 
 /// Class containing the name of the different "boxes" used by the application.

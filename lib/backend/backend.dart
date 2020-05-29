@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/backend/mock/mock_sphere.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_user.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
@@ -40,6 +41,7 @@ class Backend {
     this.db,
     this.themesProvider,
     this.pageIndexProvider,
+    this.onBoardingRepo,
   });
 
   // ignore: missing_return
@@ -68,24 +70,24 @@ class Backend {
       );
       final ImageHandler imageHandler = DeviceImageHandler();
       return Backend._(
-        searchRepo: SearchRepo(searchService),
-        authRepo: AuthRepo(
-          authService,
-          userRepo,
-          expressionService,
-          themesProvider,
-        ),
-        userRepo: userRepo,
-        collectiveProvider: CollectiveProviderCentralized(client),
-        groupsProvider: GroupRepo(groupService, userService),
-        expressionRepo:
-            ExpressionRepo(expressionService, dbService, imageHandler),
-        notificationRepo: notificationRepo,
-        appRepo: AppRepo(),
-        db: dbService,
-        themesProvider: themesProvider,
-        pageIndexProvider: pageIndexProvider,
-      );
+          searchRepo: SearchRepo(searchService),
+          authRepo: AuthRepo(
+            authService,
+            userRepo,
+            expressionService,
+            themesProvider,
+          ),
+          userRepo: userRepo,
+          collectiveProvider: CollectiveProviderCentralized(client),
+          groupsProvider: GroupRepo(groupService, userService),
+          expressionRepo:
+              ExpressionRepo(expressionService, dbService, imageHandler),
+          notificationRepo: notificationRepo,
+          appRepo: AppRepo(),
+          db: dbService,
+          themesProvider: themesProvider,
+          pageIndexProvider: pageIndexProvider,
+          onBoardingRepo: OnBoardingRepo());
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -110,6 +112,7 @@ class Backend {
       db: null,
       themesProvider: MockedThemesProvider(),
       pageIndexProvider: PageIndexProvider(),
+      onBoardingRepo: null,
     );
   }
 
@@ -124,4 +127,5 @@ class Backend {
   final LocalCache db;
   final ThemesProvider themesProvider;
   final PageIndexProvider pageIndexProvider;
+  final OnBoardingRepo onBoardingRepo;
 }

@@ -4,7 +4,10 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
@@ -19,7 +22,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
 
-class JuntoLotus extends StatelessWidget {
+class JuntoLotus extends StatefulWidget {
   const JuntoLotus({
     Key key,
     @required this.expressionContext,
@@ -31,6 +34,23 @@ class JuntoLotus extends StatelessWidget {
   final ExpressionContext expressionContext;
   final String address;
   final Screen source;
+
+  @override
+  _JuntoLotusState createState() => _JuntoLotusState();
+}
+
+class _JuntoLotusState extends State<JuntoLotus> {
+  OnBoardingRepo repo;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showLotusTutorial) {
+      showTutorial();
+      repo.setViewed(HiveKeys.kShowLotusTutorial, false);
+    }
+  }
 
   /// Pushes new page onto the stack
   /// Allows to go back from the new page
@@ -51,8 +71,8 @@ class JuntoLotus extends StatelessWidget {
       child = FeatureDiscovery(
         child: JuntoCreate(
           channels: const <String>[],
-          address: address,
-          expressionContext: expressionContext,
+          address: widget.address,
+          expressionContext: widget.expressionContext,
         ),
       );
     } else if (screen == Screen.den) {
@@ -63,8 +83,8 @@ class JuntoLotus extends StatelessWidget {
     Navigator.of(context).push(
       FadeRoute<void>(
         child: ReturnToLotusOnSwipe(
-          expressionContext: expressionContext,
-          address: address,
+          expressionContext: widget.expressionContext,
+          address: widget.address,
           source: screen,
           child: child,
         ),
@@ -76,13 +96,25 @@ class JuntoLotus extends StatelessWidget {
 
   _onDragEnd(BuildContext context, DragEndDetails dx) {
     if (dx.velocity.pixelsPerSecond.dx > 100) {
-      if (source == null || Navigator.canPop(context) == false) {
+      if (widget.source == null || Navigator.canPop(context) == false) {
         logger.logDebug('cannot pop, sorry!');
         return;
       } else {
-        _navigateTo(context, source);
+        _navigateTo(context, widget.source);
       }
     }
+  }
+
+  void showTutorial() {
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'lotus_info_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'lotus_info_id',
+      },
+    );
   }
 
   @override
@@ -120,18 +152,7 @@ class JuntoLotus extends StatelessWidget {
                                 children: <Widget>[
                                   const SizedBox(),
                                   GestureDetector(
-                                    onTap: () {
-                                      FeatureDiscovery.clearPreferences(
-                                          context, <String>{
-                                        'lotus_info_id',
-                                      });
-                                      FeatureDiscovery.discoverFeatures(
-                                        context,
-                                        const <String>{
-                                          'lotus_info_id',
-                                        },
-                                      );
-                                    },
+                                    onTap: showTutorial,
                                     child: JuntoDescribedFeatureOverlay(
                                       icon: OverlayInfoIcon(),
                                       featureId: 'lotus_info_id',

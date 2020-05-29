@@ -5,6 +5,9 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 ///
 /// - column layout of expressions
 class AppRepo {
+  AppRepo() {
+    _loadAppConfig();
+  }
   Box _appBox;
 
   bool _twoColumn = true;
@@ -12,13 +15,9 @@ class AppRepo {
   /// Exposes the current layout config.
   bool get twoColumnLayout => _twoColumn;
 
-  AppRepo() {
-    _loadLayout();
-  }
-
   /// Loads the previously save configuration. If there is none, it starts with a
   /// default of false.
-  Future<void> _loadLayout() async {
+  Future<void> _loadAppConfig() async {
     _appBox = await Hive.box(HiveBoxes.kAppBox);
     final bool _result = _appBox.get(HiveKeys.kLayoutView);
     if (_result != null) {
