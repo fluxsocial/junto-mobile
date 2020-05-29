@@ -21,14 +21,13 @@ class PerspectivesAppBar extends StatefulWidget {
 }
 
 class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final repo = Provider.of<OnBoardingRepo>(context);
-    if (repo.showCollectiveTutorial) {
+    if (repo.showPerspectiveTutorial) {
       showCollectiveTutorial();
-      repo.setViewed(HiveKeys.kShowCollectiveTutorial, false);
+      repo.setViewed(HiveKeys.kShowPerspectiveTutorial, false);
     }
   }
 
