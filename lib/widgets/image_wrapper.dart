@@ -21,6 +21,7 @@ class ImageWrapper extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imageUrl,
       cacheManager: CustomCacheManager(),
+      fadeInCurve: Curves.easeInSine,
       placeholder: placeholder,
       fit: fit,
       width: width,
