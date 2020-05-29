@@ -3,6 +3,8 @@ import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
@@ -13,6 +15,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:provider/provider.dart';
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';
 import 'create_templates/audio.dart';
@@ -36,6 +39,28 @@ class JuntoCreate extends StatefulWidget {
 
 class JuntoCreateState extends State<JuntoCreate> {
   dynamic source;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showCreateTutorial) {
+      showTutorial();
+      repo.setViewed(HiveKeys.kShowCreateTutorial, false);
+    }
+  }
+
+  void showTutorial() {
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'expression_center_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'expression_center_id',
+      },
+    );
+  }
 
   void _navigateTo(BuildContext context, ExpressionType expression) {
     switch (expression) {
@@ -126,17 +151,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                       children: <Widget>[
                         const SizedBox(height: 27),
                         GestureDetector(
-                          onTap: () {
-                            FeatureDiscovery.clearPreferences(context, <String>{
-                              'expression_center_id',
-                            });
-                            FeatureDiscovery.discoverFeatures(
-                              context,
-                              const <String>{
-                                'expression_center_id',
-                              },
-                            );
-                          },
+                          onTap: showTutorial,
                           child: JuntoDescribedFeatureOverlay(
                             icon: OverlayInfoIcon(),
                             featureId: 'expression_center_id',

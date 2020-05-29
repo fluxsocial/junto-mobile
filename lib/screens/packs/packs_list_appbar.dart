@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
@@ -8,7 +10,7 @@ import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
-class PacksListAppBar extends StatelessWidget {
+class PacksListAppBar extends StatefulWidget {
   PacksListAppBar({
     this.currentIndex,
     this.packsListNav,
@@ -16,6 +18,21 @@ class PacksListAppBar extends StatelessWidget {
 
   final Function packsListNav;
   final int currentIndex;
+
+  @override
+  _PacksListAppBarState createState() => _PacksListAppBarState();
+}
+
+class _PacksListAppBarState extends State<PacksListAppBar> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showPackTutorial) {
+      showTutorial();
+      repo.setViewed(HiveKeys.kShowPackTutorial, false);
+    }
+  }
 
   String logo(String theme) {
     if (theme == 'rainbow' || theme == 'rainbow-night') {
@@ -27,6 +44,18 @@ class PacksListAppBar extends StatelessWidget {
     } else {
       return 'assets/images/junto-mobile__logo--rainbow.png';
     }
+  }
+
+  void showTutorial() {
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'packs_list_info_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'packs_list_info_id',
+      },
+    );
   }
 
   @override
@@ -72,17 +101,7 @@ class PacksListAppBar extends StatelessWidget {
                       children: <Widget>[
                         NotificationsLunarIcon(),
                         GestureDetector(
-                          onTap: () {
-                            FeatureDiscovery.clearPreferences(context, <String>{
-                              'packs_list_info_id',
-                            });
-                            FeatureDiscovery.discoverFeatures(
-                              context,
-                              const <String>{
-                                'packs_list_info_id',
-                              },
-                            );
-                          },
+                          onTap: showTutorial,
                           child: JuntoDescribedFeatureOverlay(
                             icon: OverlayInfoIcon(),
                             featureId: 'packs_list_info_id',
@@ -122,7 +141,7 @@ class PacksListAppBar extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: packsListNav,
+                    onTap: widget.packsListNav,
                     child: Container(
                       color: Colors.transparent,
                       padding: const EdgeInsets.only(
@@ -134,10 +153,10 @@ class PacksListAppBar extends StatelessWidget {
                         'PACKS',
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: currentIndex == 0
+                          fontWeight: widget.currentIndex == 0
                               ? FontWeight.w700
                               : FontWeight.w500,
-                          color: currentIndex == 0
+                          color: widget.currentIndex == 0
                               ? Theme.of(context).primaryColorDark
                               : Theme.of(context).primaryColorLight,
                         ),
@@ -145,7 +164,7 @@ class PacksListAppBar extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: packsListNav,
+                    onTap: widget.packsListNav,
                     child: Container(
                       color: Colors.transparent,
                       padding: const EdgeInsets.only(
@@ -158,10 +177,10 @@ class PacksListAppBar extends StatelessWidget {
                         'REQUESTS',
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: currentIndex == 1
+                          fontWeight: widget.currentIndex == 1
                               ? FontWeight.w700
                               : FontWeight.w500,
-                          color: currentIndex == 1
+                          color: widget.currentIndex == 1
                               ? Theme.of(context).primaryColorDark
                               : Theme.of(context).primaryColorLight,
                         ),
