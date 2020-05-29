@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
@@ -9,10 +11,40 @@ import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
-class PerspectivesAppBar extends StatelessWidget {
+class PerspectivesAppBar extends StatefulWidget {
   PerspectivesAppBar({this.collectiveViewNav});
 
   final Function collectiveViewNav;
+
+  @override
+  _PerspectivesAppBarState createState() => _PerspectivesAppBarState();
+}
+
+class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showCollectiveTutorial) {
+      showCollectiveTutorial();
+      repo.setViewed(HiveKeys.kShowCollectiveTutorial, false);
+    }
+  }
+
+  void showCollectiveTutorial() {
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'perspectives_info_id',
+      'create_perspective_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'perspectives_info_id',
+        'create_perspective_id',
+      },
+    );
+  }
 
   String logo(String theme) {
     if (theme == 'rainbow' || theme == 'rainbow-night') {
@@ -110,19 +142,7 @@ class PerspectivesAppBar extends StatelessWidget {
                           child: NotificationsLunarIcon(),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            FeatureDiscovery.clearPreferences(context, <String>{
-                              'perspectives_info_id',
-                              'create_perspective_id',
-                            });
-                            FeatureDiscovery.discoverFeatures(
-                              context,
-                              const <String>{
-                                'perspectives_info_id',
-                                'create_perspective_id',
-                              },
-                            );
-                          },
+                          onTap: showCollectiveTutorial,
                           child: JuntoDescribedFeatureOverlay(
                             icon: OverlayInfoIcon(),
                             featureId: 'perspectives_info_id',
