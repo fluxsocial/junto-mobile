@@ -113,7 +113,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
     } else if (_expressionContext == ExpressionContext.Group) {
-      context.bloc<PackBloc>().add(RefreshPacks());
       child = JuntoPacks(initialGroup: _address);
     } else {
       context.bloc<CollectiveBloc>().add(RefreshCollective());
