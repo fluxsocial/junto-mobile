@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
@@ -192,27 +194,44 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
-class AppBarFeatureDiscovery extends StatelessWidget {
+class AppBarFeatureDiscovery extends StatefulWidget {
   const AppBarFeatureDiscovery({
     Key key,
   }) : super(key: key);
 
   @override
+  _AppBarFeatureDiscoveryState createState() => _AppBarFeatureDiscoveryState();
+}
+
+class _AppBarFeatureDiscoveryState extends State<AppBarFeatureDiscovery> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showCollectiveTutorial) {
+      repo.setViewed(HiveKeys.kShowCollectiveTutorial, false);
+      showTutorial();
+    }
+  }
+
+  void showTutorial() {
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'collective_info_id',
+      'collective_filter_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'collective_info_id',
+        'collective_filter_id',
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FeatureDiscovery.clearPreferences(context, <String>{
-          'collective_info_id',
-          'collective_filter_id',
-        });
-        FeatureDiscovery.discoverFeatures(
-          context,
-          const <String>{
-            'collective_info_id',
-            'collective_filter_id',
-          },
-        );
-      },
+      onTap: showTutorial,
       child: JuntoDescribedFeatureOverlay(
         icon: OverlayInfoIcon(),
         featureId: 'collective_info_id',
