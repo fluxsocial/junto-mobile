@@ -6,12 +6,14 @@ class OnBoardingRepo {
     _loadTutorialState();
   }
   bool _showLotusTutorial = false;
+  bool _showPerspectiveTutorial = false;
   bool _showCollectiveTutorial = false;
   bool _showPackTutorial = false;
   bool _showDenTutorial = false;
   Box _appBox;
 
   bool get showLotusTutorial => _showLotusTutorial;
+  bool get showPerspectiveTutorial => _showPerspectiveTutorial;
   bool get showCollectiveTutorial => _showCollectiveTutorial;
   bool get showPackTutorial => _showPackTutorial;
   bool get showDenTutorial => _showDenTutorial;
@@ -23,6 +25,8 @@ class OnBoardingRepo {
         await _appBox.get(HiveKeys.kShowCollectiveTutorial) ?? true;
     _showPackTutorial = await _appBox.get(HiveKeys.kShowPackTutorial) ?? true;
     _showDenTutorial = await _appBox.get(HiveKeys.kShowDenTutorial) ?? true;
+    _showPerspectiveTutorial =
+        await _appBox.get(HiveKeys.kShowPerspectiveTutorial) ?? true;
   }
 
   Future<void> setViewed(String key, bool value) async {
@@ -42,6 +46,10 @@ class OnBoardingRepo {
       case HiveKeys.kShowDenTutorial:
         _showDenTutorial = false;
         await _appBox.put(HiveKeys.kShowDenTutorial, value);
+        return;
+      case HiveKeys.kShowPerspectiveTutorial:
+        _showPerspectiveTutorial = false;
+        await _appBox.put(HiveKeys.kShowPerspectiveTutorial, value);
         return;
     }
   }
