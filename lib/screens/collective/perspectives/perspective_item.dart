@@ -82,27 +82,10 @@ class PerspectiveItem extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
-                alignment: Alignment.center,
-                height: 38.0,
-                width: 38.0,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.2, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Icon(
-                  CustomIcons.newperspective,
-                  size: 24,
-                  color: Colors.white,
-                ),
+              Icon(
+                CustomIcons.newperspective,
+                size: 24,
+                color: Theme.of(context).primaryColor,
               ),
               const SizedBox(width: 15),
               Expanded(
@@ -111,34 +94,10 @@ class PerspectiveItem extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       perspective.name,
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            fontWeight: FontWeight.w500,
                           ),
                     ),
-                    if (perspective.name == 'JUNTO')
-                      Text(
-                        'Expressions from everyone on Junto.',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    if (perspective.name == 'Connections')
-                      Text(
-                        'Expressions from people you are connected with.',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    if (perspective.name == 'Subscriptions')
-                      Text(
-                        'Expressions from specific people you are subscribed to.',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    if (perspective.name != 'JUNTO' &&
-                        perspective.name != 'Connections' &&
-                        perspective.name != 'Subscriptions' &&
-                        perspective.about != null)
-                      Text(
-                        perspective.about,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
                   ],
                 ),
               ),
