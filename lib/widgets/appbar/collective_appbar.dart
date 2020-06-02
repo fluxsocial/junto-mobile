@@ -103,11 +103,17 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                                           AboutPerspective(),
                                     );
                                   },
-                                  child: Text(
-                                    appbarTitle ?? 'JUNTO',
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                    textAlign: TextAlign.center,
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Text(
+                                      appbarTitle ?? 'JUNTO',
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ),
                               ),
