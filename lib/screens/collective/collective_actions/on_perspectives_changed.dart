@@ -42,5 +42,7 @@ void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
       ),
     );
   }
+  // set current perspective
+  bloc.setCurrentPerspective(perspective);
   context.bloc<ChannelFilteringBloc>().add(FilterClear());
 }

@@ -21,7 +21,7 @@ class CommentActionItems extends StatelessWidget {
     return Container(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery.of(context).size.height * .4,
+        height: MediaQuery.of(context).size.height * .36,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
