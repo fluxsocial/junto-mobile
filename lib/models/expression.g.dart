@@ -22,13 +22,15 @@ class AudioFormExpressionAdapter extends TypeAdapter<AudioFormExpression> {
       audio: fields[2] as String,
       gradient: (fields[3] as List)?.cast<String>(),
       caption: fields[4] as String,
+      thumbnail300: fields[5] as String,
+      thumbnail600: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, AudioFormExpression obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -38,7 +40,11 @@ class AudioFormExpressionAdapter extends TypeAdapter<AudioFormExpression> {
       ..writeByte(3)
       ..write(obj.gradient)
       ..writeByte(4)
-      ..write(obj.caption);
+      ..write(obj.caption)
+      ..writeByte(5)
+      ..write(obj.thumbnail300)
+      ..writeByte(6)
+      ..write(obj.thumbnail600);
   }
 }
 
@@ -109,17 +115,23 @@ class PhotoFormExpressionAdapter extends TypeAdapter<PhotoFormExpression> {
     return PhotoFormExpression(
       image: fields[0] as String,
       caption: fields[1] as String,
+      thumbnail300: fields[2] as String,
+      thumbnail600: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, PhotoFormExpression obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.image)
       ..writeByte(1)
-      ..write(obj.caption);
+      ..write(obj.caption)
+      ..writeByte(2)
+      ..write(obj.thumbnail300)
+      ..writeByte(3)
+      ..write(obj.thumbnail600);
   }
 }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+part 'perspective.g.dart';
 
 class Perspective {
   const Perspective({
@@ -115,8 +117,9 @@ class PerspectiveResponse {
 }
 
 /// Object representation of a perspective returned by the centralized server.
-class PerspectiveModel {
-  const PerspectiveModel({
+@HiveType(typeId: 7)
+class PerspectiveModel extends HiveObject {
+  PerspectiveModel({
     @required this.address,
     @required this.name,
     @required this.creator,
@@ -141,25 +144,33 @@ class PerspectiveModel {
   }
 
   /// Address of perspective
+  @HiveField(0)
   final String address;
 
   /// Name of given perspective
+  @HiveField(1)
   final String name;
 
   /// The UUID of the creator
+  @HiveField(2)
   final String creator;
 
   /// Needs to be converted from an ISO 8601 String
+  @HiveField(3)
   final DateTime createdAt;
+  @HiveField(4)
   final bool isDefault;
 
   /// Number of users in the given perspective
+  @HiveField(5)
   final int userCount;
 
   /// List of users associated with the given perspective.
+  @HiveField(6)
   final List<UserProfile> users;
 
   /// Purpose of the given perspective
+  @HiveField(7)
   final String about;
 
   PerspectiveModel copyWith({
