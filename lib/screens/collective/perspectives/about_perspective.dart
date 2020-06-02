@@ -74,14 +74,19 @@ class AboutPerspectiveAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Container(
-            height: 38,
-            width: 38,
-            alignment: Alignment.centerLeft,
-            child: Icon(
-              Icons.keyboard_arrow_down,
-              size: 24,
-              color: Theme.of(context).primaryColorLight,
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: 38,
+              width: 38,
+              alignment: Alignment.centerLeft,
+              child: Icon(
+                Icons.keyboard_arrow_down,
+                size: 24,
+                color: Theme.of(context).primaryColorLight,
+              ),
             ),
           ),
           Text(
