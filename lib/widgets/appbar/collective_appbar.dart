@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/about_perspective.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
@@ -91,10 +92,29 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Flexible(
-                                child: Text(
-                                  appbarTitle ?? 'JUNTO',
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                  textAlign: TextAlign.center,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      builder: (BuildContext context) =>
+                                          AboutPerspective(),
+                                    );
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Text(
+                                      appbarTitle ?? 'JUNTO',
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],

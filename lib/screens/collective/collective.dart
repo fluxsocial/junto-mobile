@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
@@ -12,7 +13,6 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-
 import 'collective_actions/perspectives.dart';
 
 // This class is a collective screen
@@ -70,18 +70,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.dispose();
   }
 
-  void _scrollToTop() {
-    if (_collectiveController.hasClients) {
-      _collectiveController.animateTo(
-        0.0,
-        duration: kTabScrollDuration,
-        curve: Curves.decelerate,
-      );
-    }
-  }
-
   _collectiveViewNav() {
-    print('yooo');
     if (_currentIndex == 0) {
       _pageController.nextPage(
         curve: Curves.easeIn,
@@ -105,6 +94,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
               ? FilterDrawerContent(ExpressionContextType.Collective)
               : null,
           rightMenu: JuntoDrawer(),
+          swipeLeftDrawer: false,
           scaffold: NotificationListener<ScrollUpdateNotification>(
             onNotification: (value) => hideOrShowFab(value, _isFabVisible),
             child: Scaffold(

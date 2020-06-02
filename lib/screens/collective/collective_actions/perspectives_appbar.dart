@@ -98,44 +98,6 @@ class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (ctx) => CreatePerspectivePage(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            alignment: Alignment.bottomCenter,
-                            child: Transform.translate(
-                              offset: Offset(0.0, 4),
-                              child: JuntoDescribedFeatureOverlay(
-                                icon: Icon(
-                                  Icons.add,
-                                  size: 25,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                featureId: 'create_perspective_id',
-                                title:
-                                    'Click this icon to create a new perspective.',
-                                learnMore: false,
-                                hasUpNext: false,
-                                isLastFeature: true,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 25,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                         Container(
                           padding: EdgeInsets.only(left: 10),
                           child: NotificationsLunarIcon(),
@@ -179,9 +141,9 @@ class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
                 ),
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.only(right: 20),
                     color: Theme.of(context).colorScheme.background,
                     child: Text(
                       'PERSPECTIVES',
@@ -189,6 +151,40 @@ class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (ctx) => CreatePerspectivePage(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      alignment: Alignment.centerRight,
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
+                          Icons.add,
+                          size: 22,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        featureId: 'create_perspective_id',
+                        title: 'Click this icon to create a new perspective.',
+                        learnMore: false,
+                        hasUpNext: false,
+                        isLastFeature: true,
+                        child: Icon(
+                          Icons.add,
+                          size: 22,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ),
