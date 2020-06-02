@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/about_perspective.dart';
 
 class PerspectiveItem extends StatelessWidget {
   const PerspectiveItem({
@@ -71,7 +72,7 @@ class PerspectiveItem extends StatelessWidget {
         ],
         key: Key(perspective.address),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: Border(
@@ -81,24 +82,43 @@ class PerspectiveItem extends StatelessWidget {
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Icon(
-                CustomIcons.newperspective,
-                size: 24,
-                color: Theme.of(context).primaryColor,
+              Row(
+                children: <Widget>[
+                  Image.asset(
+                    'assets/images/junto-mobile__perspective--rainbow.png',
+                    height: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    perspective.name,
+                    style: Theme.of(context).textTheme.subtitle1.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      perspective.name,
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                  ],
+                    builder: (BuildContext context) => AboutPerspective(
+                      incomingPerspective: perspective,
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 38,
+                  alignment: Alignment.centerRight,
+                  child: Icon(
+                    CustomIcons.morevertical,
+                    size: 17,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             ],
