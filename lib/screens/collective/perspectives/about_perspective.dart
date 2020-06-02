@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_members.dart';
 
-// This component is used in CommentPreview
-// as the 'more' icon is pressed to view the action items
+// AboutPerspective is a widget that shows details about a particular perspective
+// after pressing the perspective name in the appbar.
 class AboutPerspective extends StatelessWidget {
   const AboutPerspective();
 
@@ -18,7 +19,6 @@ class AboutPerspective extends StatelessWidget {
       color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .9,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.only(
@@ -42,9 +42,10 @@ class AboutPerspective extends StatelessWidget {
                 color: Colors.transparent,
               ),
             ),
-            AboutPerspectiveEdit(
-              perspective: perspective,
-            ),
+            if (!perspective.isDefault)
+              AboutPerspectiveEdit(
+                perspective: perspective,
+              ),
           ],
         ),
       ),
@@ -76,10 +77,11 @@ class AboutPerspectiveAppBar extends StatelessWidget {
           Container(
             height: 38,
             width: 38,
+            alignment: Alignment.centerLeft,
             child: Icon(
               Icons.keyboard_arrow_down,
               size: 24,
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).primaryColorLight,
             ),
           ),
           Text(
@@ -135,7 +137,7 @@ class AboutPerspectiveDescription extends StatelessWidget {
     } else if (perspective.name == 'Connections') {
       return 'Expressions from people you are connected with.';
     } else if (perspective.name == 'Subscriptions') {
-      'Expressions from specific people you are subscribed to.';
+      return 'Expressions from specific people you are subscribed to.';
     } else if (perspective.about.isEmpty && !perspective.isDefault) {
       return 'Edit to add a description.';
     } else {
@@ -146,6 +148,7 @@ class AboutPerspectiveDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 15,
@@ -194,14 +197,27 @@ class AboutPerspectiveMembers extends StatelessWidget {
     } else if (perspective.userCount == 1) {
       return perspective.userCount.toString() + ' Member';
     } else {
-      perspective.userCount.toString() + ' Members';
+      return perspective.userCount.toString() + ' Members';
     }
-    return 'All Members';
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        if (perspective.name == 'JUNTO' && perspective.isDefault) {
+          return;
+        } else {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => PerspectiveMembers(
+                perspective: perspective,
+              ),
+            ),
+          );
+        }
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
@@ -228,7 +244,9 @@ class AboutPerspectiveMembers extends StatelessWidget {
             ),
             Icon(
               Icons.keyboard_arrow_right,
-              color: Theme.of(context).primaryColorLight,
+              color: perspective.name == 'JUNTO' && perspective.isDefault
+                  ? Colors.transparent
+                  : Theme.of(context).primaryColorLight,
               size: 20,
             ),
           ],
@@ -244,6 +262,16 @@ class AboutPerspectiveEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        if (!perspective.isDefault) {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => EditPerspective(perspective: perspective),
+            ),
+          );
+        }
+      },
       child: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(
