@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
-import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -27,8 +26,6 @@ class JuntoApp extends StatelessWidget {
       providers: <SingleChildWidget>[
         ChangeNotifierProvider<JuntoThemesProvider>.value(
             value: backend.themesProvider),
-        ChangeNotifierProvider<PageIndexProvider>.value(
-            value: backend.pageIndexProvider),
         Provider<SearchService>.value(value: backend.searchRepo),
         Provider<AuthRepo>.value(value: backend.authRepo),
         Provider<UserRepo>.value(value: backend.userRepo),
