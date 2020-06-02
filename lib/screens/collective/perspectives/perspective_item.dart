@@ -76,8 +76,10 @@ class PerspectiveItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: .75),
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
+              ),
             ),
           ),
           child: Row(
@@ -93,9 +95,11 @@ class PerspectiveItem extends StatelessWidget {
                   const SizedBox(width: 10),
                   Text(
                     perspective.name,
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ],
               ),
@@ -114,6 +118,7 @@ class PerspectiveItem extends StatelessWidget {
                 child: Container(
                   width: 38,
                   alignment: Alignment.centerRight,
+                  color: Colors.transparent,
                   child: Icon(
                     CustomIcons.morevertical,
                     size: 17,
