@@ -39,8 +39,11 @@ class AboutPerspective extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                color: Theme.of(context).dividerColor,
+                color: Colors.transparent,
               ),
+            ),
+            AboutPerspectiveEdit(
+              perspective: perspective,
             ),
           ],
         ),
@@ -70,20 +73,20 @@ class AboutPerspectiveAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Icon(
-            Icons.keyboard_arrow_down,
-            size: 24,
-            color: Theme.of(context).primaryColor,
+          Container(
+            height: 38,
+            width: 38,
+            child: Icon(
+              Icons.keyboard_arrow_down,
+              size: 24,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
           Text(
             perspective.name,
             style: Theme.of(context).textTheme.subtitle1,
           ),
-          Icon(
-            Icons.keyboard_arrow_down,
-            size: 24,
-            color: Colors.transparent,
-          ),
+          SizedBox(width: 38),
         ],
       ),
     );
@@ -193,6 +196,7 @@ class AboutPerspectiveMembers extends StatelessWidget {
     } else {
       perspective.userCount.toString() + ' Members';
     }
+    return 'All Members';
   }
 
   @override
@@ -239,7 +243,41 @@ class AboutPerspectiveEdit extends StatelessWidget {
   final PerspectiveModel perspective;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return GestureDetector(
+      child: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 15,
+          ),
+          margin: const EdgeInsets.only(bottom: 15),
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
+              ),
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
+              ),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'EDIT',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).primaryColorLight,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
