@@ -56,7 +56,6 @@ class Group {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'address': address,
-        //FIXME(Nash+Yang): Call `toMap` once the new group types has been added to the server
         'creator': creator,
         'created_at': createdAt.toIso8601String(),
         'privacy': privacy,
