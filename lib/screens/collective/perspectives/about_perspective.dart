@@ -9,11 +9,14 @@ import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_me
 // AboutPerspective is a widget that shows details about a particular perspective
 // after pressing the perspective name in the appbar.
 class AboutPerspective extends StatelessWidget {
-  const AboutPerspective();
+  const AboutPerspective({this.incomingPerspective});
 
+  final PerspectiveModel incomingPerspective;
   @override
   Widget build(BuildContext context) {
-    final perspective = context.bloc<CollectiveBloc>().currentPerspective;
+    final perspective = incomingPerspective == null
+        ? context.bloc<CollectiveBloc>().currentPerspective
+        : incomingPerspective;
 
     return Container(
       color: Colors.transparent,

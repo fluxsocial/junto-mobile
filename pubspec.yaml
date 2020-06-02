@@ -104,6 +104,7 @@ flutter:
     - assets/images/junto-mobile__groups--placeholder.png
     - assets/images/junto-mobile__placeholder--notifications.png
     - assets/images/junto-mobile__waveform.png
+    - assets/images/junto-mobile__perspective--rainbow.png
 
 flutter_intl:
   enabled: true
