@@ -336,15 +336,22 @@ class _Header extends StatelessWidget {
           labelPadding: const EdgeInsets.all(0),
           isScrollable: true,
           labelColor: Theme.of(context).primaryColorDark,
+          unselectedLabelColor: Theme.of(context).primaryColorLight,
           labelStyle: Theme.of(context).textTheme.subtitle1,
           indicatorWeight: 0.0001,
           tabs: <Widget>[
             for (String name in tabs)
               Container(
-                margin: const EdgeInsets.only(right: 24),
+                margin: const EdgeInsets.only(right: 20),
                 color: Theme.of(context).colorScheme.background,
                 child: Tab(
-                  text: name,
+                  child: Text(
+                    name.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
           ],
