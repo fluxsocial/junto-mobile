@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/feed_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:provider/provider.dart';
@@ -54,48 +55,53 @@ class _GroupExpressionsState extends State<GroupExpressions> {
               : state.publicExpressions.results;
           return Consumer<UserDataProvider>(
             builder: (BuildContext context, UserDataProvider data, _) {
-              return CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: FilterColumnRow(
-                      twoColumnView: data.twoColumnView,
-                      switchColumnView: _switchColumnView,
-                    ),
-                  ),
-                  if (data.twoColumnView)
-                    TwoColumnList(
-                      data: _results,
-                      useSliver: true,
-                      deleteExpression: (expression) {
-                        context.bloc<PackBloc>().add(
-                              DeletePackExpression(expression.address),
-                            );
-                      },
-                    ),
-                  if (!data.twoColumnView)
-                    SingleColumnSliverListView(
-                      data: _results,
-                      privacyLayer: widget.privacy,
-                      deleteExpression: (expression) {
-                        context.bloc<PackBloc>().add(
-                              DeletePackExpression(expression.address),
-                            );
-                      },
-                    ),
-                  if (appConfig.flavor == Flavor.dev && _results.length > 50)
+              if (_results.isEmpty) {
+                return FeedPlaceholder(
+                  placeholderText: 'No expressions yet!',
+                );
+              } else {
+                return CustomScrollView(
+                  slivers: [
                     SliverToBoxAdapter(
-                      child: FetchMoreButton(
-                        onPressed: _fetchMore,
+                      child: FilterColumnRow(
+                        twoColumnView: data.twoColumnView,
+                        switchColumnView: _switchColumnView,
                       ),
-                    )
-                ],
-              );
+                    ),
+                    if (data.twoColumnView)
+                      TwoColumnList(
+                        data: _results,
+                        useSliver: true,
+                        deleteExpression: (expression) {
+                          context.bloc<PackBloc>().add(
+                                DeletePackExpression(expression.address),
+                              );
+                        },
+                      ),
+                    if (!data.twoColumnView)
+                      SingleColumnSliverListView(
+                        data: _results,
+                        privacyLayer: widget.privacy,
+                        deleteExpression: (expression) {
+                          context.bloc<PackBloc>().add(
+                                DeletePackExpression(expression.address),
+                              );
+                        },
+                      ),
+                    if (appConfig.flavor == Flavor.dev && _results.length > 50)
+                      SliverToBoxAdapter(
+                        child: FetchMoreButton(
+                          onPressed: _fetchMore,
+                        ),
+                      )
+                  ],
+                );
+              }
             },
           );
         }
         if (state is PacksEmpty) {
-          //TODO(Eric): Handle empty state
-          return Container();
+          return const SizedBox();
         }
         if (state is PacksError) {
           return JuntoErrorWidget(errorMessage: state.message ?? '');

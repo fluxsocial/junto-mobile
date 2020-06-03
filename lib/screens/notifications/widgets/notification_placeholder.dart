@@ -21,6 +21,7 @@ class NotificationPlaceholder extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               S.of(context).notifications_nothing_new_yet,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w500,

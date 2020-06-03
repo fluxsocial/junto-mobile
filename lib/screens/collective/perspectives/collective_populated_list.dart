@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/feed_placeholder.dart';
 import 'package:provider/provider.dart';
 
 class CollectivePopulatedList extends StatelessWidget {
@@ -16,12 +17,23 @@ class CollectivePopulatedList extends StatelessWidget {
   final CollectivePopulated state;
   final ValueChanged<ExpressionResponse> deleteExpression;
 
+  String _placeholderText() {
+    if (state.name == 'Subscriptions') {
+      return 'No expressions yet. Start subscribing people you want to hear from!';
+    } else if (state.name == 'Connections') {
+      return 'No expressions yet. Start connecting with people you want to hear from!';
+    } else {
+      return 'No expressions yet. Start customizing and adding people to your perspectives!';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (state.results.length == 0) {
-      // TODO:ERIC -- return empty state placeholder here
       return SliverToBoxAdapter(
-        child: const SizedBox(),
+        child: FeedPlaceholder(
+          placeholderText: _placeholderText(),
+        ),
       );
     } else {
       return Consumer<UserDataProvider>(
