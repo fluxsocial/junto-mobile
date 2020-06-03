@@ -138,7 +138,7 @@ class JuntoDescribedFeatureOverlayState
             if (!widget.isLastFeature && !widget.oneFeature)
               _actionItemButton(
                 context,
-                'Next Feature',
+                'Next',
                 () async => FeatureDiscovery.completeCurrentStep(context),
               ),
           ],
