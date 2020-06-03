@@ -5,6 +5,8 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_members.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 // AboutPerspective is a widget that shows details about a particular perspective
 // after pressing the perspective name in the appbar.
@@ -46,8 +48,15 @@ class AboutPerspective extends StatelessWidget {
               ),
             ),
             if (!perspective.isDefault)
-              AboutPerspectiveEdit(
-                perspective: perspective,
+              Column(
+                children: <Widget>[
+                  AboutPerspectiveEdit(
+                    perspective: perspective,
+                  ),
+                  AboutPerspectiveDelete(
+                    perspective: perspective,
+                  ),
+                ],
               ),
           ],
         ),
@@ -280,6 +289,62 @@ class AboutPerspectiveEdit extends StatelessWidget {
           );
         }
       },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 15,
+        ),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: .75,
+            ),
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: .75,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'EDIT',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).primaryColorLight,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AboutPerspectiveDelete extends StatelessWidget {
+  AboutPerspectiveDelete({this.perspective});
+  final PerspectiveModel perspective;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => ConfirmDialog(
+            confirmationText:
+                'Are you sure you want to delete this perspective?',
+            confirm: () {
+              context.bloc<PerspectivesBloc>().add(
+                    RemovePerspective(perspective),
+                  );
+              Navigator.pop(context);
+            },
+          ),
+        );
+      },
       child: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -289,10 +354,6 @@ class AboutPerspectiveEdit extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 15),
           decoration: BoxDecoration(
             border: Border(
-              top: BorderSide(
-                color: Theme.of(context).dividerColor,
-                width: .75,
-              ),
               bottom: BorderSide(
                 color: Theme.of(context).dividerColor,
                 width: .75,
@@ -303,10 +364,10 @@ class AboutPerspectiveEdit extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'EDIT',
+                'DELETE',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Theme.of(context).primaryColorLight,
+                  color: Colors.red,
                   fontWeight: FontWeight.w700,
                 ),
               ),
