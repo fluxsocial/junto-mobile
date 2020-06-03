@@ -81,10 +81,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     _expressionContext = widget.expressionContext;
     if (widget.expressionContext == ExpressionContext.Collective) {
       _currentExpressionContext = 'Collective';
-      _currentExpressionContextDescription = 'shared to the public of Junto';
+      _currentExpressionContextDescription = 'share publicly on Junto';
     } else if (widget.expressionContext == ExpressionContext.Group) {
       _currentExpressionContext = 'My Pack';
-      _currentExpressionContextDescription = 'shared to just your pack members';
+      _currentExpressionContextDescription = 'share to just your Pack members';
     }
   }
 
