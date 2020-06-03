@@ -1,13 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 
 /// Repository retrieving and saving various app settings:
 ///
 /// - column layout of expressions
-class AppRepo {
+class AppRepo extends ChangeNotifier {
   AppRepo() {
     _loadAppConfig();
   }
+  int get collectivePageIndex => _collectivePageIndex ?? 0;
+  int get packsPageIndex => _packsPageIndex ?? 0;
+
+  int _collectivePageIndex;
+  int _packsPageIndex;
   Box _appBox;
 
   bool _twoColumn = true;
@@ -33,5 +39,15 @@ class AppRepo {
     await _appBox.put(HiveKeys.kLayoutView, value);
     _twoColumn = value;
     return;
+  }
+
+  void setCollectivePageIndex(int index) {
+    _collectivePageIndex = index;
+    notifyListeners();
+  }
+
+  void setPacksPageIndex(int index) {
+    _packsPageIndex = index;
+    notifyListeners();
   }
 }

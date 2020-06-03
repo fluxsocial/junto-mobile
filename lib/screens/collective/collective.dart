@@ -2,6 +2,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
@@ -11,7 +12,6 @@ import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:provider/provider.dart';
 import 'collective_actions/perspectives.dart';
 
@@ -53,7 +53,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.didChangeDependencies();
 
     final collectivePageIndex =
-        Provider.of<PageIndexProvider>(context, listen: false)
+        Provider.of<AppRepo>(context, listen: false)
             .collectivePageIndex;
     _currentIndex = collectivePageIndex;
     _pageController = PageController(initialPage: collectivePageIndex);
@@ -107,7 +107,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       setState(() {
                         _currentIndex = index;
                       });
-                      Provider.of<PageIndexProvider>(context, listen: false)
+                      Provider.of<AppRepo>(context, listen: false)
                           .setCollectivePageIndex(index);
                     },
                     controller: _pageController,
