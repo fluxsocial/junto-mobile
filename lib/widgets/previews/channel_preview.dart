@@ -17,8 +17,8 @@ class ChannelPreview extends StatelessWidget {
         children: <Widget>[
           Container(
             alignment: Alignment.center,
-            height: 45.0,
-            width: 45.0,
+            height: 38.0,
+            width: 38.0,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
