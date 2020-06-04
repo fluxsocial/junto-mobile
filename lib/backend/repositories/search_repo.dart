@@ -24,7 +24,7 @@ class SearchRepo extends SearchService {
   @override
   Future<QueryResults<Channel>> searchChannel(String query,
       {int paginationPosition = 0, DateTime lastTimeStamp}) async {
-    if (query != null && query.isNotEmpty) {
+    if (query != null) {
       return _searchService.searchChannel(
         query,
         paginationPosition: paginationPosition,

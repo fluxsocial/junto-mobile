@@ -54,6 +54,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
 
   void _addSelected() {
     if (_channelController.value.text != '' && _channels.length < 3) {
+      _updateQuery('');
       setState(() {
         widget.channels.value.add(_channelController.value.text);
         widget.channels.value = _channels;
@@ -64,6 +65,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
 
   void _addItem(String name) {
     if (name != '' && _channels.length < 3) {
+      _updateQuery('');
       setState(() {
         _channels.add(name);
       });
@@ -90,112 +92,25 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
     });
   }
 
-  Widget _buildSearchField() {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
-        ),
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: TextField(
-              controller: _channelController,
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(0.0),
-                hintText: 'add up to three channels',
-                border: InputBorder.none,
-                hintStyle: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColorLight),
-              ),
-              cursorColor: Theme.of(context).primaryColor,
-              cursorWidth: 1,
-              maxLines: 1,
-              style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).primaryColor),
-              maxLength: 80,
-              textInputAction: TextInputAction.search,
-              onChanged: _onTextChange,
-            ),
-          ),
-          GestureDetector(
-            onTap: _addSelected,
-            child: Container(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 5,
-                bottom: 5,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Text(
-                'Add',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
   Widget _buildBottomSelection() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      // decoration: BoxDecoration(
-      //   color: Theme.of(context).backgroundColor,
-      //   border: Border(
-      //     bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
-      //   ),
-      // ),
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: <Widget>[
             for (String channel in _channels)
-              GestureDetector(
-                onDoubleTap: () {
-                  setState(() {
-                    _channels.removeAt(
-                      _channels.indexOf(channel),
-                    );
-                  });
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(right: 15),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).dividerColor,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    channel,
-                    style: TextStyle(
-                        fontSize: 14, color: Theme.of(context).primaryColor),
-                  ),
-                ),
-              ),
+              SelectedChannel(
+                  channel: channel,
+                  removeChannel: () {
+                    setState(() {
+                      _channels.removeAt(
+                        _channels.indexOf(channel),
+                      );
+                      _updateQuery('');
+                    });
+                  }),
           ],
         ),
       ),
@@ -210,7 +125,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
         onTap: () => FocusScope.of(context).unfocus(),
         behavior: HitTestBehavior.opaque,
         child: Container(
-          height: MediaQuery.of(context).size.height * .6,
+          height: MediaQuery.of(context).size.height * .7,
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
@@ -222,7 +137,11 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildSearchField(),
+              ChannelSearchField(
+                channelController: _channelController,
+                onTextChange: _onTextChange,
+                addSelected: _addSelected,
+              ),
               if (_channels.isNotEmpty) _buildBottomSelection(),
               Expanded(
                 child: FutureBuilder<QueryResults<Channel>>(
@@ -268,6 +187,115 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
                     }),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChannelSearchField extends StatelessWidget {
+  const ChannelSearchField({
+    this.channelController,
+    this.onTextChange,
+    this.addSelected,
+  });
+
+  final TextEditingController channelController;
+  final Function onTextChange;
+  final Function addSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: TextField(
+              controller: channelController,
+              buildCounter: (
+                BuildContext context, {
+                int currentLength,
+                int maxLength,
+                bool isFocused,
+              }) =>
+                  null,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(0.0),
+                hintText: 'add up to three channels',
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColorLight),
+              ),
+              cursorColor: Theme.of(context).primaryColor,
+              cursorWidth: 1,
+              maxLines: 1,
+              style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor),
+              maxLength: 80,
+              textInputAction: TextInputAction.search,
+              onChanged: onTextChange,
+            ),
+          ),
+          GestureDetector(
+            onTap: addSelected,
+            child: Container(
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 5,
+                bottom: 5,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                'Add',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SelectedChannel extends StatelessWidget {
+  const SelectedChannel({this.removeChannel, this.channel});
+  final Function removeChannel;
+  final String channel;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: removeChannel,
+      child: Container(
+        margin: const EdgeInsets.only(right: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).dividerColor,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Text(
+          channel,
+          style: TextStyle(
+            fontSize: 12,
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),
