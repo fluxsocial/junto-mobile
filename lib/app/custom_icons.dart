@@ -61,4 +61,5 @@ class CustomIcons {
       IconData(0xe913, fontFamily: 'j_home_two');
   static const IconData stop = IconData(0xe914, fontFamily: 'j_home_two');
   static const IconData play = IconData(0xe915, fontFamily: 'j_home_two');
+  static const IconData themes = IconData(0xe920, fontFamily: 'j_home_three');
 }
