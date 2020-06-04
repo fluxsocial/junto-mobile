@@ -10,6 +10,10 @@ class BackgroundTheme extends StatelessWidget {
       return 'assets/images/junto-mobile__themes--aqueous.png';
     } else if (theme == 'royal' || theme == 'royal-night') {
       return 'assets/images/junto-mobile__themes--royal.png';
+    } else if (theme == 'dark' || theme == 'dark-night') {
+      return 'assets/images/junto-mobile__themes--night.png';
+    } else if (theme == 'sand' || theme == 'sand-night') {
+      return 'assets/images/junto-mobile__themes--sand.png';
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     }
@@ -23,7 +27,8 @@ class BackgroundTheme extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Image.asset(
-            background(theme.themeName),
+            // background(theme.themeName),
+            'assets/images/junto-mobile__themes--night.png',
             fit: BoxFit.cover,
           ),
         );

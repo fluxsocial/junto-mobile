@@ -22,7 +22,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
   SearchRepo _searchRepo;
   TextEditingController _channelController;
   String query;
-  List<String> _channels;
+  List<String> _channels = [];
   Timer _timer;
 
   @override
@@ -119,81 +119,74 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pop(context, _channels);
-        print(_channels);
-        return true;
-      },
-      child: Container(
-        color: Colors.transparent,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          behavior: HitTestBehavior.opaque,
-          child: Container(
-            height: MediaQuery.of(context).size.height * .7,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
+    return Container(
+      color: Colors.transparent,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          height: MediaQuery.of(context).size.height * .7,
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ChannelSearchField(
-                  channelController: _channelController,
-                  onTextChange: _onTextChange,
-                  addSelected: _addSelected,
-                ),
-                if (_channels.isNotEmpty) _buildBottomSelection(),
-                Expanded(
-                  child: FutureBuilder<QueryResults<Channel>>(
-                      future: _searchRepo.searchChannel(query),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<QueryResults<Channel>> snapshot,
-                      ) {
-                        if (snapshot.hasData && !snapshot.hasError) {
-                          return ListView.builder(
-                            itemCount: snapshot.data.results.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final Channel item = snapshot.data.results[index];
-                              return InkWell(
-                                onTap: () => _addItem(item.name),
-                                child: ChannelPreview(
-                                  channel: item,
-                                  resultCount: snapshot.data.resultCount,
-                                ),
-                              );
-                            },
-                          );
-                        }
-                        if (snapshot.hasData && snapshot.data.results.isEmpty) {
-                          return Container(
-                            child: const Center(
-                              child: Text('Add new channel +'),
-                            ),
-                          );
-                        }
-                        if (snapshot.hasError) {
-                          return Container(
-                            child: Center(
-                              child: Text(snapshot.error.toString()),
-                            ),
-                          );
-                        }
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ChannelSearchField(
+                channelController: _channelController,
+                onTextChange: _onTextChange,
+                addSelected: _addSelected,
+              ),
+              if (_channels.isNotEmpty) _buildBottomSelection(),
+              Expanded(
+                child: FutureBuilder<QueryResults<Channel>>(
+                    future: _searchRepo.searchChannel(query),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<QueryResults<Channel>> snapshot,
+                    ) {
+                      if (snapshot.hasData && !snapshot.hasError) {
+                        return ListView.builder(
+                          itemCount: snapshot.data.results.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final Channel item = snapshot.data.results[index];
+                            return InkWell(
+                              onTap: () => _addItem(item.name),
+                              child: ChannelPreview(
+                                channel: item,
+                                resultCount: snapshot.data.resultCount,
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      if (snapshot.hasData && snapshot.data.results.isEmpty) {
                         return Container(
                           child: const Center(
-                            child: CircularProgressIndicator(),
+                            child: Text('Add new channel +'),
                           ),
                         );
-                      }),
-                ),
-              ],
-            ),
+                      }
+                      if (snapshot.hasError) {
+                        return Container(
+                          child: Center(
+                            child: Text(snapshot.error.toString()),
+                          ),
+                        );
+                      }
+                      return Container(
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }),
+              ),
+            ],
           ),
         ),
       ),
