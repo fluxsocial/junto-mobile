@@ -34,9 +34,9 @@ class JuntoApp extends StatelessWidget {
         Provider<ExpressionRepo>.value(value: backend.expressionRepo),
         Provider<SearchRepo>.value(value: backend.searchRepo),
         Provider<NotificationRepo>.value(value: backend.notificationRepo),
-        Provider<AppRepo>.value(value: backend.appRepo),
         Provider<LocalCache>.value(value: backend.db),
         Provider<OnBoardingRepo>.value(value: backend.onBoardingRepo),
+        ChangeNotifierProvider<AppRepo>.value(value: backend.appRepo),
         ChangeNotifierProvider(
           create: (_) => NotificationsHandler(backend.notificationRepo),
           lazy: false,
