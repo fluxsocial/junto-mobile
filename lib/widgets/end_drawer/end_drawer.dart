@@ -112,7 +112,7 @@ class JuntoDrawer extends StatelessWidget {
                             width: 60,
                             alignment: Alignment.centerLeft,
                             child: Icon(
-                              Icons.favorite,
+                              CustomIcons.themes,
                               color: Colors.white,
                               size: 24,
                             ),
