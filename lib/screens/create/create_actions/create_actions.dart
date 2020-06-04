@@ -297,12 +297,12 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: <Widget>[
-                    if (_channelsList.isEmpty)
+                    if (_channelsList == null || _channelsList.isEmpty)
                       Text(
                         '# add channels',
                         style: Theme.of(context).textTheme.caption,
                       ),
-                    if (_channelsList.isNotEmpty)
+                    if (_channelsList == null || _channelsList.isNotEmpty)
                       for (String channel in _channelsList)
                         Container(
                           margin: const EdgeInsets.only(right: 15),
@@ -420,9 +420,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           channels: _channels,
         );
       },
-    ).then((channels) {
+    ).then((x) {
       setState(() {
-        _channelsList = channels;
+        _channelsList = _channels.value;
       });
     });
   }
