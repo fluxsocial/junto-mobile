@@ -61,15 +61,6 @@ class ChannelPreview extends StatelessWidget {
                         .subtitle1
                         .copyWith(color: Theme.of(context).primaryColor),
                   ),
-                  // const SizedBox(height: 2.5),
-                  // Text(
-                  //   _expressionText(),
-                  //   textAlign: TextAlign.start,
-                  //   style: Theme.of(context).textTheme.subtitle1.copyWith(
-                  //         color: Theme.of(context).primaryColorLight,
-                  //         fontWeight: FontWeight.w500,
-                  //       ),
-                  // ),
                 ],
               ),
             ),
