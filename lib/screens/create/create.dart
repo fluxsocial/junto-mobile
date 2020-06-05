@@ -196,6 +196,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                         HomeIcon(
                           source: source,
                           navigateTo: _navigateTo,
+                          theme: theme,
                         ),
                         const SizedBox(height: 25),
                       ],
@@ -217,7 +218,9 @@ class JuntoCreateState extends State<JuntoCreate> {
     );
   }
 
-  Widget _selectExpressionIcon(ExpressionType expressionType) {
+  Widget _selectExpressionIcon(
+    ExpressionType expressionType,
+  ) {
     return CreateExpressionIcon(
       expressionType: expressionType,
       onTap: _navigateTo,
