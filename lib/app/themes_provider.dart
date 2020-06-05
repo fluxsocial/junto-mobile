@@ -30,9 +30,17 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     'rainbow': JuntoThemes().rainbow,
     'aqueous': JuntoThemes().aqueous,
     'royal': JuntoThemes().royal,
+    'fire': JuntoThemes().fire,
+    'forest': JuntoThemes().forest,
+    'sand': JuntoThemes().sand,
+    'dark': JuntoThemes().dark,
     'rainbow-night': JuntoThemes().rainbowNight,
     'aqueous-night': JuntoThemes().aqueousNight,
     'royal-night': JuntoThemes().royalNight,
+    'fire-night': JuntoThemes().fireNight,
+    'forest-night': JuntoThemes().forestNight,
+    'sand-night': JuntoThemes().sandNight,
+    'dark-night': JuntoThemes().darkNight,    
   };
 
   Future<void> initialize() async {
