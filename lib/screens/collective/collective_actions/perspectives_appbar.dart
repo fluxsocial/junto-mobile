@@ -52,6 +52,14 @@ class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
       return 'assets/images/junto-mobile__logo--aqueous.png';
     } else if (theme == 'royal' || theme == 'royal-night') {
       return 'assets/images/junto-mobile__logo--purpgold.png';
+    } else if (theme == 'fire' || theme == 'fire-night') {
+      return 'assets/images/junto-mobile__logo--fire.png';
+    } else if (theme == 'forest' || theme == 'forest-night') {
+      return 'assets/images/junto-mobile__logo--forest.png';
+    } else if (theme == 'sand' || theme == 'sand-night') {
+      return 'assets/images/junto-mobile__logo--sand.png';
+    } else if (theme == 'dark' || theme == 'dark-night') {
+      return 'assets/images/junto-mobile__logo--dark.png';
     } else {
       return 'assets/images/junto-mobile__logo--rainbow.png';
     }
