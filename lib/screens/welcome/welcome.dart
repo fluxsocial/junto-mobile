@@ -32,6 +32,13 @@ import 'widgets/sign_up_text_field_wrapper.dart';
 import 'widgets/welcome_main.dart';
 
 class Welcome extends StatefulWidget {
+  static Route<dynamic> route() {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: "welcome"),
+      builder: (context) => Welcome(),
+    );
+  }
+
   const Welcome({Key key}) : super(key: key);
 
   @override
