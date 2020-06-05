@@ -20,7 +20,6 @@ class UserDataProvider extends ChangeNotifier {
 
   String userAddress;
   UserData userProfile;
-  bool twoColumnView = false;
 
   SharedPreferences sharedPreferences;
 
@@ -37,11 +36,6 @@ class UserDataProvider extends ChangeNotifier {
         final decodedUserData = jsonDecode(userData);
         userProfile = UserData.fromMap(decodedUserData);
         userAddress = userProfile.user.address;
-        final cachedLayoutView = await box.get(HiveKeys.kLayoutView);
-        if (cachedLayoutView != null) {
-          twoColumnView = cachedLayoutView;
-        }
-
         notifyListeners();
       }
     } catch (e) {
@@ -75,9 +69,8 @@ class UserDataProvider extends ChangeNotifier {
   }
 
   Future<void> switchColumnLayout(ExpressionFeedLayout layout) async {
-    twoColumnView = !twoColumnView;
-    notifyListeners();
     await appRepository?.setLayout(layout == ExpressionFeedLayout.two);
+    notifyListeners();
     await getUserInformation();
   }
 }

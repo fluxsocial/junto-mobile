@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
@@ -65,14 +66,17 @@ class _UserExpressionsState extends State<UserExpressions> {
                       (BuildContext context, UserDataProvider data, _) {
                     return SliverToBoxAdapter(
                       child: FilterColumnRow(
-                        twoColumnView: data.twoColumnView,
+                        twoColumnView:
+                            Provider.of<AppRepo>(context, listen: false)
+                                .twoColumnLayout,
                         switchColumnView: _switchColumnView,
                       ),
                     );
                   }),
                   Consumer<UserDataProvider>(
                     builder: (BuildContext context, UserDataProvider data, _) {
-                      if (data.twoColumnView) {
+                      if (Provider.of<AppRepo>(context, listen: false)
+                          .twoColumnLayout) {
                         return TwoColumnList(
                           data: results,
                           useSliver: true,

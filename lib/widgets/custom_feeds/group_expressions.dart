@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
@@ -64,11 +65,11 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                   slivers: [
                     SliverToBoxAdapter(
                       child: FilterColumnRow(
-                        twoColumnView: data.twoColumnView,
+                        twoColumnView: Provider.of<AppRepo>(context, listen: false).twoColumnLayout,
                         switchColumnView: _switchColumnView,
                       ),
                     ),
-                    if (data.twoColumnView)
+                    if (Provider.of<AppRepo>(context, listen: false).twoColumnLayout)
                       TwoColumnList(
                         data: _results,
                         useSliver: true,
@@ -78,7 +79,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                               );
                         },
                       ),
-                    if (!data.twoColumnView)
+                    if (!Provider.of<AppRepo>(context, listen: false).twoColumnLayout == true)
                       SingleColumnSliverListView(
                         data: _results,
                         privacyLayer: widget.privacy,
