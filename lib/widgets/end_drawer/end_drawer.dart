@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -22,11 +23,16 @@ import 'package:provider/provider.dart';
 
 import 'junto_themes_page.dart';
 
-class JuntoDrawer extends StatelessWidget {
-  Future<void> _onLogOut(BuildContext context) async {
+class JuntoDrawer extends StatefulWidget {
+  @override
+  _JuntoDrawerState createState() => _JuntoDrawerState();
+}
+
+class _JuntoDrawerState extends State<JuntoDrawer> {
+  Future<void> _onLogOut() async {
     try {
-      await context.bloc<AuthBloc>().add(LogoutEvent());
-      Navigator.popUntil(context, (r) => r.isFirst);
+      context.bloc<AuthBloc>().add(LogoutEvent());
+      Navigator.of(context).pushReplacement(Welcome.route());
     } catch (e) {
       logger.logException(e);
     }
@@ -173,7 +179,7 @@ class JuntoDrawer extends StatelessWidget {
                               context: context,
                               builder: (BuildContext context) => ConfirmDialog(
                                 buildContext: context,
-                                confirm: () => _onLogOut(context),
+                                confirm: _onLogOut,
                                 confirmationText:
                                     S.of(context).menu_are_you_sure_to_logout,
                               ),
