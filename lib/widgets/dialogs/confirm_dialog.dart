@@ -12,7 +12,7 @@ class ConfirmDialog extends StatelessWidget {
 
   final BuildContext buildContext;
   final String confirmationText;
-  final Function confirm;
+  final VoidCallback confirm;
   final String errorMessage;
 
   @override
@@ -79,7 +79,7 @@ class ConfirmDialog extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () async {
                         try {
-                          await confirm();
+                           confirm();
                           Navigator.pop(context);
                         } catch (error) {
                           logger.logException(error);
