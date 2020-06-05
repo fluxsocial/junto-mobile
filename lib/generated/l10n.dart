@@ -407,7 +407,7 @@ class S {
 
   String get welcome_check_email {
     return Intl.message(
-      'CHECK EMAIL',
+      'CHECK EMAIL - we sent you a verification code',
       name: 'welcome_check_email',
       desc: '',
       args: [],
@@ -632,7 +632,7 @@ class S {
 
   String get welcome_username_label {
     return Intl.message(
-      'USERNAME',
+      'USERNAME - will be used to login',
       name: 'welcome_username_label',
       desc: '',
       args: [],
@@ -769,6 +769,15 @@ class S {
     return Intl.message(
       'Make sure you entered a correct e-mail',
       name: 'welcome_invalid_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get welcome_invalid_username {
+    return Intl.message(
+      'Make sure you entered a valid username',
+      name: 'welcome_invalid_username',
       desc: '',
       args: [],
     );

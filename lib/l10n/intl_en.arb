@@ -42,7 +42,7 @@
   "toggle_filter_drawer": "Toggle filter drawer",
   "welcome_add_photo": "Add a profile picture",
   "welcome_almost_done": "Almost done!",
-  "welcome_check_email": "CHECK EMAIL",
+  "welcome_check_email": "CHECK EMAIL - we sent you a verification code",
   "welcome_confirm_password": "Confirm password",
   "welcome_email_hint": "Email",
   "welcome_feel_free": "Feel free to share more about yourself (optional)",
@@ -67,7 +67,7 @@
   "welcome_unable_to_login": "Unable to login. Please double check your login credentials.",
   "welcome_username_hint": "Choose a unique username",
   "welcome_username_ill_go": "I'll go by...",
-  "welcome_username_label": "USERNAME",
+  "welcome_username_label": "USERNAME - will be used to login",
   "welcome_username_requirements": "Your username can only contain lowercase letters, numbers, and underscores.",
   "welcome_username_taken": "Sorry, that username is taken.",
   "welcome_verification_code": "Verification code",
@@ -82,5 +82,6 @@
   "menu_relations": "Relations",
   "menu_search": "Search",
   "menu_my_den": "My Den",
-  "welcome_invalid_email": "Make sure you entered a correct e-mail"
+  "welcome_invalid_email": "Make sure you entered a correct e-mail",
+  "welcome_invalid_username": "Make sure you entered a valid username"
 }

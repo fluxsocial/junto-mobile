@@ -85,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome_gender_hints" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_gender_label" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_invalid_email" : MessageLookupByLibrary.simpleMessage("Make sure you entered a correct e-mail"),
+    "welcome_invalid_username" : MessageLookupByLibrary.simpleMessage("Make sure you entered a valid username"),
     "welcome_lets_go" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_location_hint" : MessageLookupByLibrary.simpleMessage(""),
     "welcome_location_label" : MessageLookupByLibrary.simpleMessage(""),

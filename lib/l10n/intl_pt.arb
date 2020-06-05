@@ -82,5 +82,6 @@
   "menu_relations": "Relations",
   "menu_search": "Search",
   "menu_my_den": "My Den",
-  "welcome_invalid_email": "Make sure you entered a correct e-mail"
+  "welcome_invalid_email": "Make sure you entered a correct e-mail",
+  "welcome_invalid_username": "Make sure you entered a valid username"
 }
