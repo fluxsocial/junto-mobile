@@ -1,23 +1,19 @@
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class AuthRepo {
   const AuthRepo(
     this.authService,
-    this.userRepo,
-    this.themesProvider,
-    this.dbService,
-  );
+    this.userRepo, {
+    this.onLogout,
+  });
 
   final AuthenticationService authService;
   final UserRepo userRepo;
-  final JuntoThemesProvider themesProvider;
-  final HiveCache dbService;
+  final void Function() onLogout;
 
   Future<bool> isLoggedIn() async {
     try {
@@ -108,10 +104,9 @@ class AuthRepo {
   }
 
   Future<void> logoutUser() async {
-    logger.logInfo('Wiping the cache');
-    await dbService.wipe();
-    logger.logInfo('Setting default theme');
-    themesProvider.setTheme("rainbow");
+    if (onLogout != null) {
+      await onLogout();
+    }
     logger.logInfo('Logging out');
     await authService.logOut();
   }

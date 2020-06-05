@@ -142,6 +142,7 @@ class HiveCache implements LocalCache {
 
   Future<void> wipe() async {
     try {
+      logger.logInfo('Wiping the database');
       if (Hive.isBoxOpen(HiveBoxes.kExpressions)) {
         final exp = await Hive.box<ExpressionResponse>(HiveBoxes.kExpressions);
         await exp.deleteAll(exp.keys);

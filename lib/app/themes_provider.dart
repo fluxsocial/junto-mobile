@@ -8,6 +8,7 @@ import 'package:vibration/vibration.dart';
 
 abstract class ThemesProvider {
   ThemeData get currentTheme;
+  Future<void> reset();
 }
 
 class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
@@ -101,9 +102,18 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     box.put(HiveKeys.kTheme, value);
     return;
   }
+
+  @override
+  Future<void> reset() async {
+    logger.logInfo('Setting default theme');
+    await setTheme("rainbow");
+  }
 }
 
 class MockedThemesProvider extends ThemesProvider {
   @override
   ThemeData get currentTheme => ThemeData.light();
+
+  @override
+  Future<void> reset() async {}
 }
