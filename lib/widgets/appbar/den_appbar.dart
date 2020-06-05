@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,18 +18,6 @@ class DenAppbar extends SliverPersistentHeaderDelegate {
 
   final double expandedHeight;
   final String heading;
-
-  String logo(String theme) {
-    if (theme == 'rainbow' || theme == 'rainbow-night') {
-      return 'assets/images/junto-mobile__logo--rainbow.png';
-    } else if (theme == 'aqueous' || theme == 'aqueous-night') {
-      return 'assets/images/junto-mobile__logo--aqueous.png';
-    } else if (theme == 'royal' || theme == 'royal-night') {
-      return 'assets/images/junto-mobile__logo--purpgold.png';
-    } else {
-      return 'assets/images/junto-mobile__logo--rainbow.png';
-    }
-  }
 
   @override
   Widget build(
@@ -58,11 +47,7 @@ class DenAppbar extends SliverPersistentHeaderDelegate {
               color: Colors.transparent,
               child: Row(
                 children: <Widget>[
-                  Image.asset(
-                    logo(theme.themeName),
-                    height: 24.0,
-                    width: 24.0,
-                  ),
+                  AppbarLogo(theme: theme),
                   const SizedBox(width: 7.5),
                   Text(
                     heading,
