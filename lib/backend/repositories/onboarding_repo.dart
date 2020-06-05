@@ -21,44 +21,47 @@ class OnBoardingRepo {
   bool get showCreateTutorial => _showCreateTutorial;
 
   Future<void> _loadTutorialState() async {
-    _appBox = await Hive.box(HiveBoxes.kAppBox);
-    _showLotusTutorial = await _appBox.get(HiveKeys.kShowLotusTutorial) ?? true;
-    _showCollectiveTutorial =
-        await _appBox.get(HiveKeys.kShowCollectiveTutorial) ?? true;
-    _showPackTutorial = await _appBox.get(HiveKeys.kShowPackTutorial) ?? true;
-    _showDenTutorial = await _appBox.get(HiveKeys.kShowDenTutorial) ?? true;
-    _showPerspectiveTutorial =
-        await _appBox.get(HiveKeys.kShowPerspectiveTutorial) ?? true;
-    _showCreateTutorial =
-        await _appBox.get(HiveKeys.kShowCreateTutorial) ?? true;
+    return;
+//    _appBox = await Hive.box(HiveBoxes.kAppBox);
+//    _showLotusTutorial = await _appBox.get(HiveKeys.kShowLotusTutorial) ?? true;
+//    _showCollectiveTutorial =
+//        await _appBox.get(HiveKeys.kShowCollectiveTutorial) ?? true;
+//    _showPackTutorial = await _appBox.get(HiveKeys.kShowPackTutorial) ?? true;
+//    _showDenTutorial = await _appBox.get(HiveKeys.kShowDenTutorial) ?? true;
+//    _showPerspectiveTutorial =
+//        await _appBox.get(HiveKeys.kShowPerspectiveTutorial) ?? true;
+//    _showCreateTutorial =
+//        await _appBox.get(HiveKeys.kShowCreateTutorial) ?? true;
   }
 
   Future<void> setViewed(String key, bool value) async {
-    switch (key) {
-      case HiveKeys.kShowLotusTutorial:
-        _showLotusTutorial = false;
-        await _appBox.put(HiveKeys.kShowLotusTutorial, value);
-        return;
-      case HiveKeys.kShowCollectiveTutorial:
-        _showCollectiveTutorial = false;
-        await _appBox.put(HiveKeys.kShowCollectiveTutorial, value);
-        return;
-      case HiveKeys.kShowPackTutorial:
-        _showPackTutorial = false;
-        await _appBox.put(HiveKeys.kShowPackTutorial, value);
-        return;
-      case HiveKeys.kShowDenTutorial:
-        _showDenTutorial = false;
-        await _appBox.put(HiveKeys.kShowDenTutorial, value);
-        return;
-      case HiveKeys.kShowPerspectiveTutorial:
-        _showPerspectiveTutorial = false;
-        await _appBox.put(HiveKeys.kShowPerspectiveTutorial, value);
-        return;
-      case HiveKeys.kShowCreateTutorial:
-        _showCreateTutorial = false;
-        await _appBox.put(HiveKeys.kShowCreateTutorial, value);
-        return;
-    }
+    //TODO: Re-enable once api is updated
+    return;
+//    switch (key) {
+//      case HiveKeys.kShowLotusTutorial:
+//        _showLotusTutorial = false;
+//        await _appBox.put(HiveKeys.kShowLotusTutorial, value);
+//        return;
+//      case HiveKeys.kShowCollectiveTutorial:
+//        _showCollectiveTutorial = false;
+//        await _appBox.put(HiveKeys.kShowCollectiveTutorial, value);
+//        return;
+//      case HiveKeys.kShowPackTutorial:
+//        _showPackTutorial = false;
+//        await _appBox.put(HiveKeys.kShowPackTutorial, value);
+//        return;
+//      case HiveKeys.kShowDenTutorial:
+//        _showDenTutorial = false;
+//        await _appBox.put(HiveKeys.kShowDenTutorial, value);
+//        return;
+//      case HiveKeys.kShowPerspectiveTutorial:
+//        _showPerspectiveTutorial = false;
+//        await _appBox.put(HiveKeys.kShowPerspectiveTutorial, value);
+//        return;
+//      case HiveKeys.kShowCreateTutorial:
+//        _showCreateTutorial = false;
+//        await _appBox.put(HiveKeys.kShowCreateTutorial, value);
+//        return;
+//    }
   }
 }

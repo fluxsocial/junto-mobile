@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective_add_members.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -327,8 +328,8 @@ class EditPerspectiveState extends State<EditPerspective> {
                           .toList(),
                     );
                   }
-                  return const Center(
-                    child: Text('pending'),
+                  return Center(
+                    child: JuntoProgressIndicator(),
                   );
                 },
               )

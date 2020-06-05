@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
@@ -54,7 +54,7 @@ class JuntoPacksState extends State<JuntoPacks>
   void didChangeDependencies() {
     super.didChangeDependencies();
     final packsPageIndex =
-        Provider.of<PageIndexProvider>(context, listen: false).packsPageIndex;
+        Provider.of<AppRepo>(context, listen: false).packsPageIndex;
     _currentIndex = packsPageIndex;
     _pageController = PageController(initialPage: packsPageIndex);
   }
@@ -80,7 +80,7 @@ class JuntoPacksState extends State<JuntoPacks>
                   setState(() {
                     _currentIndex = index;
                   });
-                  Provider.of<PageIndexProvider>(context, listen: false)
+                  Provider.of<AppRepo>(context, listen: false)
                       .setPacksPageIndex(index);
                 },
                 controller: _pageController,

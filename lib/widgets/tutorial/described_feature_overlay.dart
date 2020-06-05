@@ -127,7 +127,7 @@ class JuntoDescribedFeatureOverlayState
             if (widget.learnMore)
               _actionItemButton(
                 context,
-                'Learn Why',
+                'Learn More',
                 () {
                   setState(() {
                     baseTutorialVisible = false;
@@ -138,7 +138,7 @@ class JuntoDescribedFeatureOverlayState
             if (!widget.isLastFeature && !widget.oneFeature)
               _actionItemButton(
                 context,
-                'Next Feature',
+                'Next',
                 () async => FeatureDiscovery.completeCurrentStep(context),
               ),
           ],

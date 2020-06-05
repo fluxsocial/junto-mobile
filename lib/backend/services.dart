@@ -195,5 +195,12 @@ abstract class LocalCache {
   /// Stores the last read notification time
   Future<void> setLastReadNotificationTime(DateTime datetime);
 
+  /// Fetches all stored perspectives
+  Future<List<PerspectiveModel>> retrievePerspective();
+
+  /// Insert user perspectives
+  Future<void> insertPerspectives(List<PerspectiveModel> perspectives);
+
+  /// Clears all stored data
   Future<void> wipe();
 }

@@ -54,6 +54,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
 
   void _addSelected() {
     if (_channelController.value.text != '' && _channels.length < 3) {
+      _updateQuery('');
       setState(() {
         widget.channels.value.add(_channelController.value.text);
         widget.channels.value = _channels;
@@ -64,6 +65,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
 
   void _addItem(String name) {
     if (name != '' && _channels.length < 3) {
+      _updateQuery('');
       setState(() {
         _channels.add(name);
       });
@@ -90,7 +92,128 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
     });
   }
 
-  Widget _buildSearchField() {
+  Widget _buildBottomSelection() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: <Widget>[
+            for (String channel in _channels)
+              SelectedChannel(
+                  channel: channel,
+                  removeChannel: () {
+                    setState(() {
+                      _channels.removeAt(
+                        _channels.indexOf(channel),
+                      );
+                      _updateQuery('');
+                    });
+                  }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, _channels);
+        print(_channels);
+        return true;
+      },
+      child: Container(
+        color: Colors.transparent,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            height: MediaQuery.of(context).size.height * .7,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ChannelSearchField(
+                  channelController: _channelController,
+                  onTextChange: _onTextChange,
+                  addSelected: _addSelected,
+                ),
+                if (_channels.isNotEmpty) _buildBottomSelection(),
+                Expanded(
+                  child: FutureBuilder<QueryResults<Channel>>(
+                      future: _searchRepo.searchChannel(query),
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<QueryResults<Channel>> snapshot,
+                      ) {
+                        if (snapshot.hasData && !snapshot.hasError) {
+                          return ListView.builder(
+                            itemCount: snapshot.data.results.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final Channel item = snapshot.data.results[index];
+                              return InkWell(
+                                onTap: () => _addItem(item.name),
+                                child: ChannelPreview(
+                                  channel: item,
+                                  resultCount: snapshot.data.resultCount,
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        if (snapshot.hasData && snapshot.data.results.isEmpty) {
+                          return Container(
+                            child: const Center(
+                              child: Text('Add new channel +'),
+                            ),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Container(
+                            child: Center(
+                              child: Text(snapshot.error.toString()),
+                            ),
+                          );
+                        }
+                        return Container(
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChannelSearchField extends StatelessWidget {
+  const ChannelSearchField({
+    this.channelController,
+    this.onTextChange,
+    this.addSelected,
+  });
+
+  final TextEditingController channelController;
+  final Function onTextChange;
+  final Function addSelected;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -101,7 +224,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
         children: <Widget>[
           Expanded(
             child: TextField(
-              controller: _channelController,
+              controller: channelController,
               buildCounter: (
                 BuildContext context, {
                 int currentLength,
@@ -127,158 +250,59 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
                   color: Theme.of(context).primaryColor),
               maxLength: 80,
               textInputAction: TextInputAction.search,
-              onChanged: _onTextChange,
+              onChanged: onTextChange,
             ),
           ),
           GestureDetector(
-            onTap: _addSelected,
+            onTap: addSelected,
             child: Container(
-              width: 42,
-              color: Colors.transparent,
-              alignment: Alignment.centerRight,
-              child: Icon(
-                Icons.add,
-                size: 20,
-                color: Theme.of(context).primaryColor,
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 5,
+                bottom: 5,
+              ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                'Add',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildBottomSelection() {
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          border: Border(
-            top: BorderSide(color: Theme.of(context).dividerColor, width: .75),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[
-                  for (String channel in _channels)
-                    GestureDetector(
-                      onDoubleTap: () {
-                        setState(() {
-                          _channels.removeAt(
-                            _channels.indexOf(channel),
-                          );
-                        });
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 15),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
-                        color: Theme.of(context).dividerColor,
-                        child: Text(
-                          channel,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).primaryColor),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Double tap to remove',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).primaryColorLight),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
+class SelectedChannel extends StatelessWidget {
+  const SelectedChannel({this.removeChannel, this.channel});
+  final Function removeChannel;
+  final String channel;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        behavior: HitTestBehavior.opaque,
-        child: Container(
-          height: MediaQuery.of(context).size.height * .6,
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            ),
-          ),
-          child: Stack(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildSearchField(),
-                  Expanded(
-                    child: FutureBuilder<QueryResults<Channel>>(
-                        future: _searchRepo.searchChannel(query),
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<QueryResults<Channel>> snapshot,
-                        ) {
-                          if (snapshot.hasData && !snapshot.hasError) {
-                            return ListView.builder(
-                              itemCount: snapshot.data.results.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final Channel item =
-                                    snapshot.data.results[index];
-                                return InkWell(
-                                  onTap: () => _addItem(item.name),
-                                  child: ChannelPreview(
-                                    channel: item,
-                                    resultCount: snapshot.data.resultCount,
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                          if (snapshot.hasData &&
-                              snapshot.data.results.isEmpty) {
-                            return Container(
-                              child: const Center(
-                                child: Text('Add new channel +'),
-                              ),
-                            );
-                          }
-                          if (snapshot.hasError) {
-                            return Container(
-                              child: Center(
-                                child: Text(snapshot.error.toString()),
-                              ),
-                            );
-                          }
-                          return Container(
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }),
-                  ),
-                ],
-              ),
-              if (_channels.isNotEmpty) _buildBottomSelection(),
-            ],
+    return GestureDetector(
+      onTap: removeChannel,
+      child: Container(
+        margin: const EdgeInsets.only(right: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).dividerColor,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Text(
+          channel,
+          style: TextStyle(
+            fontSize: 12,
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),

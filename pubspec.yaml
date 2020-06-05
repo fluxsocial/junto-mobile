@@ -23,7 +23,6 @@ dependencies:
   cached_network_image: 2.2.0+1
   flutter_spinkit: 4.1.2
   path_provider: 1.6.8
-  flutter_slidable: 0.5.4
   package_info: 0.4.0+14
   keyboard_avoider: 0.1.2
   flutter_bloc: 4.0.0
@@ -111,7 +110,11 @@ flutter:
     - assets/images/junto-mobile__filter.png
     - assets/images/junto-mobile__groups--placeholder.png
     - assets/images/junto-mobile__placeholder--notifications.png
+    - assets/images/junto-mobile__placeholder--feed.png
     - assets/images/junto-mobile__waveform.png
+    - assets/images/junto-mobile__perspective--rainbow.png
+    - assets/images/junto-mobile__perspective--aqueous.png
+    - assets/images/junto-mobile__perspective--purpgold.png
 
 flutter_intl:
   enabled: true

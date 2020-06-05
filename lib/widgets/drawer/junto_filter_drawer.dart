@@ -45,6 +45,7 @@ class JuntoFilterDrawer extends StatefulWidget {
     this.borderRadius = 0,
     this.onTapClose = false,
     this.swipe = true,
+    this.swipeLeftDrawer = true,
     this.duration,
     this.animationType = InnerDrawerAnimation.static,
     this.innerDrawerCallback,
@@ -72,6 +73,9 @@ class JuntoFilterDrawer extends StatefulWidget {
 
   /// activate or deactivate the swipe. NOTE: when deactivate, onTap Close is implicitly activated
   final bool swipe;
+
+  /// activate or deactivate the swipe to open [leftDrawer]
+  final bool swipeLeftDrawer;
 
   /// duration animation controller
   final Duration duration;
@@ -222,6 +226,9 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     double delta = details.primaryDelta / _width;
 
     if (delta >= 0 && _controller.value == 1 && widget.leftDrawer != null) {
+      if (!swipeLeftDrawer) {
+        return;
+      }
       _position = DrawerPosition.start;
     } else if (delta < 0 &&
         _controller.value == 1 &&
@@ -393,6 +400,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   }
 
   bool get swipe => widget.swipe;
+  bool get swipeLeftDrawer => widget.swipeLeftDrawer;
 
   /// return widget with specific animation
   Widget _animatedChild() {

@@ -65,6 +65,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     <String>[],
   );
 
+  List<String> _channelsList = [];
+
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController;
 
@@ -81,10 +83,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     _expressionContext = widget.expressionContext;
     if (widget.expressionContext == ExpressionContext.Collective) {
       _currentExpressionContext = 'Collective';
-      _currentExpressionContextDescription = 'shared to the public of Junto';
+      _currentExpressionContextDescription = 'share publicly on Junto';
     } else if (widget.expressionContext == ExpressionContext.Group) {
       _currentExpressionContext = 'My Pack';
-      _currentExpressionContextDescription = 'shared to just your pack members';
+      _currentExpressionContextDescription = 'share to just your Pack members';
     }
   }
 
@@ -291,13 +293,36 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                 ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    '# add channels',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: <Widget>[
+                    if (_channelsList.isEmpty)
+                      Text(
+                        '# add channels',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    if (_channelsList.isNotEmpty)
+                      for (String channel in _channelsList)
+                        Container(
+                          margin: const EdgeInsets.only(right: 15),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).dividerColor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            channel,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -395,6 +420,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           channels: _channels,
         );
       },
-    );
+    ).then((channels) {
+      setState(() {
+        _channelsList = channels;
+      });
+    });
   }
 }

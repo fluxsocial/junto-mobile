@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
@@ -38,12 +39,9 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<Widget>(
-                    builder: (BuildContext context) {
-                      return GlobalSearch();
-                    },
+                Navigator.of(context).push(
+                  FadeRoute<void>(
+                    child: GlobalSearch(),
                   ),
                 );
               },

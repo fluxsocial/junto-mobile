@@ -38,8 +38,13 @@ class UserRepo {
     return _userService.queryUser(param, queryType);
   }
 
-  Future<List<PerspectiveModel>> getUserPerspective(String userAddress) {
-    return _userService.getUserPerspective(userAddress);
+  Future<List<PerspectiveModel>> getUserPerspective(String userAddress) async {
+    if (await DataConnectionChecker().hasConnection) {
+      final results = await _userService.getUserPerspective(userAddress);
+      db.insertPerspectives(results);
+      return results;
+    }
+    return await db.retrievePerspective();
   }
 
   Future<List<ExpressionResponse>> getUsersResonations(String userAddress) {
@@ -71,8 +76,10 @@ class UserRepo {
     );
   }
 
-  Future<List<PerspectiveModel>> userPerspectives(String userAddress) {
-    return _userService.userPerspectives(userAddress);
+  Future<List<PerspectiveModel>> userPerspectives(String userAddress) async {
+    final results = await _userService.userPerspectives(userAddress);
+    db.insertPerspectives(results);
+    return results;
   }
 
   Future<UserProfile> createPerspectiveUserEntry(

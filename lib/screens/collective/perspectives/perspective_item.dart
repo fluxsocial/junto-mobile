@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/about_perspective.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:provider/provider.dart';
 
 class PerspectiveItem extends StatelessWidget {
   const PerspectiveItem({
@@ -26,126 +24,82 @@ class PerspectiveItem extends StatelessWidget {
     );
   }
 
+  String _buildIcon(String theme) {
+    if (theme == 'rainbow' || theme == 'rainbow-night') {
+      return 'assets/images/junto-mobile__perspective--rainbow.png';
+    } else if (theme == 'aqueous' || theme == 'aqueous-night') {
+      return 'assets/images/junto-mobile__perspective--aqueous.png';
+    } else if (theme == 'royal' || theme == 'royal-night') {
+      return 'assets/images/junto-mobile__perspective--purpgold.png';
+    } else {
+      return 'assets/images/junto-mobile__perspective--rainbow.png';
+    }
+  }
+
   Widget _buildPerspective(
       BuildContext context, PerspectiveModel perspective, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Slidable(
-        enabled: !perspective.isDefault,
-        actionPane: const SlidableDrawerActionPane(),
-        actionExtentRatio: 0.2,
-        secondaryActions: <Widget>[
-          IconSlideAction(
-            color: Theme.of(context).dividerColor,
-            iconWidget: Icon(Icons.edit,
-                size: 15, color: Theme.of(context).primaryColor),
-            onTap: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute<dynamic>(
-                  builder: (BuildContext context) => EditPerspective(
-                    perspective: perspective,
-                  ),
-                ),
-              );
-            },
-          ),
-          IconSlideAction(
-            color: Colors.red,
-            iconWidget: Icon(Icons.delete, size: 15, color: Colors.white),
-            onTap: () async {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => ConfirmDialog(
-                  confirmationText:
-                      'Are you sure you want to delete this perspective?',
-                  confirm: () {
-                    context
-                        .bloc<PerspectivesBloc>()
-                        .add(RemovePerspective(perspective));
-                  },
-                ),
-              );
-            },
-          ),
-        ],
-        key: Key(perspective.address),
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return GestureDetector(
+        onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: .75),
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
+              ),
             ),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                alignment: Alignment.center,
-                height: 38.0,
-                width: 38.0,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.2, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
+              Row(
+                children: <Widget>[
+                  Image.asset(
+                    _buildIcon(theme.themeName),
+                    height: 20,
                   ),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Icon(
-                  CustomIcons.newperspective,
-                  size: 24,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      perspective.name,
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
-                          ),
+                  const SizedBox(width: 10),
+                  Text(
+                    perspective.name,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
                     ),
-                    if (perspective.name == 'JUNTO')
-                      Text(
-                        'Expressions from everyone on Junto.',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    if (perspective.name == 'Connections')
-                      Text(
-                        'Expressions from people you are connected with.',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    if (perspective.name == 'Subscriptions')
-                      Text(
-                        'Expressions from specific people you are subscribed to.',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    if (perspective.name != 'JUNTO' &&
-                        perspective.name != 'Connections' &&
-                        perspective.name != 'Subscriptions' &&
-                        perspective.about != null)
-                      Text(
-                        perspective.about,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                  ],
+                  ),
+                ],
+              ),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    builder: (BuildContext context) => AboutPerspective(
+                      incomingPerspective: perspective,
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 38,
+                  alignment: Alignment.centerRight,
+                  color: Colors.transparent,
+                  child: Icon(
+                    CustomIcons.morevertical,
+                    size: 17,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

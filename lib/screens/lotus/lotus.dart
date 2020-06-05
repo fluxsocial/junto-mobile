@@ -158,7 +158,7 @@ class _JuntoLotusState extends State<JuntoLotus> {
                                       featureId: 'lotus_info_id',
                                       oneFeature: true,
                                       title:
-                                          'This is the intention screen, your medium for navigation.',
+                                          "Welcome to Junto! You're looking at the app's tutorial, which you can open and close by clicking the question mark on the top right corner of your screen. To begin, this is the intention screen, your medium for navigation.",
                                       learnMore: true,
                                       learnMoreText: [
                                         'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'

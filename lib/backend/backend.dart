@@ -1,7 +1,6 @@
 import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
-import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_auth.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_search.dart';
@@ -40,7 +39,6 @@ class Backend {
     this.appRepo,
     this.db,
     this.themesProvider,
-    this.pageIndexProvider,
     this.onBoardingRepo,
   });
 
@@ -83,7 +81,6 @@ class Backend {
           appRepo: AppRepo(),
           db: dbService,
           themesProvider: themesProvider,
-          pageIndexProvider: pageIndexProvider,
           onBoardingRepo: OnBoardingRepo());
     } catch (e, s) {
       logger.logException(e, s);
@@ -108,7 +105,6 @@ class Backend {
       appRepo: AppRepo(),
       db: null,
       themesProvider: MockedThemesProvider(),
-      pageIndexProvider: PageIndexProvider(),
       onBoardingRepo: null,
     );
   }
@@ -123,6 +119,5 @@ class Backend {
   final AppRepo appRepo;
   final LocalCache db;
   final ThemesProvider themesProvider;
-  final PageIndexProvider pageIndexProvider;
   final OnBoardingRepo onBoardingRepo;
 }

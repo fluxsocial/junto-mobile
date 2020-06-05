@@ -24,7 +24,6 @@ class UserServiceCentralized implements UserService {
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
   Future<PerspectiveModel> createPerspective(Perspective perspective) async {
-    print(perspective.members);
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'name': perspective.name,
       'members': perspective.members,
@@ -37,7 +36,6 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
-
     return PerspectiveModel.fromMap(_body);
   }
 
@@ -232,7 +230,6 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.delete(
       '/users/$userAddress/connect',
     );
-    print(_serverResponse.statusCode);
     logger.logDebug(_serverResponse.statusCode.toString());
     JuntoHttp.handleResponse(_serverResponse);
   }
@@ -370,8 +367,7 @@ class UserServiceCentralized implements UserService {
         'status': response,
       },
     );
-    print(_serverResponse.body);
-    print(_serverResponse.statusCode);
+
     JuntoHttp.handleResponse(_serverResponse);
   }
 

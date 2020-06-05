@@ -17,8 +17,8 @@ class ChannelPreview extends StatelessWidget {
         children: <Widget>[
           Container(
             alignment: Alignment.center,
-            height: 45.0,
-            width: 45.0,
+            height: 38.0,
+            width: 38.0,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
@@ -61,15 +61,6 @@ class ChannelPreview extends StatelessWidget {
                         .subtitle1
                         .copyWith(color: Theme.of(context).primaryColor),
                   ),
-                  // const SizedBox(height: 2.5),
-                  // Text(
-                  //   _expressionText(),
-                  //   textAlign: TextAlign.start,
-                  //   style: Theme.of(context).textTheme.subtitle1.copyWith(
-                  //         color: Theme.of(context).primaryColorLight,
-                  //         fontWeight: FontWeight.w500,
-                  //       ),
-                  // ),
                 ],
               ),
             ),

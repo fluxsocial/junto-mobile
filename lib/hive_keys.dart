@@ -25,6 +25,7 @@ class HiveBoxes {
   static const kExpressions = 'expressions';
   static const kPack = 'pack';
   static const kDen = 'pack';
+  static const kPerspectives = 'perspectives';
 
   static List<String> get keys => [kAppBox, kNotifications, kExpressions, kDen];
 }
