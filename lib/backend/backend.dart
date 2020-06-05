@@ -49,7 +49,6 @@ class Backend {
       final dbService = HiveCache();
       await dbService.init();
       final themesProvider = JuntoThemesProvider();
-      final pageIndexProvider = PageIndexProvider();
       final AuthenticationService authService = CognitoClient();
       final JuntoHttp client =
           JuntoHttp(httpClient: IOClient(), tokenProvider: authService);
