@@ -72,7 +72,7 @@ class SignUpThemes extends StatelessWidget {
     } else if (theme == 'PURPLE GOLD') {
       return 'assets/images/junto-mobile__themes--royal.png';
     } else if (theme == 'NIGHT') {
-      return 'assets/images/junto-mobile__themes--night.png';
+      return 'assets/images/junto-mobile__themes--dark.png';
     } else if (theme == 'RAINBOW') {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     }

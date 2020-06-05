@@ -11,7 +11,7 @@ class BackgroundTheme extends StatelessWidget {
     } else if (theme == 'royal' || theme == 'royal-night') {
       return 'assets/images/junto-mobile__themes--royal.png';
     } else if (theme == 'dark' || theme == 'dark-night') {
-      return 'assets/images/junto-mobile__themes--night.png';
+      return 'assets/images/junto-mobile__themes--dark.png';
     } else if (theme == 'sand' || theme == 'sand-night') {
       return 'assets/images/junto-mobile__themes--sand.png';
     } else if (theme == 'fire' || theme == 'fire-night') {
