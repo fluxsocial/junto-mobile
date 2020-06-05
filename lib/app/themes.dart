@@ -305,13 +305,10 @@ class JuntoThemes {
     backgroundColor: Colors.white,
     accentColor: const Color(0xFF4687A2),
     colorScheme: const ColorScheme(
-      // Junto purple
-      primary: Color(0xff8E8098),
-      primaryVariant: Color(0xffB3808F),
-      // Junto blue
-      secondary: Color(0xFF307FAA),
-      secondaryVariant: Color(0xFF4687A2),
-
+      primary: Color(0xffF2D094),
+      primaryVariant: Color(0xffF2D094),
+      secondary: Color(0xFFCE4E30),
+      secondaryVariant: Color(0xFFCE4E30),
       surface: Color(0xff555555),
       background: Colors.white,
       error: Color(0xff333333),
@@ -1087,13 +1084,10 @@ class JuntoThemes {
     backgroundColor: const Color(0xff333333),
     accentColor: const Color(0xFF4687A2),
     colorScheme: const ColorScheme(
-      // Junto purple
-      primary: Color(0xff8E8098),
-      primaryVariant: Color(0xffB3808F),
-      // Junto blue
-      secondary: Color(0xFF307FAA),
-      secondaryVariant: Color(0xFF4687A2),
-
+      primary: Color(0xffF2D094),
+      primaryVariant: Color(0xffF2D094),
+      secondary: Color(0xFFCE4E30),
+      secondaryVariant: Color(0xFFCE4E30),
       surface: Color(0xff444444),
       background: Color(0xff333333),
       error: Color(0xff333333),
