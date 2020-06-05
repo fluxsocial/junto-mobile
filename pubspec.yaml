@@ -95,6 +95,7 @@ flutter:
     - assets/images/junto-mobile__themes--dark.png
     - assets/images/junto-mobile__themes--sand.png
     - assets/images/junto-mobile__logo.png
+    - assets/images/junto-mobile__logo--white.png
     - assets/images/junto-mobile__logo--rainbow.png
     - assets/images/junto-mobile__logo--aqueous.png
     - assets/images/junto-mobile__logo--purpgold.png
@@ -115,6 +116,7 @@ flutter:
     - assets/images/junto-mobile__placeholder--notifications.png
     - assets/images/junto-mobile__placeholder--feed.png
     - assets/images/junto-mobile__waveform.png
+    - assets/images/junto-mobile__perspective--white.png    
     - assets/images/junto-mobile__perspective--rainbow.png
     - assets/images/junto-mobile__perspective--aqueous.png
     - assets/images/junto-mobile__perspective--purpgold.png
