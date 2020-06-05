@@ -50,8 +50,8 @@ class CreateShortformState extends State<CreateShortform> {
   @override
   void initState() {
     super.initState();
-    gradientOne = 'fefefe';
-    gradientTwo = 'fff4e6';
+    gradientOne = 'fff8ee';
+    gradientTwo = 'ffeee0';
     _bodyController = TextEditingController();
     _focus.addListener(toggleBottomNav);
   }
@@ -134,7 +134,7 @@ class CreateShortformState extends State<CreateShortform> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  _gradientSelector('fefefe', 'fff4e6'),
+                  _gradientSelector('fff8ee', 'ffeee0'),
                   _gradientSelector('222222', '555555'),
                   _gradientSelector('2E4F78', '6397C7'),
                   _gradientSelector('2034BC', 'BD96D6'),
