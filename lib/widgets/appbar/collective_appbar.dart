@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
@@ -170,9 +171,12 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             child: Icon(
                               CustomIcons.twocolumn,
                               size: 20,
-                              color: data?.twoColumnView == true
-                                  ? Theme.of(context).primaryColorDark
-                                  : Theme.of(context).primaryColorLight,
+                              color:
+                                  Provider.of<AppRepo>(context, listen: false)
+                                              .twoColumnLayout ==
+                                          true
+                                      ? Theme.of(context).primaryColorDark
+                                      : Theme.of(context).primaryColorLight,
                             ),
                           ),
                         ),
@@ -186,9 +190,12 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             child: Icon(
                               CustomIcons.singlecolumn,
                               size: 20,
-                              color: data?.twoColumnView == true
-                                  ? Theme.of(context).primaryColorLight
-                                  : Theme.of(context).primaryColorDark,
+                              color:
+                                  Provider.of<AppRepo>(context, listen: false)
+                                              .twoColumnLayout ==
+                                          true
+                                      ? Theme.of(context).primaryColorLight
+                                      : Theme.of(context).primaryColorDark,
                             ),
                           ),
                         ),

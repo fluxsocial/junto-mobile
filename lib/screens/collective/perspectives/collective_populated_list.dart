@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
@@ -36,9 +37,9 @@ class CollectivePopulatedList extends StatelessWidget {
         ),
       );
     } else {
-      return Consumer<UserDataProvider>(
+      return Consumer<AppRepo>(
         builder: (context, snapshot, _) {
-          if (snapshot.twoColumnView) {
+          if (snapshot.twoColumnLayout) {
             return TwoColumnList(
               data: state.results,
               useSliver: true,
