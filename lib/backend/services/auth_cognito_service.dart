@@ -274,9 +274,15 @@ class CognitoClient extends AuthenticationService {
   }
 
   @override
-  Future<String> getIdToken() {
+  Future<String> getIdToken() async {
     try {
-      return aws.FlutterAwsAmplifyCognito.getIdToken();
+      final loggedIn = await isLoggedIn();
+      if (loggedIn.wasSuccessful) {
+        return aws.FlutterAwsAmplifyCognito.getIdToken();
+      } else {
+        logger.logWarning('Trying to access token when logged out');
+        return null;
+      }
     } catch (e) {
       logger.logError('Error while accessing id token: ${e}');
       return null;
