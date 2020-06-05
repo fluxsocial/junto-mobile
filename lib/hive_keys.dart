@@ -1,7 +1,6 @@
 /// Various item keys used to store data in Hive boxes
 class HiveKeys {
   /// Used to access
-  static const kisLoggedIn = 'isLoggedIn';
   static const kUserFollowPerspectiveId = 'userFollowPerspectiveId';
   static const kUserId = 'userId';
   static const kUserData = 'user_data';

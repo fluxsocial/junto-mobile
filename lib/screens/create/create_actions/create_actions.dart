@@ -195,7 +195,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       } else {
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
-          expressionData: widget.expression.toMap(),
+          expressionData: widget.expression.toJson(),
           context: _expressionContext,
           channels: channel,
         );

@@ -20,6 +20,7 @@ class BlocProviders extends StatelessWidget {
           create: (ctx) => AuthBloc(
             ctx.repository<AuthRepo>(),
             ctx.repository<UserDataProvider>(),
+            ctx.repository<UserRepo>(),
           ),
         ),
         BlocProvider<PerspectivesBloc>(

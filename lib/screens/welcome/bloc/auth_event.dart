@@ -1,24 +1,27 @@
 import 'dart:io';
 
-import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 abstract class AuthEvent {}
 
 class SignUpEvent extends AuthEvent {
-  SignUpEvent(this.details, this.profilePicture);
+  SignUpEvent(this.details, this.profilePicture, this.username, this.password);
 
-  final UserAuthRegistrationDetails details;
+  final UserRegistrationDetails details;
   final File profilePicture;
+  final String username;
+  final String password;
 }
 
 class AcceptAgreements extends AuthEvent {}
 
 class LoginEvent extends AuthEvent {
-  LoginEvent(this.details);
+  LoginEvent(this.username, this.password);
 
-  final UserAuthLoginDetails details;
+  final String username;
+  final String password;
 }
 
 /// Called when the user is logged into the app.

@@ -1,17 +1,21 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class UserRepo {
-  UserRepo(this._userService, this._notificationRepo, this.db);
+  UserRepo(this._userService, this._notificationRepo, this.db,
+      this._expressionService);
 
   final UserService _userService;
   final LocalCache db;
   final NotificationRepo _notificationRepo;
+  final ExpressionService _expressionService;
   QueryResults<ExpressionResponse> cachedDenExpressions;
 
   Future<PerspectiveModel> createPerspective(Perspective perspective) {
@@ -161,10 +165,48 @@ class UserRepo {
     return UserProfile.fromMap(result);
   }
 
+  Future<UserProfile> updateProfilePicture(
+      String userAddress, File profilePicture) async {
+    final key =
+        await _expressionService.createPhoto(false, '.png', profilePicture);
+
+    final _profilePictureKeys = <String, dynamic>{
+      'profile_picture': <Map<String, dynamic>>[
+        <String, dynamic>{'index': 0, 'key': key},
+      ]
+    };
+    // update user with profile photos
+    return await updateUser(
+      _profilePictureKeys,
+      userAddress,
+    );
+  }
+
   Future<List<UserProfile>> getFollowers(String userAddress) =>
       _userService.getFollowers(userAddress);
 
   Future<PerspectiveModel> updatePerspective(
           String perspectiveAddress, Map<String, String> perspectiveBody) =>
       _userService.updatePerspective(perspectiveAddress, perspectiveBody);
+
+  Future<bool> usernameAvailable(String username) async {
+    final result = await _userService.validateUsername(username);
+    if (result != null) {
+      return result.error == null && result.validUsername != false;
+    }
+    return false;
+  }
+
+  Future<bool> emailAvailable(String email, String username) async {
+    final result = await _userService.validateUser(email, username);
+    if (result != null) {
+      return result.error == null && result.validEmail != false;
+    }
+    return false;
+  }
+
+  Future<UserData> sendMetadataPostRegistration(
+      UserRegistrationDetails details) async {
+    return _userService.sendMetadataPostRegistration(details);
+  }
 }

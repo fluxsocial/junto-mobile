@@ -22,10 +22,8 @@ class _$AuthStateTearOff {
     );
   }
 
-  AuthAuthenticated authenticated(UserData user) {
-    return AuthAuthenticated(
-      user,
-    );
+  AuthAuthenticated authenticated() {
+    return AuthAuthenticated();
   }
 
   AuthUnauthenticated unauthenticated(
@@ -46,7 +44,7 @@ mixin _$AuthState {
   Result when<Result extends Object>({
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
-    @required Result authenticated(UserData user),
+    @required Result authenticated(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   });
@@ -54,7 +52,7 @@ mixin _$AuthState {
   Result maybeWhen<Result extends Object>({
     Result loading(),
     Result agreementsRequired(UserData user),
-    Result authenticated(UserData user),
+    Result authenticated(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   });
@@ -125,7 +123,7 @@ class _$AuthLoading implements AuthLoading {
   Result when<Result extends Object>({
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
-    @required Result authenticated(UserData user),
+    @required Result authenticated(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   }) {
@@ -141,7 +139,7 @@ class _$AuthLoading implements AuthLoading {
   Result maybeWhen<Result extends Object>({
     Result loading(),
     Result agreementsRequired(UserData user),
-    Result authenticated(UserData user),
+    Result authenticated(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   }) {
@@ -248,7 +246,7 @@ class _$AuthAgreementsRequired implements AuthAgreementsRequired {
   Result when<Result extends Object>({
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
-    @required Result authenticated(UserData user),
+    @required Result authenticated(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   }) {
@@ -264,7 +262,7 @@ class _$AuthAgreementsRequired implements AuthAgreementsRequired {
   Result maybeWhen<Result extends Object>({
     Result loading(),
     Result agreementsRequired(UserData user),
-    Result authenticated(UserData user),
+    Result authenticated(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   }) {
@@ -318,7 +316,6 @@ abstract class $AuthAuthenticatedCopyWith<$Res> {
   factory $AuthAuthenticatedCopyWith(
           AuthAuthenticated value, $Res Function(AuthAuthenticated) then) =
       _$AuthAuthenticatedCopyWithImpl<$Res>;
-  $Res call({UserData user});
 }
 
 class _$AuthAuthenticatedCopyWithImpl<$Res>
@@ -330,50 +327,30 @@ class _$AuthAuthenticatedCopyWithImpl<$Res>
 
   @override
   AuthAuthenticated get _value => super._value as AuthAuthenticated;
-
-  @override
-  $Res call({
-    Object user = freezed,
-  }) {
-    return _then(AuthAuthenticated(
-      user == freezed ? _value.user : user as UserData,
-    ));
-  }
 }
 
 class _$AuthAuthenticated implements AuthAuthenticated {
-  _$AuthAuthenticated(this.user) : assert(user != null);
-
-  @override
-  final UserData user;
+  _$AuthAuthenticated();
 
   @override
   String toString() {
-    return 'AuthState.authenticated(user: $user)';
+    return 'AuthState.authenticated()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is AuthAuthenticated &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)));
+    return identical(this, other) || (other is AuthAuthenticated);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(user);
-
-  @override
-  $AuthAuthenticatedCopyWith<AuthAuthenticated> get copyWith =>
-      _$AuthAuthenticatedCopyWithImpl<AuthAuthenticated>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
-    @required Result authenticated(UserData user),
+    @required Result authenticated(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   }) {
@@ -381,7 +358,7 @@ class _$AuthAuthenticated implements AuthAuthenticated {
     assert(agreementsRequired != null);
     assert(authenticated != null);
     assert(unauthenticated != null);
-    return authenticated(user);
+    return authenticated();
   }
 
   @override
@@ -389,13 +366,13 @@ class _$AuthAuthenticated implements AuthAuthenticated {
   Result maybeWhen<Result extends Object>({
     Result loading(),
     Result agreementsRequired(UserData user),
-    Result authenticated(UserData user),
+    Result authenticated(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (authenticated != null) {
-      return authenticated(user);
+      return authenticated();
     }
     return orElse();
   }
@@ -433,10 +410,7 @@ class _$AuthAuthenticated implements AuthAuthenticated {
 }
 
 abstract class AuthAuthenticated implements AuthState {
-  factory AuthAuthenticated(UserData user) = _$AuthAuthenticated;
-
-  UserData get user;
-  $AuthAuthenticatedCopyWith<AuthAuthenticated> get copyWith;
+  factory AuthAuthenticated() = _$AuthAuthenticated;
 }
 
 abstract class $AuthUnauthenticatedCopyWith<$Res> {
@@ -517,7 +491,7 @@ class _$AuthUnauthenticated implements AuthUnauthenticated {
   Result when<Result extends Object>({
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
-    @required Result authenticated(UserData user),
+    @required Result authenticated(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   }) {
@@ -533,7 +507,7 @@ class _$AuthUnauthenticated implements AuthUnauthenticated {
   Result maybeWhen<Result extends Object>({
     Result loading(),
     Result agreementsRequired(UserData user),
-    Result authenticated(UserData user),
+    Result authenticated(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   }) {

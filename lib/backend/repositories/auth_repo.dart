@@ -1,112 +1,96 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:junto_beta_mobile/backend/services/hive_service.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class AuthRepo {
   const AuthRepo(
     this.authService,
     this.userRepo,
-    this.expressionService,
     this.themesProvider,
+    this.dbService,
   );
 
   final AuthenticationService authService;
-  final ExpressionService expressionService;
   final UserRepo userRepo;
   final JuntoThemesProvider themesProvider;
+  final HiveCache dbService;
 
   Future<bool> isLoggedIn() async {
-    final box = await Hive.box(HiveBoxes.kAppBox);
-    final isLoggedIn = await box.get(HiveKeys.kisLoggedIn);
-    // Let's check if user is actually logged in
-    if (isLoggedIn != null && isLoggedIn) {
-      try {
-        final id = await box.get(HiveKeys.kUserId);
-        await userRepo.getUser(id);
-      } on SocketException catch (_) {
-        // The user is logged in but offline
-        return true;
-      } catch (error) {
-        logger.logException(error);
-        return false;
-      }
+    try {
+      final value = await authService.isLoggedIn();
+      return value.wasSuccessful;
+    } catch (e) {
+      logger.logException(e);
+      return false;
     }
-    return isLoggedIn;
   }
 
-  Future<Map<String, dynamic>> validateUser(
-      {String username, String email}) async {
-    return authService.validateUser(username: username, email: email);
-  }
-
-  Future<String> verifyEmail(String email) async {
-    logger.logDebug('Verifying e-mail');
-    return authService.verifyEmail(email);
-  }
-
-  /// Registers a user on the server and creates their profile.
-  Future<UserData> registerUser(
-      UserAuthRegistrationDetails details, File profilePicture) async {
-    logger.logDebug('Registering user');
-    final UserData _data = await authService.registerUser(details);
-    await authService.loginUser(
-      UserAuthLoginDetails(
-        email: details.email,
-        password: details.password,
-      ),
-    );
-
-    if (profilePicture != null) {
-      final key =
-          await expressionService.createPhoto(false, '.png', profilePicture);
-
-      //TODO: Don't do it manually
-      final _profilePictureKeys = <String, dynamic>{
-        'profile_picture': <Map<String, dynamic>>[
-          <String, dynamic>{'index': 0, 'key': key},
-        ]
-      };
-      // update user with profile photos
-      await userRepo.updateUser(
-        _profilePictureKeys,
-        _data.user.address,
-      );
+  Future<bool> usernameAvailable({String username}) async {
+    try {
+      final value = await userRepo.usernameAvailable(username ?? '');
+      return value;
+    } catch (e) {
+      logger.logException(e);
+      return false;
     }
-
-    final box = await Hive.box(HiveBoxes.kAppBox);
-    await box.put(HiveKeys.kisLoggedIn, true);
-    await box.put(HiveKeys.kUserId, _data.user.address);
-    await box.put(
-      HiveKeys.kUserFollowPerspectiveId,
-      _data.userPerspective.address,
-    );
-    return _data;
   }
+
+  Future<SignUpResult> signUp(
+      String username, String email, String password) async {
+    logger.logDebug('Verifying e-mail - signing up in auth service');
+    final res = await authService.signUp(SignUpData(username, email, password));
+    return res;
+  }
+
+  Future<bool> verifySignUp(String username, String code) async {
+    logger.logDebug('Checking verification code during sign up');
+    final res = await authService.verifySignUp(VerifyData(username, code));
+    return res.wasSuccessful;
+  }
+
+  Future<bool> resendVerificationCode(
+      String username, String email, String password) async {
+    logger.logDebug('Resending verification code during sign up');
+    final res = await authService
+        .resendVerifyCode(SignUpData(username, email, password));
+    return res.wasSuccessful;
+  }
+
+  //   final box = await Hive.box(HiveBoxes.kAppBox);
+  //   await box.put(HiveKeys.kisLoggedIn, true);
+  //   await box.put(HiveKeys.kUserId, _data.user.address);
+  //   await box.put(
+  //     HiveKeys.kUserFollowPerspectiveId,
+  //     _data.userPerspective.address,
+  //   );
+  //   return _data;
+  // }
 
   /// Authenticates a registered user. Returns the [UserProfile]  for the
-  /// given user. Their cookie is stored locally on device and is used for
-  /// all future request.
-  Future<UserData> loginUser(UserAuthLoginDetails details) async {
+  /// given user.
+  Future<void> loginUser(String username, String password) async {
     try {
-      final UserData _user = await authService.loginUser(details);
-      final box = await Hive.box(HiveBoxes.kAppBox);
-      await box.put(HiveKeys.kisLoggedIn, true);
-      await box.put(HiveKeys.kUserId, _user.user.address);
-      await box.put(
-        HiveKeys.kUserFollowPerspectiveId,
-        _user.userPerspective.address,
-      );
-      final Map<String, dynamic> _userToMap = _user.toMap();
-      final String _userMapToString = json.encode(_userToMap);
-      await box.put(HiveKeys.kUserData, _userMapToString);
-      return _user;
+      final result = await authService
+          .loginUser(SignInData(username: username, password: password));
+      if (result.wasSuccessful) {
+        //TODO: fetch user data
+        // final box = await Hive.box(HiveBoxes.kAppBox);
+        // await box.put(HiveKeys.kUserId, _user.user.address);
+        // await box.put(
+        //   HiveKeys.kUserFollowPerspectiveId,
+        //   _user.userPerspective.address,
+        // );
+        // final Map<String, dynamic> _userToMap = _user.toMap();
+        // final String _userMapToString = json.encode(_userToMap);
+        // await box.put(HiveKeys.kUserData, _userMapToString);
+        // return _user;
+      } else {
+        //TODO: handle unsuccesful login
+      }
     } catch (e, s) {
       logger.logException(e, s, 'Error during user login');
       rethrow;
@@ -114,20 +98,22 @@ class AuthRepo {
   }
 
   // Request verification code to reset password
-  Future<int> requestPasswordReset(String email) async {
-    final int responseStatusCode =
-        await authService.requestPasswordReset(email);
-    return responseStatusCode;
+  Future<ResetPasswordResult> requestPasswordReset(String email) async {
+    final response = await authService.requestPasswordReset(email);
+    return response;
   }
 
-  Future<void> resetPassword(Map<String, dynamic> details) async {
-    await authService.resetPassword(details);
+  Future<ResetPasswordResult> resetPassword(ResetPasswordData data) {
+    return authService.resetPassword(data);
   }
 
-  /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser() async {
+    logger.logInfo('Wiping the cache');
+    await dbService.wipe();
+    logger.logInfo('Setting default theme');
     themesProvider.setTheme("rainbow");
-    await authService.logoutUser();
+    logger.logInfo('Logging out');
+    await authService.logOut();
   }
 
   // Delete user account

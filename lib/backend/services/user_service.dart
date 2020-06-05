@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -462,5 +463,63 @@ class UserServiceCentralized implements UserService {
         'username': param,
       };
     }
+  }
+
+  @override
+  Future<ValidUserModel> validateUser(String email, String username) async {
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      if (email != null) 'email': email,
+      if (username != null) 'username': username,
+    };
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/validate',
+      body: _postBody,
+      authenticated: false,
+    );
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_serverResponse);
+    return ValidUserModel.fromJson(_decodedResponse);
+  }
+
+  @override
+  Future<ValidUserModel> validateUsername(String username) async {
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      if (username != null) 'username': username,
+    };
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/validate/username',
+      body: _postBody,
+      authenticated: false,
+    );
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_serverResponse);
+    return ValidUserModel.fromJson(_decodedResponse);
+  }
+
+  @override
+  Future<UserData> sendMetadataPostRegistration(
+      UserRegistrationDetails details) async {
+    assert(details.name.isNotEmpty);
+    assert(details.username.isNotEmpty);
+    final Map<String, dynamic> _body = <String, dynamic>{
+      'email': details.email,
+      'name': details.name,
+      'bio': details.bio,
+      'username': details.username,
+      'website': details.website,
+      'gender': details.gender,
+      'location': details.location,
+      'profile_picture': details.profileImage,
+    };
+
+    final http.Response response = await client.postWithoutEncoding(
+      '/users',
+      body: _body,
+    );
+    logger.logDebug(response.body);
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    final UserData _userData = UserData.fromMap(_responseMap);
+    return _userData;
   }
 }

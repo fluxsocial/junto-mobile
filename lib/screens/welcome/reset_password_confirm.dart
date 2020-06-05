@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
@@ -88,20 +89,23 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
     if (await _validatePasswords()) {
       try {
         await Provider.of<AuthRepo>(context, listen: false).resetPassword(
-          {
-            "password": _newPassword.value.text,
-            "confirm_password": _confirmPassword.value.text,
-            "verification_code": int.parse(_verificationCode.value.text),
-            "email": widget.email,
-          },
+          ResetPasswordData(
+            widget.email,
+            _newPassword.value.text,
+            _verificationCode.value.text,
+          ),
         );
+
         await showFeedback(
           context,
           message: "Password successfully reset!",
         );
         //TODO: don't replace with welcome route
-        widget.signInController.animateToPage(0,
-            duration: Duration(milliseconds: 300), curve: Curves.decelerate);
+        widget.signInController.animateToPage(
+          0,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.decelerate,
+        );
       } catch (error) {
         print(error.message);
         showDialog(
