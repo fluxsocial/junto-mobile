@@ -6,8 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_state.dart';
@@ -55,6 +53,7 @@ class WelcomeState extends State<Welcome> {
   int _currentIndex;
 
   AuthRepo authRepo;
+  UserRepo userRepo;
 
   TextEditingController nameController;
   TextEditingController userNameController;
@@ -185,6 +184,7 @@ class WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     authRepo = Provider.of<AuthRepo>(context, listen: false);
+    userRepo = Provider.of<UserRepo>(context, listen: false);
     return WillPopScope(
       onWillPop: _animateOnBackPress,
       child: BlocListener<AuthBloc, AuthState>(
@@ -336,8 +336,7 @@ class WelcomeState extends State<Welcome> {
           JuntoLoader.showLoader(context, color: Colors.transparent);
           // ensure username is not taken or reserved
 
-          final usernameAvailable =
-              await authRepo.usernameAvailable(username: username);
+          final usernameAvailable = await userRepo.usernameAvailable(username);
           JuntoLoader.hide();
 
           if (!usernameAvailable) {

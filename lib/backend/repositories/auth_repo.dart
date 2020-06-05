@@ -6,29 +6,17 @@ import 'package:junto_beta_mobile/models/models.dart';
 
 class AuthRepo {
   const AuthRepo(
-    this.authService,
-    this.userRepo, {
+    this.authService, {
     this.onLogout,
   });
 
   final AuthenticationService authService;
-  final UserRepo userRepo;
   final void Function() onLogout;
 
   Future<bool> isLoggedIn() async {
     try {
       final value = await authService.isLoggedIn();
       return value.wasSuccessful;
-    } catch (e) {
-      logger.logException(e);
-      return false;
-    }
-  }
-
-  Future<bool> usernameAvailable({String username}) async {
-    try {
-      final value = await userRepo.usernameAvailable(username ?? '');
-      return value;
     } catch (e) {
       logger.logException(e);
       return false;

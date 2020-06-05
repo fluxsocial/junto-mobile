@@ -65,7 +65,7 @@ class Backend {
       final ImageHandler imageHandler = DeviceImageHandler();
       return Backend._(
           searchRepo: SearchRepo(searchService),
-          authRepo: AuthRepo(authService, userRepo, onLogout: () async {
+          authRepo: AuthRepo(authService, onLogout: () async {
             await themesProvider.reset();
             await dbService.wipe();
           }),
@@ -92,7 +92,7 @@ class Backend {
     final SearchService searchService = MockSearch();
     final ImageHandler imageHandler = MockedImageHandler();
     return Backend._(
-      authRepo: AuthRepo(authService, null, onLogout: () {}),
+      authRepo: AuthRepo(authService, onLogout: () {}),
       userRepo: UserRepo(userService, null, null, expressionService),
       collectiveProvider: null,
       groupsProvider: GroupRepo(groupService, userService),
