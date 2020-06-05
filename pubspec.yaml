@@ -46,6 +46,7 @@ dependencies:
   custom_refresh_indicator: ^0.8.0+1
   flutter_staggered_grid_view: 0.3.0
   image: 2.1.12
+  flutter_aws_amplify_cognito: 1.0.0+7
 
 dev_dependencies:
   test: any
@@ -55,6 +56,13 @@ dev_dependencies:
   effective_dart: 1.2.1
 dependency_overrides:
   path: 1.7.0
+  # Overriding due to crash on iOS https://github.com/agnostech/flutter_amplify/pull/12
+  flutter_aws_amplify_cognito:
+    git:
+      url: https://github.com/orestesgaolin/flutter_amplify.git
+      path: flutter_aws_amplify_cognito
+      ref: a7fa4b3
+
 flutter:
   uses-material-design: true
 
