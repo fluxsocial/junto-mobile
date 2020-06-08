@@ -10,17 +10,19 @@ import 'package:provider/provider.dart';
 
 import 'comment_open_body.dart';
 import 'comment_open_bottom.dart';
-import 'comment_open_parent.dart';
+import 'comment_open_parent/comment_open_parent.dart';
 import 'comment_open_top.dart';
 
 class CommentOpen extends StatefulWidget {
   const CommentOpen({
     @required this.comment,
     @required this.userAddress,
+    @required this.parent,
   });
 
   final Comment comment;
   final String userAddress;
+  final dynamic parent;
 
   @override
   State<StatefulWidget> createState() {
@@ -117,7 +119,10 @@ class CommentOpenState extends State<CommentOpen> {
               controller: _scrollController,
               children: <Widget>[
                 // Comment Parent
-                CommentOpenParent(comment: widget.comment),
+                CommentOpenParent(
+                  comment: widget.comment,
+                  parent: widget.parent,
+                ),
                 // Comment Open Top
                 CommentOpenTop(
                   comment: widget.comment,

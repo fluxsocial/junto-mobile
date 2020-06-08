@@ -36,6 +36,7 @@ class CommentPreview extends StatelessWidget with MemberValidation {
             builder: (BuildContext context) => CommentOpen(
               comment: comment,
               userAddress: userAddress,
+              parent: parent,
             ),
           ),
         );
