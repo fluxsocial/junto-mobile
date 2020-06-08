@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
+import 'package:junto_beta_mobile/widgets/action_items/comment_parent_action_items.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
@@ -63,37 +63,37 @@ class CommentOpenParent extends StatelessWidget {
           children: <Widget>[
             Container(
               margin: const EdgeInsets.only(bottom: 10),
-              padding: const EdgeInsets.only(
-                left: 10,
-              ),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        MemberAvatar(
-                          profilePicture: parent.creator.profilePicture,
-                          diameter: 45,
-                        ),
-                        const SizedBox(width: 10),
-                        // profile name and handle
-
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                parent.creator.username,
-                                style: Theme.of(context).textTheme.subtitle1,
-                              ),
-                              Text(
-                                parent.creator.name,
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                            ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Row(
+                        children: <Widget>[
+                          MemberAvatar(
+                            profilePicture: parent.creator.profilePicture,
+                            diameter: 45,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 10),
+                          // profile name and handle
+
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  parent.creator.username,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                ),
+                                Text(
+                                  parent.creator.name,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -102,8 +102,9 @@ class CommentOpenParent extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          builder: (BuildContext context) => CommentActionItems(
-                            comment: comment,
+                          builder: (BuildContext context) =>
+                              CommentParentActionItems(
+                            parent: parent,
                             userAddress: user.userAddress,
                             source: 'open',
                           ),
@@ -122,27 +123,28 @@ class CommentOpenParent extends StatelessWidget {
                     ),
                   ]),
             ),
-            Row(
-              children: <Widget>[
-                Container(
-                  width: 45,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                        color: Theme.of(context).dividerColor,
-                        width: 1,
-                      ),
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    width: 65,
+                    height: 100,
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      'assets/images/junto-mobile__line.png',
+                      color: Theme.of(context).dividerColor,
                     ),
                   ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: _buildBody(),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: _buildBody(),
+                    ),
                   ),
-                ),
-              ],
-            )
+                ],
+              ),
+            ),
           ],
         ),
       );

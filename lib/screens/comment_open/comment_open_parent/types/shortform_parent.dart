@@ -22,6 +22,7 @@ class ShortformParent extends StatelessWidget {
         horizontal: 20.0,
         vertical: 40.0,
       ),
+      width: MediaQuery.of(context).size.width,
       child: Text(
         _body,
         style: TextStyle(
