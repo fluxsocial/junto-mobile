@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
+import 'types/audio_parent.dart';
 import 'types/dynamic_parent.dart';
 import 'types/photo_parent.dart';
 import 'types/shortform_parent.dart';
@@ -36,7 +37,7 @@ class CommentOpenParent extends StatelessWidget {
           );
           break;
         case 'AudioForm':
-          return DynamicParent(
+          return AudioParent(
             expression: parent,
           );
           break;
