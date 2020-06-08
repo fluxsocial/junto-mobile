@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 
 class DynamicParent extends StatelessWidget {
   DynamicParent({this.expression});
 
-  final ExpressionResponse expression;
+  final dynamic expression;
   @override
   Widget build(BuildContext context) {
     return Container(
