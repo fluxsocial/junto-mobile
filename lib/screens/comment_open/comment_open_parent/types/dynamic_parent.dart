@@ -19,6 +19,7 @@ class DynamicParent extends StatelessWidget {
         horizontal: 20,
         vertical: 20,
       ),
+      width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

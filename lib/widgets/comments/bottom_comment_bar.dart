@@ -42,7 +42,7 @@ class BottomCommentBarState extends State<BottomCommentBar> {
           widget.expressionAddress,
           'LongForm',
           LongFormExpression(
-            title: 'Expression Comment',
+            title: '',
             body: commentController.value.text.trim(),
           ).toMap(),
         );
