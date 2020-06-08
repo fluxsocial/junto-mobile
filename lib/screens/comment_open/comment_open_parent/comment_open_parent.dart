@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 import 'types/dynamic_parent.dart';
+import 'types/shortform_parent.dart';
 
 class CommentOpenParent extends StatelessWidget {
   const CommentOpenParent({
@@ -16,7 +17,7 @@ class CommentOpenParent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _buildBody() {
+    Widget _buildBody() {
       switch (parent.type) {
         case 'LongForm':
           return DynamicParent(
@@ -24,7 +25,7 @@ class CommentOpenParent extends StatelessWidget {
           );
           break;
         case 'ShortForm':
-          return DynamicParent(
+          return ShortformParent(
             expression: parent,
           );
           break;
@@ -39,9 +40,9 @@ class CommentOpenParent extends StatelessWidget {
           );
           break;
       }
+      return SizedBox();
     }
 
-    print(parent.type);
     return Container(
       padding: const EdgeInsets.only(
         left: 10,
