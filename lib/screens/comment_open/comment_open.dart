@@ -36,6 +36,9 @@ class CommentOpenState extends State<CommentOpen> {
   // scroll controller for expression open list view
   ScrollController _scrollController;
 
+  // Focus node for comment text fioeld
+  FocusNode _focusNode;
+
   // make comments visibility
   void _openComments() {
     setState(() {
@@ -86,9 +89,17 @@ class CommentOpenState extends State<CommentOpen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    _focusNode.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    _focusNode = FocusNode();
   }
 
   @override
@@ -137,6 +148,7 @@ class CommentOpenState extends State<CommentOpen> {
             openComments: _openComments,
             refreshComments: _refreshComments,
             scrollToBottom: _scrollToBottom,
+            focusNode: _focusNode,
           ),
         ],
       ),
