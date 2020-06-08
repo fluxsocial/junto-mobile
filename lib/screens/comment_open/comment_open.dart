@@ -1,14 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
-import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
+import 'package:junto_beta_mobile/widgets/comments/bottom_comment_bar.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/comments/comments_list.dart';
+import 'package:provider/provider.dart';
 
-class CommentOpen extends StatelessWidget {
+import 'comment_open_body.dart';
+import 'comment_open_bottom.dart';
+import 'comment_open_parent.dart';
+import 'comment_open_top.dart';
+
+class CommentOpen extends StatefulWidget {
   const CommentOpen({
     @required this.comment,
     @required this.parent,
@@ -18,6 +23,75 @@ class CommentOpen extends StatelessWidget {
   final Comment comment;
   final ExpressionResponse parent;
   final String userAddress;
+
+  @override
+  State<StatefulWidget> createState() {
+    return CommentOpenState();
+  }
+}
+
+class CommentOpenState extends State<CommentOpen> {
+  Future<QueryResults<Comment>> futureComments;
+  //  whether the comments are visible or not
+  bool commentsVisible = false;
+
+  // scroll controller for expression open list view
+  ScrollController _scrollController;
+
+  // make comments visibility
+  void _openComments() {
+    setState(() {
+      commentsVisible = true;
+    });
+  }
+
+  // make comments invisible
+  void _closeComments() {
+    setState(() {
+      commentsVisible = false;
+    });
+  }
+
+  // toggle comments visibility
+  void _showComments() {
+    if (commentsVisible == false) {
+      _openComments();
+    } else if (commentsVisible == true) {
+      _closeComments();
+    }
+  }
+
+  Future<void> _refreshComments() async {
+    setState(
+      () {
+        futureComments = Provider.of<ExpressionRepo>(context, listen: false)
+            .getExpressionsComments(widget.comment.address);
+      },
+    );
+  }
+
+  // scroll to bottom of list
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeIn,
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    futureComments = Provider.of<ExpressionRepo>(context, listen: false)
+        .getExpressionsComments(widget.comment.address);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,135 +104,55 @@ class CommentOpen extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: ListView(
+              controller: _scrollController,
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                  child: Text(
-                    'in response to ${parent.creator.name}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).primaryColorLight,
-                      fontSize: 14,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                        width: .75,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          color: Colors.transparent,
-                          child: Row(children: <Widget>[
-                            MemberAvatar(
-                              profilePicture: comment.creator.profilePicture,
-                              diameter: 45,
-                            ),
-                            const SizedBox(width: 10),
-
-                            // profile name and handle
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    comment.creator.username,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                  Text(
-                                    comment.creator.name,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ]),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            builder: (BuildContext context) =>
-                                CommentActionItems(
-                              comment: comment,
-                              userAddress: userAddress,
-                              source: 'open',
-                            ),
-                          );
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.all(5),
-                          alignment: Alignment.centerRight,
-                          child: Icon(
-                            CustomIcons.morevertical,
-                            color: Theme.of(context).primaryColor,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          comment.expressionData.body.trim(),
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                      // Comment Parent
+                      CommentOpenParent(comment: widget.comment),
+                      // Comment Open Top
+                      CommentOpenTop(
+                        comment: widget.comment,
+                        userAddress: widget.userAddress,
+                      ),
+                      // Comment Body
+                      CommentOpenBody(
+                        comment: widget.comment,
+                      ),
+                      // Comment Bottom
+                      CommentOpenBottom(
+                        comment: widget.comment,
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 7.5),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: JuntoStyles.horizontalPadding,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                parseDate(
-                                  context,
-                                  comment.createdAt,
-                                ).toLowerCase(),
-                                textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.overline,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                // List of comments
+                CommentsList(
+                  commentsVisible: commentsVisible,
+                  expression: widget.comment,
+                  userAddress: widget.userAddress,
+                  futureComments: futureComments,
+                  showComments: _showComments,
+                ),
               ],
             ),
+          ),
+          // Reply Widget
+          BottomCommentBar(
+            expressionAddress: widget.comment.address,
+            openComments: _openComments,
+            refreshComments: _refreshComments,
+            scrollToBottom: _scrollToBottom,
           ),
         ],
       ),
