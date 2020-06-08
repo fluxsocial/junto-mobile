@@ -35,7 +35,6 @@ class CommentPreview extends StatelessWidget with MemberValidation {
           CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => CommentOpen(
               comment: comment,
-              parent: parent,
               userAddress: userAddress,
             ),
           ),

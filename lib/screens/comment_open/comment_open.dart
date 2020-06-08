@@ -16,12 +16,10 @@ import 'comment_open_top.dart';
 class CommentOpen extends StatefulWidget {
   const CommentOpen({
     @required this.comment,
-    @required this.parent,
     @required this.userAddress,
   });
 
   final Comment comment;
-  final ExpressionResponse parent;
   final String userAddress;
 
   @override
@@ -104,37 +102,23 @@ class CommentOpenState extends State<CommentOpen> {
         children: <Widget>[
           Expanded(
             child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: _scrollController,
               children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Theme.of(context).dividerColor,
-                        width: .75,
-                      ),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Comment Parent
-                      CommentOpenParent(comment: widget.comment),
-                      // Comment Open Top
-                      CommentOpenTop(
-                        comment: widget.comment,
-                        userAddress: widget.userAddress,
-                      ),
-                      // Comment Body
-                      CommentOpenBody(
-                        comment: widget.comment,
-                      ),
-                      // Comment Bottom
-                      CommentOpenBottom(
-                        comment: widget.comment,
-                      ),
-                    ],
-                  ),
+                // Comment Parent
+                CommentOpenParent(comment: widget.comment),
+                // Comment Open Top
+                CommentOpenTop(
+                  comment: widget.comment,
+                  userAddress: widget.userAddress,
+                ),
+                // Comment Body
+                CommentOpenBody(
+                  comment: widget.comment,
+                ),
+                // Comment Bottom
+                CommentOpenBottom(
+                  comment: widget.comment,
                 ),
                 // List of comments
                 CommentsList(
