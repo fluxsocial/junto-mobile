@@ -122,7 +122,6 @@ class CommentOpenState extends State<CommentOpen> {
                 CommentOpenParent(
                   comment: widget.comment,
                   parent: widget.parent,
-                  userAddress: widget.userAddress,
                 ),
                 // Comment Open Top
                 CommentOpenTop(
