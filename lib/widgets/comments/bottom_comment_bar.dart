@@ -15,11 +15,13 @@ class BottomCommentBar extends StatefulWidget {
     @required this.refreshComments,
     @required this.openComments,
     @required this.scrollToBottom,
+    @required this.focusNode,
   }) : super(key: key);
   final String expressionAddress;
   final Function refreshComments;
   final Function openComments;
   final Function scrollToBottom;
+  final FocusNode focusNode;
 
   @override
   BottomCommentBarState createState() => BottomCommentBarState();
@@ -46,7 +48,7 @@ class BottomCommentBarState extends State<BottomCommentBar> {
         );
         commentController.clear();
         JuntoLoader.hide();
-        // _focusNode.unfocus();
+        widget.focusNode.unfocus();
         await showFeedback(
           context,
           icon: Icon(
@@ -115,7 +117,7 @@ class BottomCommentBarState extends State<BottomCommentBar> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
-                        // focusNode: widget.focusNode,
+                        focusNode: widget.focusNode,
                         controller: commentController,
                         decoration: InputDecoration(
                           border: InputBorder.none,

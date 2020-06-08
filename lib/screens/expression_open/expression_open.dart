@@ -71,7 +71,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   @override
   void dispose() {
     commentController.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -208,6 +207,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   openComments: _openComments,
                   refreshComments: _refreshComments,
                   scrollToBottom: _scrollToBottom,
+                  focusNode: _focusNode,
                 ),
               ],
             ),
