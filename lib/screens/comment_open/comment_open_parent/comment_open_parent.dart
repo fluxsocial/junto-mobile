@@ -127,18 +127,21 @@ class CommentOpenParent extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Container(
-                    width: 65,
-                    height: 100,
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      'assets/images/junto-mobile__line.png',
-                      color: Theme.of(context).dividerColor,
-                    ),
-                  ),
+                  const SizedBox(width: 32.5),
                   Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: BorderSide(
+                            color: Theme.of(context).dividerColor,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      padding: const EdgeInsets.only(
+                        left: 32.5,
+                        right: 10,
+                      ),
                       child: _buildBody(),
                     ),
                   ),
