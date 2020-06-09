@@ -124,7 +124,7 @@ class CommentOpenParent extends StatelessWidget {
                   ]),
             ),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(width: 32.5),
                 Flexible(
