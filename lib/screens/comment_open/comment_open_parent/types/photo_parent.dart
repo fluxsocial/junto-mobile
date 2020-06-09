@@ -11,14 +11,14 @@ class PhotoParent extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: MediaQuery.of(context).size.width / 3 * 2,
+        height: MediaQuery.of(context).size.width / 2,
         width: MediaQuery.of(context).size.width,
         child: ImageWrapper(
           imageUrl: expression.expressionData.image,
           placeholder: (BuildContext context, String _) {
             return Container(
               color: Theme.of(context).dividerColor,
-              height: MediaQuery.of(context).size.width / 3 * 2,
+              height: MediaQuery.of(context).size.width / 2,
               width: MediaQuery.of(context).size.width,
             );
           },

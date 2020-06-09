@@ -83,9 +83,7 @@ class CommentParentActionItems extends StatelessWidget {
                   .deleteExpression(parent.address);
 
               JuntoLoader.hide();
-              Navigator.pop(context);
               if (source == 'open') {
-                Navigator.pop(context);
                 Navigator.pushReplacement(
                   context,
                   FadeRoute<void>(
