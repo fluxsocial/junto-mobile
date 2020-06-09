@@ -123,30 +123,28 @@ class CommentOpenParent extends StatelessWidget {
                     ),
                   ]),
             ),
-            IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  const SizedBox(width: 32.5),
-                  Flexible(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                            width: 2,
-                          ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(width: 32.5),
+                Flexible(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: 2,
                         ),
                       ),
-                      padding: const EdgeInsets.only(
-                        left: 32.5,
-                        right: 10,
-                      ),
-                      child: _buildBody(),
                     ),
+                    padding: const EdgeInsets.only(
+                      left: 32.5,
+                      right: 10,
+                    ),
+                    child: _buildBody(),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
