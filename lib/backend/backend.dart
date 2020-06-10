@@ -21,6 +21,7 @@ import 'package:junto_beta_mobile/backend/services/image_handler.dart';
 import 'package:junto_beta_mobile/backend/services/notification_service.dart';
 import 'package:junto_beta_mobile/backend/services/search_service.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
+import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 export 'package:junto_beta_mobile/backend/repositories.dart';
@@ -40,6 +41,7 @@ class Backend {
     this.db,
     this.themesProvider,
     this.onBoardingRepo,
+    this.dataProvider,
   });
 
   // ignore: missing_return
@@ -65,6 +67,8 @@ class Backend {
         notificationRepo,
         dbService,
       );
+      final appRepo = AppRepo();
+      final dataProvider = UserDataProvider(appRepo);
       final ImageHandler imageHandler = DeviceImageHandler();
       return Backend._(
           searchRepo: SearchRepo(searchService),
@@ -80,10 +84,11 @@ class Backend {
           expressionRepo:
               ExpressionRepo(expressionService, dbService, imageHandler),
           notificationRepo: notificationRepo,
-          appRepo: AppRepo(),
+          appRepo: appRepo,
           db: dbService,
+          dataProvider: dataProvider,
           themesProvider: themesProvider,
-          onBoardingRepo: OnBoardingRepo());
+          onBoardingRepo: OnBoardingRepo(dataProvider));
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -122,4 +127,5 @@ class Backend {
   final LocalCache db;
   final ThemesProvider themesProvider;
   final OnBoardingRepo onBoardingRepo;
+  final UserDataProvider dataProvider;
 }
