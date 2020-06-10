@@ -29,10 +29,14 @@ class JuntoDrawer extends StatefulWidget {
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
-  Future<void> _onLogOut() async {
+  void _onLogOut() {
     try {
       context.bloc<AuthBloc>().add(LogoutEvent());
-      Navigator.of(context).pushReplacement(Welcome.route());
+      Navigator.pushAndRemoveUntil(
+        context,
+        Welcome.route(),
+        (route) => route.settings.name == "/",
+      );
     } catch (e) {
       logger.logException(e);
     }
