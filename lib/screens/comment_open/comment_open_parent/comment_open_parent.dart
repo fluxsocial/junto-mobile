@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/action_items/comment_parent_action_items.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
@@ -66,33 +67,48 @@ class CommentOpenParent extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: <Widget>[
-                          MemberAvatar(
-                            profilePicture: parent.creator.profilePicture,
-                            diameter: 45,
-                          ),
-                          const SizedBox(width: 10),
-                          // profile name and handle
-
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  parent.creator.username,
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                ),
-                                Text(
-                                  parent.creator.name,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<Widget>(
+                            builder: (BuildContext context) => JuntoMember(
+                              profile: parent.creator,
                             ),
                           ),
-                        ],
+                        );
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Row(
+                          children: <Widget>[
+                            MemberAvatar(
+                              profilePicture: parent.creator.profilePicture,
+                              diameter: 45,
+                            ),
+                            const SizedBox(width: 10),
+                            // profile name and handle
+
+                            Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    parent.creator.username,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  Text(
+                                    parent.creator.name,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     GestureDetector(
