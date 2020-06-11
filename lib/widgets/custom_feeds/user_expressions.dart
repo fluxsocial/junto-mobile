@@ -55,7 +55,6 @@ class _UserExpressionsState extends State<UserExpressions> {
           final results = state.expressions;
           return CustomRefresh(
             refresh: () async {
-              await Future.delayed(Duration(milliseconds: 500));
               await context.bloc<DenBloc>().add(RefreshDen());
             },
             child: Container(

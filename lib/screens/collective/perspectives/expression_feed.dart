@@ -55,7 +55,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
               ),
               pinned: false,
               floating: true,
-            ),
+            ), 
           ],
           body: CollectiveFeedRefresh(
             child: CustomScrollView(
