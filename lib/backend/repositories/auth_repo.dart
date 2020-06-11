@@ -1,8 +1,8 @@
+import 'package:corsac_jwt/corsac_jwt.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 
 class AuthRepo {
   const AuthRepo(
@@ -54,32 +54,31 @@ class AuthRepo {
   //   return _data;
   // }
 
-  /// Authenticates a registered user. Returns the [UserProfile]  for the
+  /// Authenticates a registered user. Returns the [address] for the
   /// given user.
-  Future<void> loginUser(String username, String password) async {
+  Future<String> loginUser(String username, String password) async {
     try {
       logger.logInfo('Logging user in');
       final result = await authService
           .loginUser(SignInData(username: username, password: password));
       if (result.wasSuccessful) {
-        //TODO: fetch user data
-        // final box = await Hive.box(HiveBoxes.kAppBox);
-        // await box.put(HiveKeys.kUserId, _user.user.address);
-        // await box.put(
-        //   HiveKeys.kUserFollowPerspectiveId,
-        //   _user.userPerspective.address,
-        // );
-        // final Map<String, dynamic> _userToMap = _user.toMap();
-        // final String _userMapToString = json.encode(_userToMap);
-        // await box.put(HiveKeys.kUserData, _userMapToString);
-        // return _user;
+        return await getAddress();
       } else {
         //TODO: handle unsuccesful login
+        return null;
       }
     } catch (e, s) {
       logger.logException(e, s, 'Error during user login');
       rethrow;
     }
+  }
+
+  Future<String> getAddress() async {
+    final token = await authService.getIdToken();
+    final jwt = JWT.parse(token);
+    final subject = jwt.subject;
+    final address = subject;
+    return address;
   }
 
   // Request verification code to reset password

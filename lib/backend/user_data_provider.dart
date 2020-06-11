@@ -51,22 +51,20 @@ class UserDataProvider extends ChangeNotifier {
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
     final box = await Hive.box(HiveBoxes.kAppBox);
-    await box.delete(HiveKeys.kUserData);
+    // await box.delete(HiveKeys.kUserData);
     final userMap = user.toMap();
     final userData = jsonEncode(userMap);
     await box.put(HiveKeys.kUserData, userData);
-    await box.delete(HiveKeys.kUserId);
+    // await box.delete(HiveKeys.kUserId);
     await box.put(HiveKeys.kUserId, user.user.address);
   }
 
   /// Updates the user information with [user]
   void updateUser(UserData user) {
     try {
-      assert(user.user.address == userAddress);
-      logger.logDebug(
-          'Current user address is equal to the updated user address: ${user.user.address == userAddress}');
       _setUserInformation(user);
       userProfile = user;
+      userAddress = user.user.address;
       notifyListeners();
     } catch (e) {
       logger.logException(e);

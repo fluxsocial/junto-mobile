@@ -52,7 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       logger.logInfo('User signed up');
       // final login = await authRepo.loginUser(details);
-      await authRepo.loginUser(event.username, event.password);
+      final address = await authRepo.loginUser(event.username, event.password);
       final userData =
           await userRepo.sendMetadataPostRegistration(event.details);
 
@@ -60,12 +60,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await userRepo.updateProfilePicture(
             userData.user.address, event.profilePicture);
       }
-
+      await userDataProvider.updateUser(userData);
       await userDataProvider.initialize();
 
       yield AuthState.agreementsRequired(userData);
     } on JuntoException catch (e) {
       logger.logError('Error during sign up: ${e.message}');
+      await authRepo.logoutUser();
 
       yield AuthState.unauthenticated();
       yield AuthState.unauthenticated(error: true, errorMessage: e.message);
@@ -88,7 +89,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoginEventState(LoginEvent event) async* {
     yield AuthState.unauthenticated(loading: true);
     try {
-      await authRepo.loginUser(event.username, event.password);
+      final address = await authRepo.loginUser(event.username, event.password);
+      final user = await userRepo.getUser(address);
+      await userDataProvider.updateUser(user);
       await userDataProvider.initialize();
 
       yield AuthState.authenticated();
