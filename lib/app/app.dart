@@ -42,7 +42,10 @@ class JuntoApp extends StatelessWidget {
           lazy: false,
         ),
         ChangeNotifierProvider<UserDataProvider>(
-          create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
+          create: (ctx) => UserDataProvider(
+            ctx.repository<AppRepo>(),
+            ctx.repository<UserRepo>(),
+          ),
           lazy: false,
         ),
       ],
