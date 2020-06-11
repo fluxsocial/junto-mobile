@@ -100,10 +100,11 @@ class JuntoHttp {
     bool authenticated = true,
   }) async {
     final dynamic jsonBody = convert.json.encode(body);
+    final fullHeaders =
+        await _withPersistentHeaders(headers, authenticated: authenticated);
     return httpClient.post(
       _encodeUrl(resource),
-      headers:
-          await _withPersistentHeaders(headers, authenticated: authenticated),
+      headers: fullHeaders,
       body: jsonBody,
     );
   }
