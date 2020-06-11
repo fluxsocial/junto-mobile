@@ -64,7 +64,11 @@ class AuthRepo {
       if (result.wasSuccessful) {
         return await getAddress();
       } else {
-        //TODO: handle unsuccesful login
+        if (result.error == SignInResultError.AlreadyLoggedIn) {
+          logger.logInfo('User already logged in, loggin out and relogging');
+          await logoutUser();
+          return await loginUser(username, password);
+        }
         return null;
       }
     } catch (e, s) {

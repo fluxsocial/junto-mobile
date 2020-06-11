@@ -10,6 +10,7 @@ enum SignInResultError {
   UserDoesNotExists,
   InvalidPassword,
   PasswordResetRequired,
+  AlreadyLoggedIn,
   UnknownError,
 }
 
