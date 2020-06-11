@@ -115,7 +115,7 @@ class WelcomeState extends State<Welcome> {
     final password = passwordController.text;
     final email = emailController.text.trim();
     final name = nameController.text.trim();
-    final location = websiteController.text.trim();
+    final location = locationController.text.trim();
     final website = websiteController.text.trim();
     final gender = pronounController.text.trim();
 
