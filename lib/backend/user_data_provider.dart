@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -12,11 +13,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserDataProvider extends ChangeNotifier {
   UserDataProvider(
     this.appRepository,
+    this.userRepository,
   ) {
     initialize();
   }
 
   final AppRepo appRepository;
+  final UserRepo userRepository;
 
   String userAddress;
   UserData userProfile;
@@ -43,6 +46,8 @@ class UserDataProvider extends ChangeNotifier {
         }
 
         notifyListeners();
+      } else {
+        // final user = userRepository.getUser(userAddress);
       }
     } catch (e) {
       logger.logException(e);
