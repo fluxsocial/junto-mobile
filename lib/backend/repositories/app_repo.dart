@@ -36,8 +36,9 @@ class AppRepo extends ChangeNotifier {
 
   /// Allows the layout type to be updated and saved.
   Future<void> setLayout(bool value) async {
-    await _appBox.put(HiveKeys.kLayoutView, value);
     _twoColumn = value;
+    notifyListeners();
+    await _appBox.put(HiveKeys.kLayoutView, value);
     return;
   }
 

@@ -12,12 +12,9 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/comments/comments_list.dart';
+import 'package:junto_beta_mobile/widgets/comments/bottom_comment_bar.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'expressions/audio_open.dart';
@@ -74,7 +71,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   @override
   void dispose() {
     commentController.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -101,81 +97,39 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
-  // Bring the focus back to the TextField
-  // ignore: unused_element
-  void _focusTextField() {
-    FocusScope.of(context).requestFocus(_focusNode);
-  }
-
+  // open comments
   void _openComments() {
     setState(() {
       commentsVisible = true;
     });
   }
 
-  void _closeComment() {
+  // close comments
+  void _closeComments() {
     setState(() {
       commentsVisible = false;
     });
   }
 
+  // toggle comments visibility
   void _showComments() {
     if (commentsVisible == false) {
       _openComments();
     } else if (commentsVisible == true) {
-      _closeComment();
+      _closeComments();
     }
   }
 
-  Future<void> _createComment() async {
-    if (commentController.value.text != '') {
-      JuntoLoader.showLoader(context);
-      await Future.delayed(Duration(milliseconds: 500));
-      try {
-        await Provider.of<ExpressionRepo>(context, listen: false)
-            .postCommentExpression(
-          widget.expression.address,
-          'LongForm',
-          LongFormExpression(
-            title: 'Expression Comment',
-            body: commentController.value.text.trim(),
-          ).toMap(),
-        );
-        commentController.clear();
-        JuntoLoader.hide();
-        _focusNode.unfocus();
-        await showFeedback(
-          context,
-          icon: Icon(
-            CustomIcons.newcreate,
-            size: 33,
-            color: Theme.of(context).primaryColor,
-          ),
-          message: 'Comment Created',
-        );
-        await _refreshComments();
-        await _openComments();
-        await Future.delayed(Duration(milliseconds: 100));
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeIn,
-        );
-      } catch (error) {
-        debugPrint('Error posting comment $error');
-        JuntoLoader.hide();
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => const SingleActionDialog(
-            dialogText: 'Hmm, something went wrong.',
-          ),
-        );
-      }
-    } else {
-      return;
-    }
+  // scroll to bottom of list
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeIn,
+    );
   }
 
+  // refresh comments
   Future<void> _refreshComments() async {
     setState(
       () {
@@ -185,6 +139,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     );
   }
 
+  // toggle expression context view
   void toggleExpressionContext() {
     if (expressionContextVisible) {
       setState(() {
@@ -220,117 +175,44 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         controller: _scrollController,
                         children: <Widget>[
+                          // Expression Top
                           ExpressionOpenTop(
                             expression: widget.expression,
                             userAddress: widget.userAddress,
                             deleteExpression: widget.deleteExpression,
                           ),
+                          // Expression Body
                           _buildExpression(),
+                          // Expression Open Bottom
                           ExpressionOpenBottom(
                             widget.expression,
                             toggleExpressionContext,
                           ),
-                          FutureBuilder<QueryResults<Comment>>(
-                            future: futureComments,
-                            builder: (
-                              BuildContext context,
-                              AsyncSnapshot<QueryResults<Comment>> snapshot,
-                            ) {
-                              if (snapshot.hasError) {
-                                return Container(
-                                  child:
-                                      const Text('Hmm, something went wrong'),
-                                );
-                              }
-
-                              if (snapshot.hasData) {
-                                if (snapshot.data.results.isNotEmpty) {
-                                  return Column(
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: _showComments,
-                                        child: Container(
-                                          color: Colors.transparent,
-                                          margin: EdgeInsets.only(
-                                            bottom: commentsVisible ? 0 : 15,
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 15,
-                                          ),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Text(
-                                                commentsVisible
-                                                    ? 'Hide replies'
-                                                    : 'Show replies (${snapshot.data.results.length})',
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              const SizedBox(width: 5),
-                                              if (!commentsVisible)
-                                                Icon(Icons.keyboard_arrow_down,
-                                                    size: 15,
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight),
-                                              if (commentsVisible)
-                                                Icon(Icons.keyboard_arrow_up,
-                                                    size: 15,
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: commentsVisible,
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          reverse: true,
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          itemCount:
-                                              snapshot.data.results.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return CommentPreview(
-                                              comment:
-                                                  snapshot.data.results[index],
-                                              parent: widget.expression,
-                                              userAddress: widget.userAddress,
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  return const SizedBox(height: 25);
-                                }
-                              }
-                              return Transform.translate(
-                                offset: const Offset(0.0, 50.0),
-                                child: JuntoProgressIndicator(),
-                              );
-                            },
-                          )
+                          // List of comments
+                          CommentsList(
+                            commentsVisible: commentsVisible,
+                            expression: widget.expression,
+                            userAddress: widget.userAddress,
+                            futureComments: futureComments,
+                            showComments: _showComments,
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                _BottomCommentBar(
-                  postComment: _createComment,
-                  commentController: commentController,
+                // Reply Widget
+                BottomCommentBar(
+                  expressionAddress: widget.expression.address,
+                  openComments: _openComments,
+                  refreshComments: _refreshComments,
+                  scrollToBottom: _scrollToBottom,
                   focusNode: _focusNode,
                 ),
               ],
             ),
           ),
+          // Expression Context
           AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
             opacity: expressionContextVisible ? 1.0 : 0.0,
@@ -402,100 +284,6 @@ class ExpressionContextChannelPreview extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class _BottomCommentBar extends StatefulWidget {
-  const _BottomCommentBar({
-    Key key,
-    @required this.focusNode,
-    @required this.commentController,
-    @required this.postComment,
-  }) : super(key: key);
-  final FocusNode focusNode;
-  final TextEditingController commentController;
-  final VoidCallback postComment;
-
-  @override
-  _BottomCommentBarState createState() => _BottomCommentBarState();
-}
-
-enum MessageType { regular, gif }
-
-class _BottomCommentBarState extends State<_BottomCommentBar> {
-  String selectedUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Container(
-        padding: const EdgeInsets.only(
-          left: 10,
-          right: 10,
-          top: 15.0,
-          bottom: 15.0,
-        ),
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              width: .5,
-              color: Theme.of(context).dividerColor,
-            ),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(left: 15),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                constraints: const BoxConstraints(maxHeight: 180),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        focusNode: widget.focusNode,
-                        controller: widget.commentController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'write a reply...',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: Theme.of(context).primaryColorLight,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        maxLines: null,
-                        cursorColor: Theme.of(context).primaryColor,
-                        cursorWidth: 2,
-                        style: Theme.of(context).textTheme.caption,
-                        textInputAction: TextInputAction.newline,
-                        textCapitalization: TextCapitalization.sentences,
-                        keyboardAppearance: Theme.of(context).brightness,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            GestureDetector(
-              onTap: widget.postComment,
-              child: Icon(
-                Icons.send,
-                size: 20,
-                color: Theme.of(context).primaryColor,
-              ),
-            )
-          ],
-        ),
       ),
     );
   }

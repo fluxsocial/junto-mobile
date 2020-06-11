@@ -88,6 +88,10 @@ class JuntoThemesPage extends StatelessWidget {
                 _ThemeSelector('rainbow'),
                 _ThemeSelector('aqueous'),
                 _ThemeSelector('royal'),
+                _ThemeSelector('fire'),
+                _ThemeSelector('forest'),
+                _ThemeSelector('sand'),
+                _ThemeSelector('dark'),
               ],
             ),
           )

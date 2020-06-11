@@ -85,6 +85,10 @@ flutter:
       fonts:
         - asset: assets/fonts/j_home_two.ttf
 
+    - family: j_home_three
+      fonts:
+        - asset: assets/fonts/j_home_three.ttf        
+
     - family: MyFlutterApp
       fonts:
         - asset: assets/fonts/MyFlutterApp.ttf
@@ -94,11 +98,19 @@ flutter:
     - assets/images/junto-mobile__themes--rainbow.png
     - assets/images/junto-mobile__themes--aqueous.png
     - assets/images/junto-mobile__themes--royal.png
-    - assets/images/junto-mobile__themes--night.png
+    - assets/images/junto-mobile__themes--fire.png
+    - assets/images/junto-mobile__themes--forest.png    
+    - assets/images/junto-mobile__themes--dark.png
+    - assets/images/junto-mobile__themes--sand.png
     - assets/images/junto-mobile__logo.png
+    - assets/images/junto-mobile__logo--white.png
     - assets/images/junto-mobile__logo--rainbow.png
     - assets/images/junto-mobile__logo--aqueous.png
     - assets/images/junto-mobile__logo--purpgold.png
+    - assets/images/junto-mobile__logo--sand.png
+    - assets/images/junto-mobile__logo--dark.png
+    - assets/images/junto-mobile__logo--fire.png    
+    - assets/images/junto-mobile__logo--forest.png
     - assets/images/junto-mobile__outlinelogo--gradient.png
     - assets/images/junto-mobile__infinity.png
     - assets/images/junto-mobile__location.png
@@ -107,14 +119,20 @@ flutter:
     - assets/images/junto-mobile__double-up-arrow.png
     - assets/images/junto-mobile__double-down-arrow.png
     - assets/images/junto-mobile__menu.png
+    - assets/images/junto-mobile__line.png
     - assets/images/junto-mobile__filter.png
     - assets/images/junto-mobile__groups--placeholder.png
     - assets/images/junto-mobile__placeholder--notifications.png
     - assets/images/junto-mobile__placeholder--feed.png
     - assets/images/junto-mobile__waveform.png
+    - assets/images/junto-mobile__perspective--white.png    
     - assets/images/junto-mobile__perspective--rainbow.png
     - assets/images/junto-mobile__perspective--aqueous.png
     - assets/images/junto-mobile__perspective--purpgold.png
+    - assets/images/junto-mobile__perspective--sand.png
+    - assets/images/junto-mobile__perspective--fire.png
+    - assets/images/junto-mobile__perspective--forest.png    
+    - assets/images/junto-mobile__perspective--dark.png    
 
 flutter_intl:
   enabled: true

@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/screens/collective/collective_actions/create_p
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
@@ -45,18 +46,6 @@ class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
     );
   }
 
-  String logo(String theme) {
-    if (theme == 'rainbow' || theme == 'rainbow-night') {
-      return 'assets/images/junto-mobile__logo--rainbow.png';
-    } else if (theme == 'aqueous' || theme == 'aqueous-night') {
-      return 'assets/images/junto-mobile__logo--aqueous.png';
-    } else if (theme == 'royal' || theme == 'royal-night') {
-      return 'assets/images/junto-mobile__logo--purpgold.png';
-    } else {
-      return 'assets/images/junto-mobile__logo--rainbow.png';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
@@ -84,16 +73,7 @@ class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(
-                    width: 42,
-                    height: 42,
-                    alignment: Alignment.bottomLeft,
-                    color: Colors.transparent,
-                    child: Image.asset(
-                      logo(theme.themeName),
-                      height: 24,
-                    ),
-                  ),
+                  AppbarLogo(theme: theme),
                   Container(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,

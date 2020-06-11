@@ -4,7 +4,6 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
@@ -20,6 +19,7 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -120,141 +120,156 @@ class _JuntoLotusState extends State<JuntoLotus> {
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
-    return GestureDetector(
-      onHorizontalDragEnd: (dragDetails) {
-        _onDragEnd(context, dragDetails);
-      },
-      child: JuntoFilterDrawer(
-        leftDrawer: null,
-        rightMenu: JuntoDrawer(),
-        scaffold: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              BackgroundTheme(),
-              SafeArea(
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          color: Colors.transparent,
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  const SizedBox(),
-                                  GestureDetector(
-                                    onTap: showTutorial,
-                                    child: JuntoDescribedFeatureOverlay(
-                                      icon: OverlayInfoIcon(),
-                                      featureId: 'lotus_info_id',
-                                      oneFeature: true,
-                                      title:
-                                          "Welcome to Junto! You're looking at the app's tutorial, which you can open and close by clicking the question mark on the top right corner of your screen. To begin, this is the intention screen, your medium for navigation.",
-                                      learnMore: true,
-                                      learnMoreText: [
-                                        'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
-                                      ],
-                                      hasUpNext: false,
-                                      child: JuntoInfoIcon(
-                                          neutralBackground: false),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  vertical:
-                                      MediaQuery.of(context).size.height * .07,
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+    return Consumer<JuntoThemesProvider>(
+        builder: (BuildContext context, JuntoThemesProvider theme, child) {
+      return GestureDetector(
+        onHorizontalDragEnd: (dragDetails) {
+          _onDragEnd(context, dragDetails);
+        },
+        child: JuntoFilterDrawer(
+          leftDrawer: null,
+          rightMenu: JuntoDrawer(),
+          scaffold: Scaffold(
+            body: Stack(
+              children: <Widget>[
+                BackgroundTheme(),
+                SafeArea(
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                            ),
+                            color: Colors.transparent,
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Container(
-                                      child: Text(
-                                        'JUNTO',
-                                        style: TextStyle(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white.withOpacity(.8),
-                                          letterSpacing: 3.8,
+                                    const SizedBox(),
+                                    GestureDetector(
+                                      onTap: showTutorial,
+                                      child: JuntoDescribedFeatureOverlay(
+                                        icon: OverlayInfoIcon(),
+                                        featureId: 'lotus_info_id',
+                                        oneFeature: true,
+                                        title:
+                                            "Welcome to Junto! You're looking at the app's tutorial, which you can open and close by clicking the question mark on the top right corner of your screen. To begin, this is the intention screen, your medium for navigation.",
+                                        learnMore: true,
+                                        learnMoreText: [
+                                          'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
+                                        ],
+                                        hasUpNext: false,
+                                        child: JuntoInfoIcon(
+                                          neutralBackground: false,
+                                          theme: theme,
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical:
+                                        MediaQuery.of(context).size.height *
+                                            .07,
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                          'JUNTO',
+                                          style: TextStyle(
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.w400,
+                                            color: theme.themeName
+                                                    .contains('sand')
+                                                ? Color(0xff555555)
+                                                : Colors.white.withOpacity(.8),
+                                            letterSpacing: 3.8,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Column(
-                          children: <Widget>[
-                            LotusButton(
-                              label: s.lotus_collective,
-                              icon: CustomIcons.newcollective,
-                              onTap: () =>
-                                  _navigateTo(context, Screen.collective),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .5,
-                                    child: LotusButton(
-                                      label: s.lotus_packs,
-                                      icon: CustomIcons.newpacks,
-                                      iconSize: 38,
-                                      onTap: () =>
-                                          _navigateTo(context, Screen.packs),
-                                    ),
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .5,
-                                    child: LotusButton(
-                                      label: s.lotus_groups,
-                                      icon: CustomIcons.newcircles,
-                                      iconSize: 38,
-                                      onTap: () =>
-                                          _navigateTo(context, Screen.groups),
-                                    ),
-                                  ),
-                                ],
+                          Column(
+                            children: <Widget>[
+                              LotusButton(
+                                label: s.lotus_collective,
+                                icon: CustomIcons.newcollective,
+                                theme: theme,
+                                onTap: () =>
+                                    _navigateTo(context, Screen.collective),
                               ),
-                            ),
-                            LotusButton(
-                              label: s.lotus_create,
-                              icon: CustomIcons.newcreate,
-                              iconSize: 38,
-                              onTap: () => _navigateTo(context, Screen.create),
-                            ),
-                            const SizedBox(height: 25),
-                          ],
-                        )
-                      ],
+                              Container(
+                                color: Colors.transparent,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      child: LotusButton(
+                                        label: s.lotus_packs,
+                                        icon: CustomIcons.newpacks,
+                                        iconSize: 38,
+                                        theme: theme,
+                                        onTap: () =>
+                                            _navigateTo(context, Screen.packs),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      child: LotusButton(
+                                        label: s.lotus_groups,
+                                        icon: CustomIcons.newcircles,
+                                        theme: theme,
+                                        iconSize: 38,
+                                        onTap: () =>
+                                            _navigateTo(context, Screen.groups),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              LotusButton(
+                                label: s.lotus_create,
+                                icon: CustomIcons.newcreate,
+                                theme: theme,
+                                iconSize: 38,
+                                onTap: () =>
+                                    _navigateTo(context, Screen.create),
+                              ),
+                              const SizedBox(height: 25),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -279,6 +294,7 @@ class LotusButton extends StatelessWidget {
     @required this.label,
     @required this.icon,
     @required this.onTap,
+    @required this.theme,
     this.iconSize,
     Key key,
   }) : super(key: key);
@@ -286,6 +302,7 @@ class LotusButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final VoidCallback onTap;
+  final JuntoThemesProvider theme;
   final double iconSize;
 
   @override
@@ -310,13 +327,17 @@ class LotusButton extends StatelessWidget {
                     child: Icon(
                       icon,
                       size: iconSize ?? 45,
-                      color: Colors.white,
+                      color: theme.themeName.contains('sand')
+                          ? Color(0xff555555)
+                          : Colors.white,
                     ),
                   ),
                   Text(
                     label,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme.themeName.contains('sand')
+                          ? Color(0xff555555)
+                          : Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.4,

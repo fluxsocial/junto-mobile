@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
@@ -31,18 +32,6 @@ class _PacksListAppBarState extends State<PacksListAppBar> {
     if (repo.showPackTutorial) {
       showTutorial();
       repo.setViewed(HiveKeys.kShowPackTutorial, false);
-    }
-  }
-
-  String logo(String theme) {
-    if (theme == 'rainbow' || theme == 'rainbow-night') {
-      return 'assets/images/junto-mobile__logo--rainbow.png';
-    } else if (theme == 'aqueous' || theme == 'aqueous-night') {
-      return 'assets/images/junto-mobile__logo--aqueous.png';
-    } else if (theme == 'royal' || theme == 'royal-night') {
-      return 'assets/images/junto-mobile__logo--purpgold.png';
-    } else {
-      return 'assets/images/junto-mobile__logo--rainbow.png';
     }
   }
 
@@ -90,9 +79,8 @@ class _PacksListAppBarState extends State<PacksListAppBar> {
                     height: 42,
                     alignment: Alignment.bottomLeft,
                     color: Colors.transparent,
-                    child: Image.asset(
-                      logo(theme.themeName),
-                      height: 24,
+                    child: AppbarLogo(
+                      theme: theme,
                     ),
                   ),
                   Container(

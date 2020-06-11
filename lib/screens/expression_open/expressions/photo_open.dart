@@ -17,6 +17,7 @@ class PhotoOpen extends StatelessWidget {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width,
             child: ImageWrapper(
               imageUrl: photoExpression.expressionData.image,
               placeholder: (BuildContext context, String _) {
@@ -26,6 +27,7 @@ class PhotoOpen extends StatelessWidget {
                   color: Theme.of(context).dividerColor,
                   child: CachedNetworkImage(
                     imageUrl: photoExpression.thumbnailSmall,
+                    fit: BoxFit.cover,
                     cacheManager: CustomCacheManager(),
                   ),
                 );

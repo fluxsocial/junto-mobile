@@ -7,7 +7,7 @@ class ImageWrapper extends StatelessWidget {
     Key key,
     @required this.imageUrl,
     this.placeholder,
-    this.fit,
+    this.fit = BoxFit.cover,
     this.height,
     this.width,
   }) : super(key: key);

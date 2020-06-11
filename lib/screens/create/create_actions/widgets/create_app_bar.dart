@@ -24,6 +24,7 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         elevation: 0,
         titleSpacing: 0,
+        leading: BackButton(),
         title: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
