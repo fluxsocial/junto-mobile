@@ -119,7 +119,7 @@ class CommentOpenState extends State<CommentOpen> {
               controller: _scrollController,
               children: <Widget>[
                 // Comment Parent
-                CommentOpenParent(
+                CommentOpenParent( 
                   comment: widget.comment,
                   parent: widget.parent,
                 ),
