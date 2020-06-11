@@ -9,8 +9,12 @@ import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class UserRepo {
-  UserRepo(this._userService, this._notificationRepo, this.db,
-      this._expressionService);
+  UserRepo(
+    this._userService,
+    this._notificationRepo,
+    this.db,
+    this._expressionService,
+  );
 
   final UserService _userService;
   final LocalCache db;
@@ -123,6 +127,8 @@ class UserRepo {
   }
 
   Future<List<UserProfile>> pendingConnections(String userAddress) async {
+    //TODO: pending connections through notifications can be replaced by call to /users/self/relations
+    // https://github.com/juntofoundation/Junto-REST-API/blob/cognito-implementation/docs/user.md
     final result =
         await _notificationRepo.getJuntoNotifications(connectionRequests: true);
     if (result.wasSuccessful) {
