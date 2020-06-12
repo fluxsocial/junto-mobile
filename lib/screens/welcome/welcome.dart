@@ -461,7 +461,6 @@ class WelcomeState extends State<Welcome> {
 
   Future<bool> _animateOnBackPress() async {
     if (_currentIndex >= 1) {
-      print(_currentIndex);
       _previousSignUpPage();
       return false;
     } else if (_signInController.page > 0) {
