@@ -14,7 +14,7 @@ import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/auth_cognito_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
-import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
+import 'package:junto_beta_mobile/backend/services/expression_service.dart';
 import 'package:junto_beta_mobile/backend/services/group_service.dart';
 import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/backend/services/image_handler.dart';
@@ -68,21 +68,17 @@ class Backend {
       final searchService = SearchServiceCentralized(client);
       final notificationService = NotificationServiceImpl(client);
       final notificationRepo = NotificationRepo(notificationService, dbService);
-      final expressionRepo =
-          ExpressionRepo(expressionService, dbService, imageHandler);
-      final userRepo = UserRepo(
-        userService,
-        notificationRepo,
-        dbService,
-        expressionService,
-      );
+
+      final userRepo =
+          UserRepo(userService, notificationRepo, dbService, expressionService);
       return Backend._(
         searchRepo: SearchRepo(searchService),
         authRepo: authRepo,
         userRepo: userRepo,
         collectiveProvider: CollectiveProviderCentralized(client),
         groupsProvider: GroupRepo(groupService, userService),
-        expressionRepo: expressionRepo,
+        expressionRepo:
+            ExpressionRepo(expressionService, dbService, imageHandler),
         notificationRepo: notificationRepo,
         appRepo: AppRepo(),
         db: dbService,
