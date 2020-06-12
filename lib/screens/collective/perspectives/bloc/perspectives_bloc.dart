@@ -43,7 +43,6 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
 
   Stream<PerspectivesState> _mapFetchToState(FetchPerspectives event) async* {
     try {
-
       logger.logInfo('Fetching perspectives');
       final address = userDataProvider.userAddress;
       assert(address != null);
@@ -102,4 +101,7 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
       yield PerspectivesError();
     }
   }
+
+  @override
+  String toString() => 'PerspectivesBloc';
 }

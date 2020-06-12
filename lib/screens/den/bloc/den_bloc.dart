@@ -113,4 +113,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     currentTimeStamp = result.lastTimestamp;
     return result;
   }
+
+  @override
+  String toString() => 'DenBloc';
 }

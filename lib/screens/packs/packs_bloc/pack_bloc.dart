@@ -255,4 +255,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     lastMemberTimeStamp = result.lastTimestamp;
     return result;
   }
+
+  @override
+  String toString() => 'PackBloc';
 }
