@@ -104,4 +104,7 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
     }
     return _newList;
   }
+
+  @override
+  String toString() => 'GroupBloc';
 }

@@ -93,4 +93,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     lastTimeStamp = result.lastTimestamp;
     return result;
   }
+
+  @override
+  String toString() => 'SearchBloc';
 }
