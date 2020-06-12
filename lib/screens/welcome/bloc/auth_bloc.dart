@@ -52,7 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       logger.logInfo('User signed up');
       // final login = await authRepo.loginUser(details);
-      final address = await authRepo.loginUser(event.username, event.password);
+      await authRepo.loginUser(event.username, event.password);
       var userData = await userRepo.sendMetadataPostRegistration(event.details);
 
       if (event.profilePicture != null) {
