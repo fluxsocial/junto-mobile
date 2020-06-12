@@ -51,11 +51,9 @@ class UserDataProvider extends ChangeNotifier {
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
     final box = await Hive.box(HiveBoxes.kAppBox);
-    // await box.delete(HiveKeys.kUserData);
-    final userMap = user.toMap();
+    final userMap = user.toJson();
     final userData = jsonEncode(userMap);
     await box.put(HiveKeys.kUserData, userData);
-    // await box.delete(HiveKeys.kUserId);
     await box.put(HiveKeys.kUserId, user.user.address);
   }
 

@@ -294,7 +294,7 @@ class UserData {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'private_den': privateDen.toJson(),
       'public_den': publicDen.toJson(),
