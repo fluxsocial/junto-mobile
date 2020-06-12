@@ -251,7 +251,7 @@ class UserData {
     @required this.connectionPerspective,
   });
 
-  factory UserData.fromMap(Map<String, dynamic> map) {
+  factory UserData.fromJson(Map<String, dynamic> map) {
     return UserData(
       privateDen:
           map['private_den'] != null ? Den.fromMap(map['private_den']) : null,

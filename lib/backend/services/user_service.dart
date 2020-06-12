@@ -56,7 +56,7 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _resultMap =
         JuntoHttp.handleResponse(_serverResponse);
-    final UserData _userData = UserData.fromMap(_resultMap);
+    final UserData _userData = UserData.fromJson(_resultMap);
     return _userData;
   }
 
@@ -515,7 +515,7 @@ class UserServiceCentralized implements UserService {
     logger.logDebug(response.body);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    final UserData _userData = UserData.fromMap(_responseMap);
+    final UserData _userData = UserData.fromJson(_responseMap);
     return _userData;
   }
 }

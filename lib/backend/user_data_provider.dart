@@ -37,7 +37,7 @@ class UserDataProvider extends ChangeNotifier {
       final userData = await box.get(HiveKeys.kUserData);
       if (userData != null && userData.isNotEmpty) {
         final decodedUserData = jsonDecode(userData);
-        userProfile = UserData.fromMap(decodedUserData);
+        userProfile = UserData.fromJson(decodedUserData);
         userAddress = userProfile.user.address;
         notifyListeners();
       } else {
@@ -51,8 +51,7 @@ class UserDataProvider extends ChangeNotifier {
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
     final box = await Hive.box(HiveBoxes.kAppBox);
-    final userMap = user.toJson();
-    final userData = jsonEncode(userMap);
+    final userData = jsonEncode(user);
     await box.put(HiveKeys.kUserData, userData);
     await box.put(HiveKeys.kUserId, user.user.address);
   }
