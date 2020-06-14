@@ -44,16 +44,6 @@ class AuthRepo {
     return res.wasSuccessful;
   }
 
-  //   final box = await Hive.box(HiveBoxes.kAppBox);
-  //   await box.put(HiveKeys.kisLoggedIn, true);
-  //   await box.put(HiveKeys.kUserId, _data.user.address);
-  //   await box.put(
-  //     HiveKeys.kUserFollowPerspectiveId,
-  //     _data.userPerspective.address,
-  //   );
-  //   return _data;
-  // }
-
   /// Authenticates a registered user. Returns the [address] for the
   /// given user.
   Future<String> loginUser(String username, String password) async {
@@ -107,6 +97,5 @@ class AuthRepo {
   Future<void> deleteUserAccount(String userAddress, String password) async {
     await authService.deleteUserAccount(userAddress, password);
     await logoutUser();
-    return;
   }
 }
