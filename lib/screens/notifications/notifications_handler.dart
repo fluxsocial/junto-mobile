@@ -12,9 +12,7 @@ class NotificationsHandler extends ChangeNotifier {
   int _unreadNotificationsCount = 0;
   bool get unreadNotifications => _unreadNotificationsCount != 0;
 
-  NotificationsHandler(this.repository) {
-    fetchNotifications();
-  }
+  NotificationsHandler(this.repository);
 
   Future<void> fetchNotifications() async {
     logger.logInfo('fetching notifications');
@@ -28,7 +26,7 @@ class NotificationsHandler extends ChangeNotifier {
       logger.logInfo('${result.results.length} notifications fetched');
       notifyListeners();
     } else {
-      logger.logError('Couldn\'t fetch the notifications');
+      logger.logWarning('Couldn\'t fetch the notifications');
     }
   }
 
