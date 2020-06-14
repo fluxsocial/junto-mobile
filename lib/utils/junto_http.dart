@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
@@ -116,6 +117,8 @@ class JuntoHttp {
   /// Status codes matching values other than `200` are decoded and examined for
   /// the `error` key.
   static dynamic handleResponse(http.Response response) {
+    logger.logDebug(
+        'Response status code: ${response.statusCode} (${response.reasonPhrase})\nRequest: ${response.request}');
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         final dynamic responseBody = convert.json.decode(response.body);
