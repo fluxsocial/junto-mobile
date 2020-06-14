@@ -14,6 +14,7 @@ class OnBoardingRepo {
   bool _showPackTutorial = false;
   bool _showDenTutorial = false;
   bool _showCreateTutorial = false;
+  bool _showRelationTutorial = false;
   Box _appBox;
   UserDataProvider _repo;
 
@@ -23,10 +24,12 @@ class OnBoardingRepo {
   bool get showPackTutorial => _showPackTutorial;
   bool get showDenTutorial => _showDenTutorial;
   bool get showCreateTutorial => _showCreateTutorial;
+  bool get showRelationTutorial => _showRelationTutorial;
 
   Future<void> loadTutorialState() async {
     final time = DateTime.now();
-    final timeDifference = _repo.userProfile?.user?.createdAt?.difference(time)?.inMinutes;
+    final timeDifference =
+        _repo.userProfile?.user?.createdAt?.difference(time)?.inMinutes;
     if (_repo.userProfile != null && timeDifference < 1) {
       _appBox = await Hive.box(HiveBoxes.kAppBox);
       _showLotusTutorial =
@@ -39,6 +42,8 @@ class OnBoardingRepo {
           await _appBox.get(HiveKeys.kShowPerspectiveTutorial) ?? true;
       _showCreateTutorial =
           await _appBox.get(HiveKeys.kShowCreateTutorial) ?? true;
+      _showRelationTutorial =
+          await _appBox.get(HiveKeys.kRelationsTutorial) ?? true;
     }
   }
 
@@ -67,6 +72,10 @@ class OnBoardingRepo {
       case HiveKeys.kShowCreateTutorial:
         _showCreateTutorial = false;
         await _appBox.put(HiveKeys.kShowCreateTutorial, value);
+        return;
+      case HiveKeys.kRelationsTutorial:
+        _showRelationTutorial = false;
+        await _appBox.put(HiveKeys.kRelationsTutorial, value);
         return;
     }
   }

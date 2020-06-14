@@ -16,6 +16,7 @@ class HiveKeys {
   static const kShowDenTutorial = "show-den-tutorial";
   static const kShowPerspectiveTutorial = "show-perspective-tutorial";
   static const kShowCreateTutorial = "show-create-tutorial";
+  static const kRelationsTutorial = "show-relation-tutorial";
 }
 
 /// Class containing the name of the different "boxes" used by the application.

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/notification_signal.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
@@ -25,14 +27,34 @@ class JuntoRelationships extends StatefulWidget {
   final String userFollowPerspectiveAddress;
 
   @override
-  State<StatefulWidget> createState() {
-    return JuntoRelationshipsState();
-  }
+  State<StatefulWidget> createState() => JuntoRelationshipsState();
 }
 
 class JuntoRelationshipsState extends State<JuntoRelationships> {
   List<UserProfile> pendingConnectionRequests;
   List<UserProfile> pendingPackRequests;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showLotusTutorial) {
+      showTutorial();
+      repo.setViewed(HiveKeys.kRelationsTutorial, false);
+    }
+  }
+
+  void showTutorial() {
+    getUserRelationships();
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'relations_info_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'relations_info_id',
+      },
+    );
+  }
 
   final List<String> _tabs = <String>[
     'SUBSCRIPTIONS',
@@ -50,12 +72,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
       pendingPackRequests =
           userRelations['pending_group_join_requests']['results'];
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getUserRelationships();
   }
 
   @override
