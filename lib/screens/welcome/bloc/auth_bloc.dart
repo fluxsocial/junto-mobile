@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -14,8 +15,9 @@ import 'bloc.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
   final UserDataProvider userDataProvider;
+  final OnBoardingRepo onBoardingRepo;
 
-  AuthBloc(this.authRepo, this.userDataProvider) {
+  AuthBloc(this.authRepo, this.userDataProvider, this.onBoardingRepo) {
     _getLoggedIn();
   }
 
@@ -56,9 +58,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       logger.logInfo('User signed up');
       final user =
           await authRepo.registerUser(event.details, event.profilePicture);
-
       await userDataProvider.initialize();
-
+      await onBoardingRepo.loadTutorialState();
       yield AuthState.agreementsRequired(user);
     } on JuntoException catch (e) {
       logger.logError('Error during sign up: ${e.message}');
@@ -86,7 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final user = await authRepo.loginUser(event.details);
       await userDataProvider.initialize();
-
+      await onBoardingRepo.loadTutorialState();
       yield AuthState.authenticated(user);
     } on JuntoException catch (error) {
       logger.logError('Error during login: ${error.message}');

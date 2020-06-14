@@ -1,11 +1,12 @@
 import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 
 class OnBoardingRepo {
   OnBoardingRepo(UserDataProvider repo) {
     _repo = repo;
-    _loadTutorialState();
+    loadTutorialState();
   }
   bool _showLotusTutorial = false;
   bool _showPerspectiveTutorial = false;
@@ -23,10 +24,10 @@ class OnBoardingRepo {
   bool get showDenTutorial => _showDenTutorial;
   bool get showCreateTutorial => _showCreateTutorial;
 
-  Future<void> _loadTutorialState() async {
+  Future<void> loadTutorialState() async {
     final time = DateTime.now();
-    if (_repo.userProfile != null &&
-        _repo.userProfile.pack.createdAt.difference(time).inMinutes < 2) {
+    final timeDifference = _repo.userProfile?.user?.createdAt?.difference(time)?.inMinutes;
+    if (_repo.userProfile != null && timeDifference < 1) {
       _appBox = await Hive.box(HiveBoxes.kAppBox);
       _showLotusTutorial =
           await _appBox.get(HiveKeys.kShowLotusTutorial) ?? true;

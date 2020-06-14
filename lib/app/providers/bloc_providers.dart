@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
@@ -20,6 +21,7 @@ class BlocProviders extends StatelessWidget {
           create: (ctx) => AuthBloc(
             ctx.repository<AuthRepo>(),
             ctx.repository<UserDataProvider>(),
+            ctx.repository<OnBoardingRepo>(),
           ),
         ),
         BlocProvider<PerspectivesBloc>(
