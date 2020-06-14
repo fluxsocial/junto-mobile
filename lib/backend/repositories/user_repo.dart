@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:hive/hive.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
@@ -203,17 +204,27 @@ class UserRepo {
       _userService.updatePerspective(perspectiveAddress, perspectiveBody);
 
   Future<bool> usernameAvailable(String username) async {
-    final result = await _userService.validateUsername(username);
-    if (result != null) {
-      return result.error == null && result.validUsername != false;
+    try {
+      final result = await _userService.validateUsername(username);
+      if (result != null) {
+        return result.error == null && result.validUsername != false;
+      }
+      return false;
+    } catch (e) {
+      logger.logException(e);
     }
     return false;
   }
 
   Future<bool> emailAvailable(String email, String username) async {
-    final result = await _userService.validateUser(email, username);
-    if (result != null) {
-      return result.error == null && result.validEmail != false;
+    try {
+      final result = await _userService.validateUser(email, username);
+      if (result != null) {
+        return result.error == null && result.validEmail != false;
+      }
+      return false;
+    } catch (e) {
+      logger.logException(e);
     }
     return false;
   }
