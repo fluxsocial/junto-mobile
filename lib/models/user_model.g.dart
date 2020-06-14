@@ -28,13 +28,14 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
       website: (fields[8] as List)?.cast<String>(),
       gender: (fields[9] as List)?.cast<String>(),
       email: fields[10] as String,
+      createdAt: fields[11] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserProfile obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.address)
       ..writeByte(1)
@@ -56,6 +57,8 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
       ..writeByte(9)
       ..write(obj.gender)
       ..writeByte(10)
-      ..write(obj.email);
+      ..write(obj.email)
+      ..writeByte(11)
+      ..write(obj.createdAt);
   }
 }

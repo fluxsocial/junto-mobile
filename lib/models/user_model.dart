@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/models/den_model.dart';
 import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:meta/meta.dart';
 
 part 'user_model.g.dart';
@@ -81,6 +82,7 @@ class UserProfile extends HiveObject {
     @required this.website,
     @required this.gender,
     this.email,
+    this.createdAt,
   });
 
   factory UserProfile.fromMap(Map<String, dynamic> map) {
@@ -100,6 +102,7 @@ class UserProfile extends HiveObject {
           map['website'] != null ? List<String>.from(map['website']) : null,
       gender: map['gender'] != null ? List<String>.from(map['gender']) : null,
       email: map['email'] as String,
+      createdAt: RFC3339.parseRfc3339(map['created_at']),
     );
   }
 
@@ -146,6 +149,10 @@ class UserProfile extends HiveObject {
   // Email of the user
   @HiveField(10)
   final String email;
+
+  // Date user was created
+  @HiveField(11)
+  final DateTime createdAt;
 
   @override
   bool operator ==(Object other) =>
