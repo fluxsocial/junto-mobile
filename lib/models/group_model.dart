@@ -54,7 +54,7 @@ class Group {
   /// Please see [GroupDataPack] and [GroupDataSphere].
   final dynamic groupData;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address,
         'creator': creator,
         'created_at': createdAt.toIso8601String(),
@@ -126,12 +126,6 @@ class GroupDataPack {
   /// Name of pack the user is apart of
   final String name;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'name': name,
-    };
-  }
-
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
@@ -201,15 +195,15 @@ class UserGroupsResponse {
   /// List of Spheres or Packs a users is apart of
   List<Group> associated;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'owned': List<dynamic>.from(
           owned.map(
-            (Group _group) => _group.toMap(),
+            (Group _group) => _group.toJson(),
           ),
         ),
         'associated': List<dynamic>.from(
           associated.map(
-            (Group _group) => _group.toMap(),
+            (Group _group) => _group.toJson(),
           ),
         ),
       };

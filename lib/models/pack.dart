@@ -49,7 +49,7 @@ class PackResponse {
   final String privacy;
 
   /// Converts the object to a map
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'entry': <String, String>{
@@ -89,7 +89,7 @@ class CentralizedPack with RFC3339 {
   final String privacy;
   final bool isDefault;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,

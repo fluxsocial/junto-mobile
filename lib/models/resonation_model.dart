@@ -22,7 +22,7 @@ class Resonation {
   /// Can be "Resonation, DirectPost, CollectivePost"
   final String linkType;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'group_address': groupAddress,
         'expression_address': expressionAddress,
         'link_type': linkType,

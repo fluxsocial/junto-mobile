@@ -99,7 +99,7 @@ class SphereModel {
   final String photo;
   final List<String> members;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
       'privacy': privacy,
@@ -210,7 +210,7 @@ class Users {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (user != null) {
-      data['user'] = user.toMap();
+      data['user'] = user.toJson();
     }
     data['permission_level'] = permissionLevel;
     return data;
@@ -233,7 +233,7 @@ class Principle {
   final String title;
   final String body;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, String>{
       'title': title,
       'body': body,

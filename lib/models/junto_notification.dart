@@ -62,7 +62,7 @@ abstract class JuntoNotification with _$JuntoNotification {
     return null;
   }
 
-  static Map<String, dynamic> groupToJson(Group obj) => obj?.toMap();
+  static Map<String, dynamic> groupToJson(Group obj) => obj?.toJson();
   static UserProfile userFromJson(Map<String, dynamic> json) {
     if (json != null) {
       return UserProfile.fromMap(json);
@@ -70,7 +70,7 @@ abstract class JuntoNotification with _$JuntoNotification {
     return null;
   }
 
-  static Map<String, dynamic> userToJson(UserProfile obj) => obj?.toMap();
+  static Map<String, dynamic> userToJson(UserProfile obj) => obj?.toJson();
 }
 
 class JuntoNotificationAdapter extends TypeAdapter<JuntoNotification> {

@@ -25,7 +25,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<ExpressionResponse> createExpression(
       ExpressionModel expression) async {
-    final Map<String, dynamic> _postBody = expression.toMap();
+    final Map<String, dynamic> _postBody = expression.toJson();
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
     logger.logDebug(_serverResponse.body);

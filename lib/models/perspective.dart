@@ -60,7 +60,7 @@ class Perspective {
     ];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
       'members': members,
@@ -106,7 +106,7 @@ class PerspectiveResponse {
   /// String identifying the type of channel. `Perspective`
   final String channelType;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'entry': <String, dynamic>{
           'parent': parent,
           'name': name,
@@ -204,7 +204,7 @@ class PerspectiveModel extends HiveObject {
     return <UserProfile>[];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,

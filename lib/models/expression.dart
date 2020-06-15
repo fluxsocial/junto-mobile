@@ -48,7 +48,7 @@ class ExpressionModel {
   /// list of channel UUIDs the expression will be shared to.
   final List<String> channels;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'type': type,
       'expression_data': expressionData,
@@ -111,7 +111,7 @@ class AudioFormExpression {
   @HiveField(6)
   String thumbnail600;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title ?? '',
         'photo': photo ?? '',
         'audio': audio ?? '',
@@ -141,7 +141,7 @@ class LongFormExpression {
   @HiveField(1)
   final String body;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'body': body,
       };
@@ -166,7 +166,7 @@ class ShortFormExpression {
   @HiveField(1)
   final String body;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'background': background,
         'body': body,
       };
@@ -199,7 +199,7 @@ class PhotoFormExpression {
   @HiveField(3)
   String thumbnail600;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'image': image,
         'caption': caption,
         'thumbnail300': thumbnail300,
@@ -247,7 +247,7 @@ class EventFormExpression {
   final String thumbnail300;
   final String thumbnail600;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'description': description,
         'photo': photo,
@@ -365,14 +365,14 @@ class ExpressionResponse extends HiveObject {
   @HiveField(11)
   final DateTime createdAt;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'type': type,
       'expression_data': expressionData.toJson(),
       'created_at': createdAt.toIso8601String(),
       'resonations': numberResonations,
-      'creator': creator.toMap(),
+      'creator': creator.toJson(),
       'privacy': privacy ?? '',
       'channels': channels,
       'context': context ?? '',
@@ -505,11 +505,11 @@ class Comment {
   final String privacy;
   final String context;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address,
         'type': type,
         'expression_data': expressionData.toJson(),
-        'creator': creator.toMap(),
+        'creator': creator.toJson(),
         'comments': comments,
         'resonations': resonations,
         'created_at': createdAt.toIso8601String(),
@@ -565,7 +565,7 @@ class Channel with RFC3339 {
   final String name;
   final DateTime createdAt;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, String>{
       'name': name,
       'created_at': createdAt.toIso8601String(),

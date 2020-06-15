@@ -139,7 +139,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         caption: widget.expression['caption'],
         thumbnail300: photoKeys.key300,
         thumbnail600: photoKeys.key600,
-      ).toMap(),
+      ).toJson(),
       context: _expressionContext,
       channels: channel,
     );
@@ -151,7 +151,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
     return ExpressionModel(
       type: widget.expressionType.modelName(),
-      expressionData: expression.toMap(),
+      expressionData: expression.toJson(),
       context: _expressionContext,
       channels: channel,
     );
@@ -186,7 +186,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               startTime: widget.expression['start_time'],
               endTime: widget.expression['end_time'],
               facilitators: <String>[],
-              members: <String>[]).toMap(),
+              members: <String>[]).toJson(),
           channels: channel,
           context: _expressionContext,
         );

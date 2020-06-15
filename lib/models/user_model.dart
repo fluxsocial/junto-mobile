@@ -55,7 +55,7 @@ class SlimUserResponse {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, String>{
       'name': name,
       'username': username,
@@ -224,7 +224,7 @@ class UserProfile extends HiveObject {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,
@@ -300,10 +300,10 @@ class UserData {
     return <String, dynamic>{
       'private_den': privateDen.toJson(),
       'public_den': publicDen.toJson(),
-      'pack': pack.toMap(),
-      'user': user.toMap(),
-      'user_perspective': userPerspective.toMap(),
-      'connection_perspective': connectionPerspective.toMap(),
+      'pack': pack.toJson(),
+      'user': user.toJson(),
+      'user_perspective': userPerspective.toJson(),
+      'connection_perspective': connectionPerspective.toJson(),
     };
   }
 

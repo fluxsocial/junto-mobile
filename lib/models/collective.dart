@@ -39,7 +39,7 @@ class Collective {
   /// Parent Collection address if any. Only applies to nest collections.
   final String parent;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'creator': creator,
@@ -69,11 +69,11 @@ class NestedCollections {
 
   List<Collective> nestedCollections;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'nested_collections': List<dynamic>.from(
           nestedCollections.map(
             (Collective collective) {
-              return collective.toMap();
+              return collective.toJson();
             },
           ),
         ),
