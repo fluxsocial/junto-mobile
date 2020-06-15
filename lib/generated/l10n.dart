@@ -872,6 +872,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Username`
+  String get welcome_username_hint_sign_in {
+    return Intl.message(
+      'Username',
+      name: 'welcome_username_hint_sign_in',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
