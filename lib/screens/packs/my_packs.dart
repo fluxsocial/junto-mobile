@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -9,6 +8,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/er
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 
 import 'package:provider/provider.dart';
 
@@ -16,7 +16,6 @@ class MyPacks extends StatelessWidget {
   MyPacks({this.packsViewNav});
 
   final Function packsViewNav;
-  final Completer<void> refreshCompleter = Completer<void>();
 
   Widget _loader() {
     return Expanded(
@@ -44,11 +43,11 @@ class MyPacks extends StatelessWidget {
                   return Expanded(
                       child: CustomRefresh(
                     refresh: () async {
-                      await context.bloc<GroupBloc>().add(
-                            RefreshPack(),
-                          );
-                      await Future.delayed(Duration(milliseconds: 500));
-                      return refreshCompleter.future;
+                      await context
+                          .repository<NotificationsHandler>()
+                          .fetchNotifications();
+
+                      await context.bloc<GroupBloc>().add(RefreshPack());
                     },
                     child: ListView(
                       physics: AlwaysScrollableScrollPhysics(),

@@ -15,7 +15,7 @@ class CustomRefresh extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
-      offsetToArmed: 100,
+      offsetToArmed: 70,
       onRefresh: refresh,
       builder: (
         BuildContext context,

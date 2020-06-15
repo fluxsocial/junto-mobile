@@ -257,11 +257,13 @@ class UserData {
           map['private_den'] != null ? Den.fromMap(map['private_den']) : null,
       publicDen:
           map['public_den'] != null ? Den.fromMap(map['public_den']) : null,
-      pack: CentralizedPack.fromMap(map['pack']),
+      pack: map['pack'] != null ? CentralizedPack.fromMap(map['pack']) : null,
       user: UserProfile.fromMap(map['user']),
-      userPerspective: PerspectiveModel.fromMap(
-        map['user_perspective'],
-      ),
+      userPerspective: map['user_perspective'] != null
+          ? PerspectiveModel.fromMap(
+              map['user_perspective'],
+            )
+          : null,
       connectionPerspective: PerspectiveModel.fromMap(
         map['connection_perspective'],
       ),

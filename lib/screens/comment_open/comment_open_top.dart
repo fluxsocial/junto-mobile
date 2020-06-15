@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class CommentOpenTop extends StatelessWidget {
@@ -27,7 +28,16 @@ class CommentOpenTop extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute<Widget>(
+                  builder: (BuildContext context) => JuntoMember(
+                    profile: comment.creator,
+                  ),
+                ),
+              );
+            },
             child: Container(
               color: Colors.transparent,
               child: Row(children: <Widget>[

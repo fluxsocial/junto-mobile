@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:provider/provider.dart';
 
 class PackOpenActionItems extends StatefulWidget {
@@ -28,7 +29,7 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .3,
+      height: MediaQuery.of(context).size.height * .38,
       padding: const EdgeInsets.symmetric(
         horizontal: 15,
         vertical: 10,
@@ -60,6 +61,35 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 10),
+                ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  onTap: () async {
+                    final String packCreatorAddress =
+                        widget.pack.creator['address'];
+                    Navigator.pop(context);
+                    final UserData userData =
+                        await Provider.of<UserRepo>(context, listen: false)
+                            .getUser(packCreatorAddress);
+
+                    final UserProfile _userProfile = userData.user;
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) =>
+                            JuntoMember(profile: _userProfile),
+                      ),
+                    );
+                  },
+                  title: Row(
+                    children: <Widget>[
+                      Text(
+                        'View @' + widget.pack.creator['username'] + "'s den",
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 10),
                 ListTile(
