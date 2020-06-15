@@ -27,7 +27,7 @@ class PackResponse {
   });
 
   /// Creates a [PackResponse] from the given map.
-  factory PackResponse.fromMap(Map<String, dynamic> map) {
+  factory PackResponse.fromJson(Map<String, dynamic> map) {
     return PackResponse(
       address: map['address'] as String,
       name: map['name'] as String,
@@ -49,7 +49,7 @@ class PackResponse {
   final String privacy;
 
   /// Converts the object to a map
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'entry': <String, String>{
@@ -71,7 +71,7 @@ class CentralizedPack with RFC3339 {
     @required this.isDefault,
   });
 
-  factory CentralizedPack.fromMap(Map<String, dynamic> map) {
+  factory CentralizedPack.fromJson(Map<String, dynamic> map) {
     return CentralizedPack(
       address: map['address'] as String,
       name: map['name'] as String,
@@ -89,7 +89,7 @@ class CentralizedPack with RFC3339 {
   final String privacy;
   final bool isDefault;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,

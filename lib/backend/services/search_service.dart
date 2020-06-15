@@ -38,7 +38,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       _serverResponse,
     );
     final List<UserProfile> _users = <UserProfile>[
-      for (dynamic data in _results['results']) UserProfile.fromMap(data)
+      for (dynamic data in _results['results']) UserProfile.fromJson(data)
     ];
     return QueryResults<UserProfile>(
       results: _users,
@@ -66,7 +66,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       _serverResponse,
     );
     final List<Channel> _users = <Channel>[
-      for (dynamic data in _results['results']) Channel.fromMap(data)
+      for (dynamic data in _results['results']) Channel.fromJson(data)
     ];
     return QueryResults<Channel>(
         results: _users,
@@ -99,7 +99,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       _serverResponse,
     );
     final List<Group> _users = <Group>[
-      for (dynamic data in _results['results']) Group.fromMap(data)
+      for (dynamic data in _results['results']) Group.fromJson(data)
     ];
     return QueryResults<Group>(
       results: _users,

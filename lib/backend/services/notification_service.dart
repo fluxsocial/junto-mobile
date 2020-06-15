@@ -19,7 +19,7 @@ class NotificationServiceImpl implements NotificationService {
       logger.logInfo('Fetching notifications from API');
       final http.Response response = await httpClient.get(
         '/notifications',
-        queryParams: params.toMap(),
+        queryParams: params.toJson(),
       );
       final Map<String, dynamic> data = JuntoHttp.handleResponse(response);
       final result = JuntoNotificationResults.fromJson(data);

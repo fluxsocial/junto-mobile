@@ -76,8 +76,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
     } on JuntoException catch (error) {
       yield PacksError(error.message);
     } catch (e, s) {
-      print(e);
-      print(s.toString());
+      logger.logException(e, s);
       yield PacksError();
     }
   }

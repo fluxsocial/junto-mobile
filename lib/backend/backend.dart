@@ -12,9 +12,9 @@ import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/backend/services/auth_service.dart';
+import 'package:junto_beta_mobile/backend/services/auth_cognito_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
-import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
+import 'package:junto_beta_mobile/backend/services/expression_service.dart';
 import 'package:junto_beta_mobile/backend/services/group_service.dart';
 import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 import 'package:junto_beta_mobile/backend/services/image_handler.dart';
@@ -49,41 +49,42 @@ class Backend {
       final dbService = HiveCache();
       await dbService.init();
       final themesProvider = JuntoThemesProvider();
-      final JuntoHttp client = JuntoHttp(httpClient: IOClient());
-      final AuthenticationService authService =
-          AuthenticationServiceCentralized(client, dbService);
-      final UserService userService = UserServiceCentralized(client);
-      final ExpressionService expressionService =
-          ExpressionServiceCentralized(client);
-      final GroupService groupService = GroupServiceCentralized(client);
-      final SearchService searchService = SearchServiceCentralized(client);
-      final NotificationService notificationService =
-          NotificationServiceImpl(client);
-      final notificationRepo = NotificationRepo(notificationService, dbService);
-      final UserRepo userRepo = UserRepo(
-        userService,
-        notificationRepo,
-        dbService,
+      final imageHandler = DeviceImageHandler();
+      final authService = CognitoClient();
+      final client = JuntoHttp(
+        httpClient: IOClient(),
+        tokenProvider: authService,
       );
-      final ImageHandler imageHandler = DeviceImageHandler();
+      final userService = UserServiceCentralized(client);
+      final expressionService = ExpressionServiceCentralized(client);
+      final authRepo = AuthRepo(
+        authService,
+        onLogout: () async {
+          await themesProvider.reset();
+          await dbService.wipe();
+        },
+      );
+      final groupService = GroupServiceCentralized(client);
+      final searchService = SearchServiceCentralized(client);
+      final notificationService = NotificationServiceImpl(client);
+      final notificationRepo = NotificationRepo(notificationService, dbService);
+
+      final userRepo =
+          UserRepo(userService, notificationRepo, dbService, expressionService);
       return Backend._(
-          searchRepo: SearchRepo(searchService),
-          authRepo: AuthRepo(
-            authService,
-            userRepo,
-            expressionService,
-            themesProvider,
-          ),
-          userRepo: userRepo,
-          collectiveProvider: CollectiveProviderCentralized(client),
-          groupsProvider: GroupRepo(groupService, userService),
-          expressionRepo:
-              ExpressionRepo(expressionService, dbService, imageHandler),
-          notificationRepo: notificationRepo,
-          appRepo: AppRepo(),
-          db: dbService,
-          themesProvider: themesProvider,
-          onBoardingRepo: OnBoardingRepo());
+        searchRepo: SearchRepo(searchService),
+        authRepo: authRepo,
+        userRepo: userRepo,
+        collectiveProvider: CollectiveProviderCentralized(client),
+        groupsProvider: GroupRepo(groupService, userService),
+        expressionRepo:
+            ExpressionRepo(expressionService, dbService, imageHandler),
+        notificationRepo: notificationRepo,
+        appRepo: AppRepo(),
+        db: dbService,
+        themesProvider: themesProvider,
+        onBoardingRepo: OnBoardingRepo(),
+      );
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -97,8 +98,8 @@ class Backend {
     final SearchService searchService = MockSearch();
     final ImageHandler imageHandler = MockedImageHandler();
     return Backend._(
-      authRepo: AuthRepo(authService, null, expressionService, null),
-      userRepo: UserRepo(userService, null, null),
+      authRepo: AuthRepo(authService, onLogout: () {}),
+      userRepo: UserRepo(userService, null, null, expressionService),
       collectiveProvider: null,
       groupsProvider: GroupRepo(groupService, userService),
       //TODO(Nash): MockDB

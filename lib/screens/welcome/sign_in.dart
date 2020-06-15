@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/utils/form_validation.dart';
@@ -12,10 +11,10 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'bloc/bloc.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn(this.signInController, this.emailController);
+  const SignIn(this.signInController, this.usernameController);
 
   final PageController signInController;
-  final TextEditingController emailController;
+  final TextEditingController usernameController;
 
   @override
   _SignInState createState() => _SignInState();
@@ -38,20 +37,17 @@ class _SignInState extends State<SignIn> {
 
   Future<void> _handleSignIn(BuildContext context) async {
     logger.logInfo('User tapped sign in');
-    final String email = widget.emailController.text.trim();
+    final String username = widget.usernameController.text.trim();
     final String password = _passwordController.text;
-    if (email.isEmpty || password.isEmpty) {
+    if (username.isEmpty || password.isEmpty) {
       _showValidationError();
       return;
     }
-    if (Validator.validateEmail(email) != null) {
-      _showValidationError(S.of(context).welcome_invalid_email);
+    if (Validator.validateNonEmpty(username) != null) {
+      _showValidationError(S.of(context).welcome_invalid_username);
       return;
     }
-    final UserAuthLoginDetails loginDetails =
-        UserAuthLoginDetails(email: email, password: password);
-
-    BlocProvider.of<AuthBloc>(context).add(LoginEvent(loginDetails));
+    BlocProvider.of<AuthBloc>(context).add(LoginEvent(username, password));
   }
 
   @override
@@ -76,14 +72,14 @@ class _SignInState extends State<SignIn> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SignUpTextField(
-                    hint: S.of(context).welcome_email_hint,
+                    hint: S.of(context).welcome_username_hint_sign_in,
                     maxLength: 100,
                     textInputActionType: TextInputAction.next,
                     onSubmit: () {
                       FocusScope.of(context).nextFocus();
                     },
-                    valueController: widget.emailController,
-                    keyboardType: TextInputType.emailAddress,
+                    valueController: widget.usernameController,
+                    keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.none,
                   ),
                   const SizedBox(height: 30),

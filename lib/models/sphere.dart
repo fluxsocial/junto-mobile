@@ -99,7 +99,7 @@ class SphereModel {
   final String photo;
   final List<String> members;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
       'privacy': privacy,
@@ -199,7 +199,7 @@ class Users {
 
   factory Users.fromJson(Map<String, dynamic> json) {
     return Users(
-      user: UserProfile.fromMap(json['user']),
+      user: UserProfile.fromJson(json['user']),
       permissionLevel: json['permission_level'],
     );
   }
@@ -210,7 +210,7 @@ class Users {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (user != null) {
-      data['user'] = user.toMap();
+      data['user'] = user.toJson();
     }
     data['permission_level'] = permissionLevel;
     return data;
@@ -223,7 +223,7 @@ class Principle {
     @required this.body,
   });
 
-  factory Principle.fromMap(Map<String, dynamic> map) {
+  factory Principle.fromJson(Map<String, dynamic> map) {
     return Principle(
       title: map['title'] as String,
       body: map['body'] as String,
@@ -233,7 +233,7 @@ class Principle {
   final String title;
   final String body;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, String>{
       'title': title,
       'body': body,

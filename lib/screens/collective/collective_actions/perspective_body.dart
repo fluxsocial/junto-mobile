@@ -39,7 +39,6 @@ class _CreatePerspectiveBodyState extends State<CreatePerspectiveBody> {
 
           return Consumer<List<String>>(
             builder: (BuildContext context, List<String> value, Widget child) {
-              print(value);
               return TabBarView(
                 children: <Widget>[
                   // subscriptions

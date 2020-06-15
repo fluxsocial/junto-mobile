@@ -1,48 +1,29 @@
+//ignore_for_file:missing_return
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/mock/mock_data.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 
 class MockAuth implements AuthenticationService {
   @override
-  Future<UserData> loginUser(UserAuthLoginDetails details) async {
+  Future<SignInResult> loginUser(SignInData details) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return kUserData;
+    return null;
   }
 
   @override
-  Future<void> logoutUser() async {
+  Future<SignOutResult> logOut() async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
   }
 
   @override
-  Future<Map<String, dynamic>> validateUser(
-      {String username, String email}) async {
-    return {};
-  }
-
-  @override
-  Future<String> verifyEmail(String email) async {
-    return 'You registration is nearly complete. Please check your email for a verification code sent by juntofoundation@gmail.com';
-  }
-
-  @override
-  Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
+  Future<ResetPasswordResult> requestPasswordReset(String email) async {
     await Future<void>.delayed(
       const Duration(milliseconds: 500),
     );
-    return kUserData;
+    return null;
   }
 
   @override
-  Future<int> requestPasswordReset(String email) async {
-    await Future<void>.delayed(
-      const Duration(milliseconds: 500),
-    );
-    return 310;
-  }
-
-  @override
-  Future<void> resetPassword(Map<String, dynamic> details) async {
+  Future<void> resetPassword(ResetPasswordData details) async {
     await Future<void>.delayed(
       const Duration(milliseconds: 500),
     );
@@ -52,5 +33,30 @@ class MockAuth implements AuthenticationService {
     await Future<void>.delayed(
       const Duration(milliseconds: 500),
     );
+  }
+
+  @override
+  Future<SignInResult> isLoggedIn() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<SignUpResult> signUp(SignUpData data) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ResendVerifyResult> resendVerifyCode(SignUpData data) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<VerifyResult> verifySignUp(VerifyData data) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getIdToken() async {
+    return '';
   }
 }

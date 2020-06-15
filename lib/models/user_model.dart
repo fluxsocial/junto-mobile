@@ -15,7 +15,7 @@ class SlimUserResponse {
     @required this.address,
   });
 
-  factory SlimUserResponse.fromMap(Map<String, dynamic> map) {
+  factory SlimUserResponse.fromJson(Map<String, dynamic> map) {
     return SlimUserResponse(
       name: map['name'] as String,
       username: map['username'] as String,
@@ -55,7 +55,7 @@ class SlimUserResponse {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, String>{
       'name': name,
       'username': username,
@@ -83,7 +83,7 @@ class UserProfile extends HiveObject {
     this.email,
   });
 
-  factory UserProfile.fromMap(Map<String, dynamic> map) {
+  factory UserProfile.fromJson(Map<String, dynamic> map) {
     return UserProfile(
       address: map['address'] as String,
       name: map['name'] as String,
@@ -224,7 +224,7 @@ class UserProfile extends HiveObject {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,
@@ -241,84 +241,6 @@ class UserProfile extends HiveObject {
   }
 }
 
-/// Details used during user authentication.
-abstract class UserAuthDetails {
-  String get email;
-
-  String get password;
-
-  bool get isComplete;
-}
-
-/// User auth details used during login. Email and Password must
-/// not be null or empty.
-class UserAuthLoginDetails implements UserAuthDetails {
-  UserAuthLoginDetails({
-    @required this.email,
-    @required this.password,
-  });
-
-  @override
-  final String email;
-  @override
-  final String password;
-
-  @override
-  bool get isComplete => email != null && password != null;
-}
-
-/// Implementation of UserAuthDetails for registering a new user.
-/// All fields must not null or blank.
-class UserAuthRegistrationDetails implements UserAuthDetails {
-  UserAuthRegistrationDetails(
-      {@required this.email,
-      @required this.password,
-      @required this.confirmPassword,
-      @required this.name,
-      @required this.username,
-      @required this.bio,
-      @required this.location,
-      @required this.profileImage,
-      @required this.backgroundPhoto,
-      @required this.gender,
-      @required this.website,
-      @required this.verificationCode});
-
-  @override
-  final String email;
-  @override
-  final String password;
-  final String confirmPassword;
-  final String name;
-  final String username;
-  final String bio;
-  final List<String> location;
-  final List<String> profileImage;
-  final String backgroundPhoto;
-  final List<String> gender;
-  final List<String> website;
-  final int verificationCode;
-
-  @override
-  bool get isComplete => email != null && password != null && name != null;
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'username': username,
-      'name': name,
-      'password': password,
-      "confirm_password": confirmPassword,
-      'bio': bio,
-      'profile_image': profileImage,
-      'background_photo': backgroundPhoto,
-      'gender': gender,
-      'website': website,
-      'location': location,
-      'email': email
-    };
-  }
-}
-
 class UserData {
   const UserData({
     @required this.privateDen,
@@ -329,20 +251,20 @@ class UserData {
     @required this.connectionPerspective,
   });
 
-  factory UserData.fromMap(Map<String, dynamic> map) {
+  factory UserData.fromJson(Map<String, dynamic> map) {
     return UserData(
       privateDen:
-          map['private_den'] != null ? Den.fromMap(map['private_den']) : null,
+          map['private_den'] != null ? Den.fromJson(map['private_den']) : null,
       publicDen:
-          map['public_den'] != null ? Den.fromMap(map['public_den']) : null,
-      pack: map['pack'] != null ? CentralizedPack.fromMap(map['pack']) : null,
-      user: UserProfile.fromMap(map['user']),
+          map['public_den'] != null ? Den.fromJson(map['public_den']) : null,
+      pack: map['pack'] != null ? CentralizedPack.fromJson(map['pack']) : null,
+      user: UserProfile.fromJson(map['user']),
       userPerspective: map['user_perspective'] != null
-          ? PerspectiveModel.fromMap(
+          ? PerspectiveModel.fromJson(
               map['user_perspective'],
             )
           : null,
-      connectionPerspective: PerspectiveModel.fromMap(
+      connectionPerspective: PerspectiveModel.fromJson(
         map['connection_perspective'],
       ),
     );
@@ -374,14 +296,14 @@ class UserData {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'private_den': privateDen.toJson(),
       'public_den': publicDen.toJson(),
-      'pack': pack.toMap(),
-      'user': user.toMap(),
-      'user_perspective': userPerspective.toMap(),
-      'connection_perspective': connectionPerspective.toMap(),
+      'pack': pack.toJson(),
+      'user': user.toJson(),
+      'user_perspective': userPerspective.toJson(),
+      'connection_perspective': connectionPerspective.toJson(),
     };
   }
 

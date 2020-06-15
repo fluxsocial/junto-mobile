@@ -11,7 +11,7 @@ class NotificationQuery {
   final bool groupJoinRequests;
   final String lastTimestamp;
 
-  Map<String, String> toMap() {
+  Map<String, String> toJson() {
     return <String, String>{
       'pagination_position': '$paginationPosition',
       'connection_requests': '$connectionRequests',

@@ -3,11 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_state.dart';
@@ -23,6 +21,7 @@ import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -61,9 +60,10 @@ class WelcomeState extends State<Welcome> {
   int _currentIndex;
 
   AuthRepo authRepo;
+  UserRepo userRepo;
 
   TextEditingController nameController;
-  TextEditingController userNameController;
+  TextEditingController usernameController;
   TextEditingController locationController;
   TextEditingController pronounController;
   TextEditingController websiteController;
@@ -76,7 +76,7 @@ class WelcomeState extends State<Welcome> {
   void initState() {
     super.initState();
     nameController = TextEditingController();
-    userNameController = TextEditingController();
+    usernameController = TextEditingController();
     locationController = TextEditingController();
     pronounController = TextEditingController();
     websiteController = TextEditingController();
@@ -98,7 +98,7 @@ class WelcomeState extends State<Welcome> {
     _welcomeController.dispose();
     _signInController.dispose();
     nameController?.dispose();
-    userNameController?.dispose();
+    usernameController?.dispose();
     locationController?.dispose();
     pronounController?.dispose();
     websiteController?.dispose();
@@ -109,31 +109,41 @@ class WelcomeState extends State<Welcome> {
     super.dispose();
   }
 
-  Future<void> _handleSignUp() async {
-    final verificationCode = int.parse(verificationCodeController.text);
+  Future<void> _finishSignUp() async {
+    final verificationCode = verificationCodeController.text.trim();
+    final username = usernameController.text.trim();
+    final password = passwordController.text;
+    final email = emailController.text.trim();
+    final name = nameController.text.trim();
+    final location = locationController.text.trim();
+    final website = websiteController.text.trim();
+    final gender = pronounController.text.trim();
 
-    final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
-      email: emailController.text.trim(),
-      name: nameController.text.trim(),
-      username: userNameController.text.trim(),
-      password: passwordController.text,
-      confirmPassword: confirmPasswordController.text,
-      location: <String>[locationController.text.trim()],
-      profileImage: <String>[],
-      backgroundPhoto: '',
-      website: <String>[websiteController.text.trim()],
-      gender: <String>[pronounController.text.trim()],
-      verificationCode: verificationCode,
-      bio: '',
-    );
+    final canContinue = await authRepo.verifySignUp(username, verificationCode);
 
-    context.bloc<AuthBloc>().add(
-          SignUpEvent(details, profilePicture.file.value),
-        );
+    if (canContinue) {
+      final UserRegistrationDetails details = UserRegistrationDetails.initial(
+          email, username, name, location, website, gender);
+
+      context.bloc<AuthBloc>().add(
+          SignUpEvent(details, profilePicture.file.value, username, password));
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => ConfirmDialog(
+          buildContext: context,
+          confirm: () => authRepo.resendVerificationCode(
+              username, email, passwordController.text),
+          errorMessage: '',
+          confirmationText:
+              'Wrong verification code. Do you want us to send verification code again?',
+        ),
+      );
+    }
   }
 
-  void _userNameSubmission() async {
-    final username = userNameController.text.trim();
+  void _onUsernameSubmitted() async {
+    final username = usernameController.text.trim();
     bool _correctLength = username.length >= 1 && username.length <= 22;
     final exp = RegExp("^[a-z0-9_]+\$");
     if (username != null && exp.hasMatch(username) && _correctLength) {
@@ -181,6 +191,7 @@ class WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     authRepo = Provider.of<AuthRepo>(context, listen: false);
+    userRepo = Provider.of<UserRepo>(context, listen: false);
     return WillPopScope(
       onWillPop: _animateOnBackPress,
       child: BlocListener<AuthBloc, AuthState>(
@@ -209,20 +220,20 @@ class WelcomeState extends State<Welcome> {
                       physics: const NeverScrollableScrollPhysics(),
                       children: <Widget>[
                         WelcomeMain(
-                          onSignIn: _onSignIn,
-                          onSignUp: _onSignUp,
+                          onSignIn: _onSignInSelected,
+                          onSignUp: _onSignUpSelected,
                         ),
                         SignIn(
                           _signInController,
-                          emailController,
+                          usernameController,
                         ),
                         ResetPasswordRequest(
                           signInController: _signInController,
-                          emailController: emailController,
+                          usernameController: usernameController,
                         ),
                         ResetPasswordConfirm(
                           signInController: _signInController,
-                          email: emailController.text,
+                          username: usernameController.text,
                         ),
                       ],
                     ),
@@ -237,9 +248,9 @@ class WelcomeState extends State<Welcome> {
                       textCapitalization: TextCapitalization.words,
                     ),
                     SignUpTextFieldWrapper(
-                      controller: userNameController,
+                      controller: usernameController,
                       textInputActionType: TextInputAction.done,
-                      onSubmit: _userNameSubmission,
+                      onSubmit: _onUsernameSubmitted,
                       maxLength: 22,
                       hint: S.of(context).welcome_username_ill_go,
                       label: S.of(context).welcome_username_label,
@@ -260,7 +271,7 @@ class WelcomeState extends State<Welcome> {
                       confirmPasswordController: confirmPasswordController,
                     ),
                     SignUpVerify(
-                      handleSignUp: _handleSignUp,
+                      handleSignUp: _finishSignUp,
                       verificationController: verificationCodeController,
                     )
                   ],
@@ -305,7 +316,7 @@ class WelcomeState extends State<Welcome> {
   Future<void> _nextSignUpPage() async {
     try {
       final name = nameController.text.trim();
-      final username = userNameController.text.trim();
+      final username = usernameController.text.trim();
 
       if (_currentIndex == 1) {
         if (name == null || name.isEmpty || name.length > 50) {
@@ -331,12 +342,11 @@ class WelcomeState extends State<Welcome> {
         } else {
           JuntoLoader.showLoader(context, color: Colors.transparent);
           // ensure username is not taken or reserved
-          final Map<String, dynamic> validateUserResponse =
-              await authRepo.validateUser(username: username);
+
+          final usernameAvailable = await userRepo.usernameAvailable(username);
           JuntoLoader.hide();
-          final bool usernameIsAvailable =
-              validateUserResponse['valid_username'];
-          if (!usernameIsAvailable) {
+
+          if (!usernameAvailable) {
             showDialog(
               context: context,
               builder: (BuildContext context) => SingleActionDialog(
@@ -375,32 +385,44 @@ class WelcomeState extends State<Welcome> {
         }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
-        final result = await authRepo.verifyEmail(email);
-        logger.logDebug(result);
-        JuntoLoader.hide();
+        final emailAvailable = await userRepo.emailAvailable(email, username);
+        if (emailAvailable) {
+          final result = await authRepo.signUp(username, email, password);
+          JuntoLoader.hide();
+          if (!result.wasSuccessful) {
+            _showSignUpError(result);
+            return;
+          }
+        } else {
+          JuntoLoader.hide();
+          _showSignUpError(SignUpResult.emailTaken());
+          return;
+        }
       }
-      // transition to next page of sign up flow
       _welcomeController.nextPage(
         curve: Curves.decelerate,
         duration: const Duration(milliseconds: 600),
       );
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      if (error.message == 'follow the white rabbit') {
-        // transition to next page of sign up flow
-        _welcomeController.nextPage(
-          curve: Curves.decelerate,
-          duration: const Duration(milliseconds: 600),
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => SingleActionDialog(
-            dialogText: error.message,
-          ),
-        );
-      }
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
+      );
     }
+  }
+
+  void _showSignUpError(SignUpResult errorMessage) {
+    String message = _getErrorMessage(errorMessage);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => SingleActionDialog(
+        dialogText: message,
+      ),
+    );
   }
 
   // ensure passwords are same and meet our specifications
@@ -446,7 +468,6 @@ class WelcomeState extends State<Welcome> {
 
   Future<bool> _animateOnBackPress() async {
     if (_currentIndex >= 1) {
-      print(_currentIndex);
       _previousSignUpPage();
       return false;
     } else if (_signInController.page > 0) {
@@ -468,7 +489,7 @@ class WelcomeState extends State<Welcome> {
     );
   }
 
-  void _onSignUp() {
+  void _onSignUpSelected() {
     _welcomeController.nextPage(
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 400),
@@ -480,7 +501,7 @@ class WelcomeState extends State<Welcome> {
     });
   }
 
-  void _onSignIn() {
+  void _onSignInSelected() {
     _signInController.nextPage(
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 300),
@@ -507,6 +528,20 @@ class WelcomeState extends State<Welcome> {
           );
         }
       }
+    }
+  }
+
+  String _getErrorMessage(SignUpResult result) {
+    switch (result.error) {
+      case SignUpResultError.UserAlreadyExists:
+        return 'Account with this e-mail or username already exists';
+      case SignUpResultError.InvalidPassword:
+        return 'Seems like you entered incorrect password';
+      case SignUpResultError.TooManyRequests:
+        return 'You tried to register too many times. Try again later.';
+      case SignUpResultError.UnknownError:
+      default:
+        return 'We cannot register you right now, sorry';
     }
   }
 }

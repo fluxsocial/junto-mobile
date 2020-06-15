@@ -18,7 +18,7 @@ class Group {
     this.incomingCreator,
   });
 
-  factory Group.fromMap(Map<String, dynamic> json) => Group(
+  factory Group.fromJson(Map<String, dynamic> json) => Group(
         address: json['address'],
         creator: json['creator'],
         createdAt: RFC3339.parseRfc3339(json['created_at']),
@@ -28,7 +28,7 @@ class Group {
         facilitators: json['facilitators'],
         groupData: json['group_type'] == 'Sphere'
             ? GroupDataSphere.fromJson(json['group_data'])
-            : GroupDataPack.fromMap(json['group_data']),
+            : GroupDataPack.fromJson(json['group_data']),
       );
 
   /// Address of the group on the server
@@ -54,7 +54,7 @@ class Group {
   /// Please see [GroupDataPack] and [GroupDataSphere].
   final dynamic groupData;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address,
         'creator': creator,
         'created_at': createdAt.toIso8601String(),
@@ -117,7 +117,7 @@ class Group {
 class GroupDataPack {
   GroupDataPack({@required this.name});
 
-  factory GroupDataPack.fromMap(Map<String, dynamic> map) {
+  factory GroupDataPack.fromJson(Map<String, dynamic> map) {
     return GroupDataPack(
       name: map['name'] as String,
     );
@@ -125,12 +125,6 @@ class GroupDataPack {
 
   /// Name of pack the user is apart of
   final String name;
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'name': name,
-    };
-  }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -181,16 +175,16 @@ class UserGroupsResponse {
     this.associated,
   });
 
-  factory UserGroupsResponse.fromMap(Map<String, dynamic> json) =>
+  factory UserGroupsResponse.fromJson(Map<String, dynamic> json) =>
       UserGroupsResponse._(
         owned: List<Group>.from(
           json['owned'].map(
-            (dynamic _group) => Group.fromMap(_group),
+            (dynamic _group) => Group.fromJson(_group),
           ),
         ),
         associated: List<Group>.from(
           json['associated'].map(
-            (dynamic group) => Group.fromMap(group),
+            (dynamic group) => Group.fromJson(group),
           ),
         ),
       );
@@ -201,15 +195,15 @@ class UserGroupsResponse {
   /// List of Spheres or Packs a users is apart of
   List<Group> associated;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'owned': List<dynamic>.from(
           owned.map(
-            (Group _group) => _group.toMap(),
+            (Group _group) => _group.toJson(),
           ),
         ),
         'associated': List<dynamic>.from(
           associated.map(
-            (Group _group) => _group.toMap(),
+            (Group _group) => _group.toJson(),
           ),
         ),
       };

@@ -44,7 +44,7 @@ class BottomCommentBarState extends State<BottomCommentBar> {
           LongFormExpression(
             title: '',
             body: commentController.value.text.trim(),
-          ).toMap(),
+          ).toJson(),
         );
         commentController.clear();
         JuntoLoader.hide();

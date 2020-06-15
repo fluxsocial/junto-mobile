@@ -11,7 +11,7 @@ class Perspective {
     @required this.members,
   });
 
-  factory Perspective.fromMap(Map<String, dynamic> map) {
+  factory Perspective.fromJson(Map<String, dynamic> map) {
     return Perspective(
       name: map['name'],
       about: map['about'],
@@ -60,7 +60,7 @@ class Perspective {
     ];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
       'members': members,
@@ -81,7 +81,7 @@ class PerspectiveResponse {
   });
 
   /// Creates a [PerspectiveResponse] from the decoded json data.
-  factory PerspectiveResponse.fromMap(Map<String, dynamic> json) {
+  factory PerspectiveResponse.fromJson(Map<String, dynamic> json) {
     return PerspectiveResponse(
       address: json['address'],
       parent: json['entry']['parent'],
@@ -106,7 +106,7 @@ class PerspectiveResponse {
   /// String identifying the type of channel. `Perspective`
   final String channelType;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'entry': <String, dynamic>{
           'parent': parent,
           'name': name,
@@ -130,7 +130,7 @@ class PerspectiveModel extends HiveObject {
     @required this.about,
   });
 
-  factory PerspectiveModel.fromMap(Map<String, dynamic> map) {
+  factory PerspectiveModel.fromJson(Map<String, dynamic> map) {
     return PerspectiveModel(
       address: map['address'] as String,
       name: map['name'] as String,
@@ -198,13 +198,13 @@ class PerspectiveModel extends HiveObject {
   static List<UserProfile> _parseUsers(List<dynamic> _listData) {
     if (_listData != null && _listData.isNotEmpty) {
       _listData.map((dynamic userData) {
-        return UserProfile.fromMap(userData);
+        return UserProfile.fromJson(userData);
       }).toList();
     }
     return <UserProfile>[];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,
