@@ -255,12 +255,13 @@ class CognitoClient extends AuthenticationService {
         return SignInResult.signedOut();
       });
     } catch (e) {
-      //TODO
+      return Stream.value(SignInResult(false));
     }
   }
 
   @override
   Future<void> deleteUserAccount(String userAddress, String password) {
+    //TODO: implement delete user - maybe move it to UserRepository as it works with Junto API not Cognito
     //  if (userAddress.isNotEmpty &&
 //         userAddress != null &&
 //         password.isNotEmpty &&
