@@ -15,7 +15,7 @@ class SlimUserResponse {
     @required this.address,
   });
 
-  factory SlimUserResponse.fromMap(Map<String, dynamic> map) {
+  factory SlimUserResponse.fromJson(Map<String, dynamic> map) {
     return SlimUserResponse(
       name: map['name'] as String,
       username: map['username'] as String,
@@ -83,7 +83,7 @@ class UserProfile extends HiveObject {
     this.email,
   });
 
-  factory UserProfile.fromMap(Map<String, dynamic> map) {
+  factory UserProfile.fromJson(Map<String, dynamic> map) {
     return UserProfile(
       address: map['address'] as String,
       name: map['name'] as String,
@@ -254,17 +254,17 @@ class UserData {
   factory UserData.fromJson(Map<String, dynamic> map) {
     return UserData(
       privateDen:
-          map['private_den'] != null ? Den.fromMap(map['private_den']) : null,
+          map['private_den'] != null ? Den.fromJson(map['private_den']) : null,
       publicDen:
-          map['public_den'] != null ? Den.fromMap(map['public_den']) : null,
-      pack: map['pack'] != null ? CentralizedPack.fromMap(map['pack']) : null,
-      user: UserProfile.fromMap(map['user']),
+          map['public_den'] != null ? Den.fromJson(map['public_den']) : null,
+      pack: map['pack'] != null ? CentralizedPack.fromJson(map['pack']) : null,
+      user: UserProfile.fromJson(map['user']),
       userPerspective: map['user_perspective'] != null
-          ? PerspectiveModel.fromMap(
+          ? PerspectiveModel.fromJson(
               map['user_perspective'],
             )
           : null,
-      connectionPerspective: PerspectiveModel.fromMap(
+      connectionPerspective: PerspectiveModel.fromJson(
         map['connection_perspective'],
       ),
     );

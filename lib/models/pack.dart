@@ -27,7 +27,7 @@ class PackResponse {
   });
 
   /// Creates a [PackResponse] from the given map.
-  factory PackResponse.fromMap(Map<String, dynamic> map) {
+  factory PackResponse.fromJson(Map<String, dynamic> map) {
     return PackResponse(
       address: map['address'] as String,
       name: map['name'] as String,
@@ -71,7 +71,7 @@ class CentralizedPack with RFC3339 {
     @required this.isDefault,
   });
 
-  factory CentralizedPack.fromMap(Map<String, dynamic> map) {
+  factory CentralizedPack.fromJson(Map<String, dynamic> map) {
     return CentralizedPack(
       address: map['address'] as String,
       name: map['name'] as String,

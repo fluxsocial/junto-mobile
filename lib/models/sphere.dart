@@ -199,7 +199,7 @@ class Users {
 
   factory Users.fromJson(Map<String, dynamic> json) {
     return Users(
-      user: UserProfile.fromMap(json['user']),
+      user: UserProfile.fromJson(json['user']),
       permissionLevel: json['permission_level'],
     );
   }
@@ -223,7 +223,7 @@ class Principle {
     @required this.body,
   });
 
-  factory Principle.fromMap(Map<String, dynamic> map) {
+  factory Principle.fromJson(Map<String, dynamic> map) {
     return Principle(
       title: map['title'] as String,
       body: map['body'] as String,

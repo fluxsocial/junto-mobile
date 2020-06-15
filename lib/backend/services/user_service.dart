@@ -36,7 +36,7 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
-    return PerspectiveModel.fromMap(_body);
+    return PerspectiveModel.fromJson(_body);
   }
 
   @override
@@ -81,7 +81,7 @@ class UserServiceCentralized implements UserService {
       final Iterable<dynamic> _listData = json.decode(_serverResponse.body);
 
       if (_listData.isNotEmpty) {
-        return UserProfile.fromMap(_listData.first);
+        return UserProfile.fromJson(_listData.first);
       }
       throw JuntoException(
           'Unable to retrive user profile', _serverResponse.statusCode);
@@ -96,7 +96,7 @@ class UserServiceCentralized implements UserService {
         await client.get('/users/$userAddress/perspectives');
     final List<dynamic> _listData = JuntoHttp.handleResponse(response);
     final List<PerspectiveModel> _results = _listData
-        .map((dynamic data) => PerspectiveModel.fromMap(data))
+        .map((dynamic data) => PerspectiveModel.fromJson(data))
         .toList(growable: false);
     return _results;
   }
@@ -109,7 +109,7 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    return UserGroupsResponse.fromMap(_responseMap);
+    return UserGroupsResponse.fromJson(_responseMap);
   }
 
   @override
@@ -149,7 +149,7 @@ class UserServiceCentralized implements UserService {
       lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
       results: <ExpressionResponse>[
         for (dynamic data in _responseMap['root_expressions']['results'])
-          ExpressionResponse.fromMap(data)
+          ExpressionResponse.fromJson(data)
       ],
     );
   }
@@ -161,7 +161,7 @@ class UserServiceCentralized implements UserService {
     final List<Map<String, dynamic>> items =
         JuntoHttp.handleResponse(_serverResponse);
     return items.map(
-      (Map<String, dynamic> data) => PerspectiveModel.fromMap(data),
+      (Map<String, dynamic> data) => PerspectiveModel.fromJson(data),
     );
   }
 
@@ -178,7 +178,7 @@ class UserServiceCentralized implements UserService {
         body: _postBody);
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
-    return UserProfile.fromMap(_decodedResponse);
+    return UserProfile.fromJson(_decodedResponse);
   }
 
   @override
@@ -213,7 +213,7 @@ class UserServiceCentralized implements UserService {
         await client.get('/perspectives/$perspectiveAddress/users');
     final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
     return <UserProfile>[
-      for (dynamic data in _results) UserProfile.fromMap(data)
+      for (dynamic data in _results) UserProfile.fromJson(data)
     ];
   }
 
@@ -274,7 +274,7 @@ class UserServiceCentralized implements UserService {
     if (_connectionsResults.isNotEmpty) {
       for (final dynamic result in _connectionsResults) {
         _connectionsMembers.add(
-          UserProfile.fromMap(result),
+          UserProfile.fromJson(result),
         );
       }
     }
@@ -282,7 +282,7 @@ class UserServiceCentralized implements UserService {
     if (_followingResults.isNotEmpty) {
       for (final dynamic result in _followingResults) {
         _followingMembers.add(
-          UserProfile.fromMap(result['user']),
+          UserProfile.fromJson(result['user']),
         );
       }
     }
@@ -290,14 +290,14 @@ class UserServiceCentralized implements UserService {
     if (_followerResults.isNotEmpty) {
       for (final dynamic result in _followerResults) {
         _followerMembers.add(
-          UserProfile.fromMap(result['user']),
+          UserProfile.fromJson(result['user']),
         );
       }
     }
 
     for (final dynamic result in _pendingConnectionsResults) {
       _pendingConnectionsMembers.add(
-        UserProfile.fromMap(result),
+        UserProfile.fromJson(result),
       );
     }
 
@@ -305,7 +305,7 @@ class UserServiceCentralized implements UserService {
       for (final dynamic result in _pendingPackRequestsResults) {
         if (result['group_type'] == 'Pack') {
           _pendingPackRequestsMembers.add(
-            UserProfile.fromMap(result),
+            UserProfile.fromJson(result),
           );
         }
       }
@@ -396,7 +396,7 @@ class UserServiceCentralized implements UserService {
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return <UserProfile>[
-      for (dynamic data in _data['results']) UserProfile.fromMap(data)
+      for (dynamic data in _data['results']) UserProfile.fromJson(data)
     ];
   }
 
@@ -409,7 +409,7 @@ class UserServiceCentralized implements UserService {
     );
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
-    return PerspectiveModel.fromMap(_data);
+    return PerspectiveModel.fromJson(_data);
   }
 
   @override

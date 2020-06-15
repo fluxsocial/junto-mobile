@@ -9,7 +9,7 @@ class Den {
     @required this.isDefault,
   });
 
-  factory Den.fromMap(Map<String, dynamic> map) {
+  factory Den.fromJson(Map<String, dynamic> map) {
     return Den(
       address: map['address'] ?? '',
       name: map['name'] as String,

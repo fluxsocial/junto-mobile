@@ -38,7 +38,7 @@ class GroupServiceCentralized implements GroupService {
         await client.get('/groups/$groupAddress');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
-    return Group.fromMap(_data);
+    return Group.fromJson(_data);
   }
 
   @override
@@ -108,7 +108,7 @@ class GroupServiceCentralized implements GroupService {
     final Map<String, dynamic> items =
         JuntoHttp.handleResponse(_serverResponse);
     return (items['direct_posts']['results'] as List<dynamic>)
-        .map((dynamic data) => ExpressionResponse.fromMap(data))
+        .map((dynamic data) => ExpressionResponse.fromJson(data))
         .toList();
   }
 
@@ -120,7 +120,7 @@ class GroupServiceCentralized implements GroupService {
     );
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
-    return Group.fromMap(_data);
+    return Group.fromJson(_data);
   }
 
   @override

@@ -176,7 +176,7 @@ class UserRepo {
     decodedUserData['user'] = result;
     box.delete(HiveKeys.kUserData);
     box.put(HiveKeys.kUserData, jsonEncode(decodedUserData));
-    return UserProfile.fromMap(result);
+    return UserProfile.fromJson(result);
   }
 
   Future<UserProfile> updateProfilePicture(

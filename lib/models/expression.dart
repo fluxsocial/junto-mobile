@@ -17,7 +17,7 @@ class ExpressionModel {
     this.context,
   });
 
-  factory ExpressionModel.fromMap(Map<String, dynamic> map) {
+  factory ExpressionModel.fromJson(Map<String, dynamic> map) {
     return ExpressionModel(
       type: map['type'] as String,
       channels: List<String>.from(map['channels']),
@@ -84,7 +84,7 @@ class AudioFormExpression {
     this.thumbnail600,
   });
 
-  factory AudioFormExpression.fromMap(Map<String, dynamic> json) {
+  factory AudioFormExpression.fromJson(Map<String, dynamic> json) {
     return AudioFormExpression(
       title: json['title'] ?? '',
       photo: json['photo'] ?? '',
@@ -129,7 +129,7 @@ class LongFormExpression {
     this.body,
   });
 
-  factory LongFormExpression.fromMap(Map<String, dynamic> json) {
+  factory LongFormExpression.fromJson(Map<String, dynamic> json) {
     return LongFormExpression(
       title: json['title'] ?? '',
       body: json['body'] ?? '',
@@ -154,7 +154,7 @@ class ShortFormExpression {
     @required this.body,
   });
 
-  factory ShortFormExpression.fromMap(Map<String, dynamic> json) {
+  factory ShortFormExpression.fromJson(Map<String, dynamic> json) {
     return ShortFormExpression(
       background: json['background'],
       body: json['body'],
@@ -181,7 +181,7 @@ class PhotoFormExpression {
     this.thumbnail600,
   });
 
-  factory PhotoFormExpression.fromMap(Map<String, dynamic> json) {
+  factory PhotoFormExpression.fromJson(Map<String, dynamic> json) {
     return PhotoFormExpression(
       image: json['image'],
       caption: json['caption'],
@@ -221,7 +221,7 @@ class EventFormExpression {
     this.thumbnail600,
   });
 
-  factory EventFormExpression.fromMap(Map<String, dynamic> json) {
+  factory EventFormExpression.fromJson(Map<String, dynamic> json) {
     return EventFormExpression(
       title: json['title'],
       description: json['description'],
@@ -292,7 +292,7 @@ class ExpressionResponse extends HiveObject {
       ),
       resonations: json['resonations'],
       // numberResonations: json['resonations'],
-      creator: UserProfile.fromMap(
+      creator: UserProfile.fromJson(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
@@ -303,7 +303,7 @@ class ExpressionResponse extends HiveObject {
     );
   }
 
-  factory ExpressionResponse.fromMap(Map<String, dynamic> json) {
+  factory ExpressionResponse.fromJson(Map<String, dynamic> json) {
     return ExpressionResponse(
       address: json['address'],
       type: json['type'],
@@ -314,7 +314,7 @@ class ExpressionResponse extends HiveObject {
       createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
-      creator: UserProfile.fromMap(
+      creator: UserProfile.fromJson(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
@@ -328,14 +328,14 @@ class ExpressionResponse extends HiveObject {
     //     ? json['comments']
     //     : List<Comment>.from(
     //         json['comments']['results'].map(
-    //           (dynamic comment) => Comment.fromMap(comment),
+    //           (dynamic comment) => Comment.fromJson(comment),
     //         ),
     //       ),
     // resonations: json['resonations'].runtimeType == int
     //     ? json['resonations']
     //     : List<UserProfile>.from(
     //         json['resonations']['results'].map(
-    //           (dynamic res) => UserProfile.fromMap(res),
+    //           (dynamic res) => UserProfile.fromJson(res),
     //         ),
     //       ),
   }
@@ -387,19 +387,19 @@ class ExpressionResponse extends HiveObject {
   static dynamic generateExpressionData(
       String type, Map<String, dynamic> json) {
     if (type == 'LongForm') {
-      return LongFormExpression.fromMap(json);
+      return LongFormExpression.fromJson(json);
     }
     if (type == 'ShortForm') {
-      return ShortFormExpression.fromMap(json);
+      return ShortFormExpression.fromJson(json);
     }
     if (type == 'PhotoForm') {
-      return PhotoFormExpression.fromMap(json);
+      return PhotoFormExpression.fromJson(json);
     }
     if (type == 'EventForm') {
-      return EventFormExpression.fromMap(json);
+      return EventFormExpression.fromJson(json);
     }
     if (type == 'AudioForm') {
-      return AudioFormExpression.fromMap(json);
+      return AudioFormExpression.fromJson(json);
     }
   }
 }
@@ -478,7 +478,7 @@ class Comment {
     this.context,
   });
 
-  factory Comment.fromMap(Map<String, dynamic> json) {
+  factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
       address: json['address'],
       type: json['type'],
@@ -486,7 +486,7 @@ class Comment {
         json['type'],
         json['expression_data'],
       ),
-      creator: UserProfile.fromMap(json['creator']),
+      creator: UserProfile.fromJson(json['creator']),
       comments: json['comments'],
       resonations: json['resonations'],
       createdAt: RFC3339.parseRfc3339(json['created_at']),
@@ -555,7 +555,7 @@ class Channel with RFC3339 {
     this.createdAt,
   });
 
-  factory Channel.fromMap(Map<String, dynamic> map) {
+  factory Channel.fromJson(Map<String, dynamic> map) {
     return Channel(
       name: map['name'] as String,
       createdAt: RFC3339.parseRfc3339(map['created_at']),

@@ -18,7 +18,7 @@ class Group {
     this.incomingCreator,
   });
 
-  factory Group.fromMap(Map<String, dynamic> json) => Group(
+  factory Group.fromJson(Map<String, dynamic> json) => Group(
         address: json['address'],
         creator: json['creator'],
         createdAt: RFC3339.parseRfc3339(json['created_at']),
@@ -28,7 +28,7 @@ class Group {
         facilitators: json['facilitators'],
         groupData: json['group_type'] == 'Sphere'
             ? GroupDataSphere.fromJson(json['group_data'])
-            : GroupDataPack.fromMap(json['group_data']),
+            : GroupDataPack.fromJson(json['group_data']),
       );
 
   /// Address of the group on the server
@@ -117,7 +117,7 @@ class Group {
 class GroupDataPack {
   GroupDataPack({@required this.name});
 
-  factory GroupDataPack.fromMap(Map<String, dynamic> map) {
+  factory GroupDataPack.fromJson(Map<String, dynamic> map) {
     return GroupDataPack(
       name: map['name'] as String,
     );
@@ -175,16 +175,16 @@ class UserGroupsResponse {
     this.associated,
   });
 
-  factory UserGroupsResponse.fromMap(Map<String, dynamic> json) =>
+  factory UserGroupsResponse.fromJson(Map<String, dynamic> json) =>
       UserGroupsResponse._(
         owned: List<Group>.from(
           json['owned'].map(
-            (dynamic _group) => Group.fromMap(_group),
+            (dynamic _group) => Group.fromJson(_group),
           ),
         ),
         associated: List<Group>.from(
           json['associated'].map(
-            (dynamic group) => Group.fromMap(group),
+            (dynamic group) => Group.fromJson(group),
           ),
         ),
       );

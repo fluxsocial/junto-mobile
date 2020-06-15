@@ -12,7 +12,7 @@ class Collective {
     this.parent,
   });
 
-  factory Collective.fromMap(Map<String, dynamic> json) => Collective(
+  factory Collective.fromJson(Map<String, dynamic> json) => Collective(
         address: json['address'],
         creator: json['creator'],
         createdAt: DateTime.parse(json['created_at']),
@@ -57,11 +57,11 @@ class NestedCollections {
     this.nestedCollections,
   });
 
-  factory NestedCollections.fromMap(Map<String, dynamic> json) {
+  factory NestedCollections.fromJson(Map<String, dynamic> json) {
     return NestedCollections._(
       nestedCollections: List<Collective>.from(
         json['nested_collections'].map(
-          (Map<String, dynamic> collective) => Collective.fromMap(collective),
+          (Map<String, dynamic> collective) => Collective.fromJson(collective),
         ),
       ),
     );
@@ -89,14 +89,14 @@ class CollectionResponse {
     @required this.expressions,
   });
 
-  factory CollectionResponse.fromMap(Map<String, dynamic> json) {
+  factory CollectionResponse.fromJson(Map<String, dynamic> json) {
     return CollectionResponse._(
-      collective: Collective.fromMap(json['collection']),
-      nestedCollections: NestedCollections.fromMap(json['nested_collections']),
+      collective: Collective.fromJson(json['collection']),
+      nestedCollections: NestedCollections.fromJson(json['nested_collections']),
       expressions: List<ExpressionResponse>.from(
         json['expressions'].map(
           (Map<String, dynamic> expression) =>
-              ExpressionResponse.fromMap(expression),
+              ExpressionResponse.fromJson(expression),
         ),
       ),
     );
