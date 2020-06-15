@@ -72,14 +72,14 @@ class _SignInState extends State<SignIn> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SignUpTextField(
-                    hint: S.of(context).welcome_email_hint,
+                    hint: S.of(context).welcome_username_hint_sign_in,
                     maxLength: 100,
                     textInputActionType: TextInputAction.next,
                     onSubmit: () {
                       FocusScope.of(context).nextFocus();
                     },
                     valueController: widget.usernameController,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.none,
                   ),
                   const SizedBox(height: 30),

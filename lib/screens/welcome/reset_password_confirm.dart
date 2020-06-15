@@ -13,11 +13,11 @@ import 'package:provider/provider.dart';
 class ResetPasswordConfirm extends StatefulWidget {
   const ResetPasswordConfirm({
     @required this.signInController,
-    @required this.email,
+    @required this.username,
   });
 
   final PageController signInController;
-  final String email;
+  final String username;
 
   @override
   _ResetPasswordConfirmState createState() => _ResetPasswordConfirmState();
@@ -90,7 +90,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
       try {
         await Provider.of<AuthRepo>(context, listen: false).resetPassword(
           ResetPasswordData(
-            widget.email,
+            widget.username,
             _newPassword.value.text,
             _verificationCode.value.text,
           ),
@@ -188,7 +188,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
               margin: const EdgeInsets.only(bottom: 120),
               child: CallToActionButton(
                 callToAction: _confirmNewPassword,
-                title: S.of(context).welcome_confirm_password,
+                title: S.of(context).welcome_confirm_password.toUpperCase(),
               ),
             )
           ],

@@ -63,7 +63,7 @@ class WelcomeState extends State<Welcome> {
   UserRepo userRepo;
 
   TextEditingController nameController;
-  TextEditingController userNameController;
+  TextEditingController usernameController;
   TextEditingController locationController;
   TextEditingController pronounController;
   TextEditingController websiteController;
@@ -76,7 +76,7 @@ class WelcomeState extends State<Welcome> {
   void initState() {
     super.initState();
     nameController = TextEditingController();
-    userNameController = TextEditingController();
+    usernameController = TextEditingController();
     locationController = TextEditingController();
     pronounController = TextEditingController();
     websiteController = TextEditingController();
@@ -98,7 +98,7 @@ class WelcomeState extends State<Welcome> {
     _welcomeController.dispose();
     _signInController.dispose();
     nameController?.dispose();
-    userNameController?.dispose();
+    usernameController?.dispose();
     locationController?.dispose();
     pronounController?.dispose();
     websiteController?.dispose();
@@ -111,7 +111,7 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> _finishSignUp() async {
     final verificationCode = verificationCodeController.text.trim();
-    final username = userNameController.text.trim();
+    final username = usernameController.text.trim();
     final password = passwordController.text;
     final email = emailController.text.trim();
     final name = nameController.text.trim();
@@ -143,7 +143,7 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _onUsernameSubmitted() async {
-    final username = userNameController.text.trim();
+    final username = usernameController.text.trim();
     bool _correctLength = username.length >= 1 && username.length <= 22;
     final exp = RegExp("^[a-z0-9_]+\$");
     if (username != null && exp.hasMatch(username) && _correctLength) {
@@ -225,15 +225,15 @@ class WelcomeState extends State<Welcome> {
                         ),
                         SignIn(
                           _signInController,
-                          emailController,
+                          usernameController,
                         ),
                         ResetPasswordRequest(
                           signInController: _signInController,
-                          emailController: emailController,
+                          usernameController: usernameController,
                         ),
                         ResetPasswordConfirm(
                           signInController: _signInController,
-                          email: emailController.text,
+                          username: usernameController.text,
                         ),
                       ],
                     ),
@@ -248,7 +248,7 @@ class WelcomeState extends State<Welcome> {
                       textCapitalization: TextCapitalization.words,
                     ),
                     SignUpTextFieldWrapper(
-                      controller: userNameController,
+                      controller: usernameController,
                       textInputActionType: TextInputAction.done,
                       onSubmit: _onUsernameSubmitted,
                       maxLength: 22,
@@ -316,7 +316,7 @@ class WelcomeState extends State<Welcome> {
   Future<void> _nextSignUpPage() async {
     try {
       final name = nameController.text.trim();
-      final username = userNameController.text.trim();
+      final username = usernameController.text.trim();
 
       if (_currentIndex == 1) {
         if (name == null || name.isEmpty || name.length > 50) {
@@ -385,10 +385,17 @@ class WelcomeState extends State<Welcome> {
         }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
-        final result = await authRepo.signUp(username, email, password);
-        JuntoLoader.hide();
-        if (!result.wasSuccessful) {
-          _showSignUpError(result);
+        final emailAvailable = await userRepo.emailAvailable(email, username);
+        if (emailAvailable) {
+          final result = await authRepo.signUp(username, email, password);
+          JuntoLoader.hide();
+          if (!result.wasSuccessful) {
+            _showSignUpError(result);
+            return;
+          }
+        } else {
+          JuntoLoader.hide();
+          _showSignUpError(SignUpResult.emailTaken());
           return;
         }
       }

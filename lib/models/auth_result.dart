@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_aws_amplify_cognito/flutter_aws_amplify_cognito.dart';
 
 abstract class AuthResult {
   final bool wasSuccessful;
@@ -39,6 +40,9 @@ class SignUpResult extends AuthResult {
   SignUpResult(bool wasSuccessful, this.verificationCodeSent,
       [this.error = SignUpResultError.UnknownError])
       : super(wasSuccessful);
+
+  factory SignUpResult.emailTaken() =>
+      SignUpResult(false, false, SignUpResultError.UserAlreadyExists);
 }
 
 class ResetPasswordResult extends AuthResult {
@@ -73,11 +77,11 @@ class SignUpData {
 }
 
 class ResetPasswordData {
-  final String email;
+  final String username;
   final String password;
   final String confirmationCode;
 
-  ResetPasswordData(this.email, this.password, this.confirmationCode);
+  ResetPasswordData(this.username, this.password, this.confirmationCode);
 }
 
 class VerifyData {

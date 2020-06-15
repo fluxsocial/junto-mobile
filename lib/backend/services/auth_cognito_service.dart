@@ -35,9 +35,10 @@ class CognitoClient extends AuthenticationService {
   }
 
   @override
-  Future<ResetPasswordResult> requestPasswordReset(String email) async {
+  Future<ResetPasswordResult> requestPasswordReset(String username) async {
     try {
-      final result = await aws.FlutterAwsAmplifyCognito.forgotPassword(email);
+      final result =
+          await aws.FlutterAwsAmplifyCognito.forgotPassword(username);
       if (result != null) {
         switch (result.state) {
           case aws.ForgotPasswordState.CONFIRMATION_CODE:
@@ -63,7 +64,7 @@ class CognitoClient extends AuthenticationService {
   Future<ResetPasswordResult> resetPassword(ResetPasswordData data) async {
     try {
       final result = await aws.FlutterAwsAmplifyCognito.confirmForgotPassword(
-          data.email, data.password, data.confirmationCode);
+          data.username, data.password, data.confirmationCode);
       if (result != null) {
         switch (result.state) {
           case aws.ForgotPasswordState.DONE:
