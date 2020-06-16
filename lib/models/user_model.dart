@@ -232,7 +232,7 @@ class UserProfile extends HiveObject {
       website: website ?? this.website,
       gender: gender ?? this.gender,
       email: email ?? this.email,
-      createdAt: createdAt ?? this.createdAt,
+//      createdAt: createdAt ?? createdAt,
     );
   }
 
