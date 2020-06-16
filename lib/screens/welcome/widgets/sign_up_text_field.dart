@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+
+import 'package:provider/provider.dart';
 
 /// By setting [obscureText] to `true` you'll get
 /// a fancy eye icon to toggle the visibility of the obscured text
@@ -41,55 +45,55 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      validator: widget.validator,
-      controller: widget.valueController,
-      cursorColor: Colors.white70,
-      focusNode: widget.focusNode,
-      decoration: InputDecoration(
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        labelStyle: TextStyle(color: Colors.green),
-        hintText: widget.hint,
-        suffix: _visibilityIconIfObscured(),
-        hintStyle: const TextStyle(
-          color: Colors.white70,
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return TextFormField(
+        validator: widget.validator,
+        controller: widget.valueController,
+        cursorColor: JuntoPalette().juntoWhite(theme: theme).withOpacity(.70),
+        focusNode: widget.focusNode,
+        decoration: InputDecoration(
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none, hintText: widget.hint,
+          suffix: _visibilityIconIfObscured(theme),
+          hintStyle: TextStyle(
+            color: JuntoPalette().juntoWhite(theme: theme).withOpacity(.70),
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+          fillColor: JuntoPalette().juntoWhite(theme: theme),
+          //disabling the native counter
+          counter: Container(),
+        ),
+        style: TextStyle(
+          color: JuntoPalette().juntoWhite(theme: theme),
           fontSize: 20,
           fontWeight: FontWeight.w500,
         ),
-        fillColor: Colors.white,
-        //disabling the native counter
-        counter: Container(),
-      ),
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
-      ),
-      maxLines: widget.maxLines,
-      maxLength: widget.maxLength,
-      textCapitalization: widget.textCapitalization,
-      textInputAction: widget.textInputActionType,
-      keyboardType: widget.obscureText
-          ? TextInputType.visiblePassword
-          : widget.keyboardType,
-      onFieldSubmitted: (_) {
-        widget.onSubmit();
-      },
-      keyboardAppearance: Theme.of(context).brightness,
-      obscureText: widget.obscureText && !_temporarilyVisible,
-    );
+        maxLines: widget.maxLines,
+        maxLength: widget.maxLength,
+        textCapitalization: widget.textCapitalization,
+        textInputAction: widget.textInputActionType,
+        keyboardType: widget.obscureText
+            ? TextInputType.visiblePassword
+            : widget.keyboardType,
+        onFieldSubmitted: (_) {
+          widget.onSubmit();
+        },
+        keyboardAppearance: Theme.of(context).brightness,
+        obscureText: widget.obscureText && !_temporarilyVisible,
+      );
+    });
   }
 
   /// The eye icon is visible only when focus is on
   /// or some text is inside the TextField
-  Widget _visibilityIconIfObscured() {
+  Widget _visibilityIconIfObscured(JuntoThemesProvider theme) {
     if (widget.obscureText) {
       return IconButton(
         tooltip: 'Show/hide password',
         icon: Icon(
           _temporarilyVisible ? Icons.visibility_off : Icons.visibility,
-          color: Colors.white70,
+          color: JuntoPalette().juntoWhite(theme: theme).withOpacity(.70),
           size: 20,
         ),
         onPressed: () {
