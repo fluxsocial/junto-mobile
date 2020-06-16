@@ -99,7 +99,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
                 margin: const EdgeInsets.symmetric(horizontal: 40),
                 width: size.width,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  color: Theme.of(context).accentColor,
                   borderRadius: BorderRadius.circular(1000),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
@@ -114,7 +114,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
                   S.of(context).welcome_lets_go,
                   style: TextStyle(
                     letterSpacing: 1.2,
-                    color: Colors.white,
+                    color: JuntoPalette().juntoWhite(theme: theme),
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
                   ),
