@@ -25,6 +25,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/sign_up_arrows.dart';
@@ -292,9 +293,7 @@ class WelcomeState extends State<Welcome> {
                       child: Image.asset(
                         'assets/images/junto-mobile__logo.png',
                         height: 38,
-                        color: theme.themeName.contains('sand')
-                            ? Color(0xff555555)
-                            : Colors.white,
+                        color: JuntoPalette().juntoWhite(theme: theme),
                       ),
                     ),
                   BlocBuilder<AuthBloc, AuthState>(

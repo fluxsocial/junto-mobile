@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 typedef OnCreateExpressionTap = void Function(
@@ -45,9 +46,7 @@ class CreateExpressionIcon extends StatelessWidget {
                     height: 40,
                     child: Icon(
                       expressionType.icon(),
-                      color: theme.themeName.contains('sand')
-                          ? Color(0xff555555)
-                          : Colors.white,
+                      color: JuntoPalette().juntoWhite(theme: theme),
                       size: 24,
                     ),
                   ),
@@ -56,9 +55,7 @@ class CreateExpressionIcon extends StatelessWidget {
                     expressionType.name(),
                     style: TextStyle(
                       fontSize: 12,
-                      color: theme.themeName.contains('sand')
-                          ? Color(0xff555555)
-                          : Colors.white,
+                      color: JuntoPalette().juntoWhite(theme: theme),
                       fontWeight: FontWeight.w700,
                       decoration: TextDecoration.none,
                     ),

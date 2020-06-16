@@ -18,6 +18,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/junto_account.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 import 'junto_themes_page.dart';
@@ -239,9 +240,7 @@ class JuntoDrawerItem extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Icon(
                         icon,
-                        color: theme.themeName.contains('sand')
-                            ? Color(0xff555555)
-                            : Colors.white,
+                        color: JuntoPalette().juntoWhite(theme: theme),
                         size: iconSize,
                       ),
                     )
@@ -252,9 +251,7 @@ class JuntoDrawerItem extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: theme.themeName.contains('sand')
-                        ? Color(0xff555555)
-                        : Colors.white,
+                    color: JuntoPalette().juntoWhite(theme: theme),
                   ),
                   textAlign: TextAlign.right,
                 ),

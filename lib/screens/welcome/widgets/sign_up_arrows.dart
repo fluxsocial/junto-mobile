@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class SignUpArrows extends StatelessWidget {
   const SignUpArrows({
@@ -41,9 +42,8 @@ class SignUpArrows extends StatelessWidget {
                   color: Colors.transparent,
                   child: Icon(
                     Icons.keyboard_arrow_up,
-                    color: theme.themeName.contains('sand')
-                        ? Color(0xff555555).withOpacity(.3)
-                        : Colors.white30,
+                    color:
+                        JuntoPalette().juntoWhite(theme: theme).withOpacity(.3),
                     size: 36,
                   ),
                 ),
@@ -59,9 +59,7 @@ class SignUpArrows extends StatelessWidget {
                   color: Colors.transparent,
                   child: Icon(
                     Icons.keyboard_arrow_down,
-                    color: theme.themeName.contains('sand')
-                        ? Color(0xff555555)
-                        : Colors.white,
+                    color: JuntoPalette().juntoWhite(theme: theme),
                     size: 36,
                   ),
                 ),

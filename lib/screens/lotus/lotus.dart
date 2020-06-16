@@ -20,6 +20,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -192,10 +193,9 @@ class _JuntoLotusState extends State<JuntoLotus> {
                                           style: TextStyle(
                                             fontSize: 28,
                                             fontWeight: FontWeight.w400,
-                                            color: theme.themeName
-                                                    .contains('sand')
-                                                ? Color(0xff555555)
-                                                : Colors.white.withOpacity(.8),
+                                            color: JuntoPalette()
+                                                .juntoWhite(theme: theme)
+                                                .withOpacity(.8),
                                             letterSpacing: 3.8,
                                           ),
                                         ),
@@ -328,17 +328,13 @@ class LotusButton extends StatelessWidget {
                     child: Icon(
                       icon,
                       size: iconSize ?? 45,
-                      color: theme.themeName.contains('sand')
-                          ? Color(0xff555555)
-                          : Colors.white,
+                      color: JuntoPalette().juntoWhite(theme: theme),
                     ),
                   ),
                   Text(
                     label,
                     style: TextStyle(
-                      color: theme.themeName.contains('sand')
-                          ? Color(0xff555555)
-                          : Colors.white,
+                      color: JuntoPalette().juntoWhite(theme: theme),
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.4,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class HomeIcon extends StatelessWidget {
   const HomeIcon({
@@ -35,9 +36,7 @@ class HomeIcon extends StatelessWidget {
           child: Icon(
             CustomIcons.newdoubleuparrow,
             size: 45,
-            color: theme.themeName.contains('sand')
-                ? Color(0xff555555)
-                : Colors.white,
+            color: JuntoPalette().juntoWhite(theme: theme),
           ),
         ),
       ),
