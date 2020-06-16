@@ -28,11 +28,9 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
 
   Future<void> _navigateMember() async {
     final String packCreatorAddress = widget.pack.creator['address'];
-    Navigator.pop(context);
     final UserData userData =
         await Provider.of<UserRepo>(context, listen: false)
             .getUser(packCreatorAddress);
-
     final UserProfile _userProfile = userData.user;
     Navigator.push(
       context,
