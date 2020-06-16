@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/notification_signal.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
@@ -55,7 +57,24 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showRelationTutorial) {
+      showTutorial();
+      repo.setViewed(HiveKeys.kRelationsTutorial, false);
+    }
+  }
+
+  void showTutorial() {
     getUserRelationships();
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'relations_info_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'relations_info_id',
+      },
+    );
   }
 
   @override
