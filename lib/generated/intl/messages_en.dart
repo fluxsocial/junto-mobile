@@ -105,7 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome_username_hint" : MessageLookupByLibrary.simpleMessage("Choose a unique username"),
     "welcome_username_hint_sign_in" : MessageLookupByLibrary.simpleMessage("Username"),
     "welcome_username_ill_go" : MessageLookupByLibrary.simpleMessage("I\'ll go by..."),
-    "welcome_username_label" : MessageLookupByLibrary.simpleMessage("USERNAME - will be used to login"),
+    "welcome_username_label" : MessageLookupByLibrary.simpleMessage("USERNAME"),
     "welcome_username_requirements" : MessageLookupByLibrary.simpleMessage("Your username can only contain lowercase letters, numbers, and underscores."),
     "welcome_username_taken" : MessageLookupByLibrary.simpleMessage("Sorry, that username is taken."),
     "welcome_verification_code" : MessageLookupByLibrary.simpleMessage("Verification code"),

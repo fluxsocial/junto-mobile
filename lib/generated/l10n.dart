@@ -703,10 +703,10 @@ class S {
     );
   }
 
-  /// `USERNAME - will be used to login`
+  /// `USERNAME`
   String get welcome_username_label {
     return Intl.message(
-      'USERNAME - will be used to login',
+      'USERNAME',
       name: 'welcome_username_label',
       desc: '',
       args: [],
