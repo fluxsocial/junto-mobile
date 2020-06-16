@@ -85,7 +85,7 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
                   title: Row(
                     children: <Widget>[
                       Text(
-                        'View @' + widget.pack.creator['username'] + "'s den",
+                        "'View @' + ${widget.pack.creator['username']}'s den",
                         style: Theme.of(context).textTheme.headline5,
                       ),
                     ],

@@ -212,9 +212,9 @@ class AboutPerspectiveMembers extends StatelessWidget {
     if (perspective.name == 'JUNTO' && perspective.isDefault == true) {
       return 'All Members';
     } else if (perspective.userCount == 1) {
-      return perspective.userCount.toString() + ' Member';
+      return '${perspective.userCount} Member';
     } else {
-      return perspective.userCount.toString() + ' Members';
+      return '${perspective.userCount} Members';
     }
   }
 
