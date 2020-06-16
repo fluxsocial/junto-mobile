@@ -453,10 +453,10 @@ class S {
     );
   }
 
-  /// `CHECK EMAIL - we sent you a verification code`
+  /// `CHECK YOUR EMAIL`
   String get welcome_check_email {
     return Intl.message(
-      'CHECK EMAIL - we sent you a verification code',
+      'CHECK YOUR EMAIL',
       name: 'welcome_check_email',
       desc: '',
       args: [],

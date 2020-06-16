@@ -20,7 +20,7 @@ class AcceptButton extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 40),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryVariant,
+          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.circular(40.0),
         ),
         child: FlatButton(
