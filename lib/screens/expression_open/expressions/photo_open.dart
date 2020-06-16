@@ -17,12 +17,10 @@ class PhotoOpen extends StatelessWidget {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width,
             child: ImageWrapper(
               imageUrl: photoExpression.expressionData.image,
               placeholder: (BuildContext context, String _) {
                 return Container(
-                  height: MediaQuery.of(context).size.width,
                   width: MediaQuery.of(context).size.width,
                   color: Theme.of(context).dividerColor,
                   child: CachedNetworkImage(
