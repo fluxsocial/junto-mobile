@@ -18,6 +18,10 @@ class DeleteAccountDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final passwordController = TextEditingController();
+        await Provider.of<UserRepo>(context, listen: false).deleteUserAccount(
+          user.userAddress,
+          passwordController.value.text,
+        );
 
     return Dialog(
       shape: RoundedRectangleBorder(
