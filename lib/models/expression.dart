@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
 part 'expression.g.dart';
@@ -436,6 +437,7 @@ extension ExpressionResponseExt on ExpressionResponse {
       }
       return data.photo;
     }
+    throw JuntoException("Image not found", 404);
   }
 
   String get thumbnailLarge {
@@ -462,6 +464,7 @@ extension ExpressionResponseExt on ExpressionResponse {
       }
       return data.photo;
     }
+    throw JuntoException("Image not found", 404);
   }
 }
 
