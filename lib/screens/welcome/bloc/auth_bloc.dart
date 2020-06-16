@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 import 'bloc.dart';
@@ -11,8 +12,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
   final UserRepo userRepo;
   final UserDataProvider userDataProvider;
+  final OnBoardingRepo onBoardingRepo;
 
-  AuthBloc(this.authRepo, this.userDataProvider, this.userRepo) {
+  AuthBloc(
+    this.authRepo,
+    this.userDataProvider,
+    this.userRepo,
+    this.onBoardingRepo,
+  ) {
     _getLoggedIn();
   }
 
@@ -64,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       await userDataProvider.updateUser(userData);
       await userDataProvider.initialize();
-
+      await onBoardingRepo.loadTutorialState();
       yield AuthState.agreementsRequired(userData);
     } on JuntoException catch (e) {
       logger.logError('Error during sign up: ${e.message}');
