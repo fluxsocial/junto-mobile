@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_aws_amplify_cognito/flutter_aws_amplify_cognito.dart';
 
 abstract class AuthResult {
   final bool wasSuccessful;

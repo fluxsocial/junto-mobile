@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 
