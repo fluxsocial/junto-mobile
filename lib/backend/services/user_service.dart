@@ -518,4 +518,19 @@ class UserServiceCentralized implements UserService {
     final UserData _userData = UserData.fromJson(_responseMap);
     return _userData;
   }
+
+  Future<void> deleteUser(String userAddress, String password) async {
+    final Map<String, dynamic> _body = <String, String>{
+      'password': password,
+    };
+    final http.Response response = await client.delete(
+      '/users/$userAddress',
+      body: _body,
+    );
+
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    logger.logDebug("Delete user response ${_responseMap}");
+    return;
+  }
 }
