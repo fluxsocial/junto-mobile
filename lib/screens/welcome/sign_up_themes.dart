@@ -8,15 +8,40 @@ class SignUpThemes extends StatelessWidget {
   }) : super(key: key);
 
   void _setTheme(String theme, BuildContext context) {
-    if (theme == 'AQUEOUS') {
-      Provider.of<JuntoThemesProvider>(context, listen: false)
-          .setTheme('aqueous');
-    } else if (theme == 'PURPLE GOLD') {
-      Provider.of<JuntoThemesProvider>(context, listen: false)
-          .setTheme('royal');
-    } else if (theme == 'RAINBOW') {
-      Provider.of<JuntoThemesProvider>(context, listen: false)
-          .setTheme('rainbow');
+    switch (theme) {
+      case 'RAINBOW':
+        Provider.of<JuntoThemesProvider>(context, listen: false)
+            .setTheme('rainbow');
+        break;
+      case 'AQUEOUS':
+        Provider.of<JuntoThemesProvider>(context, listen: false)
+            .setTheme('aqueous');
+        break;
+
+      case 'PURPLE GOLD':
+        Provider.of<JuntoThemesProvider>(context, listen: false)
+            .setTheme('royal');
+        break;
+
+      case 'FIRE':
+        Provider.of<JuntoThemesProvider>(context, listen: false)
+            .setTheme('fire');
+        break;
+
+      case 'FOREST':
+        Provider.of<JuntoThemesProvider>(context, listen: false)
+            .setTheme('forest');
+        break;
+
+      case 'SAND':
+        Provider.of<JuntoThemesProvider>(context, listen: false)
+            .setTheme('sand');
+        break;
+
+      case 'DARK':
+        Provider.of<JuntoThemesProvider>(context, listen: false)
+            .setTheme('dark');
+        break;
     }
   }
 
@@ -67,16 +92,35 @@ class SignUpThemes extends StatelessWidget {
   }
 
   String _displayThemeAsset(String theme) {
-    if (theme == 'AQUEOUS') {
-      return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (theme == 'PURPLE GOLD') {
-      return 'assets/images/junto-mobile__themes--royal.png';
-    } else if (theme == 'NIGHT') {
-      return 'assets/images/junto-mobile__themes--dark.png';
-    } else if (theme == 'RAINBOW') {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
+    switch (theme) {
+      case 'RAINBOW':
+        return 'assets/images/junto-mobile__themes--rainbow.png';
+        break;
+      case 'AQUEOUS':
+        return 'assets/images/junto-mobile__themes--aqueous.png';
+        break;
+
+      case 'PURPLE GOLD':
+        return 'assets/images/junto-mobile__themes--royal.png';
+        break;
+
+      case 'FIRE':
+        return 'assets/images/junto-mobile__themes--fire.png';
+        break;
+
+      case 'FOREST':
+        return 'assets/images/junto-mobile__themes--forest.png';
+        break;
+
+      case 'SAND':
+        return 'assets/images/junto-mobile__themes--sand.png';
+        break;
+
+      case 'DARK':
+        return 'assets/images/junto-mobile__themes--dark.png';
+        break;
     }
-    return '';
+    return 'assets/images/junto-mobile__themes--rainbow.png';
   }
 
   @override
@@ -100,6 +144,10 @@ class SignUpThemes extends StatelessWidget {
                   _displayThemeSelector('RAINBOW', context),
                   _displayThemeSelector('AQUEOUS', context),
                   _displayThemeSelector('PURPLE GOLD', context),
+                  _displayThemeSelector('FIRE', context),
+                  _displayThemeSelector('FOREST', context),
+                  _displayThemeSelector('SAND', context),
+                  _displayThemeSelector('DARK', context),
                 ],
               ),
             )
