@@ -98,5 +98,10 @@ abstract class UserService {
 
   /// Checks if username and email are valid
   Future<ValidUserModel> validateUser(String email, String username);
+
+  /// Checks the given string against existing/reserved  username
   Future<ValidUserModel> validateUsername(String username);
+
+  /// Removes the user account.
+  Future<void> deleteUser(String email, String password);
 }

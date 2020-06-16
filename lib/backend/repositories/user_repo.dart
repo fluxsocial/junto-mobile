@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 class UserRepo {
   UserRepo(
@@ -227,6 +228,17 @@ class UserRepo {
       logger.logException(e);
     }
     return false;
+  }
+
+  Future<void> deleteUserAccount(String userAddress, String password) {
+    if (userAddress.isNotEmpty &&
+        userAddress != null &&
+        password.isNotEmpty &&
+        password != null) {
+      return _userService.deleteUser(userAddress, password);
+    }else{
+      throw JuntoException("Please ensure password is not empty", 404);
+    }
   }
 
   Future<UserData> sendMetadataPostRegistration(
