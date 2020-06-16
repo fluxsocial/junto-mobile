@@ -1,6 +1,7 @@
 /// Various item keys used to store data in Hive boxes
 class HiveKeys {
   /// Used to access
+  static const kisLoggedIn = 'isLoggedIn';
   static const kUserFollowPerspectiveId = 'userFollowPerspectiveId';
   static const kUserId = 'userId';
   static const kUserData = 'user_data';
@@ -15,6 +16,7 @@ class HiveKeys {
   static const kShowDenTutorial = "show-den-tutorial";
   static const kShowPerspectiveTutorial = "show-perspective-tutorial";
   static const kShowCreateTutorial = "show-create-tutorial";
+  static const kRelationsTutorial = "show-relation-tutorial";
 }
 
 /// Class containing the name of the different "boxes" used by the application.
