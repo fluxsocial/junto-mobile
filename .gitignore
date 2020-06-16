@@ -93,3 +93,4 @@ ios/Runner/awsconfiguration.json
 android/app/src/main/res/raw/awsconfiguration.json
 android/app/src/tst/res/raw/awsconfiguration.json
 android/app/src/debug/res/raw/awsconfiguration.json
+awsconfiguration.json
