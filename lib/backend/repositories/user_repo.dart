@@ -230,13 +230,10 @@ class UserRepo {
     return false;
   }
 
-  Future<void> deleteUserAccount(String userAddress, String password) {
-    if (userAddress.isNotEmpty &&
-        userAddress != null &&
-        password.isNotEmpty &&
-        password != null) {
-      return _userService.deleteUser(userAddress, password);
-    }else{
+  Future<void> deleteUserAccount(String userAddress) {
+    if (userAddress != null && userAddress.isNotEmpty) {
+      return _userService.deleteUser(userAddress);
+    } else {
       throw JuntoException("Please ensure password is not empty", 404);
     }
   }

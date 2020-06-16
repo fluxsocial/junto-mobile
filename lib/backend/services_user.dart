@@ -103,5 +103,5 @@ abstract class UserService {
   Future<ValidUserModel> validateUsername(String username);
 
   /// Removes the user account.
-  Future<void> deleteUser(String email, String password);
+  Future<void> deleteUser(String email);
 }

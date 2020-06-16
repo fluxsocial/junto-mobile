@@ -20,12 +20,9 @@ class DeleteAccountDialog extends StatelessWidget {
     final passwordController = TextEditingController();
     Future<void> _deleteAccount() async {
       JuntoLoader.showLoader(context);
-      print(passwordController.value.text);
       try {
-        await Provider.of<UserRepo>(context, listen: false).deleteUserAccount(
-          user.userAddress,
-          passwordController.value.text,
-        );
+        await Provider.of<UserRepo>(context, listen: false)
+            .deleteUserAccount(user.userAddress);
         JuntoLoader.hide();
         await context.bloc<AuthBloc>().add(LogoutEvent());
         Navigator.popUntil(context, (r) => r.isFirst);
