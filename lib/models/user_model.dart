@@ -279,9 +279,11 @@ class UserData {
               json['user_perspective'],
             )
           : null,
-      connectionPerspective: PerspectiveModel.fromJson(
-        json['connection_perspective'],
-      ),
+      connectionPerspective: json['connection_perspective'] != null
+          ? PerspectiveModel.fromJson(
+              json['connection_perspective'],
+            )
+          : null,
     );
   }
 
