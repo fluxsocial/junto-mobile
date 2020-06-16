@@ -24,6 +24,7 @@ import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/sign_up_arrows.dart';
@@ -192,125 +193,130 @@ class WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     authRepo = Provider.of<AuthRepo>(context, listen: false);
     userRepo = Provider.of<UserRepo>(context, listen: false);
-    return WillPopScope(
-      onWillPop: _animateOnBackPress,
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: _onBlocStateChange,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            if (FocusScope.of(context).hasFocus) {
-              FocusScope.of(context).unfocus();
-            }
-          },
-          child: Scaffold(
-            // setting this to true causes white background to be shown during keyboard opening
-            resizeToAvoidBottomInset: false,
-            body: Stack(
-              children: <Widget>[
-                BackgroundTheme(),
-                PageView(
-                  onPageChanged: onPageChanged,
-                  controller: _welcomeController,
-                  scrollDirection: Axis.vertical,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    PageView(
-                      controller: _signInController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        WelcomeMain(
-                          onSignIn: _onSignInSelected,
-                          onSignUp: _onSignUpSelected,
-                        ),
-                        SignIn(
-                          _signInController,
-                          usernameController,
-                        ),
-                        ResetPasswordRequest(
-                          signInController: _signInController,
-                          usernameController: usernameController,
-                        ),
-                        ResetPasswordConfirm(
-                          signInController: _signInController,
-                          username: usernameController.text,
-                        ),
-                      ],
-                    ),
-                    SignUpTextFieldWrapper(
-                      controller: nameController,
-                      textInputActionType: TextInputAction.done,
-                      onSubmit: _nameCheck,
-                      maxLength: 50,
-                      hint: S.of(context).welcome_my_name_is,
-                      label: S.of(context).welcome_name_label,
-                      title: S.of(context).welcome_name_hint,
-                      textCapitalization: TextCapitalization.words,
-                    ),
-                    SignUpTextFieldWrapper(
-                      controller: usernameController,
-                      textInputActionType: TextInputAction.done,
-                      onSubmit: _onUsernameSubmitted,
-                      maxLength: 22,
-                      hint: S.of(context).welcome_username_ill_go,
-                      label: S.of(context).welcome_username_label,
-                      title: S.of(context).welcome_username_hint,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                    SignUpThemes(),
-                    SignUpAbout(
-                      nextPage: _nextSignUpPage,
-                      pronounController: pronounController,
-                      locationController: locationController,
-                      websiteController: websiteController,
-                    ),
-                    SignUpPhotos(profilePicture),
-                    SignUpRegister(
-                      emailController: emailController,
-                      passwordController: passwordController,
-                      confirmPasswordController: confirmPasswordController,
-                    ),
-                    SignUpVerify(
-                      handleSignUp: _finishSignUp,
-                      verificationController: verificationCodeController,
-                    )
-                  ],
-                ),
-                if (_currentIndex != 0 &&
-                    MediaQuery.of(context).viewInsets.bottom == 0)
-                  SignUpArrows(
-                    welcomeController: _welcomeController,
-                    currentIndex: _currentIndex,
-                    onTap: _nextSignUpPage,
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return WillPopScope(
+        onWillPop: _animateOnBackPress,
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: _onBlocStateChange,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              if (FocusScope.of(context).hasFocus) {
+                FocusScope.of(context).unfocus();
+              }
+            },
+            child: Scaffold(
+              // setting this to true causes white background to be shown during keyboard opening
+              resizeToAvoidBottomInset: false,
+              body: Stack(
+                children: <Widget>[
+                  BackgroundTheme(),
+                  PageView(
+                    onPageChanged: onPageChanged,
+                    controller: _welcomeController,
+                    scrollDirection: Axis.vertical,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      PageView(
+                        controller: _signInController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          WelcomeMain(
+                            onSignIn: _onSignInSelected,
+                            onSignUp: _onSignUpSelected,
+                          ),
+                          SignIn(
+                            _signInController,
+                            usernameController,
+                          ),
+                          ResetPasswordRequest(
+                            signInController: _signInController,
+                            usernameController: usernameController,
+                          ),
+                          ResetPasswordConfirm(
+                            signInController: _signInController,
+                            username: usernameController.text,
+                          ),
+                        ],
+                      ),
+                      SignUpTextFieldWrapper(
+                        controller: nameController,
+                        textInputActionType: TextInputAction.done,
+                        onSubmit: _nameCheck,
+                        maxLength: 50,
+                        hint: S.of(context).welcome_my_name_is,
+                        label: S.of(context).welcome_name_label,
+                        title: S.of(context).welcome_name_hint,
+                        textCapitalization: TextCapitalization.words,
+                      ),
+                      SignUpTextFieldWrapper(
+                        controller: usernameController,
+                        textInputActionType: TextInputAction.done,
+                        onSubmit: _onUsernameSubmitted,
+                        maxLength: 22,
+                        hint: S.of(context).welcome_username_ill_go,
+                        label: S.of(context).welcome_username_label,
+                        title: S.of(context).welcome_username_hint,
+                        textCapitalization: TextCapitalization.none,
+                      ),
+                      SignUpThemes(),
+                      SignUpAbout(
+                        nextPage: _nextSignUpPage,
+                        pronounController: pronounController,
+                        locationController: locationController,
+                        websiteController: websiteController,
+                      ),
+                      SignUpPhotos(profilePicture),
+                      SignUpRegister(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        confirmPasswordController: confirmPasswordController,
+                      ),
+                      SignUpVerify(
+                        handleSignUp: _finishSignUp,
+                        verificationController: verificationCodeController,
+                      )
+                    ],
                   ),
-                if (_currentIndex != 0)
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * .08,
-                    left: 20,
-                    child: Image.asset(
-                      'assets/images/junto-mobile__logo.png',
-                      height: 38,
-                      color: Colors.white,
+                  if (_currentIndex != 0 &&
+                      MediaQuery.of(context).viewInsets.bottom == 0)
+                    SignUpArrows(
+                      welcomeController: _welcomeController,
+                      currentIndex: _currentIndex,
+                      onTap: _nextSignUpPage,
                     ),
+                  if (_currentIndex != 0)
+                    Positioned(
+                      top: MediaQuery.of(context).size.height * .08,
+                      left: 20,
+                      child: Image.asset(
+                        'assets/images/junto-mobile__logo.png',
+                        height: 38,
+                        color: theme.themeName.contains('sand')
+                            ? Color(0xff555555)
+                            : Colors.white,
+                      ),
+                    ),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      if (state is AuthUnauthenticated &&
+                          state.loading == true) {
+                        return Container(
+                          color:
+                              Theme.of(context).backgroundColor.withOpacity(.8),
+                          child: JuntoProgressIndicator(),
+                        );
+                      }
+                      return SizedBox();
+                    },
                   ),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if (state is AuthUnauthenticated && state.loading == true) {
-                      return Container(
-                        color:
-                            Theme.of(context).backgroundColor.withOpacity(.8),
-                        child: JuntoProgressIndicator(),
-                      );
-                    }
-                    return SizedBox();
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Future<void> _nextSignUpPage() async {

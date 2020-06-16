@@ -45,10 +45,11 @@ class SignUpThemes extends StatelessWidget {
     }
   }
 
-  Widget _displayThemeSelector(String theme, BuildContext context) {
+  Widget _displayThemeSelector(
+      String themeName, JuntoThemesProvider theme, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _setTheme(theme, context);
+        _setTheme(themeName, context);
       },
       child: Container(
         color: Colors.transparent,
@@ -68,7 +69,7 @@ class SignUpThemes extends StatelessWidget {
               ),
               child: ClipOval(
                 child: Image.asset(
-                  _displayThemeAsset(theme),
+                  _displayThemeAsset(themeName),
                   fit: BoxFit.cover,
                   height: 70,
                   width: 70,
@@ -77,9 +78,11 @@ class SignUpThemes extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             Text(
-              theme,
-              style: const TextStyle(
-                color: Colors.white,
+              themeName,
+              style: TextStyle(
+                color: theme.themeName.contains('sand')
+                    ? Color(0xff555555)
+                    : Colors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.2,
@@ -125,35 +128,37 @@ class SignUpThemes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      width: MediaQuery.of(context).size.width,
-      child: Container(
-        margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height * .16,
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return Container(
+        color: Colors.transparent,
+        width: MediaQuery.of(context).size.width,
+        child: Container(
+          margin: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * .16,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height * .24),
+              Container(
+                height: 140,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    _displayThemeSelector('RAINBOW', theme, context),
+                    _displayThemeSelector('AQUEOUS', theme, context),
+                    _displayThemeSelector('PURPLE GOLD', theme, context),
+                    _displayThemeSelector('FIRE', theme, context),
+                    _displayThemeSelector('FOREST', theme, context),
+                    _displayThemeSelector('SAND', theme, context),
+                    _displayThemeSelector('DARK', theme, context),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: MediaQuery.of(context).size.height * .24),
-            Container(
-              height: 140,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  _displayThemeSelector('RAINBOW', context),
-                  _displayThemeSelector('AQUEOUS', context),
-                  _displayThemeSelector('PURPLE GOLD', context),
-                  _displayThemeSelector('FIRE', context),
-                  _displayThemeSelector('FOREST', context),
-                  _displayThemeSelector('SAND', context),
-                  _displayThemeSelector('DARK', context),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 }
