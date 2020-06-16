@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class SignUpThemes extends StatelessWidget {
@@ -80,9 +81,7 @@ class SignUpThemes extends StatelessWidget {
             Text(
               themeName,
               style: TextStyle(
-                color: theme.themeName.contains('sand')
-                    ? Color(0xff555555)
-                    : Colors.white,
+                color: JuntoPalette().juntoWhite(theme: theme),
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.2,

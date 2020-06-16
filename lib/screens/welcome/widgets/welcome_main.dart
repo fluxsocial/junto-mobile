@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class WelcomeMain extends StatelessWidget {
@@ -30,19 +31,14 @@ class WelcomeMain extends StatelessWidget {
                 child: Image.asset(
                   'assets/images/junto-mobile__logo.png',
                   height: 69,
-                  color: theme.themeName.contains('sand')
-                      ? Color(0xff555555)
-                      : Colors.white,
+                  color: JuntoPalette().juntoWhite(theme: theme),
                 ),
               ),
               Container(
                 child: Text(
                   'JUNTO',
                   style: TextStyle(
-                    letterSpacing: 3.6,
-                    color: theme.themeName.contains('sand')
-                        ? Color(0xff555555)
-                        : Colors.white,
+                    color: JuntoPalette().juntoWhite(theme: theme),
                     fontSize: 45,
                     fontWeight: FontWeight.w400,
                   ),
@@ -64,9 +60,7 @@ class WelcomeMain extends StatelessWidget {
                       'SIGN IN',
                       style: TextStyle(
                         letterSpacing: 1.7,
-                        color: theme.themeName.contains('sand')
-                            ? Color(0xff555555)
-                            : Colors.white,
+                        color: JuntoPalette().juntoWhite(theme: theme),
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
