@@ -81,25 +81,29 @@ class UserProfile extends HiveObject {
     @required this.website,
     @required this.gender,
     this.email,
+    this.createdAt,
   });
 
-  factory UserProfile.fromJson(Map<String, dynamic> map) {
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
-      address: map['address'] as String,
-      name: map['name'] as String,
-      bio: map['bio'] as String,
+      address: json['address'] as String,
+      name: json['name'] as String,
+      bio: json['bio'] as String,
       location:
-          map['location'] != null ? List<String>.from(map['location']) : null,
-      profilePicture: map['profile_picture'] != null
-          ? List<String>.from(map['profile_picture'])
+          json['location'] != null ? List<String>.from(json['location']) : null,
+      profilePicture: json['profile_picture'] != null
+          ? List<String>.from(json['profile_picture'])
           : null,
-      backgroundPhoto: map['background_photo'],
-      verified: map['verified'] as bool,
-      username: map['username'] as String,
+      backgroundPhoto: json['background_photo'],
+      verified: json['verified'] as bool,
+      username: json['username'] as String,
       website:
-          map['website'] != null ? List<String>.from(map['website']) : null,
-      gender: map['gender'] != null ? List<String>.from(map['gender']) : null,
-      email: map['email'] as String,
+          json['website'] != null ? List<String>.from(json['website']) : null,
+      gender: json['gender'] != null ? List<String>.from(json['gender']) : null,
+      email: json['email'] as String,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null,
     );
   }
 
@@ -147,6 +151,10 @@ class UserProfile extends HiveObject {
   @HiveField(10)
   final String email;
 
+  // Sign up date
+  @HiveField(11)
+  final DateTime createdAt;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -162,7 +170,8 @@ class UserProfile extends HiveObject {
           username == other.username &&
           website == other.website &&
           gender == other.gender &&
-          email == other.email);
+          email == other.email &&
+          createdAt == other.createdAt);
 
   @override
   int get hashCode =>
@@ -176,7 +185,8 @@ class UserProfile extends HiveObject {
       username.hashCode ^
       website.hashCode ^
       gender.hashCode ^
-      email.hashCode;
+      email.hashCode ^
+      createdAt.hashCode;
 
   @override
   String toString() {
@@ -192,6 +202,7 @@ class UserProfile extends HiveObject {
         ' website: $website,'
         ' gender: $gender,'
         ' email: $email,'
+        ' createdAt: $createdAt'
         '}';
   }
 
@@ -221,6 +232,7 @@ class UserProfile extends HiveObject {
       website: website ?? this.website,
       gender: gender ?? this.gender,
       email: email ?? this.email,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -236,7 +248,8 @@ class UserProfile extends HiveObject {
       'username': username,
       'website': website,
       'gender': gender,
-      'email': email
+      'email': email,
+      'created_at': createdAt.toIso8601String(),
     };
   }
 }
@@ -251,21 +264,23 @@ class UserData {
     @required this.connectionPerspective,
   });
 
-  factory UserData.fromJson(Map<String, dynamic> map) {
+  factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
-      privateDen:
-          map['private_den'] != null ? Den.fromJson(map['private_den']) : null,
+      privateDen: json['private_den'] != null
+          ? Den.fromJson(json['private_den'])
+          : null,
       publicDen:
-          map['public_den'] != null ? Den.fromJson(map['public_den']) : null,
-      pack: map['pack'] != null ? CentralizedPack.fromJson(map['pack']) : null,
-      user: UserProfile.fromJson(map['user']),
-      userPerspective: map['user_perspective'] != null
+          json['public_den'] != null ? Den.fromJson(json['public_den']) : null,
+      pack:
+          json['pack'] != null ? CentralizedPack.fromJson(json['pack']) : null,
+      user: UserProfile.fromJson(json['user']),
+      userPerspective: json['user_perspective'] != null
           ? PerspectiveModel.fromJson(
-              map['user_perspective'],
+              json['user_perspective'],
             )
           : null,
       connectionPerspective: PerspectiveModel.fromJson(
-        map['connection_perspective'],
+        json['connection_perspective'],
       ),
     );
   }
