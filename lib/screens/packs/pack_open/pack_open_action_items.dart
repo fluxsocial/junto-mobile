@@ -26,6 +26,22 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
     Navigator.pop(context);
   }
 
+  Future<void> _navigateMember() async {
+    final String packCreatorAddress = widget.pack.creator['address'];
+    Navigator.pop(context);
+    final UserData userData =
+        await Provider.of<UserRepo>(context, listen: false)
+            .getUser(packCreatorAddress);
+
+    final UserProfile _userProfile = userData.user;
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => JuntoMember(profile: _userProfile),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,23 +81,7 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
                 const SizedBox(height: 10),
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
-                  onTap: () async {
-                    final String packCreatorAddress =
-                        widget.pack.creator['address'];
-                    Navigator.pop(context);
-                    final UserData userData =
-                        await Provider.of<UserRepo>(context, listen: false)
-                            .getUser(packCreatorAddress);
-
-                    final UserProfile _userProfile = userData.user;
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) =>
-                            JuntoMember(profile: _userProfile),
-                      ),
-                    );
-                  },
+                  onTap: _navigateMember,
                   title: Row(
                     children: <Widget>[
                       Text(
