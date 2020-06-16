@@ -40,6 +40,20 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
     );
   }
 
+  Future<void> _leavePack() async {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => ConfirmDialog(
+        buildContext: context,
+        confirm: leavePack,
+        confirmationText:
+        'Are you sure you want to leave this pack?',
+        errorMessage: S.of(context).common_network_error,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -92,19 +106,7 @@ class _PackOpenActionItemsState extends State<PackOpenActionItems> {
                 const SizedBox(height: 10),
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
-                  onTap: () async {
-                    Navigator.pop(context);
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => ConfirmDialog(
-                        buildContext: context,
-                        confirm: leavePack,
-                        confirmationText:
-                            'Are you sure you want to leave this pack?',
-                        errorMessage: S.of(context).common_network_error,
-                      ),
-                    );
-                  },
+                  onTap: _leavePack,
                   title: Row(
                     children: <Widget>[
                       Text(
