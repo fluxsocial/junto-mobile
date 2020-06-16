@@ -18,10 +18,29 @@ class DeleteAccountDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final passwordController = TextEditingController();
+    Future<void> _deleteAccount() async {
+      JuntoLoader.showLoader(context);
+      print(passwordController.value.text);
+      try {
         await Provider.of<UserRepo>(context, listen: false).deleteUserAccount(
           user.userAddress,
           passwordController.value.text,
         );
+        JuntoLoader.hide();
+        await context.bloc<AuthBloc>().add(LogoutEvent());
+        Navigator.popUntil(context, (r) => r.isFirst);
+      } catch (error) {
+        JuntoLoader.hide();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText:
+                'Unable to delete your account. Double check your password.',
+          ),
+        );
+        logger.logException(error);
+      }
+    }
 
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -115,31 +134,7 @@ class DeleteAccountDialog extends StatelessWidget {
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () async {
-                        JuntoLoader.showLoader(context);
-                        print(passwordController.value.text);
-                        try {
-                          await Provider.of<AuthRepo>(context, listen: false)
-                              .deleteUserAccount(
-                            user.userAddress,
-                            passwordController.value.text,
-                          );
-                          JuntoLoader.hide();
-                          await context.bloc<AuthBloc>().add(LogoutEvent());
-                          Navigator.popUntil(context, (r) => r.isFirst);
-                        } catch (error) {
-                          JuntoLoader.hide();
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                SingleActionDialog(
-                              dialogText:
-                                  'Unable to delete your account. Double check your password.',
-                            ),
-                          );
-                          logger.logException(error);
-                        }
-                      },
+                      onTap: _deleteAccount,
                       child: Container(
                         color: Colors.transparent,
                         alignment: Alignment.center,
