@@ -98,11 +98,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await userDataProvider.initialize();
 
         yield AuthState.authenticated();
+      } else {
+        yield AuthState.unauthenticated(
+            error: true,
+            errorMessage: 'Please check if username and password are correct');
       }
     } on JuntoException catch (error) {
       logger.logError('Error during login: ${error.message}');
       yield AuthState.unauthenticated();
-      yield AuthState.unauthenticated(error: true, errorMessage: error.message);
+      yield AuthState.unauthenticated(
+          error: true,
+          errorMessage: 'Sorry, we have some problems signing you in');
     } catch (error) {
       logger.logException(error);
       yield AuthState.unauthenticated();
