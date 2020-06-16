@@ -110,10 +110,13 @@ class CognitoClient extends AuthenticationService {
       return SignInResult.signedOut();
     } on PlatformException catch (e) {
       logger.logException(e);
-      if (e.details != null &&
-          e.details is String &&
-          e.details.contains("There is already a user which is signed in.")) {
-        return SignInResult(false, SignInResultError.AlreadyLoggedIn);
+      if (e.details != null && e.details is String) {
+        if (e.details.contains("There is already a user which is signed in.")) {
+          return SignInResult(false, SignInResultError.AlreadyLoggedIn);
+        }
+        if (e.details.contains("Incorrect username or password")) {
+          return SignInResult(false, SignInResultError.InvalidPassword);
+        }
       }
       return SignInResult.signedOut();
     } catch (e) {
