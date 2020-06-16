@@ -112,7 +112,7 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> _finishSignUp() async {
     final verificationCode = verificationCodeController.text.trim();
-    final username = usernameController.text.trim().toLowerCase();
+    final username = usernameController.text..toLowerCase().trim();
     final password = passwordController.text;
     final email = emailController.text.trim();
     final name = nameController.text.trim();
@@ -144,7 +144,7 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _onUsernameSubmitted() async {
-    final username = usernameController.text.trim().toLowerCase();
+    final username = usernameController.text.toLowerCase().trim();
     bool _correctLength = username.length >= 1 && username.length <= 22;
     final exp = RegExp("^[a-z0-9_]+\$");
     if (username != null && exp.hasMatch(username) && _correctLength) {
@@ -322,7 +322,7 @@ class WelcomeState extends State<Welcome> {
   Future<void> _nextSignUpPage() async {
     try {
       final name = nameController.text.trim();
-      final username = usernameController.text.trim();
+      final username = usernameController.text.toLowerCase().trim();
 
       if (_currentIndex == 1) {
         if (name == null || name.isEmpty || name.length > 50) {
