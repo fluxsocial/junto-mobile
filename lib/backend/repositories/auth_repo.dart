@@ -93,9 +93,4 @@ class AuthRepo {
     await authService.logOut();
   }
 
-  // Delete user account
-  Future<void> deleteUserAccount(String userAddress, String password) async {
-    await authService.deleteUserAccount(userAddress, password);
-    await logoutUser();
-  }
 }

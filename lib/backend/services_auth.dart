@@ -33,9 +33,6 @@ abstract class AuthenticationService extends IdTokenProvider {
   /// Logs out a user and removes their auth token from the device.
   Future<SignOutResult> logOut();
 
-  /// Deletes user account
-  Future<void> deleteUserAccount(String userAddress, String password);
-
   /// Gives indication if user is logged in
   Future<SignInResult> isLoggedIn();
 }
