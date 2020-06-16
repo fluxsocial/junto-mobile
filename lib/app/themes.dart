@@ -585,7 +585,7 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xffeeeeee),
     backgroundColor: Colors.white,
-    accentColor: const Color(0xFF4687A2),
+    accentColor: const Color(0xFF333333),
     colorScheme: const ColorScheme(
       primary: Color(0xff444444),
       primaryVariant: Color(0xff444444),
@@ -1352,7 +1352,7 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xff555555),
     backgroundColor: const Color(0xff333333),
-    accentColor: const Color(0xFF4687A2),
+    accentColor: const Color(0xFF333333),
     colorScheme: const ColorScheme(
       primary: Color(0xff444444),
       primaryVariant: Color(0xff444444),
