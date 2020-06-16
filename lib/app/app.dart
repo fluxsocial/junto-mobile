@@ -24,6 +24,10 @@ class JuntoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
+        ChangeNotifierProvider<UserDataProvider>(
+          create: (ctx) => backend.dataProvider,
+          lazy: false,
+        ),
         ChangeNotifierProvider<JuntoThemesProvider>.value(
             value: backend.themesProvider),
         Provider<SearchService>.value(value: backend.searchRepo),
@@ -39,13 +43,6 @@ class JuntoApp extends StatelessWidget {
         ChangeNotifierProvider<AppRepo>.value(value: backend.appRepo),
         ChangeNotifierProvider(
           create: (_) => NotificationsHandler(backend.notificationRepo),
-          lazy: false,
-        ),
-        ChangeNotifierProvider<UserDataProvider>(
-          create: (ctx) => UserDataProvider(
-            ctx.repository<AppRepo>(),
-            ctx.repository<UserRepo>(),
-          ),
           lazy: false,
         ),
       ],

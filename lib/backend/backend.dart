@@ -21,6 +21,7 @@ import 'package:junto_beta_mobile/backend/services/image_handler.dart';
 import 'package:junto_beta_mobile/backend/services/notification_service.dart';
 import 'package:junto_beta_mobile/backend/services/search_service.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
+import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 export 'package:junto_beta_mobile/backend/repositories.dart';
@@ -40,6 +41,7 @@ class Backend {
     this.db,
     this.themesProvider,
     this.onBoardingRepo,
+    this.dataProvider,
   });
 
   // ignore: missing_return
@@ -68,9 +70,10 @@ class Backend {
       final searchService = SearchServiceCentralized(client);
       final notificationService = NotificationServiceImpl(client);
       final notificationRepo = NotificationRepo(notificationService, dbService);
-
+      final appRepo = AppRepo();
       final userRepo =
           UserRepo(userService, notificationRepo, dbService, expressionService);
+      final dataProvider = UserDataProvider(appRepo, userRepo);
       return Backend._(
         searchRepo: SearchRepo(searchService),
         authRepo: authRepo,
@@ -80,10 +83,11 @@ class Backend {
         expressionRepo:
             ExpressionRepo(expressionService, dbService, imageHandler),
         notificationRepo: notificationRepo,
-        appRepo: AppRepo(),
+        appRepo: appRepo,
         db: dbService,
         themesProvider: themesProvider,
-        onBoardingRepo: OnBoardingRepo(),
+        dataProvider: dataProvider,
+        onBoardingRepo: OnBoardingRepo(dataProvider),
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -102,11 +106,11 @@ class Backend {
       userRepo: UserRepo(userService, null, null, expressionService),
       collectiveProvider: null,
       groupsProvider: GroupRepo(groupService, userService),
-      //TODO(Nash): MockDB
       expressionRepo: ExpressionRepo(expressionService, null, imageHandler),
       searchRepo: SearchRepo(searchService),
       appRepo: AppRepo(),
       db: null,
+      dataProvider: null,
       themesProvider: MockedThemesProvider(),
       onBoardingRepo: null,
     );
@@ -123,4 +127,5 @@ class Backend {
   final LocalCache db;
   final ThemesProvider themesProvider;
   final OnBoardingRepo onBoardingRepo;
+  final UserDataProvider dataProvider;
 }
