@@ -14,6 +14,7 @@ class OnBoardingRepo {
   bool _showDenTutorial = false;
   bool _showCreateTutorial = false;
   bool _showRelationTutorial = false;
+  bool _showGroupTutorial = false;
   Box _appBox;
   UserDataProvider _repo;
 
@@ -24,6 +25,7 @@ class OnBoardingRepo {
   bool get showDenTutorial => _showDenTutorial;
   bool get showCreateTutorial => _showCreateTutorial;
   bool get showRelationTutorial => _showRelationTutorial;
+  bool get showGroupTutorial => _showGroupTutorial;
 
   Future<void> loadTutorialState() async {
     final time = DateTime.now();
@@ -43,6 +45,7 @@ class OnBoardingRepo {
           await _appBox.get(HiveKeys.kShowCreateTutorial) ?? true;
       _showRelationTutorial =
           await _appBox.get(HiveKeys.kRelationsTutorial) ?? true;
+      _showGroupTutorial = await _appBox.get(HiveKeys.kGroupTutorial) ?? true;
     }
   }
 
@@ -75,6 +78,10 @@ class OnBoardingRepo {
       case HiveKeys.kRelationsTutorial:
         _showRelationTutorial = false;
         await _appBox.put(HiveKeys.kRelationsTutorial, value);
+        return;
+      case HiveKeys.kGroupTutorial:
+        _showGroupTutorial = false;
+        await _appBox.put(HiveKeys.kGroupTutorial, value);
         return;
     }
   }
