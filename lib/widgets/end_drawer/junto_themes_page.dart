@@ -120,6 +120,8 @@ class _ThemeSelector extends StatelessWidget {
         onTap: () async {
           await Provider.of<JuntoThemesProvider>(context, listen: false)
               .setTheme(name);
+          await Provider.of<JuntoThemesProvider>(context, listen: false)
+              .vibrate();
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
