@@ -78,11 +78,10 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     notifyListeners();
     _persistTheme(themeName);
     _setSystemOverlay();
-    _vibrate();
     return currentTheme;
   }
 
-  void _vibrate() async {
+  void vibrate() async {
     if (await Vibration.hasVibrator()) {
       Vibration.vibrate(
         duration: 200,
