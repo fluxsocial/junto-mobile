@@ -49,6 +49,7 @@ class AuthRepo {
   Future<String> loginUser(String username, String password) async {
     try {
       logger.logInfo('Logging user in');
+      await authService.logOut();
       final result = await authService
           .loginUser(SignInData(username: username, password: password));
       if (result.wasSuccessful) {
