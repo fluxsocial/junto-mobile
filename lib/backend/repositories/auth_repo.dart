@@ -69,10 +69,14 @@ class AuthRepo {
 
   Future<String> getAddress() async {
     final token = await authService.getIdToken();
-    final jwt = JWT.parse(token);
-    final subject = jwt.subject;
-    final address = subject;
-    return address;
+    if (token != null) {
+      final jwt = JWT.parse(token);
+      final subject = jwt.subject;
+      final address = subject;
+      return address;
+    } else {
+      throw Exception("Access token is null");
+    }
   }
 
   // Request verification code to reset password
@@ -82,6 +86,9 @@ class AuthRepo {
   }
 
   Future<ResetPasswordResult> resetPassword(ResetPasswordData data) {
+    assert(data.username.isNotEmpty);
+    assert(data.password.isNotEmpty);
+    assert(data.confirmationCode.isNotEmpty);
     return authService.resetPassword(data);
   }
 
@@ -92,5 +99,4 @@ class AuthRepo {
     logger.logInfo('Logging out');
     await authService.logOut();
   }
-
 }
