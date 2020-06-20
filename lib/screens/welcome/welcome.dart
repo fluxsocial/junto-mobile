@@ -236,7 +236,7 @@ class WelcomeState extends State<Welcome> {
                           ),
                           ResetPasswordConfirm(
                             signInController: _signInController,
-                            username: usernameController.value.text,
+                            username: usernameController.value.text.trim(),
                           ),
                         ],
                       ),
