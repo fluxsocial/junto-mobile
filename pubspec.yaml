@@ -58,10 +58,11 @@ dependency_overrides:
   path: 1.7.0
   # Overriding due to crash on iOS https://github.com/agnostech/flutter_amplify/pull/12
   flutter_aws_amplify_cognito:
-    git:
-      url: https://github.com/Nash0x7E2/flutter_amplify.git
-      path: flutter_aws_amplify_cognito
-      ref: e469c9749e87570abfc644fc4583b729a099c391
+    # path: ../flutter_amplify/flutter_aws_amplify_cognito
+   git:
+     url: https://github.com/Nash0x7E2/flutter_amplify.git
+     path: flutter_aws_amplify_cognito
+     ref: 5f85b135d06434075d271552d1232c15e3bcd581
 
 flutter:
   uses-material-design: true
