@@ -49,7 +49,6 @@ class AuthRepo {
   Future<String> loginUser(String username, String password) async {
     try {
       logger.logInfo('Logging user in');
-      await authService.logOut();
       final result = await authService
           .loginUser(SignInData(username: username, password: password));
       if (result.wasSuccessful) {
@@ -72,9 +71,7 @@ class AuthRepo {
     final token = await authService.getIdToken();
     if (token != null) {
       final jwt = JWT.parse(token);
-      final subject = jwt.subject;
-      final address = subject;
-      return address;
+      return jwt.subject;
     } else {
       throw Exception("Access token is null");
     }
