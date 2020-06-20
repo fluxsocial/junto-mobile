@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
@@ -9,6 +11,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ResetPasswordConfirm extends StatefulWidget {
   const ResetPasswordConfirm({
@@ -100,12 +103,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
           context,
           message: "Password successfully reset!",
         );
-        //TODO: don't replace with welcome route
-        widget.signInController.animateToPage(
-          0,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.decelerate,
-        );
+        context.bloc<AuthBloc>().add(LogoutEvent());
       } catch (error) {
         print(error.message);
         showDialog(
