@@ -14,7 +14,7 @@ class ResetPasswordConfirm extends StatefulWidget {
   const ResetPasswordConfirm({
     @required this.signInController,
     @required this.username,
-  });
+  }) : assert(username != null || username != "");
 
   final PageController signInController;
   final String username;
