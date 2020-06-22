@@ -21,6 +21,7 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
+import 'junto_center.dart';
 import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
@@ -124,6 +125,28 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
                                   return JuntoThemesPage();
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                        JuntoDrawerItem(
+                          icon: Padding(
+                            padding: const EdgeInsets.only(right: 32),
+                            child: Image.asset(
+                              'assets/images/junto-mobile__sprout.png',
+                              height: 20,
+                              color: JuntoPalette().juntoWhite(theme: theme),
+                            ),
+                          ),
+                          title: 'Center',
+                          theme: theme,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute<dynamic>(
+                                builder: (BuildContext context) {
+                                  return JuntoCommunityCenter();
                                 },
                               ),
                             );
