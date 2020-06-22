@@ -135,6 +135,7 @@ flutter:
     - assets/images/junto-mobile__perspective--fire.png
     - assets/images/junto-mobile__perspective--forest.png
     - assets/images/junto-mobile__perspective--dark.png
+    - assets/images/junto-mobile__sprout.png
 
 flutter_intl:
   enabled: true
