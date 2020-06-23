@@ -24,6 +24,7 @@ class GroupServiceCentralized implements GroupService {
     );
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
+
     return SphereResponse.fromJson(_decodedResponse);
   }
 

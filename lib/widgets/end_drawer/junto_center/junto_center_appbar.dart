@@ -48,6 +48,9 @@ class JuntoCommunityCenterAppbar extends SliverPersistentHeaderDelegate {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                     child: Container(
                       alignment: Alignment.bottomLeft,
                       color: Colors.transparent,

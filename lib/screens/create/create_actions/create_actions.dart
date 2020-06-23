@@ -265,13 +265,23 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  child: Row(children: <Widget>[
-                    const SizedBox(width: 15),
-                    _expressionContextSelector(expressionContext: 'Collective'),
-                    _expressionContextSelector(expressionContext: 'My Pack'),
-                  ]),
-                ),
+                if (widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386')
+                  Container(
+                    child: Row(children: <Widget>[
+                      const SizedBox(width: 15),
+                      _expressionContextSelector(
+                          expressionContext: 'Collective'),
+                      _expressionContextSelector(expressionContext: 'My Pack'),
+                    ]),
+                  ),
+                if (widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386')
+                  Container(
+                    child: Row(children: <Widget>[
+                      const SizedBox(width: 15),
+                      _expressionContextSelector(
+                          expressionContext: 'Community Center'),
+                    ]),
+                  ),
               ],
             ),
           ),
@@ -364,6 +374,20 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             ? Colors.white
             : Theme.of(context).primaryColor,
         size: 28,
+      );
+    } else if (expressionContext == 'Community Center') {
+      _setExpressionContextDescription = () {
+        setState(() {
+          _expressionContext = ExpressionContext.Group;
+          _currentExpressionContextDescription =
+              'share your feedback with the community';
+          _address = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+        });
+      };
+      _expressionContextIcon = Image.asset(
+        'assets/images/junto-mobile__sprout.png',
+        height: 17,
+        color: Colors.white,
       );
     }
     return GestureDetector(

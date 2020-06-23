@@ -65,11 +65,14 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                   slivers: [
                     SliverToBoxAdapter(
                       child: FilterColumnRow(
-                        twoColumnView: Provider.of<AppRepo>(context, listen: false).twoColumnLayout,
+                        twoColumnView:
+                            Provider.of<AppRepo>(context, listen: false)
+                                .twoColumnLayout,
                         switchColumnView: _switchColumnView,
                       ),
                     ),
-                    if (Provider.of<AppRepo>(context, listen: false).twoColumnLayout)
+                    if (Provider.of<AppRepo>(context, listen: false)
+                        .twoColumnLayout)
                       TwoColumnList(
                         data: _results,
                         useSliver: true,
@@ -79,7 +82,9 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                               );
                         },
                       ),
-                    if (!Provider.of<AppRepo>(context, listen: false).twoColumnLayout == true)
+                    if (!Provider.of<AppRepo>(context, listen: false)
+                            .twoColumnLayout ==
+                        true)
                       SingleColumnSliverListView(
                         data: _results,
                         privacyLayer: widget.privacy,
