@@ -23,8 +23,6 @@ class Connections extends StatelessWidget {
       future: getUserRelations(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
-          print('getting connections');
-
           // get list of connections
           final List<UserProfile> _connectionsMembers =
               snapshot.data['connections']['results'];

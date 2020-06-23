@@ -70,7 +70,6 @@ class SpheresState extends State<Spheres> with ListDistinct {
     try {
       return _userProvider.getUserGroups(_userProfile.user.address);
     } catch (error) {
-      print(error);
       return null;
     }
   }
