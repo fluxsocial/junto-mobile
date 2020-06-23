@@ -17,29 +17,27 @@ class JuntoCommunityCenter extends StatelessWidget {
           child: JuntoCommunityCenterFab(),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: FeatureDiscovery(
-          child: DefaultTabController(
-            length: _tabs.length,
-            child: NestedScrollView(
-              headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
-                return <Widget>[
-                  SliverPersistentHeader(
-                    delegate: JuntoCommunityCenterAppbar(
-                      expandedHeight:
-                          MediaQuery.of(context).size.height * .11 + 50,
-                      tabs: _tabs,
-                    ),
-                    floating: true,
-                    pinned: false,
+        body: DefaultTabController(
+          length: _tabs.length,
+          child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+              return <Widget>[
+                SliverPersistentHeader(
+                  delegate: JuntoCommunityCenterAppbar(
+                    expandedHeight:
+                        MediaQuery.of(context).size.height * .11 + 50,
+                    tabs: _tabs,
                   ),
-                ];
-              },
-              body: TabBarView(
-                children: <Widget>[
-                  JuntoCommunityCenterFeedback(),
-                  SizedBox(),
-                ],
-              ),
+                  floating: true,
+                  pinned: false,
+                ),
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                JuntoCommunityCenterFeedback(),
+                SizedBox(),
+              ],
             ),
           ),
         ),

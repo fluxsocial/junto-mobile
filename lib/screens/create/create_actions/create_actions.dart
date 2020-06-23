@@ -15,6 +15,7 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_a
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
@@ -83,9 +84,15 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     if (widget.expressionContext == ExpressionContext.Collective) {
       _currentExpressionContext = 'Collective';
       _currentExpressionContextDescription = 'share publicly on Junto';
-    } else if (widget.expressionContext == ExpressionContext.Group) {
+    } else if (widget.expressionContext == ExpressionContext.Group &&
+        widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
       _currentExpressionContext = 'My Pack';
       _currentExpressionContextDescription = 'share to just your Pack members';
+    } else if (widget.expressionContext == ExpressionContext.Group &&
+        widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
+      _currentExpressionContext = 'Community Center';
+      _currentExpressionContextDescription =
+          'share your feedback with the team and community';
     }
   }
 
@@ -113,10 +120,16 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     if (_expressionContext == ExpressionContext.Collective) {
       context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
-    } else if (_expressionContext == ExpressionContext.Group) {
+    } else if (_expressionContext == ExpressionContext.Group &&
+        widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
       child = JuntoPacks(initialGroup: _address);
+    } else if (_expressionContext == ExpressionContext.Group &&
+        widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
+      child = JuntoCommunityCenter();
     } else {
-      context.bloc<CollectiveBloc>().add(RefreshCollective());
+      context.bloc<CollectiveBloc>().add(
+            RefreshCollective(),
+          );
       child = JuntoCollective();
     }
     Navigator.of(context).pushAndRemoveUntil(
@@ -380,7 +393,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         setState(() {
           _expressionContext = ExpressionContext.Group;
           _currentExpressionContextDescription =
-              'share your feedback with the community';
+              'share your feedback with the team and community';
           _address = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
         });
       };
