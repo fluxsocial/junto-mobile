@@ -28,6 +28,7 @@ class SignUpArrows extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            if(_currentIndex <= 6)
             Container(
               child: GestureDetector(
                 onTap: () {

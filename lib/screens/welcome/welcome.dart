@@ -17,6 +17,9 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_arrows.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_wrapper.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/welcome_main.dart';
 import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -28,9 +31,6 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
-import 'widgets/sign_up_arrows.dart';
-import 'widgets/sign_up_text_field_wrapper.dart';
-import 'widgets/welcome_main.dart';
 
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
@@ -194,6 +194,7 @@ class WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     authRepo = Provider.of<AuthRepo>(context, listen: false);
     userRepo = Provider.of<UserRepo>(context, listen: false);
+    final canShowUp = _currentIndex != 0 && context.media.viewInsets.bottom == 0;
     return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
       return WillPopScope(
         onWillPop: _animateOnBackPress,
@@ -279,8 +280,7 @@ class WelcomeState extends State<Welcome> {
                       )
                     ],
                   ),
-                  if (_currentIndex != 0 &&
-                      MediaQuery.of(context).viewInsets.bottom == 0)
+                  if (canShowUp)
                     SignUpArrows(
                       welcomeController: _welcomeController,
                       currentIndex: _currentIndex,
@@ -549,4 +549,8 @@ class WelcomeState extends State<Welcome> {
         return 'We cannot register you right now, sorry';
     }
   }
+}
+
+extension on BuildContext {
+  get media => MediaQuery.of(this);
 }
