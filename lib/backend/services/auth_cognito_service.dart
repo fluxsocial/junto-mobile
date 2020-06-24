@@ -40,7 +40,7 @@ class CognitoClient extends AuthenticationService {
       final result =
           await aws.FlutterAwsAmplifyCognito.forgotPassword(username);
       if (result != null) {
-        logger.logDebug('Password reset request result: ${result.state}');
+        logger.logInfo('Password reset request result: ${result.state}');
         switch (result.state) {
           case aws.ForgotPasswordState.CONFIRMATION_CODE:
             logger.logInfo(
@@ -50,10 +50,27 @@ class CognitoClient extends AuthenticationService {
             return ResetPasswordResult(false);
           case aws.ForgotPasswordState.UNKNOWN:
           case aws.ForgotPasswordState.ERROR:
-            return ResetPasswordResult(false);
+            return ResetPasswordResult.unknownError();
         }
       }
       return ResetPasswordResult(false);
+    } on PlatformException catch (e) {
+      if (e.details is String) {
+        if (e.details.contains('Attempt limit exceeded') ||
+            e.details.contains('LimitExceededException')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.TooManyAttempts,
+          );
+        } else if (e.details.contains('Invalid verification code provided')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.InvalidCode,
+          );
+        }
+      }
+      logger.logError('Error while resetting the password: $e');
+      return ResetPasswordResult.unknownError();
     } catch (e) {
       logger.logException(e);
       return ResetPasswordResult(false);
@@ -66,7 +83,7 @@ class CognitoClient extends AuthenticationService {
       final result = await aws.FlutterAwsAmplifyCognito.confirmForgotPassword(
           data.username, data.password, data.confirmationCode);
       if (result != null) {
-        logger.logDebug('Password reset result: ${result.state}');
+        logger.logInfo('Password reset result: ${result.state}');
         switch (result.state) {
           case aws.ForgotPasswordState.DONE:
             logger.logInfo("Password changed successfully");
@@ -106,7 +123,8 @@ class CognitoClient extends AuthenticationService {
       final result = await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
       logger.logInfo(
           'Result of resending verification code: ${result.confirmationState} ${result.userCodeDeliveryDetails.deliveryMedium}');
-      if (result.confirmationState) {
+      if (result.userCodeDeliveryDetails.deliveryMedium == 'EMAIL' ||
+          result.confirmationState) {
         return ResetPasswordResult(true);
       } else {
         return ResetPasswordResult.unknownError();
