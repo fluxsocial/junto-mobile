@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
@@ -17,6 +18,9 @@ class JuntoCommunityCenterFeedback extends StatelessWidget {
     return Consumer<AppRepo>(builder: (context, AppRepo appRepo, _) {
       return Column(
         children: <Widget>[
+          FilterColumnRow(
+            twoColumnView: appRepo.twoColumnLayout,
+          ),
           FutureBuilder<QueryResults<ExpressionResponse>>(
             future: Provider.of<ExpressionRepo>(context, listen: false)
                 .getCollectiveExpressions(

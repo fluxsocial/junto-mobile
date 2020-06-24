@@ -35,11 +35,6 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  Future<void> _switchColumnView(ExpressionFeedLayout columnType) async {
-    await Provider.of<UserDataProvider>(context, listen: false)
-        .switchColumnLayout(columnType);
-  }
-
   void deleteDenExpression(ExpressionResponse expression) {
     context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
   }
@@ -65,11 +60,9 @@ class _UserExpressionsState extends State<UserExpressions> {
                       (BuildContext context, UserDataProvider data, _) {
                     return SliverToBoxAdapter(
                       child: FilterColumnRow(
-                        twoColumnView:
-                            Provider.of<AppRepo>(context, listen: false)
-                                .twoColumnLayout,
-                        switchColumnView: _switchColumnView,
-                      ),
+                          twoColumnView:
+                              Provider.of<AppRepo>(context, listen: false)
+                                  .twoColumnLayout),
                     );
                   }),
                   Consumer<UserDataProvider>(
