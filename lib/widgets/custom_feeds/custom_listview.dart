@@ -47,6 +47,7 @@ class TwoColumnList extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       height: MediaQuery.of(context).size.height,
       child: StaggeredGridView.countBuilder(
+        padding: const EdgeInsets.all(0),
         key: ValueKey<String>('two-column'),
         addAutomaticKeepAlives: true,
         crossAxisCount: 4,
