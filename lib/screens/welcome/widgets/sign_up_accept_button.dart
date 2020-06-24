@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 
 class AcceptButton extends StatelessWidget {
   const AcceptButton({
@@ -18,7 +20,8 @@ class AcceptButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+    return Consumer2<JuntoThemesProvider, UserDataProvider>(builder:
+        (context, JuntoThemesProvider theme, UserDataProvider user, child) {
       return InkWell(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 40),
@@ -31,10 +34,14 @@ class AcceptButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40.0),
             ),
-            onPressed: () {
+            onPressed: () async {
               if (pageView == 0) {
                 nextPage();
               } else {
+                await Provider.of<GroupRepo>(context, listen: false)
+                    .addGroupMember('48b97134-1a4d-deb0-b27c-9bcdfc33f386',
+                        [user.userProfile.user], 'Member');
+                // accept agreements
                 BlocProvider.of<AuthBloc>(context).add(
                   AcceptAgreements(),
                 );
