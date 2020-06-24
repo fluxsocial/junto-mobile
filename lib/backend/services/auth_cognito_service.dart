@@ -101,6 +101,40 @@ class CognitoClient extends AuthenticationService {
   }
 
   @override
+  Future<ResetPasswordResult> resendVerifyCode(String data) async {
+    try {
+      final result = await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
+      logger.logInfo(
+          'Result of resending verification code: ${result.confirmationState} ${result.userCodeDeliveryDetails.deliveryMedium}');
+      if (result.confirmationState) {
+        return ResetPasswordResult(true);
+      } else {
+        return ResetPasswordResult.unknownError();
+      }
+    } on PlatformException catch (e) {
+      if (e.details is String) {
+        if (e.details.contains('Attempt limit exceeded')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.TooManyAttempts,
+          );
+        } else if (e.details.contains('Invalid verification code provided')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.InvalidCode,
+          );
+        }
+      }
+      logger.logError('Error while resetting the password: $e');
+      return ResetPasswordResult.unknownError();
+    } catch (e, s) {
+      logger.logException(e, s,
+          'Unexpected error while requesting the verification code again');
+      return ResetPasswordResult.unknownError();
+    }
+  }
+
+  @override
   Future<SignInResult> loginUser(SignInData details) async {
     try {
       final result = await aws.FlutterAwsAmplifyCognito.signIn(
@@ -203,21 +237,6 @@ class CognitoClient extends AuthenticationService {
     } catch (e) {
       logger.logException(e);
       return VerifyResult(false);
-    }
-  }
-
-  @override
-  Future<ResendVerifyResult> resendVerifyCode(String data) async {
-    try {
-      final result = await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
-      if (result.confirmationState) {
-        return ResendVerifyResult(true);
-      } else {
-        return ResendVerifyResult(false);
-      }
-    } catch (e) {
-      logger.logException(e);
-      return ResendVerifyResult(false);
     }
   }
 
