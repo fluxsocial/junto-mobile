@@ -56,9 +56,10 @@ class JuntoCommunityCenterFeedbackState
           if (snapshot.hasData) {
             return Column(
               children: <Widget>[
-                FilterColumnRow(
-                  twoColumnView: appRepo.twoColumnLayout,
-                ),
+                if (snapshot.data.results.length > 0)
+                  FilterColumnRow(
+                    twoColumnView: appRepo.twoColumnLayout,
+                  ),
                 appRepo.twoColumnLayout
                     ? Expanded(
                         child: TwoColumnList(
