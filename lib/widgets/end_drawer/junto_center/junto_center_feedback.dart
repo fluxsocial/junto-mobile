@@ -26,7 +26,6 @@ class JuntoCommunityCenterFeedback extends StatelessWidget {
           builder: (BuildContext context,
               AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot) {
             if (snapshot.hasData) {
-              print(snapshot.data);
               return Expanded(
                 child: ListView(
                   padding: const EdgeInsets.all(0),
@@ -44,8 +43,14 @@ class JuntoCommunityCenterFeedback extends StatelessWidget {
                 errorMessage: 'Hmm, something went wrong',
               );
             }
-            return Center(
-              child: JuntoProgressIndicator(),
+            return Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                child: Transform.translate(
+                  offset: Offset(0.0, -50),
+                  child: JuntoProgressIndicator(),
+                ),
+              ),
             );
           },
         ),
