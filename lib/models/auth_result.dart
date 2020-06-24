@@ -60,10 +60,6 @@ class VerifyResult extends AuthResult {
   VerifyResult(bool wasSuccessful) : super(wasSuccessful);
 }
 
-class ResendVerifyResult extends AuthResult {
-  ResendVerifyResult(bool wasSuccessful) : super(wasSuccessful);
-}
-
 class SignOutResult extends AuthResult {
   SignOutResult(bool wasSuccessful) : super(wasSuccessful);
 }
