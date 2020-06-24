@@ -129,86 +129,84 @@ class JuntoCreateState extends State<JuntoCreate> {
   Widget _expressionCenter(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
         builder: (BuildContext context, JuntoThemesProvider theme, child) {
-      return FeatureDiscovery(
-        child: Stack(
-          children: <Widget>[
-            Positioned.fill(
-              child: BackgroundTheme(),
-            ),
-            Positioned(
-              bottom: 0,
-              top: 0,
-              left: 0,
-              right: 0,
-              child: SafeArea(
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            const SizedBox(height: 27),
-                            GestureDetector(
-                              onTap: showTutorial,
-                              child: JuntoDescribedFeatureOverlay(
-                                icon: OverlayInfoIcon(),
-                                featureId: 'expression_center_id',
-                                oneFeature: true,
-                                title:
-                                    'This is the expression center, where you can create posts in a variety of forms. These mediums will expand over time.',
-                                learnMore: true,
-                                learnMoreText: [
-                                  "We've become acclimated to a highly refined and curated style of digital sharing. Our goal with this expression center is to inspire a more raw and lighthearted atmosphere through improvements on existing forms of sharing and new mediums we haven't experienced yet. Let's explore these possibilities together and figure out how we can make our digital experience more human.",
-                                  'We want to hear your ideas.'
-                                ],
-                                upNextText: [
-                                  'Rich Text Editor, Audio, Video, Music, Events, Art Board, Links, and much more',
-                                ],
-                                hasUpNext: true,
-                                child: JuntoInfoIcon(
-                                    neutralBackground: false, theme: theme),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
+      return Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: BackgroundTheme(),
+          ),
+          Positioned(
+            bottom: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Container(
-                            alignment: Alignment.center,
-                            height: 120,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: <Widget>[
-                                _selectExpressionIcon(ExpressionType.dynamic),
-                                _selectExpressionIcon(ExpressionType.shortform),
-                                _selectExpressionIcon(ExpressionType.photo),
-                                if (appConfig.flavor != Flavor.prod)
-                                  _selectExpressionIcon(ExpressionType.audio),
+                          const SizedBox(height: 27),
+                          GestureDetector(
+                            onTap: showTutorial,
+                            child: JuntoDescribedFeatureOverlay(
+                              icon: OverlayInfoIcon(),
+                              featureId: 'expression_center_id',
+                              oneFeature: true,
+                              title:
+                                  'This is the expression center, where you can create posts in a variety of forms. These mediums will expand over time.',
+                              learnMore: true,
+                              learnMoreText: [
+                                "We've become acclimated to a highly refined and curated style of digital sharing. Our goal with this expression center is to inspire a more raw and lighthearted atmosphere through improvements on existing forms of sharing and new mediums we haven't experienced yet. Let's explore these possibilities together and figure out how we can make our digital experience more human.",
+                                'We want to hear your ideas.'
                               ],
+                              upNextText: [
+                                'Rich Text Editor, Audio, Video, Music, Events, Art Board, Links, and much more',
+                              ],
+                              hasUpNext: true,
+                              child: JuntoInfoIcon(
+                                  neutralBackground: false, theme: theme),
                             ),
                           ),
-                          HomeIcon(
-                            source: source,
-                            navigateTo: _navigateTo,
-                            theme: theme,
-                          ),
-                          const SizedBox(height: 25),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.center,
+                          height: 120,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: <Widget>[
+                              _selectExpressionIcon(ExpressionType.dynamic),
+                              _selectExpressionIcon(ExpressionType.shortform),
+                              _selectExpressionIcon(ExpressionType.photo),
+                              if (appConfig.flavor != Flavor.prod)
+                                _selectExpressionIcon(ExpressionType.audio),
+                            ],
+                          ),
+                        ),
+                        HomeIcon(
+                          source: source,
+                          navigateTo: _navigateTo,
+                          theme: theme,
+                        ),
+                        const SizedBox(height: 25),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }
