@@ -11,7 +11,7 @@ class JuntoCommunityCenterFab extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushReplacement(
+        Navigator.of(context).push(
           FadeRoute<void>(
             child: FeatureDiscovery(
               child: JuntoCreate(
@@ -34,8 +34,8 @@ class JuntoCommunityCenterFab extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(1000),
           gradient: LinearGradient(colors: [
-            Theme.of(context).colorScheme.secondaryVariant,
-            Theme.of(context).colorScheme.primaryVariant,
+            Theme.of(context).colorScheme.secondaryVariant.withOpacity(.9),
+            Theme.of(context).colorScheme.primaryVariant.withOpacity(.9),
           ]),
         ),
         child: Icon(
