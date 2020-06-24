@@ -60,9 +60,9 @@ dependency_overrides:
   flutter_aws_amplify_cognito:
     # path: ../flutter_amplify/flutter_aws_amplify_cognito
    git:
-     url: https://github.com/Nash0x7E2/flutter_amplify.git
+     url: https://github.com/orestesgaolin/flutter_amplify.git
      path: flutter_aws_amplify_cognito
-     ref: 69ada5d
+     ref: 9e835abe5a8602b16a7b8ea6d8f3ed3a1f21f5b6
 
 flutter:
   uses-material-design: true
