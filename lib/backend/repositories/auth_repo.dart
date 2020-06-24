@@ -36,12 +36,9 @@ class AuthRepo {
     return res.wasSuccessful;
   }
 
-  Future<bool> resendVerificationCode(
-      String username, String email, String password) async {
+  Future<ResetPasswordResult> resendVerificationCode(String username) {
     logger.logDebug('Resending verification code during sign up');
-    final res = await authService
-        .resendVerifyCode(SignUpData(username, email, password));
-    return res.wasSuccessful;
+    return authService.resendVerifyCode(username);
   }
 
   /// Authenticates a registered user. Returns the [address] for the
@@ -78,9 +75,8 @@ class AuthRepo {
   }
 
   // Request verification code to reset password
-  Future<ResetPasswordResult> requestPasswordReset(String username) async {
-    final response = await authService.requestPasswordReset(username);
-    return response;
+  Future<ResetPasswordResult> requestPasswordReset(String username) {
+    return authService.requestPasswordReset(username);
   }
 
   Future<ResetPasswordResult> resetPassword(ResetPasswordData data) {

@@ -882,6 +882,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Resend the code`
+  String get resend_verification_code {
+    return Intl.message(
+      'Resend the code',
+      name: 'resend_verification_code',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

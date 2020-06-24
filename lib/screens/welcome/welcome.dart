@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
@@ -26,11 +27,11 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
-
 
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
@@ -134,8 +135,7 @@ class WelcomeState extends State<Welcome> {
         context: context,
         builder: (BuildContext context) => ConfirmDialog(
           buildContext: context,
-          confirm: () => authRepo.resendVerificationCode(
-              username, email, passwordController.text),
+          confirm: () => authRepo.resendVerificationCode(username),
           errorMessage: '',
           confirmationText:
               'Wrong verification code. Do you want us to send verification code again?',
@@ -190,11 +190,45 @@ class WelcomeState extends State<Welcome> {
     }
   }
 
+  Future<void> _resendVerificationCode() async {
+    assert(usernameController.text != null);
+    final username = usernameController.text;
+    try {
+      final result = await Provider.of<AuthRepo>(context, listen: false)
+          .resendVerificationCode(username);
+      if (result.wasSuccessful) {
+        await showFeedback(context, message: "Confirmation code sent again!");
+      } else {
+        _handleResendCodeError(result);
+      }
+    } catch (error) {
+      logger.logDebug("Unable to send confirmation code $error");
+      await showFeedback(context, message: "Confirmation code not sent!");
+    }
+  }
+
+  void _handleResendCodeError(ResetPasswordResult result) {
+    var message = '';
+    switch (result.error) {
+      case ResetPasswordError.InvalidCode:
+        message = 'Invalid verification code';
+        break;
+      case ResetPasswordError.TooManyAttempts:
+        message = 'Attempt limit exceeded, please try again later.';
+        break;
+      case ResetPasswordError.Unknown:
+        message = 'We cannot reset your password now, please try again later';
+        break;
+    }
+    showFeedback(context, message: message);
+  }
+
   @override
   Widget build(BuildContext context) {
     authRepo = Provider.of<AuthRepo>(context, listen: false);
     userRepo = Provider.of<UserRepo>(context, listen: false);
-    final canShowUp = _currentIndex != 0 && context.media.viewInsets.bottom == 0;
+    final canShowUp =
+        _currentIndex != 0 && context.media.viewInsets.bottom == 0;
     return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
       return WillPopScope(
         onWillPop: _animateOnBackPress,
@@ -277,6 +311,7 @@ class WelcomeState extends State<Welcome> {
                       SignUpVerify(
                         handleSignUp: _finishSignUp,
                         verificationController: verificationCodeController,
+                        handleVerificationCode: _resendVerificationCode,
                       )
                     ],
                   ),

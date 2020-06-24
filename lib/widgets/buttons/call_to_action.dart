@@ -48,6 +48,7 @@ class CallToActionButton extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontSize: 14,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ),

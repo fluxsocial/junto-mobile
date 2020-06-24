@@ -23,12 +23,9 @@ class ResetPasswordRequest extends StatefulWidget {
 }
 
 class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
-  GlobalKey<FormState> _formKey;
-
   @override
   void initState() {
     super.initState();
-    _formKey = GlobalKey();
   }
 
   @override
@@ -38,7 +35,12 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
 
   /// Request a verification code from the server.
   Future<void> _requestEmail() async {
-    if (_formKey.currentState.validate()) {
+    if (widget.usernameController.text.isEmpty) {
+      await showFeedback(
+        context,
+        message: "Please provide your username",
+      );
+    } else {
       try {
         JuntoLoader.showLoader(context);
         final username = widget.usernameController.text;
@@ -49,10 +51,11 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
           JuntoLoader.hide();
           await showFeedback(
             context,
-            message: "Check your email for a verification code.",
+            message: "Check your email for a verification code",
           );
+          await Future.delayed(Duration(milliseconds: 300));
           widget.signInController.nextPage(
-            curve: Curves.easeIn,
+            curve: Curves.easeInOut,
             duration: const Duration(milliseconds: 300),
           );
         }
@@ -67,7 +70,7 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
           ),
         );
         return;
-      } catch (error){
+      } catch (error) {
         logger.logDebug("Platform error $error");
         JuntoLoader.hide();
       }
@@ -91,25 +94,22 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SignUpTextField(
-                      valueController: widget.usernameController,
-                      hint: S.of(context).welcome_username_hint_sign_in,
-                      maxLength: 100,
-                      textInputActionType: TextInputAction.done,
-                      onSubmit: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                      keyboardType: TextInputType.text,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SignUpTextField(
+                    valueController: widget.usernameController,
+                    hint: S.of(context).welcome_username_hint_sign_in,
+                    maxLength: 100,
+                    textInputActionType: TextInputAction.done,
+                    onSubmit: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.none,
+                  ),
+                ],
               ),
             ),
             Container(

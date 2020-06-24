@@ -40,13 +40,13 @@ class CognitoClient extends AuthenticationService {
       final result =
           await aws.FlutterAwsAmplifyCognito.forgotPassword(username);
       if (result != null) {
+        logger.logDebug('Password reset request result: ${result.state}');
         switch (result.state) {
           case aws.ForgotPasswordState.CONFIRMATION_CODE:
             logger.logInfo(
                 "Confirmation code is sent to reset password through ${result.parameters.deliveryMedium}");
             return ResetPasswordResult(true);
           case aws.ForgotPasswordState.DONE:
-            //TODO: should we handle this?
             return ResetPasswordResult(false);
           case aws.ForgotPasswordState.UNKNOWN:
           case aws.ForgotPasswordState.ERROR:
@@ -66,6 +66,7 @@ class CognitoClient extends AuthenticationService {
       final result = await aws.FlutterAwsAmplifyCognito.confirmForgotPassword(
           data.username, data.password, data.confirmationCode);
       if (result != null) {
+        logger.logDebug('Password reset result: ${result.state}');
         switch (result.state) {
           case aws.ForgotPasswordState.DONE:
             logger.logInfo("Password changed successfully");
@@ -73,13 +74,63 @@ class CognitoClient extends AuthenticationService {
           case aws.ForgotPasswordState.CONFIRMATION_CODE:
           case aws.ForgotPasswordState.UNKNOWN:
           case aws.ForgotPasswordState.ERROR:
-            return ResetPasswordResult(false);
+            return ResetPasswordResult.unknownError();
         }
       }
       return ResetPasswordResult(false);
-    } catch (e) {
-      logger.logException(e);
-      return ResetPasswordResult(false);
+    } on PlatformException catch (e) {
+      if (e.details is String) {
+        if (e.details.contains('Attempt limit exceeded')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.TooManyAttempts,
+          );
+        } else if (e.details.contains('Invalid verification code provided')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.InvalidCode,
+          );
+        }
+      }
+      logger.logError('Error while resetting the password: $e');
+      return ResetPasswordResult.unknownError();
+    } catch (e, s) {
+      logger.logException(e, s, 'Unexpected exception when resetting password');
+      return ResetPasswordResult.unknownError();
+    }
+  }
+
+  @override
+  Future<ResetPasswordResult> resendVerifyCode(String data) async {
+    try {
+      final result = await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
+      logger.logInfo(
+          'Result of resending verification code: ${result.confirmationState} ${result.userCodeDeliveryDetails.deliveryMedium}');
+      if (result.confirmationState) {
+        return ResetPasswordResult(true);
+      } else {
+        return ResetPasswordResult.unknownError();
+      }
+    } on PlatformException catch (e) {
+      if (e.details is String) {
+        if (e.details.contains('Attempt limit exceeded')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.TooManyAttempts,
+          );
+        } else if (e.details.contains('Invalid verification code provided')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.InvalidCode,
+          );
+        }
+      }
+      logger.logError('Error while resetting the password: $e');
+      return ResetPasswordResult.unknownError();
+    } catch (e, s) {
+      logger.logException(e, s,
+          'Unexpected error while requesting the verification code again');
+      return ResetPasswordResult.unknownError();
     }
   }
 
@@ -186,22 +237,6 @@ class CognitoClient extends AuthenticationService {
     } catch (e) {
       logger.logException(e);
       return VerifyResult(false);
-    }
-  }
-
-  @override
-  Future<ResendVerifyResult> resendVerifyCode(SignUpData data) async {
-    try {
-      final result =
-          await aws.FlutterAwsAmplifyCognito.resendSignUp(data.username);
-      if (result.confirmationState) {
-        return ResendVerifyResult(true);
-      } else {
-        return ResendVerifyResult(false);
-      }
-    } catch (e) {
-      logger.logException(e);
-      return ResendVerifyResult(false);
     }
   }
 
