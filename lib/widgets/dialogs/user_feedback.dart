@@ -105,6 +105,7 @@ class _FeedbackBody extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     decoration: TextDecoration.none,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],
