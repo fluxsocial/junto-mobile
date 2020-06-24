@@ -52,21 +52,12 @@ class WelcomeMain extends StatelessWidget {
                   title: 'WELCOME TO THE PACK',
                 ),
                 const SizedBox(height: 30),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 120),
-                  child: GestureDetector(
-                    onTap: _onSignIn,
-                    child: Text(
-                      'SIGN IN',
-                      style: TextStyle(
-                        letterSpacing: 1.7,
-                        color: JuntoPalette().juntoWhite(theme: theme),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
+                CallToActionButton(
+                  callToAction: _onSignIn,
+                  title: 'SIGN IN',
+                  transparent: true,
                 ),
+                SizedBox(height: 120),
               ],
             )
           ],
