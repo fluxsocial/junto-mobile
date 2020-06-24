@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
@@ -26,6 +27,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
@@ -188,6 +190,18 @@ class WelcomeState extends State<Welcome> {
       return true;
     }
   }
+  Future<void> _resendVerificationCode() async {
+    final username = usernameController.value.text;
+    assert(usernameController.value.text != null);
+    try {
+      await Provider.of<AuthRepo>(context, listen: false)
+          .resendVerificationCode(username);
+      await showFeedback(context, message: "Confirmation code sent!");
+    } catch (error) {
+      logger.logDebug("Unable to send confirmation code $error");
+      await showFeedback(context, message: "Confirmation code not sent!");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,6 +290,7 @@ class WelcomeState extends State<Welcome> {
                       SignUpVerify(
                         handleSignUp: _finishSignUp,
                         verificationController: verificationCodeController,
+                        handleVerificationCode: _resendVerificationCode,
                       )
                     ],
                   ),
