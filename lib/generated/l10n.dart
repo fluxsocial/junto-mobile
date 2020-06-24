@@ -653,6 +653,15 @@ class S {
     );
   }
 
+  String get resend_verification_code {
+    return Intl.message(
+      'Resend verification code',
+      name: 'resend_verification_code',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `SIGN IN`
   String get welcome_sign_in {
     return Intl.message(

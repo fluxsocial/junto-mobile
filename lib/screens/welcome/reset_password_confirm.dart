@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
@@ -120,6 +121,18 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
     }
   }
 
+  Future<void> _resendVerificationCode() async {
+    assert(widget.username != null);
+    try {
+      await Provider.of<AuthRepo>(context, listen: false)
+          .resendVerificationCode(widget.username);
+      await showFeedback(context, message: "Confirmation code sent!");
+    } catch (error) {
+      logger.logDebug("Unable to send confirmation code $error");
+      await showFeedback(context, message: "Confirmation code not sent!");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,6 +197,13 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                     ),
                   ],
                 ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: CallToActionButton(
+                callToAction: _resendVerificationCode,
+                title: S.of(context).resend_verification_code.toUpperCase(),
               ),
             ),
             Container(
