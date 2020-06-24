@@ -13,7 +13,7 @@ Future<void> showFeedback(
 }) async {
   showGeneralDialog(
     context: context,
-    barrierDismissible: true,
+    barrierDismissible: false,
     transitionDuration: duration,
     barrierLabel: 'User feedback: $message',
     pageBuilder: (

@@ -123,7 +123,7 @@ class CognitoClient extends AuthenticationService {
       final result = await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
       logger.logInfo(
           'Result of resending verification code: ${result.confirmationState} ${result.userCodeDeliveryDetails.deliveryMedium}');
-      if (result.userCodeDeliveryDetails.deliveryMedium == 'EMAIL' ||
+      if (result.userCodeDeliveryDetails.deliveryMedium.toLowerCase().contains('email') ||
           result.confirmationState) {
         return ResetPasswordResult(true);
       } else {
