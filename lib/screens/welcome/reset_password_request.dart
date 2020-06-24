@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
@@ -66,6 +67,9 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
           ),
         );
         return;
+      } catch (error){
+        logger.logDebug("Platform error $error");
+        JuntoLoader.hide();
       }
     }
   }

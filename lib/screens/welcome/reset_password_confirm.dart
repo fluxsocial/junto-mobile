@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
@@ -91,6 +92,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
   Future<void> _confirmNewPassword() async {
     if (await _validatePasswords()) {
       try {
+        JuntoLoader.showLoader(context);
         await Provider.of<AuthRepo>(context, listen: false).resetPassword(
           ResetPasswordData(
             widget.username,
@@ -98,7 +100,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
             _verificationCode.value.text,
           ),
         );
-
+        JuntoLoader.hide();
         await showFeedback(
           context,
           message: "Password successfully reset!",
@@ -112,6 +114,8 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
             dialogText: error.message,
           ),
         );
+      } finally {
+        JuntoLoader.hide();
       }
     }
   }
