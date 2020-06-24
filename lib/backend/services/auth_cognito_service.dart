@@ -40,13 +40,13 @@ class CognitoClient extends AuthenticationService {
       final result =
           await aws.FlutterAwsAmplifyCognito.forgotPassword(username);
       if (result != null) {
+        logger.logDebug('Password reset request result: ${result.state}');
         switch (result.state) {
           case aws.ForgotPasswordState.CONFIRMATION_CODE:
             logger.logInfo(
                 "Confirmation code is sent to reset password through ${result.parameters.deliveryMedium}");
             return ResetPasswordResult(true);
           case aws.ForgotPasswordState.DONE:
-            //TODO: should we handle this?
             return ResetPasswordResult(false);
           case aws.ForgotPasswordState.UNKNOWN:
           case aws.ForgotPasswordState.ERROR:
@@ -66,6 +66,7 @@ class CognitoClient extends AuthenticationService {
       final result = await aws.FlutterAwsAmplifyCognito.confirmForgotPassword(
           data.username, data.password, data.confirmationCode);
       if (result != null) {
+        logger.logDebug('Password reset result: ${result.state}');
         switch (result.state) {
           case aws.ForgotPasswordState.DONE:
             logger.logInfo("Password changed successfully");
