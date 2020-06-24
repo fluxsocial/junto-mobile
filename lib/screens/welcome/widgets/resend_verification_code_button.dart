@@ -56,6 +56,7 @@ class _ResendVerificationCodeButtonState
       title: _waitingTime != null
           ? 'PLEASE WAIT $_waitingTime'
           : S.of(context).resend_verification_code.toUpperCase(),
+      transparent: true,
     );
   }
 }
