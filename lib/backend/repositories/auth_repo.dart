@@ -36,10 +36,9 @@ class AuthRepo {
     return res.wasSuccessful;
   }
 
-  Future<bool> resendVerificationCode(String username) async {
+  Future<ResetPasswordResult> resendVerificationCode(String username) {
     logger.logDebug('Resending verification code during sign up');
-    final res = await authService.resendVerifyCode(username);
-    return res.wasSuccessful;
+    return authService.resendVerifyCode(username);
   }
 
   /// Authenticates a registered user. Returns the [address] for the

@@ -14,7 +14,7 @@ abstract class AuthenticationService extends IdTokenProvider {
   Future<SignUpResult> signUp(SignUpData data);
 
   /// Allows to resend verification code if not received after [signUp]
-  Future<ResendVerifyResult> resendVerifyCode(String data);
+  Future<ResetPasswordResult> resendVerifyCode(String data);
 
   /// Verify user's registration with verification code
   ///
