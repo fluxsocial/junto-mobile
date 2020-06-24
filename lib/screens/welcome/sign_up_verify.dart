@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/resend_verification_code_button.dart';
-import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 
@@ -99,11 +98,6 @@ class SignUpVerifyState extends State<SignUpVerify> {
             ResendVerificationCodeButton(
               onPressed: widget.handleVerificationCode,
             ),
-            // _SignUpButtons(
-            //   theme: theme,
-            //   onAction: widget.handleVerificationCode,
-            //   text: S.of(context).resend_verification_code.toUpperCase(),
-            // ),
             SizedBox(height: 10.0),
             _SignUpButtons(
               theme: theme,
