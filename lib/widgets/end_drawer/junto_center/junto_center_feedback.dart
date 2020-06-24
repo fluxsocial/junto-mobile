@@ -37,6 +37,11 @@ class JuntoCommunityCenterFeedback extends StatelessWidget {
                     ? Expanded(
                         child: TwoColumnList(
                           data: snapshot.data.results,
+                          deleteExpression: (expression) async {
+                            await Provider.of<ExpressionRepo>(context,
+                                    listen: false)
+                                .deleteExpression(expression.address);
+                          },
                         ),
                       )
                     : Expanded(
