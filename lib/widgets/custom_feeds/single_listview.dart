@@ -9,47 +9,31 @@ class SingleColumnListView extends StatelessWidget {
     @required this.data,
     @required this.privacyLayer,
     @required this.deleteExpression,
-    this.scrollChanged,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
   final String privacyLayer;
   final ValueChanged<ExpressionResponse> deleteExpression;
 
-  final ValueChanged<ScrollNotification> scrollChanged;
-
-  bool _onScrollNotification(ScrollNotification scrollNotification) {
-    final metrics = scrollNotification.metrics;
-    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
-    if (scrollPercent.roundToDouble() == 60.0) {
-      scrollChanged(scrollNotification);
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return NotificationListener(
-      onNotification: _onScrollNotification,
-      child: Container(
-        color: Theme.of(context).backgroundColor,
-        child: ListView(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.all(0),
-          children: <Widget>[
-            for (int index = 0; index < data.length + 1; index++)
-              if (index == data.length)
-                const SizedBox()
-              else if (data[index].privacy == privacyLayer)
-                SingleColumnExpressionPreview(
-                  key: ValueKey<String>(data[index].address),
-                  expression: data[index],
-                  deleteExpression: deleteExpression,
-                )
-          ],
-        ),
+    return Container(
+      color: Theme.of(context).backgroundColor,
+      child: ListView(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        padding: const EdgeInsets.all(0),
+        children: <Widget>[
+          for (int index = 0; index < data.length + 1; index++)
+            if (index == data.length)
+              const SizedBox()
+            else if (data[index].privacy == privacyLayer)
+              SingleColumnExpressionPreview(
+                key: ValueKey<String>(data[index].address),
+                expression: data[index],
+                deleteExpression: deleteExpression,
+              )
+        ],
       ),
     );
   }

@@ -43,7 +43,7 @@ class AcceptButton extends StatelessWidget {
                     .addGroupMember('48b97134-1a4d-deb0-b27c-9bcdfc33f386',
                         [user.userProfile.user], 'Member');
                 // accept agreements
-                BlocProvider.of<AuthBloc>(context).add(
+                await BlocProvider.of<AuthBloc>(context).add(
                   AcceptAgreements(),
                 );
               }
