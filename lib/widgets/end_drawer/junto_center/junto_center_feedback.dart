@@ -10,21 +10,40 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 
-class JuntoCommunityCenterFeedback extends StatelessWidget {
+class JuntoCommunityCenterFeedback extends StatefulWidget {
   final String communityCenterAddress = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoCommunityCenterFeedbackState();
+  }
+}
+
+class JuntoCommunityCenterFeedbackState
+    extends State<JuntoCommunityCenterFeedback> {
+  Future<QueryResults<ExpressionResponse>> getExpressions;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    setGetExpressions();
+  }
+
+  void setGetExpressions() {
+    setState(() {
+      getExpressions = Provider.of<ExpressionRepo>(context, listen: false)
+          .getCollectiveExpressions({
+        'context': '48b97134-1a4d-deb0-b27c-9bcdfc33f386',
+        'context_type': 'Group',
+        'pagination_position': '0',
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AppRepo>(builder: (context, AppRepo appRepo, _) {
       return FutureBuilder<QueryResults<ExpressionResponse>>(
-        future: Provider.of<ExpressionRepo>(context, listen: false)
-            .getCollectiveExpressions(
-          {
-            'context': '48b97134-1a4d-deb0-b27c-9bcdfc33f386',
-            'context_type': 'Group',
-            'pagination_position': '0',
-          },
-        ),
+        future: getExpressions,
         builder: (BuildContext context,
             AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot) {
           if (snapshot.hasData) {
@@ -41,6 +60,8 @@ class JuntoCommunityCenterFeedback extends StatelessWidget {
                             await Provider.of<ExpressionRepo>(context,
                                     listen: false)
                                 .deleteExpression(expression.address);
+                            // refresh feed
+                            setGetExpressions();
                           },
                         ),
                       )
