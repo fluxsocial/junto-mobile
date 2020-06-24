@@ -8,10 +8,12 @@ class CallToActionButton extends StatelessWidget {
     Key key,
     @required this.callToAction,
     @required this.title,
+    this.transparent = false,
   }) : super(key: key);
 
   final VoidCallback callToAction;
   final String title;
+  final bool transparent;
 
   @override
   Widget build(BuildContext context) {
@@ -19,18 +21,20 @@ class CallToActionButton extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40.0),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: const Color(0xff222222).withOpacity(.2),
-              offset: const Offset(0.0, 5.0),
-              blurRadius: 9,
-            ),
-          ],
-        ),
+        decoration: transparent
+            ? null
+            : BoxDecoration(
+                borderRadius: BorderRadius.circular(40.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: const Color(0xff222222).withOpacity(.2),
+                    offset: const Offset(0.0, 5.0),
+                    blurRadius: 9,
+                  ),
+                ],
+              ),
         child: FlatButton(
-          color: Theme.of(context).accentColor,
+          color: transparent ? null : Theme.of(context).accentColor,
           onPressed: callToAction,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40.0),

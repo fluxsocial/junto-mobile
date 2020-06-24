@@ -111,26 +111,17 @@ class _SignInState extends State<SignIn> {
                     title: S.of(context).welcome_sign_in,
                   ),
                   const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: () {
+                  CallToActionButton(
+                    callToAction: () {
                       widget.signInController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.decelerate,
                       );
                     },
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 120),
-                      child: Text(
-                        S.of(context).reset_password,
-                        style: TextStyle(
-                          letterSpacing: 1.7,
-                          color: JuntoPalette().juntoWhite(theme: theme),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                    title: S.of(context).reset_password,
+                    transparent: true,
                   ),
+                  SizedBox(height: 120),
                 ],
               ),
             ],

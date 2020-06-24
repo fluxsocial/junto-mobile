@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -34,7 +35,7 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
   }
 
   /// Request a verification code from the server.
-  Future<void> _requestEmail() async {
+  Future<void> _requestPasswordReset() async {
     if (widget.usernameController.text.isEmpty) {
       await showFeedback(
         context,
@@ -47,8 +48,8 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
         final result = await Provider.of<AuthRepo>(context, listen: false)
             .requestPasswordReset(username);
 
+        JuntoLoader.hide();
         if (result.wasSuccessful) {
-          JuntoLoader.hide();
           await showFeedback(
             context,
             message: "Check your email for a verification code",
@@ -58,6 +59,8 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
             curve: Curves.easeInOut,
             duration: const Duration(milliseconds: 300),
           );
+        } else {
+          _handlePasswordResetRequest(result);
         }
 
         return;
@@ -71,10 +74,26 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
         );
         return;
       } catch (error) {
-        logger.logDebug("Platform error $error");
+        logger.logError("Error: $error");
         JuntoLoader.hide();
       }
     }
+  }
+
+  void _handlePasswordResetRequest(ResetPasswordResult result) {
+    var message = '';
+    switch (result.error) {
+      case ResetPasswordError.InvalidCode:
+        message = 'Invalid verification code';
+        break;
+      case ResetPasswordError.TooManyAttempts:
+        message = 'Attempt limit exceeded, please try again later';
+        break;
+      case ResetPasswordError.Unknown:
+        message = 'We cannot reset your password now, please try again later';
+        break;
+    }
+    showFeedback(context, message: message);
   }
 
   @override
@@ -115,7 +134,7 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
             Container(
               margin: const EdgeInsets.only(bottom: 120),
               child: CallToActionButton(
-                callToAction: _requestEmail,
+                callToAction: _requestPasswordReset,
                 title: S.of(context).welcome_reset_password.toUpperCase(),
               ),
             ),
