@@ -55,7 +55,7 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
           );
           await Future.delayed(Duration(milliseconds: 300));
           widget.signInController.nextPage(
-            curve: Curves.easeIn,
+            curve: Curves.easeInOut,
             duration: const Duration(milliseconds: 300),
           );
         }

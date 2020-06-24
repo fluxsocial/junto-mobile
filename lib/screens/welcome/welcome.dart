@@ -33,7 +33,6 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
-
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute(
@@ -190,24 +189,46 @@ class WelcomeState extends State<Welcome> {
       return true;
     }
   }
+
   Future<void> _resendVerificationCode() async {
-    final username = usernameController.value.text;
-    assert(usernameController.value.text != null);
+    assert(usernameController.text != null);
+    final username = usernameController.text;
     try {
-      await Provider.of<AuthRepo>(context, listen: false)
+      final result = await Provider.of<AuthRepo>(context, listen: false)
           .resendVerificationCode(username);
-      await showFeedback(context, message: "Confirmation code sent!");
+      if (result.wasSuccessful) {
+        await showFeedback(context, message: "Confirmation code sent again!");
+      } else {
+        _handleResendCodeError(result);
+      }
     } catch (error) {
       logger.logDebug("Unable to send confirmation code $error");
       await showFeedback(context, message: "Confirmation code not sent!");
     }
   }
 
+  void _handleResendCodeError(ResetPasswordResult result) {
+    var message = '';
+    switch (result.error) {
+      case ResetPasswordError.InvalidCode:
+        message = 'Invalid verification code';
+        break;
+      case ResetPasswordError.TooManyAttempts:
+        message = 'Attempt limit exceeded, please try again later.';
+        break;
+      case ResetPasswordError.Unknown:
+        message = 'We cannot reset your password now, please try again later';
+        break;
+    }
+    showFeedback(context, message: message);
+  }
+
   @override
   Widget build(BuildContext context) {
     authRepo = Provider.of<AuthRepo>(context, listen: false);
     userRepo = Provider.of<UserRepo>(context, listen: false);
-    final canShowUp = _currentIndex != 0 && context.media.viewInsets.bottom == 0;
+    final canShowUp =
+        _currentIndex != 0 && context.media.viewInsets.bottom == 0;
     return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
       return WillPopScope(
         onWillPop: _animateOnBackPress,

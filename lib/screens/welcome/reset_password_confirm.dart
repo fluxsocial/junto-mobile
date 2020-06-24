@@ -12,6 +12,8 @@ import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:provider/provider.dart';
 
+import 'widgets/resend_verification_code_button.dart';
+
 class ResetPasswordConfirm extends StatefulWidget {
   const ResetPasswordConfirm({
     @required this.signInController,
@@ -95,8 +97,8 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
             await Provider.of<AuthRepo>(context, listen: false).resetPassword(
           ResetPasswordData(
             widget.username,
-            _newPassword.value.text,
-            _verificationCode.value.text,
+            _newPassword.text,
+            _verificationCode.text,
           ),
         );
         JuntoLoader.hide();
@@ -140,19 +142,19 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
         message = 'We cannot reset your password now, please try again later';
         break;
     }
-    showDialog(
-      context: context,
-      builder: (BuildContext context) =>
-          SingleActionDialog(dialogText: message),
-    );
+    showFeedback(context, message: message);
   }
 
   Future<void> _resendVerificationCode() async {
     assert(widget.username != null);
     try {
-      await Provider.of<AuthRepo>(context, listen: false)
+      final result = await Provider.of<AuthRepo>(context, listen: false)
           .resendVerificationCode(widget.username);
-      await showFeedback(context, message: "Confirmation code sent!");
+      if (result.wasSuccessful) {
+        await showFeedback(context, message: "Confirmation code sent again!");
+      } else {
+        _handlePasswordResetError(result);
+      }
     } catch (error) {
       logger.logDebug("Unable to send confirmation code $error");
       await showFeedback(context, message: "Confirmation code not sent!");
@@ -169,7 +171,8 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -227,9 +230,8 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  CallToActionButton(
-                    callToAction: _resendVerificationCode,
-                    title: S.of(context).resend_verification_code.toUpperCase(),
+                  ResendVerificationCodeButton(
+                    onPressed: _resendVerificationCode,
                   ),
                   CallToActionButton(
                     callToAction: _confirmNewPassword,
