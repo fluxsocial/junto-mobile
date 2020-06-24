@@ -66,6 +66,13 @@ class JuntoCommunityCenterAppbar extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 38),
+                    child: Text(
+                      'Community Center',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
