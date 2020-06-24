@@ -70,6 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "packs_requests" : MessageLookupByLibrary.simpleMessage(""),
     "packs_title" : MessageLookupByLibrary.simpleMessage(""),
     "profile_picture" : MessageLookupByLibrary.simpleMessage(""),
+    "resend_verification_code" : MessageLookupByLibrary.simpleMessage("Resend the code"),
     "reset_password" : MessageLookupByLibrary.simpleMessage(""),
     "themes_light" : MessageLookupByLibrary.simpleMessage("Light"),
     "themes_night" : MessageLookupByLibrary.simpleMessage("Night"),
