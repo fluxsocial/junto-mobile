@@ -20,10 +20,12 @@ class ExpressionActionItems extends StatelessWidget {
   const ExpressionActionItems({
     @required this.deleteExpression,
     @required this.expression,
+    @required this.expressionOpen,
   });
 
   final ExpressionResponse expression;
   final ValueChanged<ExpressionResponse> deleteExpression;
+  final bool expressionOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +89,12 @@ class ExpressionActionItems extends StatelessWidget {
           context: context,
           builder: (BuildContext context) => ConfirmDialog(
             buildContext: context,
-            confirm: () => deleteExpression(expressionResponse),
+            confirm: () {
+              deleteExpression(expressionResponse);
+              if (expressionOpen) {
+                Navigator.pop(context);
+              }
+            },
             confirmationText:
                 'Are you sure you want to delete this expression?',
           ),
