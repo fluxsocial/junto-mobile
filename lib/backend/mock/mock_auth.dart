@@ -46,7 +46,7 @@ class MockAuth implements AuthenticationService {
   }
 
   @override
-  Future<ResendVerifyResult> resendVerifyCode(SignUpData data) {
+  Future<ResendVerifyResult> resendVerifyCode(String data) {
     throw UnimplementedError();
   }
 

@@ -190,10 +190,10 @@ class CognitoClient extends AuthenticationService {
   }
 
   @override
-  Future<ResendVerifyResult> resendVerifyCode(SignUpData data) async {
+  Future<ResendVerifyResult> resendVerifyCode(String data) async {
     try {
       final result =
-          await aws.FlutterAwsAmplifyCognito.resendSignUp(data.username);
+          await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
       if (result.confirmationState) {
         return ResendVerifyResult(true);
       } else {

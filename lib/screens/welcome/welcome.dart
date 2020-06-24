@@ -134,8 +134,7 @@ class WelcomeState extends State<Welcome> {
         context: context,
         builder: (BuildContext context) => ConfirmDialog(
           buildContext: context,
-          confirm: () => authRepo.resendVerificationCode(
-              username, email, passwordController.text),
+          confirm: () => authRepo.resendVerificationCode(username),
           errorMessage: '',
           confirmationText:
               'Wrong verification code. Do you want us to send verification code again?',
