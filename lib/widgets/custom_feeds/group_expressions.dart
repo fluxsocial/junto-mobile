@@ -34,11 +34,6 @@ class GroupExpressions extends StatefulWidget {
 class _GroupExpressionsState extends State<GroupExpressions> {
   bool get isPrivate => widget.privacy != 'Public';
 
-  Future<void> _switchColumnView(ExpressionFeedLayout columnType) async {
-    await Provider.of<UserDataProvider>(context, listen: false)
-        .switchColumnLayout(columnType);
-  }
-
   void _fetchMore() {
     context.bloc<PackBloc>().add(FetchMorePacks());
   }
@@ -68,7 +63,6 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                         twoColumnView:
                             Provider.of<AppRepo>(context, listen: false)
                                 .twoColumnLayout,
-                        switchColumnView: _switchColumnView,
                       ),
                     ),
                     if (Provider.of<AppRepo>(context, listen: false)
