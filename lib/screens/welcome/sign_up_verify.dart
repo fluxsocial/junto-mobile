@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 
 class SignUpVerify extends StatefulWidget {
-  const SignUpVerify({Key key, this.handleSignUp, this.verificationController})
-      : super(key: key);
+  const SignUpVerify({
+    Key key,
+    @required this.handleSignUp,
+    @required this.verificationController,
+    @required this.handleVerificationCode,
+  }) : super(key: key);
 
   final TextEditingController verificationController;
   final VoidCallback handleSignUp;
+  final VoidCallback handleVerificationCode;
 
   @override
   State<StatefulWidget> createState() {
@@ -89,42 +95,69 @@ class SignUpVerifyState extends State<SignUpVerify> {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: widget.handleSignUp,
-              child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                ),
-                margin: const EdgeInsets.symmetric(horizontal: 40),
-                width: size.width,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.circular(1000),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color:
-                          Theme.of(context).primaryColorDark.withOpacity(.12),
-                      offset: const Offset(0.0, 6.0),
-                      blurRadius: 9,
-                    ),
-                  ],
-                ),
-                child: Text(
-                  S.of(context).welcome_lets_go,
-                  style: TextStyle(
-                    letterSpacing: 1.2,
-                    color: JuntoPalette().juntoWhite(theme: theme),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+            _SignUpButtons(
+              theme: theme,
+              onAction: widget.handleVerificationCode,
+              text: S.of(context).resend_verification_code.toUpperCase(),
+            ),
+            SizedBox(height: 10.0),
+            _SignUpButtons(
+              theme: theme,
+              onAction: widget.handleSignUp,
+              text: S.of(context).welcome_lets_go,
             ),
             const Spacer(),
           ],
         ),
       );
     });
+  }
+}
+
+class _SignUpButtons extends StatelessWidget {
+  const _SignUpButtons({
+    Key key,
+    @required this.onAction,
+    @required this.text,
+    @required this.theme,
+  }) : super(key: key);
+  final VoidCallback onAction;
+  final String text;
+  final JuntoThemesProvider theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: onAction,
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(
+          vertical: 20,
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 40),
+        width: size.width,
+        decoration: BoxDecoration(
+          color: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.circular(1000),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Theme.of(context).primaryColorDark.withOpacity(.12),
+              offset: const Offset(0.0, 6.0),
+              blurRadius: 9,
+            ),
+          ],
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            letterSpacing: 1.2,
+            color: JuntoPalette().juntoWhite(theme: theme),
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
+        ),
+      ),
+    );
   }
 }
