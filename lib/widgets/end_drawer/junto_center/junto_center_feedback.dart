@@ -16,54 +16,51 @@ class JuntoCommunityCenterFeedback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppRepo>(builder: (context, AppRepo appRepo, _) {
-      return Column(
-        children: <Widget>[
-          FilterColumnRow(
-            twoColumnView: appRepo.twoColumnLayout,
-          ),
-          FutureBuilder<QueryResults<ExpressionResponse>>(
-            future: Provider.of<ExpressionRepo>(context, listen: false)
-                .getCollectiveExpressions(
-              {
-                'context': '48b97134-1a4d-deb0-b27c-9bcdfc33f386',
-                'context_type': 'Group',
-                'pagination_position': '0',
-              },
-            ),
-            builder: (BuildContext context,
-                AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot) {
-              if (snapshot.hasData) {
-                if (appRepo.twoColumnLayout) {
-                  return Expanded(
-                    child: TwoColumnList(
-                      data: snapshot.data.results,
-                    ),
-                  );
-                } else {
-                  return Expanded(
-                    child: SingleColumnListView(
-                      data: snapshot.data.results,
-                      privacyLayer: 'Public',
-                    ),
-                  );
-                }
-              } else if (snapshot.hasError) {
-                return JuntoErrorWidget(
-                  errorMessage: 'Hmm, something went wrong',
-                );
-              }
-              return Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Transform.translate(
-                    offset: Offset(0.0, -50),
-                    child: JuntoProgressIndicator(),
-                  ),
+      return FutureBuilder<QueryResults<ExpressionResponse>>(
+        future: Provider.of<ExpressionRepo>(context, listen: false)
+            .getCollectiveExpressions(
+          {
+            'context': '48b97134-1a4d-deb0-b27c-9bcdfc33f386',
+            'context_type': 'Group',
+            'pagination_position': '0',
+          },
+        ),
+        builder: (BuildContext context,
+            AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: <Widget>[
+                FilterColumnRow(
+                  twoColumnView: appRepo.twoColumnLayout,
                 ),
-              );
-            },
-          ),
-        ],
+                appRepo.twoColumnLayout
+                    ? Expanded(
+                        child: TwoColumnList(
+                          data: snapshot.data.results,
+                        ),
+                      )
+                    : Expanded(
+                        child: SingleColumnListView(
+                          data: snapshot.data.results,
+                          privacyLayer: 'Public',
+                        ),
+                      ),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return JuntoErrorWidget(
+              errorMessage: 'Hmm, something went wrong',
+            );
+          }
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            alignment: Alignment.center,
+            child: Transform.translate(
+              offset: Offset(0.0, -50),
+              child: JuntoProgressIndicator(),
+            ),
+          );
+        },
       );
     });
   }
