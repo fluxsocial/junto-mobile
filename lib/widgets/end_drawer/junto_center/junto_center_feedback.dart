@@ -39,6 +39,13 @@ class JuntoCommunityCenterFeedbackState
     });
   }
 
+  void deleteExpression(ExpressionResponse expression) async {
+    await Provider.of<ExpressionRepo>(context, listen: false)
+        .deleteExpression(expression.address);
+    // refresh feed
+    setGetExpressions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppRepo>(builder: (context, AppRepo appRepo, _) {
@@ -56,19 +63,14 @@ class JuntoCommunityCenterFeedbackState
                     ? Expanded(
                         child: TwoColumnList(
                           data: snapshot.data.results,
-                          deleteExpression: (expression) async {
-                            await Provider.of<ExpressionRepo>(context,
-                                    listen: false)
-                                .deleteExpression(expression.address);
-                            // refresh feed
-                            setGetExpressions();
-                          },
+                          deleteExpression: deleteExpression,
                         ),
                       )
                     : Expanded(
                         child: SingleColumnListView(
                           data: snapshot.data.results,
                           privacyLayer: 'Public',
+                          deleteExpression: deleteExpression,
                         ),
                       ),
               ],
