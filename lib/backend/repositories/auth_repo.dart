@@ -76,9 +76,8 @@ class AuthRepo {
   }
 
   // Request verification code to reset password
-  Future<ResetPasswordResult> requestPasswordReset(String username) async {
-    final response = await authService.requestPasswordReset(username);
-    return response;
+  Future<ResetPasswordResult> requestPasswordReset(String username) {
+    return authService.requestPasswordReset(username);
   }
 
   Future<ResetPasswordResult> resetPassword(ResetPasswordData data) {
