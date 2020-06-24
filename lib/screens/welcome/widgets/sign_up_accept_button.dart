@@ -38,6 +38,7 @@ class AcceptButton extends StatelessWidget {
               if (pageView == 0) {
                 nextPage();
               } else {
+                // Add member to community center on sign up
                 await Provider.of<GroupRepo>(context, listen: false)
                     .addGroupMember('48b97134-1a4d-deb0-b27c-9bcdfc33f386',
                         [user.userProfile.user], 'Member');
