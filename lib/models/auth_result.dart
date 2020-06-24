@@ -44,8 +44,16 @@ class SignUpResult extends AuthResult {
       SignUpResult(false, false, SignUpResultError.UserAlreadyExists);
 }
 
+enum ResetPasswordError { InvalidCode, TooManyAttempts, Unknown }
+
 class ResetPasswordResult extends AuthResult {
-  ResetPasswordResult(bool wasSuccessful) : super(wasSuccessful);
+  final ResetPasswordError error;
+  ResetPasswordResult(bool wasSuccessful, {this.error}) : super(wasSuccessful);
+
+  factory ResetPasswordResult.unknownError() => ResetPasswordResult(
+        false,
+        error: ResetPasswordError.Unknown,
+      );
 }
 
 class VerifyResult extends AuthResult {

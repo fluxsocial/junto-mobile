@@ -73,13 +73,29 @@ class CognitoClient extends AuthenticationService {
           case aws.ForgotPasswordState.CONFIRMATION_CODE:
           case aws.ForgotPasswordState.UNKNOWN:
           case aws.ForgotPasswordState.ERROR:
-            return ResetPasswordResult(false);
+            return ResetPasswordResult.unknownError();
         }
       }
       return ResetPasswordResult(false);
-    } catch (e) {
-      logger.logException(e);
-      return ResetPasswordResult(false);
+    } on PlatformException catch (e) {
+      if (e.details is String) {
+        if (e.details.contains('Attempt limit exceeded')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.TooManyAttempts,
+          );
+        } else if (e.details.contains('Invalid verification code provided')) {
+          return ResetPasswordResult(
+            false,
+            error: ResetPasswordError.InvalidCode,
+          );
+        }
+      }
+      logger.logError('Error while resetting the password: $e');
+      return ResetPasswordResult.unknownError();
+    } catch (e, s) {
+      logger.logException(e, s, 'Unexpected exception when resetting password');
+      return ResetPasswordResult.unknownError();
     }
   }
 
@@ -192,8 +208,7 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<ResendVerifyResult> resendVerifyCode(String data) async {
     try {
-      final result =
-          await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
+      final result = await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
       if (result.confirmationState) {
         return ResendVerifyResult(true);
       } else {

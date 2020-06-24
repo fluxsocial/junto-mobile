@@ -94,7 +94,8 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
     if (await _validatePasswords()) {
       try {
         JuntoLoader.showLoader(context);
-        await Provider.of<AuthRepo>(context, listen: false).resetPassword(
+        final result =
+            await Provider.of<AuthRepo>(context, listen: false).resetPassword(
           ResetPasswordData(
             widget.username,
             _newPassword.value.text,
@@ -102,12 +103,34 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
           ),
         );
         JuntoLoader.hide();
-        await showFeedback(
-          context,
-          message: "Password successfully reset!",
-        );
-        context.bloc<AuthBloc>().add(LogoutEvent());
+        if (result.wasSuccessful) {
+          await showFeedback(
+            context,
+            message: "Password successfully reset!",
+          );
+          context.bloc<AuthBloc>().add(LogoutEvent());
+        } else if (result.error != null) {
+          var message = '';
+          switch (result.error) {
+            case ResetPasswordError.InvalidCode:
+              message = 'Invalid verification code';
+              break;
+            case ResetPasswordError.TooManyAttempts:
+              message = 'Attempt limit exceeded, please try again later.';
+              break;
+            case ResetPasswordError.Unknown:
+              message =
+                  'We cannot reset your password now, please try again later';
+              break;
+          }
+          showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                SingleActionDialog(dialogText: message),
+          );
+        }
       } catch (error) {
+        JuntoLoader.hide();
         print(error.message);
         showDialog(
           context: context,
@@ -115,9 +138,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
             dialogText: error.message,
           ),
         );
-      } finally {
-        JuntoLoader.hide();
-      }
+      } finally {}
     }
   }
 
