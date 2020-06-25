@@ -6,7 +6,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_f
 import 'package:feature_discovery/feature_discovery.dart';
 
 class JuntoCommunityCenter extends StatelessWidget {
-  final List<String> _tabs = ['FEEDBACK', 'UPDATES'];
+  final List<String> _tabs = ['FEEDBACK'];
   final String communityCenterAddress = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
 
   @override
@@ -36,7 +36,6 @@ class JuntoCommunityCenter extends StatelessWidget {
             body: TabBarView(
               children: <Widget>[
                 JuntoCommunityCenterFeedback(),
-                SizedBox(),
               ],
             ),
           ),
