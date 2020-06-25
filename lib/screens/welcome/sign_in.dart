@@ -110,7 +110,7 @@ class _SignInState extends State<SignIn> {
                     },
                     title: S.of(context).welcome_sign_in,
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 15),
                   CallToActionButton(
                     callToAction: () {
                       widget.signInController.nextPage(

@@ -234,6 +234,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                     callToAction: _confirmNewPassword,
                     title: S.of(context).welcome_confirm_password.toUpperCase(),
                   ),
+                  const SizedBox(height: 15),
                   ResendVerificationCodeButton(
                     onPressed: _resendVerificationCode,
                   ),
