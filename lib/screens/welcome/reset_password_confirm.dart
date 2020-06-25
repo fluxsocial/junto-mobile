@@ -230,13 +230,13 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  ResendVerificationCodeButton(
-                    onPressed: _resendVerificationCode,
-                  ),
                   CallToActionButton(
                     callToAction: _confirmNewPassword,
                     title: S.of(context).welcome_confirm_password.toUpperCase(),
-                  )
+                  ),
+                  ResendVerificationCodeButton(
+                    onPressed: _resendVerificationCode,
+                  ),
                 ],
               ),
             ),

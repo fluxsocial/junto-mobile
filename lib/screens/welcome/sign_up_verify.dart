@@ -95,14 +95,14 @@ class SignUpVerifyState extends State<SignUpVerify> {
                 ),
               ),
             ),
-            ResendVerificationCodeButton(
-              onPressed: widget.handleVerificationCode,
-            ),
-            SizedBox(height: 10.0),
             _SignUpButtons(
               theme: theme,
               onAction: widget.handleSignUp,
               text: S.of(context).welcome_lets_go,
+            ),
+            SizedBox(height: 10.0),
+            ResendVerificationCodeButton(
+              onPressed: widget.handleVerificationCode,
             ),
             const Spacer(),
           ],
