@@ -102,13 +102,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   Future<void> getRelationToGroup() async {
-    // get user address
-    final String userAddress =
-        await Provider.of<UserDataProvider>(context, listen: false).userAddress;
     // get relation to updates group
     final Map<String, dynamic> relation =
         await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
-            '2eb976b4-4473-2436-ccb2-e512e868bcac', userAddress);
+            '2eb976b4-4473-2436-ccb2-e512e868bcac', _userAddress);
     // set state
     setState(() {
       relationToGroup = relation;
@@ -439,7 +436,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             : Theme.of(context).primaryColor,
       );
     } else if (expressionContext == 'Updates') {
-      print(relationToGroup);
       _setExpressionContextDescription = () {
         setState(() {
           _expressionContext = ExpressionContext.Group;
