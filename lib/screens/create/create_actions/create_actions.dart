@@ -312,8 +312,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                       _expressionContextSelector(
                           expressionContext: 'Community Center'),
                       if (relationToGroup != null)
-                        if (relationToGroup['facilitator'] ||
-                            relationToGroup['creator'])
+                        if (relationToGroup['creator'] ||
+                            relationToGroup['facilitator'])
                           _expressionContextSelector(
                               expressionContext: 'Updates'),
                     ]),
@@ -428,6 +428,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             : Theme.of(context).primaryColor,
       );
     } else if (expressionContext == 'Updates') {
+      print(relationToGroup);
       _setExpressionContextDescription = () {
         setState(() {
           _expressionContext = ExpressionContext.Group;
@@ -438,7 +439,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       };
       _expressionContextIcon = Icon(
         Icons.update,
-        size: 17,
+        size: 24,
         color: _currentExpressionContext == expressionContext
             ? Colors.white
             : Theme.of(context).primaryColor,
