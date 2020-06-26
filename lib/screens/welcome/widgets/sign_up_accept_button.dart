@@ -42,6 +42,10 @@ class AcceptButton extends StatelessWidget {
                 await Provider.of<GroupRepo>(context, listen: false)
                     .addGroupMember('48b97134-1a4d-deb0-b27c-9bcdfc33f386',
                         [user.userProfile.user], 'Member');
+                // Add member to updates on sign up
+                await Provider.of<GroupRepo>(context, listen: false)
+                    .addGroupMember('2eb976b4-4473-2436-ccb2-e512e868bcac',
+                        [user.userProfile.user], 'Member');
                 // accept agreements
                 await BlocProvider.of<AuthBloc>(context).add(
                   AcceptAgreements(),
