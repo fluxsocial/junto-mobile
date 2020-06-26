@@ -8,10 +8,15 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
 import 'widgets/sign_up_profile_picture.dart';
 
-class SignUpPhotos extends StatelessWidget {
+class SignUpPhotos extends StatefulWidget {
   const SignUpPhotos(this.profilePicture);
   final ProfilePicture profilePicture;
 
+  @override
+  _SignUpPhotosState createState() => _SignUpPhotosState();
+}
+
+class _SignUpPhotosState extends State<SignUpPhotos> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,8 +35,9 @@ class SignUpPhotos extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       const SizedBox(height: 50),
-                      ProfilePictureImage(profilePicture: profilePicture),
-                      if (profilePicture.file.value != null)
+                      ProfilePictureImage(
+                          profilePicture: widget.profilePicture),
+                      if (widget.profilePicture.file.value != null)
                         RemovePhoto(onTap: _onRemovePhoto)
                       else
                         ProfilePictureLabel(),
@@ -47,13 +53,15 @@ class SignUpPhotos extends StatelessWidget {
   }
 
   void _onRemovePhoto() {
-    profilePicture.file.value = null;
-    profilePicture.originalFile.value = null;
+    setState(() {
+      widget.profilePicture.file.value = null;
+      widget.profilePicture.originalFile.value = null;
+    });
   }
 
   Future<void> _onImageSelect(BuildContext context) async {
     {
-      if (profilePicture.file.value == null) {
+      if (widget.profilePicture.file.value == null) {
         await _onPickPressed(context);
       } else {
         await _cropPhoto(context);
@@ -65,10 +73,10 @@ class SignUpPhotos extends StatelessWidget {
     try {
       final File image =
           await ImagePicker.pickImage(source: ImageSource.gallery);
-      if (image == null && profilePicture.file.value == null) {
+      if (image == null && widget.profilePicture.file.value == null) {
         logger.logDebug('No image selected and no profile picture exists');
         return;
-      } else if (image == null && profilePicture.file.value != null) {
+      } else if (image == null && widget.profilePicture.file.value != null) {
         logger.logDebug(
             'No new image selected but profile picture already exists');
         return;
@@ -86,8 +94,10 @@ class SignUpPhotos extends StatelessWidget {
         logger.logDebug('No new image selected and cropping cancelled');
         return;
       }
-      profilePicture.file.value = cropped;
-      profilePicture.originalFile.value = image;
+      setState(() {
+        widget.profilePicture.file.value = cropped;
+        widget.profilePicture.originalFile.value = image;
+      });
     } catch (error) {
       logger.logException(error);
     }
@@ -96,7 +106,7 @@ class SignUpPhotos extends StatelessWidget {
   Future<void> _cropPhoto(BuildContext context) async {
     final File cropped = await ImageCroppingDialog.show(
       context,
-      profilePicture.originalFile.value,
+      widget.profilePicture.originalFile.value,
       aspectRatios: <String>[
         '1:1',
       ],
@@ -104,6 +114,6 @@ class SignUpPhotos extends StatelessWidget {
     if (cropped == null) {
       return;
     }
-    profilePicture.file.value = cropped;
+    widget.profilePicture.file.value = cropped;
   }
 }
