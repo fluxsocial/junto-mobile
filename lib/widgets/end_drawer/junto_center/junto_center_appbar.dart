@@ -13,10 +13,12 @@ class JuntoCommunityCenterAppbar extends SliverPersistentHeaderDelegate {
   JuntoCommunityCenterAppbar({
     @required this.expandedHeight,
     @required this.tabs,
+    @required this.tabController,
   });
 
   final double expandedHeight;
   final List<String> tabs;
+  final TabController tabController;
 
   @override
   Widget build(
@@ -130,6 +132,7 @@ class JuntoCommunityCenterAppbar extends SliverPersistentHeaderDelegate {
               ),
             ),
             child: TabBar(
+              controller: tabController,
               labelPadding: const EdgeInsets.all(0),
               isScrollable: true,
               labelColor: Theme.of(context).primaryColorDark,
