@@ -4,9 +4,12 @@ import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_a
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_fab.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_feedback.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 
 class JuntoCommunityCenter extends StatelessWidget {
-  final List<String> _tabs = ['FEEDBACK'];
+  final List<String> _tabs = ['FEEDBACK', 'UPDATES'];
   final String communityCenterAddress = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
 
   @override
@@ -36,6 +39,7 @@ class JuntoCommunityCenter extends StatelessWidget {
             body: TabBarView(
               children: <Widget>[
                 JuntoCommunityCenterFeedback(),
+                const SizedBox(),
               ],
             ),
           ),
