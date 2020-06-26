@@ -190,6 +190,17 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<void> _createExpression() async {
     try {
+      if (_address == '2eb976b4-4473-2436-ccb2-e512e868bcac' &&
+          !relationToGroup['facilitator'] &&
+          !relationToGroup['creator']) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'You must be an admin to post updates.',
+          ),
+        );
+        return;
+      }
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
       if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context, color: Colors.white54);
