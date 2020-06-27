@@ -55,6 +55,7 @@ dev_dependencies:
   freezed: 0.10.8
   effective_dart: 1.2.1
 dependency_overrides:
+  characters: 1.0.0
   path: 1.7.0
   # Overriding due to crash on iOS https://github.com/agnostech/flutter_amplify/pull/12
   flutter_aws_amplify_cognito:
