@@ -75,9 +75,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
 
+  // relation to community center
+  Map<String, dynamic> relationToGroup;
+
   @override
   void initState() {
     super.initState();
+    // get relationship to group
+    getRelationToGroup();
     _channelController = TextEditingController();
     _address = widget.address;
     _expressionContext = widget.expressionContext;
@@ -94,6 +99,17 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _currentExpressionContextDescription =
           'share your feedback with the team and community';
     }
+  }
+
+  Future<void> getRelationToGroup() async {
+    // get relation to updates group
+    final Map<String, dynamic> relation =
+        await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
+            '2eb976b4-4473-2436-ccb2-e512e868bcac', _userAddress);
+    // set state
+    setState(() {
+      relationToGroup = relation;
+    });
   }
 
   @override
@@ -171,6 +187,17 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<void> _createExpression() async {
     try {
+      if (_address == '2eb976b4-4473-2436-ccb2-e512e868bcac' &&
+          !relationToGroup['facilitator'] &&
+          !relationToGroup['creator']) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'You must be an admin to post updates.',
+          ),
+        );
+        return;
+      }
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
       if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context, color: Colors.white54);
@@ -292,6 +319,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                       const SizedBox(width: 15),
                       _expressionContextSelector(
                           expressionContext: 'Community Center'),
+                      if (relationToGroup != null)
+                        if (relationToGroup['creator'] ||
+                            relationToGroup['facilitator'])
+                          _expressionContextSelector(
+                              expressionContext: 'Updates'),
                     ]),
                   ),
               ],
@@ -399,7 +431,25 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _expressionContextIcon = Image.asset(
         'assets/images/junto-mobile__sprout.png',
         height: 17,
-        color: Colors.white,
+        color: _currentExpressionContext == expressionContext
+            ? Colors.white
+            : Theme.of(context).primaryColor,
+      );
+    } else if (expressionContext == 'Updates') {
+      _setExpressionContextDescription = () {
+        setState(() {
+          _expressionContext = ExpressionContext.Group;
+          _currentExpressionContextDescription =
+              'share updates to the Junto community';
+          _address = '2eb976b4-4473-2436-ccb2-e512e868bcac';
+        });
+      };
+      _expressionContextIcon = Icon(
+        Icons.update,
+        size: 24,
+        color: _currentExpressionContext == expressionContext
+            ? Colors.white
+            : Theme.of(context).primaryColor,
       );
     }
     return GestureDetector(
