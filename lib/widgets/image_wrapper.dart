@@ -7,7 +7,7 @@ class ImageWrapper extends StatelessWidget {
     Key key,
     @required this.imageUrl,
     this.placeholder,
-    this.fit,
+    this.fit = BoxFit.cover,
     this.height,
     this.width,
   }) : super(key: key);
@@ -21,6 +21,7 @@ class ImageWrapper extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imageUrl,
       cacheManager: CustomCacheManager(),
+      fadeInCurve: Curves.easeInSine,
       placeholder: placeholder,
       fit: fit,
       width: width,

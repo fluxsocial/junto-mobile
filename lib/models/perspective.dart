@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+part 'perspective.g.dart';
 
 class Perspective {
   const Perspective({
@@ -9,7 +11,7 @@ class Perspective {
     @required this.members,
   });
 
-  factory Perspective.fromMap(Map<String, dynamic> map) {
+  factory Perspective.fromJson(Map<String, dynamic> map) {
     return Perspective(
       name: map['name'],
       about: map['about'],
@@ -58,7 +60,7 @@ class Perspective {
     ];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
       'members': members,
@@ -79,7 +81,7 @@ class PerspectiveResponse {
   });
 
   /// Creates a [PerspectiveResponse] from the decoded json data.
-  factory PerspectiveResponse.fromMap(Map<String, dynamic> json) {
+  factory PerspectiveResponse.fromJson(Map<String, dynamic> json) {
     return PerspectiveResponse(
       address: json['address'],
       parent: json['entry']['parent'],
@@ -104,7 +106,7 @@ class PerspectiveResponse {
   /// String identifying the type of channel. `Perspective`
   final String channelType;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'entry': <String, dynamic>{
           'parent': parent,
           'name': name,
@@ -115,8 +117,9 @@ class PerspectiveResponse {
 }
 
 /// Object representation of a perspective returned by the centralized server.
-class PerspectiveModel {
-  const PerspectiveModel({
+@HiveType(typeId: 7)
+class PerspectiveModel extends HiveObject {
+  PerspectiveModel({
     @required this.address,
     @required this.name,
     @required this.creator,
@@ -127,7 +130,7 @@ class PerspectiveModel {
     @required this.about,
   });
 
-  factory PerspectiveModel.fromMap(Map<String, dynamic> map) {
+  factory PerspectiveModel.fromJson(Map<String, dynamic> map) {
     return PerspectiveModel(
       address: map['address'] as String,
       name: map['name'] as String,
@@ -141,25 +144,33 @@ class PerspectiveModel {
   }
 
   /// Address of perspective
+  @HiveField(0)
   final String address;
 
   /// Name of given perspective
+  @HiveField(1)
   final String name;
 
   /// The UUID of the creator
+  @HiveField(2)
   final String creator;
 
   /// Needs to be converted from an ISO 8601 String
+  @HiveField(3)
   final DateTime createdAt;
+  @HiveField(4)
   final bool isDefault;
 
   /// Number of users in the given perspective
+  @HiveField(5)
   final int userCount;
 
   /// List of users associated with the given perspective.
+  @HiveField(6)
   final List<UserProfile> users;
 
   /// Purpose of the given perspective
+  @HiveField(7)
   final String about;
 
   PerspectiveModel copyWith({
@@ -187,13 +198,13 @@ class PerspectiveModel {
   static List<UserProfile> _parseUsers(List<dynamic> _listData) {
     if (_listData != null && _listData.isNotEmpty) {
       _listData.map((dynamic userData) {
-        return UserProfile.fromMap(userData);
+        return UserProfile.fromJson(userData);
       }).toList();
     }
     return <UserProfile>[];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,

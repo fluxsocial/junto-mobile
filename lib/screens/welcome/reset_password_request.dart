@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_in_back_nav.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
@@ -11,22 +14,19 @@ import 'package:provider/provider.dart';
 
 class ResetPasswordRequest extends StatefulWidget {
   const ResetPasswordRequest(
-      {@required this.emailController, this.signInController});
+      {@required this.usernameController, this.signInController});
 
   final PageController signInController;
-  final TextEditingController emailController;
+  final TextEditingController usernameController;
 
   @override
   _ResetPasswordRequestState createState() => _ResetPasswordRequestState();
 }
 
 class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
-  GlobalKey<FormState> _formKey;
-
   @override
   void initState() {
     super.initState();
-    _formKey = GlobalKey();
   }
 
   @override
@@ -35,33 +35,37 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
   }
 
   /// Request a verification code from the server.
-  Future<void> _requestEmail() async {
-    if (_formKey.currentState.validate()) {
+  Future<void> _requestPasswordReset() async {
+    if (widget.usernameController.text.isEmpty) {
+      await showFeedback(
+        context,
+        message: "Please provide your username",
+      );
+    } else {
       try {
-        final email = widget.emailController.text;
-        final int responseStatusCode =
-            await Provider.of<AuthRepo>(context, listen: false)
-                .requestPasswordReset(email);
-        // if 310, then continue as this status code represents that a verification
-        // email has already been sent
-        if (responseStatusCode == 310) {
+        JuntoLoader.showLoader(context);
+        final username = widget.usernameController.text;
+        final result = await Provider.of<AuthRepo>(context, listen: false)
+            .requestPasswordReset(username);
+
+        JuntoLoader.hide();
+        if (result.wasSuccessful) {
+          await showFeedback(
+            context,
+            message: "Check your email for a verification code",
+          );
+          await Future.delayed(Duration(milliseconds: 300));
           widget.signInController.nextPage(
-            curve: Curves.easeIn,
+            curve: Curves.easeInOut,
             duration: const Duration(milliseconds: 300),
           );
         } else {
-          await showFeedback(
-            context,
-            message: "Check your email for a verification code.",
-          );
-          widget.signInController.nextPage(
-            curve: Curves.easeIn,
-            duration: const Duration(milliseconds: 300),
-          );
+          _handlePasswordResetRequest(result);
         }
 
         return;
       } on JuntoException catch (error) {
+        JuntoLoader.hide();
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
@@ -69,8 +73,27 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
           ),
         );
         return;
+      } catch (error) {
+        logger.logError("Error: $error");
+        JuntoLoader.hide();
       }
     }
+  }
+
+  void _handlePasswordResetRequest(ResetPasswordResult result) {
+    var message = '';
+    switch (result.error) {
+      case ResetPasswordError.InvalidCode:
+        message = 'Invalid verification code';
+        break;
+      case ResetPasswordError.TooManyAttempts:
+        message = 'Attempt limit exceeded, please try again later';
+        break;
+      case ResetPasswordError.Unknown:
+        message = 'We cannot reset your password now, please try again later';
+        break;
+    }
+    showFeedback(context, message: message);
   }
 
   @override
@@ -90,32 +113,29 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SignUpTextField(
-                      valueController: widget.emailController,
-                      hint: S.of(context).welcome_email_hint,
-                      maxLength: 100,
-                      textInputActionType: TextInputAction.done,
-                      onSubmit: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SignUpTextField(
+                    valueController: widget.usernameController,
+                    hint: S.of(context).welcome_username_hint_sign_in,
+                    maxLength: 100,
+                    textInputActionType: TextInputAction.done,
+                    onSubmit: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.none,
+                  ),
+                ],
               ),
             ),
             Container(
               margin: const EdgeInsets.only(bottom: 120),
               child: CallToActionButton(
-                callToAction: _requestEmail,
-                title: S.of(context).welcome_reset_password,
+                callToAction: _requestPasswordReset,
+                title: S.of(context).welcome_reset_password.toUpperCase(),
               ),
             ),
           ],

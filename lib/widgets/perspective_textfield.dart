@@ -44,7 +44,7 @@ class PerspectiveTextField extends StatelessWidget {
           border: InputBorder.none,
           hintText: name,
           hintStyle: TextStyle(
-            fontSize: 17,
+            fontSize: 15,
             fontWeight: FontWeight.w600,
             color: Theme.of(context).primaryColorLight,
           ),
@@ -53,7 +53,7 @@ class PerspectiveTextField extends StatelessWidget {
         cursorWidth: 2,
         maxLines: 1,
         style: TextStyle(
-          fontSize: 17,
+          fontSize: 15,
           fontWeight: FontWeight.w600,
           color: Theme.of(context).primaryColor,
         ),

@@ -17,13 +17,14 @@ class GroupServiceCentralized implements GroupService {
   Future<SphereResponse> createSphere(
     SphereModel sphere,
   ) async {
-    final Map<String, dynamic> _postBody = sphere.toMap();
+    final Map<String, dynamic> _postBody = sphere.toJson();
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/groups',
       body: _postBody,
     );
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
+
     return SphereResponse.fromJson(_decodedResponse);
   }
 
@@ -38,14 +39,14 @@ class GroupServiceCentralized implements GroupService {
         await client.get('/groups/$groupAddress');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
-    return Group.fromMap(_data);
+    return Group.fromJson(_data);
   }
 
   @override
   Future<Map<String, dynamic>> getRelationToGroup(
       String groupAddress, String userAddress) async {
-    final http.Response _serverResponse = await client
-        .postWithoutEncoding('/groups/$groupAddress/members/$userAddress');
+    final http.Response _serverResponse =
+        await client.get('/groups/$groupAddress/members/$userAddress');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return _data;
@@ -81,7 +82,7 @@ class GroupServiceCentralized implements GroupService {
   Future<QueryResults<Users>> getGroupMembers(
       String groupAddress, ExpressionQueryParams params) async {
     final http.Response _serverResponse = await client
-        .get('/groups/$groupAddress/members', queryParams: params.toMap());
+        .get('/groups/$groupAddress/members', queryParams: params.toJson());
     final Map<String, dynamic> items =
         await JuntoHttp.handleResponse(_serverResponse);
 
@@ -108,7 +109,7 @@ class GroupServiceCentralized implements GroupService {
     final Map<String, dynamic> items =
         JuntoHttp.handleResponse(_serverResponse);
     return (items['direct_posts']['results'] as List<dynamic>)
-        .map((dynamic data) => ExpressionResponse.fromMap(data))
+        .map((dynamic data) => ExpressionResponse.fromJson(data))
         .toList();
   }
 
@@ -120,7 +121,7 @@ class GroupServiceCentralized implements GroupService {
     );
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
-    return Group.fromMap(_data);
+    return Group.fromJson(_data);
   }
 
   @override

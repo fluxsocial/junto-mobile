@@ -88,6 +88,10 @@ class JuntoThemesPage extends StatelessWidget {
                 _ThemeSelector('rainbow'),
                 _ThemeSelector('aqueous'),
                 _ThemeSelector('royal'),
+                _ThemeSelector('fire'),
+                _ThemeSelector('forest'),
+                _ThemeSelector('sand'),
+                _ThemeSelector('dark'),
               ],
             ),
           )
@@ -116,6 +120,8 @@ class _ThemeSelector extends StatelessWidget {
         onTap: () async {
           await Provider.of<JuntoThemesProvider>(context, listen: false)
               .setTheme(name);
+          await Provider.of<JuntoThemesProvider>(context, listen: false)
+              .vibrate();
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),

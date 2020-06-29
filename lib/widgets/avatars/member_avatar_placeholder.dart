@@ -21,7 +21,7 @@ class MemberAvatarPlaceholder extends StatelessWidget {
           ],
           colors: <Color>[
             Theme.of(context).colorScheme.secondary,
-            Theme.of(context).colorScheme.primaryVariant,
+            Theme.of(context).colorScheme.primary,
           ],
         ),
         borderRadius: BorderRadius.circular(100),

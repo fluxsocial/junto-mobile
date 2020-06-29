@@ -19,6 +19,7 @@ class HiveCache implements LocalCache {
     Hive.registerAdapter(UserProfileAdapter());
     Hive.registerAdapter(AudioFormExpressionAdapter());
     Hive.registerAdapter(JuntoNotificationAdapter());
+    Hive.registerAdapter(PerspectiveModelAdapter());
   }
 
   final _supportedBox = <DBBoxes, String>{
@@ -141,6 +142,7 @@ class HiveCache implements LocalCache {
 
   Future<void> wipe() async {
     try {
+      logger.logInfo('Wiping the database');
       if (Hive.isBoxOpen(HiveBoxes.kExpressions)) {
         final exp = await Hive.box<ExpressionResponse>(HiveBoxes.kExpressions);
         await exp.deleteAll(exp.keys);
@@ -202,5 +204,29 @@ class HiveCache implements LocalCache {
     } catch (e) {
       logger.logException(e);
     }
+  }
+
+  @override
+  Future<void> insertPerspectives(List<PerspectiveModel> perspectives) async {
+    final box = await Hive.openBox<PerspectiveModel>(HiveBoxes.kPerspectives);
+    final _futures = <Future>[];
+    for (PerspectiveModel perspective in perspectives) {
+      if (!box.containsKey(perspective.address)) {
+        _futures.add(box.put(perspective.address, perspective));
+      }
+    }
+    await Future.wait(_futures);
+  }
+
+  @override
+  Future<List<PerspectiveModel>> retrievePerspective() async {
+    final box = await Hive.openBox<PerspectiveModel>(HiveBoxes.kPerspectives);
+    List<PerspectiveModel> items = [];
+    for (dynamic key in box.keys) {
+      PerspectiveModel res = await box.get(key);
+      items.add(res);
+    }
+    items.sort((a, b) => -a.createdAt.compareTo(b.createdAt));
+    return items;
   }
 }

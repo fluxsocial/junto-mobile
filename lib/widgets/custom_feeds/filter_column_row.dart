@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/backend/user_data_provider.dart';
+import 'package:provider/provider.dart';
 
 class FilterColumnRow extends StatelessWidget {
-  const FilterColumnRow({this.switchColumnView, this.twoColumnView});
+  const FilterColumnRow({this.twoColumnView});
 
-  final Function switchColumnView;
   final bool twoColumnView;
+
+  Future<void> switchColumnView(
+      BuildContext context, ExpressionFeedLayout columnType) async {
+    await Provider.of<UserDataProvider>(context, listen: false)
+        .switchColumnLayout(columnType);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +28,8 @@ class FilterColumnRow extends StatelessWidget {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap: () => switchColumnView(ExpressionFeedLayout.two),
+                onTap: () =>
+                    switchColumnView(context, ExpressionFeedLayout.two),
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.symmetric(
@@ -37,7 +46,8 @@ class FilterColumnRow extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => switchColumnView(ExpressionFeedLayout.single),
+                onTap: () =>
+                    switchColumnView(context, ExpressionFeedLayout.single),
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.symmetric(

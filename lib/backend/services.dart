@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/junto_notification_cache.dart';
 import 'package:junto_beta_mobile/models/junto_notification_results.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/notification_query.dart';
+
+part 'services_auth.dart';
+part 'services_user.dart';
 
 abstract class SearchService {
   /// Returns a [QueryResults] contains a list of [UserProfile] matching the [query]
@@ -29,35 +33,6 @@ abstract class SearchService {
     DateTime lastTimeStamp,
     bool handle,
   });
-}
-
-/// Abstract class which defines the functionality of the Authentication Provider
-abstract class AuthenticationService {
-  // verifies the email of a user
-  Future<Map<String, dynamic>> validateUser({String username, String email});
-
-  // verifies the email of a user
-  Future<String> verifyEmail(String email);
-
-  /// Registers a user on the server and creates their profile.
-  Future<UserData> registerUser(UserAuthRegistrationDetails details);
-
-  // Request verification code to reset password
-  Future<int> requestPasswordReset(String email);
-
-  // Request verification code to reset password
-  Future<void> resetPassword(Map<String, dynamic> details);
-
-  /// Authenticates a registered user. Returns the [UserProfile]  for the
-  /// given user. Their cookie is stored locally on device and is used for
-  /// all future request.
-  Future<UserData> loginUser(UserAuthLoginDetails details);
-
-  /// Logs out a user and removes their auth token from the device.
-  Future<void> logoutUser();
-
-  // Deletes user account
-  Future<void> deleteUserAccount(String userAddress, String password);
 }
 
 abstract class CollectiveService {
@@ -180,99 +155,6 @@ abstract class GroupService {
 
 enum QueryType { address, email, username }
 
-abstract class UserService {
-  /// Allows the user to create a [Perspective] on the server.
-  Future<PerspectiveModel> createPerspective(Perspective perspective);
-
-  /// Allows the user to delete a [Perspective] .
-  Future<void> deletePerspective(String perspective);
-
-  Future<PerspectiveModel> updatePerspective(
-    String perspectiveAddress,
-    Map<String, String> perspectiveBody,
-  );
-
-  /// Gets the user
-  Future<UserData> getUser(String userAddress);
-
-  /// Returns the [UserProfile] for the given [QueryType]
-  Future<UserProfile> queryUser(String param, QueryType queryType);
-
-  /// Returns a [PerspectiveModel] containing a list of `user`s who are
-  /// apart of the given perspective.
-  Future<List<PerspectiveModel>> getUserPerspective(String userAddress);
-
-  /// Returns a list of users in a group. Note: The return type of this
-  /// function is [PerspectiveModel] since the response sent back from
-  /// the server is identical to [getUserPerspective]
-  Future<UserGroupsResponse> getUserGroups(String userAddress);
-
-  /// Currently under development server-side.
-  Future<List<ExpressionResponse>> getUsersResonations(String userAddress);
-
-  /// Placeholder for now, currently under development server-side.
-  Future<QueryResults<ExpressionResponse>> getUsersExpressions(
-    String userAddress,
-    int paginationPos,
-    String lastTimestamp,
-  );
-
-  /// Returns a list of perspectives owned by the given user
-  Future<List<PerspectiveModel>> userPerspectives(String userAddress);
-
-  Future<UserProfile> createPerspectiveUserEntry(
-    String userAddress,
-    String perspectiveAddress,
-  );
-
-  /// Adds the given user to a perspective. The perspective address and user
-  /// address must be supplied.
-  Future<void> addUsersToPerspective(
-      String perspectiveAddress, List<String> userAddresses);
-
-  /// Uses a Delete request.
-  Future<void> deleteUsersFromPerspective(
-    List<Map<String, String>> userAddresses,
-    String perspectiveAddress,
-  );
-
-  Future<List<UserProfile>> getPerspectiveUsers(
-    String perspectiveAddress,
-  );
-
-  /// Connects to the user with the given address.
-  Future<void> connectUser(String userAddress);
-
-  /// Removes the user's connection with the given address
-  Future<void> removeUserConnection(String userAddress);
-
-  /// Responds to the connection with either `true` or `false`
-  Future<void> respondToConnection(String userAddress, bool response);
-
-  /// Gets a list of pending user connections
-  Future<Map<String, dynamic>> userRelations();
-
-  /// Gets a list of pending user connections
-  Future<List<UserProfile>> connectedUsers(String userAddress);
-
-  /// Returns true/false of user's relations to another member
-  Future<Map<String, dynamic>> isRelated(
-      String userAddress, String targetAddress);
-
-  /// Returns true/false if the [userAddress] is following the [targetAddress]
-  Future<bool> isFollowingUser(String userAddress, String targetAddress);
-
-  /// Returns true/false if the [userAddress] is connected to the [targetAddress]
-  Future<bool> isConnectedUser(String userAddress, String targetAddress);
-
-  /// Updates the given [user] and returns updated [UserData]
-  Future<Map<String, dynamic>> updateUser(
-      Map<String, dynamic> profile, String userAddress);
-
-  // Returns a list of followers for the given user address.
-  Future<List<UserProfile>> getFollowers(String userAddress);
-}
-
 /// App wide notification service
 abstract class NotificationService {
   Future<JuntoNotificationResults> getJuntoNotifications(
@@ -313,5 +195,12 @@ abstract class LocalCache {
   /// Stores the last read notification time
   Future<void> setLastReadNotificationTime(DateTime datetime);
 
+  /// Fetches all stored perspectives
+  Future<List<PerspectiveModel>> retrievePerspective();
+
+  /// Insert user perspectives
+  Future<void> insertPerspectives(List<PerspectiveModel> perspectives);
+
+  /// Clears all stored data
   Future<void> wipe();
 }

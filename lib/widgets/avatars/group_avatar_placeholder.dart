@@ -20,8 +20,8 @@ class GroupAvatarPlaceholder extends StatelessWidget {
             0.9,
           ],
           colors: <Color>[
-            Theme.of(context).colorScheme.primary,
             Theme.of(context).colorScheme.secondary,
+            Theme.of(context).colorScheme.primary
           ],
         ),
         borderRadius: BorderRadius.circular(100),

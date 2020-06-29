@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/about_perspective.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
@@ -89,10 +93,29 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Flexible(
-                                child: Text(
-                                  appbarTitle ?? 'JUNTO',
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                  textAlign: TextAlign.center,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      builder: (BuildContext context) =>
+                                          AboutPerspective(),
+                                    );
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Text(
+                                      appbarTitle ?? 'JUNTO',
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -132,7 +155,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       ),
                       featureId: 'collective_filter_id',
                       title:
-                          'Click this icon to filter this perspective by channel.',
+                          'Click this icon to filter this perspective by channel (topic).',
                       isLastFeature: true,
                       child: const FilterDrawerButton(),
                     ),
@@ -148,9 +171,12 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             child: Icon(
                               CustomIcons.twocolumn,
                               size: 20,
-                              color: data?.twoColumnView == true
-                                  ? Theme.of(context).primaryColorDark
-                                  : Theme.of(context).primaryColorLight,
+                              color:
+                                  Provider.of<AppRepo>(context, listen: false)
+                                              .twoColumnLayout ==
+                                          true
+                                      ? Theme.of(context).primaryColorDark
+                                      : Theme.of(context).primaryColorLight,
                             ),
                           ),
                         ),
@@ -164,9 +190,12 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             child: Icon(
                               CustomIcons.singlecolumn,
                               size: 20,
-                              color: data?.twoColumnView == true
-                                  ? Theme.of(context).primaryColorLight
-                                  : Theme.of(context).primaryColorDark,
+                              color:
+                                  Provider.of<AppRepo>(context, listen: false)
+                                              .twoColumnLayout ==
+                                          true
+                                      ? Theme.of(context).primaryColorLight
+                                      : Theme.of(context).primaryColorDark,
                             ),
                           ),
                         ),
@@ -192,27 +221,44 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
-class AppBarFeatureDiscovery extends StatelessWidget {
+class AppBarFeatureDiscovery extends StatefulWidget {
   const AppBarFeatureDiscovery({
     Key key,
   }) : super(key: key);
 
   @override
+  _AppBarFeatureDiscoveryState createState() => _AppBarFeatureDiscoveryState();
+}
+
+class _AppBarFeatureDiscoveryState extends State<AppBarFeatureDiscovery> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showCollectiveTutorial) {
+      repo.setViewed(HiveKeys.kShowCollectiveTutorial, false);
+      showTutorial();
+    }
+  }
+
+  void showTutorial() {
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'collective_info_id',
+      'collective_filter_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'collective_info_id',
+        'collective_filter_id',
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FeatureDiscovery.clearPreferences(context, <String>{
-          'collective_info_id',
-          'collective_filter_id',
-        });
-        FeatureDiscovery.discoverFeatures(
-          context,
-          const <String>{
-            'collective_info_id',
-            'collective_filter_id',
-          },
-        );
-      },
+      onTap: showTutorial,
       child: JuntoDescribedFeatureOverlay(
         icon: OverlayInfoIcon(),
         featureId: 'collective_info_id',

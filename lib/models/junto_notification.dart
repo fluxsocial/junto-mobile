@@ -57,20 +57,20 @@ abstract class JuntoNotification with _$JuntoNotification {
 // and instance methods used for fromMap and toMap calls
   static Group groupFromJson(Map<String, dynamic> json) {
     if (json != null) {
-      return Group.fromMap(json);
+      return Group.fromJson(json);
     }
     return null;
   }
 
-  static Map<String, dynamic> groupToJson(Group obj) => obj?.toMap();
+  static Map<String, dynamic> groupToJson(Group obj) => obj?.toJson();
   static UserProfile userFromJson(Map<String, dynamic> json) {
     if (json != null) {
-      return UserProfile.fromMap(json);
+      return UserProfile.fromJson(json);
     }
     return null;
   }
 
-  static Map<String, dynamic> userToJson(UserProfile obj) => obj?.toMap();
+  static Map<String, dynamic> userToJson(UserProfile obj) => obj?.toJson();
 }
 
 class JuntoNotificationAdapter extends TypeAdapter<JuntoNotification> {

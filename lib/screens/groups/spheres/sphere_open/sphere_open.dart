@@ -168,7 +168,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                       MediaQuery.of(context).size.height * .3,
                                 );
                               },
-                              fit: BoxFit.cover),
+                              fit: BoxFit.cover,
+                            ),
                       Container(
                         key: _keyFlexibleSpace,
                         padding: const EdgeInsets.symmetric(

@@ -14,3 +14,4 @@ export 'perspective.dart';
 export 'resonation_model.dart';
 export 'sphere.dart';
 export 'user_model.dart';
+export 'valid_user_model.dart';

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class HomeIcon extends StatelessWidget {
   const HomeIcon({
     Key key,
     this.source,
     this.navigateTo,
+    this.theme,
   }) : super(key: key);
 
   final ExpressionType source;
   final Function navigateTo;
+  final JuntoThemesProvider theme;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,7 @@ class HomeIcon extends StatelessWidget {
           child: Icon(
             CustomIcons.newdoubleuparrow,
             size: 45,
-            color: Colors.white,
+            color: JuntoPalette().juntoWhite(theme: theme),
           ),
         ),
       ),

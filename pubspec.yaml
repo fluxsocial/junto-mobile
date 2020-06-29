@@ -23,7 +23,6 @@ dependencies:
   cached_network_image: 2.2.0+1
   flutter_spinkit: 4.1.2
   path_provider: 1.6.8
-  flutter_slidable: 0.5.4
   package_info: 0.4.0+14
   keyboard_avoider: 0.1.2
   flutter_bloc: 4.0.0
@@ -46,6 +45,8 @@ dependencies:
   custom_refresh_indicator: ^0.8.0+1
   flutter_staggered_grid_view: 0.3.0
   image: 2.1.12
+  flutter_aws_amplify_cognito: 1.0.0+7
+  corsac_jwt: ^0.2.2
 
 dev_dependencies:
   test: any
@@ -54,7 +55,16 @@ dev_dependencies:
   freezed: 0.10.8
   effective_dart: 1.2.1
 dependency_overrides:
+  characters: 1.0.0
   path: 1.7.0
+  # Overriding due to crash on iOS https://github.com/agnostech/flutter_amplify/pull/12
+  flutter_aws_amplify_cognito:
+    # path: ../flutter_amplify/flutter_aws_amplify_cognito
+   git:
+     url: https://github.com/orestesgaolin/flutter_amplify.git
+     path: flutter_aws_amplify_cognito
+     ref: 9e835abe5a8602b16a7b8ea6d8f3ed3a1f21f5b6
+
 flutter:
   uses-material-design: true
 
@@ -78,6 +88,10 @@ flutter:
       fonts:
         - asset: assets/fonts/j_home_two.ttf
 
+    - family: j_home_three
+      fonts:
+        - asset: assets/fonts/j_home_three.ttf
+
     - family: MyFlutterApp
       fonts:
         - asset: assets/fonts/MyFlutterApp.ttf
@@ -87,11 +101,19 @@ flutter:
     - assets/images/junto-mobile__themes--rainbow.png
     - assets/images/junto-mobile__themes--aqueous.png
     - assets/images/junto-mobile__themes--royal.png
-    - assets/images/junto-mobile__themes--night.png
+    - assets/images/junto-mobile__themes--fire.png
+    - assets/images/junto-mobile__themes--forest.png
+    - assets/images/junto-mobile__themes--dark.png
+    - assets/images/junto-mobile__themes--sand.png
     - assets/images/junto-mobile__logo.png
+    - assets/images/junto-mobile__logo--white.png
     - assets/images/junto-mobile__logo--rainbow.png
     - assets/images/junto-mobile__logo--aqueous.png
     - assets/images/junto-mobile__logo--purpgold.png
+    - assets/images/junto-mobile__logo--sand.png
+    - assets/images/junto-mobile__logo--dark.png
+    - assets/images/junto-mobile__logo--fire.png
+    - assets/images/junto-mobile__logo--forest.png
     - assets/images/junto-mobile__outlinelogo--gradient.png
     - assets/images/junto-mobile__infinity.png
     - assets/images/junto-mobile__location.png
@@ -100,10 +122,22 @@ flutter:
     - assets/images/junto-mobile__double-up-arrow.png
     - assets/images/junto-mobile__double-down-arrow.png
     - assets/images/junto-mobile__menu.png
+    - assets/images/junto-mobile__line.png
     - assets/images/junto-mobile__filter.png
     - assets/images/junto-mobile__groups--placeholder.png
     - assets/images/junto-mobile__placeholder--notifications.png
+    - assets/images/junto-mobile__placeholder--feed.png
     - assets/images/junto-mobile__waveform.png
+    - assets/images/junto-mobile__perspective--white.png
+    - assets/images/junto-mobile__perspective--rainbow.png
+    - assets/images/junto-mobile__perspective--aqueous.png
+    - assets/images/junto-mobile__perspective--purpgold.png
+    - assets/images/junto-mobile__perspective--sand.png
+    - assets/images/junto-mobile__perspective--fire.png
+    - assets/images/junto-mobile__perspective--forest.png
+    - assets/images/junto-mobile__perspective--dark.png
+    - assets/images/junto-mobile__sprout.png
+    - assets/images/junto-mobile__background.png
 
 flutter_intl:
   enabled: true

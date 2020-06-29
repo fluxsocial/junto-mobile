@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
+import 'create_perspective_button.dart';
 
 class CreatePerspectivePage extends StatefulWidget {
   const CreatePerspectivePage();
@@ -198,7 +199,7 @@ class _PerspectivesPageViewState extends State<PerspectivesPageView> {
                     child: ListView(
                       children: <Widget>[
                         PerspectiveTextField(
-                          name: 'Perspective Name',
+                          name: 'New Perspective',
                           validator: _nameValidator,
                           controller: widget.nameController,
                           textInputActionType: TextInputAction.next,
@@ -293,52 +294,24 @@ class PerspectivesAppBar extends StatelessWidget {
               onTap: onBackTap,
               child: Container(
                 height: 45,
-                width: 80,
+                width: 50,
                 color: Colors.transparent,
                 alignment: Alignment.centerLeft,
-                child: Icon(CustomIcons.back, size: 20),
+                child: Icon(
+                  CustomIcons.back,
+                  size: 20,
+                ),
               ),
             ),
-            if (currentIndex == 0)
-              Flexible(
-                child: Text('New Perspective',
-                    style: Theme.of(context).textTheme.subtitle1),
-              ),
             if (currentIndex == 1)
-              GestureDetector(
-                onTap: onCreateTap,
-                child: Container(
-                  height: 45,
-                  width: 80,
-                  color: Colors.transparent,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'create',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
+              CreatePerspectiveButton(
+                cta: onCreateTap,
+                title: 'Create',
               ),
             if (currentIndex != 1)
-              GestureDetector(
-                onTap: onNextTap,
-                child: Container(
-                  height: 45,
-                  width: 80,
-                  color: Colors.transparent,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'next',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
+              CreatePerspectiveButton(
+                cta: onNextTap,
+                title: 'Next',
               ),
           ],
         ),
@@ -363,15 +336,22 @@ class _Header extends StatelessWidget {
           labelPadding: const EdgeInsets.all(0),
           isScrollable: true,
           labelColor: Theme.of(context).primaryColorDark,
+          unselectedLabelColor: Theme.of(context).primaryColorLight,
           labelStyle: Theme.of(context).textTheme.subtitle1,
           indicatorWeight: 0.0001,
           tabs: <Widget>[
             for (String name in tabs)
               Container(
-                margin: const EdgeInsets.only(right: 24),
+                margin: const EdgeInsets.only(right: 20),
                 color: Theme.of(context).colorScheme.background,
                 child: Tab(
-                  text: name,
+                  child: Text(
+                    name.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
           ],

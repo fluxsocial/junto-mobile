@@ -6,15 +6,18 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_members.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 
 class PackTabs extends StatelessWidget {
   PackTabs({
     Key key,
     @required this.group,
+    @required this.user,
   }) : super(key: key);
 
   final Group group;
   final Completer<void> refreshCompleter = Completer<void>();
+  final UserDataProvider user;
 
   Future<void> _fetchMore(BuildContext context) async {
     await context.bloc<PackBloc>().add(RefreshPacks());
@@ -45,15 +48,16 @@ class PackTabs extends StatelessWidget {
             privacy: 'Private',
           ),
         ),
-        CustomRefresh(
-          refresh: () {
-            _fetchMore(context);
-          },
-          child: PackOpenMembers(
-            key: UniqueKey(),
-            packAddress: group.address,
-          ),
-        )
+        if (group.address == user.userProfile.pack.address)
+          CustomRefresh(
+            refresh: () {
+              _fetchMore(context);
+            },
+            child: PackOpenMembers(
+              key: UniqueKey(),
+              packAddress: group.address,
+            ),
+          )
       ],
     );
   }

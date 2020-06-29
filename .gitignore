@@ -87,5 +87,10 @@ ios/Flutter/Flutter.podspec
 .flutter-plugins-dependencies
 *.http
 ios/Runner.xcodeproj/project.pbxproj
-fvm
 macos/Flutter/GeneratedPluginRegistrant.swift
+ios/Runner/awsconfiguration.json
+android/app/src/main/res/raw/awsconfiguration.json
+android/app/src/tst/res/raw/awsconfiguration.json
+android/app/src/debug/res/raw/awsconfiguration.json
+awsconfiguration.json
+.fvm/

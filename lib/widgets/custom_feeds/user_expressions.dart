@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
@@ -8,6 +9,7 @@ import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/feed_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
@@ -33,11 +35,6 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  Future<void> _switchColumnView(ExpressionFeedLayout columnType) async {
-    await Provider.of<UserDataProvider>(context, listen: false)
-        .switchColumnLayout(columnType);
-  }
-
   void deleteDenExpression(ExpressionResponse expression) {
     context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
   }
@@ -53,7 +50,6 @@ class _UserExpressionsState extends State<UserExpressions> {
           final results = state.expressions;
           return CustomRefresh(
             refresh: () async {
-              await Future.delayed(Duration(milliseconds: 500));
               await context.bloc<DenBloc>().add(RefreshDen());
             },
             child: Container(
@@ -64,14 +60,15 @@ class _UserExpressionsState extends State<UserExpressions> {
                       (BuildContext context, UserDataProvider data, _) {
                     return SliverToBoxAdapter(
                       child: FilterColumnRow(
-                        twoColumnView: data.twoColumnView,
-                        switchColumnView: _switchColumnView,
-                      ),
+                          twoColumnView:
+                              Provider.of<AppRepo>(context, listen: false)
+                                  .twoColumnLayout),
                     );
                   }),
                   Consumer<UserDataProvider>(
                     builder: (BuildContext context, UserDataProvider data, _) {
-                      if (data.twoColumnView) {
+                      if (Provider.of<AppRepo>(context, listen: false)
+                          .twoColumnLayout) {
                         return TwoColumnList(
                           data: results,
                           useSliver: true,
@@ -101,8 +98,9 @@ class _UserExpressionsState extends State<UserExpressions> {
           );
         }
         if (state is DenEmptyState) {
-          // TODO(Eric): Update with empty state graphic
-          return const SizedBox();
+          return FeedPlaceholder(
+            placeholderText: 'No expressions yet. Feel free to start creating!',
+          );
         }
         if (state is DenErrorState) {
           return JuntoErrorWidget(

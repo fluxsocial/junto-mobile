@@ -1,21 +1,25 @@
 import 'dart:async';
-import 'dart:convert' show jsonDecode;
 
 import 'package:bloc/bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
-import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 import 'bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
+  final UserRepo userRepo;
   final UserDataProvider userDataProvider;
+  final OnBoardingRepo onBoardingRepo;
 
-  AuthBloc(this.authRepo, this.userDataProvider) {
+  AuthBloc(
+    this.authRepo,
+    this.userDataProvider,
+    this.userRepo,
+    this.onBoardingRepo,
+  ) {
     _getLoggedIn();
   }
 
@@ -53,15 +57,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
     yield AuthState.unauthenticated(loading: true);
     try {
-      logger.logInfo('User signed up');
-      final user =
-          await authRepo.registerUser(event.details, event.profilePicture);
+      logger.logInfo('User signed up, now logging in');
+      // final login = await authRepo.loginUser(details);
+      await authRepo.loginUser(event.username, event.password);
+      var userData = await userRepo.sendMetadataPostRegistration(event.details);
 
+      if (event.profilePicture != null) {
+        final profile = await userRepo.updateProfilePicture(
+            userData.user.address, event.profilePicture);
+        logger.logDebug(
+            'User profile picture updated, updating the user profile');
+        userData = userData.copyWith(user: profile);
+      }
+      await userDataProvider.updateUser(userData);
       await userDataProvider.initialize();
-
-      yield AuthState.agreementsRequired(user);
+      await onBoardingRepo.loadTutorialState();
+      yield AuthState.agreementsRequired(userData);
     } on JuntoException catch (e) {
       logger.logError('Error during sign up: ${e.message}');
+      await authRepo.logoutUser();
 
       yield AuthState.unauthenticated();
       yield AuthState.unauthenticated(error: true, errorMessage: e.message);
@@ -74,7 +88,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapAcceptAgreementsToState(
       AcceptAgreements event, AuthAgreementsRequired state) async* {
     try {
-      yield AuthState.authenticated(state.user);
+      yield AuthState.authenticated();
     } catch (error) {
       logger.logException(error);
       yield AuthState.unauthenticated();
@@ -84,14 +98,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoginEventState(LoginEvent event) async* {
     yield AuthState.unauthenticated(loading: true);
     try {
-      final user = await authRepo.loginUser(event.details);
-      await userDataProvider.initialize();
+      final address = await authRepo.loginUser(event.username, event.password);
+      if (address != null) {
+        final user = await userRepo.getUser(address);
+        await userDataProvider.updateUser(user);
+        await userDataProvider.initialize();
 
-      yield AuthState.authenticated(user);
+        yield AuthState.authenticated();
+      } else {
+        yield AuthState.unauthenticated(
+            error: true,
+            errorMessage: 'Please check if username and password are correct');
+      }
     } on JuntoException catch (error) {
       logger.logError('Error during login: ${error.message}');
       yield AuthState.unauthenticated();
-      yield AuthState.unauthenticated(error: true, errorMessage: error.message);
+      yield AuthState.unauthenticated(
+          error: true,
+          errorMessage: 'Sorry, we have some problems signing you in');
     } catch (error) {
       logger.logException(error);
       yield AuthState.unauthenticated();
@@ -115,11 +139,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLoggedIn(LoggedInEvent event) async* {
     yield AuthState.loading();
     try {
-      final box = await Hive.box(HiveBoxes.kAppBox);
-      final data = await box.get(HiveKeys.kUserData);
-      logger.logDebug(data);
-      final user = UserData.fromMap(jsonDecode(data));
-      yield AuthState.authenticated(user);
+      yield AuthState.authenticated();
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
       await _clearUserInformation();

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeMain extends StatelessWidget {
   const WelcomeMain({
@@ -15,59 +18,51 @@ class WelcomeMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(top: 120, bottom: 30),
-              child: Image.asset(
-                'assets/images/junto-mobile__logo.png',
-                height: 69,
-                color: Colors.white,
-              ),
-            ),
-            Container(
-              child: const Text(
-                'JUNTO',
-                style: TextStyle(
-                  letterSpacing: 3.6,
-                  color: Colors.white,
-                  fontSize: 45,
-                  fontWeight: FontWeight.w400,
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return Container(
+        color: Colors.transparent,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(top: 120, bottom: 30),
+                child: Image.asset(
+                  'assets/images/junto-mobile__logo.png',
+                  height: 69,
+                  color: JuntoPalette().juntoWhite(theme: theme),
                 ),
               ),
-            ),
-          ]),
-          Column(
-            children: <Widget>[
-              CallToActionButton(
-                callToAction: _onSignUp,
-                title: 'WELCOME TO THE PACK',
-              ),
-              const SizedBox(height: 30),
               Container(
-                margin: const EdgeInsets.only(bottom: 120),
-                child: GestureDetector(
-                  onTap: _onSignIn,
-                  child: const Text(
-                    'SIGN IN',
-                    style: TextStyle(
-                      letterSpacing: 1.7,
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
+                child: Text(
+                  'JUNTO',
+                  style: TextStyle(
+                    color: JuntoPalette().juntoWhite(theme: theme),
+                    fontSize: 45,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
-            ],
-          )
-        ],
-      ),
-    );
+            ]),
+            Column(
+              children: <Widget>[
+                CallToActionButton(
+                  callToAction: _onSignUp,
+                  title: 'WELCOME TO THE PACK',
+                ),
+                const SizedBox(height: 15),
+                CallToActionButton(
+                  callToAction: _onSignIn,
+                  title: 'SIGN IN',
+                  transparent: true,
+                ),
+                SizedBox(height: 120),
+              ],
+            )
+          ],
+        ),
+      );
+    });
   }
 }

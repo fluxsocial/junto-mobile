@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class JuntoDescribedFeatureOverlay extends StatefulWidget {
   const JuntoDescribedFeatureOverlay({
@@ -46,7 +49,8 @@ class JuntoDescribedFeatureOverlayState
   bool designInspirationVisible = false;
   bool comingSoonVisible = false;
 
-  _actionItemButton(BuildContext context, String name, Function onPressed) {
+  _actionItemButton(BuildContext context, JuntoThemesProvider theme,
+      String name, Function onPressed) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -59,13 +63,13 @@ class JuntoDescribedFeatureOverlayState
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
-                color: Colors.white,
+                color: JuntoPalette().juntoWhite(theme: theme),
               ),
             ),
             const SizedBox(width: 10),
             Icon(
               Icons.arrow_forward,
-              color: Colors.white,
+              color: JuntoPalette().juntoWhite(theme: theme),
               size: 20,
             ),
           ],
@@ -76,35 +80,39 @@ class JuntoDescribedFeatureOverlayState
 
   @override
   Widget build(BuildContext context) {
-    return DescribedFeatureOverlay(
-      tapTarget: widget.icon,
-      featureId: widget.featureId,
-      backgroundColor: Theme.of(context).colorScheme.primaryVariant,
-      contentLocation: widget.contentLocation,
-      overflowMode: OverflowMode.extendBackground,
-      targetColor: Theme.of(context).backgroundColor,
-      title: null,
-      enablePulsingAnimation: false,
-      description: Stack(
-        children: <Widget>[
-          _tutorialDescription(),
-          _learnMore(
-            context: context,
-            learnMoreText: widget.learnMoreText,
-            hasUpNext: widget.hasUpNext,
-            upNextText: widget.upNextText,
-          ),
-          if (widget.hasUpNext)
-            _comingSoon(
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return DescribedFeatureOverlay(
+        tapTarget: widget.icon,
+        featureId: widget.featureId,
+        backgroundColor: Theme.of(context).colorScheme.primaryVariant,
+        contentLocation: widget.contentLocation,
+        overflowMode: OverflowMode.extendBackground,
+        targetColor: Theme.of(context).backgroundColor,
+        title: null,
+        enablePulsingAnimation: false,
+        description: Stack(
+          children: <Widget>[
+            _tutorialDescription(theme: theme),
+            _learnMore(
               context: context,
+              theme: theme,
+              learnMoreText: widget.learnMoreText,
+              hasUpNext: widget.hasUpNext,
+              upNextText: widget.upNextText,
             ),
-        ],
-      ),
-      child: widget.child,
-    );
+            if (widget.hasUpNext)
+              _comingSoon(
+                context: context,
+                theme: theme,
+              ),
+          ],
+        ),
+        child: widget.child,
+      );
+    });
   }
 
-  Widget _tutorialDescription() {
+  Widget _tutorialDescription({theme}) {
     return AnimatedOpacity(
       opacity: baseTutorialVisible ? 1 : 0,
       duration: Duration(milliseconds: 300),
@@ -119,7 +127,7 @@ class JuntoDescribedFeatureOverlayState
                 widget.title,
                 style: TextStyle(
                   fontSize: 22,
-                  color: Colors.white,
+                  color: JuntoPalette().juntoWhite(theme: theme),
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -127,7 +135,8 @@ class JuntoDescribedFeatureOverlayState
             if (widget.learnMore)
               _actionItemButton(
                 context,
-                'Learn Why',
+                theme,
+                'Learn More',
                 () {
                   setState(() {
                     baseTutorialVisible = false;
@@ -138,7 +147,8 @@ class JuntoDescribedFeatureOverlayState
             if (!widget.isLastFeature && !widget.oneFeature)
               _actionItemButton(
                 context,
-                'Next Feature',
+                theme,
+                'Next',
                 () async => FeatureDiscovery.completeCurrentStep(context),
               ),
           ],
@@ -149,6 +159,7 @@ class JuntoDescribedFeatureOverlayState
 
   Widget _learnMore({
     BuildContext context,
+    JuntoThemesProvider theme,
     List<String> learnMoreText,
     bool hasUpNext,
     List<String> upNextText,
@@ -172,7 +183,7 @@ class JuntoDescribedFeatureOverlayState
                     'DESIGN INSPIRATION',
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: JuntoPalette().juntoWhite(theme: theme),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -185,7 +196,7 @@ class JuntoDescribedFeatureOverlayState
                           text,
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.white,
+                            color: JuntoPalette().juntoWhite(theme: theme),
                             fontWeight: FontWeight.w500,
                             height: 1.7,
                           ),
@@ -216,7 +227,7 @@ class JuntoDescribedFeatureOverlayState
                         children: <Widget>[
                           Icon(
                             Icons.arrow_back,
-                            color: Colors.white,
+                            color: JuntoPalette().juntoWhite(theme: theme),
                             size: 20,
                           ),
                           const SizedBox(width: 10),
@@ -225,7 +236,7 @@ class JuntoDescribedFeatureOverlayState
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
-                              color: Colors.white,
+                              color: JuntoPalette().juntoWhite(theme: theme),
                             ),
                           ),
                         ],
@@ -249,13 +260,13 @@ class JuntoDescribedFeatureOverlayState
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                                color: JuntoPalette().juntoWhite(theme: theme),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Icon(
                               Icons.arrow_forward,
-                              color: Colors.white,
+                              color: JuntoPalette().juntoWhite(theme: theme),
                               size: 20,
                             ),
                           ],
@@ -271,7 +282,10 @@ class JuntoDescribedFeatureOverlayState
     );
   }
 
-  _comingSoon({BuildContext context}) {
+  _comingSoon({
+    BuildContext context,
+    JuntoThemesProvider theme,
+  }) {
     return AnimatedOpacity(
       opacity: comingSoonVisible ? 1 : 0,
       duration: Duration(milliseconds: 300),
@@ -291,7 +305,7 @@ class JuntoDescribedFeatureOverlayState
                     'COMING SOON',
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: JuntoPalette().juntoWhite(theme: theme),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -304,7 +318,7 @@ class JuntoDescribedFeatureOverlayState
                           Icon(
                             Icons.label_important,
                             size: 20,
-                            color: Colors.white,
+                            color: JuntoPalette().juntoWhite(theme: theme),
                           ),
                           const SizedBox(width: 10),
                           Flexible(
@@ -312,7 +326,7 @@ class JuntoDescribedFeatureOverlayState
                               text,
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white,
+                                color: JuntoPalette().juntoWhite(theme: theme),
                                 fontWeight: FontWeight.w500,
                                 height: 1.7,
                               ),
@@ -341,7 +355,7 @@ class JuntoDescribedFeatureOverlayState
                   children: <Widget>[
                     Icon(
                       Icons.arrow_back,
-                      color: Colors.white,
+                      color: JuntoPalette().juntoWhite(theme: theme),
                       size: 20,
                     ),
                     const SizedBox(width: 10),
@@ -350,7 +364,7 @@ class JuntoDescribedFeatureOverlayState
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                        color: JuntoPalette().juntoWhite(theme: theme),
                       ),
                     ),
                   ],

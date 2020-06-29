@@ -6,8 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_state.dart';
@@ -19,19 +18,29 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_arrows.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_wrapper.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/welcome_main.dart';
 import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
-import 'widgets/sign_up_arrows.dart';
-import 'widgets/sign_up_text_field_wrapper.dart';
-import 'widgets/welcome_main.dart';
-
 class Welcome extends StatefulWidget {
+  static Route<dynamic> route() {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: "welcome"),
+      builder: (context) => Welcome(),
+    );
+  }
+
   const Welcome({Key key}) : super(key: key);
 
   @override
@@ -54,9 +63,10 @@ class WelcomeState extends State<Welcome> {
   int _currentIndex;
 
   AuthRepo authRepo;
+  UserRepo userRepo;
 
   TextEditingController nameController;
-  TextEditingController userNameController;
+  TextEditingController usernameController;
   TextEditingController locationController;
   TextEditingController pronounController;
   TextEditingController websiteController;
@@ -69,7 +79,7 @@ class WelcomeState extends State<Welcome> {
   void initState() {
     super.initState();
     nameController = TextEditingController();
-    userNameController = TextEditingController();
+    usernameController = TextEditingController();
     locationController = TextEditingController();
     pronounController = TextEditingController();
     websiteController = TextEditingController();
@@ -91,7 +101,7 @@ class WelcomeState extends State<Welcome> {
     _welcomeController.dispose();
     _signInController.dispose();
     nameController?.dispose();
-    userNameController?.dispose();
+    usernameController?.dispose();
     locationController?.dispose();
     pronounController?.dispose();
     websiteController?.dispose();
@@ -102,31 +112,40 @@ class WelcomeState extends State<Welcome> {
     super.dispose();
   }
 
-  Future<void> _handleSignUp() async {
-    final verificationCode = int.parse(verificationCodeController.text);
+  Future<void> _finishSignUp() async {
+    final verificationCode = verificationCodeController.text.trim();
+    final username = usernameController.text..toLowerCase().trim();
+    final password = passwordController.text;
+    final email = emailController.text.trim();
+    final name = nameController.text.trim();
+    final location = locationController.text.trim();
+    final website = websiteController.text.trim();
+    final gender = pronounController.text.trim();
 
-    final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
-      email: emailController.text.trim(),
-      name: nameController.text.trim(),
-      username: userNameController.text.trim(),
-      password: passwordController.text,
-      confirmPassword: confirmPasswordController.text,
-      location: <String>[locationController.text.trim()],
-      profileImage: <String>[],
-      backgroundPhoto: '',
-      website: <String>[websiteController.text.trim()],
-      gender: <String>[pronounController.text.trim()],
-      verificationCode: verificationCode,
-      bio: '',
-    );
+    final canContinue = await authRepo.verifySignUp(username, verificationCode);
 
-    context.bloc<AuthBloc>().add(
-          SignUpEvent(details, profilePicture.file.value),
-        );
+    if (canContinue) {
+      final UserRegistrationDetails details = UserRegistrationDetails.initial(
+          email, username, name, location, website, gender);
+
+      context.bloc<AuthBloc>().add(
+          SignUpEvent(details, profilePicture.file.value, username, password));
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => ConfirmDialog(
+          buildContext: context,
+          confirm: () => authRepo.resendVerificationCode(username),
+          errorMessage: '',
+          confirmationText:
+              'Wrong verification code. Do you want us to send verification code again?',
+        ),
+      );
+    }
   }
 
-  void _userNameSubmission() async {
-    final username = userNameController.text.trim();
+  void _onUsernameSubmitted() async {
+    final username = usernameController.text.toLowerCase().trim();
     bool _correctLength = username.length >= 1 && username.length <= 22;
     final exp = RegExp("^[a-z0-9_]+\$");
     if (username != null && exp.hasMatch(username) && _correctLength) {
@@ -171,134 +190,173 @@ class WelcomeState extends State<Welcome> {
     }
   }
 
+  Future<void> _resendVerificationCode() async {
+    assert(usernameController.text != null);
+    final username = usernameController.text;
+    try {
+      final result = await Provider.of<AuthRepo>(context, listen: false)
+          .resendVerificationCode(username);
+      if (result.wasSuccessful) {
+        await showFeedback(context, message: "Confirmation code sent again!");
+      } else {
+        _handleResendCodeError(result);
+      }
+    } catch (error) {
+      logger.logDebug("Unable to send confirmation code $error");
+      await showFeedback(context, message: "Confirmation code not sent!");
+    }
+  }
+
+  void _handleResendCodeError(ResetPasswordResult result) {
+    var message = '';
+    switch (result.error) {
+      case ResetPasswordError.InvalidCode:
+        message = 'Invalid verification code';
+        break;
+      case ResetPasswordError.TooManyAttempts:
+        message = 'Attempt limit exceeded, please try again later.';
+        break;
+      case ResetPasswordError.Unknown:
+        message = 'We cannot reset your password now, please try again later';
+        break;
+    }
+    showFeedback(context, message: message);
+  }
+
   @override
   Widget build(BuildContext context) {
     authRepo = Provider.of<AuthRepo>(context, listen: false);
-    return WillPopScope(
-      onWillPop: _animateOnBackPress,
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: _onBlocStateChange,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            if (FocusScope.of(context).hasFocus) {
-              FocusScope.of(context).unfocus();
-            }
-          },
-          child: Scaffold(
-            // setting this to true causes white background to be shown during keyboard opening
-            resizeToAvoidBottomInset: false,
-            body: Stack(
-              children: <Widget>[
-                BackgroundTheme(),
-                PageView(
-                  onPageChanged: onPageChanged,
-                  controller: _welcomeController,
-                  scrollDirection: Axis.vertical,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    PageView(
-                      controller: _signInController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        WelcomeMain(
-                          onSignIn: _onSignIn,
-                          onSignUp: _onSignUp,
-                        ),
-                        SignIn(
-                          _signInController,
-                          emailController,
-                        ),
-                        ResetPasswordRequest(
-                          signInController: _signInController,
-                          emailController: emailController,
-                        ),
-                        ResetPasswordConfirm(
-                          signInController: _signInController,
-                          email: emailController.text,
-                        ),
-                      ],
-                    ),
-                    SignUpTextFieldWrapper(
-                      controller: nameController,
-                      textInputActionType: TextInputAction.done,
-                      onSubmit: _nameCheck,
-                      maxLength: 50,
-                      hint: S.of(context).welcome_my_name_is,
-                      label: S.of(context).welcome_name_label,
-                      title: S.of(context).welcome_name_hint,
-                      textCapitalization: TextCapitalization.words,
-                    ),
-                    SignUpTextFieldWrapper(
-                      controller: userNameController,
-                      textInputActionType: TextInputAction.done,
-                      onSubmit: _userNameSubmission,
-                      maxLength: 22,
-                      hint: S.of(context).welcome_username_ill_go,
-                      label: S.of(context).welcome_username_label,
-                      title: S.of(context).welcome_username_hint,
-                      textCapitalization: TextCapitalization.none,
-                    ),
-                    SignUpThemes(),
-                    SignUpAbout(
-                      nextPage: _nextSignUpPage,
-                      pronounController: pronounController,
-                      locationController: locationController,
-                      websiteController: websiteController,
-                    ),
-                    SignUpPhotos(profilePicture),
-                    SignUpRegister(
-                      emailController: emailController,
-                      passwordController: passwordController,
-                      confirmPasswordController: confirmPasswordController,
-                    ),
-                    SignUpVerify(
-                      handleSignUp: _handleSignUp,
-                      verificationController: verificationCodeController,
-                    )
-                  ],
-                ),
-                if (_currentIndex != 0 &&
-                    MediaQuery.of(context).viewInsets.bottom == 0)
-                  SignUpArrows(
-                    welcomeController: _welcomeController,
-                    currentIndex: _currentIndex,
-                    onTap: _nextSignUpPage,
+    userRepo = Provider.of<UserRepo>(context, listen: false);
+    final canShowUp =
+        _currentIndex != 0 && context.media.viewInsets.bottom == 0;
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return WillPopScope(
+        onWillPop: _animateOnBackPress,
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: _onBlocStateChange,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              if (FocusScope.of(context).hasFocus) {
+                FocusScope.of(context).unfocus();
+              }
+            },
+            child: Scaffold(
+              // setting this to true causes white background to be shown during keyboard opening
+              resizeToAvoidBottomInset: false,
+              body: Stack(
+                children: <Widget>[
+                  BackgroundTheme(),
+                  PageView(
+                    onPageChanged: onPageChanged,
+                    controller: _welcomeController,
+                    scrollDirection: Axis.vertical,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      PageView(
+                        controller: _signInController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          WelcomeMain(
+                            onSignIn: _onSignInSelected,
+                            onSignUp: _onSignUpSelected,
+                          ),
+                          SignIn(
+                            _signInController,
+                            usernameController,
+                          ),
+                          ResetPasswordRequest(
+                            signInController: _signInController,
+                            usernameController: usernameController,
+                          ),
+                          ResetPasswordConfirm(
+                            signInController: _signInController,
+                            username: usernameController.value.text.trim(),
+                          ),
+                        ],
+                      ),
+                      SignUpTextFieldWrapper(
+                        controller: nameController,
+                        textInputActionType: TextInputAction.done,
+                        onSubmit: _nameCheck,
+                        maxLength: 50,
+                        hint: S.of(context).welcome_my_name_is,
+                        label: S.of(context).welcome_name_label,
+                        title: S.of(context).welcome_name_hint,
+                        textCapitalization: TextCapitalization.words,
+                      ),
+                      SignUpTextFieldWrapper(
+                        controller: usernameController,
+                        textInputActionType: TextInputAction.done,
+                        onSubmit: _onUsernameSubmitted,
+                        maxLength: 22,
+                        hint: S.of(context).welcome_username_ill_go,
+                        label: S.of(context).welcome_username_label,
+                        title: S.of(context).welcome_username_hint,
+                        textCapitalization: TextCapitalization.none,
+                      ),
+                      SignUpThemes(),
+                      SignUpAbout(
+                        nextPage: _nextSignUpPage,
+                        pronounController: pronounController,
+                        locationController: locationController,
+                        websiteController: websiteController,
+                      ),
+                      SignUpPhotos(profilePicture),
+                      SignUpRegister(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        confirmPasswordController: confirmPasswordController,
+                      ),
+                      SignUpVerify(
+                        handleSignUp: _finishSignUp,
+                        verificationController: verificationCodeController,
+                        handleVerificationCode: _resendVerificationCode,
+                      )
+                    ],
                   ),
-                if (_currentIndex != 0)
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * .08,
-                    left: 20,
-                    child: Image.asset(
-                      'assets/images/junto-mobile__logo.png',
-                      height: 38,
-                      color: Colors.white,
+                  if (canShowUp)
+                    SignUpArrows(
+                      welcomeController: _welcomeController,
+                      currentIndex: _currentIndex,
+                      onTap: _nextSignUpPage,
                     ),
+                  if (_currentIndex != 0)
+                    Positioned(
+                      top: MediaQuery.of(context).size.height * .08,
+                      left: 20,
+                      child: Image.asset(
+                        'assets/images/junto-mobile__logo.png',
+                        height: 38,
+                        color: JuntoPalette().juntoWhite(theme: theme),
+                      ),
+                    ),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      if (state is AuthUnauthenticated &&
+                          state.loading == true) {
+                        return Container(
+                          color:
+                              Theme.of(context).backgroundColor.withOpacity(.8),
+                          child: JuntoProgressIndicator(),
+                        );
+                      }
+                      return SizedBox();
+                    },
                   ),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    if (state is AuthUnauthenticated && state.loading == true) {
-                      return Container(
-                        color:
-                            Theme.of(context).backgroundColor.withOpacity(.8),
-                        child: JuntoProgressIndicator(),
-                      );
-                    }
-                    return SizedBox();
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Future<void> _nextSignUpPage() async {
     try {
       final name = nameController.text.trim();
-      final username = userNameController.text.trim();
+      final username = usernameController.text.toLowerCase().trim();
 
       if (_currentIndex == 1) {
         if (name == null || name.isEmpty || name.length > 50) {
@@ -324,12 +382,11 @@ class WelcomeState extends State<Welcome> {
         } else {
           JuntoLoader.showLoader(context, color: Colors.transparent);
           // ensure username is not taken or reserved
-          final Map<String, dynamic> validateUserResponse =
-              await authRepo.validateUser(username: username);
+
+          final usernameAvailable = await userRepo.usernameAvailable(username);
           JuntoLoader.hide();
-          final bool usernameIsAvailable =
-              validateUserResponse['valid_username'];
-          if (!usernameIsAvailable) {
+
+          if (!usernameAvailable) {
             showDialog(
               context: context,
               builder: (BuildContext context) => SingleActionDialog(
@@ -368,32 +425,44 @@ class WelcomeState extends State<Welcome> {
         }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
-        final result = await authRepo.verifyEmail(email);
-        logger.logDebug(result);
-        JuntoLoader.hide();
+        final emailAvailable = await userRepo.emailAvailable(email, username);
+        if (emailAvailable) {
+          final result = await authRepo.signUp(username, email, password);
+          JuntoLoader.hide();
+          if (!result.wasSuccessful) {
+            _showSignUpError(result);
+            return;
+          }
+        } else {
+          JuntoLoader.hide();
+          _showSignUpError(SignUpResult.emailTaken());
+          return;
+        }
       }
-      // transition to next page of sign up flow
       _welcomeController.nextPage(
         curve: Curves.decelerate,
         duration: const Duration(milliseconds: 600),
       );
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      if (error.message == 'follow the white rabbit') {
-        // transition to next page of sign up flow
-        _welcomeController.nextPage(
-          curve: Curves.decelerate,
-          duration: const Duration(milliseconds: 600),
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => SingleActionDialog(
-            dialogText: error.message,
-          ),
-        );
-      }
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
+      );
     }
+  }
+
+  void _showSignUpError(SignUpResult errorMessage) {
+    String message = _getErrorMessage(errorMessage);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => SingleActionDialog(
+        dialogText: message,
+      ),
+    );
   }
 
   // ensure passwords are same and meet our specifications
@@ -439,7 +508,6 @@ class WelcomeState extends State<Welcome> {
 
   Future<bool> _animateOnBackPress() async {
     if (_currentIndex >= 1) {
-      print(_currentIndex);
       _previousSignUpPage();
       return false;
     } else if (_signInController.page > 0) {
@@ -461,7 +529,7 @@ class WelcomeState extends State<Welcome> {
     );
   }
 
-  void _onSignUp() {
+  void _onSignUpSelected() {
     _welcomeController.nextPage(
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 400),
@@ -473,7 +541,7 @@ class WelcomeState extends State<Welcome> {
     });
   }
 
-  void _onSignIn() {
+  void _onSignInSelected() {
     _signInController.nextPage(
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 300),
@@ -502,4 +570,22 @@ class WelcomeState extends State<Welcome> {
       }
     }
   }
+
+  String _getErrorMessage(SignUpResult result) {
+    switch (result.error) {
+      case SignUpResultError.UserAlreadyExists:
+        return 'Account with this e-mail or username already exists';
+      case SignUpResultError.InvalidPassword:
+        return 'Seems like you entered incorrect password';
+      case SignUpResultError.TooManyRequests:
+        return 'You tried to register too many times. Try again later.';
+      case SignUpResultError.UnknownError:
+      default:
+        return 'We cannot register you right now, sorry';
+    }
+  }
+}
+
+extension on BuildContext {
+  get media => MediaQuery.of(this);
 }

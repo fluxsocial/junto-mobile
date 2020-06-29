@@ -65,7 +65,7 @@
   "welcome_sign_in": "",
   "welcome_theme": "",
   "welcome_unable_to_login": "",
-  "welcome_username_hint": "",
+  "welcome_username_hint": "Username",
   "welcome_username_ill_go": "",
   "welcome_username_label": "",
   "welcome_username_requirements": "",
@@ -82,5 +82,8 @@
   "menu_relations": "Relations",
   "menu_search": "Search",
   "menu_my_den": "My Den",
-  "welcome_invalid_email": "Make sure you entered a correct e-mail"
+  "welcome_invalid_email": "Make sure you entered a correct e-mail",
+  "welcome_invalid_username": "Make sure you entered a valid username",
+  "welcome_username_hint_sign_in": "Username",
+  "resend_verification_code": "Resend the code"
 }

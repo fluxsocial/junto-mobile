@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -23,7 +24,6 @@ class UserServiceCentralized implements UserService {
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
   Future<PerspectiveModel> createPerspective(Perspective perspective) async {
-    print(perspective.members);
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'name': perspective.name,
       'members': perspective.members,
@@ -36,8 +36,7 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
-
-    return PerspectiveModel.fromMap(_body);
+    return PerspectiveModel.fromJson(_body);
   }
 
   @override
@@ -57,7 +56,7 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _resultMap =
         JuntoHttp.handleResponse(_serverResponse);
-    final UserData _userData = UserData.fromMap(_resultMap);
+    final UserData _userData = UserData.fromJson(_resultMap);
     return _userData;
   }
 
@@ -82,7 +81,7 @@ class UserServiceCentralized implements UserService {
       final Iterable<dynamic> _listData = json.decode(_serverResponse.body);
 
       if (_listData.isNotEmpty) {
-        return UserProfile.fromMap(_listData.first);
+        return UserProfile.fromJson(_listData.first);
       }
       throw JuntoException(
           'Unable to retrive user profile', _serverResponse.statusCode);
@@ -97,7 +96,7 @@ class UserServiceCentralized implements UserService {
         await client.get('/users/$userAddress/perspectives');
     final List<dynamic> _listData = JuntoHttp.handleResponse(response);
     final List<PerspectiveModel> _results = _listData
-        .map((dynamic data) => PerspectiveModel.fromMap(data))
+        .map((dynamic data) => PerspectiveModel.fromJson(data))
         .toList(growable: false);
     return _results;
   }
@@ -110,7 +109,7 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    return UserGroupsResponse.fromMap(_responseMap);
+    return UserGroupsResponse.fromJson(_responseMap);
   }
 
   @override
@@ -150,7 +149,7 @@ class UserServiceCentralized implements UserService {
       lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
       results: <ExpressionResponse>[
         for (dynamic data in _responseMap['root_expressions']['results'])
-          ExpressionResponse.fromMap(data)
+          ExpressionResponse.fromJson(data)
       ],
     );
   }
@@ -162,7 +161,7 @@ class UserServiceCentralized implements UserService {
     final List<Map<String, dynamic>> items =
         JuntoHttp.handleResponse(_serverResponse);
     return items.map(
-      (Map<String, dynamic> data) => PerspectiveModel.fromMap(data),
+      (Map<String, dynamic> data) => PerspectiveModel.fromJson(data),
     );
   }
 
@@ -179,7 +178,7 @@ class UserServiceCentralized implements UserService {
         body: _postBody);
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
-    return UserProfile.fromMap(_decodedResponse);
+    return UserProfile.fromJson(_decodedResponse);
   }
 
   @override
@@ -214,7 +213,7 @@ class UserServiceCentralized implements UserService {
         await client.get('/perspectives/$perspectiveAddress/users');
     final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
     return <UserProfile>[
-      for (dynamic data in _results) UserProfile.fromMap(data)
+      for (dynamic data in _results) UserProfile.fromJson(data)
     ];
   }
 
@@ -231,7 +230,6 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.delete(
       '/users/$userAddress/connect',
     );
-    print(_serverResponse.statusCode);
     logger.logDebug(_serverResponse.statusCode.toString());
     JuntoHttp.handleResponse(_serverResponse);
   }
@@ -276,7 +274,7 @@ class UserServiceCentralized implements UserService {
     if (_connectionsResults.isNotEmpty) {
       for (final dynamic result in _connectionsResults) {
         _connectionsMembers.add(
-          UserProfile.fromMap(result),
+          UserProfile.fromJson(result),
         );
       }
     }
@@ -284,7 +282,7 @@ class UserServiceCentralized implements UserService {
     if (_followingResults.isNotEmpty) {
       for (final dynamic result in _followingResults) {
         _followingMembers.add(
-          UserProfile.fromMap(result['user']),
+          UserProfile.fromJson(result['user']),
         );
       }
     }
@@ -292,14 +290,14 @@ class UserServiceCentralized implements UserService {
     if (_followerResults.isNotEmpty) {
       for (final dynamic result in _followerResults) {
         _followerMembers.add(
-          UserProfile.fromMap(result['user']),
+          UserProfile.fromJson(result['user']),
         );
       }
     }
 
     for (final dynamic result in _pendingConnectionsResults) {
       _pendingConnectionsMembers.add(
-        UserProfile.fromMap(result),
+        UserProfile.fromJson(result),
       );
     }
 
@@ -307,7 +305,7 @@ class UserServiceCentralized implements UserService {
       for (final dynamic result in _pendingPackRequestsResults) {
         if (result['group_type'] == 'Pack') {
           _pendingPackRequestsMembers.add(
-            UserProfile.fromMap(result),
+            UserProfile.fromJson(result),
           );
         }
       }
@@ -369,8 +367,7 @@ class UserServiceCentralized implements UserService {
         'status': response,
       },
     );
-    print(_serverResponse.body);
-    print(_serverResponse.statusCode);
+
     JuntoHttp.handleResponse(_serverResponse);
   }
 
@@ -399,7 +396,7 @@ class UserServiceCentralized implements UserService {
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return <UserProfile>[
-      for (dynamic data in _data['results']) UserProfile.fromMap(data)
+      for (dynamic data in _data['results']) UserProfile.fromJson(data)
     ];
   }
 
@@ -412,7 +409,7 @@ class UserServiceCentralized implements UserService {
     );
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
-    return PerspectiveModel.fromMap(_data);
+    return PerspectiveModel.fromJson(_data);
   }
 
   @override
@@ -462,5 +459,72 @@ class UserServiceCentralized implements UserService {
         'username': param,
       };
     }
+  }
+
+  @override
+  Future<ValidUserModel> validateUser(String email, String username) async {
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      if (email != null) 'email': email,
+      if (username != null) 'username': username,
+    };
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/validate',
+      body: _postBody,
+      authenticated: false,
+    );
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_serverResponse);
+    return ValidUserModel.fromJson(_decodedResponse);
+  }
+
+  @override
+  Future<ValidUserModel> validateUsername(String username) async {
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      if (username != null) 'username': username,
+    };
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/validate/username',
+      body: _postBody,
+      authenticated: false,
+    );
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_serverResponse);
+    return ValidUserModel.fromJson(_decodedResponse);
+  }
+
+  @override
+  Future<UserData> sendMetadataPostRegistration(
+      UserRegistrationDetails details) async {
+    assert(details.name.isNotEmpty);
+    assert(details.username.isNotEmpty);
+    final Map<String, dynamic> _body = <String, dynamic>{
+      'email': details.email,
+      'name': details.name,
+      'bio': details.bio,
+      'username': details.username,
+      'website': details.website,
+      'gender': details.gender,
+      'location': details.location,
+      'profile_picture': details.profileImage,
+    };
+
+    final http.Response response = await client.postWithoutEncoding(
+      '/users',
+      body: _body,
+    );
+    logger.logDebug(response.body);
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    final UserData _userData = UserData.fromJson(_responseMap);
+    return _userData;
+  }
+
+  Future<void> deleteUser(String userAddress) async {
+    final http.Response response = await client.delete('/users/$userAddress');
+
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    logger.logDebug("Delete user response ${_responseMap}");
+    return;
   }
 }

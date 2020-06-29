@@ -25,6 +25,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   Map<String, String> _params;
   ExpressionQueryParams _previousParameters;
   int _currentPage = 0;
+  PerspectiveModel _currentPerspective;
 
   String _lastTimeStamp;
 
@@ -45,6 +46,12 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
 
   @override
   CollectiveState get initialState => CollectiveState.initial();
+
+  PerspectiveModel get currentPerspective => _currentPerspective;
+
+  setCurrentPerspective(PerspectiveModel perspective) {
+    _currentPerspective = perspective;
+  }
 
   @override
   Stream<CollectiveState> mapEventToState(CollectiveEvent event) async* {

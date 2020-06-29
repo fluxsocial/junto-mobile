@@ -34,13 +34,26 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Text(
-                  expressionType.appBarName().toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColor,
-                    letterSpacing: 1.7,
+                child: Container(
+                  color: Colors.transparent,
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        expressionType.appBarName().toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor,
+                          letterSpacing: 1.7,
+                        ),
+                      ),
+                      const SizedBox(width: 2.5),
+                      Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 15,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ],
                   ),
                 ),
               ),

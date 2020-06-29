@@ -1,9 +1,11 @@
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_data.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/valid_user_model.dart';
 
 class MockUserService implements UserService {
   @override
@@ -160,5 +162,27 @@ class MockUserService implements UserService {
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives.first;
+  }
+
+  @override
+  Future<ValidUserModel> validateUser(String email, String username) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserData> sendMetadataPostRegistration(
+      UserRegistrationDetails details) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ValidUserModel> validateUsername(String username) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteUser(String email) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return;
   }
 }

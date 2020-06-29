@@ -25,14 +25,14 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<ExpressionResponse> createExpression(
       ExpressionModel expression) async {
-    final Map<String, dynamic> _postBody = expression.toMap();
+    final Map<String, dynamic> _postBody = expression.toJson();
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
     logger.logDebug(_serverResponse.body);
     logger.logDebug(_serverResponse.statusCode.toString());
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
-    final ExpressionResponse response = ExpressionResponse.fromMap(parseData);
+    final ExpressionResponse response = ExpressionResponse.fromJson(parseData);
     return response;
   }
 
@@ -87,6 +87,7 @@ class ExpressionServiceCentralized implements ExpressionService {
       }
     } catch (e) {
       logger.logException(e);
+      return null;
     }
   }
 
@@ -161,7 +162,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     );
     final Map<String, dynamic> _parseResponse =
         JuntoHttp.handleResponse(_serverResponse);
-    return ExpressionResponse.fromMap(_parseResponse);
+    return ExpressionResponse.fromJson(_parseResponse);
   }
 
   @override
@@ -171,7 +172,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/resonations',
     );
-    return Resonation.fromMap(JuntoHttp.handleResponse(_serverResponse));
+    return Resonation.fromJson(JuntoHttp.handleResponse(_serverResponse));
   }
 
   @override
@@ -198,7 +199,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     return QueryResults<Comment>(
       lastTimestamp: _listData['last_timestamp'],
       results: <Comment>[
-        for (dynamic data in _listData['results']) Comment.fromMap(data)
+        for (dynamic data in _listData['results']) Comment.fromJson(data)
       ],
     );
   }
@@ -210,7 +211,7 @@ class ExpressionServiceCentralized implements ExpressionService {
         await client.get('/expressions/$expressionAddress/resonations');
     final List<dynamic> _listData = json.decode(response.body);
     final List<UserProfile> _results = _listData
-        .map((dynamic data) => UserProfile.fromMap(data))
+        .map((dynamic data) => UserProfile.fromJson(data))
         .toList(growable: false);
     return _results;
   }

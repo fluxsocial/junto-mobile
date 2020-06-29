@@ -1,31 +1,29 @@
 import 'dart:convert' as convert;
 
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
-import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 class JuntoHttp {
-  JuntoHttp({this.httpClient}) {
+  JuntoHttp({this.httpClient, this.tokenProvider}) {
     httpClient ??= IOClient();
   }
 
+  final IdTokenProvider tokenProvider;
   final String _endPoint = END_POINT;
   http.Client httpClient;
 
-  Future<String> _getAuthKey() async {
-    final box = await Hive.box(HiveBoxes.kAppBox);
-    return await box.get(HiveKeys.kAuth) as String;
-  }
+  Future<String> _getAuthKey() => tokenProvider.getIdToken();
 
-  Future<Map<String, String>> _getPersistentHeaders() async {
-    final String authKey = await _getAuthKey();
+  Future<Map<String, String>> _getPersistentHeaders(
+      {bool authenticated = true}) async {
     return <String, String>{
       'Content-Type': 'application/json',
-      'Authorization': authKey,
+      if (authenticated) 'Authorization': await _getAuthKey(),
     };
   }
 
@@ -36,9 +34,10 @@ class JuntoHttp {
   }
 
   Future<Map<String, String>> _withPersistentHeaders(
-      Map<String, String> headers) async {
+      Map<String, String> headers,
+      {bool authenticated = true}) async {
     return <String, String>{
-      ...await _getPersistentHeaders(),
+      ...await _getPersistentHeaders(authenticated: authenticated),
       ...headers ?? const <String, String>{}
     };
   }
@@ -99,11 +98,14 @@ class JuntoHttp {
     String resource, {
     Map<String, String> headers,
     dynamic body,
+    bool authenticated = true,
   }) async {
     final dynamic jsonBody = convert.json.encode(body);
+    final fullHeaders =
+        await _withPersistentHeaders(headers, authenticated: authenticated);
     return httpClient.post(
       _encodeUrl(resource),
-      headers: await _withPersistentHeaders(headers),
+      headers: fullHeaders,
       body: jsonBody,
     );
   }
@@ -115,6 +117,8 @@ class JuntoHttp {
   /// Status codes matching values other than `200` are decoded and examined for
   /// the `error` key.
   static dynamic handleResponse(http.Response response) {
+    logger.logDebug(
+        'Response status code: ${response.statusCode} (${response.reasonPhrase})\nRequest: ${response.request}');
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         final dynamic responseBody = convert.json.decode(response.body);

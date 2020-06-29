@@ -1,29 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
+import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
-class PerspectivesAppBar extends StatelessWidget {
+class PerspectivesAppBar extends StatefulWidget {
   PerspectivesAppBar({this.collectiveViewNav});
 
   final Function collectiveViewNav;
 
-  String logo(String theme) {
-    if (theme == 'rainbow' || theme == 'rainbow-night') {
-      return 'assets/images/junto-mobile__logo--rainbow.png';
-    } else if (theme == 'aqueous' || theme == 'aqueous-night') {
-      return 'assets/images/junto-mobile__logo--aqueous.png';
-    } else if (theme == 'royal' || theme == 'royal-night') {
-      return 'assets/images/junto-mobile__logo--purpgold.png';
-    } else {
-      return 'assets/images/junto-mobile__logo--rainbow.png';
+  @override
+  _PerspectivesAppBarState createState() => _PerspectivesAppBarState();
+}
+
+class _PerspectivesAppBarState extends State<PerspectivesAppBar> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final repo = Provider.of<OnBoardingRepo>(context);
+    if (repo.showPerspectiveTutorial) {
+      showCollectiveTutorial();
+      repo.setViewed(HiveKeys.kShowPerspectiveTutorial, false);
     }
+  }
+
+  void showCollectiveTutorial() {
+    FeatureDiscovery.clearPreferences(context, <String>{
+      'perspectives_info_id',
+      'create_perspective_id',
+    });
+    FeatureDiscovery.discoverFeatures(
+      context,
+      const <String>{
+        'perspectives_info_id',
+        'create_perspective_id',
+      },
+    );
   }
 
   @override
@@ -53,76 +73,17 @@ class PerspectivesAppBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(
-                    width: 42,
-                    height: 42,
-                    alignment: Alignment.bottomLeft,
-                    color: Colors.transparent,
-                    child: Image.asset(
-                      logo(theme.themeName),
-                      height: 24,
-                    ),
-                  ),
+                  AppbarLogo(theme: theme),
                   Container(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (ctx) => CreatePerspectivePage(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            alignment: Alignment.bottomCenter,
-                            child: Transform.translate(
-                              offset: Offset(0.0, 4),
-                              child: JuntoDescribedFeatureOverlay(
-                                icon: Icon(
-                                  Icons.add,
-                                  size: 25,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                featureId: 'create_perspective_id',
-                                title:
-                                    'Click this icon to create a new perspective.',
-                                learnMore: false,
-                                hasUpNext: false,
-                                isLastFeature: true,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 25,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                         Container(
                           padding: EdgeInsets.only(left: 10),
                           child: NotificationsLunarIcon(),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            FeatureDiscovery.clearPreferences(context, <String>{
-                              'perspectives_info_id',
-                              'create_perspective_id',
-                            });
-                            FeatureDiscovery.discoverFeatures(
-                              context,
-                              const <String>{
-                                'perspectives_info_id',
-                                'create_perspective_id',
-                              },
-                            );
-                          },
+                          onTap: showCollectiveTutorial,
                           child: JuntoDescribedFeatureOverlay(
                             icon: OverlayInfoIcon(),
                             featureId: 'perspectives_info_id',
@@ -160,9 +121,9 @@ class PerspectivesAppBar extends StatelessWidget {
                 ),
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.only(right: 20),
                     color: Theme.of(context).colorScheme.background,
                     child: Text(
                       'PERSPECTIVES',
@@ -170,6 +131,40 @@ class PerspectivesAppBar extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (ctx) => CreatePerspectivePage(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      alignment: Alignment.centerRight,
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
+                          Icons.add,
+                          size: 22,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        featureId: 'create_perspective_id',
+                        title: 'Click this icon to create a new perspective.',
+                        learnMore: false,
+                        hasUpNext: false,
+                        isLastFeature: true,
+                        child: Icon(
+                          Icons.add,
+                          size: 22,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ),

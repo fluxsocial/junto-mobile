@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
 part 'expression.g.dart';
@@ -17,7 +18,7 @@ class ExpressionModel {
     this.context,
   });
 
-  factory ExpressionModel.fromMap(Map<String, dynamic> map) {
+  factory ExpressionModel.fromJson(Map<String, dynamic> map) {
     return ExpressionModel(
       type: map['type'] as String,
       channels: List<String>.from(map['channels']),
@@ -48,7 +49,7 @@ class ExpressionModel {
   /// list of channel UUIDs the expression will be shared to.
   final List<String> channels;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'type': type,
       'expression_data': expressionData,
@@ -84,7 +85,7 @@ class AudioFormExpression {
     this.thumbnail600,
   });
 
-  factory AudioFormExpression.fromMap(Map<String, dynamic> json) {
+  factory AudioFormExpression.fromJson(Map<String, dynamic> json) {
     return AudioFormExpression(
       title: json['title'] ?? '',
       photo: json['photo'] ?? '',
@@ -111,7 +112,7 @@ class AudioFormExpression {
   @HiveField(6)
   String thumbnail600;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title ?? '',
         'photo': photo ?? '',
         'audio': audio ?? '',
@@ -129,7 +130,7 @@ class LongFormExpression {
     this.body,
   });
 
-  factory LongFormExpression.fromMap(Map<String, dynamic> json) {
+  factory LongFormExpression.fromJson(Map<String, dynamic> json) {
     return LongFormExpression(
       title: json['title'] ?? '',
       body: json['body'] ?? '',
@@ -141,7 +142,7 @@ class LongFormExpression {
   @HiveField(1)
   final String body;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'body': body,
       };
@@ -154,7 +155,7 @@ class ShortFormExpression {
     @required this.body,
   });
 
-  factory ShortFormExpression.fromMap(Map<String, dynamic> json) {
+  factory ShortFormExpression.fromJson(Map<String, dynamic> json) {
     return ShortFormExpression(
       background: json['background'],
       body: json['body'],
@@ -166,7 +167,7 @@ class ShortFormExpression {
   @HiveField(1)
   final String body;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'background': background,
         'body': body,
       };
@@ -181,7 +182,7 @@ class PhotoFormExpression {
     this.thumbnail600,
   });
 
-  factory PhotoFormExpression.fromMap(Map<String, dynamic> json) {
+  factory PhotoFormExpression.fromJson(Map<String, dynamic> json) {
     return PhotoFormExpression(
       image: json['image'],
       caption: json['caption'],
@@ -199,7 +200,7 @@ class PhotoFormExpression {
   @HiveField(3)
   String thumbnail600;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'image': image,
         'caption': caption,
         'thumbnail300': thumbnail300,
@@ -221,7 +222,7 @@ class EventFormExpression {
     this.thumbnail600,
   });
 
-  factory EventFormExpression.fromMap(Map<String, dynamic> json) {
+  factory EventFormExpression.fromJson(Map<String, dynamic> json) {
     return EventFormExpression(
       title: json['title'],
       description: json['description'],
@@ -247,7 +248,7 @@ class EventFormExpression {
   final String thumbnail300;
   final String thumbnail600;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'description': description,
         'photo': photo,
@@ -292,7 +293,7 @@ class ExpressionResponse extends HiveObject {
       ),
       resonations: json['resonations'],
       // numberResonations: json['resonations'],
-      creator: UserProfile.fromMap(
+      creator: UserProfile.fromJson(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
@@ -303,7 +304,7 @@ class ExpressionResponse extends HiveObject {
     );
   }
 
-  factory ExpressionResponse.fromMap(Map<String, dynamic> json) {
+  factory ExpressionResponse.fromJson(Map<String, dynamic> json) {
     return ExpressionResponse(
       address: json['address'],
       type: json['type'],
@@ -314,7 +315,7 @@ class ExpressionResponse extends HiveObject {
       createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
-      creator: UserProfile.fromMap(
+      creator: UserProfile.fromJson(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
@@ -328,14 +329,14 @@ class ExpressionResponse extends HiveObject {
     //     ? json['comments']
     //     : List<Comment>.from(
     //         json['comments']['results'].map(
-    //           (dynamic comment) => Comment.fromMap(comment),
+    //           (dynamic comment) => Comment.fromJson(comment),
     //         ),
     //       ),
     // resonations: json['resonations'].runtimeType == int
     //     ? json['resonations']
     //     : List<UserProfile>.from(
     //         json['resonations']['results'].map(
-    //           (dynamic res) => UserProfile.fromMap(res),
+    //           (dynamic res) => UserProfile.fromJson(res),
     //         ),
     //       ),
   }
@@ -365,14 +366,14 @@ class ExpressionResponse extends HiveObject {
   @HiveField(11)
   final DateTime createdAt;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'type': type,
       'expression_data': expressionData.toJson(),
       'created_at': createdAt.toIso8601String(),
       'resonations': numberResonations,
-      'creator': creator.toMap(),
+      'creator': creator.toJson(),
       'privacy': privacy ?? '',
       'channels': channels,
       'context': context ?? '',
@@ -387,19 +388,19 @@ class ExpressionResponse extends HiveObject {
   static dynamic generateExpressionData(
       String type, Map<String, dynamic> json) {
     if (type == 'LongForm') {
-      return LongFormExpression.fromMap(json);
+      return LongFormExpression.fromJson(json);
     }
     if (type == 'ShortForm') {
-      return ShortFormExpression.fromMap(json);
+      return ShortFormExpression.fromJson(json);
     }
     if (type == 'PhotoForm') {
-      return PhotoFormExpression.fromMap(json);
+      return PhotoFormExpression.fromJson(json);
     }
     if (type == 'EventForm') {
-      return EventFormExpression.fromMap(json);
+      return EventFormExpression.fromJson(json);
     }
     if (type == 'AudioForm') {
-      return AudioFormExpression.fromMap(json);
+      return AudioFormExpression.fromJson(json);
     }
   }
 }
@@ -436,6 +437,7 @@ extension ExpressionResponseExt on ExpressionResponse {
       }
       return data.photo;
     }
+    throw JuntoException("Image not found", 404);
   }
 
   String get thumbnailLarge {
@@ -462,6 +464,7 @@ extension ExpressionResponseExt on ExpressionResponse {
       }
       return data.photo;
     }
+    throw JuntoException("Image not found", 404);
   }
 }
 
@@ -478,7 +481,7 @@ class Comment {
     this.context,
   });
 
-  factory Comment.fromMap(Map<String, dynamic> json) {
+  factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
       address: json['address'],
       type: json['type'],
@@ -486,7 +489,7 @@ class Comment {
         json['type'],
         json['expression_data'],
       ),
-      creator: UserProfile.fromMap(json['creator']),
+      creator: UserProfile.fromJson(json['creator']),
       comments: json['comments'],
       resonations: json['resonations'],
       createdAt: RFC3339.parseRfc3339(json['created_at']),
@@ -505,11 +508,11 @@ class Comment {
   final String privacy;
   final String context;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address,
         'type': type,
         'expression_data': expressionData.toJson(),
-        'creator': creator.toMap(),
+        'creator': creator.toJson(),
         'comments': comments,
         'resonations': resonations,
         'created_at': createdAt.toIso8601String(),
@@ -555,7 +558,7 @@ class Channel with RFC3339 {
     this.createdAt,
   });
 
-  factory Channel.fromMap(Map<String, dynamic> map) {
+  factory Channel.fromJson(Map<String, dynamic> map) {
     return Channel(
       name: map['name'] as String,
       createdAt: RFC3339.parseRfc3339(map['created_at']),
@@ -565,7 +568,7 @@ class Channel with RFC3339 {
   final String name;
   final DateTime createdAt;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, String>{
       'name': name,
       'created_at': createdAt.toIso8601String(),

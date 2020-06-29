@@ -62,8 +62,8 @@ class JuntoStyles with ChangeNotifier {
   );
 
   // title style used in shortform expression preview
-  static const TextStyle shortformPreviewTitle = TextStyle(
-    color: JuntoPalette.juntoWhite,
+  static TextStyle shortformPreviewTitle = TextStyle(
+    color: JuntoPalette().juntoWhite(),
     fontSize: 17,
     fontWeight: FontWeight.w700,
   );
@@ -79,12 +79,12 @@ class JuntoStyles with ChangeNotifier {
     fontFamily: 'Avenir Heavy',
     color: JuntoPalette.juntoGrey,
   );
-  static const TextStyle lotusLongformBodyLight = TextStyle(
+  static TextStyle lotusLongformBodyLight = TextStyle(
     height: 1.25,
     fontSize: 17.0,
     fontWeight: FontWeight.w600,
     fontFamily: 'Avenir Heavy',
-    color: JuntoPalette.juntoWhite,
+    color: JuntoPalette().juntoWhite(),
   );
 
   static const TextStyle perspectiveTitle = TextStyle(

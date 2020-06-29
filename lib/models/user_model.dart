@@ -15,7 +15,7 @@ class SlimUserResponse {
     @required this.address,
   });
 
-  factory SlimUserResponse.fromMap(Map<String, dynamic> map) {
+  factory SlimUserResponse.fromJson(Map<String, dynamic> map) {
     return SlimUserResponse(
       name: map['name'] as String,
       username: map['username'] as String,
@@ -55,7 +55,7 @@ class SlimUserResponse {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, String>{
       'name': name,
       'username': username,
@@ -81,25 +81,29 @@ class UserProfile extends HiveObject {
     @required this.website,
     @required this.gender,
     this.email,
+    this.createdAt,
   });
 
-  factory UserProfile.fromMap(Map<String, dynamic> map) {
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
-      address: map['address'] as String,
-      name: map['name'] as String,
-      bio: map['bio'] as String,
+      address: json['address'] as String,
+      name: json['name'] as String,
+      bio: json['bio'] as String,
       location:
-          map['location'] != null ? List<String>.from(map['location']) : null,
-      profilePicture: map['profile_picture'] != null
-          ? List<String>.from(map['profile_picture'])
+          json['location'] != null ? List<String>.from(json['location']) : null,
+      profilePicture: json['profile_picture'] != null
+          ? List<String>.from(json['profile_picture'])
           : null,
-      backgroundPhoto: map['background_photo'],
-      verified: map['verified'] as bool,
-      username: map['username'] as String,
+      backgroundPhoto: json['background_photo'],
+      verified: json['verified'] as bool,
+      username: json['username'] as String,
       website:
-          map['website'] != null ? List<String>.from(map['website']) : null,
-      gender: map['gender'] != null ? List<String>.from(map['gender']) : null,
-      email: map['email'] as String,
+          json['website'] != null ? List<String>.from(json['website']) : null,
+      gender: json['gender'] != null ? List<String>.from(json['gender']) : null,
+      email: json['email'] as String,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null,
     );
   }
 
@@ -147,6 +151,10 @@ class UserProfile extends HiveObject {
   @HiveField(10)
   final String email;
 
+  // Sign up date
+  @HiveField(11)
+  final DateTime createdAt;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -162,7 +170,8 @@ class UserProfile extends HiveObject {
           username == other.username &&
           website == other.website &&
           gender == other.gender &&
-          email == other.email);
+          email == other.email &&
+          createdAt == other.createdAt);
 
   @override
   int get hashCode =>
@@ -176,7 +185,8 @@ class UserProfile extends HiveObject {
       username.hashCode ^
       website.hashCode ^
       gender.hashCode ^
-      email.hashCode;
+      email.hashCode ^
+      createdAt.hashCode;
 
   @override
   String toString() {
@@ -192,6 +202,7 @@ class UserProfile extends HiveObject {
         ' website: $website,'
         ' gender: $gender,'
         ' email: $email,'
+        ' createdAt: $createdAt'
         '}';
   }
 
@@ -221,10 +232,11 @@ class UserProfile extends HiveObject {
       website: website ?? this.website,
       gender: gender ?? this.gender,
       email: email ?? this.email,
+//      createdAt: createdAt ?? createdAt,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,
@@ -236,85 +248,8 @@ class UserProfile extends HiveObject {
       'username': username,
       'website': website,
       'gender': gender,
-      'email': email
-    };
-  }
-}
-
-/// Details used during user authentication.
-abstract class UserAuthDetails {
-  String get email;
-
-  String get password;
-
-  bool get isComplete;
-}
-
-/// User auth details used during login. Email and Password must
-/// not be null or empty.
-class UserAuthLoginDetails implements UserAuthDetails {
-  UserAuthLoginDetails({
-    @required this.email,
-    @required this.password,
-  });
-
-  @override
-  final String email;
-  @override
-  final String password;
-
-  @override
-  bool get isComplete => email != null && password != null;
-}
-
-/// Implementation of UserAuthDetails for registering a new user.
-/// All fields must not null or blank.
-class UserAuthRegistrationDetails implements UserAuthDetails {
-  UserAuthRegistrationDetails(
-      {@required this.email,
-      @required this.password,
-      @required this.confirmPassword,
-      @required this.name,
-      @required this.username,
-      @required this.bio,
-      @required this.location,
-      @required this.profileImage,
-      @required this.backgroundPhoto,
-      @required this.gender,
-      @required this.website,
-      @required this.verificationCode});
-
-  @override
-  final String email;
-  @override
-  final String password;
-  final String confirmPassword;
-  final String name;
-  final String username;
-  final String bio;
-  final List<String> location;
-  final List<String> profileImage;
-  final String backgroundPhoto;
-  final List<String> gender;
-  final List<String> website;
-  final int verificationCode;
-
-  @override
-  bool get isComplete => email != null && password != null && name != null;
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'username': username,
-      'name': name,
-      'password': password,
-      "confirm_password": confirmPassword,
-      'bio': bio,
-      'profile_image': profileImage,
-      'background_photo': backgroundPhoto,
-      'gender': gender,
-      'website': website,
-      'location': location,
-      'email': email
+      'email': email,
+      'created_at': createdAt.toIso8601String(),
     };
   }
 }
@@ -329,20 +264,26 @@ class UserData {
     @required this.connectionPerspective,
   });
 
-  factory UserData.fromMap(Map<String, dynamic> map) {
+  factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
-      privateDen:
-          map['private_den'] != null ? Den.fromMap(map['private_den']) : null,
+      privateDen: json['private_den'] != null
+          ? Den.fromJson(json['private_den'])
+          : null,
       publicDen:
-          map['public_den'] != null ? Den.fromMap(map['public_den']) : null,
-      pack: CentralizedPack.fromMap(map['pack']),
-      user: UserProfile.fromMap(map['user']),
-      userPerspective: PerspectiveModel.fromMap(
-        map['user_perspective'],
-      ),
-      connectionPerspective: PerspectiveModel.fromMap(
-        map['connection_perspective'],
-      ),
+          json['public_den'] != null ? Den.fromJson(json['public_den']) : null,
+      pack:
+          json['pack'] != null ? CentralizedPack.fromJson(json['pack']) : null,
+      user: UserProfile.fromJson(json['user']),
+      userPerspective: json['user_perspective'] != null
+          ? PerspectiveModel.fromJson(
+              json['user_perspective'],
+            )
+          : null,
+      connectionPerspective: json['connection_perspective'] != null
+          ? PerspectiveModel.fromJson(
+              json['connection_perspective'],
+            )
+          : null,
     );
   }
 
@@ -372,14 +313,14 @@ class UserData {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'private_den': privateDen.toJson(),
       'public_den': publicDen.toJson(),
-      'pack': pack.toMap(),
-      'user': user.toMap(),
-      'user_perspective': userPerspective.toMap(),
-      'connection_perspective': connectionPerspective.toMap(),
+      'pack': pack.toJson(),
+      'user': user.toJson(),
+      'user_perspective': userPerspective.toJson(),
+      'connection_perspective': connectionPerspective.toJson(),
     };
   }
 

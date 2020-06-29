@@ -54,7 +54,7 @@ class CollectiveFeedRefresh extends StatelessWidget {
             },
           );
         },
-        child: child,
+        child: child, 
       ),
     );
   }

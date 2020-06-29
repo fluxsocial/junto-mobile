@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 
 class JuntoPalette {
-  static const Color juntoWhite = Color(0xffffffff);
+  Color juntoWhite({JuntoThemesProvider theme}) {
+    if (theme.themeName.contains('sand')) {
+      return Color(0xff555555);
+    } else {
+      return Colors.white;
+    }
+  }
+
   static const Color juntoBlack = Color(0xff000000);
   static const Color juntoGrey = Color(0xff333333);
   static const Color juntoSleek = Color(0xff555555);

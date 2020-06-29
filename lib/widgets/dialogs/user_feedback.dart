@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 /// Shows Non intrusive feedback widget.
 /// The properties [context], [message] must be supplied and not null.
 /// The values [color] and [fontColor] both default to [Colors.white] and
-/// [Colors.black]. This widget has a default duration of `300` milliseconds for
+/// [Colors.black]. This widget has a default duration of `400` milliseconds for
 /// animating and an interval of `750` + [duration] until it is removed.
 Future<void> showFeedback(
   final BuildContext context, {
   Widget icon,
   @required final String message,
-  Duration duration = const Duration(milliseconds: 300),
+  Duration duration = const Duration(milliseconds: 400),
 }) async {
   showGeneralDialog(
     context: context,
-    barrierDismissible: true,
+    barrierDismissible: false,
     transitionDuration: duration,
     barrierLabel: 'User feedback: $message',
     pageBuilder: (
@@ -59,7 +59,19 @@ class _FeedbackBody extends StatelessWidget {
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget child) {
-        return Container(
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero)
+              .animate(CurvedAnimation(
+                  parent: _controller, curve: Curves.decelerate)),
+          child: FadeTransition(
+            opacity: Tween<double>(begin: 0.5, end: 1.00).animate(_controller),
+            child: child,
+          ),
+        );
+      },
+      child: Material(
+        type: MaterialType.transparency,
+        child: Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
             vertical: 15,
@@ -73,39 +85,32 @@ class _FeedbackBody extends StatelessWidget {
                   blurRadius: 6,
                 ),
               ]),
-          child: SizeTransition(
-            sizeFactor: _controller,
-            child: FadeTransition(
-              opacity:
-                  Tween<double>(begin: 0.5, end: 1.00).animate(_controller),
-              child: child,
-            ),
-          ),
-        );
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          if (icon != null)
-            Container(
-              margin: const EdgeInsets.only(
-                right: 20,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              if (icon != null)
+                Container(
+                  margin: const EdgeInsets.only(
+                    right: 20,
+                  ),
+                  child: icon,
+                ),
+              Flexible(
+                child: Text(
+                  message,
+                  overflow: TextOverflow.fade,
+                  style: TextStyle(
+                    fontSize: 17.0,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w600,
+                    decoration: TextDecoration.none,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              child: icon,
-            ),
-          Flexible(
-            child: Text(
-              message,
-              overflow: TextOverflow.fade,
-              style: TextStyle(
-                fontSize: 17.0,
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w600,
-                decoration: TextDecoration.none,
-              ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

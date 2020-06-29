@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/providers/bloc_providers.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
-import 'package:junto_beta_mobile/app/page_index_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -24,10 +23,11 @@ class JuntoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
+        ChangeNotifierProvider<UserDataProvider>.value(
+          value: backend.dataProvider,
+        ),
         ChangeNotifierProvider<JuntoThemesProvider>.value(
             value: backend.themesProvider),
-        ChangeNotifierProvider<PageIndexProvider>.value(
-            value: backend.pageIndexProvider),
         Provider<SearchService>.value(value: backend.searchRepo),
         Provider<AuthRepo>.value(value: backend.authRepo),
         Provider<UserRepo>.value(value: backend.userRepo),
@@ -36,14 +36,11 @@ class JuntoApp extends StatelessWidget {
         Provider<ExpressionRepo>.value(value: backend.expressionRepo),
         Provider<SearchRepo>.value(value: backend.searchRepo),
         Provider<NotificationRepo>.value(value: backend.notificationRepo),
-        Provider<AppRepo>.value(value: backend.appRepo),
         Provider<LocalCache>.value(value: backend.db),
+        Provider<OnBoardingRepo>.value(value: backend.onBoardingRepo),
+        ChangeNotifierProvider<AppRepo>.value(value: backend.appRepo),
         ChangeNotifierProvider(
           create: (_) => NotificationsHandler(backend.notificationRepo),
-          lazy: false,
-        ),
-        ChangeNotifierProvider<UserDataProvider>(
-          create: (ctx) => UserDataProvider(ctx.repository<AppRepo>()),
           lazy: false,
         ),
       ],

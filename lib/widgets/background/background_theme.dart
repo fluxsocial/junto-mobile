@@ -10,6 +10,14 @@ class BackgroundTheme extends StatelessWidget {
       return 'assets/images/junto-mobile__themes--aqueous.png';
     } else if (theme == 'royal' || theme == 'royal-night') {
       return 'assets/images/junto-mobile__themes--royal.png';
+    } else if (theme == 'dark' || theme == 'dark-night') {
+      return 'assets/images/junto-mobile__themes--dark.png';
+    } else if (theme == 'sand' || theme == 'sand-night') {
+      return 'assets/images/junto-mobile__themes--sand.png';
+    } else if (theme == 'fire' || theme == 'fire-night') {
+      return 'assets/images/junto-mobile__themes--fire.png';
+    } else if (theme == 'forest' || theme == 'forest-night') {
+      return 'assets/images/junto-mobile__themes--forest.png';
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     }

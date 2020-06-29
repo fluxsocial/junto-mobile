@@ -20,7 +20,7 @@ class CollectiveProviderCentralized implements CollectiveService {
       'parent': parent,
     });
     final Map<String, dynamic> _map = JuntoHttp.handleResponse(_response);
-    return Collective.fromMap(_map);
+    return Collective.fromJson(_map);
   }
 
   @override
@@ -28,7 +28,7 @@ class CollectiveProviderCentralized implements CollectiveService {
     final http.Response _response =
         await client.get('/collection/$collectionAddress');
     final Map<String, dynamic> _map = JuntoHttp.handleResponse(_response);
-    return CollectionResponse.fromMap(_map);
+    return CollectionResponse.fromJson(_map);
   }
 
   @override

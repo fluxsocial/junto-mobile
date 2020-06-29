@@ -13,9 +13,9 @@ import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
-import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
@@ -65,6 +65,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     <String>[],
   );
 
+  List<String> _channelsList = [];
+
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController;
 
@@ -73,19 +75,41 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
 
+  // relation to community center
+  Map<String, dynamic> relationToGroup;
+
   @override
   void initState() {
     super.initState();
+    // get relationship to group
+    getRelationToGroup();
     _channelController = TextEditingController();
     _address = widget.address;
     _expressionContext = widget.expressionContext;
     if (widget.expressionContext == ExpressionContext.Collective) {
       _currentExpressionContext = 'Collective';
-      _currentExpressionContextDescription = 'shared to the public of Junto';
-    } else if (widget.expressionContext == ExpressionContext.Group) {
+      _currentExpressionContextDescription = 'share publicly on Junto';
+    } else if (widget.expressionContext == ExpressionContext.Group &&
+        widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
       _currentExpressionContext = 'My Pack';
-      _currentExpressionContextDescription = 'shared to just your pack members';
+      _currentExpressionContextDescription = 'share to just your Pack members';
+    } else if (widget.expressionContext == ExpressionContext.Group &&
+        widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
+      _currentExpressionContext = 'Community Center';
+      _currentExpressionContextDescription =
+          'share your feedback with the team and community';
     }
+  }
+
+  Future<void> getRelationToGroup() async {
+    // get relation to updates group
+    final Map<String, dynamic> relation =
+        await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
+            '2eb976b4-4473-2436-ccb2-e512e868bcac', _userAddress);
+    // set state
+    setState(() {
+      relationToGroup = relation;
+    });
   }
 
   @override
@@ -112,11 +136,16 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     if (_expressionContext == ExpressionContext.Collective) {
       context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
-    } else if (_expressionContext == ExpressionContext.Group) {
-      context.bloc<PackBloc>().add(RefreshPacks());
+    } else if (_expressionContext == ExpressionContext.Group &&
+        widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
       child = JuntoPacks(initialGroup: _address);
+    } else if (_expressionContext == ExpressionContext.Group &&
+        widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
+      child = JuntoCommunityCenter();
     } else {
-      context.bloc<CollectiveBloc>().add(RefreshCollective());
+      context.bloc<CollectiveBloc>().add(
+            RefreshCollective(),
+          );
       child = JuntoCollective();
     }
     Navigator.of(context).pushAndRemoveUntil(
@@ -138,7 +167,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         caption: widget.expression['caption'],
         thumbnail300: photoKeys.key300,
         thumbnail600: photoKeys.key600,
-      ).toMap(),
+      ).toJson(),
       context: _expressionContext,
       channels: channel,
     );
@@ -150,7 +179,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
     return ExpressionModel(
       type: widget.expressionType.modelName(),
-      expressionData: expression.toMap(),
+      expressionData: expression.toJson(),
       context: _expressionContext,
       channels: channel,
     );
@@ -158,6 +187,17 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<void> _createExpression() async {
     try {
+      if (_address == '2eb976b4-4473-2436-ccb2-e512e868bcac' &&
+          !relationToGroup['facilitator'] &&
+          !relationToGroup['creator']) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'You must be an admin to post updates.',
+          ),
+        );
+        return;
+      }
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
       if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context, color: Colors.white54);
@@ -185,7 +225,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               startTime: widget.expression['start_time'],
               endTime: widget.expression['end_time'],
               facilitators: <String>[],
-              members: <String>[]).toMap(),
+              members: <String>[]).toJson(),
           channels: channel,
           context: _expressionContext,
         );
@@ -196,7 +236,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       } else {
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
-          expressionData: widget.expression.toMap(),
+          expressionData: widget.expression.toJson(),
           context: _expressionContext,
           channels: channel,
         );
@@ -221,7 +261,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       );
       _postCreateAction();
     } catch (error) {
-      print(error);
       JuntoLoader.hide();
       showDialog(
         context: context,
@@ -265,13 +304,28 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  child: Row(children: <Widget>[
-                    const SizedBox(width: 15),
-                    _expressionContextSelector(expressionContext: 'Collective'),
-                    _expressionContextSelector(expressionContext: 'My Pack'),
-                  ]),
-                ),
+                if (widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386')
+                  Container(
+                    child: Row(children: <Widget>[
+                      const SizedBox(width: 15),
+                      _expressionContextSelector(
+                          expressionContext: 'Collective'),
+                      _expressionContextSelector(expressionContext: 'My Pack'),
+                    ]),
+                  ),
+                if (widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386')
+                  Container(
+                    child: Row(children: <Widget>[
+                      const SizedBox(width: 15),
+                      _expressionContextSelector(
+                          expressionContext: 'Community Center'),
+                      if (relationToGroup != null)
+                        if (relationToGroup['creator'] ||
+                            relationToGroup['facilitator'])
+                          _expressionContextSelector(
+                              expressionContext: 'Updates'),
+                    ]),
+                  ),
               ],
             ),
           ),
@@ -292,13 +346,36 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                 ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    '# add channels',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: <Widget>[
+                    if (_channelsList == null || _channelsList.isEmpty)
+                      Text(
+                        '# add channels',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    if (_channelsList == null || _channelsList.isNotEmpty)
+                      for (String channel in _channelsList)
+                        Container(
+                          margin: const EdgeInsets.only(right: 15),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).dividerColor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            channel,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -341,6 +418,38 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             ? Colors.white
             : Theme.of(context).primaryColor,
         size: 28,
+      );
+    } else if (expressionContext == 'Community Center') {
+      _setExpressionContextDescription = () {
+        setState(() {
+          _expressionContext = ExpressionContext.Group;
+          _currentExpressionContextDescription =
+              'share your feedback with the team and community';
+          _address = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+        });
+      };
+      _expressionContextIcon = Image.asset(
+        'assets/images/junto-mobile__sprout.png',
+        height: 17,
+        color: _currentExpressionContext == expressionContext
+            ? Colors.white
+            : Theme.of(context).primaryColor,
+      );
+    } else if (expressionContext == 'Updates') {
+      _setExpressionContextDescription = () {
+        setState(() {
+          _expressionContext = ExpressionContext.Group;
+          _currentExpressionContextDescription =
+              'share updates to the Junto community';
+          _address = '2eb976b4-4473-2436-ccb2-e512e868bcac';
+        });
+      };
+      _expressionContextIcon = Icon(
+        Icons.update,
+        size: 24,
+        color: _currentExpressionContext == expressionContext
+            ? Colors.white
+            : Theme.of(context).primaryColor,
       );
     }
     return GestureDetector(
@@ -396,6 +505,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           channels: _channels,
         );
       },
-    );
+    ).then((x) {
+      setState(() {
+        _channelsList = _channels.value;
+      });
+    });
   }
 }

@@ -8,6 +8,7 @@ import 'package:vibration/vibration.dart';
 
 abstract class ThemesProvider {
   ThemeData get currentTheme;
+  Future<void> reset();
 }
 
 class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
@@ -30,9 +31,17 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     'rainbow': JuntoThemes().rainbow,
     'aqueous': JuntoThemes().aqueous,
     'royal': JuntoThemes().royal,
+    'fire': JuntoThemes().fire,
+    'forest': JuntoThemes().forest,
+    'sand': JuntoThemes().sand,
+    'dark': JuntoThemes().dark,
     'rainbow-night': JuntoThemes().rainbowNight,
     'aqueous-night': JuntoThemes().aqueousNight,
     'royal-night': JuntoThemes().royalNight,
+    'fire-night': JuntoThemes().fireNight,
+    'forest-night': JuntoThemes().forestNight,
+    'sand-night': JuntoThemes().sandNight,
+    'dark-night': JuntoThemes().darkNight,    
   };
 
   Future<void> initialize() async {
@@ -69,11 +78,10 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     notifyListeners();
     _persistTheme(themeName);
     _setSystemOverlay();
-    _vibrate();
     return currentTheme;
   }
 
-  void _vibrate() async {
+  void vibrate() async {
     if (await Vibration.hasVibrator()) {
       Vibration.vibrate(
         duration: 200,
@@ -101,9 +109,18 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     box.put(HiveKeys.kTheme, value);
     return;
   }
+
+  @override
+  Future<void> reset() async {
+    logger.logInfo('Setting default theme');
+    await setTheme("rainbow");
+  }
 }
 
 class MockedThemesProvider extends ThemesProvider {
   @override
   ThemeData get currentTheme => ThemeData.light();
+
+  @override
+  Future<void> reset() async {}
 }

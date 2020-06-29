@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 class PhotoOpen extends StatelessWidget {
@@ -19,9 +21,13 @@ class PhotoOpen extends StatelessWidget {
               imageUrl: photoExpression.expressionData.image,
               placeholder: (BuildContext context, String _) {
                 return Container(
-                  height: MediaQuery.of(context).size.width,
                   width: MediaQuery.of(context).size.width,
                   color: Theme.of(context).dividerColor,
+                  child: CachedNetworkImage(
+                    imageUrl: photoExpression.thumbnailSmall,
+                    fit: BoxFit.cover,
+                    cacheManager: CustomCacheManager(),
+                  ),
                 );
               },
               fit: BoxFit.cover,

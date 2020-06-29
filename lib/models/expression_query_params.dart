@@ -38,7 +38,7 @@ class ExpressionQueryParams {
     ExpressionContextType.ConnectPerspective: 'ConnectPerspective',
   };
 
-  Map<String, String> toMap() {
+  Map<String, String> toJson() {
     Map<String, String> params = {};
     if (contextType != null) {
       params.putIfAbsent(

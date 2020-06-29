@@ -10,7 +10,11 @@ import 'package:provider/provider.dart';
 // This component is used in CommentPreview
 // as the 'more' icon is pressed to view the action items
 class CommentActionItems extends StatelessWidget {
-  const CommentActionItems({this.comment, this.userAddress, this.source});
+  const CommentActionItems({
+    this.comment,
+    this.userAddress,
+    this.source,
+  });
 
   final Comment comment;
   final String userAddress;
@@ -21,7 +25,7 @@ class CommentActionItems extends StatelessWidget {
     return Container(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery.of(context).size.height * .4,
+        height: MediaQuery.of(context).size.height * .36,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,

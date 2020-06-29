@@ -71,7 +71,7 @@ class NotificationRepo {
           return JuntoNotificationResults(
               wasSuccessful: true, results: currentNotifications);
         } else {
-          logger.logError('Couldn\'t retrieve notifications from cache');
+          logger.logWarning('Couldn\'t retrieve notifications from cache');
           return JuntoNotificationResults(wasSuccessful: false);
         }
       }
