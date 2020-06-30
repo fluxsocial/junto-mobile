@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -188,8 +187,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                               _selectExpressionIcon(ExpressionType.dynamic),
                               _selectExpressionIcon(ExpressionType.shortform),
                               _selectExpressionIcon(ExpressionType.photo),
-                              if (appConfig.flavor != Flavor.prod)
-                                _selectExpressionIcon(ExpressionType.audio),
+                              _selectExpressionIcon(ExpressionType.audio),
                             ],
                           ),
                         ),
