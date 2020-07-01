@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 
 import 'bloc/bloc.dart';
 
