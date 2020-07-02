@@ -104,4 +104,12 @@ abstract class UserService {
 
   /// Removes the user account.
   Future<void> deleteUser(String email);
+
+  /// Validate/Delete Un-confirmed Cognito User
+  ///
+  /// If user had previously created account and not verified it during sign up
+  /// and tries to sign up again with the same username
+  /// Then the previous account is deleted on Cognito
+  /// to allow new signup
+  Future<bool> cognitoValidate(String username);
 }

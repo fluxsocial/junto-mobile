@@ -206,6 +206,12 @@ class UserRepo {
 
   Future<bool> usernameAvailable(String username) async {
     try {
+      logger.logDebug('Checking if username available in cognito pool');
+      final verified = await _userService.cognitoValidate(username);
+      if (verified == true) {
+        logger.logDebug('Previous not-verified account had to be removed');
+      }
+
       final result = await _userService.validateUsername(username);
       if (result != null) {
         return result.error == null && result.validUsername != false;

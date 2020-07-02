@@ -185,4 +185,9 @@ class MockUserService implements UserService {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return;
   }
+
+  @override
+  Future<bool> cognitoValidate(String username) async {
+    return true;
+  }
 }
