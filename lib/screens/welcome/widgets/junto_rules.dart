@@ -34,7 +34,7 @@ class JuntoRules extends StatelessWidget {
                       ),
                       TextSpan(
                           text:
-                              'Express yourself freely. Be real and hold space for authenticity.'),
+                              'Express yourself freely and hold space for authenticity.'),
                     ]),
               ),
             ),
