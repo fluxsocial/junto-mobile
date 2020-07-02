@@ -56,6 +56,9 @@ class AuthRepo {
           await logoutUser();
           return await loginUser(username, password);
         }
+        if (result.error == SignInResultError.UserNotConfirmed){
+          logger.logInfo('User not verified');
+        }
         return null;
       }
     } catch (e, s) {
