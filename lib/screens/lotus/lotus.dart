@@ -110,8 +110,8 @@ class _JuntoLotusState extends State<JuntoLotus> {
     FeatureDiscovery.clearPreferences(context, <String>{
       'lotus_info_id',
       'lotus_collective_id',
-      'lotus_packs_id',
       'lotus_groups_id',
+      'lotus_packs_id',
       'lotus_create_id',
     });
     FeatureDiscovery.discoverFeatures(
@@ -119,8 +119,8 @@ class _JuntoLotusState extends State<JuntoLotus> {
       const <String>{
         'lotus_info_id',
         'lotus_collective_id',
-        'lotus_packs_id',
         'lotus_groups_id',
+        'lotus_packs_id',
         'lotus_create_id',
       },
     );
