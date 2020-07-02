@@ -22,13 +22,18 @@ class PhotoOpen extends StatelessWidget {
               placeholder: (BuildContext context, String _) {
                 return Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
                   color: Theme.of(context).dividerColor,
                   child: CachedNetworkImage(
-                    imageUrl: photoExpression.thumbnailSmall,
-                    fit: BoxFit.cover,
-                    cacheManager: CustomCacheManager(),
-                  ),
+                      imageUrl: photoExpression.thumbnailSmall,
+                      fit: BoxFit.cover,
+                      cacheManager: CustomCacheManager(),
+                      placeholder: (BuildContext context, String _) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width,
+                          color: Theme.of(context).dividerColor,
+                        );
+                      }),
                 );
               },
               fit: BoxFit.cover,
