@@ -12,6 +12,7 @@ enum SignInResultError {
   PasswordResetRequired,
   AlreadyLoggedIn,
   UnknownError,
+  UserNotConfirmed,
 }
 
 class SignInResult extends AuthResult {

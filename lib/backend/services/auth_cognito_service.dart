@@ -123,7 +123,9 @@ class CognitoClient extends AuthenticationService {
       final result = await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
       logger.logInfo(
           'Result of resending verification code: ${result.confirmationState} ${result.userCodeDeliveryDetails.deliveryMedium}');
-      if (result.userCodeDeliveryDetails.deliveryMedium.toLowerCase().contains('email') ||
+      if (result.userCodeDeliveryDetails.deliveryMedium
+              .toLowerCase()
+              .contains('email') ||
           result.confirmationState) {
         return ResetPasswordResult(true);
       } else {
@@ -185,6 +187,9 @@ class CognitoClient extends AuthenticationService {
         }
         if (e.details.contains("Incorrect username or password")) {
           return SignInResult(false, SignInResultError.InvalidPassword);
+        }
+        if (e.details.contains("User is not confirmed.")) {
+          return SignInResult(false, SignInResultError.UserNotConfirmed);
         }
       }
       return SignInResult.signedOut();

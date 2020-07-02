@@ -94,3 +94,4 @@ android/app/src/tst/res/raw/awsconfiguration.json
 android/app/src/debug/res/raw/awsconfiguration.json
 awsconfiguration.json
 .fvm/
+lib/api_prod.dart
