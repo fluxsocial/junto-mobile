@@ -527,4 +527,20 @@ class UserServiceCentralized implements UserService {
     logger.logDebug("Delete user response ${_responseMap}");
     return;
   }
+
+  @override
+  Future<bool> cognitoValidate(String username) async {
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      if (username != null) 'username': username,
+    };
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/auth/cognito/validate',
+      body: _postBody,
+      authenticated: false,
+    );
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_serverResponse);
+    print(_decodedResponse);
+    return _decodedResponse['action_taken'] == true;
+  }
 }
