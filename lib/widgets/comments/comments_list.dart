@@ -9,14 +9,13 @@ class CommentsList extends StatelessWidget {
   const CommentsList({
     this.commentsVisible,
     this.expression,
-    this.userAddress,
     this.futureComments,
     this.showComments,
   });
 
   final bool commentsVisible;
   final dynamic expression;
-  final String userAddress;
+
   final Future<QueryResults<Comment>> futureComments;
   final Function showComments;
 
@@ -84,7 +83,6 @@ class CommentsList extends StatelessWidget {
                       return CommentPreview(
                         comment: snapshot.data.results[index],
                         parent: expression,
-                        userAddress: userAddress,
                       );
                     },
                   ),

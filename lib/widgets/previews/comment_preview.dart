@@ -10,21 +10,17 @@ import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget with MemberValidation {
-  const CommentPreview(
-      {Key key,
-      @required this.comment,
-      @required this.parent,
-      @required this.userAddress})
-      : super(key: key);
+  const CommentPreview({
+    Key key,
+    @required this.comment,
+    @required this.parent,
+  }) : super(key: key);
 
   /// comment
   final Comment comment;
 
   // parent expression of comment
   final dynamic parent;
-
-  // address of user
-  final String userAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +31,6 @@ class CommentPreview extends StatelessWidget with MemberValidation {
           CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => CommentOpen(
               comment: comment,
-              userAddress: userAddress,
               parent: parent,
             ),
           ),
@@ -85,7 +80,6 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                           color: Colors.transparent,
                           child: CommentActionItems(
                             comment: comment,
-                            userAddress: userAddress,
                             source: 'preview',
                           ),
                         ),

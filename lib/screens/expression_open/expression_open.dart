@@ -23,11 +23,10 @@ class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(
     this.deleteExpression,
     this.expression,
-    this.userAddress,
   );
 
   final ExpressionResponse expression;
-  final String userAddress;
+
   final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
@@ -178,7 +177,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           // Expression Top
                           ExpressionOpenTop(
                             expression: widget.expression,
-                            userAddress: widget.userAddress,
                             deleteExpression: widget.deleteExpression,
                           ),
                           // Expression Body
@@ -192,7 +190,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           CommentsList(
                             commentsVisible: commentsVisible,
                             expression: widget.expression,
-                            userAddress: widget.userAddress,
                             futureComments: futureComments,
                             showComments: _showComments,
                           ),

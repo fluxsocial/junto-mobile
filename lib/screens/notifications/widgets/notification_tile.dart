@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
@@ -54,9 +53,6 @@ class NotificationTile extends StatelessWidget {
           var sourceExpression =
               await Provider.of<ExpressionRepo>(context, listen: false)
                   .getExpression(item.sourceExpression.address);
-          var userAddress =
-              await Provider.of<UserDataProvider>(context, listen: false)
-                  .userAddress;
 
           JuntoLoader.hide();
 
@@ -66,7 +62,6 @@ class NotificationTile extends StatelessWidget {
               builder: (context) => ExpressionOpen(
                 (_) {},
                 sourceExpression,
-                userAddress,
               ),
             ),
           );

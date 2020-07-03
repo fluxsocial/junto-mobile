@@ -16,12 +16,11 @@ import 'comment_open_top.dart';
 class CommentOpen extends StatefulWidget {
   const CommentOpen({
     @required this.comment,
-    @required this.userAddress,
     @required this.parent,
   });
 
   final Comment comment;
-  final String userAddress;
+
   final dynamic parent;
 
   @override
@@ -119,14 +118,13 @@ class CommentOpenState extends State<CommentOpen> {
               controller: _scrollController,
               children: <Widget>[
                 // Comment Parent
-                CommentOpenParent( 
+                CommentOpenParent(
                   comment: widget.comment,
                   parent: widget.parent,
                 ),
                 // Comment Open Top
                 CommentOpenTop(
                   comment: widget.comment,
-                  userAddress: widget.userAddress,
                 ),
                 // Comment Body
                 CommentOpenBody(
@@ -140,7 +138,6 @@ class CommentOpenState extends State<CommentOpen> {
                 CommentsList(
                   commentsVisible: commentsVisible,
                   expression: widget.comment,
-                  userAddress: widget.userAddress,
                   futureComments: futureComments,
                   showComments: _showComments,
                 ),

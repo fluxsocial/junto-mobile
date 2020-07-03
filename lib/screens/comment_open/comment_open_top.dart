@@ -10,10 +10,8 @@ import 'package:junto_beta_mobile/models/models.dart';
 class CommentOpenTop extends StatelessWidget {
   const CommentOpenTop({
     this.comment,
-    this.userAddress,
   });
   final Comment comment;
-  final String userAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +73,6 @@ class CommentOpenTop extends StatelessWidget {
                 ),
                 builder: (BuildContext context) => CommentActionItems(
                   comment: comment,
-                  userAddress: userAddress,
                   source: 'open',
                 ),
               );

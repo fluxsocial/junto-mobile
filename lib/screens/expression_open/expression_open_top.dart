@@ -8,14 +8,10 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class ExpressionOpenTop extends StatelessWidget with MemberValidation {
   const ExpressionOpenTop(
-      {Key key,
-      @required this.deleteExpression,
-      this.expression,
-      this.userAddress})
+      {Key key, @required this.deleteExpression, this.expression})
       : super(key: key);
 
   final ExpressionResponse expression;
-  final String userAddress;
   final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
