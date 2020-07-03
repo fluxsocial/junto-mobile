@@ -11,13 +11,18 @@ class DynamicPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('rendering dynamic');
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 10,
+      ),
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[_buildTitle(context), _buildBody(context)],
+        children: <Widget>[
+          _buildTitle(context),
+          _buildBody(context),
+        ],
       ),
     );
   }
