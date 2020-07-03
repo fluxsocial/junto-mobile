@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
@@ -143,12 +144,20 @@ class CreatePhotoState extends State<CreatePhoto> {
         context,
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) {
-            return CreateActions(
-              expressionType: ExpressionType.photo,
-              address: widget.address,
-              expressionContext: widget.expressionContext,
-              expression: expression,
-            );
+            if (widget.expressionContext == ExpressionContext.Comment) {
+              return CreateCommentActions(
+                expression: expression,
+                address: widget.address,
+                expressionType: ExpressionType.photo,
+              );
+            } else {
+              return CreateActions(
+                expressionType: ExpressionType.photo,
+                address: widget.address,
+                expressionContext: widget.expressionContext,
+                expression: expression,
+              );
+            }
           },
         ),
       );
