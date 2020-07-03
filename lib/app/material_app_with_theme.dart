@@ -12,7 +12,6 @@ import 'package:junto_beta_mobile/screens/notifications/notifications_handler.da
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_agreement.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
-import 'package:junto_beta_mobile/utils/device_preview.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +34,6 @@ class _MaterialAppWithThemeState extends State<MaterialAppWithTheme> {
       builder: (context, theme, _) {
         return MaterialApp(
           home: HomePage(),
-          builder: DevicePreviewWrapper.appBuilder,
           title: 'JUNTO Alpha',
           debugShowCheckedModeBanner: false,
           theme: theme.currentTheme,

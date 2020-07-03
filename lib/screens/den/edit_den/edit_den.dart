@@ -103,10 +103,16 @@ class JuntoEditDenState extends State<JuntoEditDen> {
 
   Future<void> _onPickPressed(String photoType, String source) async {
     File image;
+    final imagePicker = ImagePicker();
+    //TODO: replace strings with enum
     if (source == 'Gallery') {
-      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      final pickedImage =
+          await imagePicker.getImage(source: ImageSource.gallery);
+      image = File(pickedImage.path);
     } else if (source == 'Camera') {
-      image = await ImagePicker.pickImage(source: ImageSource.camera);
+      final pickedImage =
+          await imagePicker.getImage(source: ImageSource.camera);
+      image = File(pickedImage.path);
     }
     if (image == null) {
       if (photoType == 'profile' && profilePictureFile == null) {

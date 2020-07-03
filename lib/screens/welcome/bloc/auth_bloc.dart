@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.userDataProvider,
     this.userRepo,
     this.onBoardingRepo,
-  ) {
+  ) : super(AuthState.loading()) {
     _getLoggedIn();
   }
 
@@ -31,9 +31,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       add(LogoutEvent());
     }
   }
-
-  @override
-  AuthState get initialState => AuthState.loading();
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {

@@ -64,9 +64,9 @@ class PresignedFilesCacheStore extends CacheStore {
   }
 
   @override
-  Future<FileInfo> getFile(String url) async {
+  Future<FileInfo> getFile(String url, {bool ignoreMemCache = false}) async {
     final id = imageId(url);
-    return await super.getFile(id);
+    return await super.getFile(id, ignoreMemCache: ignoreMemCache);
   }
 
   @override
@@ -77,9 +77,10 @@ class PresignedFilesCacheStore extends CacheStore {
   }
 
   @override
-  Future<CacheObject> retrieveCacheData(String url) {
+  Future<CacheObject> retrieveCacheData(String url,
+      {bool ignoreMemCache = false}) {
     final id = imageId(url);
-    return super.retrieveCacheData(id);
+    return super.retrieveCacheData(id, ignoreMemCache: ignoreMemCache);
   }
 
   FileInfo getFileFromMemory(String url) {

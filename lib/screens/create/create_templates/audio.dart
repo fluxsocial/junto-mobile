@@ -37,14 +37,16 @@ class CreateAudioState extends State<CreateAudio> {
 
   Future<void> _onPickPressed({String source}) async {
     try {
-      File image;
+      final imagePicker = ImagePicker();
+      PickedFile file;
       if (source == 'Camera') {
-        image = await ImagePicker.pickImage(source: ImageSource.camera);
+        file = await imagePicker.getImage(source: ImageSource.camera);
       } else if (source == 'Gallery') {
-        image = await ImagePicker.pickImage(source: ImageSource.gallery);
+        file = await imagePicker.getImage(source: ImageSource.gallery);
       } else {
-        image = await ImagePicker.pickImage(source: ImageSource.camera);
+        file = await imagePicker.getImage(source: ImageSource.camera);
       }
+      final image = File(file.path);
 
       if (image == null && audioPhotoBackground == null) {
         setState(() => audioPhotoBackground = null);
