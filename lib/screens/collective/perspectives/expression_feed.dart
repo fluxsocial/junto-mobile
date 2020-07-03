@@ -60,6 +60,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
           ],
           body: CollectiveFeedRefresh(
             child: CustomScrollView(
+              shrinkWrap: true,
               slivers: <Widget>[
                 // Empty SliverToBoxAdaptor is necessary, otherwise switching
                 //  between single and two column layouts creates an issue.
