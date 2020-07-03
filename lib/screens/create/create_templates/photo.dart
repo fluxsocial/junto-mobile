@@ -36,21 +36,25 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   Future<void> _onPickPressed({@required ImageSource source}) async {
     try {
+      final imagePicker = ImagePicker();
       File image;
       if (source == ImageSource.gallery) {
-        image = await ImagePicker.pickImage(
+        final pickedImage = await imagePicker.getImage(
           source: ImageSource.gallery,
           imageQuality: 70,
         );
+        image = File(pickedImage.path);
 
         setState(() {
           imageSource = ImageSource.gallery;
         });
       } else if (source == ImageSource.camera) {
-        image = await ImagePicker.pickImage(
+        final pickedImage = await imagePicker.getImage(
           source: ImageSource.camera,
           imageQuality: 70,
         );
+        image = File(pickedImage.path);
+
         setState(() {
           imageSource = ImageSource.camera;
         });

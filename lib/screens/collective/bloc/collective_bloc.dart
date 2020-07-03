@@ -18,7 +18,7 @@ export 'collective_state.dart';
 part 'collective_event.dart';
 
 class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
-  CollectiveBloc(this.expressionRepository);
+  CollectiveBloc(this.expressionRepository) : super(CollectiveState.initial());
 
   final expressionsPerPage = 50;
   final ExpressionRepo expressionRepository;
@@ -43,9 +43,6 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     return super.transformEvents(
         MergeStream([nonDebounceStream, debounceStream]), transitionFn);
   }
-
-  @override
-  CollectiveState get initialState => CollectiveState.initial();
 
   PerspectiveModel get currentPerspective => _currentPerspective;
 

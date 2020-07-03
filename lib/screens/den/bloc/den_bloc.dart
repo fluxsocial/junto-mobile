@@ -15,14 +15,12 @@ class DenBloc extends Bloc<DenEvent, DenState> {
   final UserDataProvider userData;
   final ExpressionRepo expressionRepo;
 
-  DenBloc(this.userRepo, this.userData, this.expressionRepo);
+  DenBloc(this.userRepo, this.userData, this.expressionRepo)
+      : super(DenInitial());
 
   String userAddress;
   int currentPage = 0;
   String currentTimeStamp;
-
-  @override
-  DenState get initialState => DenInitial();
 
   @override
   Stream<DenState> mapEventToState(DenEvent event) async* {

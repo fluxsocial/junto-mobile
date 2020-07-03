@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/app/app.dart';
 import 'package:junto_beta_mobile/app/logger/sentry.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/bloc_delegate.dart';
-import 'package:junto_beta_mobile/utils/device_preview.dart';
 
 Future<void> mainApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,11 +15,7 @@ Future<void> mainApp() async {
     DeviceOrientation.portraitDown,
   ]);
   await Hive.initFlutter();
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  Bloc.observer = SimpleBlocObserver();
   final Backend backend = await Backend.init();
-  runLoggedApp(
-    DevicePreviewWrapper(
-      child: JuntoApp(backend: backend),
-    ),
-  );
+  runLoggedApp(JuntoApp(backend: backend));
 }

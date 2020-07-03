@@ -12,21 +12,19 @@ part 'pack_event.dart';
 part 'pack_state.dart';
 
 class PackBloc extends Bloc<PackEvent, PackState> {
-  PackBloc(this.expressionRepo, this.groupRepo, {this.initialGroup});
+  PackBloc(this.expressionRepo, this.groupRepo, {this.initialGroup})
+      : super(PackInitial());
 
   final ExpressionRepo expressionRepo;
   final GroupRepo groupRepo;
   final String initialGroup;
-  String currentGroup;
-  String lastTimestamp;
+  String _currentGroup;
+  String _lastTimestamp;
 
   Map<String, String> _params;
-  int currentPos = 0;
-  int membersPos = 0;
-  String lastMemberTimeStamp;
-
-  @override
-  PackState get initialState => PackInitial();
+  int _currentPos = 0;
+  int _membersPos = 0;
+  String _lastMemberTimeStamp;
 
   @override
   Stream<PackState> mapEventToState(
@@ -51,14 +49,14 @@ class PackBloc extends Bloc<PackEvent, PackState> {
 
   Stream<PackState> _mapFetchPacksToState(FetchPacks event) async* {
     if (event.group != null) {
-      currentGroup = event.group;
+      _currentGroup = event.group;
     }
-    final Group group = await groupRepo.getGroup(currentGroup ?? initialGroup);
-    currentGroup = group.address;
+    final Group group = await groupRepo.getGroup(_currentGroup ?? initialGroup);
+    _currentGroup = group.address;
     _params = <String, String>{
       'context': group.address,
       'context_type': 'Group',
-      'pagination_position': currentPos.toString(),
+      'pagination_position': _currentPos.toString(),
       if (event.channel != null) 'channels[0]': event.channel,
     };
     try {
@@ -84,8 +82,8 @@ class PackBloc extends Bloc<PackEvent, PackState> {
   Stream<PackState> _mapRefreshPacksToState(RefreshPacks refreshEvent) async* {
     try {
       if (state is PacksLoaded) {
-        currentPos = 0;
-        lastTimestamp = null;
+        _currentPos = 0;
+        _lastTimestamp = null;
         final _results = await _fetchExpressionAndMembers();
         QueryResults<ExpressionResponse> publicQueryResults = _results[0];
         QueryResults<ExpressionResponse> privateQueryResults = _results[1];
@@ -105,9 +103,9 @@ class PackBloc extends Bloc<PackEvent, PackState> {
   }
 
   Stream<PackState> _mapFetchMorePacksToState(FetchMorePacks event) async* {
-    currentPos = currentPos + 50;
-    _params['pagination_position'] = '$currentPos';
-    _params['last_timestamp'] = lastTimestamp;
+    _currentPos = _currentPos + 50;
+    _params['pagination_position'] = '$_currentPos';
+    _params['last_timestamp'] = _lastTimestamp;
 
     try {
       if (_params != null && state is PacksLoaded) {
@@ -161,12 +159,12 @@ class PackBloc extends Bloc<PackEvent, PackState> {
         currentState.pack,
       );
 
-      membersPos += 50;
+      _membersPos += 50;
       final ExpressionQueryParams _params = ExpressionQueryParams(
-        paginationPosition: '$membersPos',
-        lastTimestamp: lastMemberTimeStamp,
+        paginationPosition: '$_membersPos',
+        lastTimestamp: _lastMemberTimeStamp,
       );
-      final _updatedMembers = await _getMembers(currentGroup, _params);
+      final _updatedMembers = await _getMembers(_currentGroup, _params);
       if (_updatedMembers.results.length > 1) {
         currentMembers.addAll(_updatedMembers.results);
         yield PacksLoaded(
@@ -223,7 +221,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       _params,
     );
     final members = await _getMembers(
-        currentGroup, ExpressionQueryParams(paginationPosition: '0'));
+        _currentGroup, ExpressionQueryParams(paginationPosition: '0'));
 
     List<ExpressionResponse> _public = results.results
         .where((element) => element.privacy == 'Public')
@@ -232,7 +230,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
         .where((element) => element.privacy == 'Private')
         .toList();
 
-    lastTimestamp = results.lastTimestamp;
+    _lastTimestamp = results.lastTimestamp;
 
     final publicQueryResults = QueryResults(
       results: _public,
@@ -251,7 +249,7 @@ class PackBloc extends Bloc<PackEvent, PackState> {
   Future<QueryResults<Users>> _getMembers(
       final String groupAddress, ExpressionQueryParams params) async {
     final result = await groupRepo.getGroupMembers(groupAddress, params);
-    lastMemberTimeStamp = result.lastTimestamp;
+    _lastMemberTimeStamp = result.lastTimestamp;
     return result;
   }
 

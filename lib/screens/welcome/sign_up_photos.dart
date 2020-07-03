@@ -71,8 +71,11 @@ class _SignUpPhotosState extends State<SignUpPhotos> {
 
   Future<void> _onPickPressed(BuildContext context) async {
     try {
-      final File image =
-          await ImagePicker.pickImage(source: ImageSource.gallery);
+      final imagePicker = ImagePicker();
+      final pickedImage =
+          await imagePicker.getImage(source: ImageSource.gallery);
+      final File image = File(pickedImage.path);
+
       if (image == null && widget.profilePicture.file.value == null) {
         logger.logDebug('No image selected and no profile picture exists');
         return;

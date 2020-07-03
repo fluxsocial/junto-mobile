@@ -2,7 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 
-class SimpleBlocDelegate extends BlocDelegate {
+class SimpleBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);

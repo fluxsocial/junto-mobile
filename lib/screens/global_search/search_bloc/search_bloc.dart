@@ -10,14 +10,11 @@ import 'package:rxdart/rxdart.dart';
 import 'bloc.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  SearchBloc(this.searchRepo);
+  SearchBloc(this.searchRepo) : super(InitialSearchState());
 
   final SearchRepo searchRepo;
   int currentPos = 0;
   String lastTimeStamp;
-
-  @override
-  SearchState get initialState => InitialSearchState();
 
   @override
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
