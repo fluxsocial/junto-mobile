@@ -116,7 +116,7 @@ class BottomCommentBarState extends State<BottomCommentBar> {
                       child: JuntoCreate(
                         channels: <String>[],
                         address: widget.expressionAddress,
-                        expressionContext: ExpressionContext.Group,
+                        expressionContext: ExpressionContext.Comment,
                       ),
                     ),
                   ),
