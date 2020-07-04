@@ -93,6 +93,8 @@ class CommentOpenState extends State<CommentOpen> {
       return DynamicOpen(widget.comment);
     } else if (expressionType == 'ShortForm') {
       return ShortformOpen(widget.comment);
+    } else if (expressionType == 'PhotoForm') {
+      return PhotoOpen(widget.comment);
     } else {
       return const SizedBox();
     }
