@@ -20,11 +20,12 @@ import 'types/shortform.dart';
 class CommentOpen extends StatefulWidget {
   const CommentOpen({
     @required this.comment,
+    @required this.userAddress,
     @required this.parent,
   });
 
   final Comment comment;
-
+  final String userAddress;
   final dynamic parent;
 
   @override
@@ -145,6 +146,7 @@ class CommentOpenState extends State<CommentOpen> {
                 // Comment Open Top
                 CommentOpenTop(
                   comment: widget.comment,
+                  userAddress: widget.userAddress,
                 ),
                 // Comment Body
                 _buildExpression(),
@@ -156,6 +158,7 @@ class CommentOpenState extends State<CommentOpen> {
                 CommentsList(
                   commentsVisible: commentsVisible,
                   expression: widget.comment,
+                  userAddress: widget.userAddress,
                   futureComments: futureComments,
                   showComments: _showComments,
                 ),

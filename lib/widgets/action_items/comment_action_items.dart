@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
@@ -13,16 +12,16 @@ import 'package:provider/provider.dart';
 class CommentActionItems extends StatelessWidget {
   const CommentActionItems({
     this.comment,
+    this.userAddress,
     this.source,
   });
 
   final Comment comment;
-
+  final String userAddress;
   final String source;
 
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<UserDataProvider>(context, listen: false);
     return Container(
       color: Colors.transparent,
       child: Container(
@@ -56,7 +55,7 @@ class CommentActionItems extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                userData.userAddress == comment.creator.address
+                userAddress == comment.creator.address
                     ? _myActionItems(context)
                     : _memberActionItems(context)
               ],
