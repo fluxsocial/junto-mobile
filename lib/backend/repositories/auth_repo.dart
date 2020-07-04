@@ -25,7 +25,8 @@ class AuthRepo {
 
   Future<SignUpResult> signUp(
       String username, String email, String password) async {
-    logger.logDebug('Verifying e-mail - signing up in auth service');
+    logger.logDebug(
+        'Signing up in auth service with username, email and password');
     final res = await authService.signUp(SignUpData(username, email, password));
     return res;
   }
@@ -55,6 +56,9 @@ class AuthRepo {
           logger.logInfo('User already logged in, loggin out and relogging');
           await logoutUser();
           return await loginUser(username, password);
+        }
+        if (result.error == SignInResultError.UserNotConfirmed) {
+          logger.logInfo('User not verified');
         }
         return null;
       }

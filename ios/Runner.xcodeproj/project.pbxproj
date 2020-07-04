@@ -69,7 +69,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4FA51854DFF5F392482F2DB4 /* Pods */ = {
+		05C97CBE087AEB8B52951B57 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				EC28D4FD2AFD65642682BA9D /* Pods-Runner.debug-tst.xcconfig */,
@@ -82,7 +82,7 @@
 				7DD19DC55910A32332037DB5 /* Pods-Runner.profile-dev.xcconfig */,
 				6B9476568566CABD01A169CF /* Pods-Runner.profile-prod.xcconfig */,
 			);
-			path = Pods;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
@@ -286,7 +286,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

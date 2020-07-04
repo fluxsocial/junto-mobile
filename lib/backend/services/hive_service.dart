@@ -11,15 +11,25 @@ class HiveCache implements LocalCache {
   HiveCache();
 
   Future<void> init() async {
-    await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
-    Hive.registerAdapter(ExpressionResponseAdapter());
-    Hive.registerAdapter(ShortFormExpressionAdapter());
-    Hive.registerAdapter(PhotoFormExpressionAdapter());
-    Hive.registerAdapter(LongFormExpressionAdapter());
-    Hive.registerAdapter(UserProfileAdapter());
-    Hive.registerAdapter(AudioFormExpressionAdapter());
-    Hive.registerAdapter(JuntoNotificationAdapter());
-    Hive.registerAdapter(PerspectiveModelAdapter());
+    try {
+      await Hive.openBox(HiveBoxes.kAppBox, encryptionKey: key);
+      Hive.registerAdapter(ExpressionResponseAdapter());
+      Hive.registerAdapter(ShortFormExpressionAdapter());
+      Hive.registerAdapter(PhotoFormExpressionAdapter());
+      Hive.registerAdapter(LongFormExpressionAdapter());
+      Hive.registerAdapter(UserProfileAdapter());
+      Hive.registerAdapter(AudioFormExpressionAdapter());
+      Hive.registerAdapter(JuntoNotificationAdapter());
+      Hive.registerAdapter(PerspectiveModelAdapter());
+    } on HiveError catch (error) {
+      logger.logDebug("Hive Error $error");
+      // Clears exiting boxes
+      await wipe();
+      // Tries to reinitialize hive
+      init();
+    } catch (exception) {
+      logger.logDebug("Hive initialization error $exception");
+    }
   }
 
   final _supportedBox = <DBBoxes, String>{

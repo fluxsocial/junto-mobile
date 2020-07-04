@@ -175,13 +175,13 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
             const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Flexible(
-              flex: 3,
+            SizedBox(height: MediaQuery.of(context).size.height * .14),
+            Expanded(
               child: KeyboardAvoider(
                 autoScroll: true,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     SignUpTextField(
                       focusNode: _codeNode,
@@ -195,6 +195,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                       keyboardType: TextInputType.number,
                       textCapitalization: TextCapitalization.none,
                     ),
+                    const SizedBox(height: 25),
                     SignUpTextField(
                       focusNode: _passwordNode,
                       valueController: _newPassword,
@@ -208,6 +209,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                       textCapitalization: TextCapitalization.none,
                       obscureText: true,
                     ),
+                    const SizedBox(height: 25),
                     SignUpTextField(
                       focusNode: _confirmNode,
                       valueController: _confirmPassword,
@@ -225,21 +227,17 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
                 ),
               ),
             ),
-            Flexible(
-              flex: 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  CallToActionButton(
-                    callToAction: _confirmNewPassword,
-                    title: S.of(context).welcome_confirm_password.toUpperCase(),
-                  ),
-                  const SizedBox(height: 15),
-                  ResendVerificationCodeButton(
-                    onPressed: _resendVerificationCode,
-                  ),
-                ],
-              ),
+            Column(
+              children: <Widget>[
+                CallToActionButton(
+                  callToAction: _confirmNewPassword,
+                  title: S.of(context).welcome_confirm_password.toUpperCase(),
+                ),
+                const SizedBox(height: 15),
+                ResendVerificationCodeButton(
+                  onPressed: _resendVerificationCode,
+                ),
+              ],
             ),
           ],
         ),
