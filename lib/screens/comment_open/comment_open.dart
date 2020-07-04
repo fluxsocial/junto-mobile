@@ -12,6 +12,10 @@ import 'comment_open_body.dart';
 import 'comment_open_bottom.dart';
 import 'comment_open_parent/comment_open_parent.dart';
 import 'comment_open_top.dart';
+import 'types/dynamic.dart';
+import 'types/shortform.dart';
+import 'types/photo.dart';
+import 'types/audio.dart';
 
 class CommentOpen extends StatefulWidget {
   const CommentOpen({
@@ -82,6 +86,18 @@ class CommentOpenState extends State<CommentOpen> {
     );
   }
 
+  /// Builds an expression for the given type. IE: Longform or shortform
+  Widget _buildExpression() {
+    final String expressionType = widget.comment.type;
+    if (expressionType == 'LongForm') {
+      return DynamicOpen(widget.comment);
+    } else if (expressionType == 'ShortForm') {
+      return ShortformOpen(widget.comment);
+    } else {
+      return const SizedBox();
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -119,7 +135,7 @@ class CommentOpenState extends State<CommentOpen> {
               controller: _scrollController,
               children: <Widget>[
                 // Comment Parent
-                CommentOpenParent( 
+                CommentOpenParent(
                   comment: widget.comment,
                   parent: widget.parent,
                 ),
@@ -129,9 +145,7 @@ class CommentOpenState extends State<CommentOpen> {
                   userAddress: widget.userAddress,
                 ),
                 // Comment Body
-                CommentOpenBody(
-                  comment: widget.comment,
-                ),
+                _buildExpression(),
                 // Comment Bottom
                 CommentOpenBottom(
                   comment: widget.comment,
