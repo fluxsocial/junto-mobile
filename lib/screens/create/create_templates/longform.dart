@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 
@@ -75,12 +76,20 @@ class CreateLongformState extends State<CreateLongform> {
         context,
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) {
-            return CreateActions(
-              expressionType: ExpressionType.dynamic,
-              address: widget.address,
-              expressionContext: widget.expressionContext,
-              expression: expression,
-            );
+            if (widget.expressionContext == ExpressionContext.Comment) {
+              return CreateCommentActions(
+                expression: expression,
+                address: widget.address,
+                expressionType: ExpressionType.dynamic,
+              );
+            } else {
+              return CreateActions(
+                expressionType: ExpressionType.dynamic,
+                address: widget.address,
+                expressionContext: widget.expressionContext,
+                expression: expression,
+              );
+            }
           },
         ),
       );

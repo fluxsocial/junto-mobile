@@ -6,6 +6,9 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:provider/provider.dart';
 
 class BottomCommentBar extends StatefulWidget {
@@ -105,6 +108,30 @@ class BottomCommentBarState extends State<BottomCommentBar> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  FadeRoute<void>(
+                    child: FeatureDiscovery(
+                      child: JuntoCreate(
+                        channels: <String>[],
+                        address: widget.expressionAddress,
+                        expressionContext: ExpressionContext.Comment,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.only(right: 15),
+                color: Colors.transparent,
+                child: Icon(
+                  CustomIcons.create,
+                  size: 17,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(left: 15),
