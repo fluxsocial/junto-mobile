@@ -7,28 +7,20 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/audio.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/dynamic.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/photo.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/shortform.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget with MemberValidation {
-  const CommentPreview(
-      {Key key,
-      @required this.comment,
-      @required this.parent,
-      @required this.userAddress})
-      : super(key: key);
+  const CommentPreview({
+    Key key,
+    @required this.comment,
+    @required this.parent,
+  }) : super(key: key);
 
   /// comment
   final Comment comment;
 
   // parent expression of comment
   final dynamic parent;
-
-  // address of user
-  final String userAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +31,6 @@ class CommentPreview extends StatelessWidget with MemberValidation {
           CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => CommentOpen(
               comment: comment,
-              userAddress: userAddress,
               parent: parent,
             ),
           ),
@@ -89,7 +80,6 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                           color: Colors.transparent,
                           child: CommentActionItems(
                             comment: comment,
-                            userAddress: userAddress,
                             source: 'preview',
                           ),
                         ),
@@ -113,7 +103,18 @@ class CommentPreview extends StatelessWidget with MemberValidation {
               ),
             ),
             // comment preview body
-            _returnExpression(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                comment.expressionData.body.trim(),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
             const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.only(
@@ -134,19 +135,5 @@ class CommentPreview extends StatelessWidget with MemberValidation {
         ),
       ),
     );
-  }
-
-  Widget _returnExpression() {
-    if (comment.type == 'LongForm') {
-      return DynamicPreview(comment: comment);
-    } else if (comment.type == 'ShortForm') {
-      return ShortformPreview(comment: comment);
-    } else if (comment.type == 'PhotoForm') {
-      return PhotoPreview(comment: comment);
-    } else if (comment.type == 'AudioForm') {
-      return AudioPreview(comment: comment);
-    } else {
-      return Container();
-    }
   }
 }
