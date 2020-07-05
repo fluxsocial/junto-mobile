@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/utils/cache_manager.dart';
 class AudioParent extends StatelessWidget {
   const AudioParent({this.expression});
 
-  final ExpressionResponse expression;
+  final dynamic expression;
   @override
   Widget build(BuildContext context) {
     final String audioTitle = expression.expressionData.title;
