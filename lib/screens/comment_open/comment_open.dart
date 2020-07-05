@@ -122,6 +122,7 @@ class CommentOpenState extends State<CommentOpen> {
     super.initState();
     _scrollController = ScrollController();
     _focusNode = FocusNode();
+    print('comment open');
   }
 
   @override
