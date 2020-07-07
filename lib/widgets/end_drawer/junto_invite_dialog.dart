@@ -13,20 +13,30 @@ class JuntoInviteDialog extends StatelessWidget {
   void inviteUser(BuildContext context, String email) async {
     try {
       JuntoLoader.showLoader(context);
-      await Provider.of<UserRepo>(context, listen: false).inviteUser(email);
+      final int statusCode =
+          await Provider.of<UserRepo>(context, listen: false).inviteUser(email);
       Navigator.pop(context);
       JuntoLoader.hide();
+
+      String dialogText;
+      if (statusCode == 200) {
+        dialogText =
+            'Your invitation is on its way! Feel free to invite another person to Junto in 7 days.';
+      } else if (statusCode == 403) {
+        dialogText =
+            'You can only send one invitation per week. Please wait 7 days from the time you sent your last invitation.';
+      }
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
           context: context,
-          dialogText:
-              'Your invitation is on its way! Feel free to invite another person to Junto in 7 days.',
+          dialogText: dialogText,
         ),
       );
     } catch (error) {
       Navigator.pop(context);
       JuntoLoader.hide();
+
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
