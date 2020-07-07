@@ -112,6 +112,14 @@ flutter:
     - assets/images/junto-mobile__logo--dark.png
     - assets/images/junto-mobile__logo--fire.png
     - assets/images/junto-mobile__logo--forest.png
+    - assets/images/junto-mobile__logo-outline--white.png
+    - assets/images/junto-mobile__logo-outline--rainbow.png
+    - assets/images/junto-mobile__logo-outline--aqueous.png
+    - assets/images/junto-mobile__logo-outline--purpgold.png
+    - assets/images/junto-mobile__logo-outline--sand.png
+    - assets/images/junto-mobile__logo-outline--dark.png
+    - assets/images/junto-mobile__logo-outline--fire.png
+    - assets/images/junto-mobile__logo-outline--forest.png    
     - assets/images/junto-mobile__outlinelogo--gradient.png
     - assets/images/junto-mobile__infinity.png
     - assets/images/junto-mobile__location.png
