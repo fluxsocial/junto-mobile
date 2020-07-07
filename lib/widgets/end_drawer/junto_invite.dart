@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/screens/welcome/widgets/junto_logo.dart';
 
 import 'junto_invite_appbar.dart';
 import 'junto_invite_cta.dart';
+import 'junto_invite_logo.dart';
 
 class JuntoInvite extends StatelessWidget {
   @override
@@ -28,7 +28,7 @@ class JuntoInvite extends StatelessWidget {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    JuntoLogo(),
+                    JuntoInviteLogo(),
                     JuntoInviteText(
                       "Junto was created from the desire to have more meaningful experiences on social media. On Junto, you can build your Pack - people closest to you that evoke the most unfiltered version of yourself.",
                     ),
@@ -38,7 +38,7 @@ class JuntoInvite extends StatelessWidget {
                   ],
                 ),
                 JuntoInviteCTA(
-                  title: 'INVITE ONE PERSON',
+                  title: 'INVITE SOMEONE TO JUNTO',
                   callToAction: () {},
                 )
               ],
