@@ -543,4 +543,13 @@ class UserServiceCentralized implements UserService {
     print(_decodedResponse);
     return _decodedResponse['action_taken'] == true;
   }
+
+  Future<void> inviteUser(String email) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/auth/invite',
+      body: {
+        'email': email,
+      },
+    );
+  }
 }
