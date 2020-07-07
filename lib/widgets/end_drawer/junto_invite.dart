@@ -27,16 +27,21 @@ class JuntoInvite extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    JuntoLogoOutline(),
-                    JuntoInviteText(
-                      "Junto was created from the desire to have more meaningful experiences on social media. On Junto, you can build your Pack - people closest to you that evoke the most unfiltered version of yourself.",
-                    ),
-                    JuntoInviteText(
-                      "We envision the growth of Junto to take place through the creation of each individual's closest relationships and invite you to bring on one new person a week. Thank you for participating in building this grassroots community with us.",
-                    ),
-                  ],
+                JuntoLogoOutline(),
+                Expanded(
+                  child: ListView(
+                    children: <Widget>[
+                      JuntoInviteText(
+                        "Junto was created from the desire to have more meaningful experiences on social media. On Junto, you can build your Pack - people closest to you that evoke the most unfiltered version of yourself.",
+                      ),
+                      JuntoInviteText(
+                        "You always have the option to share privately to your Pack. The people in your Pack will also have access to your Pack feed, which displays the public content from everyone in it. You become the common thread between all the people you invite, facilitating a more organic way for them to discover one another through their mutual connection - you.",
+                      ),
+                      JuntoInviteText(
+                        "We envision the growth of Junto to take place through the creation of each individual's closest relationships. Thank you for participating in building this grassroots community with us.",
+                      ),
+                    ],
+                  ),
                 ),
                 JuntoInviteCTA(
                   title: 'INVITE SOMEONE TO JUNTO',
