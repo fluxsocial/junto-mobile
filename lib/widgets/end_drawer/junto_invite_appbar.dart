@@ -36,7 +36,7 @@ class JuntoInviteAppBar extends StatelessWidget {
               ),
             ),
             Text(
-              'Invite',
+              'Build Your Pack',
               style: Theme.of(context).textTheme.subtitle1,
             ),
             const SizedBox(width: 42)
