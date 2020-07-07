@@ -112,4 +112,7 @@ abstract class UserService {
   /// Then the previous account is deleted on Cognito
   /// to allow new signup
   Future<bool> cognitoValidate(String username);
+
+  // invite user to Junto
+  Future<void> inviteUser(String email);
 }

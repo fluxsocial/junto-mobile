@@ -24,6 +24,10 @@ class UserRepo {
   final ExpressionService _expressionService;
   QueryResults<ExpressionResponse> cachedDenExpressions;
 
+  Future<void> inviteUser(String email) {
+    return _userService.inviteUser(email);
+  }
+
   Future<PerspectiveModel> createPerspective(Perspective perspective) {
     assert(perspective.name != null);
     assert(perspective.members != null);
