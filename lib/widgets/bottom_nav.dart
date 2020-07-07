@@ -39,9 +39,10 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  FadeRoute<void>(
-                    child: GlobalSearch(),
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute<dynamic>(
+                    builder: (BuildContext context) => GlobalSearch(),
                   ),
                 );
               },
