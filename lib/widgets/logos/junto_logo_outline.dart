@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
-class JuntoInviteLogo extends StatelessWidget {
-  const JuntoInviteLogo({
+class JuntoLogoOutline extends StatelessWidget {
+  const JuntoLogoOutline({
     Key key,
   }) : super(key: key);
 
