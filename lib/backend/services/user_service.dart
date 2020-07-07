@@ -553,8 +553,7 @@ class UserServiceCentralized implements UserService {
 
     if (_serverResponse.statusCode != 200 &&
         _serverResponse.statusCode != 403) {
-      final Map<String, dynamic> _decodedResponse =
-          JuntoHttp.handleResponse(_serverResponse);
+      JuntoHttp.handleResponse(_serverResponse);
     }
 
     return _serverResponse.statusCode;
