@@ -2,11 +2,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
 class JuntoInviteDialog extends StatelessWidget {
   const JuntoInviteDialog({this.buildContext});
 
   final BuildContext buildContext;
+
+  void inviteUser(BuildContext context, String email) async {
+    try {
+      JuntoLoader.showLoader(context);
+      await Provider.of<UserRepo>(context, listen: false).inviteUser(email);
+      Navigator.pop(context);
+      JuntoLoader.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          context: context,
+          dialogText:
+              'Your invitation is on its way! Feel free to invite another person to Junto in 7 days.',
+        ),
+      );
+    } catch (error) {
+      Navigator.pop(context);
+      JuntoLoader.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          context: context,
+          dialogText: error.message,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +75,6 @@ class JuntoInviteDialog extends StatelessWidget {
               ),
               child: TextField(
                 controller: emailController,
-                obscureText: true,
                 buildCounter: (
                   BuildContext context, {
                   int currentLength,
@@ -107,6 +135,14 @@ class JuntoInviteDialog extends StatelessWidget {
                   ),
                   Expanded(
                     child: GestureDetector(
+                      onTap: () {
+                        if (emailController.text.trim().isNotEmpty) {
+                          inviteUser(
+                            context,
+                            emailController.text.trim(),
+                          );
+                        }
+                      },
                       child: Container(
                         color: Colors.transparent,
                         alignment: Alignment.center,
