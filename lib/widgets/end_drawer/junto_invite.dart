@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
 
 import 'junto_invite_appbar.dart';
 import 'junto_invite_cta.dart';
+import 'junto_invite_dialog.dart';
 
 class JuntoInvite extends StatelessWidget {
   @override
@@ -39,7 +40,14 @@ class JuntoInvite extends StatelessWidget {
                 ),
                 JuntoInviteCTA(
                   title: 'INVITE SOMEONE TO JUNTO',
-                  callToAction: () {},
+                  callToAction: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (BuildContext context) => JuntoInviteDialog(
+                        buildContext: context,
+                      ),
+                    );
+                  },
                 )
               ],
             ),
