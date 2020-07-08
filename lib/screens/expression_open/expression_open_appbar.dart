@@ -53,7 +53,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 icon: OverlayInfoIcon(),
                 featureId: 'expression_info_id',
                 title:
-                    "This screen shows an opened expression. Click 'Learn Why' to read about our design inspiration",
+                    "This screen shows an opened expression. Click 'Learn More' to read about our design inspiration",
                 learnMore: true,
                 hasUpNext: true,
                 isLastFeature: true,
