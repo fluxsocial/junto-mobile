@@ -78,7 +78,7 @@ class AudioBottomToolsDefault extends StatelessWidget {
     return Consumer<AudioService>(builder: (context, audio, child) {
       return Container(
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          color: Theme.of(context).backgroundColor,
           border: Border(
             top: BorderSide(
               color: Theme.of(context).dividerColor,
