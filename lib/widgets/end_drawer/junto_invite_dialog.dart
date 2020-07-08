@@ -5,10 +5,18 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
-class JuntoInviteDialog extends StatelessWidget {
+class JuntoInviteDialog extends StatefulWidget {
   const JuntoInviteDialog({this.buildContext});
-
   final BuildContext buildContext;
+
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoInviteDialogState();
+  }
+}
+
+class JuntoInviteDialogState extends State<JuntoInviteDialog> {
+  TextEditingController emailController;
 
   void inviteUser(BuildContext context, String email) async {
     try {
@@ -48,9 +56,19 @@ class JuntoInviteDialog extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final emailController = TextEditingController();
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+  }
 
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -70,7 +88,7 @@ class JuntoInviteDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "You can invite one person a week to Junto. Who would you like to bring on?",
+              "You can invite one person a week to Junto - who would you like to bring on?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,
