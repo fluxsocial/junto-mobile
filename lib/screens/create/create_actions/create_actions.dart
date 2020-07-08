@@ -57,7 +57,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   UserData _userProfile;
 
   // community center address
-  String communityCenterAddress = appConfig.flavor == Flavor.prod
+  final String communityCenterAddress = appConfig.flavor == Flavor.prod
       ? '0ab99620-8835-d63b-3836-f091992ca2b4'
       : '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
 
@@ -198,7 +198,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<void> _createExpression() async {
     try {
-      if (_address == '2eb976b4-4473-2436-ccb2-e512e868bcac' &&
+      if (_address == updatesAddress &&
           !relationToGroup['facilitator'] &&
           !relationToGroup['creator']) {
         showDialog(

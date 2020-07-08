@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
@@ -9,9 +10,9 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/feed_placeholder.dart';
 
 class JuntoCommunityCenterFeedback extends StatefulWidget {
-  final String communityCenterAddress = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
   @override
   State<StatefulWidget> createState() {
     return JuntoCommunityCenterFeedbackState();
@@ -20,6 +21,12 @@ class JuntoCommunityCenterFeedback extends StatefulWidget {
 
 class JuntoCommunityCenterFeedbackState
     extends State<JuntoCommunityCenterFeedback> {
+  // final String communityCenterAddress = appConfig.flavor == Flavor.prod
+  //     ? '0ab99620-8835-d63b-3836-f091992ca2b4'
+  //     : '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+
+  final String communityCenterAddress = '0ab99620-8835-d63b-3836-f091992ca2b4';
+
   Future<QueryResults<ExpressionResponse>> getExpressions;
 
   @override
@@ -32,7 +39,7 @@ class JuntoCommunityCenterFeedbackState
     setState(() {
       getExpressions = Provider.of<ExpressionRepo>(context, listen: false)
           .getCollectiveExpressions({
-        'context': '48b97134-1a4d-deb0-b27c-9bcdfc33f386',
+        'context': communityCenterAddress,
         'context_type': 'Group',
         'pagination_position': '0',
       });
@@ -53,7 +60,11 @@ class JuntoCommunityCenterFeedbackState
         future: getExpressions,
         builder: (BuildContext context,
             AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data.results.length == 0) {
+            return FeedPlaceholder(
+              placeholderText: 'No expressions yet!',
+            );
+          } else if (snapshot.hasData) {
             return Column(
               children: <Widget>[
                 if (snapshot.data.results.length > 0)
