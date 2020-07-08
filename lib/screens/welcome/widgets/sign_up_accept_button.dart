@@ -35,7 +35,7 @@ class AcceptButton extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 40),
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(40.0),
           ),
           child: FlatButton(
@@ -46,14 +46,14 @@ class AcceptButton extends StatelessWidget {
               if (pageView == 0) {
                 nextPage();
               } else {
-                // Add member to community center on sign up
-                await Provider.of<GroupRepo>(context, listen: false)
-                    .addGroupMember(communityCenterAddress,
-                        [user.userProfile.user], 'Member');
-                // Add member to updates on sign up
-                await Provider.of<GroupRepo>(context, listen: false)
-                    .addGroupMember(
-                        updatesAddress, [user.userProfile.user], 'Member');
+                // // Add member to community center on sign up
+                // await Provider.of<GroupRepo>(context, listen: false)
+                //     .addGroupMember(communityCenterAddress,
+                //         [user.userProfile.user], 'Member');
+                // // Add member to updates on sign up
+                // await Provider.of<GroupRepo>(context, listen: false)
+                //     .addGroupMember(
+                //         updatesAddress, [user.userProfile.user], 'Member');
                 // accept agreements
                 await BlocProvider.of<AuthBloc>(context).add(
                   AcceptAgreements(),

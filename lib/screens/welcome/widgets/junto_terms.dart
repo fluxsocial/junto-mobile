@@ -46,7 +46,7 @@ class JuntoTerms extends StatelessWidget {
                           },
                         text: 'here.',
                         style: TextStyle(
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -82,7 +82,7 @@ class JuntoTerms extends StatelessWidget {
                           },
                         text: 'here.',
                         style: TextStyle(
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
