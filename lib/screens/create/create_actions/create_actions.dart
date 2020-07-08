@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -55,6 +56,16 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   String _userAddress;
   UserData _userProfile;
 
+  // community center address
+  String communityCenterAddress = appConfig.flavor == Flavor.prod
+      ? '0ab99620-8835-d63b-3836-f091992ca2b4'
+      : '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+
+  // updates address
+  String updatesAddress = appConfig.flavor == Flavor.prod
+      ? '98b99620-ca1f-fda2-060d-d1a22f1de6d2'
+      : '2eb976b4-4473-2436-ccb2-e512e868bcac';
+
   String _currentExpressionContext;
   ExpressionContext _expressionContext;
   String _currentExpressionContextDescription;
@@ -90,11 +101,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _currentExpressionContext = 'Collective';
       _currentExpressionContextDescription = 'share publicly on Junto';
     } else if (widget.expressionContext == ExpressionContext.Group &&
-        widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
+        widget.address != communityCenterAddress) {
       _currentExpressionContext = 'My Pack';
       _currentExpressionContextDescription = 'share to just your Pack members';
     } else if (widget.expressionContext == ExpressionContext.Group &&
-        widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
+        widget.address == communityCenterAddress) {
       _currentExpressionContext = 'Community Center';
       _currentExpressionContextDescription =
           'share your feedback with the team and community';
@@ -104,8 +115,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   Future<void> getRelationToGroup() async {
     // get relation to updates group
     final Map<String, dynamic> relation =
-        await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
-            '2eb976b4-4473-2436-ccb2-e512e868bcac', _userAddress);
+        await Provider.of<GroupRepo>(context, listen: false)
+            .getRelationToGroup(updatesAddress, _userAddress);
     // set state
     setState(() {
       relationToGroup = relation;
@@ -137,10 +148,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
     } else if (_expressionContext == ExpressionContext.Group &&
-        widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
+        widget.address != communityCenterAddress) {
       child = JuntoPacks(initialGroup: _address);
     } else if (_expressionContext == ExpressionContext.Group &&
-        widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386') {
+        widget.address == communityCenterAddress) {
       child = JuntoCommunityCenter();
     } else {
       context.bloc<CollectiveBloc>().add(
@@ -304,7 +315,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                if (widget.address != '48b97134-1a4d-deb0-b27c-9bcdfc33f386')
+                if (widget.address != communityCenterAddress)
                   Container(
                     child: Row(children: <Widget>[
                       const SizedBox(width: 15),
@@ -313,7 +324,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                       _expressionContextSelector(expressionContext: 'My Pack'),
                     ]),
                   ),
-                if (widget.address == '48b97134-1a4d-deb0-b27c-9bcdfc33f386')
+                if (widget.address == communityCenterAddress)
                   Container(
                     child: Row(children: <Widget>[
                       const SizedBox(width: 15),
@@ -425,7 +436,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           _expressionContext = ExpressionContext.Group;
           _currentExpressionContextDescription =
               'share your feedback with the team and community';
-          _address = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+          _address = communityCenterAddress;
         });
       };
       _expressionContextIcon = Image.asset(
@@ -441,7 +452,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           _expressionContext = ExpressionContext.Group;
           _currentExpressionContextDescription =
               'share updates to the Junto community';
-          _address = '2eb976b4-4473-2436-ccb2-e512e868bcac';
+          _address = updatesAddress;
         });
       };
       _expressionContextIcon = Icon(
