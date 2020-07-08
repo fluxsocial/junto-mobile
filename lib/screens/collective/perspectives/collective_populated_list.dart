@@ -19,7 +19,7 @@ class CollectivePopulatedList extends StatelessWidget {
 
   String _placeholderText() {
     if (state.name == 'Subscriptions') {
-      return 'No expressions yet. Start subscribing people you want to hear from!';
+      return 'No expressions yet. Start subscribing to people you want to hear from!';
     } else if (state.name == 'Connections') {
       return 'No expressions yet. Start connecting with people you want to hear from!';
     } else {
