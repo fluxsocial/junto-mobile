@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
@@ -37,14 +38,16 @@ class CreateAudioState extends State<CreateAudio> {
 
   Future<void> _onPickPressed({String source}) async {
     try {
-      File image;
+      final imagePicker = ImagePicker();
+      PickedFile file;
       if (source == 'Camera') {
-        image = await ImagePicker.pickImage(source: ImageSource.camera);
+        file = await imagePicker.getImage(source: ImageSource.camera);
       } else if (source == 'Gallery') {
-        image = await ImagePicker.pickImage(source: ImageSource.gallery);
+        file = await imagePicker.getImage(source: ImageSource.gallery);
       } else {
-        image = await ImagePicker.pickImage(source: ImageSource.camera);
+        file = await imagePicker.getImage(source: ImageSource.camera);
       }
+      final image = File(file.path);
 
       if (image == null && audioPhotoBackground == null) {
         setState(() => audioPhotoBackground = null);
@@ -178,12 +181,20 @@ class CreateAudioState extends State<CreateAudio> {
         context,
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) {
-            return CreateActions(
-              expressionType: ExpressionType.audio,
-              address: widget.address,
-              expressionContext: widget.expressionContext,
-              expression: audioExpression,
-            );
+            if (widget.expressionContext == ExpressionContext.Comment) {
+              return CreateCommentActions(
+                expression: audioExpression,
+                address: widget.address,
+                expressionType: ExpressionType.audio,
+              );
+            } else {
+              return CreateActions(
+                expressionType: ExpressionType.audio,
+                address: widget.address,
+                expressionContext: widget.expressionContext,
+                expression: audioExpression,
+              );
+            }
           },
         ),
       );

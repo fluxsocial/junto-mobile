@@ -11,14 +11,12 @@ part 'group_event.dart';
 part 'group_state.dart';
 
 class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
-  GroupBloc(this.groupRepo, this.userDataProvider, this.notificationRepo);
+  GroupBloc(this.groupRepo, this.userDataProvider, this.notificationRepo)
+      : super(GroupBlocInitial());
 
   final GroupRepo groupRepo;
   final NotificationRepo notificationRepo;
   final UserDataProvider userDataProvider;
-
-  @override
-  GroupBlocState get initialState => GroupBlocInitial();
 
   @override
   Stream<GroupBlocState> mapEventToState(

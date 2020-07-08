@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 
 class PhotoParent extends StatelessWidget {
   const PhotoParent({this.expression});
-  final ExpressionResponse expression;
+  final dynamic expression;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

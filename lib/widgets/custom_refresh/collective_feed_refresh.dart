@@ -7,11 +7,19 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 
-class CollectiveFeedRefresh extends StatelessWidget {
-  CollectiveFeedRefresh({Key key, this.child}) : super(key: key);
+class CollectiveFeedRefresh extends StatefulWidget {
+  CollectiveFeedRefresh({
+    Key key,
+   @required this.child,
+  }) : super(key: key);
 
   final Widget child;
 
+  @override
+  _CollectiveFeedRefreshState createState() => _CollectiveFeedRefreshState();
+}
+
+class _CollectiveFeedRefreshState extends State<CollectiveFeedRefresh> {
   final Completer<void> refreshCompleter = Completer<void>();
 
   @override
@@ -39,14 +47,14 @@ class CollectiveFeedRefresh extends StatelessWidget {
                 children: <Widget>[
                   if (!controller.isIdle)
                     Positioned(
-                      top: 25.0 * controller.value,
+                      top: 25 * controller.value,
                       child: SpinKitFadingCircle(
                         color: Theme.of(context).dividerColor,
                         size: 38.0,
                       ),
                     ),
                   Transform.translate(
-                    offset: Offset(0, 80.0 * controller.value),
+                    offset: Offset(0, 80 * controller.value),
                     child: child,
                   ),
                 ],
@@ -54,7 +62,7 @@ class CollectiveFeedRefresh extends StatelessWidget {
             },
           );
         },
-        child: child, 
+        child: widget.child,
       ),
     );
   }

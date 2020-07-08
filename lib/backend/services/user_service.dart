@@ -540,7 +540,22 @@ class UserServiceCentralized implements UserService {
     );
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
-    print(_decodedResponse);
     return _decodedResponse['action_taken'] == true;
+  }
+
+  Future<int> inviteUser(String email) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/auth/invite',
+      body: {
+        'email': email,
+      },
+    );
+
+    if (_serverResponse.statusCode != 200 &&
+        _serverResponse.statusCode != 403) {
+      JuntoHttp.handleResponse(_serverResponse);
+    }
+
+    return _serverResponse.statusCode;
   }
 }

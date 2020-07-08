@@ -81,7 +81,9 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   }
 
   Future<void> _onPickPressed() async {
-    final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    final imagePicker = ImagePicker();
+    final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
+    final File image = File(pickedImage.path);
     if (image == null) {
       imageFile.value = null;
       return;

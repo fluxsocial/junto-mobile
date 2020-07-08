@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/comment_preview/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 class CommentsList extends StatelessWidget {

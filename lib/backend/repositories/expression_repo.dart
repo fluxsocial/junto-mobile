@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services/image_handler.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
-enum ExpressionContext { Group, Collection, Collective }
+enum ExpressionContext { Group, Collection, Collective, Comment }
 
 class ImageThumbnails {
   final String keyPhoto;

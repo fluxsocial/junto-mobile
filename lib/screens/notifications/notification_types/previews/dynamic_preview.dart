@@ -32,7 +32,8 @@ class NotificationDynamicPreview extends StatelessWidget {
               ),
             ),
           // add space if title and body are both not empty
-          if (title.isNotEmpty && body.isNotEmpty) const SizedBox(height: 10),
+          if (title.isNotEmpty && body.isNotEmpty)
+            const SizedBox(height: 10),
           // show body of expression
           if (body.isNotEmpty)
             Text(

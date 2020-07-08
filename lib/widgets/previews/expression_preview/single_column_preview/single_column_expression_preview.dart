@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -10,7 +10,6 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_col
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/event.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/shortform.dart';
-import 'package:provider/provider.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
 class SingleColumnExpressionPreview extends StatelessWidget
@@ -26,7 +25,6 @@ class SingleColumnExpressionPreview extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<UserDataProvider>(context, listen: false);
     return GestureDetector(
       onTap: () {
         // pending - create conditional statement that renders ExpressionOpenCreated if
@@ -36,7 +34,6 @@ class SingleColumnExpressionPreview extends StatelessWidget
             builder: (context) => ExpressionOpen(
               deleteExpression,
               expression,
-              userData.userAddress,
             ),
           ),
         );

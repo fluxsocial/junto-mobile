@@ -190,4 +190,12 @@ class MockUserService implements UserService {
   Future<bool> cognitoValidate(String username) async {
     return true;
   }
+
+  Future<int> inviteUser(String email) async {
+    await Future<void>.delayed(
+      const Duration(milliseconds: 500),
+    );
+
+    return 200;
+  }
 }

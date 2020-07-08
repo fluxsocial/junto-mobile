@@ -17,13 +17,11 @@ typedef OnFilterApplied = void Function(Channel);
 
 class ChannelFilteringBloc
     extends Bloc<ChannelFilteringEvent, ChannelFilteringState> {
-  ChannelFilteringBloc(this.searchRepository, this.onFilterApplied);
+  ChannelFilteringBloc(this.searchRepository, this.onFilterApplied)
+      : super(const ChannelsInitialState());
 
   final SearchRepo searchRepository;
   final OnFilterApplied onFilterApplied;
-
-  @override
-  ChannelFilteringState get initialState => const ChannelsInitialState();
 
   // This debounces type events but leaves other events with normal "pace"
   @override

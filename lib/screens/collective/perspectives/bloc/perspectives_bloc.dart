@@ -15,13 +15,10 @@ class PerspectivesBloc extends Bloc<PerspectivesEvent, PerspectivesState> {
   PerspectivesBloc(
     this.userRepository,
     this.userDataProvider,
-  );
+  ) : super(PerspectivesInitial());
 
   final UserRepo userRepository;
   final UserDataProvider userDataProvider;
-
-  @override
-  PerspectivesState get initialState => PerspectivesInitial();
 
   @override
   Stream<PerspectivesState> mapEventToState(

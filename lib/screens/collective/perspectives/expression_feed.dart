@@ -28,6 +28,7 @@ class ExpressionFeed extends StatefulWidget {
 }
 
 class _ExpressionFeedState extends State<ExpressionFeed> {
+
   void _removeExpression(ExpressionResponse expression) {
     final bloc = context.bloc<CollectiveBloc>();
     bloc.add(DeleteCollective(expression.address));
@@ -55,10 +56,11 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
               ),
               pinned: false,
               floating: true,
-            ), 
+            ),
           ],
           body: CollectiveFeedRefresh(
             child: CustomScrollView(
+              shrinkWrap: true,
               slivers: <Widget>[
                 // Empty SliverToBoxAdaptor is necessary, otherwise switching
                 //  between single and two column layouts creates an issue.

@@ -109,11 +109,19 @@ class _JuntoLotusState extends State<JuntoLotus> {
   void showTutorial() {
     FeatureDiscovery.clearPreferences(context, <String>{
       'lotus_info_id',
+      'lotus_collective_id',
+      'lotus_groups_id',
+      'lotus_packs_id',
+      'lotus_create_id',
     });
     FeatureDiscovery.discoverFeatures(
       context,
       const <String>{
         'lotus_info_id',
+        'lotus_collective_id',
+        'lotus_groups_id',
+        'lotus_packs_id',
+        'lotus_create_id',
       },
     );
   }
@@ -159,10 +167,9 @@ class _JuntoLotusState extends State<JuntoLotus> {
                                       child: JuntoDescribedFeatureOverlay(
                                         icon: OverlayInfoIcon(),
                                         featureId: 'lotus_info_id',
-                                        oneFeature: true,
+                                        oneFeature: false,
                                         title:
-                                            "Welcome to Junto! You're looking at the app's tutorial, which you can open and close by clicking the question mark on the top right corner of your screen.  "
-                                            " To begin, this is the intention screen, your medium for navigation.",
+                                            "Welcome to Junto! This is the intention screen, your medium for navigation. Click 'Next' for a brief description of each section of the app.",
                                         learnMore: true,
                                         learnMoreText: [
                                           'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
@@ -208,12 +215,25 @@ class _JuntoLotusState extends State<JuntoLotus> {
                           ),
                           Column(
                             children: <Widget>[
-                              LotusButton(
-                                label: s.lotus_collective,
-                                icon: CustomIcons.newcollective,
-                                theme: theme,
-                                onTap: () =>
-                                    _navigateTo(context, Screen.collective),
+                              JuntoDescribedFeatureOverlay(
+                                icon: Icon(
+                                  CustomIcons.newcollective,
+                                  size: 38,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                featureId: 'lotus_collective_id',
+                                title:
+                                    'Collective: Interact with everyone on Junto.',
+                                learnMore: false,
+                                hasUpNext: false,
+                                isLastFeature: false,
+                                child: LotusButton(
+                                  label: s.lotus_collective,
+                                  icon: CustomIcons.newcollective,
+                                  theme: theme,
+                                  onTap: () =>
+                                      _navigateTo(context, Screen.collective),
+                                ),
                               ),
                               Container(
                                 color: Colors.transparent,
@@ -225,37 +245,79 @@ class _JuntoLotusState extends State<JuntoLotus> {
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           .5,
-                                      child: LotusButton(
-                                        label: s.lotus_packs,
-                                        icon: CustomIcons.newpacks,
-                                        iconSize: 38,
-                                        theme: theme,
-                                        onTap: () =>
-                                            _navigateTo(context, Screen.packs),
+                                      child: JuntoDescribedFeatureOverlay(
+                                        icon: Icon(
+                                          CustomIcons.newpacks,
+                                          size: 38,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        featureId: 'lotus_packs_id',
+                                        title:
+                                            'Packs: Interact with your closest friends and their closest friends.',
+                                        learnMore: false,
+                                        hasUpNext: false,
+                                        isLastFeature: false,
+                                        contentLocation: ContentLocation.above,
+                                        child: LotusButton(
+                                          label: s.lotus_packs,
+                                          icon: CustomIcons.newpacks,
+                                          iconSize: 38,
+                                          theme: theme,
+                                          onTap: () => _navigateTo(
+                                              context, Screen.packs),
+                                        ),
                                       ),
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           .5,
-                                      child: LotusButton(
-                                        label: s.lotus_groups,
-                                        icon: CustomIcons.newcircles,
-                                        theme: theme,
-                                        iconSize: 38,
-                                        onTap: () =>
-                                            _navigateTo(context, Screen.groups),
+                                      child: JuntoDescribedFeatureOverlay(
+                                        icon: Icon(
+                                          CustomIcons.newcircles,
+                                          size: 38,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        featureId: 'lotus_groups_id',
+                                        title:
+                                            'Groups: Create and interact in public or private groups.',
+                                        learnMore: false,
+                                        hasUpNext: false,
+                                        isLastFeature: false,
+                                        contentLocation: ContentLocation.above,
+                                        child: LotusButton(
+                                          label: s.lotus_groups,
+                                          icon: CustomIcons.newcircles,
+                                          theme: theme,
+                                          iconSize: 38,
+                                          onTap: () => _navigateTo(
+                                              context, Screen.groups),
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              LotusButton(
-                                label: s.lotus_create,
-                                icon: CustomIcons.newcreate,
-                                theme: theme,
-                                iconSize: 38,
-                                onTap: () =>
-                                    _navigateTo(context, Screen.create),
+                              JuntoDescribedFeatureOverlay(
+                                icon: Icon(
+                                  CustomIcons.newcreate,
+                                  size: 38,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                featureId: 'lotus_create_id',
+                                title:
+                                    'Create: Share expressions in multiple social layers.',
+                                learnMore: false,
+                                hasUpNext: false,
+                                contentLocation: ContentLocation.above,
+                                isLastFeature: true,
+                                child: (LotusButton(
+                                  label: s.lotus_create,
+                                  icon: CustomIcons.newcreate,
+                                  theme: theme,
+                                  iconSize: 38,
+                                  onTap: () =>
+                                      _navigateTo(context, Screen.create),
+                                )),
                               ),
                               const SizedBox(height: 25),
                             ],

@@ -22,6 +22,7 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 import 'junto_center.dart';
+import 'junto_invite.dart';
 import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
@@ -60,9 +61,9 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
               physics: NeverScrollableScrollPhysics(),
               child: Container(
                 padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * .2,
+                  top: MediaQuery.of(context).size.height * .17,
                   left: 32,
-                  bottom: MediaQuery.of(context).size.height * .2,
+                  bottom: MediaQuery.of(context).size.height * .17,
                   right: 32,
                 ),
                 height: MediaQuery.of(context).size.height,
@@ -147,6 +148,21 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
                                   return JuntoCommunityCenter();
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                        JuntoDrawerItem(
+                          icon: Icons.mail_outline,
+                          title: 'Invite',
+                          theme: theme,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute<dynamic>(
+                                builder: (BuildContext context) {
+                                  return JuntoInvite();
                                 },
                               ),
                             );
