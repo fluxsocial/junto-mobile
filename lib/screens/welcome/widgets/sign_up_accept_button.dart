@@ -22,11 +22,11 @@ class AcceptButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String communityCenterAddress = appConfig.flavor == Flavor.prod
-        ? '2eb98370-d74d-84bf-4fdb-0d30c22b8739'
+        ? '0ab99620-8835-d63b-3836-f091992ca2b4'
         : '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
 
     final String updatesAddress = appConfig.flavor == Flavor.prod
-        ? '32b98371-1663-ba6d-b268-48afb157f5a8'
+        ? '98b99620-ca1f-fda2-060d-d1a22f1de6d2'
         : '2eb976b4-4473-2436-ccb2-e512e868bcac';
     return Consumer2<JuntoThemesProvider, UserDataProvider>(builder:
         (context, JuntoThemesProvider theme, UserDataProvider user, child) {
@@ -46,14 +46,14 @@ class AcceptButton extends StatelessWidget {
               if (pageView == 0) {
                 nextPage();
               } else {
-                // // Add member to community center on sign up
-                // await Provider.of<GroupRepo>(context, listen: false)
-                //     .addGroupMember(communityCenterAddress,
-                //         [user.userProfile.user], 'Member');
-                // // Add member to updates on sign up
-                // await Provider.of<GroupRepo>(context, listen: false)
-                //     .addGroupMember(
-                //         updatesAddress, [user.userProfile.user], 'Member');
+                // Add member to community center on sign up
+                await Provider.of<GroupRepo>(context, listen: false)
+                    .addGroupMember(communityCenterAddress,
+                        [user.userProfile.user], 'Member');
+                // Add member to updates on sign up
+                await Provider.of<GroupRepo>(context, listen: false)
+                    .addGroupMember(
+                        updatesAddress, [user.userProfile.user], 'Member');
                 // accept agreements
                 await BlocProvider.of<AuthBloc>(context).add(
                   AcceptAgreements(),
