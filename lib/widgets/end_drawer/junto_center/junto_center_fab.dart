@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -7,6 +8,11 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
 class JuntoCommunityCenterFab extends StatelessWidget {
+  // community center address
+  final String communityCenterAddress = appConfig.flavor == Flavor.prod
+      ? '0ab99620-8835-d63b-3836-f091992ca2b4'
+      : '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -16,7 +22,7 @@ class JuntoCommunityCenterFab extends StatelessWidget {
             child: FeatureDiscovery(
               child: JuntoCreate(
                 channels: <String>[],
-                address: '48b97134-1a4d-deb0-b27c-9bcdfc33f386',
+                address: communityCenterAddress,
                 expressionContext: ExpressionContext.Group,
               ),
             ),

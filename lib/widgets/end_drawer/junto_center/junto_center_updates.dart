@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
@@ -11,7 +12,6 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 
 class JuntoCommunityCenterUpdates extends StatefulWidget {
-  final String communityCenterAddress = '2eb976b4-4473-2436-ccb2-e512e868bcac';
   @override
   State<StatefulWidget> createState() {
     return JuntoCommunityCenterUpdatesState();
@@ -20,6 +20,11 @@ class JuntoCommunityCenterUpdates extends StatefulWidget {
 
 class JuntoCommunityCenterUpdatesState
     extends State<JuntoCommunityCenterUpdates> {
+  // updates address
+  String updatesAddress = appConfig.flavor == Flavor.prod
+      ? '98b99620-ca1f-fda2-060d-d1a22f1de6d2'
+      : '2eb976b4-4473-2436-ccb2-e512e868bcac';
+
   Future<QueryResults<ExpressionResponse>> getExpressions;
 
   @override
@@ -32,7 +37,7 @@ class JuntoCommunityCenterUpdatesState
     setState(() {
       getExpressions = Provider.of<ExpressionRepo>(context, listen: false)
           .getCollectiveExpressions({
-        'context': '2eb976b4-4473-2436-ccb2-e512e868bcac',
+        'context': updatesAddress,
         'context_type': 'Group',
         'pagination_position': '0',
       });

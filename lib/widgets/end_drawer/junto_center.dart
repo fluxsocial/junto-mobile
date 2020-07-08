@@ -8,7 +8,6 @@ import 'package:feature_discovery/feature_discovery.dart';
 
 class JuntoCommunityCenter extends StatelessWidget {
   final List<String> _tabs = ['FEEDBACK', 'UPDATES'];
-  final String communityCenterAddress = '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
 
   @override
   Widget build(BuildContext context) {
