@@ -114,7 +114,7 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> _finishSignUp() async {
     final verificationCode = verificationCodeController.text.trim();
-    final username = usernameController.text..toLowerCase().trim();
+    final username = usernameController.text.toLowerCase().trim();
     final password = passwordController.text;
     final email = emailController.text.trim();
     final name = nameController.text.trim();
@@ -192,7 +192,7 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> _resendVerificationCode() async {
     assert(usernameController.text != null);
-    final username = usernameController.text;
+    final username = usernameController.text.toLowerCase().trim();
     try {
       final result = await Provider.of<AuthRepo>(context, listen: false)
           .resendVerificationCode(username);
@@ -271,7 +271,9 @@ class WelcomeState extends State<Welcome> {
                           ),
                           ResetPasswordConfirm(
                             signInController: _signInController,
-                            username: usernameController.value.text.trim(),
+                            username: usernameController.value.text
+                                .toLowerCase()
+                                .trim(),
                           ),
                         ],
                       ),
@@ -574,14 +576,14 @@ class WelcomeState extends State<Welcome> {
   String _getErrorMessage(SignUpResult result) {
     switch (result.error) {
       case SignUpResultError.UserAlreadyExists:
-        return 'Account with this e-mail or username already exists';
+        return 'Account with this email or username already exists';
       case SignUpResultError.InvalidPassword:
-        return 'Seems like you entered incorrect password';
+        return 'Seems like you entered an incorrect password';
       case SignUpResultError.TooManyRequests:
         return 'You tried to register too many times. Try again later.';
       case SignUpResultError.UnknownError:
       default:
-        return 'We cannot register you right now, sorry';
+        return 'Sorry, we cannot register you right now.';
     }
   }
 }
