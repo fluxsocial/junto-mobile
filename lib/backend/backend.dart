@@ -61,6 +61,7 @@ class Backend {
       final expressionService = ExpressionServiceCentralized(client);
       final authRepo = AuthRepo(
         authService,
+        cache: dbService,
         onLogout: () async {
           await themesProvider.reset();
           await dbService.wipe();
@@ -102,7 +103,7 @@ class Backend {
     final SearchService searchService = MockSearch();
     final ImageHandler imageHandler = MockedImageHandler();
     return Backend._(
-      authRepo: AuthRepo(authService, onLogout: () {}),
+      authRepo: AuthRepo(authService, onLogout: () {}, cache: null),
       userRepo: UserRepo(userService, null, null, expressionService),
       collectiveProvider: null,
       groupsProvider: GroupRepo(groupService, userService),

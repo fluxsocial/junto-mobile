@@ -7,9 +7,11 @@ import 'package:junto_beta_mobile/models/auth_result.dart';
 class AuthRepo {
   const AuthRepo(
     this.authService, {
+    this.cache,
     this.onLogout,
   });
 
+  final LocalCache cache;
   final AuthenticationService authService;
   final void Function() onLogout;
 
