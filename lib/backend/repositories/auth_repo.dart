@@ -10,7 +10,6 @@ class AuthRepo {
     this.cache,
     this.onLogout,
   });
-
   final LocalCache cache;
   final AuthenticationService authService;
   final void Function() onLogout;
@@ -23,7 +22,7 @@ class AuthRepo {
       logger.logException(e);
       return false;
     }
-  } 
+  }
 
   Future<SignUpResult> signUp(
       String username, String email, String password) async {
@@ -98,5 +97,6 @@ class AuthRepo {
     }
     logger.logInfo('Logging out');
     await authService.logOut();
+    await cache.wipe();
   }
 }
