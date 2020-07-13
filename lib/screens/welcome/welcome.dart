@@ -427,17 +427,33 @@ class WelcomeState extends State<Welcome> {
         }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
-        final emailAvailable = await userRepo.emailAvailable(email, username);
-        if (emailAvailable) {
-          final result = await authRepo.signUp(username, email, password);
-          JuntoLoader.hide();
-          if (!result.wasSuccessful) {
-            _showSignUpError(result);
-            return;
+
+        try {
+          final emailAvailable = await userRepo.emailAvailable(email, username);
+          if (emailAvailable) {
+            final result = await authRepo.signUp(username, email, password);
+            JuntoLoader.hide();
+            if (!result.wasSuccessful) {
+              // _showSignUpError(result);
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => SingleActionDialog(
+                  dialogText: result.error.toString(),
+                ),
+              );
+
+              return;
+            }
           }
-        } else {
+        } catch (error) {
           JuntoLoader.hide();
-          _showSignUpError(SignUpResult.emailTaken());
+
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              dialogText: error,
+            ),
+          );
           return;
         }
       }
