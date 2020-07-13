@@ -427,33 +427,17 @@ class WelcomeState extends State<Welcome> {
         }
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
-
-        try {
-          final emailAvailable = await userRepo.emailAvailable(email, username);
-          if (emailAvailable) {
-            final result = await authRepo.signUp(username, email, password);
-            JuntoLoader.hide();
-            if (!result.wasSuccessful) {
-              // _showSignUpError(result);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => SingleActionDialog(
-                  dialogText: result.error.toString(),
-                ),
-              );
-
-              return;
-            }
-          }
-        } catch (error) {
+        final emailAvailable = await userRepo.emailAvailable(email, username);
+        if (emailAvailable) {
+          final result = await authRepo.signUp(username, email, password);
           JuntoLoader.hide();
-
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => SingleActionDialog(
-              dialogText: error,
-            ),
-          );
+          if (!result.wasSuccessful) {
+            _showSignUpError(result);
+            return;
+          }
+        } else {
+          JuntoLoader.hide();
+          _showSignUpError(SignUpResult.emailTaken());
           return;
         }
       }
@@ -592,9 +576,9 @@ class WelcomeState extends State<Welcome> {
   String _getErrorMessage(SignUpResult result) {
     switch (result.error) {
       case SignUpResultError.UserAlreadyExists:
-        return 'Account with this email or username already exists';
+        return 'This username has been reserved or an account with this email already exists.';
       case SignUpResultError.InvalidPassword:
-        return 'Seems like you entered an incorrect password';
+        return 'Seems like you entered an incorrect password.';
       case SignUpResultError.TooManyRequests:
         return 'You tried to register too many times. Try again later.';
       case SignUpResultError.UnknownError:
