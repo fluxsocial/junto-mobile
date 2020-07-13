@@ -13,7 +13,7 @@ class JuntoLogoOutline extends StatelessWidget {
     } else if (theme == 'aqueous' || theme == 'aqueous-night') {
       return 'assets/images/junto-mobile__logo-outline--aqueous.png';
     } else if (theme == 'royal' || theme == 'royal-night') {
-      return 'assets/images/junto-mobile__logo-outline--royal.png';
+      return 'assets/images/junto-mobile__logo-outline--purpgold.png';
     } else if (theme == 'dark') {
       return 'assets/images/junto-mobile__logo-outline--dark.png';
     } else if (theme == 'dark-night') {
