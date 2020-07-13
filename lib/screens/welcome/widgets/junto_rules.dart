@@ -15,6 +15,17 @@ class JuntoRules extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             Container(
+              margin: const EdgeInsets.only(bottom: 15.0),
+              child: Text(
+                'Community Agreements',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            Container(
               margin: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height * .05,
               ),

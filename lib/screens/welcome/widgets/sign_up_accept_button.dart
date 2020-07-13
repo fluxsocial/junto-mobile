@@ -66,7 +66,7 @@ class AcceptButton extends StatelessWidget {
             ),
             color: Colors.transparent,
             child: Text(
-              pageView == 0 ? 'NEXT' : S.of(context).count_me_in,
+              pageView == 0 ? 'ACCEPT' : S.of(context).count_me_in,
               style: TextStyle(
                 color: JuntoPalette().juntoWhite(theme: theme),
                 fontWeight: FontWeight.w700,
