@@ -116,7 +116,7 @@ class WelcomeState extends State<Welcome> {
     final verificationCode = verificationCodeController.text.trim();
     final username = usernameController.text.toLowerCase().trim();
     final password = passwordController.text;
-    final email = emailController.text.trim();
+    final email = emailController.text.trim().toLowerCase();
     final name = nameController.text.trim();
     final location = locationController.text.trim();
     final website = websiteController.text.trim();
@@ -404,7 +404,7 @@ class WelcomeState extends State<Welcome> {
         //
       } else if (_currentIndex == 6) {
         //
-        final email = emailController.text.trim();
+        final email = emailController.text.trim().toLowerCase();
         final password = passwordController.text;
         final confirmPassword = confirmPasswordController.text;
         if (email == null ||
