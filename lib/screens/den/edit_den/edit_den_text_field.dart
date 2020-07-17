@@ -33,8 +33,6 @@ class EditDenTextField extends StatelessWidget {
           border: InputBorder.none,
           hintText: hintText,
         ),
-        cursorColor: Theme.of(context).primaryColor,
-        cursorWidth: 1.0,
         buildCounter: (
           BuildContext context, {
           int currentLength,
