@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
-import 'package:junto_beta_mobile/screens/welcome/widgets/junto_logo.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/junto_name.dart';
+import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
 import 'package:provider/provider.dart';
 
 class UnsupportedVersion extends StatelessWidget {
@@ -16,12 +16,16 @@ class UnsupportedVersion extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Spacer(),
-            JuntoLogo(),
+            JuntoLogoOutline(),
             JuntoName(),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 24.0),
+              margin: const EdgeInsets.symmetric(
+                vertical: 15.0,
+                horizontal: 40.0,
+              ),
               child: Text(
-                "Your copy of Junto must be updated. You can do so by visiting your device's app store",
+                "Your copy of Junto must be updated. You can do so by visiting your device's app store.",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 17,
                   color: Theme.of(context).primaryColor,
