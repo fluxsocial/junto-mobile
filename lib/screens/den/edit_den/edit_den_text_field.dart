@@ -33,6 +33,22 @@ class EditDenTextField extends StatelessWidget {
           border: InputBorder.none,
           hintText: hintText,
         ),
+        buildCounter: (
+          BuildContext context, {
+          int currentLength,
+          int maxLength,
+          bool isFocused,
+        }) =>
+            hintText == 'Short/Long Bio'
+                ? Text(
+                    '$currentLength / $maxLength',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                : null,
         maxLines: null,
         maxLength: maxLength,
         style: Theme.of(context).textTheme.caption,
