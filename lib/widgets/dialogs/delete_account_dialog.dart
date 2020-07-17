@@ -17,7 +17,7 @@ class DeleteAccountDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final passwordController = TextEditingController();
+    final deleteController = TextEditingController();
     Future<void> _deleteAccount() async {
       JuntoLoader.showLoader(context);
       try {
@@ -58,7 +58,7 @@ class DeleteAccountDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "If you are sure you'd like to delete your account, type your password below and confirm.",
+              "If you are sure you'd like to leave Junto, type 'delete' below and confirm.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,
@@ -69,7 +69,7 @@ class DeleteAccountDialog extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 25),
               child: TextField(
-                controller: passwordController,
+                controller: deleteController,
                 obscureText: true,
                 buildCounter: (
                   BuildContext context, {
@@ -80,7 +80,7 @@ class DeleteAccountDialog extends StatelessWidget {
                     null,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(0.0),
-                  hintText: 'password',
+                  hintText: 'Type here...',
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                     fontSize: 17,
@@ -131,7 +131,20 @@ class DeleteAccountDialog extends StatelessWidget {
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: _deleteAccount,
+                      onTap: () {
+                        if (deleteController.text.trim().toLowerCase() ==
+                            'delete') {
+                          _deleteAccount();
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                SingleActionDialog(
+                              dialogText: "Type 'delete' to leave Junto.",
+                            ),
+                          );
+                        }
+                      },
                       child: Container(
                         color: Colors.transparent,
                         alignment: Alignment.center,
