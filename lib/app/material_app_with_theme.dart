@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/screens/notifications/notification_navigation_
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_agreement.dart';
+import 'package:junto_beta_mobile/screens/welcome/unsupported_screen.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -71,8 +72,9 @@ class HomePage extends StatelessWidget {
             child: state.map(
               loading: (_) => HomeLoadingPage(),
               agreementsRequired: (_) => SignUpAgreements(),
-              authenticated: (_) => HomePageContent(),
+              authenticated: (_) => UnsupportedVersion(),
               unauthenticated: (_) => const Welcome(),
+              unsupported: (_) => const UnsupportedVersion(),
             ),
           ),
         ],
