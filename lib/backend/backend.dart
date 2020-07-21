@@ -23,6 +23,7 @@ import 'package:junto_beta_mobile/backend/services/search_service.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
 import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
+import 'package:junto_beta_mobile/backend/services/app_service.dart';
 
 export 'package:junto_beta_mobile/backend/repositories.dart';
 export 'package:junto_beta_mobile/backend/services.dart';
@@ -70,7 +71,7 @@ class Backend {
       final searchService = SearchServiceCentralized(client);
       final notificationService = NotificationServiceImpl(client);
       final notificationRepo = NotificationRepo(notificationService, dbService);
-      final appRepo = AppRepo();
+      final appRepo = AppRepo(AppServiceImpl());
       final userRepo =
           UserRepo(userService, notificationRepo, dbService, expressionService);
       final dataProvider = UserDataProvider(appRepo, userRepo);
@@ -108,7 +109,7 @@ class Backend {
       groupsProvider: GroupRepo(groupService, userService),
       expressionRepo: ExpressionRepo(expressionService, null, imageHandler),
       searchRepo: SearchRepo(searchService),
-      appRepo: AppRepo(),
+      appRepo: AppRepo(null),
       db: null,
       dataProvider: null,
       themesProvider: MockedThemesProvider(),
