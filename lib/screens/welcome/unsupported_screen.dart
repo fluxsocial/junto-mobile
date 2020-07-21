@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/junto_name.dart';
 import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
-import 'package:provider/provider.dart';
-import 'package:store_launcher/store_launcher.dart';
 
 class UpdateApp extends StatelessWidget {
   const UpdateApp({Key key}) : super(key: key);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:junto_beta_mobile/utils/cache_manager.dart';

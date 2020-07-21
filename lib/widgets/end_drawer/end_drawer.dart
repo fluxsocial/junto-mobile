@@ -20,7 +20,6 @@ import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 
 import 'junto_center.dart';
 import 'junto_invite.dart';
