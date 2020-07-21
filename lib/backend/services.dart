@@ -204,3 +204,7 @@ abstract class LocalCache {
   /// Clears all stored data
   Future<void> wipe();
 }
+
+abstract class AppService {
+  Future<AppModel> getServerVersion();
+}
