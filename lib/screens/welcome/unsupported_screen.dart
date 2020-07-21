@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/junto_name.dart';
 import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
 import 'package:provider/provider.dart';
+import 'package:store_launcher/store_launcher.dart';
 
-class UnsupportedVersion extends StatelessWidget {
-  const UnsupportedVersion({Key key}) : super(key: key);
+class UpdateApp extends StatelessWidget {
+  const UpdateApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,41 +36,7 @@ class UnsupportedVersion extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: InkWell(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 40),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(40.0),
-                  ),
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                    ),
-                    onPressed: () async {},
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 20,
-                    ),
-                    color: Colors.transparent,
-                    child: Text(
-                      "Update".toUpperCase(),
-                      style: TextStyle(
-                        color: JuntoPalette().juntoWhite(
-                            theme: Provider.of<JuntoThemesProvider>(context)),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        letterSpacing: 1.4,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+           ],
         ),
       ),
     );
