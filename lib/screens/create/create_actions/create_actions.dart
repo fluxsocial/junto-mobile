@@ -93,7 +93,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   void initState() {
     super.initState();
     // get relationship to group
-    getRelationToGroup();
     _channelController = TextEditingController();
     _address = widget.address;
     _expressionContext = widget.expressionContext;
@@ -113,6 +112,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   Future<void> getRelationToGroup() async {
+    // final String userAddress =
+    //     await Provider.of<UserDataProvider>(context).userAddress;
+
     // get relation to updates group
     final Map<String, dynamic> relation =
         await Provider.of<GroupRepo>(context, listen: false)
@@ -128,6 +130,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     super.didChangeDependencies();
     _userAddress = Provider.of<UserDataProvider>(context).userAddress;
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
+    getRelationToGroup();
   }
 
   @override
