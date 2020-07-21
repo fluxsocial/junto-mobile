@@ -11,9 +11,11 @@ import 'package:junto_beta_mobile/screens/notifications/notification_navigation_
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_agreement.dart';
+import 'package:junto_beta_mobile/screens/welcome/unsupported_screen.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
 import 'package:provider/provider.dart';
 
 class MaterialAppWithTheme extends StatefulWidget {
@@ -62,21 +64,32 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) => Stack(
-        children: <Widget>[
-          BackgroundTheme(),
-          AnimatedSwitcher(
-            duration: kThemeAnimationDuration,
-            child: state.map(
-              loading: (_) => HomeLoadingPage(),
-              agreementsRequired: (_) => SignUpAgreements(),
-              authenticated: (_) => HomePageContent(),
-              unauthenticated: (_) => const Welcome(),
+    return BlocBuilder<AppBloc, AppBlocState>(
+      builder: (context, state) {
+        if (state is SupportedVersion) {
+          return BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) => Stack(
+              children: <Widget>[
+                BackgroundTheme(),
+                AnimatedSwitcher(
+                  duration: kThemeAnimationDuration,
+                  child: state.map(
+                    loading: (_) => HomeLoadingPage(),
+                    agreementsRequired: (_) => SignUpAgreements(),
+                    authenticated: (_) => HomePageContent(),
+                    unauthenticated: (_) => const Welcome(),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
+          );
+        }
+
+        if (state is UnsupportedState) {
+          return UpdateApp();
+        }
+        return HomeLoadingPage();
+      },
     );
   }
 }
