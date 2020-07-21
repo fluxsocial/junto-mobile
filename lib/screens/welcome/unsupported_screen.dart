@@ -21,7 +21,7 @@ class UpdateApp extends StatelessWidget {
                 horizontal: 40.0,
               ),
               child: Text(
-                "Your copy of Junto must be updated. You can do so by visiting your device's app store.",
+                "Your copy of Junto must be updated. You can do so through TestFlight or the Google Play store.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 17,
@@ -31,7 +31,7 @@ class UpdateApp extends StatelessWidget {
               ),
             ),
             Spacer(),
-           ],
+          ],
         ),
       ),
     );
