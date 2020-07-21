@@ -51,6 +51,7 @@ class NotificationsLunarIcon extends StatelessWidget {
                   NotificationSignal(
                     top: 2,
                     right: 1,
+                    onGradientBackground: onGradientBackground,
                   ),
               ],
             ),
