@@ -33,9 +33,9 @@ class PackTabs extends StatelessWidget {
             _fetchMore(context);
           },
           child: GroupExpressions(
-            key: const PageStorageKey<String>('public-pack'),
+            key: const PageStorageKey<String>('private-pack'),
             group: group,
-            privacy: 'Public',
+            privacy: 'Private',
           ),
         ),
         CustomRefresh(
@@ -43,9 +43,9 @@ class PackTabs extends StatelessWidget {
             _fetchMore(context);
           },
           child: GroupExpressions(
-            key: const PageStorageKey<String>('private-pack'),
+            key: const PageStorageKey<String>('public-pack'),
             group: group,
-            privacy: 'Private',
+            privacy: 'Public',
           ),
         ),
         if (group.address == user.userProfile.pack.address)
