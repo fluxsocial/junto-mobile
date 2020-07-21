@@ -8,7 +8,6 @@ abstract class AuthState with _$AuthState {
   factory AuthState.loading() = AuthLoading;
   factory AuthState.agreementsRequired(UserData user) = AuthAgreementsRequired;
   factory AuthState.authenticated() = AuthAuthenticated;
-  factory AuthState.unsupported() = AuthUnsupported;
   factory AuthState.unauthenticated(
       {bool loading, bool error, String errorMessage}) = AuthUnauthenticated;
 }

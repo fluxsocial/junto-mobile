@@ -26,10 +26,6 @@ class _$AuthStateTearOff {
     return AuthAuthenticated();
   }
 
-  AuthUnsupported unsupported() {
-    return AuthUnsupported();
-  }
-
   AuthUnauthenticated unauthenticated(
       {bool loading, bool error, String errorMessage}) {
     return AuthUnauthenticated(
@@ -49,7 +45,6 @@ mixin _$AuthState {
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
     @required Result authenticated(),
-    @required Result unsupported(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   });
@@ -58,7 +53,6 @@ mixin _$AuthState {
     Result loading(),
     Result agreementsRequired(UserData user),
     Result authenticated(),
-    Result unsupported(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   });
@@ -67,7 +61,6 @@ mixin _$AuthState {
     @required Result loading(AuthLoading value),
     @required Result agreementsRequired(AuthAgreementsRequired value),
     @required Result authenticated(AuthAuthenticated value),
-    @required Result unsupported(AuthUnsupported value),
     @required Result unauthenticated(AuthUnauthenticated value),
   });
   @optionalTypeArgs
@@ -75,7 +68,6 @@ mixin _$AuthState {
     Result loading(AuthLoading value),
     Result agreementsRequired(AuthAgreementsRequired value),
     Result authenticated(AuthAuthenticated value),
-    Result unsupported(AuthUnsupported value),
     Result unauthenticated(AuthUnauthenticated value),
     @required Result orElse(),
   });
@@ -132,14 +124,12 @@ class _$AuthLoading implements AuthLoading {
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
     @required Result authenticated(),
-    @required Result unsupported(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   }) {
     assert(loading != null);
     assert(agreementsRequired != null);
     assert(authenticated != null);
-    assert(unsupported != null);
     assert(unauthenticated != null);
     return loading();
   }
@@ -150,7 +140,6 @@ class _$AuthLoading implements AuthLoading {
     Result loading(),
     Result agreementsRequired(UserData user),
     Result authenticated(),
-    Result unsupported(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   }) {
@@ -167,13 +156,11 @@ class _$AuthLoading implements AuthLoading {
     @required Result loading(AuthLoading value),
     @required Result agreementsRequired(AuthAgreementsRequired value),
     @required Result authenticated(AuthAuthenticated value),
-    @required Result unsupported(AuthUnsupported value),
     @required Result unauthenticated(AuthUnauthenticated value),
   }) {
     assert(loading != null);
     assert(agreementsRequired != null);
     assert(authenticated != null);
-    assert(unsupported != null);
     assert(unauthenticated != null);
     return loading(this);
   }
@@ -184,7 +171,6 @@ class _$AuthLoading implements AuthLoading {
     Result loading(AuthLoading value),
     Result agreementsRequired(AuthAgreementsRequired value),
     Result authenticated(AuthAuthenticated value),
-    Result unsupported(AuthUnsupported value),
     Result unauthenticated(AuthUnauthenticated value),
     @required Result orElse(),
   }) {
@@ -261,14 +247,12 @@ class _$AuthAgreementsRequired implements AuthAgreementsRequired {
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
     @required Result authenticated(),
-    @required Result unsupported(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   }) {
     assert(loading != null);
     assert(agreementsRequired != null);
     assert(authenticated != null);
-    assert(unsupported != null);
     assert(unauthenticated != null);
     return agreementsRequired(user);
   }
@@ -279,7 +263,6 @@ class _$AuthAgreementsRequired implements AuthAgreementsRequired {
     Result loading(),
     Result agreementsRequired(UserData user),
     Result authenticated(),
-    Result unsupported(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   }) {
@@ -296,13 +279,11 @@ class _$AuthAgreementsRequired implements AuthAgreementsRequired {
     @required Result loading(AuthLoading value),
     @required Result agreementsRequired(AuthAgreementsRequired value),
     @required Result authenticated(AuthAuthenticated value),
-    @required Result unsupported(AuthUnsupported value),
     @required Result unauthenticated(AuthUnauthenticated value),
   }) {
     assert(loading != null);
     assert(agreementsRequired != null);
     assert(authenticated != null);
-    assert(unsupported != null);
     assert(unauthenticated != null);
     return agreementsRequired(this);
   }
@@ -313,7 +294,6 @@ class _$AuthAgreementsRequired implements AuthAgreementsRequired {
     Result loading(AuthLoading value),
     Result agreementsRequired(AuthAgreementsRequired value),
     Result authenticated(AuthAuthenticated value),
-    Result unsupported(AuthUnsupported value),
     Result unauthenticated(AuthUnauthenticated value),
     @required Result orElse(),
   }) {
@@ -371,14 +351,12 @@ class _$AuthAuthenticated implements AuthAuthenticated {
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
     @required Result authenticated(),
-    @required Result unsupported(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   }) {
     assert(loading != null);
     assert(agreementsRequired != null);
     assert(authenticated != null);
-    assert(unsupported != null);
     assert(unauthenticated != null);
     return authenticated();
   }
@@ -389,7 +367,6 @@ class _$AuthAuthenticated implements AuthAuthenticated {
     Result loading(),
     Result agreementsRequired(UserData user),
     Result authenticated(),
-    Result unsupported(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   }) {
@@ -406,13 +383,11 @@ class _$AuthAuthenticated implements AuthAuthenticated {
     @required Result loading(AuthLoading value),
     @required Result agreementsRequired(AuthAgreementsRequired value),
     @required Result authenticated(AuthAuthenticated value),
-    @required Result unsupported(AuthUnsupported value),
     @required Result unauthenticated(AuthUnauthenticated value),
   }) {
     assert(loading != null);
     assert(agreementsRequired != null);
     assert(authenticated != null);
-    assert(unsupported != null);
     assert(unauthenticated != null);
     return authenticated(this);
   }
@@ -423,7 +398,6 @@ class _$AuthAuthenticated implements AuthAuthenticated {
     Result loading(AuthLoading value),
     Result agreementsRequired(AuthAgreementsRequired value),
     Result authenticated(AuthAuthenticated value),
-    Result unsupported(AuthUnsupported value),
     Result unauthenticated(AuthUnauthenticated value),
     @required Result orElse(),
   }) {
@@ -437,112 +411,6 @@ class _$AuthAuthenticated implements AuthAuthenticated {
 
 abstract class AuthAuthenticated implements AuthState {
   factory AuthAuthenticated() = _$AuthAuthenticated;
-}
-
-abstract class $AuthUnsupportedCopyWith<$Res> {
-  factory $AuthUnsupportedCopyWith(
-          AuthUnsupported value, $Res Function(AuthUnsupported) then) =
-      _$AuthUnsupportedCopyWithImpl<$Res>;
-}
-
-class _$AuthUnsupportedCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
-    implements $AuthUnsupportedCopyWith<$Res> {
-  _$AuthUnsupportedCopyWithImpl(
-      AuthUnsupported _value, $Res Function(AuthUnsupported) _then)
-      : super(_value, (v) => _then(v as AuthUnsupported));
-
-  @override
-  AuthUnsupported get _value => super._value as AuthUnsupported;
-}
-
-class _$AuthUnsupported implements AuthUnsupported {
-  _$AuthUnsupported();
-
-  @override
-  String toString() {
-    return 'AuthState.unsupported()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is AuthUnsupported);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result loading(),
-    @required Result agreementsRequired(UserData user),
-    @required Result authenticated(),
-    @required Result unsupported(),
-    @required
-        Result unauthenticated(bool loading, bool error, String errorMessage),
-  }) {
-    assert(loading != null);
-    assert(agreementsRequired != null);
-    assert(authenticated != null);
-    assert(unsupported != null);
-    assert(unauthenticated != null);
-    return unsupported();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result loading(),
-    Result agreementsRequired(UserData user),
-    Result authenticated(),
-    Result unsupported(),
-    Result unauthenticated(bool loading, bool error, String errorMessage),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (unsupported != null) {
-      return unsupported();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result loading(AuthLoading value),
-    @required Result agreementsRequired(AuthAgreementsRequired value),
-    @required Result authenticated(AuthAuthenticated value),
-    @required Result unsupported(AuthUnsupported value),
-    @required Result unauthenticated(AuthUnauthenticated value),
-  }) {
-    assert(loading != null);
-    assert(agreementsRequired != null);
-    assert(authenticated != null);
-    assert(unsupported != null);
-    assert(unauthenticated != null);
-    return unsupported(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result loading(AuthLoading value),
-    Result agreementsRequired(AuthAgreementsRequired value),
-    Result authenticated(AuthAuthenticated value),
-    Result unsupported(AuthUnsupported value),
-    Result unauthenticated(AuthUnauthenticated value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (unsupported != null) {
-      return unsupported(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AuthUnsupported implements AuthState {
-  factory AuthUnsupported() = _$AuthUnsupported;
 }
 
 abstract class $AuthUnauthenticatedCopyWith<$Res> {
@@ -624,14 +492,12 @@ class _$AuthUnauthenticated implements AuthUnauthenticated {
     @required Result loading(),
     @required Result agreementsRequired(UserData user),
     @required Result authenticated(),
-    @required Result unsupported(),
     @required
         Result unauthenticated(bool loading, bool error, String errorMessage),
   }) {
     assert(loading != null);
     assert(agreementsRequired != null);
     assert(authenticated != null);
-    assert(unsupported != null);
     assert(unauthenticated != null);
     return unauthenticated(this.loading, error, errorMessage);
   }
@@ -642,7 +508,6 @@ class _$AuthUnauthenticated implements AuthUnauthenticated {
     Result loading(),
     Result agreementsRequired(UserData user),
     Result authenticated(),
-    Result unsupported(),
     Result unauthenticated(bool loading, bool error, String errorMessage),
     @required Result orElse(),
   }) {
@@ -659,13 +524,11 @@ class _$AuthUnauthenticated implements AuthUnauthenticated {
     @required Result loading(AuthLoading value),
     @required Result agreementsRequired(AuthAgreementsRequired value),
     @required Result authenticated(AuthAuthenticated value),
-    @required Result unsupported(AuthUnsupported value),
     @required Result unauthenticated(AuthUnauthenticated value),
   }) {
     assert(loading != null);
     assert(agreementsRequired != null);
     assert(authenticated != null);
-    assert(unsupported != null);
     assert(unauthenticated != null);
     return unauthenticated(this);
   }
@@ -676,7 +539,6 @@ class _$AuthUnauthenticated implements AuthUnauthenticated {
     Result loading(AuthLoading value),
     Result agreementsRequired(AuthAgreementsRequired value),
     Result authenticated(AuthAuthenticated value),
-    Result unsupported(AuthUnsupported value),
     Result unauthenticated(AuthUnauthenticated value),
     @required Result orElse(),
   }) {
