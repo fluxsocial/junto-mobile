@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
 
 // This component is used in CommentPreview
@@ -22,48 +23,54 @@ class CommentActionItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: Container(
-        height: MediaQuery.of(context).size.height * .36,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
+    return Consumer<UserDataProvider>(builder: (
+      BuildContext context,
+      UserDataProvider user,
+      Widget child,
+    ) {
+      return Container(
+        color: Colors.transparent,
+        child: Container(
+          height: MediaQuery.of(context).size.height * .36,
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: 5,
+                        width: MediaQuery.of(context).size.width * .1,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).dividerColor,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  user.userAddress == comment.creator.address
+                      ? _myActionItems(context)
+                      : _memberActionItems(context)
+                ],
+              ),
+            ],
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 5,
-                      width: MediaQuery.of(context).size.width * .1,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).dividerColor,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                userAddress == comment.creator.address
-                    ? _myActionItems(context)
-                    : _memberActionItems(context)
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 
   // show these action items if the comment was created by user

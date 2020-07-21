@@ -5,10 +5,12 @@ class EditDenTextField extends StatelessWidget {
     this.controller,
     this.hintText,
     this.textCapitalization = TextCapitalization.words,
+    this.maxLength,
   });
   final TextEditingController controller;
   final String hintText;
   final TextCapitalization textCapitalization;
+  final int maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,26 @@ class EditDenTextField extends StatelessWidget {
           border: InputBorder.none,
           hintText: hintText,
         ),
+        cursorColor: Theme.of(context).primaryColor,
+        cursorWidth: 1.0,
+        buildCounter: (
+          BuildContext context, {
+          int currentLength,
+          int maxLength,
+          bool isFocused,
+        }) =>
+            hintText == 'Short/Long Bio'
+                ? Text(
+                    '$currentLength / $maxLength',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).primaryColorLight,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                : null,
         maxLines: null,
+        maxLength: maxLength,
         style: Theme.of(context).textTheme.caption,
         textInputAction: TextInputAction.done,
         textCapitalization: textCapitalization,

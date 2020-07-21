@@ -273,23 +273,28 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           EditDenTextField(
                             controller: _nameController,
                             hintText: 'Full Name',
+                            maxLength: 38,
                           ),
                           EditDenTextField(
                             controller: _locationController,
                             hintText: 'Location',
+                            maxLength: 38,
                           ),
                           EditDenTextField(
                             controller: _genderController,
                             hintText: 'Gender Pronouns',
+                            maxLength: 22,
                           ),
                           EditDenTextField(
                             controller: _websiteController,
                             hintText: 'Website',
+                            maxLength: 100,
                           ),
                           EditDenTextField(
                             controller: _bioController,
                             hintText: 'Short/Long Bio',
                             textCapitalization: TextCapitalization.sentences,
+                            maxLength: 1000,
                           ),
                         ],
                       ),

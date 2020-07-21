@@ -32,6 +32,7 @@ class CommentPreview extends StatelessWidget with MemberValidation {
 
   @override
   Widget build(BuildContext context) {
+    final String replyText = comment.comments == 1 ? 'reply' : 'replies';
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -126,6 +127,34 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                   Text(
                     parseDate(context, comment.createdAt).toLowerCase(),
                     style: Theme.of(context).textTheme.overline,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: 2,
+                        width: 14,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).dividerColor,
+                          border: Border(
+                            bottom: BorderSide(
+                              width: .5,
+                              color: Theme.of(context).dividerColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      if (comment.comments > 0)
+                        Text(
+                          '${comment.comments} ${replyText}',
+                          style: Theme.of(context).textTheme.overline,
+                        ),
+                      if (comment.comments == 0)
+                        Text(
+                          'reply',
+                          style: Theme.of(context).textTheme.overline,
+                        ),
+                    ],
                   ),
                 ],
               ),

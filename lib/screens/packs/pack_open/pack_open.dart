@@ -73,8 +73,8 @@ class PacksLoadedScaffold extends StatelessWidget {
                     expandedHeight:
                         MediaQuery.of(context).size.height * .11 + 50,
                     tabs: state.pack.address == user.userProfile.pack.address
-                        ? ['Pack', 'Private', 'Members']
-                        : ['Pack', 'Private'],
+                        ? ['Public', 'Private', 'Members']
+                        : ['Public', 'Private'],
                     packsViewNav: packsViewNav,
                   ),
                   floating: true,
