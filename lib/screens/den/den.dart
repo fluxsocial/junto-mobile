@@ -90,10 +90,14 @@ class JuntoDenState extends State<JuntoDen>
             UserExpressions(
               privacy: 'Public',
               userProfile: user.user,
+              rootExpressions: true,
+              subExpressions: false,
             ),
             UserExpressions(
               privacy: 'Public',
               userProfile: user.user,
+              rootExpressions: false,
+              subExpressions: true,
             ),
           ],
         ),
@@ -115,7 +119,9 @@ class JuntoDenState extends State<JuntoDen>
                     Provider.of<UserRepo>(context, listen: false),
                     Provider.of<UserDataProvider>(context, listen: false),
                     Provider.of<ExpressionRepo>(context, listen: false),
-                  )..add(LoadDen(user.userAddress)),
+                  )..add(
+                      LoadDen(user.userAddress),
+                    ),
                 ),
                 BlocProvider<ChannelFilteringBloc>(
                   create: (ctx) => ChannelFilteringBloc(

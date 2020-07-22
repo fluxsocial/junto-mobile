@@ -24,27 +24,83 @@ class DenBloc extends Bloc<DenEvent, DenState> {
 
   @override
   Stream<DenState> mapEventToState(DenEvent event) async* {
+    // root expression events
     if (event is LoadDen) {
-      yield* _fetchUserDenExpressions(event);
+      yield* _fetchUserDenExpressions(
+        event,
+        true,
+        false,
+      );
     }
     if (event is LoadMoreDen) {
-      yield* _fetchMoreUserDenExpressions(event);
+      yield* _fetchMoreUserDenExpressions(
+        event,
+        true,
+        false,
+      );
     }
     if (event is RefreshDen) {
-      yield* _refreshUserDenExpressions(event);
+      yield* _refreshUserDenExpressions(
+        event,
+        true,
+        false,
+      );
     }
+
     if (event is DeleteDenExpression) {
-      yield* _deleteUserExpression(event);
+      yield* _deleteUserExpression(
+        event,
+        true,
+        false,
+      );
+    }
+
+    // sub expression events
+    if (event is LoadDenReplies) {
+      yield* _fetchUserDenExpressions(
+        event,
+        false,
+        true,
+      );
+    }
+    if (event is LoadMoreDenReplies) {
+      yield* _fetchMoreUserDenExpressions(
+        event,
+        false,
+        true,
+      );
+    }
+    if (event is RefreshDenReplies) {
+      yield* _refreshUserDenExpressions(
+        event,
+        false,
+        true,
+      );
+    }
+
+    if (event is DeleteDenReply) {
+      yield* _deleteUserExpression(
+        event,
+        false,
+        true,
+      );
     }
   }
 
-  Stream<DenState> _fetchUserDenExpressions(LoadDen event) async* {
+  Stream<DenState> _fetchUserDenExpressions(
+    dynamic event,
+    bool rootExpressions,
+    bool subExpressions,
+  ) async* {
     userAddress = event.userAddress;
     try {
       yield DenLoadingState();
       final userInfo = await userRepo.getUser(userData.userAddress);
       userData.updateUser(userInfo);
-      final userExpressions = await fetchExpressions();
+      final userExpressions = await fetchExpressions(
+        rootExpressions,
+        subExpressions,
+      );
       currentTimeStamp = userExpressions.lastTimestamp;
       if (userExpressions.results.isEmpty) {
         yield DenEmptyState();
@@ -56,7 +112,11 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     }
   }
 
-  Stream<DenState> _deleteUserExpression(DeleteDenExpression event) async* {
+  Stream<DenState> _deleteUserExpression(
+    dynamic event,
+    bool rootExpressions,
+    bool subExpressions,
+  ) async* {
     try {
       if (state is DenLoadedState) {
         final DenLoadedState data = state;
@@ -70,13 +130,20 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     }
   }
 
-  Stream<DenState> _fetchMoreUserDenExpressions(event) async* {
+  Stream<DenState> _fetchMoreUserDenExpressions(
+    dynamic event,
+    bool rootExpressions,
+    bool subExpressions,
+  ) async* {
     try {
       if (state is DenLoadedState) {
         final DenLoadedState data = state;
         yield DenLoadedState(data.expressions);
         currentPage = currentPage + 50;
-        final userExpressions = await fetchExpressions();
+        final userExpressions = await fetchExpressions(
+          rootExpressions,
+          subExpressions,
+        );
         if (userExpressions.results.length > 1) {
           data.expressions.addAll(userExpressions.results);
         }
@@ -87,10 +154,17 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     }
   }
 
-  Stream<DenState> _refreshUserDenExpressions(event) async* {
+  Stream<DenState> _refreshUserDenExpressions(
+    dynamic event,
+    bool rootExpressions,
+    bool subExpressions,
+  ) async* {
     try {
       yield DenLoadingState();
-      final userExpressions = await fetchExpressions();
+      final userExpressions = await fetchExpressions(
+        rootExpressions,
+        subExpressions,
+      );
       currentTimeStamp = userExpressions.lastTimestamp;
       if (userExpressions.results.isEmpty) {
         yield DenEmptyState();
@@ -102,16 +176,18 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     }
   }
 
-  Future<QueryResults<ExpressionResponse>> fetchExpressions() async {
+  Future<QueryResults<ExpressionResponse>> fetchExpressions(
+    bool rootExpressions,
+    bool subExpressions,
+  ) async {
     final result = await userRepo.getUsersExpressions(
       userAddress,
       currentPage,
       currentTimeStamp,
+      rootExpressions,
+      subExpressions,
     );
     currentTimeStamp = result.lastTimestamp;
     return result;
   }
-
-  @override
-  String toString() => 'DenBloc';
 }

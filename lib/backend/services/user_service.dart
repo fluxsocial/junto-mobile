@@ -131,10 +131,12 @@ class UserServiceCentralized implements UserService {
     String userAddress,
     int paginationPos,
     String lastTimestamp,
+    bool rootExpressions,
+    bool subExpressions,
   ) async {
     final parms = <String, String>{
-      'root_expressions': 'true',
-      'sub_expressions': 'false',
+      'root_expressions': rootExpressions.toString(),
+      'sub_expressions': subExpressions.toString(),
       'pagination_position': '$paginationPos',
     };
     if (lastTimestamp != null && lastTimestamp.isNotEmpty) {
@@ -145,13 +147,31 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    return QueryResults(
-      lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
-      results: <ExpressionResponse>[
-        for (dynamic data in _responseMap['root_expressions']['results'])
-          ExpressionResponse.fromJson(data)
-      ],
-    );
+    if (rootExpressions) {
+      return QueryResults(
+        lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
+        results: <ExpressionResponse>[
+          for (dynamic data in _responseMap['root_expressions']['results'])
+            ExpressionResponse.fromJson(data)
+        ],
+      );
+    } else if (subExpressions) {
+      return QueryResults(
+        lastTimestamp: _responseMap['sub_expressions']['last_timestamp'],
+        results: <ExpressionResponse>[
+          for (dynamic data in _responseMap['sub_expressions']['results'])
+            ExpressionResponse.fromJson(data)
+        ],
+      );
+    } else {
+      return QueryResults(
+        lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
+        results: <ExpressionResponse>[
+          for (dynamic data in _responseMap['root_expressions']['results'])
+            ExpressionResponse.fromJson(data)
+        ],
+      );
+    }
   }
 
   @override

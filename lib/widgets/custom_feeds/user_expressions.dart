@@ -21,6 +21,8 @@ class UserExpressions extends StatefulWidget {
     Key key,
     @required this.userProfile,
     @required this.privacy,
+    this.rootExpressions,
+    this.subExpressions,
   }) : super(key: key);
 
   /// [UserProfile] of the user
@@ -29,13 +31,34 @@ class UserExpressions extends StatefulWidget {
   /// Either Public or Private;
   final String privacy;
 
+  // Show root expressions of user
+  final bool rootExpressions;
+
+  // Show sub expressions of user
+  final bool subExpressions;
+
   @override
   _UserExpressionsState createState() => _UserExpressionsState();
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
+  DenEvent refreshDen;
+  DenEvent loadMore;
+
   void deleteDenExpression(ExpressionResponse expression) {
     context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.rootExpressions) {
+      refreshDen = RefreshDen();
+      loadMore = LoadMoreDen();
+    } else if (widget.subExpressions) {
+      refreshDen = RefreshDenReplies();
+      loadMore = LoadMoreDenReplies();
+    }
   }
 
   @override
@@ -49,7 +72,7 @@ class _UserExpressionsState extends State<UserExpressions> {
           final results = state.expressions;
           return CustomRefresh(
             refresh: () async {
-              await context.bloc<DenBloc>().add(RefreshDen());
+              await context.bloc<DenBloc>().add(refreshDen);
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,
@@ -85,9 +108,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                     SliverToBoxAdapter(
                       child: FetchMoreButton(
                         onPressed: () {
-                          context.bloc<DenBloc>().add(
-                                LoadMoreDen(),
-                              );
+                          context.bloc<DenBloc>().add(loadMore);
                         },
                       ),
                     )

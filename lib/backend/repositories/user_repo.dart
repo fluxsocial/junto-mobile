@@ -65,6 +65,8 @@ class UserRepo {
     String userAddress,
     int paginationPos,
     String lastTimestamp,
+    bool rootExpressions,
+    bool subExpressions,
   ) async {
     assert(userAddress != null && userAddress.isNotEmpty);
     if (await DataConnectionChecker().hasConnection) {
@@ -72,6 +74,8 @@ class UserRepo {
         userAddress,
         paginationPos,
         lastTimestamp,
+        rootExpressions,
+        subExpressions,
       );
       await db.insertExpressions(
           cachedDenExpressions.results, DBBoxes.denExpressions);
