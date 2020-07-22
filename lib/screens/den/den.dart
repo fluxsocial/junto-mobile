@@ -11,6 +11,9 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar_name.dart';
+
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
@@ -31,6 +34,7 @@ class JuntoDenState extends State<JuntoDen>
 
   ScrollController _denController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final List<String> _tabs = ['Collective', 'Replies'];
 
   @override
   void initState() {
@@ -45,27 +49,54 @@ class JuntoDenState extends State<JuntoDen>
   }
 
   Widget _buildBody(UserData user) {
-    return NestedScrollView(
-      controller: _denController,
-      physics: const ClampingScrollPhysics(),
-      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return <Widget>[
-          SliverPersistentHeader(
-            delegate: DenAppbar(
-              expandedHeight: MediaQuery.of(context).size.height * .1,
-              heading: user.user.username,
+    return DefaultTabController(
+      length: _tabs.length,
+      child: NestedScrollView(
+        controller: _denController,
+        physics: const ClampingScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverPersistentHeader(
+              delegate: DenAppbar(
+                expandedHeight: MediaQuery.of(context).size.height * .1,
+                heading: user.user.username,
+              ),
+              floating: true,
+              pinned: true,
             ),
-            floating: true,
-            pinned: false,
-          ),
-          JuntoDenSliverAppbar(
-            profile: user,
-          ),
-        ];
-      },
-      body: UserExpressions(
-        privacy: 'Public',
-        userProfile: user.user,
+            JuntoDenSliverAppbar(
+              profile: user,
+            ),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: JuntoAppBarDelegate(
+                TabBar(
+                  labelPadding: const EdgeInsets.all(0),
+                  isScrollable: true,
+                  labelColor: Theme.of(context).primaryColorDark,
+                  unselectedLabelColor: Theme.of(context).primaryColorLight,
+                  labelStyle: Theme.of(context).textTheme.subtitle1,
+                  indicatorWeight: 0.0001,
+                  tabs: <Widget>[
+                    for (String name in _tabs) TabBarName(name: name),
+                  ],
+                ),
+              ),
+            )
+          ];
+        },
+        body: TabBarView(
+          children: <Widget>[
+            UserExpressions(
+              privacy: 'Public',
+              userProfile: user.user,
+            ),
+            UserExpressions(
+              privacy: 'Public',
+              userProfile: user.user,
+            ),
+          ],
+        ),
       ),
     );
   }
