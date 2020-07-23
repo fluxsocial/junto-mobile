@@ -133,6 +133,7 @@ class UserServiceCentralized implements UserService {
     String lastTimestamp,
     bool rootExpressions,
     bool subExpressions,
+    bool communityFeedback,
   ) async {
     final parms = <String, String>{
       'root_expressions': rootExpressions.toString(),
@@ -148,12 +149,21 @@ class UserServiceCentralized implements UserService {
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     if (rootExpressions) {
+      List<ExpressionResponse> results = <ExpressionResponse>[];
+      final String expressionContext = communityFeedback
+          ? '0ab99620-8835-d63b-3836-f091992ca2b4'
+          : 'collective';
+      for (dynamic data in _responseMap['root_expressions']['results']) {
+        if (data['context'] == expressionContext) {
+          results.add(
+            ExpressionResponse.fromJson(data),
+          );
+        }
+      }
+
       return QueryResults(
         lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
-        results: <ExpressionResponse>[
-          for (dynamic data in _responseMap['root_expressions']['results'])
-            ExpressionResponse.fromJson(data)
-        ],
+        results: results,
       );
     } else if (subExpressions) {
       return QueryResults(

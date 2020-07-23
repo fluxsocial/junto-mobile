@@ -32,20 +32,39 @@ class JuntoDenState extends State<JuntoDen>
     with HideFab, TickerProviderStateMixin {
   bool showComments = false;
   ScrollController _denController;
+  TabController _tabController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  final List<String> _tabs = ['Collective', 'Replies'];
+  final List<String> _tabs = [
+    'Collective',
+    'Feedback',
+    'Replies',
+  ];
+  int _currentIndex;
 
   @override
   void initState() {
     super.initState();
 
     _denController = ScrollController();
+    _tabController = TabController(
+      vsync: this,
+      initialIndex: 0,
+      length: _tabs.length,
+    );
+    _tabController.addListener(_setCurrentIndex);
   }
 
   @override
   void dispose() {
     _denController.dispose();
+    _tabController.dispose();
     super.dispose();
+  }
+
+  void _setCurrentIndex() {
+    setState(() {
+      _currentIndex = _tabController.index;
+    });
   }
 
   Widget _buildBody(UserData user) {
@@ -71,6 +90,7 @@ class JuntoDenState extends State<JuntoDen>
               pinned: true,
               delegate: JuntoAppBarDelegate(
                 TabBar(
+                  controller: _tabController,
                   labelPadding: const EdgeInsets.all(0),
                   isScrollable: true,
                   labelColor: Theme.of(context).primaryColorDark,
@@ -86,18 +106,28 @@ class JuntoDenState extends State<JuntoDen>
           ];
         },
         body: TabBarView(
+          controller: _tabController,
           children: <Widget>[
             UserExpressions(
               privacy: 'Public',
               userProfile: user.user,
               rootExpressions: true,
               subExpressions: false,
+              communityCenterFeedback: false,
+            ),
+            UserExpressions(
+              privacy: 'Public',
+              userProfile: user.user,
+              rootExpressions: true,
+              subExpressions: false,
+              communityCenterFeedback: true,
             ),
             UserExpressions(
               privacy: 'Public',
               userProfile: user.user,
               rootExpressions: false,
               subExpressions: true,
+              communityCenterFeedback: false,
             ),
           ],
         ),

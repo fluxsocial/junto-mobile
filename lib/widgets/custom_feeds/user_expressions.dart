@@ -18,14 +18,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
+import '../../models/junto_notification_results.dart';
+
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
   const UserExpressions({
     Key key,
     @required this.userProfile,
     @required this.privacy,
-    this.rootExpressions,
-    this.subExpressions,
+    @required this.rootExpressions,
+    @required this.subExpressions,
+    this.communityCenterFeedback = false,
   }) : super(key: key);
 
   /// [UserProfile] of the user
@@ -40,12 +43,14 @@ class UserExpressions extends StatefulWidget {
   // Show sub expressions of user
   final bool subExpressions;
 
+  // shows community center feedback
+  final bool communityCenterFeedback;
+
   @override
   _UserExpressionsState createState() => _UserExpressionsState();
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  String _userAddress;
   DenEvent refreshDen;
   DenEvent loadMore;
 
@@ -56,8 +61,7 @@ class _UserExpressionsState extends State<UserExpressions> {
   @override
   void initState() {
     super.initState();
-    _userAddress =
-        Provider.of<UserDataProvider>(context, listen: false).userAddress;
+
     if (widget.rootExpressions) {
       refreshDen = RefreshDen();
       loadMore = LoadMoreDen();
@@ -69,6 +73,12 @@ class _UserExpressionsState extends State<UserExpressions> {
     context.bloc<DenBloc>().add(refreshDen);
   }
 
+  setDenEvent(DenEvent denEvent) {
+    setState(() {
+      refreshDen = denEvent;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DenBloc, DenState>(
@@ -78,6 +88,7 @@ class _UserExpressionsState extends State<UserExpressions> {
         }
         if (state is DenLoadedState) {
           final results = state.expressions;
+
           return CustomRefresh(
             refresh: () async {
               await context.bloc<DenBloc>().add(refreshDen);
@@ -100,7 +111,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                       if (Provider.of<AppRepo>(context, listen: false)
                           .twoColumnLayout) {
                         return TwoColumnList(
-                          data: results,
+                          data: results == null ? [] : results,
                           useSliver: true,
                           deleteExpression: deleteDenExpression,
                         );

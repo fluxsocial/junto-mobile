@@ -67,6 +67,7 @@ class UserRepo {
     String lastTimestamp,
     bool rootExpressions,
     bool subExpressions,
+    bool communityFeedback,
   ) async {
     assert(userAddress != null && userAddress.isNotEmpty);
     DBBoxes cacheBox;
@@ -78,6 +79,7 @@ class UserRepo {
         lastTimestamp,
         rootExpressions,
         subExpressions,
+        communityFeedback,
       );
 
       if (rootExpressions) {
@@ -88,8 +90,7 @@ class UserRepo {
       await db.insertExpressions(cachedDenExpressions.results, cacheBox);
       return cachedDenExpressions;
     }
-    print(DBBoxes.denRootExpressions);
-    print(DBBoxes.denSubExpressions);
+
     final cachedResult = await db.retrieveExpressions(
       cacheBox,
     );

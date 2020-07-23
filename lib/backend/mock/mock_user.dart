@@ -72,6 +72,7 @@ class MockUserService implements UserService {
     String lastTimestamp,
     bool rootExpressions,
     bool subExpressions,
+    bool communityFeedback,
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return QueryResults(

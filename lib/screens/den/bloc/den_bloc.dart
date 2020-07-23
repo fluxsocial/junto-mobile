@@ -30,6 +30,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
         event,
         true,
         false,
+        false,
       );
     }
     if (event is LoadMoreDen) {
@@ -37,12 +38,14 @@ class DenBloc extends Bloc<DenEvent, DenState> {
         event,
         true,
         false,
+        false,
       );
     }
     if (event is RefreshDen) {
       yield* _refreshUserDenExpressions(
         event,
         true,
+        false,
         false,
       );
     }
@@ -61,6 +64,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
         event,
         false,
         true,
+        false,
       );
     }
     if (event is LoadMoreDenReplies) {
@@ -68,6 +72,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
         event,
         false,
         true,
+        false,
       );
     }
     if (event is RefreshDenReplies) {
@@ -75,6 +80,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
         event,
         false,
         true,
+        false,
       );
     }
 
@@ -91,6 +97,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     dynamic event,
     bool rootExpressions,
     bool subExpressions,
+    bool communityFeedback,
   ) async* {
     userAddress = event.userAddress;
     try {
@@ -100,6 +107,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
       final userExpressions = await fetchExpressions(
         rootExpressions,
         subExpressions,
+        communityFeedback,
       );
       currentTimeStamp = userExpressions.lastTimestamp;
       if (userExpressions.results.isEmpty) {
@@ -134,6 +142,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     dynamic event,
     bool rootExpressions,
     bool subExpressions,
+    bool communityFeedback,
   ) async* {
     try {
       if (state is DenLoadedState) {
@@ -143,6 +152,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
         final userExpressions = await fetchExpressions(
           rootExpressions,
           subExpressions,
+          communityFeedback,
         );
         if (userExpressions.results.length > 1) {
           data.expressions.addAll(userExpressions.results);
@@ -158,12 +168,14 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     dynamic event,
     bool rootExpressions,
     bool subExpressions,
+    bool communityFeedback,
   ) async* {
     try {
       yield DenLoadingState();
       final userExpressions = await fetchExpressions(
         rootExpressions,
         subExpressions,
+        communityFeedback,
       );
       currentTimeStamp = userExpressions.lastTimestamp;
       if (userExpressions.results.isEmpty) {
@@ -179,6 +191,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
   Future<QueryResults<ExpressionResponse>> fetchExpressions(
     bool rootExpressions,
     bool subExpressions,
+    bool communityFeedback,
   ) async {
     final result = await userRepo.getUsersExpressions(
       userAddress,
@@ -186,8 +199,10 @@ class DenBloc extends Bloc<DenEvent, DenState> {
       currentTimeStamp,
       rootExpressions,
       subExpressions,
+      communityFeedback,
     );
     currentTimeStamp = result.lastTimestamp;
+
     return result;
   }
 }
