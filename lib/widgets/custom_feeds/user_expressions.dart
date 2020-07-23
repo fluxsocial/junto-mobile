@@ -14,6 +14,9 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/er
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
@@ -42,6 +45,7 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
+  String _userAddress;
   DenEvent refreshDen;
   DenEvent loadMore;
 
@@ -52,6 +56,8 @@ class _UserExpressionsState extends State<UserExpressions> {
   @override
   void initState() {
     super.initState();
+    _userAddress =
+        Provider.of<UserDataProvider>(context, listen: false).userAddress;
     if (widget.rootExpressions) {
       refreshDen = RefreshDen();
       loadMore = LoadMoreDen();
@@ -59,6 +65,8 @@ class _UserExpressionsState extends State<UserExpressions> {
       refreshDen = RefreshDenReplies();
       loadMore = LoadMoreDenReplies();
     }
+
+    context.bloc<DenBloc>().add(refreshDen);
   }
 
   @override

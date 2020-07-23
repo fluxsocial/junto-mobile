@@ -37,7 +37,6 @@ abstract class UserService {
     String lastTimestamp,
     bool rootExpressions,
     bool subExpressions,
-    
   );
 
   /// Returns a list of perspectives owned by the given user

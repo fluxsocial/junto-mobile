@@ -31,7 +31,6 @@ class JuntoDen extends StatefulWidget {
 class JuntoDenState extends State<JuntoDen>
     with HideFab, TickerProviderStateMixin {
   bool showComments = false;
-
   ScrollController _denController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   final List<String> _tabs = ['Collective', 'Replies'];
@@ -39,6 +38,7 @@ class JuntoDenState extends State<JuntoDen>
   @override
   void initState() {
     super.initState();
+
     _denController = ScrollController();
   }
 

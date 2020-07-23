@@ -69,6 +69,8 @@ class UserRepo {
     bool subExpressions,
   ) async {
     assert(userAddress != null && userAddress.isNotEmpty);
+    DBBoxes cacheBox;
+
     if (await DataConnectionChecker().hasConnection) {
       cachedDenExpressions = await _userService.getUsersExpressions(
         userAddress,
@@ -77,12 +79,19 @@ class UserRepo {
         rootExpressions,
         subExpressions,
       );
-      await db.insertExpressions(
-          cachedDenExpressions.results, DBBoxes.denExpressions);
+
+      if (rootExpressions) {
+        cacheBox = DBBoxes.denRootExpressions;
+      } else if (subExpressions) {
+        cacheBox = DBBoxes.denSubExpressions;
+      }
+      await db.insertExpressions(cachedDenExpressions.results, cacheBox);
       return cachedDenExpressions;
     }
+    print(DBBoxes.denRootExpressions);
+    print(DBBoxes.denSubExpressions);
     final cachedResult = await db.retrieveExpressions(
-      DBBoxes.denExpressions,
+      cacheBox,
     );
     return QueryResults(
       lastTimestamp: cachedDenExpressions?.lastTimestamp,
