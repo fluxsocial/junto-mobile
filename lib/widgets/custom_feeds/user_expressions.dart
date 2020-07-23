@@ -49,8 +49,6 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  String _userAddress;
-
   void deleteDenExpression(ExpressionResponse expression) {
     context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
   }
@@ -58,8 +56,6 @@ class _UserExpressionsState extends State<UserExpressions> {
   @override
   void initState() {
     super.initState();
-    _userAddress =
-        Provider.of<UserDataProvider>(context, listen: false).userAddress;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadData();
@@ -96,7 +92,7 @@ class _UserExpressionsState extends State<UserExpressions> {
 
     context.bloc<DenBloc>().add(
           LoadDen(
-            _userAddress,
+            widget.userProfile.address,
             _params,
           ),
         );

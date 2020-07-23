@@ -196,23 +196,20 @@ class _JuntoMemberState extends State<JuntoMember>
                       },
                       body: TabBarView(
                         children: <Widget>[
-                          const SizedBox(), const SizedBox(),
-                          // UserExpressions(
-                          //   key: UniqueKey(),
-                          //   privacy: 'Public',
-                          //   userProfile: widget.profile,
-                          //   rootExpressions: true,
-                          //   subExpressions: false,
-                          //   communityCenterFeedback: false,
-                          // ),
-                          // UserExpressions(
-                          //   key: UniqueKey(),
-                          //   privacy: 'Public',
-                          //   userProfile: widget.profile,
-                          //   rootExpressions: true,
-                          //   subExpressions: false,
-                          //   communityCenterFeedback: true,
-                          // ),
+                          UserExpressions(
+                            privacy: 'Public',
+                            userProfile: widget.profile,
+                            rootExpressions: true,
+                            subExpressions: false,
+                            communityCenterFeedback: false,
+                          ),
+                          UserExpressions(
+                            privacy: 'Public',
+                            userProfile: widget.profile,
+                            rootExpressions: true,
+                            subExpressions: false,
+                            communityCenterFeedback: true,
+                          ),
                         ],
                       ),
                     ),
