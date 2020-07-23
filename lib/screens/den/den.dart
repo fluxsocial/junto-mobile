@@ -102,7 +102,7 @@ class JuntoDenState extends State<JuntoDen>
                   ],
                 ),
               ),
-            )
+            ),
           ];
         },
         body: TabBarView(

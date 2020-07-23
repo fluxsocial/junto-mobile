@@ -13,6 +13,8 @@ import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
 import 'package:junto_beta_mobile/screens/member/member_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar_name.dart';
 import 'package:provider/provider.dart';
 
 class JuntoMember extends StatefulWidget {
@@ -40,6 +42,10 @@ class JuntoMember extends StatefulWidget {
 class _JuntoMemberState extends State<JuntoMember>
     with HideFab, TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final List<String> _tabs = [
+    'Collective',
+    'Feedback',
+  ];
   UserData _memberProfile;
   String _userAddress;
   UserData _userProfile;
@@ -136,16 +142,7 @@ class _JuntoMemberState extends State<JuntoMember>
           Provider.of<UserRepo>(context, listen: false),
           Provider.of<UserDataProvider>(context, listen: false),
           Provider.of<ExpressionRepo>(context, listen: false),
-        )..add(
-            LoadDen(
-              widget.profile.address,
-              {
-                'rootExpressions': true,
-                'subExpressions': false,
-                'communityFeedback': false,
-              },
-            ),
-          ),
+        ),
         child: Scaffold(
           //TODO(dominik/Nash): revert filter drawer
           // and use bloc to fetch member expressions
@@ -154,31 +151,70 @@ class _JuntoMemberState extends State<JuntoMember>
               children: <Widget>[
                 Scaffold(
                   key: scaffoldKey,
-                  body: NestedScrollView(
-                    physics: const ClampingScrollPhysics(),
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
-                      return <Widget>[
-                        SliverPersistentHeader(
-                          delegate: MemberAppbar(
-                            expandedHeight:
-                                MediaQuery.of(context).size.height * .1,
-                            username: _memberProfile.user.username,
+                  body: DefaultTabController(
+                    length: _tabs.length,
+                    child: NestedScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      headerSliverBuilder:
+                          (BuildContext context, bool innerBoxIsScrolled) {
+                        return <Widget>[
+                          SliverPersistentHeader(
+                            delegate: MemberAppbar(
+                              expandedHeight:
+                                  MediaQuery.of(context).size.height * .1,
+                              username: _memberProfile.user.username,
+                            ),
+                            floating: true,
+                            pinned: true,
                           ),
-                          floating: true,
-                          pinned: false,
-                        ),
-                        MemberDenAppbar(
-                          profile: widget.profile,
-                          isConnected: isConnected,
-                          toggleMemberRelationships: toggleMemberRelationships,
-                        ),
-                      ];
-                    },
-                    body: UserExpressions(
-                      key: UniqueKey(),
-                      privacy: 'Public',
-                      userProfile: widget.profile,
+                          MemberDenAppbar(
+                            profile: widget.profile,
+                            isConnected: isConnected,
+                            toggleMemberRelationships:
+                                toggleMemberRelationships,
+                          ),
+                          SliverPersistentHeader(
+                            pinned: true,
+                            delegate: JuntoAppBarDelegate(
+                              TabBar(
+                                labelPadding: const EdgeInsets.all(0),
+                                isScrollable: true,
+                                labelColor: Theme.of(context).primaryColorDark,
+                                unselectedLabelColor:
+                                    Theme.of(context).primaryColorLight,
+                                labelStyle:
+                                    Theme.of(context).textTheme.subtitle1,
+                                indicatorWeight: 0.0001,
+                                tabs: <Widget>[
+                                  for (String name in _tabs)
+                                    TabBarName(name: name),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ];
+                      },
+                      body: TabBarView(
+                        children: <Widget>[
+                          const SizedBox(), const SizedBox(),
+                          // UserExpressions(
+                          //   key: UniqueKey(),
+                          //   privacy: 'Public',
+                          //   userProfile: widget.profile,
+                          //   rootExpressions: true,
+                          //   subExpressions: false,
+                          //   communityCenterFeedback: false,
+                          // ),
+                          // UserExpressions(
+                          //   key: UniqueKey(),
+                          //   privacy: 'Public',
+                          //   userProfile: widget.profile,
+                          //   rootExpressions: true,
+                          //   subExpressions: false,
+                          //   communityCenterFeedback: true,
+                          // ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
