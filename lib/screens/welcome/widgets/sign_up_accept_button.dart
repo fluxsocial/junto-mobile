@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 
 class AcceptButton extends StatelessWidget {
   const AcceptButton({
@@ -21,13 +22,10 @@ class AcceptButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String communityCenterAddress = appConfig.flavor == Flavor.prod
-        ? '0ab99620-8835-d63b-3836-f091992ca2b4'
-        : '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+    final String communityCenterAddress = kCommunityCenterAddress;
 
-    final String updatesAddress = appConfig.flavor == Flavor.prod
-        ? '98b99620-ca1f-fda2-060d-d1a22f1de6d2'
-        : '2eb976b4-4473-2436-ccb2-e512e868bcac';
+    final String updatesAddress = kUpdatesAddress;
+
     return Consumer2<JuntoThemesProvider, UserDataProvider>(builder:
         (context, JuntoThemesProvider theme, UserDataProvider user, child) {
       return InkWell(

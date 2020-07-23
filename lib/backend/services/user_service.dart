@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
@@ -150,9 +151,8 @@ class UserServiceCentralized implements UserService {
         JuntoHttp.handleResponse(response);
     if (rootExpressions) {
       List<ExpressionResponse> results = <ExpressionResponse>[];
-      final String expressionContext = communityFeedback
-          ? '0ab99620-8835-d63b-3836-f091992ca2b4'
-          : 'collective';
+      final String expressionContext =
+          communityFeedback ? kCommunityCenterAddress : 'collective';
       for (dynamic data in _responseMap['root_expressions']['results']) {
         if (data['context'] == expressionContext) {
           results.add(
