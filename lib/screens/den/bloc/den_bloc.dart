@@ -27,56 +27,28 @@ class DenBloc extends Bloc<DenEvent, DenState> {
   Stream<DenState> mapEventToState(DenEvent event) async* {
     // root expression events
     if (event is LoadDen) {
-      yield* _fetchUserDenExpressions(
-        event,
-        event.params['rootExpressions'],
-        event.params['subExpressions'],
-        event.params['communityFeedback'],
-      );
+      yield* _fetchUserDenExpressions(event);
     }
     if (event is LoadMoreDen) {
-      yield* _fetchMoreUserDenExpressions(
-        event,
-        _params['rootExpressions'],
-        _params['subExpressions'],
-        _params['communityFeedback'],
-      );
+      yield* _fetchMoreUserDenExpressions(event);
     }
     if (event is RefreshDen) {
-      yield* _refreshUserDenExpressions(
-        event,
-        _params['rootExpressions'],
-        _params['subExpressions'],
-        _params['communityFeedback'],
-      );
+      yield* _refreshUserDenExpressions(event);
     }
 
     if (event is DeleteDenExpression) {
-      yield* _deleteUserExpression(
-        event,
-        _params['rootExpressions'],
-        _params['subExpressions'],
-      );
+      yield* _deleteUserExpression(event);
     }
   }
 
-  Stream<DenState> _fetchUserDenExpressions(
-    dynamic event,
-    bool rootExpressions,
-    bool subExpressions,
-    bool communityFeedback,
-  ) async* {
+  Stream<DenState> _fetchUserDenExpressions(dynamic event) async* {
     userAddress = event.userAddress;
     _updateParams(event);
     try {
       yield DenLoadingState();
       final userInfo = await userRepo.getUser(userData.userAddress);
       userData.updateUser(userInfo);
-      final userExpressions = await fetchExpressions(
-        rootExpressions,
-        subExpressions,
-        communityFeedback,
-      );
+      final userExpressions = await fetchExpressions(event.params);
       currentTimeStamp = userExpressions.lastTimestamp;
       if (userExpressions.results.isEmpty) {
         yield DenEmptyState();
@@ -92,11 +64,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     _params = event.params;
   }
 
-  Stream<DenState> _deleteUserExpression(
-    dynamic event,
-    bool rootExpressions,
-    bool subExpressions,
-  ) async* {
+  Stream<DenState> _deleteUserExpression(dynamic event) async* {
     try {
       if (state is DenLoadedState) {
         final DenLoadedState data = state;
@@ -112,20 +80,13 @@ class DenBloc extends Bloc<DenEvent, DenState> {
 
   Stream<DenState> _fetchMoreUserDenExpressions(
     dynamic event,
-    bool rootExpressions,
-    bool subExpressions,
-    bool communityFeedback,
   ) async* {
     try {
       if (state is DenLoadedState) {
         final DenLoadedState data = state;
         yield DenLoadedState(data.expressions);
         currentPage = currentPage + 50;
-        final userExpressions = await fetchExpressions(
-          rootExpressions,
-          subExpressions,
-          communityFeedback,
-        );
+        final userExpressions = await fetchExpressions(_params);
         if (userExpressions.results.length > 1) {
           data.expressions.addAll(userExpressions.results);
         }
@@ -138,17 +99,10 @@ class DenBloc extends Bloc<DenEvent, DenState> {
 
   Stream<DenState> _refreshUserDenExpressions(
     dynamic event,
-    bool rootExpressions,
-    bool subExpressions,
-    bool communityFeedback,
   ) async* {
     try {
       yield DenLoadingState();
-      final userExpressions = await fetchExpressions(
-        rootExpressions,
-        subExpressions,
-        communityFeedback,
-      );
+      final userExpressions = await fetchExpressions(_params);
       currentTimeStamp = userExpressions.lastTimestamp;
       if (userExpressions.results.isEmpty) {
         yield DenEmptyState();
@@ -161,17 +115,14 @@ class DenBloc extends Bloc<DenEvent, DenState> {
   }
 
   Future<QueryResults<ExpressionResponse>> fetchExpressions(
-    bool rootExpressions,
-    bool subExpressions,
-    bool communityFeedback,
-  ) async {
+      Map<String, bool> params) async {
     final result = await userRepo.getUsersExpressions(
       userAddress,
       currentPage,
       currentTimeStamp,
-      rootExpressions,
-      subExpressions,
-      communityFeedback,
+      params['rootExpressions'],
+      params['subExpressions'],
+      params['communityFeedback'],
     );
     currentTimeStamp = result.lastTimestamp;
 
