@@ -162,6 +162,7 @@ class _UserExpressionsState extends State<UserExpressions> {
         if (state is DenEmptyState) {
           return FeedPlaceholder(
             placeholderText: 'No expressions yet!',
+            verticalOffset: 0,
           );
         }
         if (state is DenErrorState) {

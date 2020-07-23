@@ -1,14 +1,20 @@
-
 import 'package:flutter/material.dart';
 
 class FeedPlaceholder extends StatelessWidget {
-  const FeedPlaceholder({this.placeholderText});
+  const FeedPlaceholder({
+    this.placeholderText,
+    this.verticalOffset = -50.0,
+  });
 
   final String placeholderText;
+  final double verticalOffset;
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: Offset(0.0, -50),
+      offset: Offset(
+        0.0,
+        verticalOffset,
+      ),
       child: Container(
         color: Colors.transparent,
         height: MediaQuery.of(context).size.height -
