@@ -58,40 +58,6 @@ class DenBloc extends Bloc<DenEvent, DenState> {
         _params['subExpressions'],
       );
     }
-
-    // sub expression events
-    if (event is LoadDenReplies) {
-      yield* _fetchUserDenExpressions(
-        event,
-        false,
-        true,
-        false,
-      );
-    }
-    if (event is LoadMoreDenReplies) {
-      yield* _fetchMoreUserDenExpressions(
-        event,
-        false,
-        true,
-        false,
-      );
-    }
-    if (event is RefreshDenReplies) {
-      yield* _refreshUserDenExpressions(
-        event,
-        false,
-        true,
-        false,
-      );
-    }
-
-    if (event is DeleteDenReply) {
-      yield* _deleteUserExpression(
-        event,
-        false,
-        true,
-      );
-    }
   }
 
   Stream<DenState> _fetchUserDenExpressions(

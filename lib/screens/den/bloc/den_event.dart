@@ -20,20 +20,3 @@ class DeleteDenExpression extends DenEvent {
 
   final String address;
 }
-
-class LoadDenReplies extends DenEvent {
-  LoadDenReplies(this.userAddress, {this.channels});
-
-  final String userAddress;
-  final List<String> channels;
-}
-
-class LoadMoreDenReplies extends DenEvent {}
-
-class RefreshDenReplies extends DenEvent {}
-
-class DeleteDenReply extends DenEvent {
-  DeleteDenReply(this.address);
-
-  final String address;
-}
