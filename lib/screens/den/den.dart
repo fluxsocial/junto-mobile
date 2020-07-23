@@ -145,20 +145,22 @@ class JuntoDenState extends State<JuntoDen>
             child: MultiBlocProvider(
               providers: [
                 BlocProvider<DenBloc>(
-                  create: (context) => DenBloc(
-                    Provider.of<UserRepo>(context, listen: false),
-                    Provider.of<UserDataProvider>(context, listen: false),
-                    Provider.of<ExpressionRepo>(context, listen: false),
-                  )..add(
-                      LoadDen(user.userAddress),
-                    ),
-                ),
+                    create: (context) => DenBloc(
+                          Provider.of<UserRepo>(context, listen: false),
+                          Provider.of<UserDataProvider>(context, listen: false),
+                          Provider.of<ExpressionRepo>(context, listen: false),
+                        )),
                 BlocProvider<ChannelFilteringBloc>(
                   create: (ctx) => ChannelFilteringBloc(
                     RepositoryProvider.of<SearchRepo>(ctx),
                     (value) => BlocProvider.of<DenBloc>(ctx).add(
                       LoadDen(
                         user.userAddress,
+                        {
+                          'rootExpressions': true,
+                          'subExpressions': false,
+                          'communityFeedback': false,
+                        },
                         channels: value != null ? [value.name] : null,
                       ),
                     ),

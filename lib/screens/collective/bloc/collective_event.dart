@@ -5,7 +5,7 @@ abstract class CollectiveEvent {}
 
 class FetchCollective extends CollectiveEvent {
   FetchCollective(this.param);
-
+ 
   final ExpressionQueryParams param;
 }
 

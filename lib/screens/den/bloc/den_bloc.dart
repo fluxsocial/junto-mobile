@@ -21,6 +21,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
   String userAddress;
   int currentPage = 0;
   String currentTimeStamp;
+  Map<String, bool> _params;
 
   @override
   Stream<DenState> mapEventToState(DenEvent event) async* {
@@ -28,33 +29,33 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     if (event is LoadDen) {
       yield* _fetchUserDenExpressions(
         event,
-        true,
-        false,
-        false,
+        event.params['rootExpressions'],
+        event.params['subExpressions'],
+        event.params['communityFeedback'],
       );
     }
     if (event is LoadMoreDen) {
       yield* _fetchMoreUserDenExpressions(
         event,
-        true,
-        false,
-        false,
+        _params['rootExpressions'],
+        _params['subExpressions'],
+        _params['communityFeedback'],
       );
     }
     if (event is RefreshDen) {
       yield* _refreshUserDenExpressions(
         event,
-        true,
-        false,
-        false,
+        _params['rootExpressions'],
+        _params['subExpressions'],
+        _params['communityFeedback'],
       );
     }
 
     if (event is DeleteDenExpression) {
       yield* _deleteUserExpression(
         event,
-        true,
-        false,
+        _params['rootExpressions'],
+        _params['subExpressions'],
       );
     }
 
@@ -100,6 +101,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     bool communityFeedback,
   ) async* {
     userAddress = event.userAddress;
+    // _updateParams(event);
     try {
       yield DenLoadingState();
       final userInfo = await userRepo.getUser(userData.userAddress);
@@ -118,6 +120,10 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     } on JuntoException catch (e) {
       yield DenErrorState(e.message);
     }
+  }
+
+  void _updateParams(LoadDen event) {
+    _params = event.params;
   }
 
   Stream<DenState> _deleteUserExpression(

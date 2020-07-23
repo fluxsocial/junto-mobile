@@ -51,6 +51,7 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
+  String _userAddress;
   DenEvent refreshDen;
   DenEvent loadMore;
 
@@ -61,16 +62,46 @@ class _UserExpressionsState extends State<UserExpressions> {
   @override
   void initState() {
     super.initState();
+    _userAddress =
+        Provider.of<UserDataProvider>(context, listen: false).userAddress;
 
-    if (widget.rootExpressions) {
-      refreshDen = RefreshDen();
-      loadMore = LoadMoreDen();
-    } else if (widget.subExpressions) {
-      refreshDen = RefreshDenReplies();
-      loadMore = LoadMoreDenReplies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadData();
+    });
+
+    // context.bloc<DenBloc>().add(refreshDen);
+  }
+
+  void _loadData() {
+    if (!mounted) {
+      print('not mounted');
+      return;
     }
-
-    context.bloc<DenBloc>().add(refreshDen);
+    if (widget.rootExpressions && !widget.communityCenterFeedback) {
+      context.bloc<DenBloc>().add(
+            LoadDen(_userAddress, {
+              'rootExpressions': true,
+              'subExpressions': false,
+              'communityFeedback': false,
+            }),
+          );
+    } else if (widget.rootExpressions && widget.communityCenterFeedback) {
+      context.bloc<DenBloc>().add(
+            LoadDen(_userAddress, {
+              'rootExpressions': true,
+              'subExpressions': false,
+              'communityFeedback': true,
+            }),
+          );
+    } else if (widget.subExpressions) {
+      context.bloc<DenBloc>().add(
+            LoadDen(_userAddress, {
+              'rootExpressions': false,
+              'subExpressions': true,
+              'communityFeedback': false,
+            }),
+          );
+    }
   }
 
   setDenEvent(DenEvent denEvent) {
@@ -91,7 +122,7 @@ class _UserExpressionsState extends State<UserExpressions> {
 
           return CustomRefresh(
             refresh: () async {
-              await context.bloc<DenBloc>().add(refreshDen);
+              // await context.bloc<DenBloc>().add(refreshDen);
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,
@@ -127,7 +158,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                     SliverToBoxAdapter(
                       child: FetchMoreButton(
                         onPressed: () {
-                          context.bloc<DenBloc>().add(loadMore);
+                          // context.bloc<DenBloc>().add(loadMore);
                         },
                       ),
                     )
