@@ -22,7 +22,6 @@ class JuntoCommunityCenterFeedback extends StatefulWidget {
 class JuntoCommunityCenterFeedbackState
     extends State<JuntoCommunityCenterFeedback> {
 
-
   final String communityCenterAddress = kCommunityCenterAddress;
 
   Future<QueryResults<ExpressionResponse>> getExpressions;

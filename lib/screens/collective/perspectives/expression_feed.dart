@@ -37,8 +37,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
   Widget build(BuildContext context) {
     return BlocBuilder<CollectiveBloc, CollectiveState>(
       builder: (BuildContext context, CollectiveState state) {
-        final canFetch = state is CollectivePopulated &&
-            (state.availableMore == true && state.loadingMore != true);
+        final canFetch = state is CollectivePopulated && (state.availableMore && !state.loadingMore);
         if (state is CollectiveError) {
           return CollectiveErrorLabel();
         }

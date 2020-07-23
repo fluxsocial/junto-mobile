@@ -108,6 +108,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   Future<void> getRelationToGroup() async {
+    // final String userAddress =
+    //     await Provider.of<UserDataProvider>(context).userAddress;
+
     // get relation to updates group
     final Map<String, dynamic> relation =
         await Provider.of<GroupRepo>(context, listen: false)
