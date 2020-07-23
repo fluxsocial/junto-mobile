@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/cta_button.dart';
 
 class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -38,6 +39,12 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.transparent,
                   child: Row(
                     children: <Widget>[
+                      Icon(
+                        CustomIcons.back,
+                        size: 12,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(width: 5),
                       Text(
                         expressionType.appBarName().toUpperCase(),
                         style: TextStyle(
@@ -46,12 +53,6 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
                           color: Theme.of(context).primaryColor,
                           letterSpacing: 1.7,
                         ),
-                      ),
-                      const SizedBox(width: 2.5),
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 15,
-                        color: Theme.of(context).primaryColor,
                       ),
                     ],
                   ),

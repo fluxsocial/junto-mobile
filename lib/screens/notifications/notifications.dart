@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/screens/notifications/views/all_view.dart';
 import 'package:junto_beta_mobile/screens/notifications/views/expression_view.dart';
 import 'package:junto_beta_mobile/screens/notifications/views/relations_view.dart';

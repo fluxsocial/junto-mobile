@@ -163,7 +163,8 @@ abstract class NotificationService {
 
 enum DBBoxes {
   collectiveExpressions,
-  denExpressions,
+  denRootExpressions,
+  denSubExpressions,
   packExpressions,
   notifications,
 }

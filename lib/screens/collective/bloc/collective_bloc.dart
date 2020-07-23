@@ -110,7 +110,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   }
 
   Stream<CollectiveState> _mapFetchCollectiveToState(
-      FetchCollective event) async* {
+      FetchCollective event) async* { 
     try {
       final name = getCurrentName(event);
       yield CollectiveState.loading();

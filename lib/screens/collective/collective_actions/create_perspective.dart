@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspecti
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'create_perspective_button.dart';
 

@@ -1,6 +1,8 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -162,24 +164,31 @@ class _JuntoLotusState extends State<JuntoLotus> {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     const SizedBox(),
-                                    GestureDetector(
-                                      onTap: showTutorial,
-                                      child: JuntoDescribedFeatureOverlay(
-                                        icon: OverlayInfoIcon(),
-                                        featureId: 'lotus_info_id',
-                                        oneFeature: false,
-                                        title:
-                                            "Welcome to Junto! This is the intention screen, your medium for navigation. Click 'Next' for a brief description of each section of the app.",
-                                        learnMore: true,
-                                        learnMoreText: [
-                                          'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
-                                        ],
-                                        hasUpNext: false,
-                                        child: JuntoInfoIcon(
-                                          neutralBackground: false,
-                                          theme: theme,
+                                    Row(
+                                      children: <Widget>[
+                                        NotificationsLunarIcon(
+                                          onGradientBackground: true,
                                         ),
-                                      ),
+                                        GestureDetector(
+                                          onTap: showTutorial,
+                                          child: JuntoDescribedFeatureOverlay(
+                                            icon: OverlayInfoIcon(),
+                                            featureId: 'lotus_info_id',
+                                            oneFeature: false,
+                                            title:
+                                                "Welcome to Junto! This is the intention screen, your medium for navigation. Click 'Next' for a brief description of each section of the app.",
+                                            learnMore: true,
+                                            learnMoreText: [
+                                              'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection while navigating between screens.'
+                                            ],
+                                            hasUpNext: false,
+                                            child: JuntoInfoIcon(
+                                              neutralBackground: false,
+                                              theme: theme,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

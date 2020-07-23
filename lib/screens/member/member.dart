@@ -137,7 +137,14 @@ class _JuntoMemberState extends State<JuntoMember>
           Provider.of<UserDataProvider>(context, listen: false),
           Provider.of<ExpressionRepo>(context, listen: false),
         )..add(
-            LoadDen(widget.profile.address),
+            LoadDen(
+              widget.profile.address,
+              {
+                'rootExpressions': true,
+                'subExpressions': false,
+                'communityFeedback': false,
+              },
+            ),
           ),
         child: Scaffold(
           //TODO(dominik/Nash): revert filter drawer

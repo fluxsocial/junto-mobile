@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 
 class SphereOpenMembers extends StatefulWidget {
   const SphereOpenMembers({
