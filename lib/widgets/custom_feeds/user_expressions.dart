@@ -18,8 +18,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
-import '../../models/junto_notification_results.dart';
-
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
   const UserExpressions({
@@ -52,8 +50,6 @@ class UserExpressions extends StatefulWidget {
 
 class _UserExpressionsState extends State<UserExpressions> {
   String _userAddress;
-  DenEvent refreshDen;
-  DenEvent loadMore;
 
   void deleteDenExpression(ExpressionResponse expression) {
     context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
@@ -68,8 +64,6 @@ class _UserExpressionsState extends State<UserExpressions> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadData();
     });
-
-    // context.bloc<DenBloc>().add(refreshDen);
   }
 
   void _loadData() {
@@ -77,37 +71,35 @@ class _UserExpressionsState extends State<UserExpressions> {
       print('not mounted');
       return;
     }
-    if (widget.rootExpressions && !widget.communityCenterFeedback) {
-      context.bloc<DenBloc>().add(
-            LoadDen(_userAddress, {
-              'rootExpressions': true,
-              'subExpressions': false,
-              'communityFeedback': false,
-            }),
-          );
-    } else if (widget.rootExpressions && widget.communityCenterFeedback) {
-      context.bloc<DenBloc>().add(
-            LoadDen(_userAddress, {
-              'rootExpressions': true,
-              'subExpressions': false,
-              'communityFeedback': true,
-            }),
-          );
-    } else if (widget.subExpressions) {
-      context.bloc<DenBloc>().add(
-            LoadDen(_userAddress, {
-              'rootExpressions': false,
-              'subExpressions': true,
-              'communityFeedback': false,
-            }),
-          );
-    }
-  }
 
-  setDenEvent(DenEvent denEvent) {
-    setState(() {
-      refreshDen = denEvent;
-    });
+    Map<String, bool> _params;
+
+    if (widget.rootExpressions && !widget.communityCenterFeedback) {
+      _params = {
+        'rootExpressions': true,
+        'subExpressions': false,
+        'communityFeedback': false,
+      };
+    } else if (widget.rootExpressions && widget.communityCenterFeedback) {
+      _params = {
+        'rootExpressions': true,
+        'subExpressions': false,
+        'communityFeedback': true,
+      };
+    } else if (widget.subExpressions) {
+      _params = {
+        'rootExpressions': false,
+        'subExpressions': true,
+        'communityFeedback': false,
+      };
+    }
+
+    context.bloc<DenBloc>().add(
+          LoadDen(
+            _userAddress,
+            _params,
+          ),
+        );
   }
 
   @override
@@ -122,7 +114,9 @@ class _UserExpressionsState extends State<UserExpressions> {
 
           return CustomRefresh(
             refresh: () async {
-              // await context.bloc<DenBloc>().add(refreshDen);
+              await context.bloc<DenBloc>().add(
+                    RefreshDen(),
+                  );
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,
@@ -158,7 +152,9 @@ class _UserExpressionsState extends State<UserExpressions> {
                     SliverToBoxAdapter(
                       child: FetchMoreButton(
                         onPressed: () {
-                          // context.bloc<DenBloc>().add(loadMore);
+                          context.bloc<DenBloc>().add(
+                                LoadMoreDen(),
+                              );
                         },
                       ),
                     )

@@ -67,7 +67,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     bool communityFeedback,
   ) async* {
     userAddress = event.userAddress;
-    // _updateParams(event);
+    _updateParams(event);
     try {
       yield DenLoadingState();
       final userInfo = await userRepo.getUser(userData.userAddress);
