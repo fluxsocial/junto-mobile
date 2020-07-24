@@ -67,9 +67,18 @@ class MockUserService implements UserService {
 
   @override
   Future<QueryResults<ExpressionResponse>> getUsersExpressions(
-      String userAddress, int paginationPos, String lastTimestamp) async {
+    String userAddress,
+    int paginationPos,
+    String lastTimestamp,
+    bool rootExpressions,
+    bool subExpressions,
+    bool communityFeedback,
+  ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return QueryResults(results: kSampleExpressions, lastTimestamp: '');
+    return QueryResults(
+      results: kSampleExpressions,
+      lastTimestamp: '',
+    );
   }
 
   @override

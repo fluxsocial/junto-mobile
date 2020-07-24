@@ -12,7 +12,7 @@ import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 

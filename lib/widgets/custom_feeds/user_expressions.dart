@@ -14,6 +14,9 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/er
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
@@ -21,6 +24,9 @@ class UserExpressions extends StatefulWidget {
     Key key,
     @required this.userProfile,
     @required this.privacy,
+    @required this.rootExpressions,
+    @required this.subExpressions,
+    this.communityCenterFeedback = false,
   }) : super(key: key);
 
   /// [UserProfile] of the user
@@ -28,6 +34,15 @@ class UserExpressions extends StatefulWidget {
 
   /// Either Public or Private;
   final String privacy;
+
+  // Show root expressions of user
+  final bool rootExpressions;
+
+  // Show sub expressions of user
+  final bool subExpressions;
+
+  // shows community center feedback
+  final bool communityCenterFeedback;
 
   @override
   _UserExpressionsState createState() => _UserExpressionsState();
@@ -39,6 +54,51 @@ class _UserExpressionsState extends State<UserExpressions> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadData();
+    });
+  }
+
+  void _loadData() {
+    if (!mounted) {
+      print('not mounted');
+      return;
+    }
+
+    Map<String, bool> _params;
+
+    if (widget.rootExpressions && !widget.communityCenterFeedback) {
+      _params = {
+        'rootExpressions': true,
+        'subExpressions': false,
+        'communityFeedback': false,
+      };
+    } else if (widget.rootExpressions && widget.communityCenterFeedback) {
+      _params = {
+        'rootExpressions': true,
+        'subExpressions': false,
+        'communityFeedback': true,
+      };
+    } else if (widget.subExpressions) {
+      _params = {
+        'rootExpressions': false,
+        'subExpressions': true,
+        'communityFeedback': false,
+      };
+    }
+
+    context.bloc<DenBloc>().add(
+          LoadDen(
+            widget.userProfile.address,
+            _params,
+          ),
+        );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
@@ -47,9 +107,12 @@ class _UserExpressionsState extends State<UserExpressions> {
         }
         if (state is DenLoadedState) {
           final results = state.expressions;
+
           return CustomRefresh(
             refresh: () async {
-              await context.bloc<DenBloc>().add(RefreshDen());
+              await context.bloc<DenBloc>().add(
+                    RefreshDen(),
+                  );
             },
             child: Container(
               color: Theme.of(context).colorScheme.background,
@@ -69,7 +132,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                       if (Provider.of<AppRepo>(context, listen: false)
                           .twoColumnLayout) {
                         return TwoColumnList(
-                          data: results,
+                          data: results == null ? [] : results,
                           useSliver: true,
                           deleteExpression: deleteDenExpression,
                         );
@@ -98,7 +161,8 @@ class _UserExpressionsState extends State<UserExpressions> {
         }
         if (state is DenEmptyState) {
           return FeedPlaceholder(
-            placeholderText: 'No expressions yet. Feel free to start creating!',
+            placeholderText: 'No expressions yet!',
+            verticalOffset: 0,
           );
         }
         if (state is DenErrorState) {

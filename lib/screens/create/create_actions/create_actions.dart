@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -57,14 +57,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   UserData _userProfile;
 
   // community center address
-  final String communityCenterAddress = appConfig.flavor == Flavor.prod
-      ? '0ab99620-8835-d63b-3836-f091992ca2b4'
-      : '48b97134-1a4d-deb0-b27c-9bcdfc33f386';
+  final String communityCenterAddress = kCommunityCenterAddress;
 
   // updates address
-  String updatesAddress = appConfig.flavor == Flavor.prod
-      ? '98b99620-ca1f-fda2-060d-d1a22f1de6d2'
-      : '2eb976b4-4473-2436-ccb2-e512e868bcac';
+  String updatesAddress = kUpdatesAddress;
 
   String _currentExpressionContext;
   ExpressionContext _expressionContext;
@@ -92,8 +88,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   @override
   void initState() {
     super.initState();
-    // get relationship to group
-    getRelationToGroup();
     _channelController = TextEditingController();
     _address = widget.address;
     _expressionContext = widget.expressionContext;
@@ -113,6 +107,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   Future<void> getRelationToGroup() async {
+    // final String userAddress =
+    //     await Provider.of<UserDataProvider>(context).userAddress;
+
     // get relation to updates group
     final Map<String, dynamic> relation =
         await Provider.of<GroupRepo>(context, listen: false)
@@ -121,6 +118,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     setState(() {
       relationToGroup = relation;
     });
+    print(relationToGroup);
   }
 
   @override
@@ -128,6 +126,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     super.didChangeDependencies();
     _userAddress = Provider.of<UserDataProvider>(context).userAddress;
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
+    getRelationToGroup();
   }
 
   @override

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+
+import 'package:provider/provider.dart';
 
 class SignUpRegister extends StatefulWidget {
   final TextEditingController emailController;
@@ -71,69 +75,81 @@ class SignUpRegisterState extends State<SignUpRegister> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      width: MediaQuery.of(context).size.width,
-      child: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .24),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: KeyboardAvoider(
-                autoScroll: true,
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(top: 24.0),
-                  child: Column(
-                    children: <Widget>[
-                      SignUpTextField(
-                        valueController: widget.emailController,
-                        textInputActionType: TextInputAction.next,
-                        onSubmit: () {
-                          FocusScope.of(context).requestFocus(passwordNode);
-                        },
-                        focusNode: emailNode,
-                        hint: S.of(context).welcome_email_hint,
-                        maxLength: 1000,
-                        textCapitalization: TextCapitalization.none,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      const SizedBox(height: 40),
-                      SignUpTextField(
-                        valueController: widget.passwordController,
-                        textInputActionType: TextInputAction.next,
-                        onSubmit: () => _passwordCheck(
-                            widget.passwordController.text,
-                            confirmPasswordNode),
-                        focusNode: passwordNode,
-                        hint: S.of(context).welcome_password_hint,
-                        maxLength: 1000,
-                        textCapitalization: TextCapitalization.none,
-                        keyboardType: TextInputType.emailAddress,
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 40),
-                      SignUpTextField(
-                        valueController: widget.confirmPasswordController,
-                        textInputActionType: TextInputAction.done,
-                        onSubmit: () => _passwordCheck(
-                            widget.confirmPasswordController.text, null),
-                        focusNode: confirmPasswordNode,
-                        hint: S.of(context).welcome_confirm_password,
-                        maxLength: 1000,
-                        textCapitalization: TextCapitalization.none,
-                        keyboardType: TextInputType.emailAddress,
-                        obscureText: true,
-                      ),
-                    ],
-                  ),
+    return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
+      return Container(
+        color: Colors.transparent,
+        width: MediaQuery.of(context).size.width,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height * .17),
+              Text(
+                'If you reserved your username beforehand, please use the email associated with your crowdfunding account.',
+                style: TextStyle(
+                  color:
+                      JuntoPalette().juntoWhite(theme: theme).withOpacity(.70),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-            )
-          ],
+              const SizedBox(height: 40),
+              Expanded(
+                child: KeyboardAvoider(
+                  autoScroll: true,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.only(top: 24.0),
+                    child: Column(
+                      children: <Widget>[
+                        SignUpTextField(
+                          valueController: widget.emailController,
+                          textInputActionType: TextInputAction.next,
+                          onSubmit: () {
+                            FocusScope.of(context).requestFocus(passwordNode);
+                          },
+                          focusNode: emailNode,
+                          hint: S.of(context).welcome_email_hint,
+                          maxLength: 1000,
+                          textCapitalization: TextCapitalization.none,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 40),
+                        SignUpTextField(
+                          valueController: widget.passwordController,
+                          textInputActionType: TextInputAction.next,
+                          onSubmit: () => _passwordCheck(
+                              widget.passwordController.text,
+                              confirmPasswordNode),
+                          focusNode: passwordNode,
+                          hint: S.of(context).welcome_password_hint,
+                          maxLength: 1000,
+                          textCapitalization: TextCapitalization.none,
+                          keyboardType: TextInputType.emailAddress,
+                          obscureText: true,
+                        ),
+                        const SizedBox(height: 40),
+                        SignUpTextField(
+                          valueController: widget.confirmPasswordController,
+                          textInputActionType: TextInputAction.done,
+                          onSubmit: () => _passwordCheck(
+                              widget.confirmPasswordController.text, null),
+                          focusNode: confirmPasswordNode,
+                          hint: S.of(context).welcome_confirm_password,
+                          maxLength: 1000,
+                          textCapitalization: TextCapitalization.none,
+                          keyboardType: TextInputType.emailAddress,
+                          obscureText: true,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

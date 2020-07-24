@@ -65,20 +65,34 @@ class UserRepo {
     String userAddress,
     int paginationPos,
     String lastTimestamp,
+    bool rootExpressions,
+    bool subExpressions,
+    bool communityFeedback,
   ) async {
     assert(userAddress != null && userAddress.isNotEmpty);
+    DBBoxes cacheBox;
+
     if (await DataConnectionChecker().hasConnection) {
       cachedDenExpressions = await _userService.getUsersExpressions(
         userAddress,
         paginationPos,
         lastTimestamp,
+        rootExpressions,
+        subExpressions,
+        communityFeedback,
       );
-      await db.insertExpressions(
-          cachedDenExpressions.results, DBBoxes.denExpressions);
+
+      if (rootExpressions) {
+        cacheBox = DBBoxes.denRootExpressions;
+      } else if (subExpressions) {
+        cacheBox = DBBoxes.denSubExpressions;
+      }
+      await db.insertExpressions(cachedDenExpressions.results, cacheBox);
       return cachedDenExpressions;
     }
+
     final cachedResult = await db.retrieveExpressions(
-      DBBoxes.denExpressions,
+      cacheBox,
     );
     return QueryResults(
       lastTimestamp: cachedDenExpressions?.lastTimestamp,

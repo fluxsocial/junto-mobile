@@ -4,10 +4,11 @@ part of 'den_bloc.dart';
 abstract class DenEvent {}
 
 class LoadDen extends DenEvent {
-  LoadDen(this.userAddress, {this.channels});
+  LoadDen(this.userAddress, this.params, {this.channels});
 
   final String userAddress;
   final List<String> channels;
+  final Map<String, bool> params;
 }
 
 class LoadMoreDen extends DenEvent {}

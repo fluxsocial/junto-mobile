@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
@@ -131,10 +132,13 @@ class UserServiceCentralized implements UserService {
     String userAddress,
     int paginationPos,
     String lastTimestamp,
+    bool rootExpressions,
+    bool subExpressions,
+    bool communityFeedback,
   ) async {
     final parms = <String, String>{
-      'root_expressions': 'true',
-      'sub_expressions': 'false',
+      'root_expressions': rootExpressions.toString(),
+      'sub_expressions': subExpressions.toString(),
       'pagination_position': '$paginationPos',
     };
     if (lastTimestamp != null && lastTimestamp.isNotEmpty) {
@@ -145,13 +149,39 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    return QueryResults(
-      lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
-      results: <ExpressionResponse>[
-        for (dynamic data in _responseMap['root_expressions']['results'])
-          ExpressionResponse.fromJson(data)
-      ],
-    );
+    if (rootExpressions) {
+      List<ExpressionResponse> results = <ExpressionResponse>[];
+      final String expressionContext =
+          communityFeedback ? kCommunityCenterAddress : 'collective';
+      for (dynamic data in _responseMap['root_expressions']['results']) {
+        if (data['context'] == expressionContext) {
+          results.add(
+            ExpressionResponse.fromJson(data),
+          );
+        }
+      }
+
+      return QueryResults(
+        lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
+        results: results,
+      );
+    } else if (subExpressions) {
+      return QueryResults(
+        lastTimestamp: _responseMap['sub_expressions']['last_timestamp'],
+        results: <ExpressionResponse>[
+          for (dynamic data in _responseMap['sub_expressions']['results'])
+            ExpressionResponse.fromJson(data)
+        ],
+      );
+    } else {
+      return QueryResults(
+        lastTimestamp: _responseMap['root_expressions']['last_timestamp'],
+        results: <ExpressionResponse>[
+          for (dynamic data in _responseMap['root_expressions']['results'])
+            ExpressionResponse.fromJson(data)
+        ],
+      );
+    }
   }
 
   @override

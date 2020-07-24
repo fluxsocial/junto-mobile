@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -19,11 +21,10 @@ class BlocProviders extends StatelessWidget {
       providers: [
         BlocProvider<AuthBloc>(
           create: (ctx) => AuthBloc(
-            ctx.repository<AuthRepo>(),
-            ctx.repository<UserDataProvider>(),
-            ctx.repository<UserRepo>(),
-            ctx.repository<OnBoardingRepo>()
-          ),
+              ctx.repository<AuthRepo>(),
+              ctx.repository<UserDataProvider>(),
+              ctx.repository<UserRepo>(),
+              ctx.repository<OnBoardingRepo>()),
         ),
         BlocProvider<PerspectivesBloc>(
           create: (ctx) => PerspectivesBloc(
@@ -34,6 +35,10 @@ class BlocProviders extends StatelessWidget {
         BlocProvider<CollectiveBloc>(
           create: (ctx) =>
               CollectiveBloc(RepositoryProvider.of<ExpressionRepo>(ctx)),
+        ),
+        BlocProvider<AppBloc>(
+          create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context))
+            ..add(CheckServerVersion()),
         ),
         BlocProvider<ChannelFilteringBloc>(
           create: (ctx) => ChannelFilteringBloc(

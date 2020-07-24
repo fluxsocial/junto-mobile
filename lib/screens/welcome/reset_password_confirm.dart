@@ -16,9 +16,10 @@ import 'widgets/resend_verification_code_button.dart';
 
 class ResetPasswordConfirm extends StatefulWidget {
   const ResetPasswordConfirm({
+    Key key,
     @required this.signInController,
     @required this.username,
-  }) : assert(username != null || username != "");
+  }) : super(key: key);
 
   final PageController signInController;
   final String username;
@@ -90,6 +91,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
   }
 
   Future<void> _confirmNewPassword() async {
+    assert(widget.username.isNotEmpty);
     if (await _validatePasswords()) {
       try {
         JuntoLoader.showLoader(context);

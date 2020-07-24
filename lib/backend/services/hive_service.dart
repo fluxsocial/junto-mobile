@@ -35,7 +35,8 @@ class HiveCache implements LocalCache {
   final _supportedBox = <DBBoxes, String>{
     DBBoxes.collectiveExpressions: HiveBoxes.kExpressions,
     DBBoxes.packExpressions: HiveBoxes.kPack,
-    DBBoxes.denExpressions: HiveBoxes.kDen,
+    DBBoxes.denRootExpressions: HiveBoxes.kDenRoot,
+    DBBoxes.denSubExpressions: HiveBoxes.kDenSub,
     DBBoxes.notifications: HiveBoxes.kNotifications,
   };
 
@@ -166,11 +167,23 @@ class HiveCache implements LocalCache {
     }
 
     try {
-      if (Hive.isBoxOpen(HiveBoxes.kDen)) {
-        final den = await Hive.box<ExpressionResponse>(HiveBoxes.kDen);
+      if (Hive.isBoxOpen(HiveBoxes.kDenRoot)) {
+        final den = await Hive.box<ExpressionResponse>(HiveBoxes.kDenRoot);
         await den.deleteAll(den.keys);
       } else {
-        final den = await Hive.openBox<ExpressionResponse>(HiveBoxes.kDen);
+        final den = await Hive.openBox<ExpressionResponse>(HiveBoxes.kDenRoot);
+        await den.deleteAll(den.keys);
+      }
+    } catch (e) {
+      logger.logException(e);
+    }
+
+    try {
+      if (Hive.isBoxOpen(HiveBoxes.kDenSub)) {
+        final den = await Hive.box<ExpressionResponse>(HiveBoxes.kDenSub);
+        await den.deleteAll(den.keys);
+      } else {
+        final den = await Hive.openBox<ExpressionResponse>(HiveBoxes.kDenSub);
         await den.deleteAll(den.keys);
       }
     } catch (e) {

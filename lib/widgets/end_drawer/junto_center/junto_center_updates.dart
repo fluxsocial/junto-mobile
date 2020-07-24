@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
@@ -21,9 +21,7 @@ class JuntoCommunityCenterUpdates extends StatefulWidget {
 class JuntoCommunityCenterUpdatesState
     extends State<JuntoCommunityCenterUpdates> {
   // updates address
-  String updatesAddress = appConfig.flavor == Flavor.prod
-      ? '98b99620-ca1f-fda2-060d-d1a22f1de6d2'
-      : '2eb976b4-4473-2436-ccb2-e512e868bcac';
+  String updatesAddress = kUpdatesAddress;
 
   Future<QueryResults<ExpressionResponse>> getExpressions;
 

@@ -35,6 +35,9 @@ abstract class UserService {
     String userAddress,
     int paginationPos,
     String lastTimestamp,
+    bool rootExpressions,
+    bool subExpressions,
+    bool communityFeedback,
   );
 
   /// Returns a list of perspectives owned by the given user
