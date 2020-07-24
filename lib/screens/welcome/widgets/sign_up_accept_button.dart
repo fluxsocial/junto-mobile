@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 
 class AcceptButton extends StatelessWidget {
