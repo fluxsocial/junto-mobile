@@ -54,6 +54,7 @@ dev_dependencies:
   freezed: 0.11.2
   effective_dart: 1.2.3
 dependency_overrides:
+  dartx: ^0.3.0
   characters: 1.0.0
   path: 1.7.0
   # Overriding due to crash on iOS https://github.com/agnostech/flutter_amplify/pull/12
