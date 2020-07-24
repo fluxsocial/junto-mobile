@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview/comment_preview.dart';
 
 /// Box implementation of the custom `ListView` used across Junto.
 class SingleColumnListView extends StatelessWidget {
