@@ -39,7 +39,6 @@ class _MaterialAppWithThemeState extends State<MaterialAppWithTheme>
     if (state == AppLifecycleState.resumed) {
       UserData userProfile =
           Provider.of<UserDataProvider>(context, listen: false).userProfile;
-      print(userProfile);
       if (userProfile == null) {
         try {
           context.bloc<AuthBloc>().add(LogoutEvent());
