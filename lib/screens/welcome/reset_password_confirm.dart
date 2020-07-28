@@ -60,8 +60,7 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
   }
 
   bool _passwordCheck(String password) {
-    final String passwordRegEx =
-        "(?=.{8,})(?=.*[!@#\$%^&*])(?=.*[0-9])(?=.*[A-Z])(?=.*[A-z])";
+    final String passwordRegEx = "(?=.*[0-9])(?=.*[A-Z])(?=.*[A-z])";
     final exp = RegExp(passwordRegEx);
     bool match = exp.hasMatch(password);
     if (!match) {

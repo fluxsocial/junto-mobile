@@ -96,7 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome_name_label" : MessageLookupByLibrary.simpleMessage("FULL NAME"),
     "welcome_password_hint" : MessageLookupByLibrary.simpleMessage("Password"),
     "welcome_password_length" : m2,
-    "welcome_password_rules" : MessageLookupByLibrary.simpleMessage("Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter."),
+    "welcome_password_rules" : MessageLookupByLibrary.simpleMessage("Passwords must contain at least 1 number, 8 characters, and one uppercase letter."),
     "welcome_passwords_must_match" : MessageLookupByLibrary.simpleMessage("Passwords must match."),
     "welcome_remove_photo" : MessageLookupByLibrary.simpleMessage("REMOVE PHOTO"),
     "welcome_reset_password" : MessageLookupByLibrary.simpleMessage("Reset password"),

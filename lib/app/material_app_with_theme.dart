@@ -20,12 +20,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
 import 'package:provider/provider.dart';
 
-class MaterialAppWithTheme extends StatefulWidget {
-  @override
-  _MaterialAppWithThemeState createState() => _MaterialAppWithThemeState();
-}
-
-class _MaterialAppWithThemeState extends State<MaterialAppWithTheme> {
+class MaterialAppWithTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(

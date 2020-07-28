@@ -58,7 +58,7 @@
   "welcome_name_label": "FULL NAME",
   "welcome_password_hint": "Password",
   "welcome_password_length": "Your password must be greater than {n} characters.",
-  "welcome_password_rules": "Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.",
+  "welcome_password_rules": "Passwords must contain at least 1 number, 8 characters, and one uppercase letter.",
   "welcome_passwords_must_match": "Passwords must match.",
   "welcome_remove_photo": "REMOVE PHOTO",
   "welcome_reset_password": "Reset password",
