@@ -61,9 +61,9 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
               physics: NeverScrollableScrollPhysics(),
               child: Container(
                 padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * .12,
+                  top: MediaQuery.of(context).size.height * .15,
                   left: 32,
-                  bottom: MediaQuery.of(context).size.height * .12,
+                  bottom: MediaQuery.of(context).size.height * .15,
                   right: 32,
                 ),
                 height: MediaQuery.of(context).size.height,

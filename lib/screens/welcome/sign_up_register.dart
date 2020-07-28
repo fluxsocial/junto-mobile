@@ -29,8 +29,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
   FocusNode emailNode = FocusNode();
   FocusNode passwordNode = FocusNode();
   FocusNode confirmPasswordNode = FocusNode();
-  final String passwordRegEx =
-      "(?=.{8,})(?=.*[!@#\$%^&*])(?=.*[0-9])(?=.*[A-Z])(?=.*[A-z])";
+  final String passwordRegEx = "(?=.*[A-Z])(?=.*[0-9])";
 
   @override
   void dispose() {

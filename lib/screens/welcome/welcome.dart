@@ -173,8 +173,7 @@ class WelcomeState extends State<Welcome> {
   }
 
   bool _passwordCheck(String password) {
-    final String passwordRegEx =
-        "(?=.{8,})(?=.*[!@#\$%^&*])(?=.*[0-9])(?=.*[A-Z])(?=.*[A-z])";
+    final String passwordRegEx = "(?=.*[A-Z])(?=.*[0-9])";
     final exp = RegExp(passwordRegEx);
     bool match = exp.hasMatch(password);
     if (!match) {

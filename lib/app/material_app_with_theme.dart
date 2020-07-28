@@ -115,7 +115,6 @@ class HomePageContentState extends State<HomePageContent>
 
   @override
   void dispose() {
-    Hive.close();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
