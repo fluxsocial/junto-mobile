@@ -24,6 +24,8 @@ class LoginEvent extends AuthEvent {
   final String password;
 }
 
+class RefreshUser extends AuthEvent {}
+
 /// Called when the user is logged into the app.
 /// Cases may include: Launching the app from the background, closing and
 /// re-opening, etc..
