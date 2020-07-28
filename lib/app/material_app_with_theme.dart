@@ -25,31 +25,7 @@ class MaterialAppWithTheme extends StatefulWidget {
   _MaterialAppWithThemeState createState() => _MaterialAppWithThemeState();
 }
 
-class _MaterialAppWithThemeState extends State<MaterialAppWithTheme>
-    with WidgetsBindingObserver {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    UserData userProfile =
-        Provider.of<UserDataProvider>(context, listen: false).userProfile;
-    if (userProfile == null) {
-      context.bloc<AuthBloc>().add(RefreshUser());
-    }
-  }
-
-  @override
-  void dispose() {
-    Hive.close();
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
+class _MaterialAppWithThemeState extends State<MaterialAppWithTheme> {
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
@@ -117,7 +93,43 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class HomePageContent extends StatelessWidget {
+class HomePageContent extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return HomePageContentState();
+  }
+}
+
+class HomePageContentState extends State<HomePageContent>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.resumed) {
+      print(state);
+      UserData userProfile =
+          Provider.of<UserDataProvider>(context, listen: false).userProfile;
+
+      if (userProfile == null) {
+        context.bloc<AuthBloc>().add(RefreshUser());
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    Hive.close();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
