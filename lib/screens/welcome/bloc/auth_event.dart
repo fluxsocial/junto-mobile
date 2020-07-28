@@ -30,3 +30,5 @@ class LoginEvent extends AuthEvent {
 class LoggedInEvent extends AuthEvent {}
 
 class LogoutEvent extends AuthEvent {}
+
+class RefreshUser extends AuthEvent {}

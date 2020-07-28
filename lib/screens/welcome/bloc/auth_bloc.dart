@@ -49,6 +49,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is LoggedInEvent) {
       yield* _mapLoggedIn(event);
     }
+    if (event is RefreshUser) {
+      yield* _mapRefreshUser(event);
+    }
   }
 
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
@@ -137,6 +140,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.loading();
     try {
       yield AuthState.authenticated();
+    } on JuntoException catch (error) {
+      logger.logDebug(error.message);
+      await _clearUserInformation();
+      yield AuthState.unauthenticated();
+    } catch (error) {
+      logger.logException(error);
+      await _clearUserInformation();
+      yield AuthState.unauthenticated();
+    }
+  }
+
+  Stream<AuthState> _mapRefreshUser(RefreshUser event) async* {
+    yield AuthState.loading();
+    try {
+      final uid = await authRepo.getAddress();
+      if (uid != null) {
+        final user = await userRepo.getUser(uid);
+        await userDataProvider.updateUser(user);
+        await userDataProvider.initialize();
+        yield AuthState.authenticated();
+      } else {
+        yield AuthState.unauthenticated(
+            error: true,
+            errorMessage: 'Please re-enter your login credentials');
+      }
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
       await _clearUserInformation();

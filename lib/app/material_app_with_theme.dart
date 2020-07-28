@@ -2,8 +2,6 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hive/hive.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -20,47 +18,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
 import 'package:provider/provider.dart';
 
-class MaterialAppWithTheme extends StatefulWidget {
-  @override
-  _MaterialAppWithThemeState createState() => _MaterialAppWithThemeState();
-}
-
-class _MaterialAppWithThemeState extends State<MaterialAppWithTheme>
-    with WidgetsBindingObserver {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    super.initState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      UserData userProfile =
-          Provider.of<UserDataProvider>(context, listen: false).userProfile;
-      if (userProfile == null) {
-        try {
-          context.bloc<AuthBloc>().add(LogoutEvent());
-          Navigator.pushAndRemoveUntil(
-            context,
-            Welcome.route(),
-            (route) => route.settings.name == "/",
-          );
-        } catch (e) {
-          logger.logException(e);
-        }
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    Hive.close();
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
+class MaterialAppWithTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
@@ -98,8 +56,8 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<AppBloc, AppBlocState>(
       builder: (context, state) {
         if (state is SupportedVersion) {
-          return BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) => Stack(
+          return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            return Stack(
               children: <Widget>[
                 BackgroundTheme(),
                 AnimatedSwitcher(
@@ -112,8 +70,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          );
+            );
+          });
         }
 
         if (state is UnsupportedState) {
@@ -125,7 +83,40 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class HomePageContent extends StatelessWidget {
+class HomePageContent extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return HomePageContentState();
+  }
+}
+
+class HomePageContentState extends State<HomePageContent>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      print(state);
+      UserData userProfile =
+          Provider.of<UserDataProvider>(context, listen: false).userProfile;
+      if (userProfile == null) {
+        context.bloc<AuthBloc>().add(RefreshUser());
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(

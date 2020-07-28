@@ -52,8 +52,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.didChangeDependencies();
 
     final collectivePageIndex =
-        Provider.of<AppRepo>(context, listen: false)
-            .collectivePageIndex;
+        Provider.of<AppRepo>(context, listen: false).collectivePageIndex;
     _currentIndex = collectivePageIndex;
     _pageController = PageController(initialPage: collectivePageIndex);
   }
@@ -98,33 +97,29 @@ class JuntoCollectiveState extends State<JuntoCollective>
             onNotification: (value) => hideOrShowFab(value, _isFabVisible),
             child: Scaffold(
               key: _juntoCollectiveKey,
-              body: Stack(
+              body: PageView(
+                physics: NeverScrollableScrollPhysics(),
+                onPageChanged: (int index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                  Provider.of<AppRepo>(context, listen: false)
+                      .setCollectivePageIndex(index);
+                },
+                controller: _pageController,
                 children: <Widget>[
-                  PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                      Provider.of<AppRepo>(context, listen: false)
-                          .setCollectivePageIndex(index);
-                    },
-                    controller: _pageController,
-                    children: <Widget>[
-                      JuntoPerspectives(
-                        collectiveViewNav: _collectiveViewNav,
-                      ),
-                      Scaffold(
-                        floatingActionButton: CollectiveActionButton(
-                          isVisible: _isFabVisible,
-                        ),
-                        floatingActionButtonLocation:
-                            FloatingActionButtonLocation.centerDocked,
-                        body: ExpressionFeed(
-                          collectiveViewNav: _collectiveViewNav,
-                        ),
-                      ),
-                    ],
+                  JuntoPerspectives(
+                    collectiveViewNav: _collectiveViewNav,
+                  ),
+                  Scaffold(
+                    floatingActionButton: CollectiveActionButton(
+                      isVisible: _isFabVisible,
+                    ),
+                    floatingActionButtonLocation:
+                        FloatingActionButtonLocation.centerDocked,
+                    body: ExpressionFeed(
+                      collectiveViewNav: _collectiveViewNav,
+                    ),
                   ),
                 ],
               ),

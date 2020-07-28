@@ -16,7 +16,7 @@ class JuntoPerspectives extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final juntoPerspective =  PerspectiveModel(
+    final juntoPerspective = PerspectiveModel(
       address: null,
       name: 'JUNTO',
       about: null,
