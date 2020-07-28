@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -14,11 +17,11 @@ class AppServiceImpl extends AppService {
       http.Response response;
       if (appConfig.flavor == Flavor.prod) {
         response = await http.get("https://$END_POINT_without_prefix");
+        final map = JuntoHttp.handleResponse(response);
+        return AppModel.fromJson(map);
       } else {
-        response = await http.get("http://$END_POINT_without_prefix");
+        return currentAppVersion;
       }
-      final map = JuntoHttp.handleResponse(response);
-      return AppModel.fromJson(map);
     } catch (error) {
       logger.logDebug(error);
       throw JuntoException("Cannot get server version", -1);
