@@ -12,22 +12,23 @@ import 'intl/messages_all.dart';
 
 class S {
   S();
-  
+
   static S current;
-  
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name); 
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       S.current = S();
-      
+
       return S.current;
     });
-  } 
+  }
 
   static S of(BuildContext context) {
     return Localizations.of<S>(context, S);
@@ -613,10 +614,10 @@ class S {
     );
   }
 
-  /// `Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.`
+  /// `Passwords must contain at least 1 number, 8 characters, and one uppercase letter.`
   String get welcome_password_rules {
     return Intl.message(
-      'Passwords must contain at least 1 number, 8 characters, 1 special character, and one uppercase letter.',
+      'Passwords must contain at least 1 number, 8 characters, and one uppercase letter.',
       name: 'welcome_password_rules',
       desc: '',
       args: [],
