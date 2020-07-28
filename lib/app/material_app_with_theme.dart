@@ -58,8 +58,8 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<AppBloc, AppBlocState>(
       builder: (context, state) {
         if (state is SupportedVersion) {
-          return BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) => Stack(
+          return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            return Stack(
               children: <Widget>[
                 BackgroundTheme(),
                 AnimatedSwitcher(
@@ -72,8 +72,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          );
+            );
+          });
         }
 
         if (state is UnsupportedState) {
@@ -104,19 +104,11 @@ class HomePageContentState extends State<HomePageContent>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
+      print(state);
       UserData userProfile =
           Provider.of<UserDataProvider>(context, listen: false).userProfile;
       if (userProfile == null) {
-        try {
-          context.bloc<AuthBloc>().add(LogoutEvent());
-          Navigator.pushAndRemoveUntil(
-            context,
-            Welcome.route(),
-            (route) => route.settings.name == "/",
-          );
-        } catch (e) {
-          logger.logException(e);
-        }
+        context.bloc<AuthBloc>().add(RefreshUser());
       }
     }
   }
