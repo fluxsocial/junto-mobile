@@ -20,47 +20,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
 import 'package:provider/provider.dart';
 
-class MaterialAppWithTheme extends StatefulWidget {
-  @override
-  _MaterialAppWithThemeState createState() => _MaterialAppWithThemeState();
-}
-
-class _MaterialAppWithThemeState extends State<MaterialAppWithTheme>
-    with WidgetsBindingObserver {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    super.initState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      UserData userProfile =
-          Provider.of<UserDataProvider>(context, listen: false).userProfile;
-      if (userProfile == null) {
-        try {
-          context.bloc<AuthBloc>().add(LogoutEvent());
-          Navigator.pushAndRemoveUntil(
-            context,
-            Welcome.route(),
-            (route) => route.settings.name == "/",
-          );
-        } catch (e) {
-          logger.logException(e);
-        }
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    Hive.close();
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
+class MaterialAppWithTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
@@ -125,7 +85,49 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class HomePageContent extends StatelessWidget {
+class HomePageContent extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return HomePageContentState();
+  }
+}
+
+class HomePageContentState extends State<HomePageContent>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      UserData userProfile =
+          Provider.of<UserDataProvider>(context, listen: false).userProfile;
+      if (userProfile == null) {
+        try {
+          context.bloc<AuthBloc>().add(LogoutEvent());
+          Navigator.pushAndRemoveUntil(
+            context,
+            Welcome.route(),
+            (route) => route.settings.name == "/",
+          );
+        } catch (e) {
+          logger.logException(e);
+        }
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    Hive.close();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
