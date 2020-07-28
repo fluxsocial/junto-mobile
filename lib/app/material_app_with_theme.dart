@@ -29,17 +29,28 @@ class _MaterialAppWithThemeState extends State<MaterialAppWithTheme>
     with WidgetsBindingObserver {
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
+    super.initState();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    UserData userProfile =
-        Provider.of<UserDataProvider>(context, listen: false).userProfile;
-    if (userProfile == null) {
-      context.bloc<AuthBloc>().add(RefreshUser());
+    if (state == AppLifecycleState.resumed) {
+      UserData userProfile =
+          Provider.of<UserDataProvider>(context, listen: false).userProfile;
+      if (userProfile == null) {
+        try {
+          context.bloc<AuthBloc>().add(LogoutEvent());
+          Navigator.pushAndRemoveUntil(
+            context,
+            Welcome.route(),
+            (route) => route.settings.name == "/",
+          );
+        } catch (e) {
+          logger.logException(e);
+        }
+      }
     }
   }
 
@@ -88,23 +99,20 @@ class HomePage extends StatelessWidget {
       builder: (context, state) {
         if (state is SupportedVersion) {
           return BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              return Stack(
-                children: <Widget>[
-                  BackgroundTheme(),
-                  AnimatedSwitcher(
-                    key: ValueKey<String>(state.toString()),
-                    duration: kThemeAnimationDuration,
-                    child: state.map(
-                      loading: (_) => HomeLoadingPage(),
-                      agreementsRequired: (_) => SignUpAgreements(),
-                      authenticated: (_) => HomePageContent(),
-                      unauthenticated: (_) => const Welcome(),
-                    ),
+            builder: (context, state) => Stack(
+              children: <Widget>[
+                BackgroundTheme(),
+                AnimatedSwitcher(
+                  duration: kThemeAnimationDuration,
+                  child: state.map(
+                    loading: (_) => HomeLoadingPage(),
+                    agreementsRequired: (_) => SignUpAgreements(),
+                    authenticated: (_) => HomePageContent(),
+                    unauthenticated: (_) => const Welcome(),
                   ),
-                ],
-              );
-            },
+                ),
+              ],
+            ),
           );
         }
 
