@@ -64,7 +64,7 @@ class AppRepo extends ChangeNotifier {
 
   Future<bool> isValidVersion() async {
     final isProd = appConfig.flavor == Flavor.prod;
-    final isTst = appConfig.flavor == Flavor.tst || appConfig.flavor == Flavor.dev;
+    final isTst = appConfig.flavor == Flavor.tst;
     try {
       final serVersion = await _appService.getServerVersion();
       if (isProd) {
