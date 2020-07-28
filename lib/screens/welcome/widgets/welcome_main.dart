@@ -49,7 +49,7 @@ class WelcomeMain extends StatelessWidget {
               children: <Widget>[
                 CallToActionButton(
                   callToAction: _onSignUp,
-                  title: 'WELCOME TO THE PACK',
+                  title: 'CREATE AN ACCOUNT',
                 ),
                 const SizedBox(height: 15),
                 CallToActionButton(
