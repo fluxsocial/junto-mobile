@@ -26,7 +26,7 @@ class AboutItem extends StatelessWidget {
                         if (!item[0].startsWith('https://') ||
                             !item[0].startsWith('http:') ||
                             !item[0].startsWith('https:')) {
-                          url = 'https://${item[0]}';
+                          url = item[0];
                         }
                         if (await canLaunch(url)) {
                           await launch(url);
@@ -36,7 +36,7 @@ class AboutItem extends StatelessWidget {
                             builder: (BuildContext context) =>
                                 const SingleActionDialog(
                               dialogText:
-                                  'Could not launch this website. Try typing it in your browser.',
+                                  'Could not open this website. Try typing it in your browser.',
                             ),
                           );
                         }
