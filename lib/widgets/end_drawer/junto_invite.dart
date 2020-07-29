@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
 import 'junto_invite_appbar.dart';
 import 'junto_invite_cta.dart';
 import 'junto_invite_dialog.dart';
+import 'junto_invite_notice.dart';
 
 class JuntoInvite extends StatelessWidget {
   @override
