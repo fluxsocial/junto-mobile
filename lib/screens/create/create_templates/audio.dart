@@ -138,6 +138,7 @@ class CreateAudioState extends State<CreateAudio> {
       child: Consumer<AudioService>(builder: (context, audio, child) {
         return CreateExpressionScaffold(
           onNext: () => _onNext(audio),
+          expressionHasData: () => expressionHasData(audio),
           showBottomNav: !audio.playBackAvailable,
           expressionType: ExpressionType.audio,
           child: Expanded(
@@ -167,8 +168,16 @@ class CreateAudioState extends State<CreateAudio> {
     );
   }
 
+  bool expressionHasData(AudioService audio) {
+    if (audio.playBackAvailable && audio.recordingPath != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void _onNext(AudioService audio) {
-    if (_validate(audio)) {
+    if (expressionHasData(audio)) {
       final audioExpression = AudioFormExpression(
         title: titleController.text.trim(),
         photo: audioPhotoBackground?.path,
@@ -207,14 +216,5 @@ class CreateAudioState extends State<CreateAudio> {
       );
       return;
     }
-  }
-
-  bool _validate(AudioService audio) {
-    if (audio.playBackAvailable && audio.recordingPath != null
-        //TODO: add validation for title and image if necessary
-        ) {
-      return true;
-    }
-    return false;
   }
 }
