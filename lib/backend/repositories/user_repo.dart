@@ -24,9 +24,13 @@ class UserRepo {
   final ExpressionService _expressionService;
   QueryResults<ExpressionResponse> cachedDenExpressions;
 
+  // Invite someone to join JUNTO
   Future<int> inviteUser(String email, String name) {
     return _userService.inviteUser(email, name);
   }
+
+  // Retrieve date of last invitation sent
+  Future<void> lastInviteUser() {}
 
   Future<PerspectiveModel> createPerspective(Perspective perspective) {
     assert(perspective.name != null);

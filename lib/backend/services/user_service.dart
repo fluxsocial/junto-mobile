@@ -589,4 +589,9 @@ class UserServiceCentralized implements UserService {
 
     return _serverResponse.statusCode;
   }
+
+  Future<void> lastInviteSent() async {
+    final http.Response _serverResponse = await client.get('/auth/invite');
+    print(_serverResponse.body);
+  }
 }
