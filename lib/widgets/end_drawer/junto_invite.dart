@@ -23,7 +23,6 @@ class JuntoInvite extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
-              vertical: 40,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,6 +30,7 @@ class JuntoInvite extends StatelessWidget {
                 Expanded(
                   child: ListView(
                     children: <Widget>[
+                      const SizedBox(height: 40),
                       JuntoLogoOutline(),
                       JuntoInviteText(
                         "Junto was created from the desire to have more meaningful experiences on social media. On Junto, you can build your Pack - people closest to you that evoke the most unfiltered version of yourself.",
