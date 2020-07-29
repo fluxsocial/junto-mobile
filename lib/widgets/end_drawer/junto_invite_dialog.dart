@@ -102,6 +102,41 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
             Container(
               margin: const EdgeInsets.only(
                 top: 25,
+              ),
+              child: TextField(
+                controller: nameController,
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(0.0),
+                  hintText: 'Your Full Name',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
+                ),
+                cursorColor: Theme.of(context).primaryColor,
+                cursorWidth: 1,
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor,
+                ),
+                maxLength: 40,
+                textInputAction: TextInputAction.done,
+              ),
+            ),
+            const SizedBox(height: 12.5),
+            Container(
+              margin: const EdgeInsets.only(
                 bottom: 25,
               ),
               child: TextField(
@@ -115,7 +150,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
                     null,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(0.0),
-                  hintText: 'Email',
+                  hintText: 'Their Email',
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                     fontSize: 17,
@@ -136,6 +171,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
               ),
             ),
             Container(
+              margin: const EdgeInsets.only(top: 25),
               child: Row(
                 children: <Widget>[
                   Expanded(
