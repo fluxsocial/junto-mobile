@@ -147,6 +147,7 @@ flutter:
     - assets/images/junto-mobile__perspective--dark.png
     - assets/images/junto-mobile__sprout.png
     - assets/images/junto-mobile__background.png
+    - assets/images/junto-mobile__bench.png
 
 flutter_intl:
   enabled: true

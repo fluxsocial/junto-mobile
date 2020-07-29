@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 
 class PendingPackMembers extends StatelessWidget {
   @override
@@ -36,8 +37,12 @@ class PendingPackMembers extends StatelessWidget {
               return const SizedBox();
             },
           );
+        } else {
+          return FeedPlaceholder(
+            placeholderText: 'No pack requests yet!',
+            image: 'assets/images/junto-mobile__bench.png',
+          );
         }
-        return const SizedBox();
       },
     );
   }

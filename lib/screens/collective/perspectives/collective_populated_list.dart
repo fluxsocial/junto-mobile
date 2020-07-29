@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/feed_placeholder.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:provider/provider.dart';
 
 class CollectivePopulatedList extends StatelessWidget {
@@ -33,6 +33,7 @@ class CollectivePopulatedList extends StatelessWidget {
       return SliverToBoxAdapter(
         child: FeedPlaceholder(
           placeholderText: _placeholderText(),
+          image: 'assets/images/junto-mobile__placeholder--feed.png',
         ),
       );
     } else {
