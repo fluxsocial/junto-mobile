@@ -57,7 +57,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    userProvider = Provider.of<UserDataProvider>(context);
+    userProvider = Provider.of<UserDataProvider>(context, listen: false);
     getUserInformation();
   }
 
@@ -74,6 +74,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   Future<void> getUserInformation() async {
     _userAddress = userProvider.userAddress;
     _userData = userProvider.userProfile;
+
     setEditInfo();
   }
 
@@ -190,7 +191,6 @@ class JuntoEditDenState extends State<JuntoEditDen> {
             _photoKeys.add(key);
           } catch (e, s) {
             logger.logException(e, s);
-            print(e.message);
             JuntoLoader.hide();
           }
         }

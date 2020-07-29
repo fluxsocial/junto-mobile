@@ -31,9 +31,10 @@ class JuntoDrawer extends StatefulWidget {
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
-  void _onLogOut() {
+  void _onLogOut() async {
     try {
-      context.bloc<AuthBloc>().add(LogoutEvent());
+      await context.bloc<AuthBloc>().add(LogoutEvent());
+
       Navigator.pushAndRemoveUntil(
         context,
         Welcome.route(),
