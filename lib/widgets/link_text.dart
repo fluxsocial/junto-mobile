@@ -32,6 +32,7 @@ class LinkText extends StatelessWidget {
       onOpen: onLinkPressed,
       text: text,
       linkStyle: style,
+      style: style,
       maxLines: maxLines,
       textAlign: textAlign,
       overflow: overflow,
