@@ -17,12 +17,13 @@ class JuntoInviteDialog extends StatefulWidget {
 
 class JuntoInviteDialogState extends State<JuntoInviteDialog> {
   TextEditingController emailController;
+  TextEditingController nameController;
 
-  void inviteUser(BuildContext context, String email) async {
+  void inviteUser(BuildContext context, String email, String name) async {
     try {
       JuntoLoader.showLoader(context);
-      final int statusCode =
-          await Provider.of<UserRepo>(context, listen: false).inviteUser(email);
+      final int statusCode = await Provider.of<UserRepo>(context, listen: false)
+          .inviteUser(email, name);
       Navigator.pop(context);
       JuntoLoader.hide();
 
@@ -59,12 +60,14 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
   void initState() {
     super.initState();
     emailController = TextEditingController();
+    nameController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
+    nameController.dispose();
   }
 
   @override
@@ -164,10 +167,12 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        if (emailController.text.trim().isNotEmpty) {
+                        if (emailController.text.trim().isNotEmpty &&
+                            nameController.text.trim().isNotEmpty) {
                           inviteUser(
                             context,
                             emailController.text.trim(),
+                            nameController.text.trim(),
                           );
                         }
                       },
