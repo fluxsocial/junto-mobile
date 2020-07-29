@@ -118,4 +118,7 @@ abstract class UserService {
 
   // invite user to Junto
   Future<int> inviteUser(String email, String name);
+
+  // retrieve date of last invite sent
+  Future<void> lastInviteSent();
 }
