@@ -10,7 +10,7 @@ import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/feed_placeholder.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 
 class JuntoCommunityCenterFeedback extends StatefulWidget {
   @override
@@ -21,7 +21,6 @@ class JuntoCommunityCenterFeedback extends StatefulWidget {
 
 class JuntoCommunityCenterFeedbackState
     extends State<JuntoCommunityCenterFeedback> {
-
   final String communityCenterAddress = kCommunityCenterAddress;
 
   Future<QueryResults<ExpressionResponse>> getExpressions;
@@ -60,6 +59,7 @@ class JuntoCommunityCenterFeedbackState
           if (snapshot.hasData && snapshot.data.results.length == 0) {
             return FeedPlaceholder(
               placeholderText: 'No expressions yet!',
+              image: 'assets/images/junto-mobile__placeholder--feed.png',
             );
           } else if (snapshot.hasData) {
             return Column(

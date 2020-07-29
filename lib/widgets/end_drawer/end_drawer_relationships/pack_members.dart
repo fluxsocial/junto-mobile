@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:provider/provider.dart';
 
 class PackMembers extends StatefulWidget {
@@ -39,15 +40,23 @@ class PackMembersState extends State<PackMembers> {
       builder: (BuildContext context, AsyncSnapshot<List<Users>> snapshot) {
         if (snapshot.hasData) {
           final List<Users> packMembers = snapshot.data;
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            children: packMembers
-                .map(
-                  (dynamic packMember) =>
-                      MemberPreview(profile: packMember.user),
-                )
-                .toList(),
-          );
+
+          if (packMembers.length > 0) {
+            return ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              children: packMembers
+                  .map(
+                    (dynamic packMember) =>
+                        MemberPreview(profile: packMember.user),
+                  )
+                  .toList(),
+            );
+          } else {
+            return FeedPlaceholder(
+              placeholderText: 'No pack members yet!',
+              image: 'assets/images/junto-mobile__bench.png',
+            );
+          }
         } else if (snapshot.hasError) {
           print(snapshot.error);
           return JuntoErrorWidget(errorMessage: 'Hmm, something went wrong');
