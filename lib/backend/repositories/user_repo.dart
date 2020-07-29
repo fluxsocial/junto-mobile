@@ -30,7 +30,9 @@ class UserRepo {
   }
 
   // Retrieve date of last invitation sent
-  Future<void> lastInviteUser() {}
+  Future<void> lastInviteSent() {
+    return _userService.lastInviteSent();
+  }
 
   Future<PerspectiveModel> createPerspective(Perspective perspective) {
     assert(perspective.name != null);
