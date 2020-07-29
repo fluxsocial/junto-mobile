@@ -25,7 +25,9 @@ import 'package:provider/provider.dart';
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => JuntoDenState();
+  State<StatefulWidget> createState() {
+    return JuntoDenState();
+  }
 }
 
 class JuntoDenState extends State<JuntoDen>
@@ -57,7 +59,9 @@ class JuntoDenState extends State<JuntoDen>
   @override
   void dispose() {
     _denController.dispose();
+    _tabController.removeListener(_setCurrentIndex);
     _tabController.dispose();
+
     super.dispose();
   }
 
