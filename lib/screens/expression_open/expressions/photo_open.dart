@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
+import 'package:junto_beta_mobile/widgets/link_text.dart';
 
 class PhotoOpen extends StatelessWidget {
   const PhotoOpen(this.photoExpression);
@@ -43,7 +44,7 @@ class PhotoOpen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 10),
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
+              child: LinkText(
                 photoExpression.expressionData.caption.trim(),
                 style: Theme.of(context).textTheme.caption,
               ),
