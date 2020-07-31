@@ -8,8 +8,8 @@ class LinkText extends StatelessWidget {
     Key key,
     this.style,
     this.textAlign = TextAlign.start,
-    this.maxLines = 1,
-    this.overflow,
+    this.overflow = TextOverflow.ellipsis,
+    this.maxLines,
   }) : super(key: key);
 
   final String text;
