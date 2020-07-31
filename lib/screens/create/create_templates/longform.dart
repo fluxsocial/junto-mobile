@@ -173,7 +173,7 @@ class CreateLongformState extends State<CreateLongform> {
                           ),
                       keyboardAppearance: Theme.of(context).brightness,
                       textCapitalization: TextCapitalization.sentences,
-                      keyboardType: TextInputType.text,
+//                      keyboardType: TextInputType.multiline,
                     ),
                   ),
                 ],
