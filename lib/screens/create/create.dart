@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/linkform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
@@ -68,6 +69,14 @@ class JuntoCreateState extends State<JuntoCreate> {
         _push(
             context,
             CreateLongform(
+                expressionContext: widget.expressionContext,
+                address: widget.address),
+            expression);
+        break;
+      case ExpressionType.linkform:
+        _push(
+            context,
+            CreatLinkForm(
                 expressionContext: widget.expressionContext,
                 address: widget.address),
             expression);
@@ -185,6 +194,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                             scrollDirection: Axis.horizontal,
                             children: <Widget>[
                               _selectExpressionIcon(ExpressionType.dynamic),
+                              _selectExpressionIcon(ExpressionType.linkform),
                               _selectExpressionIcon(ExpressionType.shortform),
                               _selectExpressionIcon(ExpressionType.photo),
                               _selectExpressionIcon(ExpressionType.audio),
