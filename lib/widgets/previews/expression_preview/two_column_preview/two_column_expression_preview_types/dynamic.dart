@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/link_text.dart';
 
 class DynamicPreview extends StatelessWidget {
   const DynamicPreview({
@@ -46,7 +47,7 @@ class DynamicPreview extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     final String expressionBody = expression.expressionData.body.trim();
     if (expressionBody.isNotEmpty) {
-      return Text(
+      return LinkText(
         expressionBody,
         maxLines: 7,
         overflow: TextOverflow.ellipsis,

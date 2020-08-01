@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/link_text.dart';
 
 class LongformOpen extends StatelessWidget {
   const LongformOpen(this.longformExpression);
@@ -36,7 +37,7 @@ class LongformOpen extends StatelessWidget {
           longformBody != ''
               ? Container(
                   width: MediaQuery.of(context).size.width,
-                  child: SelectableText(
+                  child: LinkText(
                     longformBody,
                     textAlign: TextAlign.start,
                     style: TextStyle(
