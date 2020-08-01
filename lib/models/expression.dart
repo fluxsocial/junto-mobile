@@ -173,6 +173,36 @@ class ShortFormExpression {
       };
 }
 
+@HiveType(typeId: 8)
+class LinkFormExpression {
+  LinkFormExpression({
+    @required this.title,
+    @required this.caption,
+    @required this.url,
+  });
+
+  factory LinkFormExpression.fromJson(Map<String, dynamic> json) {
+    return LinkFormExpression(
+      title: json['title'],
+      caption: json['caption'],
+      url: json['url'],
+    );
+  }
+
+  @HiveField(0)
+  final String title;
+  @HiveField(1)
+  final String caption;
+  @HiveField(2)
+  final String url;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'title': title,
+        'caption': caption,
+        'url': url,
+      };
+}
+
 @HiveType(typeId: 2)
 class PhotoFormExpression {
   PhotoFormExpression({
