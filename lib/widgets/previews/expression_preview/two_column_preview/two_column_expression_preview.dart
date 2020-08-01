@@ -1,3 +1,4 @@
+import 'package:embedly_preview/embedly_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -70,6 +71,14 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                       AudioPreview(expression: expression)
                     else if (expression.type == 'LongForm')
                       DynamicPreview(expression: expression)
+                    else if (expression.type == 'LinkForm')
+                      Container(
+                        height: 100,
+                        child: OEmbedWidget(
+                          data:
+                              OEmbedResponse.fromMap(expression.expressionData),
+                        ),
+                      )
                     else
                       SizedBox()
                   ],

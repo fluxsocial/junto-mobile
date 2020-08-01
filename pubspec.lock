@@ -253,6 +253,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.3"
+  embedly_preview:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "127063aa4ca5f18f57ca301edaa963f14ebedb05"
+      url: "https://github.com/juntofoundation/embedly-preview.git"
+    source: git
+    version: "0.0.1"
   equatable:
     dependency: "direct main"
     description:
@@ -1005,4 +1014,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.9.0-18.0 <2.9.0"
-  flutter: ">=1.16.0 <2.0.0"
+  flutter: ">=1.17.0 <2.0.0"
