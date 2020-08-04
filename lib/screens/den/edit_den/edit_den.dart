@@ -168,10 +168,10 @@ class JuntoEditDenState extends State<JuntoEditDen> {
 
     _newProfileBody = <String, dynamic>{
       'name': updatedName,
-      'location': updatedLocation == '' ? null : <String>[updatedLocation],
-      'bio': updatedBio == '' ? null : updatedBio,
-      'website': updatedWebsite == '' ? null : <String>[updatedWebsite],
-      'gender': updatedGender == '' ? null : <String>[updatedGender],
+      'location': <String>[updatedLocation],
+      'bio': updatedBio,
+      'website': <String>[updatedWebsite],
+      'gender': <String>[updatedGender],
     };
 
     // check if user uploaded profile pictures
