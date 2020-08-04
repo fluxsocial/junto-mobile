@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 
 /// Top level function which handles parsing and rendering dates.
 /// Function requires the `BuildContext`, [context], of the current widget and the `DateTime`, [time].
@@ -27,4 +30,41 @@ String parseDate(BuildContext context, DateTime time) {
   } else {
     return MaterialLocalizations.of(context).formatFullDate(time.toLocal());
   }
+}
+
+Future<DateTime> getTimeOfLastInviteSent(BuildContext context) async {
+  final String timestamp =
+      await Provider.of<UserRepo>(context, listen: false).lastInviteSent();
+  return DateTime.parse(timestamp);
+}
+
+Duration getTimeDifferenceFromNow(DateTime timeStamp) {
+  return DateTime.now().difference(timeStamp);
+}
+
+Map<String, String> parseTimeUntilNextInvite(Duration duration) {
+  if (duration.inHours > 48) {
+    return {
+      'timeUntilNextInvitation': duration.inDays.toString(),
+      'timeUnit': 'days'
+    };
+  } else if (duration.inHours < 1) {
+    final timeUntilNextInvitation = duration.inMinutes.toString();
+    return {
+      'timeUntilNextInvitation': timeUntilNextInvitation,
+      'timeUnit': timeUntilNextInvitation == 1 ? 'minute' : 'minutes'
+    };
+  } else if (duration.inHours >= 1 && duration.inHours <= 48) {
+    final timeUntilNextInvitation = duration.inHours.toString();
+    return {
+      'timeUntilNextInvitation': timeUntilNextInvitation,
+      'timeUnit': timeUntilNextInvitation == 1 ? 'hour' : 'hours'
+    };
+  } else {
+    return {
+      'timeUntilNextInvitation': duration.inDays.toString(),
+      'timeUnit': 'days'
+    };
+  }
+  ;
 }

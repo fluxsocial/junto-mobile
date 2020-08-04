@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 import 'junto_invite_appbar.dart';
 import 'junto_invite_cta.dart';
 import 'junto_invite_dialog.dart';
-import 'junto_invite_notice.dart';
 
 class JuntoInvite extends StatelessWidget {
   @override
@@ -46,14 +46,14 @@ class JuntoInvite extends StatelessWidget {
                   title: 'INVITE SOMEONE TO JUNTO',
                   callToAction: () async {
                     try {
-                      final String timestamp =
-                          await Provider.of<UserRepo>(context, listen: false)
-                              .lastInviteSent();
-                      print(timestamp);
-                      final newTimestamp = DateTime.parse(timestamp);
+                      DateTime timeStamp;
+                      await getTimeOfLastInviteSent(context).then((result) {
+                        timeStamp = result;
+                      });
 
                       final Duration timeSinceLastInvitation =
-                          DateTime.now().difference(newTimestamp);
+                          getTimeDifferenceFromNow(timeStamp);
+
                       if (timeSinceLastInvitation.inHours == 1000 ||
                           timeSinceLastInvitation.inHours > 1000) {
                         await showDialog(
@@ -63,39 +63,33 @@ class JuntoInvite extends StatelessWidget {
                           ),
                         );
                       } else {
-                        String timeUntilNextInvitation;
-                        String timeToString;
+                        String timeNumber;
+                        String timeUnit;
 
-                        if (timeSinceLastInvitation.inHours > 48) {
-                          timeUntilNextInvitation =
-                              timeSinceLastInvitation.inDays.toString();
-                          timeToString = 'days';
-                        } else if (timeSinceLastInvitation.inHours < 1) {
-                          timeUntilNextInvitation =
-                              timeSinceLastInvitation.inMinutes.toString();
-
-                          timeToString = timeUntilNextInvitation == 1
-                              ? 'minute'
-                              : 'minutes';
-                        } else if (timeSinceLastInvitation.inHours >= 1 ||
-                            timeSinceLastInvitation.inHours <= 48) {
-                          timeUntilNextInvitation =
-                              timeSinceLastInvitation.inHours.toString();
-                          timeToString =
-                              timeUntilNextInvitation == 1 ? 'hour' : 'hours';
-                        }
+                        final Map<String, String> timeUntilNextInvite =
+                            parseTimeUntilNextInvite(timeSinceLastInvitation);
+                        timeNumber =
+                            timeUntilNextInvite['timeUntilNextInvitation'];
+                        timeUnit = timeUntilNextInvite['timeUnit'];
 
                         showDialog(
                           context: context,
                           builder: (BuildContext context) => SingleActionDialog(
                             context: context,
                             dialogText:
-                                'You can only invite one person every 7 days. Please wait another ${timeUntilNextInvitation} ${timeToString}.',
+                                'You can only invite one person every 7 days. Please wait another ${timeNumber} ${timeUnit}.',
                           ),
                         );
                       }
                     } catch (error) {
                       print(error);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => SingleActionDialog(
+                          context: context,
+                          dialogText: error,
+                        ),
+                      );
                     }
                   },
                 )
