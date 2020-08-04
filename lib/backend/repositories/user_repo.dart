@@ -30,7 +30,7 @@ class UserRepo {
   }
 
   // Retrieve date of last invitation sent
-  Future<void> lastInviteSent() {
+  Future<String> lastInviteSent() {
     return _userService.lastInviteSent();
   }
 

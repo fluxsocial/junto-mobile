@@ -120,5 +120,5 @@ abstract class UserService {
   Future<int> inviteUser(String email, String name);
 
   // retrieve date of last invite sent
-  Future<void> lastInviteSent();
+  Future<String> lastInviteSent();
 }

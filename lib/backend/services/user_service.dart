@@ -574,6 +574,8 @@ class UserServiceCentralized implements UserService {
   }
 
   Future<int> inviteUser(String email, String name) async {
+    print(email);
+    print(name);
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/auth/invite',
       body: {
@@ -590,8 +592,10 @@ class UserServiceCentralized implements UserService {
     return _serverResponse.statusCode;
   }
 
-  Future<void> lastInviteSent() async {
+  Future<String> lastInviteSent() async {
     final http.Response _serverResponse = await client.get('/auth/invite');
-    print(_serverResponse.body);
+    final Map<String, dynamic> result =
+        JuntoHttp.handleResponse(_serverResponse);
+    return result['last_invite'];
   }
 }
