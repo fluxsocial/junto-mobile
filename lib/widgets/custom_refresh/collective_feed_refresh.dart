@@ -10,7 +10,7 @@ import 'package:junto_beta_mobile/screens/notifications/notifications_handler.da
 class CollectiveFeedRefresh extends StatefulWidget {
   CollectiveFeedRefresh({
     Key key,
-   @required this.child,
+    @required this.child,
   }) : super(key: key);
 
   final Widget child;
