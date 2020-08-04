@@ -23,12 +23,12 @@ class AboutMember extends StatelessWidget {
       body: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
-          vertical: 10,
         ),
         child: Column(
           children: <Widget>[
             Expanded(
               child: ListView(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 children: <Widget>[
                   MemberProfilePictureFull(profile: profile),
                   AboutMemberName(profile: profile),
