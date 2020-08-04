@@ -208,9 +208,10 @@ class MockUserService implements UserService {
     return 200;
   }
 
-  Future<void> lastInviteSent() async {
+  Future<String> lastInviteSent() async {
     await Future<void>.delayed(
       const Duration(milliseconds: 500),
     );
+    return '';
   }
 }
