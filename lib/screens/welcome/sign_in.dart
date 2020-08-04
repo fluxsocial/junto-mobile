@@ -45,10 +45,7 @@ class _SignInState extends State<SignIn> {
       _showValidationError();
       return;
     }
-    if (Validator.validateNonEmpty(username) != null) {
-      _showValidationError(S.of(context).welcome_invalid_username);
-      return;
-    }
+
     BlocProvider.of<AuthBloc>(context).add(LoginEvent(username, password));
   }
 
