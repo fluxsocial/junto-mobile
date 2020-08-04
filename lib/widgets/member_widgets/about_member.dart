@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_full.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
-import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/bio_full.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_member_name.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_member_appbar.dart';
 
@@ -53,7 +53,9 @@ class AboutMember extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  MemberBio(profile: profile)
+                  MemberBioFull(
+                    profile: profile,
+                  )
                 ],
               ),
             ),
