@@ -54,8 +54,8 @@ class JuntoInvite extends StatelessWidget {
                       final Duration timeSinceLastInvitation =
                           getTimeDifferenceFromNow(timeStamp);
 
-                      if (timeSinceLastInvitation.inHours == 1000 ||
-                          timeSinceLastInvitation.inHours > 1000) {
+                      if (timeSinceLastInvitation.inHours == 24 ||
+                          timeSinceLastInvitation.inHours > 24) {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) => JuntoInviteDialog(
