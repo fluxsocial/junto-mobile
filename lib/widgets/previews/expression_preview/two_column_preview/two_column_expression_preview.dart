@@ -73,10 +73,15 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                       DynamicPreview(expression: expression)
                     else if (expression.type == 'LinkForm')
                       Container(
-                        height: 100,
-                        child: OEmbedWidget(
-                          data:
-                              OEmbedResponse.fromMap(expression.expressionData),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Title: ${expression.expressionData.title}"),
+                            OEmbedWidget(
+                              data: expression.expressionData.data,
+                            ),
+                            Text("Caption: ${expression.expressionData.caption}"),
+                          ],
                         ),
                       )
                     else

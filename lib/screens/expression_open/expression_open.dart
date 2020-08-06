@@ -1,3 +1,4 @@
+import 'package:embedly_preview/embedly_preview.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -86,6 +87,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       return EventOpen(widget.expression);
     } else if (expressionType == 'AudioForm') {
       return AudioOpen(widget.expression);
+    } else if (expressionType == 'LinkForm') {
+      return OEmbedWidget(data: widget.expression.expressionData.data);
     } else {
       return const SizedBox();
     }
