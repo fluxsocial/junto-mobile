@@ -1,3 +1,4 @@
+import 'package:embedly_preview/embedly_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -179,6 +180,7 @@ class LinkFormExpression {
     @required this.title,
     @required this.caption,
     @required this.url,
+    @required this.data,
   });
 
   factory LinkFormExpression.fromJson(Map<String, dynamic> json) {
@@ -186,6 +188,7 @@ class LinkFormExpression {
       title: json['title'],
       caption: json['caption'],
       url: json['url'],
+      data: OEmbedResponse.fromMap(json['data'])
     );
   }
 
@@ -195,6 +198,7 @@ class LinkFormExpression {
   final String caption;
   @HiveField(2)
   final String url;
+  final OEmbedResponse data;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
@@ -431,6 +435,9 @@ class ExpressionResponse extends HiveObject {
     }
     if (type == 'AudioForm') {
       return AudioFormExpression.fromJson(json);
+    }
+    if (type == 'LinkForm') {
+      return LinkFormExpression.fromJson(json);
     }
   }
 }
