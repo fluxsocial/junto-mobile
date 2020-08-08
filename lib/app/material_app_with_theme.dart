@@ -63,10 +63,18 @@ class HomePage extends StatelessWidget {
                 AnimatedSwitcher(
                   duration: kThemeAnimationDuration,
                   child: state.map(
-                    loading: (_) => HomeLoadingPage(),
-                    agreementsRequired: (_) => SignUpAgreements(),
-                    authenticated: (_) => HomePageContent(),
-                    unauthenticated: (_) => const Welcome(),
+                    loading: (_) => HomeLoadingPage(
+                      key: ValueKey<String>('loading-screen'),
+                    ),
+                    agreementsRequired: (_) => SignUpAgreements(
+                      key: ValueKey<String>('agreements-required-screen'),
+                    ),
+                    authenticated: (_) => HomePageContent(
+                      key: ValueKey<String>('authenticated-screen'),
+                    ),
+                    unauthenticated: (_) => const Welcome(
+                      key: ValueKey<String>('welcome-screen'),
+                    ),
                   ),
                 ),
               ],
@@ -84,6 +92,7 @@ class HomePage extends StatelessWidget {
 }
 
 class HomePageContent extends StatefulWidget {
+  const HomePageContent({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return HomePageContentState();
@@ -130,6 +139,7 @@ class HomePageContentState extends State<HomePageContent>
 }
 
 class HomeLoadingPage extends StatelessWidget {
+  const HomeLoadingPage({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
