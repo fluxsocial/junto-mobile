@@ -23,7 +23,7 @@ class AppServiceImpl extends AppService {
         return currentAppVersion;
       }
     } catch (error) {
-      logger.logDebug(error);
+      logger.logException(error);
       throw JuntoException("Cannot get server version", -1);
     }
   }
