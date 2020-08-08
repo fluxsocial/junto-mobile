@@ -168,7 +168,7 @@ packages:
       name: collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.14.13"
+    version: "1.15.0-nullsafety"
   convert:
     dependency: transitive
     description:
@@ -304,9 +304,9 @@ packages:
     dependency: "direct main"
     description:
       path: flutter_aws_amplify_cognito
-      ref: "9e835abe5a8602b16a7b8ea6d8f3ed3a1f21f5b6"
-      resolved-ref: "9e835abe5a8602b16a7b8ea6d8f3ed3a1f21f5b6"
-      url: "https://github.com/orestesgaolin/flutter_amplify.git"
+      ref: "5838fbe7438d20552840462b3be5ffe6ef76ed23"
+      resolved-ref: "5838fbe7438d20552840462b3be5ffe6ef76ed23"
+      url: "https://github.com/Nash0x7E2/flutter_amplify.git"
     source: git
     version: "1.0.0+7"
   flutter_bloc:
@@ -355,7 +355,7 @@ packages:
       name: flutter_staggered_grid_view
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.3.2"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -458,7 +458,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.7+3"
+    version: "0.6.7+4"
   image_picker_platform_interface:
     dependency: transitive
     description:
@@ -535,7 +535,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.8"
+    version: "1.3.0-nullsafety"
   mime:
     dependency: transitive
     description:
@@ -904,7 +904,7 @@ packages:
       name: typed_data
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0-nullsafety"
   url_launcher:
     dependency: "direct main"
     description:
@@ -953,7 +953,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.8"
+    version: "2.1.0-nullsafety"
   vibration:
     dependency: "direct main"
     description:
@@ -1004,5 +1004,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.9.0-14.0.dev <3.0.0"
-  flutter: ">=1.16.0 <2.0.0"
+  dart: ">=2.9.0-18.0 <2.9.0"
+  flutter: ">=1.20.0 <2.0.0"
