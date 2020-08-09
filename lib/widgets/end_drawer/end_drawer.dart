@@ -34,12 +34,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
   void _onLogOut() async {
     try {
       await context.bloc<AuthBloc>().add(LogoutEvent());
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        Welcome.route(),
-        (route) => route.settings.name == "/",
-      );
     } catch (e) {
       logger.logException(e);
     }

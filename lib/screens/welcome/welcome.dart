@@ -35,12 +35,6 @@ import 'package:provider/provider.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({Key key}) : super(key: key);
-  static Route<dynamic> route() {
-    return MaterialPageRoute(
-      settings: RouteSettings(name: "welcome"),
-      builder: (context) => Welcome(),
-    );
-  }
 
   @override
   State<StatefulWidget> createState() {
