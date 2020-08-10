@@ -18,6 +18,7 @@ class JuntoInviteCTA extends StatelessWidget {
     return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
       return Container(
         width: MediaQuery.of(context).size.width,
+        margin: const EdgeInsets.only(bottom: 25),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40.0),
           boxShadow: <BoxShadow>[
