@@ -574,8 +574,6 @@ class UserServiceCentralized implements UserService {
   }
 
   Future<int> inviteUser(String email, String name) async {
-    print(email);
-    print(name);
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/auth/invite',
       body: {
@@ -583,7 +581,6 @@ class UserServiceCentralized implements UserService {
         'name': name,
       },
     );
-
     if (_serverResponse.statusCode != 200 &&
         _serverResponse.statusCode != 403) {
       JuntoHttp.handleResponse(_serverResponse);
