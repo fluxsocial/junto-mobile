@@ -110,14 +110,12 @@ class HomePageContentState extends State<HomePageContent>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
       print(state);
       UserData userProfile =
           Provider.of<UserDataProvider>(context, listen: false).userProfile;
       if (userProfile == null) {
         context.bloc<AuthBloc>().add(RefreshUser());
-      }
-    }
+      } 
   }
 
   @override
