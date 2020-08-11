@@ -51,7 +51,7 @@ class CreateLongformState extends State<CreateLongform> {
     );
   }
 
-  bool validate() {
+  bool expressionHasData() {
     final body = _bodyController.value.text.trim();
     final title = _titleController.value.text.trim();
     // Body cannot be empty if the title is also empty
@@ -70,7 +70,7 @@ class CreateLongformState extends State<CreateLongform> {
   }
 
   void _onNext() {
-    if (validate() == true) {
+    if (expressionHasData() == true) {
       final LongFormExpression expression = createExpression();
       Navigator.push(
         context,
@@ -115,6 +115,7 @@ class CreateLongformState extends State<CreateLongform> {
       showBottomNav: _showBottomNav,
       expressionType: ExpressionType.dynamic,
       onNext: _onNext,
+      expressionHasData: expressionHasData,
       child: Expanded(
         child: Column(
           children: <Widget>[
@@ -173,7 +174,7 @@ class CreateLongformState extends State<CreateLongform> {
                           ),
                       keyboardAppearance: Theme.of(context).brightness,
                       textCapitalization: TextCapitalization.sentences,
-                      keyboardType: TextInputType.text,
+//                      keyboardType: TextInputType.multiline,
                     ),
                   ),
                 ],

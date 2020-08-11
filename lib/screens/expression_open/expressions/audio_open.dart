@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
+import 'package:junto_beta_mobile/widgets/link_text.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
@@ -91,7 +94,7 @@ class AudioOpenCaption extends StatelessWidget {
         horizontal: 10,
         vertical: 10,
       ),
-      child: Text(
+      child: LinkText(
         caption,
         style: TextStyle(
           fontSize: 17,

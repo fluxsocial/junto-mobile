@@ -117,5 +117,8 @@ abstract class UserService {
   Future<bool> cognitoValidate(String username);
 
   // invite user to Junto
-  Future<int> inviteUser(String email);
+  Future<int> inviteUser(String email, String name);
+
+  // retrieve date of last invite sent
+  Future<Map<String, dynamic>> lastInviteSent();
 }

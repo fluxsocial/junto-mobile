@@ -21,12 +21,8 @@ class CollectiveActionButton extends StatelessWidget {
           child: visible ? child : const SizedBox(),
         );
       },
-      child: Padding(
-        key: ValueKey('Down-Button'),
-        padding: const EdgeInsets.only(bottom: 25),
-        child: BottomNav(
-          source: Screen.collective,
-        ),
+      child: BottomNav(
+        source: Screen.collective,
       ),
     );
   }

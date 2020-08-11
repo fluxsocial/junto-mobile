@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/cta_button.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CreateAppBar({
     Key key,
     @required this.expressionType,
     @required this.onNext,
+    @required this.expressionHasData,
   }) : super(key: key);
 
   final ExpressionType expressionType;
   final VoidCallback onNext;
+  final Function expressionHasData;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,20 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  if (expressionHasData()) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ConfirmDialog(
+                        confirmationText:
+                            'Are you sure you want to leave this screen? Your expression will not be saved.',
+                        confirm: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    );
+                  } else {
+                    Navigator.pop(context);
+                  }
                 },
                 child: Container(
                   color: Colors.transparent,

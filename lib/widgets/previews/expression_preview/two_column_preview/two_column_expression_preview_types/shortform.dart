@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
+import 'package:junto_beta_mobile/widgets/link_text.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatelessWidget {
@@ -38,7 +39,7 @@ class ShortformPreview extends StatelessWidget {
         alignment: Alignment.center,
         // width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
-        child: Text(
+        child: LinkText(
           shortformBody,
           maxLines: 7,
           textAlign: TextAlign.center,

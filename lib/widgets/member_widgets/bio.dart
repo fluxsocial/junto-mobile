@@ -4,7 +4,9 @@ import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MemberBio extends StatelessWidget {
-  const MemberBio({this.profile});
+  const MemberBio({
+    this.profile,
+  });
 
   final UserData profile;
   @override
@@ -31,6 +33,8 @@ class MemberBio extends StatelessWidget {
               child: Text(
                 profile.user.bio,
                 style: Theme.of(context).textTheme.caption,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           )

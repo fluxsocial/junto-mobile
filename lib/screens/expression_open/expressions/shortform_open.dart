@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/link_text.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 class ShortformOpen extends StatelessWidget {
@@ -31,7 +32,7 @@ class ShortformOpen extends StatelessWidget {
         horizontal: 25.0,
         vertical: 50.0,
       ),
-      child: SelectableText(
+      child: LinkText(
         expression.expressionData.body.trim(),
         textAlign: TextAlign.center,
         style: TextStyle(

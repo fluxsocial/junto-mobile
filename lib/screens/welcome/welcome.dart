@@ -34,13 +34,6 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class Welcome extends StatefulWidget {
-  static Route<dynamic> route() {
-    return MaterialPageRoute(
-      settings: RouteSettings(name: "welcome"),
-      builder: (context) => Welcome(),
-    );
-  }
-
   const Welcome({Key key}) : super(key: key);
 
   @override

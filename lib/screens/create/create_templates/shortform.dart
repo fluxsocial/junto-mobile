@@ -43,7 +43,7 @@ class CreateShortformState extends State<CreateShortform> {
     );
   }
 
-  bool validate() {
+  bool expressionHasData() {
     return _bodyController.value.text != null &&
         _bodyController.value.text.trim().isNotEmpty;
   }
@@ -91,7 +91,7 @@ class CreateShortformState extends State<CreateShortform> {
   }
 
   void _onNext() {
-    if (validate() == true) {
+    if (expressionHasData() == true) {
       final ShortFormExpression expression = createExpression();
       Navigator.push(
         context,
@@ -131,6 +131,7 @@ class CreateShortformState extends State<CreateShortform> {
       expressionType: ExpressionType.shortform,
       onNext: _onNext,
       showBottomNav: _showBottomNav,
+      expressionHasData: expressionHasData,
       child: Expanded(
         child: Column(
           children: <Widget>[

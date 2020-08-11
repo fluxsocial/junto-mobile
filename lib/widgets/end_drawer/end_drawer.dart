@@ -31,14 +31,9 @@ class JuntoDrawer extends StatefulWidget {
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
-  void _onLogOut() {
+  void _onLogOut() async {
     try {
-      context.bloc<AuthBloc>().add(LogoutEvent());
-      Navigator.pushAndRemoveUntil(
-        context,
-        Welcome.route(),
-        (route) => route.settings.name == "/",
-      );
+      await context.bloc<AuthBloc>().add(LogoutEvent());
     } catch (e) {
       logger.logException(e);
     }
@@ -61,9 +56,9 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
               physics: NeverScrollableScrollPhysics(),
               child: Container(
                 padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * .15,
+                  top: MediaQuery.of(context).size.height * .12,
                   left: 32,
-                  bottom: MediaQuery.of(context).size.height * .15,
+                  bottom: MediaQuery.of(context).size.height * .12,
                   right: 32,
                 ),
                 height: MediaQuery.of(context).size.height,

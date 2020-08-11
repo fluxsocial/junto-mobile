@@ -95,7 +95,7 @@ class AppRepo extends ChangeNotifier {
       logger.logDebug(error.message);
       return false;
     } catch (e) {
-      logger.logDebug(e);
+      logger.logException(e);
       return false;
     }
   }

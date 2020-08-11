@@ -23,9 +23,9 @@ class AboutItem extends StatelessWidget {
                     onTap: () async {
                       if (isWebsite) {
                         String url = item[0].trim();
-                        if (!item[0].startsWith('https://') ||
-                            !item[0].startsWith('http:') ||
-                            !item[0].startsWith('https:')) {
+                        String urlToLowercase = item[0].toLowerCase();
+                        if (!urlToLowercase.startsWith('https') &&
+                            !urlToLowercase.startsWith('http')) {
                           url = 'https://${item[0]}';
                         }
                         if (await canLaunch(url)) {
@@ -36,7 +36,7 @@ class AboutItem extends StatelessWidget {
                             builder: (BuildContext context) =>
                                 const SingleActionDialog(
                               dialogText:
-                                  'Could not launch this website. Try typing it in your browser.',
+                                  'Could not open this website. Try typing it in your browser.',
                             ),
                           );
                         }

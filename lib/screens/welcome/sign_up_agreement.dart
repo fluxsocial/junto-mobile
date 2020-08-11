@@ -8,6 +8,7 @@ import 'widgets/sign_up_accept_button.dart';
 
 /// Agreements screen shown to the user following registration
 class SignUpAgreements extends StatefulWidget {
+  const SignUpAgreements({Key key}): super(key: key);
   @override
   State<StatefulWidget> createState() {
     return SignUpAgreementsState();

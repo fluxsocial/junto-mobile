@@ -25,7 +25,9 @@ import 'package:provider/provider.dart';
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => JuntoDenState();
+  State<StatefulWidget> createState() {
+    return JuntoDenState();
+  }
 }
 
 class JuntoDenState extends State<JuntoDen>
@@ -57,7 +59,9 @@ class JuntoDenState extends State<JuntoDen>
   @override
   void dispose() {
     _denController.dispose();
+    _tabController.removeListener(_setCurrentIndex);
     _tabController.dispose();
+
     super.dispose();
   }
 
@@ -175,8 +179,8 @@ class JuntoDenState extends State<JuntoDen>
                   ),
                   rightMenu: JuntoDrawer(),
                   scaffold: Scaffold(
-                    floatingActionButton:
-                        DenActionButton(isVisible: _isVisible, user: user),
+                    floatingActionButton: BottomNav(),
+                    // DenActionButton(isVisible: _isVisible, user: user),
                     floatingActionButtonLocation:
                         FloatingActionButtonLocation.centerDocked,
                     body: _buildBody(user.userProfile),
@@ -212,11 +216,8 @@ class DenActionButton extends StatelessWidget {
           child: child,
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 25),
-        child: BottomNav(
-          source: Screen.den,
-        ),
+      child: BottomNav(
+        source: Screen.den,
       ),
     );
   }

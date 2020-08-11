@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 
 import 'junto_invite_appbar.dart';
 import 'junto_invite_cta.dart';
@@ -22,7 +23,6 @@ class JuntoInvite extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
-              vertical: 40,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,12 +30,10 @@ class JuntoInvite extends StatelessWidget {
                 Expanded(
                   child: ListView(
                     children: <Widget>[
+                      const SizedBox(height: 40),
                       JuntoLogoOutline(),
                       JuntoInviteText(
                         "Junto was created from the desire to have more meaningful experiences on social media. On Junto, you can build your Pack - people closest to you that evoke the most unfiltered version of yourself.",
-                      ),
-                      JuntoInviteText(
-                        "You always have the option to share privately to your Pack. The people in your Pack will also have access to your Pack feed, which displays the public content from everyone in it. You become the common thread between all the people you invite, facilitating a more organic way for them to discover one another through their mutual connection - you.",
                       ),
                       JuntoInviteText(
                         "We envision the growth of Junto to take place through the creation of each individual's closest relationships. Thank you for participating in building this grassroots community with us.",
@@ -46,12 +44,51 @@ class JuntoInvite extends StatelessWidget {
                 JuntoInviteCTA(
                   title: 'INVITE SOMEONE TO JUNTO',
                   callToAction: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) => JuntoInviteDialog(
-                        buildContext: context,
-                      ),
-                    );
+                    try {
+                      // Get the invite capacity of user
+                      final Map<String, dynamic> inviteInfo =
+                          await Provider.of<UserRepo>(context, listen: false)
+                              .lastInviteSent();
+
+                      // If the user made more than three invites this week, send a notice
+                      if (inviteInfo['invites_made_this_week'] >= 3) {
+                        // Get date time of last invitation sent
+                        final DateTime lastInviteSent =
+                            DateTime.parse(inviteInfo['last_invite']);
+
+                        // Get date time of next available invite
+                        final DateTime nextAvailableInvite = lastInviteSent.add(
+                          Duration(days: 7),
+                        );
+
+                        // Show user when they can send the next invite
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => SingleActionDialog(
+                            context: context,
+                            dialogText:
+                                "It looks like you've already invited three people this week. Please wait until ${nextAvailableInvite.month}/${nextAvailableInvite.day}/${nextAvailableInvite.year} at ${nextAvailableInvite.hour}:${nextAvailableInvite.minute} ${nextAvailableInvite.timeZoneName}.",
+                          ),
+                        );
+                        // If the user made less than 3 invites this week, let them invite more people
+                      } else {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) => JuntoInviteDialog(
+                            buildContext: context,
+                          ),
+                        );
+                      }
+                    } catch (error) {
+                      print(error);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => SingleActionDialog(
+                          context: context,
+                          dialogText: error,
+                        ),
+                      );
+                    }
                   },
                 )
               ],

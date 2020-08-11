@@ -21,6 +21,7 @@ import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
@@ -48,11 +49,17 @@ class _JuntoLotusState extends State<JuntoLotus> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    fetchNotifications();
     repo = Provider.of<OnBoardingRepo>(context);
     if (repo.showLotusTutorial) {
       showTutorial();
       repo.setViewed(HiveKeys.kShowLotusTutorial, false);
     }
+  }
+
+  void fetchNotifications() async {
+    await Provider.of<NotificationsHandler>(context, listen: false)
+        .fetchNotifications();
   }
 
   /// Pushes new page onto the stack
