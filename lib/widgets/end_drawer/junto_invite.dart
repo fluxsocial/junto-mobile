@@ -46,39 +46,27 @@ class JuntoInvite extends StatelessWidget {
                   title: 'INVITE SOMEONE TO JUNTO',
                   callToAction: () async {
                     try {
-                      DateTime timeStamp;
-                      await getTimeOfLastInviteSent(context).then((result) {
-                        timeStamp = result;
-                      });
-                      print(timeStamp);
+                      // Get the invite capacity of user
+                      final Map<String, dynamic> inviteInfo =
+                          await Provider.of<UserRepo>(context, listen: false)
+                              .lastInviteSent();
 
-                      final Duration timeSinceLastInvitation =
-                          getTimeDifferenceFromNow(timeStamp);
-                      
-                      if (timeSinceLastInvitation.inHours == 24 ||
-                          timeSinceLastInvitation.inHours > 24) {
-                        await showDialog(
-                          context: context,
-                          builder: (BuildContext context) => JuntoInviteDialog(
-                            buildContext: context,
-                          ),
-                        );
-                      } else {
-                        String timeNumber;
-                        String timeUnit;
-
-                        final Map<String, String> timeUntilNextInvite =
-                            parseTimeUntilNextInvite(timeSinceLastInvitation);
-                        timeNumber =
-                            timeUntilNextInvite['timeUntilNextInvitation'];
-                        timeUnit = timeUntilNextInvite['timeUnit'];
-
+                      // If the user made more than three invites this week, send a notice
+                      if (inviteInfo['invites_made_this_week'] >= 3) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) => SingleActionDialog(
                             context: context,
                             dialogText:
-                                'You can only invite one person every 7 days. Please wait another ${timeNumber} ${timeUnit}.',
+                                'You can only invite three people every 7 days.',
+                          ),
+                        );
+                        // If the user made less than 3 invites this week, let them invite more people
+                      } else {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) => JuntoInviteDialog(
+                            buildContext: context,
                           ),
                         );
                       }
