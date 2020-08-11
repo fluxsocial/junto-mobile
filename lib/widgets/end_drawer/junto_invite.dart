@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 import 'junto_invite_appbar.dart';
 import 'junto_invite_cta.dart';
