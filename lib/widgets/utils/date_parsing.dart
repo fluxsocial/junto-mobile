@@ -41,30 +41,3 @@ Future<DateTime> getTimeOfLastInviteSent(BuildContext context) async {
 Duration getTimeDifferenceFromNow(DateTime timeStamp) {
   return DateTime.now().difference(timeStamp);
 }
-
-Map<String, String> parseTimeUntilNextInvite(Duration duration) {
-  if (duration.inHours > 48) {
-    return {
-      'timeUntilNextInvitation': duration.inDays.toString(),
-      'timeUnit': 'days'
-    };
-  } else if (duration.inHours < 1) {
-    final timeUntilNextInvitation = duration.inMinutes.toString();
-    return {
-      'timeUntilNextInvitation': timeUntilNextInvitation,
-      'timeUnit': timeUntilNextInvitation == 1 ? 'minute' : 'minutes'
-    };
-  } else if (duration.inHours >= 1 && duration.inHours <= 48) {
-    final timeUntilNextInvitation = duration.inHours.toString();
-    return {
-      'timeUntilNextInvitation': timeUntilNextInvitation,
-      'timeUnit': timeUntilNextInvitation == 1 ? 'hour' : 'hours'
-    };
-  } else {
-    return {
-      'timeUntilNextInvitation': duration.inDays.toString(),
-      'timeUnit': 'days'
-    };
-  }
-  ;
-}
