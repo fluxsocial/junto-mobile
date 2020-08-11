@@ -21,8 +21,9 @@ class JuntoInviteDialog extends StatefulWidget {
 
 class JuntoInviteDialogState extends State<JuntoInviteDialog> {
   int invitesLeft;
-  TextEditingController emailController;
+  String inviteText;
   TextEditingController nameController;
+  TextEditingController emailController;
 
   void inviteUser(BuildContext context, String email, String name) async {
     try {
@@ -33,12 +34,13 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
       JuntoLoader.hide();
 
       String dialogText;
+      await getInviteInfo();
       if (statusCode == 200) {
         dialogText =
-            'Your invitation is on its way! Feel free to invite another person to Junto in 7 days.';
+            'Your invitation is on its way! You have ${invitesLeft} ${inviteText} left.';
       } else if (statusCode == 403) {
         dialogText =
-            'You can only send one invitation per week. Please wait 7 days from the time you sent your last invitation.';
+            'You can only send three invitations per week. Please wait until you can send more invites';
       }
       showDialog(
         context: context,
@@ -66,15 +68,25 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
     super.initState();
     emailController = TextEditingController();
     nameController = TextEditingController();
-    invitesLeft =
-        widget.invitesMadeThisWeek == null ? 3 : 3 - widget.invitesMadeThisWeek;
+    getInviteInfo();
+  }
+
+  Future<void> getInviteInfo() async {
+    final Map<String, dynamic> inviteInfo =
+        await Provider.of<UserRepo>(context, listen: false).lastInviteSent();
+    final int invitesMadeThisWeek = inviteInfo['invites_made_this_week'];
+
+    setState(() {
+      invitesLeft = invitesMadeThisWeek == null ? 3 : 3 - invitesMadeThisWeek;
+      inviteText = invitesLeft == 1 ? 'invite' : 'invites';
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    emailController.dispose();
     nameController.dispose();
+    emailController.dispose();
   }
 
   @override
@@ -98,7 +110,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "You have ${invitesLeft} invites left this week - who would you like to bring on?",
+              "You have ${invitesLeft} ${inviteText} left this week - who would you like to bring on?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,
@@ -109,146 +121,98 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
             Container(
               margin: const EdgeInsets.only(
                 top: 25,
-                bottom: 12.5,
+                bottom: 25,
               ),
-              child: TextField(
-                controller: nameController,
-                buildCounter: (
-                  BuildContext context, {
-                  int currentLength,
-                  int maxLength,
-                  bool isFocused,
-                }) =>
-                    null,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(0.0),
-                  hintText: 'Your Full Name',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColorLight,
+              child: Column(
+                children: [
+                  TextField(
+                    controller: nameController,
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(0.0),
+                      hintText: 'Your Full Name',
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                    ),
+                    cursorColor: Theme.of(context).primaryColor,
+                    cursorWidth: 1,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    maxLength: 40,
+                    textInputAction: TextInputAction.done,
                   ),
-                ),
-                cursorColor: Theme.of(context).primaryColor,
-                cursorWidth: 1,
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).primaryColor,
-                ),
-                maxLength: 40,
-                textInputAction: TextInputAction.done,
+                  Text(
+                    'Please provide your name so your friend knows who is inviting them.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ),
+                ],
               ),
             ),
             Container(
               margin: const EdgeInsets.only(
                 bottom: 12.5,
               ),
-              child: TextField(
-                controller: emailController,
-                buildCounter: (
-                  BuildContext context, {
-                  int currentLength,
-                  int maxLength,
-                  bool isFocused,
-                }) =>
-                    null,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(0.0),
-                  hintText: 'Email of 1st Invite',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColorLight,
+              child: Column(
+                children: [
+                  TextField(
+                    controller: emailController,
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(0.0),
+                      hintText: 'Their Email',
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                    ),
+                    cursorColor: Theme.of(context).primaryColor,
+                    cursorWidth: 1,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    maxLength: 40,
+                    textInputAction: TextInputAction.done,
                   ),
-                ),
-                cursorColor: Theme.of(context).primaryColor,
-                cursorWidth: 1,
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).primaryColor,
-                ),
-                maxLength: 40,
-                textInputAction: TextInputAction.done,
+                  Text(
+                    'Please provide the email of the person receiving the invite.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ),
+                ],
               ),
             ),
-            if (invitesLeft >= 2)
-              Container(
-                margin: const EdgeInsets.only(
-                  bottom: 12.5,
-                ),
-                child: TextField(
-                  controller: emailController,
-                  buildCounter: (
-                    BuildContext context, {
-                    int currentLength,
-                    int maxLength,
-                    bool isFocused,
-                  }) =>
-                      null,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(0.0),
-                    hintText: 'Email of 2nd Invite',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).primaryColorLight,
-                    ),
-                  ),
-                  cursorColor: Theme.of(context).primaryColor,
-                  cursorWidth: 1,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  maxLength: 40,
-                  textInputAction: TextInputAction.done,
-                ),
-              ),
-            if (invitesLeft >= 3)
-              Container(
-                margin: const EdgeInsets.only(
-                  bottom: 12.5,
-                ),
-                child: TextField(
-                  controller: emailController,
-                  buildCounter: (
-                    BuildContext context, {
-                    int currentLength,
-                    int maxLength,
-                    bool isFocused,
-                  }) =>
-                      null,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(0.0),
-                    hintText: 'Email of 3rd Invite',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).primaryColorLight,
-                    ),
-                  ),
-                  cursorColor: Theme.of(context).primaryColor,
-                  cursorWidth: 1,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  maxLength: 40,
-                  textInputAction: TextInputAction.done,
-                ),
-              ),
             Container(
               margin: const EdgeInsets.only(top: 25),
               child: Row(

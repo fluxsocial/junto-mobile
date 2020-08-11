@@ -67,8 +67,6 @@ class JuntoInvite extends StatelessWidget {
                           context: context,
                           builder: (BuildContext context) => JuntoInviteDialog(
                             buildContext: context,
-                            invitesMadeThisWeek:
-                                inviteInfo['invites_made_this_week'],
                           ),
                         );
                       }
