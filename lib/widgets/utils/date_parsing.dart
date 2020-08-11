@@ -33,9 +33,9 @@ String parseDate(BuildContext context, DateTime time) {
 }
 
 Future<DateTime> getTimeOfLastInviteSent(BuildContext context) async {
-  final String timestamp =
+  final Map<String, dynamic> inviteInfo =
       await Provider.of<UserRepo>(context, listen: false).lastInviteSent();
-  return DateTime.parse(timestamp);
+  return DateTime.parse(inviteInfo['last_invite']);
 }
 
 Duration getTimeDifferenceFromNow(DateTime timeStamp) {

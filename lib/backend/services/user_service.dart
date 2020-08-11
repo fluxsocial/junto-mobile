@@ -589,10 +589,10 @@ class UserServiceCentralized implements UserService {
     return _serverResponse.statusCode;
   }
 
-  Future<String> lastInviteSent() async {
+  Future<Map<String, dynamic>> lastInviteSent() async {
     final http.Response _serverResponse = await client.get('/auth/invite');
     final Map<String, dynamic> result =
         JuntoHttp.handleResponse(_serverResponse);
-    return result['last_invite'];
+    return result;
   }
 }
