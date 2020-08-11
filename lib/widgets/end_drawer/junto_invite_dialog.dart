@@ -6,8 +6,12 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
 class JuntoInviteDialog extends StatefulWidget {
-  const JuntoInviteDialog({this.buildContext});
+  const JuntoInviteDialog({
+    this.buildContext,
+    this.invitesMadeThisWeek,
+  });
   final BuildContext buildContext;
+  final int invitesMadeThisWeek;
 
   @override
   State<StatefulWidget> createState() {
@@ -16,6 +20,7 @@ class JuntoInviteDialog extends StatefulWidget {
 }
 
 class JuntoInviteDialogState extends State<JuntoInviteDialog> {
+  int invitesLeft;
   TextEditingController emailController;
   TextEditingController nameController;
 
@@ -61,6 +66,8 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
     super.initState();
     emailController = TextEditingController();
     nameController = TextEditingController();
+    invitesLeft =
+        widget.invitesMadeThisWeek == null ? 3 : 3 - widget.invitesMadeThisWeek;
   }
 
   @override
@@ -91,7 +98,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "You can invite one person a week to Junto - who would you like to bring on?",
+              "You have ${invitesLeft} invites left this week - who would you like to bring on?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,
@@ -102,6 +109,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
             Container(
               margin: const EdgeInsets.only(
                 top: 25,
+                bottom: 12.5,
               ),
               child: TextField(
                 controller: nameController,
@@ -134,10 +142,9 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
                 textInputAction: TextInputAction.done,
               ),
             ),
-            const SizedBox(height: 12.5),
             Container(
               margin: const EdgeInsets.only(
-                bottom: 25,
+                bottom: 12.5,
               ),
               child: TextField(
                 controller: emailController,
@@ -150,7 +157,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
                     null,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(0.0),
-                  hintText: 'Their Email',
+                  hintText: 'Email of 1st Invite',
                   border: InputBorder.none,
                   hintStyle: TextStyle(
                     fontSize: 17,
@@ -170,6 +177,78 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
                 textInputAction: TextInputAction.done,
               ),
             ),
+            if (invitesLeft >= 2)
+              Container(
+                margin: const EdgeInsets.only(
+                  bottom: 12.5,
+                ),
+                child: TextField(
+                  controller: emailController,
+                  buildCounter: (
+                    BuildContext context, {
+                    int currentLength,
+                    int maxLength,
+                    bool isFocused,
+                  }) =>
+                      null,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(0.0),
+                    hintText: 'Email of 2nd Invite',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ),
+                  cursorColor: Theme.of(context).primaryColor,
+                  cursorWidth: 1,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  maxLength: 40,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+            if (invitesLeft >= 3)
+              Container(
+                margin: const EdgeInsets.only(
+                  bottom: 12.5,
+                ),
+                child: TextField(
+                  controller: emailController,
+                  buildCounter: (
+                    BuildContext context, {
+                    int currentLength,
+                    int maxLength,
+                    bool isFocused,
+                  }) =>
+                      null,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(0.0),
+                    hintText: 'Email of 3rd Invite',
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ),
+                  cursorColor: Theme.of(context).primaryColor,
+                  cursorWidth: 1,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  maxLength: 40,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
             Container(
               margin: const EdgeInsets.only(top: 25),
               child: Row(
