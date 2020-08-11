@@ -53,12 +53,22 @@ class JuntoInvite extends StatelessWidget {
 
                       // If the user made more than three invites this week, send a notice
                       if (inviteInfo['invites_made_this_week'] >= 3) {
+                        // Get date time of last invitation sent
+                        final DateTime lastInviteSent =
+                            DateTime.parse(inviteInfo['last_invite']);
+
+                        // Get date time of next available invite
+                        final DateTime nextAvailableInvite = lastInviteSent.add(
+                          Duration(days: 7),
+                        );
+
+                        // Show user when they can send the next invite
                         showDialog(
                           context: context,
                           builder: (BuildContext context) => SingleActionDialog(
                             context: context,
                             dialogText:
-                                'You can only invite three people every 7 days.',
+                                'You can only invite three people every week. Please wait until ${nextAvailableInvite.month}/${nextAvailableInvite.day}/${nextAvailableInvite.year} at ${nextAvailableInvite.hour}:${nextAvailableInvite.minute} ${nextAvailableInvite.timeZoneName}.',
                           ),
                         );
                         // If the user made less than 3 invites this week, let them invite more people
