@@ -37,7 +37,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
       await getInviteInfo();
       if (statusCode == 200) {
         dialogText =
-            'Your invitation is on its way! You have ${invitesLeft} ${inviteText} left.';
+            'Your invitation is on its way! You have ${invitesLeft} ${inviteText} left this week.';
       } else if (statusCode == 403) {
         dialogText =
             'You can only send three invitations per week. Please wait until you can send more invites';
