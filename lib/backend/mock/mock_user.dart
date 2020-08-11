@@ -208,10 +208,10 @@ class MockUserService implements UserService {
     return 200;
   }
 
-  Future<String> lastInviteSent() async {
+  Future<Map<String, dynamic>> lastInviteSent() async {
     await Future<void>.delayed(
       const Duration(milliseconds: 500),
     );
-    return '';
+    return {};
   }
 }
