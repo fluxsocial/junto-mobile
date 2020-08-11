@@ -67,7 +67,7 @@ class JuntoInvite extends StatelessWidget {
                           builder: (BuildContext context) => SingleActionDialog(
                             context: context,
                             dialogText:
-                                'You can only invite three people every week. Please wait until ${nextAvailableInvite.month}/${nextAvailableInvite.day}/${nextAvailableInvite.year} at ${nextAvailableInvite.hour}:${nextAvailableInvite.minute} ${nextAvailableInvite.timeZoneName}.',
+                                "It looks like you've already invited three people this week. Please wait until ${nextAvailableInvite.month}/${nextAvailableInvite.day}/${nextAvailableInvite.year} at ${nextAvailableInvite.hour}:${nextAvailableInvite.minute} ${nextAvailableInvite.timeZoneName}.",
                           ),
                         );
                         // If the user made less than 3 invites this week, let them invite more people
