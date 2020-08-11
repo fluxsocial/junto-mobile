@@ -22,13 +22,10 @@ class SpheresTemp extends StatelessWidget {
             ),
             child: SpheresTempAppBar(),
           ),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 25),
-            child: BottomNav(
-              address: null,
-              expressionContext: ExpressionContext.Group,
-              source: Screen.groups,
-            ),
+          floatingActionButton: BottomNav(
+            address: null,
+            expressionContext: ExpressionContext.Group,
+            source: Screen.groups,
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,

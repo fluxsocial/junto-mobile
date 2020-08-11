@@ -179,8 +179,8 @@ class JuntoDenState extends State<JuntoDen>
                   ),
                   rightMenu: JuntoDrawer(),
                   scaffold: Scaffold(
-                    floatingActionButton:
-                        DenActionButton(isVisible: _isVisible, user: user),
+                    floatingActionButton: BottomNav(),
+                    // DenActionButton(isVisible: _isVisible, user: user),
                     floatingActionButtonLocation:
                         FloatingActionButtonLocation.centerDocked,
                     body: _buildBody(user.userProfile),
@@ -216,11 +216,8 @@ class DenActionButton extends StatelessWidget {
           child: child,
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 25),
-        child: BottomNav(
-          source: Screen.den,
-        ),
+      child: BottomNav(
+        source: Screen.den,
       ),
     );
   }
