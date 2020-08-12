@@ -94,7 +94,7 @@ class AudioOpenCaption extends StatelessWidget {
         horizontal: 10,
         vertical: 10,
       ),
-      child: LinkText(
+      child: Text(
         caption,
         style: TextStyle(
           fontSize: 17,
