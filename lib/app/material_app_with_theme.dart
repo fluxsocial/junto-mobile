@@ -16,6 +16,7 @@ import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:provider/provider.dart';
 
 class MaterialAppWithTheme extends StatelessWidget {
@@ -110,12 +111,13 @@ class HomePageContentState extends State<HomePageContent>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-      print(state);
-      UserData userProfile =
-          Provider.of<UserDataProvider>(context, listen: false).userProfile;
-      if (userProfile == null) {
-        context.bloc<AuthBloc>().add(RefreshUser());
-      } 
+    print(state);
+    UserData userProfile =
+        Provider.of<UserDataProvider>(context, listen: false).userProfile;
+    if (userProfile == null) {
+      context.bloc<AuthBloc>().add(RefreshUser());
+    }
+    context.bloc<AppBloc>().add(CheckServerVersion());
   }
 
   @override
