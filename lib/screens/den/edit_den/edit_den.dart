@@ -18,6 +18,7 @@ import 'package:junto_beta_mobile/screens/den/edit_den/update_photo_options.dart
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
 class JuntoEditDen extends StatefulWidget {
@@ -166,12 +167,23 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     final updatedWebsite = _websiteController.value.text.trim();
     final updatedGender = _genderController.value.text.trim();
 
+    if (updatedName.isEmpty) {
+      JuntoLoader.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Your name cannot be empty.',
+        ),
+      );
+      return;
+    }
+
     _newProfileBody = <String, dynamic>{
       'name': updatedName,
-      'location': updatedLocation == '' ? null : <String>[updatedLocation],
-      'bio': updatedBio == '' ? null : updatedBio,
-      'website': updatedWebsite == '' ? null : <String>[updatedWebsite],
-      'gender': updatedGender == '' ? null : <String>[updatedGender],
+      'location': <String>[updatedLocation],
+      'bio': updatedBio,
+      'website': <String>[updatedWebsite],
+      'gender': <String>[updatedGender],
     };
 
     // check if user uploaded profile pictures

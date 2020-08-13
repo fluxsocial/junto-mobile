@@ -32,7 +32,7 @@ class ShortformOpen extends StatelessWidget {
         horizontal: 25.0,
         vertical: 50.0,
       ),
-      child: LinkText(
+      child: Text(
         expression.expressionData.body.trim(),
         textAlign: TextAlign.center,
         style: TextStyle(

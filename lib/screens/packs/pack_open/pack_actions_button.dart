@@ -23,12 +23,9 @@ class PacksActionButtons extends StatelessWidget {
           child: child,
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 25),
-        child: BottomNav(
-          expressionContext: ExpressionContext.Group,
-          source: Screen.packs,
-        ),
+      child: BottomNav(
+        expressionContext: ExpressionContext.Group,
+        source: Screen.packs,
       ),
     );
   }

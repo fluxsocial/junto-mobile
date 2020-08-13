@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 
 /// Top level function which handles parsing and rendering dates.
 /// Function requires the `BuildContext`, [context], of the current widget and the `DateTime`, [time].
@@ -27,4 +30,14 @@ String parseDate(BuildContext context, DateTime time) {
   } else {
     return MaterialLocalizations.of(context).formatFullDate(time.toLocal());
   }
+}
+
+Future<DateTime> getTimeOfLastInviteSent(BuildContext context) async {
+  final Map<String, dynamic> inviteInfo =
+      await Provider.of<UserRepo>(context, listen: false).lastInviteSent();
+  return DateTime.parse(inviteInfo['last_invite']);
+}
+
+Duration getTimeDifferenceFromNow(DateTime timeStamp) {
+  return DateTime.now().difference(timeStamp);
 }

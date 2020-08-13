@@ -89,9 +89,7 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
   Widget build(BuildContext context) {
     return FeatureDiscovery(
       child: Scaffold(
-        floatingActionButton: SafeArea(
-          child: JuntoCommunityCenterFab(),
-        ),
+        floatingActionButton: JuntoCommunityCenterFab(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: DefaultTabController(
           length: _tabs.length,

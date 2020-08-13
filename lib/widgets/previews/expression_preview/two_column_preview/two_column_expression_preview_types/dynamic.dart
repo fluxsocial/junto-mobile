@@ -47,7 +47,7 @@ class DynamicPreview extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     final String expressionBody = expression.expressionData.body.trim();
     if (expressionBody.isNotEmpty) {
-      return LinkText(
+      return Text(
         expressionBody,
         maxLines: 7,
         overflow: TextOverflow.ellipsis,

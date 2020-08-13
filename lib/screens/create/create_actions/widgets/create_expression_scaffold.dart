@@ -13,6 +13,7 @@ class CreateExpressionScaffold extends StatelessWidget {
     this.child,
     this.onNext,
     this.showBottomNav = true,
+    this.expressionHasData,
     @required this.expressionType,
   }) : super(key: key);
 
@@ -20,6 +21,7 @@ class CreateExpressionScaffold extends StatelessWidget {
   final VoidCallback onNext;
   final bool showBottomNav;
   final ExpressionType expressionType;
+  final Function expressionHasData;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +34,13 @@ class CreateExpressionScaffold extends StatelessWidget {
             appBar: CreateAppBar(
               expressionType: expressionType,
               onNext: onNext,
+              expressionHasData: expressionHasData,
             ),
             resizeToAvoidBottomPadding: false,
             resizeToAvoidBottomInset: false,
             floatingActionButton: showBottomNav
-                ? Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: BottomNav(
-                      source: Screen.create,
-                    ),
+                ? BottomNav(
+                    source: Screen.create,
                   )
                 : null,
             floatingActionButtonLocation:

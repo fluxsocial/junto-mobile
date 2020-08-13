@@ -37,7 +37,7 @@ class LongformOpen extends StatelessWidget {
           longformBody != ''
               ? Container(
                   width: MediaQuery.of(context).size.width,
-                  child: LinkText(
+                  child: Text(
                     longformBody,
                     textAlign: TextAlign.start,
                     style: TextStyle(

@@ -133,7 +133,7 @@ class CreatePhotoState extends State<CreatePhoto> {
     };
   }
 
-  bool _validate() {
+  bool _expressionHasData() {
     if (imageFile != null) {
       return true;
     } else {
@@ -142,7 +142,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   void _onNext() {
-    if (_validate() == true) {
+    if (_expressionHasData() == true) {
       final Map<String, dynamic> expression = createExpression();
       Navigator.push(
         context,
@@ -202,6 +202,7 @@ class CreatePhotoState extends State<CreatePhoto> {
       expressionType: ExpressionType.photo,
       onNext: _onNext,
       showBottomNav: _showBottomNav,
+      expressionHasData: _expressionHasData,
       child: Expanded(
         child: Column(
           children: <Widget>[

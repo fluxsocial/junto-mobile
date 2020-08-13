@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
@@ -59,29 +58,7 @@ class DenAppbar extends SliverPersistentHeaderDelegate {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => NotificationsScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                    alignment: Alignment.bottomRight,
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                      right: 10,
-                    ),
-                    child: Icon(
-                      CustomIcons.newmoon,
-                      size: 20,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
+                NotificationsLunarIcon(),
               ],
             )
           ],

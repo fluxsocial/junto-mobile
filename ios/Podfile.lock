@@ -1,25 +1,21 @@
 PODS:
   - audioplayers (0.0.1):
     - Flutter
-  - AWSAuthCore (2.13.4):
-    - AWSCore (= 2.13.4)
-  - AWSCognitoIdentityProvider (2.13.4):
+  - AWSAuthCore (2.13.6):
+    - AWSCore (= 2.13.6)
+  - AWSCognitoIdentityProvider (2.13.6):
     - AWSCognitoIdentityProviderASF (= 1.0.1)
-    - AWSCore (= 2.13.4)
+    - AWSCore (= 2.13.6)
   - AWSCognitoIdentityProviderASF (1.0.1)
-  - AWSCore (2.13.4)
-  - AWSMobileClient (2.13.4):
-    - AWSAuthCore (= 2.13.4)
-    - AWSCognitoIdentityProvider (= 2.13.4)
-  - embedly_preview (0.0.1):
-    - Flutter
+  - AWSCore (2.13.6)
+  - AWSMobileClient (2.13.6):
+    - AWSAuthCore (= 2.13.6)
+    - AWSCognitoIdentityProvider (= 2.13.6)
   - Flutter (1.0.0)
   - flutter_audio_recorder (0.5.4):
     - Flutter
   - flutter_aws_amplify_cognito (0.0.2):
     - AWSMobileClient (~> 2.13.4)
-    - Flutter
-  - flutter_plugin_android_lifecycle (0.0.1):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -30,22 +26,12 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
-  - path_provider_macos (0.0.1):
-    - Flutter
   - shared_preferences (0.0.1):
-    - Flutter
-  - shared_preferences_macos (0.0.1):
-    - Flutter
-  - shared_preferences_web (0.0.1):
     - Flutter
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
   - url_launcher (0.0.1):
-    - Flutter
-  - url_launcher_macos (0.0.1):
-    - Flutter
-  - url_launcher_web (0.0.1):
     - Flutter
   - vibration (1.4.0):
     - Flutter
@@ -56,18 +42,12 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_audio_recorder (from `.symlinks/plugins/flutter_audio_recorder/ios`)
   - flutter_aws_amplify_cognito (from `.symlinks/plugins/flutter_aws_amplify_cognito/ios`)
-  - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
-  - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
-  - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
-  - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
   - vibration (from `.symlinks/plugins/vibration/ios`)
 
 SPEC REPOS:
@@ -90,59 +70,40 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_audio_recorder/ios"
   flutter_aws_amplify_cognito:
     :path: ".symlinks/plugins/flutter_aws_amplify_cognito/ios"
-  flutter_plugin_android_lifecycle:
-    :path: ".symlinks/plugins/flutter_plugin_android_lifecycle/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
-  path_provider_macos:
-    :path: ".symlinks/plugins/path_provider_macos/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  shared_preferences_macos:
-    :path: ".symlinks/plugins/shared_preferences_macos/ios"
-  shared_preferences_web:
-    :path: ".symlinks/plugins/shared_preferences_web/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
-  url_launcher_macos:
-    :path: ".symlinks/plugins/url_launcher_macos/ios"
-  url_launcher_web:
-    :path: ".symlinks/plugins/url_launcher_web/ios"
   vibration:
     :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
   audioplayers: 84f968cea3f2deab00ec4f8ff53358b3c0b3992c
-  AWSAuthCore: 72b4bd064c28985ea5345c62759632d511de342a
-  AWSCognitoIdentityProvider: a2d1d2857316519c018c03ac8205cf78154db5c0
+  AWSAuthCore: 62e92b5ffbd66b8ba0eac471e7f90ccfa76cf63b
+  AWSCognitoIdentityProvider: 05f14f7c892df9ff764268d2ac33b4e95288e603
   AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
-  AWSCore: 06beea22b6bdbfe9f5ab5015c6901e8475c746a8
-  AWSMobileClient: 33ecce524fbc011d543dae8306ca29a43ecb72e5
-  embedly_preview: 1eeccad41cc4b0496564028aa37fb1b59707a925
+  AWSCore: 2b6015f278770e745b4863ac5f45e007e647f298
+  AWSMobileClient: 420a899c4691c7f0991daa35daee82a84396ec63
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_audio_recorder: eb998d4e75e59b39d9e3ca1818a5e0f3a82f5836
   flutter_aws_amplify_cognito: 7e3a7bf2c46c4b468e724d6fd62277d01c1985a1
-  flutter_plugin_android_lifecycle: dc0b544e129eebb77a6bfb1239d4d1c673a60a35
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  image_picker: 66aa71bc96850a90590a35d4c4a2907b0d823109
+  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
-  shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
-  url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
-  url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
   vibration: 2275f5e3ab5da73de1d948dc96c026799e08ff6d
 
-PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
 COCOAPODS: 1.9.3
