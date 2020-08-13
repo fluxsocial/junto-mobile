@@ -11,6 +11,8 @@ PODS:
   - AWSMobileClient (2.13.4):
     - AWSAuthCore (= 2.13.4)
     - AWSCognitoIdentityProvider (= 2.13.4)
+  - embedly_preview (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - flutter_audio_recorder (0.5.4):
     - Flutter
@@ -50,6 +52,7 @@ PODS:
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - embedly_preview (from `.symlinks/plugins/embedly_preview/ios`)
   - Flutter (from `Flutter`)
   - flutter_audio_recorder (from `.symlinks/plugins/flutter_audio_recorder/ios`)
   - flutter_aws_amplify_cognito (from `.symlinks/plugins/flutter_aws_amplify_cognito/ios`)
@@ -79,6 +82,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
+  embedly_preview:
+    :path: ".symlinks/plugins/embedly_preview/ios"
   Flutter:
     :path: Flutter
   flutter_audio_recorder:
@@ -119,6 +124,7 @@ SPEC CHECKSUMS:
   AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
   AWSCore: 06beea22b6bdbfe9f5ab5015c6901e8475c746a8
   AWSMobileClient: 33ecce524fbc011d543dae8306ca29a43ecb72e5
+  embedly_preview: 1eeccad41cc4b0496564028aa37fb1b59707a925
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_audio_recorder: eb998d4e75e59b39d9e3ca1818a5e0f3a82f5836
   flutter_aws_amplify_cognito: 7e3a7bf2c46c4b468e724d6fd62277d01c1985a1
