@@ -1,4 +1,5 @@
 import 'package:embedly_preview/embedly_preview.dart';
+import 'package:embedly_preview/theme/embedly_theme_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -76,11 +77,15 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text("Title: ${expression.expressionData.title}"),
+                            if (expression.expressionData.title.isNotEmpty)
+                              Text("Title: ${expression.expressionData.title}"),
                             OEmbedWidget(
                               data: expression.expressionData.data,
+                              theme: EmbedlyThemeData(),
                             ),
-                            Text("Caption: ${expression.expressionData.caption}"),
+                            if (expression.expressionData.caption.isNotEmpty)
+                              Text(
+                                  "Caption: ${expression.expressionData.caption}"),
                           ],
                         ),
                       )
