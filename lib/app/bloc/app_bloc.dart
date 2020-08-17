@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -20,10 +21,14 @@ class AppBloc extends Bloc<AppBlocEvent, AppBlocState> {
   }
 
   Stream<AppBlocState> _mapEventToState(CheckServerVersion event) async* {
-    if (await repo.isValidVersion()) {
-      yield SupportedVersion();
+    if (Platform.isIOS) {
+      if (await repo.isValidVersion()) {
+        yield SupportedVersion();
+      } else {
+        yield UnsupportedState();
+      }
     } else {
-      yield UnsupportedState();
+      yield SupportedVersion();
     }
   }
 }
