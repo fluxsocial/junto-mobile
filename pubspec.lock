@@ -256,10 +256,12 @@ packages:
   embedly_preview:
     dependency: "direct main"
     description:
-      path: "../junto_packages/embedly-preview"
-      relative: true
-    source: path
-    version: "0.0.1"
+      path: "."
+      ref: HEAD
+      resolved-ref: "023678d71124d36dfea542fc0f4cad8b03a66bab"
+      url: "https://github.com/juntofoundation/embedly-preview.git"
+    source: git
+    version: "0.0.2"
   equatable:
     dependency: "direct main"
     description:
@@ -542,7 +544,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.0-nullsafety.2"
+    version: "1.1.8"
   mime:
     dependency: transitive
     description:
@@ -981,7 +983,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0-nullsafety.2"
+    version: "2.0.8"
   vibration:
     dependency: "direct main"
     description:

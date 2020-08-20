@@ -1,5 +1,3 @@
-import 'package:embedly_preview/embedly_preview.dart';
-import 'package:embedly_preview/theme/embedly_theme_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -10,6 +8,7 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/event.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/shortform.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/link.dart';
 
 import 'two_column_expression_preview_types/audio.dart';
 
@@ -73,22 +72,7 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                     else if (expression.type == 'LongForm')
                       DynamicPreview(expression: expression)
                     else if (expression.type == 'LinkForm')
-                      Container(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (expression.expressionData.title.isNotEmpty)
-                              Text("Title: ${expression.expressionData.title}"),
-                            OEmbedWidget(
-                              data: expression.expressionData.data,
-                              theme: EmbedlyThemeData(),
-                            ),
-                            if (expression.expressionData.caption.isNotEmpty)
-                              Text(
-                                  "Caption: ${expression.expressionData.caption}"),
-                          ],
-                        ),
-                      )
+                      LinkPreview(expression: expression)
                     else
                       SizedBox()
                   ],

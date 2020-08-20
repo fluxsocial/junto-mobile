@@ -38,7 +38,6 @@ PODS:
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
-  - embedly_preview (from `.symlinks/plugins/embedly_preview/ios`)
   - Flutter (from `Flutter`)
   - flutter_audio_recorder (from `.symlinks/plugins/flutter_audio_recorder/ios`)
   - flutter_aws_amplify_cognito (from `.symlinks/plugins/flutter_aws_amplify_cognito/ios`)
@@ -62,8 +61,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
-  embedly_preview:
-    :path: ".symlinks/plugins/embedly_preview/ios"
   Flutter:
     :path: Flutter
   flutter_audio_recorder:
