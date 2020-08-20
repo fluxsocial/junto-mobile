@@ -257,8 +257,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "023678d71124d36dfea542fc0f4cad8b03a66bab"
+      ref: master
+      resolved-ref: "96a3bd5b02d3b893ddfcc9ab6c4a81ee8cbcce9a"
       url: "https://github.com/juntofoundation/embedly-preview.git"
     source: git
     version: "0.0.2"

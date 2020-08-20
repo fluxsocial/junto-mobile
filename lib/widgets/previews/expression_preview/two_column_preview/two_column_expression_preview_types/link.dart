@@ -14,17 +14,53 @@ class LinkPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (expression.expressionData.title.isNotEmpty)
-            Text("Title: ${expression.expressionData.title}"),
+            Container(
+              margin: const EdgeInsets.only(bottom: 5),
+              child: Text(
+                expression.expressionData.title,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
           OEmbedWidget(
             data: expression.expressionData.data,
-            theme: EmbedlyThemeData(),
+            theme: EmbedlyThemeData(
+              brightness: Theme.of(context).brightness,
+              backgroundColor: Theme.of(context).backgroundColor,
+              headingText: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).primaryColor,
+              ),
+              subheadingText: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).primaryColor,
+              ),
+              elevation: 0.0,
+            ),
+            // theme: EmbedlyThemeData(),
           ),
-          if (expression.expressionData.caption.isNotEmpty)
-            Text("Caption: ${expression.expressionData.caption}"),
+          // if (expression.expressionData.caption.isNotEmpty)
+          //   Text(
+          //     expression.expressionData.caption,
+          //     maxlines: 3,
+          //     style: TextStyle(
+          //       height: 1.5,
+          //       color: Theme.of(context).primaryColor,
+          //       fontSize: 17,
+          //     ),
+          //   ),
         ],
       ),
     );
