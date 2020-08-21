@@ -41,7 +41,8 @@ class UserDataProvider extends ChangeNotifier {
         userAddress = userProfile.user.address;
         notifyListeners();
       } else {
-        // final user = userRepository.getUser(userAddress);
+        userProfile = await userRepository.getUser(userAddress);
+        userAddress = userProfile.user.address;
       }
     } catch (e) {
       logger.logException(e);
