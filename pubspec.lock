@@ -168,7 +168,7 @@ packages:
       name: collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.14.13"
+    version: "1.15.0-nullsafety.2"
   convert:
     dependency: transitive
     description:
@@ -303,11 +303,9 @@ packages:
   flutter_aws_amplify_cognito:
     dependency: "direct main"
     description:
-      path: flutter_aws_amplify_cognito
-      ref: "5838fbe7438d20552840462b3be5ffe6ef76ed23"
-      resolved-ref: "5838fbe7438d20552840462b3be5ffe6ef76ed23"
-      url: "https://github.com/Nash0x7E2/flutter_amplify.git"
-    source: git
+      path: "../flutter_amplify/flutter_aws_amplify_cognito"
+      relative: true
+    source: path
     version: "1.0.0+7"
   flutter_bloc:
     dependency: "direct main"
@@ -535,7 +533,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.8"
+    version: "1.3.0-nullsafety.2"
   mime:
     dependency: transitive
     description:
@@ -925,7 +923,7 @@ packages:
       name: typed_data
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0-nullsafety.2"
   url_launcher:
     dependency: "direct main"
     description:
@@ -974,7 +972,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.8"
+    version: "2.1.0-nullsafety.2"
   vibration:
     dependency: "direct main"
     description:
@@ -1032,5 +1030,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.9.0-14.0.dev <3.0.0"
+  dart: ">=2.10.0-0.0.dev <2.10.0"
   flutter: ">=1.20.0 <2.0.0"
