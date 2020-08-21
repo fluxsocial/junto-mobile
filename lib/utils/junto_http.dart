@@ -130,8 +130,9 @@ class JuntoHttp {
       } else {
         return null;
       }
-    }
-    if (response.statusCode >= 400 && response.statusCode <= 499) {
+    } else if (response.statusCode == 401) {
+      throw UnAuthorizedException();
+    } else if (response.statusCode >= 400 && response.statusCode <= 499) {
       if (response.body.isNotEmpty) {
         final dynamic responseBody = convert.json.decode(response.body);
         if (responseBody is Map && responseBody['error'] != null) {
@@ -142,8 +143,7 @@ class JuntoHttp {
         }
       }
       throw JuntoException('${response?.body}', response.statusCode);
-    }
-    if (response.statusCode >= 500) {
+    } else if (response.statusCode >= 500) {
       throw JuntoException(response.reasonPhrase, response.statusCode);
     }
     throw JuntoException(
