@@ -21,7 +21,7 @@ class AuthRepo {
       logger.logException(e);
       return false;
     }
-  } 
+  }
 
   Future<SignUpResult> signUp(
       String username, String email, String password) async {
