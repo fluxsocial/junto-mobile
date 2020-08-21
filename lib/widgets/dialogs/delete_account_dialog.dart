@@ -25,7 +25,6 @@ class DeleteAccountDialog extends StatelessWidget {
             .deleteUserAccount(user.userAddress);
         JuntoLoader.hide();
         await context.bloc<AuthBloc>().add(LogoutEvent());
-        Navigator.popUntil(context, (r) => r.isFirst);
       } catch (error) {
         JuntoLoader.hide();
         showDialog(
