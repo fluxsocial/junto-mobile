@@ -266,7 +266,7 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<SignOutResult> logOut() async {
     try {
-      await aws.FlutterAwsAmplifyCognito.signOut();
+      await aws.FlutterAwsAmplifyCognito.signOutGlobally();
       return SignOutResult(true);
     } catch (e) {
       return SignOutResult(false);
