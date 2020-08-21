@@ -32,6 +32,20 @@ class LinkPreview extends StatelessWidget {
                 ),
               ),
             ),
+          if (expression.expressionData.caption.isNotEmpty)
+            Container(
+              margin: const EdgeInsets.only(bottom: 5),
+              child: Text(
+                expression.expressionData.caption,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  height: 1.5,
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 14,
+                ),
+              ),
+            ),
           OEmbedWidget(
             data: expression.expressionData.data,
             theme: EmbedlyThemeData(
@@ -51,16 +65,6 @@ class LinkPreview extends StatelessWidget {
             ),
             // theme: EmbedlyThemeData(),
           ),
-          // if (expression.expressionData.caption.isNotEmpty)
-          //   Text(
-          //     expression.expressionData.caption,
-          //     maxlines: 3,
-          //     style: TextStyle(
-          //       height: 1.5,
-          //       color: Theme.of(context).primaryColor,
-          //       fontSize: 17,
-          //     ),
-          //   ),
         ],
       ),
     );
