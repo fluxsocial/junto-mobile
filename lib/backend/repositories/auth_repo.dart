@@ -95,6 +95,9 @@ class AuthRepo {
       await onLogout();
     }
     logger.logInfo('Logging out');
-    await authService.logOut();
+    final status = await authService.isLoggedIn();
+    if (status.wasSuccessful) {
+      await authService.logOut();
+    }
   }
 }
