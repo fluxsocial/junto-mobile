@@ -73,7 +73,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                 address: widget.address),
             expression);
         break;
-      case ExpressionType.linkform:
+      case ExpressionType.link:
         _push(
             context,
             CreateLinkForm(
@@ -194,7 +194,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                             scrollDirection: Axis.horizontal,
                             children: <Widget>[
                               _selectExpressionIcon(ExpressionType.dynamic),
-                              _selectExpressionIcon(ExpressionType.linkform),
+                              _selectExpressionIcon(ExpressionType.link),
                               _selectExpressionIcon(ExpressionType.shortform),
                               _selectExpressionIcon(ExpressionType.photo),
                               _selectExpressionIcon(ExpressionType.audio),

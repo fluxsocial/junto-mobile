@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'custom_icons.dart';
 
-enum ExpressionType { dynamic, shortform, photo, event, audio, linkform }
+enum ExpressionType { dynamic, shortform, photo, event, audio, link }
 
 extension ExpressionIcon on ExpressionType {
   IconData icon() {
@@ -12,7 +12,7 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: CustomIcons.camera,
       ExpressionType.event: CustomIcons.event,
       ExpressionType.audio: Icons.mic,
-      ExpressionType.linkform: Icons.link,
+      ExpressionType.link: Icons.link,
     };
     return _expressionIcon[this];
   }
@@ -24,7 +24,7 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: 'PHOTO',
       ExpressionType.event: 'EVENT',
       ExpressionType.audio: 'AUDIO',
-      ExpressionType.linkform: 'LINK',
+      ExpressionType.link: 'LINK',
     };
     return _expressionNames[this];
   }
@@ -36,6 +36,7 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: 'photo',
       ExpressionType.event: 'event',
       ExpressionType.audio: 'audio',
+      ExpressionType.link: 'link'
     };
 
     return _expressionAppBarNames[this];
@@ -48,7 +49,7 @@ extension ExpressionIcon on ExpressionType {
       ExpressionType.photo: 'PhotoForm',
       ExpressionType.event: 'EventForm',
       ExpressionType.audio: 'AudioForm',
-      ExpressionType.linkform: 'LinkForm',
+      ExpressionType.link: 'LinkForm',
     };
 
     return _expressionModelNames[this];

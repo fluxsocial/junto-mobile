@@ -83,11 +83,11 @@ class CreateLinkFormState extends State<CreateLinkForm> {
               return CreateCommentActions(
                 expression: expression,
                 address: widget.address,
-                expressionType: ExpressionType.linkform,
+                expressionType: ExpressionType.link,
               );
             } else {
               return CreateActions(
-                expressionType: ExpressionType.linkform,
+                expressionType: ExpressionType.link,
                 address: widget.address,
                 expressionContext: widget.expressionContext,
                 expression: expression,
@@ -110,7 +110,7 @@ class CreateLinkFormState extends State<CreateLinkForm> {
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
-      expressionType: ExpressionType.shortform,
+      expressionType: ExpressionType.link,
       onNext: _onNext,
       showBottomNav: _showBottomNav,
       child: Expanded(
