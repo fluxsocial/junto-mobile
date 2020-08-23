@@ -42,7 +42,7 @@ class LinkPreview extends StatelessWidget {
                 style: TextStyle(
                   height: 1.5,
                   color: Theme.of(context).primaryColor,
-                  fontSize: 14,
+                  fontSize: 17,
                 ),
               ),
             ),
@@ -57,7 +57,7 @@ class LinkPreview extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
               ),
               subheadingText: TextStyle(
-                fontSize: 14,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: Theme.of(context).primaryColor,
               ),
