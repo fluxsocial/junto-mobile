@@ -76,7 +76,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       case ExpressionType.linkform:
         _push(
             context,
-            CreatLinkForm(
+            CreateLinkForm(
                 expressionContext: widget.expressionContext,
                 address: widget.address),
             expression);

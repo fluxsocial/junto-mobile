@@ -7,18 +7,18 @@ import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_e
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 
-class CreatLinkForm extends StatefulWidget {
-  const CreatLinkForm({Key key, this.expressionContext, this.address})
+class CreateLinkForm extends StatefulWidget {
+  const CreateLinkForm({Key key, this.expressionContext, this.address})
       : super(key: key);
 
   final ExpressionContext expressionContext;
   final String address;
 
   @override
-  State<StatefulWidget> createState() => CreatLinkFormState();
+  State<StatefulWidget> createState() => CreateLinkFormState();
 }
 
-class CreatLinkFormState extends State<CreatLinkForm> {
+class CreateLinkFormState extends State<CreateLinkForm> {
   FocusNode _focus;
   bool _showBottomNav = true;
   String caption;

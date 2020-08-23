@@ -63,7 +63,6 @@ class LinkPreview extends StatelessWidget {
               ),
               elevation: 0.0,
             ),
-            // theme: EmbedlyThemeData(),
           ),
         ],
       ),
