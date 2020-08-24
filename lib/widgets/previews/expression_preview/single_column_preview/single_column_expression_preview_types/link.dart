@@ -14,7 +14,10 @@ class LinkPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 10,
+      ),
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -34,7 +37,7 @@ class LinkPreview extends StatelessWidget {
             ),
           if (expression.expressionData.caption.isNotEmpty)
             Container(
-              margin: const EdgeInsets.only(bottom: 5),
+              margin: const EdgeInsets.only(bottom: 15),
               child: Text(
                 expression.expressionData.caption,
                 maxLines: 3,
@@ -48,7 +51,7 @@ class LinkPreview extends StatelessWidget {
             ),
           OEmbedWidget(
             data: expression.expressionData.data,
-            expanded: true,
+            expanded: false,
             theme: EmbedlyThemeData(
               brightness: Theme.of(context).brightness,
               backgroundColor: Theme.of(context).backgroundColor,

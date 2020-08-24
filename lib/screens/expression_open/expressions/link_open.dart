@@ -53,7 +53,7 @@ class LinkOpen extends StatelessWidget {
             },
             child: OEmbedWidget(
               data: expression.expressionData.data,
-              preview: false,
+              expanded: false,
               theme: EmbedlyThemeData(
                 brightness: Theme.of(context).brightness,
                 backgroundColor: Theme.of(context).backgroundColor,

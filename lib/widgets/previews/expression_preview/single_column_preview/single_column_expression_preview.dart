@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_col
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/event.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/shortform.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/link.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
 class SingleColumnExpressionPreview extends StatelessWidget
@@ -95,6 +96,8 @@ class SingleColumnExpressionPreview extends StatelessWidget
       return EventPreview(expression: expression);
     } else if (expression.type == 'AudioForm') {
       return AudioPreview(expression: expression);
+    } else if (expression.type == 'LinkForm') {
+      return LinkPreview(expression: expression);
     } else {
       return Container();
     }
