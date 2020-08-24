@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:embedly_preview/embedly_preview.dart';
 import 'package:embedly_preview/theme/embedly_theme_data.dart';
 
-
 class CreateLinkForm extends StatefulWidget {
   const CreateLinkForm({Key key, this.expressionContext, this.address})
       : super(key: key);
@@ -110,12 +109,24 @@ class CreateLinkFormState extends State<CreateLinkForm> {
     }
   }
 
+  bool expressionHasData() {
+    final LinkFormExpression expression = createExpression();
+    if (expression.caption.isNotEmpty ||
+        expression.title.isNotEmpty ||
+        expression.url.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CreateExpressionScaffold(
       expressionType: ExpressionType.link,
       onNext: _onNext,
       showBottomNav: _showBottomNav,
+      expressionHasData: expressionHasData,
       child: Expanded(
         child: ListView(
           children: <Widget>[
