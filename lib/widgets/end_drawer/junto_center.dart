@@ -19,7 +19,7 @@ class JuntoCommunityCenter extends StatefulWidget {
 }
 
 class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
-  final List<String> _tabs = ['FEEDBACK', 'UPDATES'];
+  final List<String> _tabs = ['UPDATES', 'FEEDBACK'];
   Map<String, dynamic> relationToFeedback;
   Map<String, dynamic> relationToUpdates;
 
@@ -109,8 +109,8 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
             },
             body: TabBarView(
               children: <Widget>[
-                JuntoCommunityCenterFeedback(),
                 JuntoCommunityCenterUpdates(),
+                JuntoCommunityCenterFeedback(),
               ],
             ),
           ),
