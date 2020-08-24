@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/event.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/shortform.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/link.dart';
 
 import 'two_column_expression_preview_types/audio.dart';
 
@@ -70,6 +71,8 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                       AudioPreview(expression: expression)
                     else if (expression.type == 'LongForm')
                       DynamicPreview(expression: expression)
+                    else if (expression.type == 'LinkForm')
+                      LinkPreview(expression: expression)
                     else
                       SizedBox()
                   ],

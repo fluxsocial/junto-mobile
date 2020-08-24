@@ -102,6 +102,36 @@ class ShortFormExpressionAdapter extends TypeAdapter<ShortFormExpression> {
   }
 }
 
+class LinkFormExpressionAdapter extends TypeAdapter<LinkFormExpression> {
+  @override
+  final typeId = 8;
+
+  @override
+  LinkFormExpression read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return LinkFormExpression(
+      title: fields[0] as String,
+      caption: fields[1] as String,
+      url: fields[2] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, LinkFormExpression obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.title)
+      ..writeByte(1)
+      ..write(obj.caption)
+      ..writeByte(2)
+      ..write(obj.url);
+  }
+}
+
 class PhotoFormExpressionAdapter extends TypeAdapter<PhotoFormExpression> {
   @override
   final typeId = 2;
