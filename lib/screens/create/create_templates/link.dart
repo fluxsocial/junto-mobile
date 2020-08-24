@@ -66,12 +66,14 @@ class CreateLinkFormState extends State<CreateLinkForm> {
 
   bool validate() {
     final text = _urlController.value.text;
-    final validUrl = RegExp(
-      r'[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)',
-      caseSensitive: false,
-      unicode: true,
-    ).hasMatch(text);
-    return text != null && text.trim().isNotEmpty && validUrl;
+    if (text.startsWith('http://') || text.startsWith('https://')) {
+      return true;
+    } else if (text.startsWith('www.')) {
+      _urlController.value = TextEditingValue(text: 'https://$text');
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void _onNext() {
@@ -102,7 +104,8 @@ class CreateLinkFormState extends State<CreateLinkForm> {
       showDialog(
         context: context,
         builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: "Please enter a valid url.",
+          dialogText:
+              "Please enter a valid url. Your link must start with 'http' or 'https'",
         ),
       );
       return;
