@@ -114,82 +114,94 @@ class CreateLinkFormState extends State<CreateLinkForm> {
       onNext: _onNext,
       showBottomNav: _showBottomNav,
       child: Expanded(
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              height: 58,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
                 controller: _titleController,
+                textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
-                  hintText: "Title...",
+                  border: InputBorder.none,
+                  hintText: 'Title (optional)',
+                  hintStyle: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Theme.of(context).primaryColorLight,
+                      ),
                 ),
-              ),
-            ),
-            Flexible(
-              child: Form(
-                autovalidate: false,
-                child: Container(
-                  height: 200.0,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 50.0,
-                    horizontal: 25.0,
-                  ),
-                  constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.width,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF8E8098),
-                      Color(0xFF307FAA),
-                    ],
-                  )),
-                  child: TextField(
-                    focusNode: _focus,
-                    autofocus: false,
-                    controller: _urlController,
-                    buildCounter: (
-                      BuildContext context, {
-                      int currentLength,
-                      int maxLength,
-                      bool isFocused,
-                    }) =>
-                        null,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                    cursorColor: Colors.white,
-                    cursorWidth: 2,
-                    maxLines: null,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    maxLength: 220,
-                    textAlign: TextAlign.center,
-                    textInputAction: TextInputAction.done,
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardAppearance: Theme.of(context).brightness,
-                  ),
-                ),
+                cursorColor: Theme.of(context).primaryColor,
+                cursorWidth: 2,
+                maxLines: null,
+                maxLength: 140,
+                style: Theme.of(context).textTheme.headline6,
+                keyboardAppearance: Theme.of(context).brightness,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.text,
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              height: 58,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
                 controller: _captionController,
-                decoration: InputDecoration(hintText: "Caption..."),
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Caption (optional)',
+                  hintStyle: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                ),
+                cursorColor: Theme.of(context).primaryColor,
+                cursorWidth: 2,
+                maxLines: null,
+                maxLength: 140,
+                style: Theme.of(context).textTheme.headline6,
+                keyboardAppearance: Theme.of(context).brightness,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.text,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: TextField(
+                focusNode: _focus,
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
+                controller: _urlController,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Link',
+                  hintStyle: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                ),
+                cursorColor: Theme.of(context).primaryColor,
+                cursorWidth: 2,
+                maxLines: null,
+                maxLength: 140,
+                style: Theme.of(context).textTheme.headline6,
+                keyboardAppearance: Theme.of(context).brightness,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.text,
               ),
             ),
           ],

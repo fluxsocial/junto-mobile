@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
-import 'package:junto_beta_mobile/screens/create/create_templates/linkform.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/link.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
