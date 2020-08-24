@@ -7,6 +7,9 @@ import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_widget.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:provider/provider.dart';
 
 // Junto app bar used in collective screen.
 class JuntoCommunityCenterAppbar extends SliverPersistentHeaderDelegate {
@@ -129,15 +132,24 @@ class JuntoCommunityCenterAppbar extends SliverPersistentHeaderDelegate {
                 ),
               ),
             ),
-            child: TabBar(
-              labelPadding: const EdgeInsets.all(0),
-              isScrollable: true,
-              labelColor: Theme.of(context).primaryColorDark,
-              unselectedLabelColor: Theme.of(context).primaryColorLight,
-              labelStyle: Theme.of(context).textTheme.subtitle1,
-              indicatorWeight: 0.0001,
-              tabs: <Widget>[
-                for (String name in tabs) PackName(name: name),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TabBar(
+                  labelPadding: const EdgeInsets.all(0),
+                  isScrollable: true,
+                  labelColor: Theme.of(context).primaryColorDark,
+                  unselectedLabelColor: Theme.of(context).primaryColorLight,
+                  labelStyle: Theme.of(context).textTheme.subtitle1,
+                  indicatorWeight: 0.0001,
+                  tabs: <Widget>[
+                    for (String name in tabs) PackName(name: name),
+                  ],
+                ),
+                FilterColumnWidget(
+                  twoColumnView: Provider.of<AppRepo>(context, listen: false)
+                      .twoColumnLayout,
+                ),
               ],
             ),
           )

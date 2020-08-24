@@ -122,9 +122,10 @@ class _UserExpressionsState extends State<UserExpressions> {
                       (BuildContext context, UserDataProvider data, _) {
                     return SliverToBoxAdapter(
                       child: FilterColumnRow(
-                          twoColumnView:
-                              Provider.of<AppRepo>(context, listen: false)
-                                  .twoColumnLayout),
+                        twoColumnView:
+                            Provider.of<AppRepo>(context, listen: false)
+                                .twoColumnLayout,
+                      ),
                     );
                   }),
                   Consumer<UserDataProvider>(

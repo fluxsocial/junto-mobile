@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 
+import 'junto_center_support_notice.dart';
+
 class JuntoCommunityCenterUpdates extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -59,10 +61,7 @@ class JuntoCommunityCenterUpdatesState
           if (snapshot.hasData) {
             return Column(
               children: <Widget>[
-                if (snapshot.data.results.length > 0)
-                  FilterColumnRow(
-                    twoColumnView: appRepo.twoColumnLayout,
-                  ),
+                JuntoCenterSupportNotice(),
                 appRepo.twoColumnLayout
                     ? Expanded(
                         child: TwoColumnList(
