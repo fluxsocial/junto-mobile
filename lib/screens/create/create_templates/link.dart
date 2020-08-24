@@ -6,8 +6,6 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.d
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:embedly_preview/embedly_preview.dart';
-import 'package:embedly_preview/theme/embedly_theme_data.dart';
 
 class CreateLinkForm extends StatefulWidget {
   const CreateLinkForm({Key key, this.expressionContext, this.address})
@@ -221,24 +219,6 @@ class CreateLinkFormState extends State<CreateLinkForm> {
                 keyboardType: TextInputType.text,
               ),
             ),
-            // OEmbedWidget(
-            //   data: expression.expressionData.data,
-            //   theme: EmbedlyThemeData(
-            //     brightness: Theme.of(context).brightness,
-            //     backgroundColor: Theme.of(context).backgroundColor,
-            //     headingText: TextStyle(
-            //       fontSize: 17,
-            //       fontWeight: FontWeight.w700,
-            //       color: Theme.of(context).primaryColor,
-            //     ),
-            //     subheadingText: TextStyle(
-            //       fontSize: 15,
-            //       fontWeight: FontWeight.w500,
-            //       color: Theme.of(context).primaryColor,
-            //     ),
-            //     elevation: 0.0,
-            //   ),
-            // ),
           ],
         ),
       ),
