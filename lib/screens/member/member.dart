@@ -85,13 +85,14 @@ class _JuntoMemberState extends State<JuntoMember>
       _userAddress = Provider.of<UserDataProvider>(context).userAddress;
       _userProfile = Provider.of<UserDataProvider>(context).userProfile;
       userProvider = Provider.of<UserRepo>(context, listen: false);
-      groupProvider = Provider.of<GroupRepo>(context, listen:false);
+      groupProvider = Provider.of<GroupRepo>(context, listen: false);
     });
 
     // // see if user is connected to member
     await userProvider
         .isRelated(_userAddress, widget.profile.address)
         .then((Map<String, dynamic> result) {
+      print(result);
       setState(() {
         isConnected = result['is_connected'];
         isFollowing = result['is_following'];
