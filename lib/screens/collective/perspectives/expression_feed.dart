@@ -43,6 +43,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
           return CollectiveErrorLabel();
         }
         return NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (context, innerBoxScrolled) => [
             // SliverPersistentHeader made into custom appbar with pinned
             // set to false and floating set to true
