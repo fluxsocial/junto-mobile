@@ -94,6 +94,7 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
         body: DefaultTabController(
           length: _tabs.length,
           child: NestedScrollView(
+            floatHeaderSlivers: true,
             headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
               return <Widget>[
                 SliverPersistentHeader(
