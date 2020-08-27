@@ -28,7 +28,8 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
   @override
   void initState() {
     super.initState();
-    _channelController = TextEditingController();
+    _channelController = TextEditingController()
+      ..addListener(_onTextChange(''));
     _channels = widget.channels.value;
   }
 
@@ -50,6 +51,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
   void dispose() {
     super.dispose();
     _channelController.dispose();
+    _channelController..removeListener(_onTextChange(''));
   }
 
   void _addSelected() {
@@ -74,7 +76,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
     }
   }
 
-  void _onTextChange(String value) {
+  _onTextChange(String value) {
     if (_timer != null) {
       _timer.cancel();
     }
@@ -218,6 +220,7 @@ class ChannelSearchField extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: channelController,
+              autofocus: true,
               buildCounter: (
                 BuildContext context, {
                 int currentLength,
