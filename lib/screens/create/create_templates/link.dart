@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -57,13 +58,13 @@ class CreateLinkFormState extends State<CreateLinkForm> {
   LinkFormExpression createExpression() {
     return LinkFormExpression(
       caption: _captionController.value.text,
-      title: _titleController.value.text,
+      title: appConfig.flavor == Flavor.prod ? '' : _titleController.value.text,
       url: _urlController.value.text,
     );
   }
 
   bool validate() {
-    final text = _urlController.value.text;
+    final text = _urlController.value.text.toLowerCase();
     if (text.startsWith('http://') || text.startsWith('https://')) {
       return true;
     } else if (text.startsWith('www.')) {
@@ -131,35 +132,37 @@ class CreateLinkFormState extends State<CreateLinkForm> {
       child: Expanded(
         child: ListView(
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: TextField(
-                buildCounter: (
-                  BuildContext context, {
-                  int currentLength,
-                  int maxLength,
-                  bool isFocused,
-                }) =>
-                    null,
-                controller: _titleController,
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Title (optional)',
-                  hintStyle: Theme.of(context).textTheme.headline6.copyWith(
-                        color: Theme.of(context).primaryColorLight,
-                      ),
+            if (appConfig.flavor == Flavor.dev ||
+                appConfig.flavor == Flavor.tst)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: TextField(
+                  buildCounter: (
+                    BuildContext context, {
+                    int currentLength,
+                    int maxLength,
+                    bool isFocused,
+                  }) =>
+                      null,
+                  controller: _titleController,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Title (optional)',
+                    hintStyle: Theme.of(context).textTheme.headline6.copyWith(
+                          color: Theme.of(context).primaryColorLight,
+                        ),
+                  ),
+                  cursorColor: Theme.of(context).primaryColor,
+                  cursorWidth: 2,
+                  maxLines: null,
+                  maxLength: 140,
+                  style: Theme.of(context).textTheme.headline6,
+                  keyboardAppearance: Theme.of(context).brightness,
+                  textCapitalization: TextCapitalization.sentences,
+                  keyboardType: TextInputType.text,
                 ),
-                cursorColor: Theme.of(context).primaryColor,
-                cursorWidth: 2,
-                maxLines: null,
-                maxLength: 140,
-                style: Theme.of(context).textTheme.headline6,
-                keyboardAppearance: Theme.of(context).brightness,
-                textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.text,
               ),
-            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
