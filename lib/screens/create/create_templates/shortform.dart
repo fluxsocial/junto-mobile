@@ -60,6 +60,7 @@ class CreateShortformState extends State<CreateShortform> {
   @override
   void dispose() {
     _bodyController.dispose();
+    _focus.dispose();
     super.dispose();
   }
 
@@ -161,65 +162,70 @@ class CreateShortformState extends State<CreateShortform> {
                 autovalidate: false,
                 child: ListView(
                   children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 50.0,
-                        horizontal: 25.0,
-                      ),
-                      constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.width,
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomLeft,
-                          end: Alignment.topRight,
-                          stops: const <double>[
-                            0.2,
-                            0.9,
-                          ],
-                          colors: <Color>[
-                            HexColor.fromHex(gradientOne),
-                            HexColor.fromHex(gradientTwo),
-                          ],
+                    GestureDetector(
+                      onTap: () {
+                        _focus.requestFocus();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 50.0,
+                          horizontal: 25.0,
                         ),
-                      ),
-                      child: TextField(
-                        focusNode: _focus,
-                        autofocus: false,
-                        controller: _bodyController,
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.width,
                         ),
-                        cursorColor: gradientOne.contains('fff') ||
-                                gradientTwo.contains('fff')
-                            ? Color(0xff333333)
-                            : Colors.white,
-                        cursorWidth: 2,
-                        maxLines: null,
-                        style: TextStyle(
-                          color: gradientOne.contains('fff') ||
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: const <double>[
+                              0.2,
+                              0.9,
+                            ],
+                            colors: <Color>[
+                              HexColor.fromHex(gradientOne),
+                              HexColor.fromHex(gradientTwo),
+                            ],
+                          ),
+                        ),
+                        child: TextField(
+                          focusNode: _focus,
+                          autofocus: false,
+                          controller: _bodyController,
+                          buildCounter: (
+                            BuildContext context, {
+                            int currentLength,
+                            int maxLength,
+                            bool isFocused,
+                          }) =>
+                              null,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
+                          cursorColor: gradientOne.contains('fff') ||
                                   gradientTwo.contains('fff')
                               ? Color(0xff333333)
                               : Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
+                          cursorWidth: 2,
+                          maxLines: null,
+                          style: TextStyle(
+                            color: gradientOne.contains('fff') ||
+                                    gradientTwo.contains('fff')
+                                ? Color(0xff333333)
+                                : Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          maxLength: 220,
+                          textAlign: TextAlign.center,
+                          textInputAction: TextInputAction.done,
+                          textCapitalization: TextCapitalization.sentences,
+                          keyboardAppearance: Theme.of(context).brightness,
                         ),
-                        maxLength: 220,
-                        textAlign: TextAlign.center,
-                        textInputAction: TextInputAction.done,
-                        textCapitalization: TextCapitalization.sentences,
-                        keyboardAppearance: Theme.of(context).brightness,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
