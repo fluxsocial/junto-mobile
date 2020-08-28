@@ -145,7 +145,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                       );
                     },
                   ),
-                  if (appConfig.flavor == Flavor.dev && results.length > 50)
+                  if (appConfig.flavor == Flavor.tst && results.length > 50)
                     SliverToBoxAdapter(
                       child: FetchMoreButton(
                         onPressed: () {

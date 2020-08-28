@@ -45,7 +45,7 @@ class JuntoHttp {
   Future<http.Response> get(String resource,
       {Map<String, String> headers, Map<String, String> queryParams}) async {
     Uri _uri;
-    if (appConfig.flavor == Flavor.dev || appConfig.flavor == Flavor.tst) {
+    if (appConfig.flavor == Flavor.tst) {
       _uri = Uri.http(
           END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
     } else {
@@ -64,7 +64,7 @@ class JuntoHttp {
       Map<String, String> queryParams,
       dynamic body}) async {
     Uri _uri;
-    if (appConfig.flavor == Flavor.dev || appConfig.flavor == Flavor.tst) {
+    if (appConfig.flavor == Flavor.tst) {
       _uri = Uri.http(
           END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
     } else {

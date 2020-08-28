@@ -88,7 +88,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                               );
                         },
                       ),
-                    if (appConfig.flavor == Flavor.dev && _results.length > 50)
+                    if (appConfig.flavor == Flavor.tst && _results.length > 50)
                       SliverToBoxAdapter(
                         child: FetchMoreButton(
                           onPressed: _fetchMore,

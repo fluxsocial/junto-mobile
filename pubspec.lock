@@ -317,7 +317,6 @@ packages:
       resolved-ref: "7ace73c14878d134ff6e86cc18bc16414242b122"
       url: "https://github.com/Nash0x7E2/flutter_amplify.git"
     source: git
-
     version: "1.0.0+7"
   flutter_bloc:
     dependency: "direct main"
