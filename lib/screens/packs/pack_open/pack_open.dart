@@ -65,6 +65,7 @@ class PacksLoadedScaffold extends StatelessWidget {
         body: DefaultTabController(
           length: state.pack.address == user.userProfile.pack.address ? 3 : 2,
           child: NestedScrollView(
+            floatHeaderSlivers: true,
             headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
               return <Widget>[
                 SliverPersistentHeader(

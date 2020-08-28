@@ -28,25 +28,19 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
   void inviteUser(BuildContext context, String email, String name) async {
     try {
       JuntoLoader.showLoader(context);
-      final int statusCode = await Provider.of<UserRepo>(context, listen: false)
+      await Provider.of<UserRepo>(context, listen: false)
           .inviteUser(email, name);
       Navigator.pop(context);
       JuntoLoader.hide();
 
-      String dialogText;
       await getInviteInfo();
-      if (statusCode == 200) {
-        dialogText =
-            'Your invitation is on its way! You have ${invitesLeft} ${inviteText} left this week.';
-      } else if (statusCode == 403) {
-        dialogText =
-            'You can only send three invitations per week. Please wait until you can send more invites';
-      }
-      showDialog(
+
+      await showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
           context: context,
-          dialogText: dialogText,
+          dialogText:
+              'Your invitation is on its way! You have ${invitesLeft} ${inviteText} left this week.',
         ),
       );
     } catch (error) {

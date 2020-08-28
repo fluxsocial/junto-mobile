@@ -16,7 +16,7 @@ class ConnectedActionItems extends StatelessWidget {
   });
 
   final BuildContext buildContext;
-  final bool isFollowing;
+  final bool isFollowing; 
   final bool hasPendingConnection;
   final bool isConnected;
   final Function subscribeToUser;

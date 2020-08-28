@@ -1,3 +1,4 @@
+import 'package:embedly_preview/embedly_preview.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -10,11 +11,13 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open_contex
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/link_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
 import 'package:junto_beta_mobile/widgets/comments/comments_list.dart';
 import 'package:junto_beta_mobile/widgets/comments/bottom_comment_bar.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
+import 'package:embedly_preview/theme/embedly_theme_data.dart';
 import 'package:provider/provider.dart';
 
 import 'expressions/audio_open.dart';
@@ -86,6 +89,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       return EventOpen(widget.expression);
     } else if (expressionType == 'AudioForm') {
       return AudioOpen(widget.expression);
+    } else if (expressionType == 'LinkForm') {
+      return LinkOpen(widget.expression);
     } else {
       return const SizedBox();
     }

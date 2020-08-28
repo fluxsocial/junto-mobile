@@ -79,7 +79,7 @@ class ConfirmDialog extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () async {
                         try {
-                           confirm();
+                          confirm();
                           Navigator.pop(context);
                         } catch (error) {
                           logger.logException(error);

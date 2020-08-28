@@ -29,6 +29,7 @@ class FilterDrawerTextField extends StatelessWidget {
             child: TextField(
               controller: textEditingController,
               focusNode: focusNode,
+              autofocus: true,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(0),
                 border: InputBorder.none,

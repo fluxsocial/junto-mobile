@@ -21,6 +21,7 @@ class HiveCache implements LocalCache {
       Hive.registerAdapter(AudioFormExpressionAdapter());
       Hive.registerAdapter(JuntoNotificationAdapter());
       Hive.registerAdapter(PerspectiveModelAdapter());
+      Hive.registerAdapter(LinkFormExpressionAdapter());
     } on HiveError catch (error) {
       logger.logDebug("Hive Error $error");
       // Clears exiting boxes

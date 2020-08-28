@@ -6,11 +6,12 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
 import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
+
+import 'junto_center_support_notice.dart';
 
 class JuntoCommunityCenterFeedback extends StatefulWidget {
   @override
@@ -64,10 +65,7 @@ class JuntoCommunityCenterFeedbackState
           } else if (snapshot.hasData) {
             return Column(
               children: <Widget>[
-                if (snapshot.data.results.length > 0)
-                  FilterColumnRow(
-                    twoColumnView: appRepo.twoColumnLayout,
-                  ),
+                JuntoCenterSupportNotice(),
                 appRepo.twoColumnLayout
                     ? Expanded(
                         child: TwoColumnList(

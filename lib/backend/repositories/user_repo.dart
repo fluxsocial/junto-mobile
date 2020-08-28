@@ -25,7 +25,7 @@ class UserRepo {
   QueryResults<ExpressionResponse> cachedDenExpressions;
 
   // Invite someone to join JUNTO
-  Future<int> inviteUser(String email, String name) {
+  Future<void> inviteUser(String email, String name) {
     return _userService.inviteUser(email, name);
   }
 
@@ -47,7 +47,11 @@ class UserRepo {
   }
 
   Future<UserData> getUser(String userAddress) {
-    return _userService.getUser(userAddress);
+    if (userAddress != null) {
+      return _userService.getUser(userAddress);
+    } else {
+      throw UnAuthorizedException();
+    }
   }
 
   Future<UserProfile> queryUser(String param, QueryType queryType) {

@@ -52,7 +52,7 @@ class CreateExpressionIcon extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    expressionType.name(),
+              expressionType.name(),
                     style: TextStyle(
                       fontSize: 12,
                       color: JuntoPalette().juntoWhite(theme: theme),

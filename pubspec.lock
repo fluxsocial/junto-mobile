@@ -253,6 +253,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.3"
+  embedly_preview:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "832edcd51060b3ed8cd017c6e3013dca66dbfe32"
+      url: "https://github.com/juntofoundation/embedly-preview.git"
+    source: git
+    version: "0.0.2"
   equatable:
     dependency: "direct main"
     description:
@@ -303,9 +312,12 @@ packages:
   flutter_aws_amplify_cognito:
     dependency: "direct main"
     description:
-      path: "../flutter_amplify/flutter_aws_amplify_cognito"
-      relative: true
-    source: path
+      path: flutter_aws_amplify_cognito
+      ref: "7ace73c14878d134ff6e86cc18bc16414242b122"
+      resolved-ref: "7ace73c14878d134ff6e86cc18bc16414242b122"
+      url: "https://github.com/Nash0x7E2/flutter_amplify.git"
+    source: git
+
     version: "1.0.0+7"
   flutter_bloc:
     dependency: "direct main"

@@ -10,7 +10,7 @@ class AboutItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return item.isNotEmpty && item[0].isNotEmpty
+    return item.isNotEmpty && item[0].isNotEmpty 
         ? Container(
             margin: const EdgeInsets.symmetric(vertical: 5),
             width: MediaQuery.of(context).size.width,

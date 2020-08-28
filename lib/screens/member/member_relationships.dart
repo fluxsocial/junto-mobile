@@ -27,6 +27,7 @@ class MemberRelationships extends StatelessWidget {
     this.toggleMemberRelationships,
     this.memberProfile,
     this.refreshRelations,
+    this.groupProvider,
   }) : super(key: key);
 
   final bool isFollowing;
@@ -39,6 +40,7 @@ class MemberRelationships extends StatelessWidget {
   final UserProfile memberProfile;
   final UserData userProfile;
   final UserRepo userProvider;
+  final GroupRepo groupProvider;
 
   Future<void> subscribeToUser(BuildContext buildContext) async {
     try {
@@ -136,8 +138,8 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> leavePack({BuildContext buildContext}) async {
-    await Provider.of<GroupRepo>(buildContext, listen: false).removeGroupMember(
+  Future<void> leavePack() async {
+    await groupProvider.removeGroupMember(
       userProfile.pack.address,
       memberProfile.address,
     );

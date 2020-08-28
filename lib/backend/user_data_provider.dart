@@ -50,6 +50,7 @@ class UserDataProvider extends ChangeNotifier {
         }
       }
     } catch (e) {
+      isUnAuthorized.value = true;
       logger.logException(e);
     }
   }

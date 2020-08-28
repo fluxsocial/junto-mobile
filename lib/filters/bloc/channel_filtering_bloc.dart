@@ -61,12 +61,10 @@ class ChannelFilteringBloc
   Stream<ChannelFilteringState> _mapFilterUpdatedToState(
       FilterQueryUpdated event) async* {
     try {
-      if (event.term.isNotEmpty && event.term.length > 1) {
-        final result = await searchRepository.searchChannel(event.term);
-        logger.logDebug(
-            'Channels available for query ${event.term} ${result.results.length}');
-        yield ChannelsPopulatedState(result.results, state.selectedChannel);
-      }
+      final result = await searchRepository.searchChannel(event.term);
+      logger.logDebug(
+          'Channels available for query ${event.term} ${result.results.length}');
+      yield ChannelsPopulatedState(result.results, state.selectedChannel);
     } catch (e, s) {
       logger.logException(e, s, 'Error during updating the filter');
       yield const ChannelsErrorState();
