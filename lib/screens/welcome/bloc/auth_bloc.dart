@@ -33,10 +33,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _getLoggedIn() async {
-    final result = await authRepo.isLoggedIn();
-    if (result == true) {
-      add(LoggedInEvent());
-    } else {
+    try {
+      final result = await authRepo.isLoggedIn();
+      final userAddress = await authRepo.getAddress();
+      if (result == true && (userAddress != null || userAddress.isNotEmpty)) {
+        add(LoggedInEvent());
+      } else {
+        add(LogoutEvent());
+      }
+    } catch (e) {
+      print(e);
       add(LogoutEvent());
     }
   }
