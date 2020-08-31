@@ -22,3 +22,6 @@
 -dontwarn com.amazonaws.http.**
 -dontwarn com.amazonaws.metrics.**
 -dontwarn com.amazonaws.mobileconnectors.**
+
+# https://github.com/flutter/flutter/issues/58479
+-keep class androidx.lifecycle.** { *; }
