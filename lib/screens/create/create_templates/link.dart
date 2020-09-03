@@ -186,7 +186,9 @@ class CreateLinkFormState extends State<CreateLinkForm> {
                 cursorWidth: 2,
                 maxLines: null,
                 maxLength: 140,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
                 keyboardAppearance: Theme.of(context).brightness,
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.text,
@@ -216,7 +218,9 @@ class CreateLinkFormState extends State<CreateLinkForm> {
                 cursorWidth: 2,
                 maxLines: null,
                 maxLength: 140,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
                 keyboardAppearance: Theme.of(context).brightness,
                 textCapitalization: TextCapitalization.sentences,
                 keyboardType: TextInputType.text,
