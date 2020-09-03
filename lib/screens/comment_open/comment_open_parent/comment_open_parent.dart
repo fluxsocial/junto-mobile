@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'types/audio_parent.dart';
 import 'types/dynamic_parent.dart';
+import 'types/link_parent.dart';
 import 'types/photo_parent.dart';
 import 'types/shortform_parent.dart';
 
@@ -31,6 +32,8 @@ class CommentOpenParent extends StatelessWidget {
             expression: parent,
           );
           break;
+        case 'LinkForm':
+          return LinkParent(expression: parent);
         case 'ShortForm':
           return ShortformParent(
             expression: parent,
