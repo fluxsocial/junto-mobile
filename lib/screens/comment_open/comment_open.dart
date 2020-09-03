@@ -14,6 +14,7 @@ import 'comment_open_top.dart';
 
 import 'types/audio.dart';
 import 'types/dynamic.dart';
+import 'types/link.dart';
 import 'types/photo.dart';
 import 'types/shortform.dart';
 
@@ -91,6 +92,8 @@ class CommentOpenState extends State<CommentOpen> {
     final String expressionType = widget.comment.type;
     if (expressionType == 'LongForm') {
       return DynamicOpen(widget.comment);
+    } else if (expressionType == 'LinkForm') {
+      return LinkOpen(widget.comment);
     } else if (expressionType == 'ShortForm') {
       return ShortformOpen(widget.comment);
     } else if (expressionType == 'PhotoForm') {
