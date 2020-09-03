@@ -31,6 +31,7 @@ class NotificationServiceImpl implements NotificationService {
       return JuntoNotificationResults(wasSuccessful: false);
     } catch (e, s) {
       logger.logException(e, s, 'Error while fetching notifications');
+
       return JuntoNotificationResults(wasSuccessful: false);
     }
   }
