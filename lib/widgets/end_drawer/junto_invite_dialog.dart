@@ -193,7 +193,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).primaryColor,
                     ),
-                    maxLength: 40,
+                    maxLength: 80,
                     textInputAction: TextInputAction.done,
                   ),
                   Text(
