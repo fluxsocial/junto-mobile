@@ -57,14 +57,16 @@ class CreateLinkFormState extends State<CreateLinkForm> {
 
   LinkFormExpression createExpression() {
     return LinkFormExpression(
-      caption: _captionController.value.text,
-      title: appConfig.flavor == Flavor.prod ? '' : _titleController.value.text,
-      url: _urlController.value.text,
+      caption: _captionController.value.text.trim(),
+      title: appConfig.flavor == Flavor.prod
+          ? ''
+          : _titleController.value.text.trim(),
+      url: _urlController.value.text.trim(),
     );
   }
 
   bool validate() {
-    final text = _urlController.value.text.toLowerCase();
+    final text = _urlController.value.text.toLowerCase().trim();
     if (text.startsWith('http://') || text.startsWith('https://')) {
       return true;
     } else if (text.startsWith('www.')) {
@@ -174,7 +176,7 @@ class CreateLinkFormState extends State<CreateLinkForm> {
                 }) =>
                     null,
                 controller: _captionController,
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.newline,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Caption (optional)',
@@ -182,16 +184,15 @@ class CreateLinkFormState extends State<CreateLinkForm> {
                         color: Theme.of(context).primaryColorLight,
                       ),
                 ),
+                maxLines: null,
                 cursorColor: Theme.of(context).primaryColor,
                 cursorWidth: 2,
-                maxLines: null,
-                maxLength: 140,
                 style: Theme.of(context).textTheme.headline6.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
                 keyboardAppearance: Theme.of(context).brightness,
                 textCapitalization: TextCapitalization.sentences,
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.multiline,
               ),
             ),
             Container(
@@ -205,6 +206,7 @@ class CreateLinkFormState extends State<CreateLinkForm> {
                   bool isFocused,
                 }) =>
                     null,
+                maxLines: null,
                 controller: _urlController,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
@@ -216,8 +218,6 @@ class CreateLinkFormState extends State<CreateLinkForm> {
                 ),
                 cursorColor: Theme.of(context).primaryColor,
                 cursorWidth: 2,
-                maxLines: null,
-                maxLength: 140,
                 style: Theme.of(context).textTheme.headline6.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
