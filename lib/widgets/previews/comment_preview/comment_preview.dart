@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/audio.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/dynamic.dart';
+import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/link.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/shortform.dart';
 
@@ -168,6 +169,8 @@ class CommentPreview extends StatelessWidget with MemberValidation {
   Widget _returnExpression() {
     if (comment.type == 'LongForm') {
       return DynamicPreview(comment: comment);
+    } else if (comment.type == 'LinkForm') {
+      return LinkPreview(comment: comment);
     } else if (comment.type == 'ShortForm') {
       return ShortformPreview(comment: comment);
     } else if (comment.type == 'PhotoForm') {
