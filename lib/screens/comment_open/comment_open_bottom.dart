@@ -38,7 +38,7 @@ class CommentOpenBottom extends StatelessWidget {
                     parseDate(
                       context,
                       comment.createdAt,
-                    ).toLowerCase(),
+                    ),
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.overline,
                   ),

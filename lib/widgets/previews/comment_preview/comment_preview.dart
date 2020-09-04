@@ -126,7 +126,7 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    parseDate(context, comment.createdAt).toLowerCase(),
+                    parseDate(context, comment.createdAt),
                     style: Theme.of(context).textTheme.overline,
                   ),
                   Row(

@@ -41,7 +41,7 @@ class ExpressionOpenBottom extends StatelessWidget {
                         parseDate(
                           context,
                           expression.createdAt,
-                        ).toLowerCase(),
+                        ),
                         style: JuntoStyles.expressionTimestamp,
                       ),
                     ]),
