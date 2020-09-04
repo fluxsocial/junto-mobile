@@ -16,7 +16,6 @@ import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
-import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:provider/provider.dart';
 
 class MaterialAppWithTheme extends StatelessWidget {
@@ -62,32 +61,35 @@ class MaterialAppWithTheme extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
+  Widget _buildChildFor({@required AuthState state}) {
+    if (state is AuthLoading) {
+      return HomeLoadingPage();
+    } else if (state is AuthAgreementsRequired) {
+      return SignUpAgreements();
+    } else if (state is AuthAuthenticated) {
+      return HomePageContent();
+    } else if (state is AuthUnauthenticated) {
+      return Welcome();
+    } else {
+      return Welcome();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      return Stack(
-        children: <Widget>[
-          BackgroundTheme(),
-          AnimatedSwitcher(
-            duration: kThemeAnimationDuration,
-            child: state.map(
-              loading: (_) => HomeLoadingPage(
-                key: ValueKey<String>('loading-screen'),
-              ),
-              agreementsRequired: (_) => SignUpAgreements(
-                key: ValueKey<String>('agreements-required-screen'),
-              ),
-              authenticated: (_) => HomePageContent(
-                key: ValueKey<String>('authenticated-screen'),
-              ),
-              unauthenticated: (_) => const Welcome(
-                key: ValueKey<String>('welcome-screen'),
-              ),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        return Stack(
+          children: <Widget>[
+            BackgroundTheme(),
+            AnimatedSwitcher(
+              duration: kThemeAnimationDuration,
+              child: _buildChildFor(state: state),
             ),
-          ),
-        ],
-      );
-    });
+          ],
+        );
+      },
+    );
   }
 }
 

@@ -31,12 +31,11 @@ class JuntoDrawer extends StatefulWidget {
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
-  void _onLogOut() async {
-    try {
-      await context.bloc<AuthBloc>().add(LogoutEvent());
-    } catch (e) {
-      logger.logException(e);
-    }
+  void _onLogOut() {
+    // Dismiss the dialog
+    Navigator.of(context).pop();
+    // Sends logout event
+    context.bloc<AuthBloc>().add(LogoutEvent());
   }
 
   @override
