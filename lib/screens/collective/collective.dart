@@ -12,18 +12,11 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+
 import 'collective_actions/perspectives.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
-  static Route<dynamic> route() {
-    return MaterialPageRoute<dynamic>(
-      builder: (BuildContext context) {
-        return JuntoCollective();
-      },
-    );
-  }
-
   @override
   State<StatefulWidget> createState() => JuntoCollectiveState();
 }
