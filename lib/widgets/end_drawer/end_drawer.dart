@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
@@ -17,8 +18,6 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/en
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_account.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 import 'junto_center.dart';
@@ -36,6 +35,12 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     Navigator.of(context).pop();
     // Sends logout event
     context.bloc<AuthBloc>().add(LogoutEvent());
+    if (ModalRoute.of(context).settings.name != "/") {
+      Navigator.of(context).pushAndRemoveUntil(
+        FadeRoute(child: Welcome(), name: "Welcome"),
+        ModalRoute.withName('/'),
+      );
+    }
   }
 
   @override
