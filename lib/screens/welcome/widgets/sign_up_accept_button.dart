@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 
 class AcceptButton extends StatelessWidget {
   const AcceptButton({
@@ -19,12 +20,32 @@ class AcceptButton extends StatelessWidget {
   final int pageView;
   final Function nextPage;
 
+  Future<void> _acceptCommunityAgreements(
+    BuildContext context,
+    UserDataProvider user,
+  ) async {
+    final String communityCenterAddress = kCommunityCenterAddress;
+    final String updatesAddress = kUpdatesAddress;
+    try {
+      if (pageView == 0) {
+        nextPage();
+      } else {
+        // Add member to community center on sign up
+        await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
+            communityCenterAddress, [user.userProfile.user], 'Member');
+        // Add member to updates on sign up
+        await Provider.of<GroupRepo>(context, listen: false)
+            .addGroupMember(updatesAddress, [user.userProfile.user], 'Member');
+        // accept agreements
+        await BlocProvider.of<AuthBloc>(context).add(AcceptAgreements());
+      }
+    } catch (e) {
+      logger.logException(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String communityCenterAddress = kCommunityCenterAddress;
-
-    final String updatesAddress = kUpdatesAddress;
-
     return Consumer2<JuntoThemesProvider, UserDataProvider>(builder:
         (context, JuntoThemesProvider theme, UserDataProvider user, child) {
       return InkWell(
@@ -39,24 +60,7 @@ class AcceptButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40.0),
             ),
-            onPressed: () async {
-              if (pageView == 0) {
-                nextPage();
-              } else {
-                // Add member to community center on sign up
-                await Provider.of<GroupRepo>(context, listen: false)
-                    .addGroupMember(communityCenterAddress,
-                        [user.userProfile.user], 'Member');
-                // Add member to updates on sign up
-                await Provider.of<GroupRepo>(context, listen: false)
-                    .addGroupMember(
-                        updatesAddress, [user.userProfile.user], 'Member');
-                // accept agreements
-                await BlocProvider.of<AuthBloc>(context).add(
-                  AcceptAgreements(),
-                );
-              }
-            },
+            onPressed: () => _acceptCommunityAgreements(context, user),
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 20,
