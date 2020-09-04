@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -17,12 +18,11 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_a
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({
@@ -108,18 +108,20 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   Future<void> getRelationToGroup() async {
-    // final String userAddress =
-    //     await Provider.of<UserDataProvider>(context).userAddress;
-
     // get relation to updates group
-    final Map<String, dynamic> relation =
-        await Provider.of<GroupRepo>(context, listen: false)
-            .getRelationToGroup(updatesAddress, _userAddress);
-    // set state
-    setState(() {
-      relationToGroup = relation;
-    });
-    print(relationToGroup);
+    try {
+      final Map<String, dynamic> relation =
+          await Provider.of<GroupRepo>(context, listen: false)
+              .getRelationToGroup(
+        updatesAddress,
+        _userAddress,
+      );
+      setState(() {
+        relationToGroup = relation;
+      });
+    } catch (e) {
+      logger.logException(e);
+    }
   }
 
   @override
@@ -395,7 +397,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     );
   }
 
-  Widget _expressionContextSelector({String expressionContext, Group sphere}) {
+  Widget _expressionContextSelector({String expressionContext}) {
     dynamic _expressionContextIcon;
     Function _setExpressionContextDescription;
 
