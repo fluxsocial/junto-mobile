@@ -25,7 +25,17 @@ class MaterialAppWithTheme extends StatelessWidget {
     return Consumer<JuntoThemesProvider>(
       builder: (context, theme, _) {
         return MaterialApp(
-          home: HomePage(),
+          home: BlocBuilder<AppBloc, AppBlocState>(
+            builder: (context, state) {
+              if (state is SupportedVersion) {
+                return HomePage();
+              } else if (state is UnsupportedState) {
+                return UpdateApp();
+              } else {
+                return HomeLoadingPage();
+              }
+            },
+          ),
           title: 'JUNTO Alpha',
           debugShowCheckedModeBanner: false,
           theme: theme.currentTheme,
@@ -54,41 +64,30 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppBlocState>(
-      builder: (context, state) {
-        if (state is SupportedVersion) {
-          return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-            return Stack(
-              children: <Widget>[
-                BackgroundTheme(),
-                AnimatedSwitcher(
-                  duration: kThemeAnimationDuration,
-                  child: state.map(
-                    loading: (_) => HomeLoadingPage(
-                      key: ValueKey<String>('loading-screen'),
-                    ),
-                    agreementsRequired: (_) => SignUpAgreements(
-                      key: ValueKey<String>('agreements-required-screen'),
-                    ),
-                    authenticated: (_) => HomePageContent(
-                      key: ValueKey<String>('authenticated-screen'),
-                    ),
-                    unauthenticated: (_) => const Welcome(
-                      key: ValueKey<String>('welcome-screen'),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          });
-        }
-
-        if (state is UnsupportedState) {
-          return UpdateApp();
-        }
-        return HomeLoadingPage();
-      },
-    );
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      return Stack(
+        children: <Widget>[
+          BackgroundTheme(),
+          AnimatedSwitcher(
+            duration: kThemeAnimationDuration,
+            child: state.map(
+              loading: (_) => HomeLoadingPage(
+                key: ValueKey<String>('loading-screen'),
+              ),
+              agreementsRequired: (_) => SignUpAgreements(
+                key: ValueKey<String>('agreements-required-screen'),
+              ),
+              authenticated: (_) => HomePageContent(
+                key: ValueKey<String>('authenticated-screen'),
+              ),
+              unauthenticated: (_) => const Welcome(
+                key: ValueKey<String>('welcome-screen'),
+              ),
+            ),
+          ),
+        ],
+      );
+    });
   }
 }
 
@@ -109,14 +108,25 @@ class HomePageContentState extends State<HomePageContent>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _checkServerVersion();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    print(state);
     UserData userProfile =
         Provider.of<UserDataProvider>(context, listen: false).userProfile;
     if (userProfile == null) {
       context.bloc<AuthBloc>().add(RefreshUser());
     }
+    if (state == AppLifecycleState.resumed) {
+      _checkServerVersion();
+    }
+  }
+
+  void _checkServerVersion() {
     context.bloc<AppBloc>().add(CheckServerVersion());
   }
 
