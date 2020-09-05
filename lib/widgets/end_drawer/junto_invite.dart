@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/widgets/logos/junto_logo_outline.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 
 import 'junto_invite_appbar.dart';
 import 'junto_invite_cta.dart';
@@ -52,19 +53,44 @@ class JuntoInvite extends StatelessWidget {
 
                       // If the user made more than three invites this week, send a notice
                       if (inviteInfo['invites_made_this_week'] >= 3) {
-                        // Get date time of last invitation sent
-                        final DateTime nextInvite =
-                            DateTime.parse(inviteInfo['next_invite']);
+                        if (appConfig.flavor == Flavor.prod) {
+                          // Get date time of last invitation sent
+                          final DateTime lastInviteSent =
+                              DateTime.parse(inviteInfo['last_invite']);
 
-                        // Show user when they can send the next invite
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => SingleActionDialog(
+                          // Get date time of next available invite
+                          final DateTime nextAvailableInvite =
+                              lastInviteSent.add(
+                            Duration(days: 7),
+                          );
+
+                          // Show user when they can send the next invite
+                          showDialog(
                             context: context,
-                            dialogText:
-                                "It looks like you've already invited three people this week. Please wait until ${nextInvite.month}/${nextInvite.day}/${nextInvite.year} at ${nextInvite.hour}:${nextInvite.minute} ${nextInvite.timeZoneName}.",
-                          ),
-                        );
+                            builder: (BuildContext context) =>
+                                SingleActionDialog(
+                              context: context,
+                              dialogText:
+                                  "It looks like you've already invited three people this week. Please wait until ${nextAvailableInvite.month}/${nextAvailableInvite.day}/${nextAvailableInvite.year} at ${nextAvailableInvite.hour}:${nextAvailableInvite.minute} ${nextAvailableInvite.timeZoneName}.",
+                            ),
+                          );
+                        } else {
+                          // Get date time of last invitation sent
+                          final DateTime nextInvite =
+                              DateTime.parse(inviteInfo['next_invite']);
+
+                          // Show user when they can send the next invite
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                SingleActionDialog(
+                              context: context,
+                              dialogText:
+                                  "It looks like you've already invited three people this week. Please wait until ${nextInvite.month}/${nextInvite.day}/${nextInvite.year} at ${nextInvite.hour}:${nextInvite.minute} ${nextInvite.timeZoneName}.",
+                            ),
+                          );
+                        }
+
                         // If the user made less than 3 invites this week, let them invite more people
                       } else {
                         await showDialog(
