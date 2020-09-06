@@ -73,6 +73,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   @override
   void dispose() {
     commentController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 

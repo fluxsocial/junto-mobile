@@ -30,7 +30,7 @@ class CreateAudio extends StatefulWidget {
 
 class CreateAudioState extends State<CreateAudio> {
   bool _showBottomTools = true;
-  final FocusNode captionFocus = FocusNode();
+  FocusNode captionFocus = FocusNode();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController captionController = TextEditingController();
   File audioPhotoBackground;
@@ -129,6 +129,12 @@ class CreateAudioState extends State<CreateAudio> {
   void initState() {
     super.initState();
     captionFocus.addListener(_toggleBottomTools);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    captionFocus.removeListener(_toggleBottomTools);
   }
 
   @override
