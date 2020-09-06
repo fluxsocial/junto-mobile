@@ -107,6 +107,8 @@ class CreateLongformState extends State<CreateLongform> {
     super.dispose();
     _titleController.dispose();
     _bodyController.dispose();
+    _titleFocus.dispose();
+    _bodyFocus.dispose();
   }
 
   @override
