@@ -29,8 +29,8 @@ class CognitoClient extends AuthenticationService {
           logger.logInfo(result.toString());
           break;
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 
@@ -71,8 +71,8 @@ class CognitoClient extends AuthenticationService {
       }
       logger.logError('Error while resetting the password: $e');
       return ResetPasswordResult.unknownError();
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return ResetPasswordResult(false);
     }
   }
@@ -179,8 +179,8 @@ class CognitoClient extends AuthenticationService {
         }
       }
       return SignInResult.signedOut();
-    } on PlatformException catch (e) {
-      logger.logException(e);
+    } on PlatformException catch (e, s) {
+      logger.logException(e, s);
       if (e.details != null && e.details is String) {
         if (e.details.contains("There is already a user which is signed in.")) {
           return SignInResult(false, SignInResultError.AlreadyLoggedIn);
@@ -214,8 +214,8 @@ class CognitoClient extends AuthenticationService {
             'Problem with sending verification code to the user: ${result.confirmationState} ${result.userCodeDeliveryDetails?.deliveryMedium}');
         return SignUpResult(false, false);
       }
-    } on PlatformException catch (e) {
-      logger.logException(e);
+    } on PlatformException catch (e, s) {
+      logger.logException(e, s);
       if (e.details != null && e.details is String) {
         final details = e.details as String;
         if (details.contains('UsernameExistsException') ||
@@ -232,8 +232,8 @@ class CognitoClient extends AuthenticationService {
         }
       }
       return SignUpResult(false, false);
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return SignUpResult(false, false);
     }
   }
@@ -250,15 +250,15 @@ class CognitoClient extends AuthenticationService {
       } else {
         return VerifyResult(false);
       }
-    } on PlatformException catch (e) {
-      logger.logException(e);
+    } on PlatformException catch (e, s) {
+      logger.logException(e, s);
       if (e.details.contains('Current status is CONFIRMED')) {
         return VerifyResult(true);
       } else {
         return VerifyResult(false);
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return VerifyResult(false);
     }
   }
@@ -292,8 +292,8 @@ class CognitoClient extends AuthenticationService {
           return SignInResult.signedOut();
       }
       return SignInResult.signedOut();
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return SignInResult.signedOut();
     }
   }

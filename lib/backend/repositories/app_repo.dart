@@ -94,8 +94,8 @@ class AppRepo extends ChangeNotifier {
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
       return false;
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return false;
     }
   }

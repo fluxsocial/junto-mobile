@@ -94,8 +94,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield AuthState.unauthenticated();
       yield AuthState.unauthenticated(error: true, errorMessage: e.message);
-    } catch (error) {
-      logger.logException(error);
+    } catch (e, s) {
+      logger.logException(e, s);
       yield AuthState.unauthenticated();
     }
   }
@@ -104,8 +104,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AcceptAgreements event, AuthAgreementsRequired state) async* {
     try {
       yield AuthState.authenticated();
-    } catch (error) {
-      logger.logException(error);
+    } catch (e, s) {
+      logger.logException(e, s);
       yield AuthState.unauthenticated();
     }
   }
@@ -131,8 +131,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield AuthState.unauthenticated(
           error: true,
           errorMessage: 'Sorry, we have some problems signing you in');
-    } catch (error) {
-      logger.logException(error);
+    } catch (e, s) {
+      logger.logException(e, s);
       yield AuthState.unauthenticated();
     }
   }
@@ -142,11 +142,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _clearUserInformation();
       yield AuthState.unauthenticated();
-    } on JuntoException catch (error) {
-      logger.logDebug(error.message);
+    } on JuntoException catch (e, s) {
+      logger.logException(e, s);
       yield AuthState.unauthenticated();
-    } catch (error) {
-      logger.logDebug(error);
+    } catch (e, s) {
+      logger.logException(e, s);
       yield AuthState.unauthenticated();
     }
   }
@@ -155,12 +155,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.loading();
     try {
       yield AuthState.authenticated();
-    } on JuntoException catch (error) {
-      logger.logDebug(error.message);
+    } on JuntoException catch (e, s) {
+      logger.logException(e, s);
       await _clearUserInformation();
       yield AuthState.unauthenticated();
-    } catch (error) {
-      logger.logException(error);
+    } catch (e, s) {
+      logger.logException(e, s);
       await _clearUserInformation();
       yield AuthState.unauthenticated();
     }
@@ -184,8 +184,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       logger.logDebug(error.message);
       await _clearUserInformation();
       yield AuthState.unauthenticated();
-    } catch (error) {
-      logger.logException(error);
+    } catch (e, s) {
+      logger.logException(e, s);
       await _clearUserInformation();
       yield AuthState.unauthenticated();
     }

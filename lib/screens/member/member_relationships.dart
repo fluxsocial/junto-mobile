@@ -48,8 +48,8 @@ class MemberRelationships extends StatelessWidget {
       await userProvider.addUsersToPerspective(
           userProfile.userPerspective.address, <String>[memberProfile.address]);
       refreshRelations();
-    } on JuntoException catch (error) {
-      logger.logException(error);
+    } on JuntoException catch (e, s) {
+      logger.logException(e, s);
       showDialog(
         context: buildContext,
         builder: (BuildContext context) => SingleActionDialog(
@@ -81,8 +81,8 @@ class MemberRelationships extends StatelessWidget {
     try {
       await userProvider.connectUser(memberProfile.address);
       refreshRelations();
-    } on JuntoException catch (error) {
-      logger.logException(error);
+    } on JuntoException catch (e, s) {
+      logger.logException(e, s);
       showDialog(
         context: buildContext,
         builder: (BuildContext context) => SingleActionDialog(
@@ -133,8 +133,8 @@ class MemberRelationships extends StatelessWidget {
           ),
         );
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 

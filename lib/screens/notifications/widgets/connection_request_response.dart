@@ -25,8 +25,8 @@ class ConnectionRequestResponse extends StatelessWidget {
 
       // hide Junto loader
       await JuntoLoader.hide();
-    } catch (error) {
-      logger.logException(error);
+    } catch (e, s) {
+      logger.logException(e, s);
       // hide Junto loader
       await JuntoLoader.hide();
     }

@@ -34,8 +34,8 @@ class PackRequest extends StatelessWidget {
                   JuntoMember(profile: userProfile),
             ),
           );
-        } catch (error) {
-          logger.logException(error);
+        } catch (e, s) {
+          logger.logException(e, s);
           JuntoLoader.hide();
         }
       },
@@ -93,9 +93,9 @@ class PackRequest extends StatelessWidget {
                                   .respondToGroupRequest(pack.address, true);
                               refreshGroups();
                               JuntoLoader.hide();
-                            } catch (error) {
+                            } catch (e, s) {
                               JuntoLoader.hide();
-                              logger.logException(error);
+                              logger.logException(e, s);
                             }
                           },
                           child: Container(
@@ -126,8 +126,8 @@ class PackRequest extends StatelessWidget {
                                   .respondToGroupRequest(pack.address, false);
                               refreshGroups();
                               JuntoLoader.hide();
-                            } catch (error) {
-                              logger.logException(error);
+                            } catch (e, s) {
+                              logger.logException(e, s);
                               JuntoLoader.hide();
                             }
                           },

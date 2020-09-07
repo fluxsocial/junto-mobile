@@ -41,7 +41,7 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
     'fire-night': JuntoThemes().fireNight,
     'forest-night': JuntoThemes().forestNight,
     'sand-night': JuntoThemes().sandNight,
-    'dark-night': JuntoThemes().darkNight,    
+    'dark-night': JuntoThemes().darkNight,
   };
 
   Future<void> initialize() async {
@@ -64,11 +64,11 @@ class JuntoThemesProvider extends ThemesProvider with ChangeNotifier {
       }
       logger.logDebug('Theme initialized to $themeName');
       notifyListeners();
-    } on HiveError catch (e) {
-      logger.logException(e);
+    } on HiveError catch (e, s) {
+      logger.logException(e, s);
       await Hive.deleteBoxFromDisk(HiveBoxes.kAppBox);
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 
