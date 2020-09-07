@@ -81,8 +81,8 @@ class HiveCache implements LocalCache {
         }
       }
       await Future.wait(_futures);
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 
@@ -97,8 +97,8 @@ class HiveCache implements LocalCache {
         Map<String, JuntoNotification>.fromIterable(notifications,
             key: (e) => e.address),
       );
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 
@@ -121,8 +121,8 @@ class HiveCache implements LocalCache {
         notifications: items,
         lastReadNotificationTimestamp: lastRead ?? DateTime(1970),
       );
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return JuntoNotificationCache(
         notifications: [],
         lastReadNotificationTimestamp: null,
@@ -136,8 +136,8 @@ class HiveCache implements LocalCache {
       final box = await Hive.openBox<JuntoNotification>(
           _supportedBox[DBBoxes.notifications]);
       box.delete(notificationKey);
-    } catch (error) {
-      logger.logException(error);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 
@@ -146,8 +146,8 @@ class HiveCache implements LocalCache {
     try {
       final box = await Hive.box(HiveBoxes.kAppBox);
       await box.put(HiveKeys.kLastNotification, datetime);
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return;
     }
   }
@@ -163,8 +163,8 @@ class HiveCache implements LocalCache {
             await Hive.openBox<ExpressionResponse>(HiveBoxes.kExpressions);
         await exp.deleteAll(exp.keys);
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
 
     try {
@@ -175,8 +175,8 @@ class HiveCache implements LocalCache {
         final den = await Hive.openBox<ExpressionResponse>(HiveBoxes.kDenRoot);
         await den.deleteAll(den.keys);
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
 
     try {
@@ -187,8 +187,8 @@ class HiveCache implements LocalCache {
         final den = await Hive.openBox<ExpressionResponse>(HiveBoxes.kDenSub);
         await den.deleteAll(den.keys);
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
 
     try {
@@ -199,8 +199,8 @@ class HiveCache implements LocalCache {
         final pack = await Hive.openBox<ExpressionResponse>(HiveBoxes.kPack);
         await pack.deleteAll(pack.keys);
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
 
     try {
@@ -213,8 +213,8 @@ class HiveCache implements LocalCache {
             await Hive.openBox<JuntoNotification>(HiveBoxes.kNotifications);
         await notif.deleteAll(notif.keys);
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
 
     try {
@@ -225,8 +225,8 @@ class HiveCache implements LocalCache {
         final app = await Hive.openBox(HiveBoxes.kAppBox);
         await app.deleteAll(app.keys);
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 

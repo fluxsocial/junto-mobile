@@ -29,8 +29,8 @@ class NotificationRepo {
   Future<void> deleteNotification(String notificationKey) async {
     try {
       await dbService.deleteNotification(notificationKey);
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 

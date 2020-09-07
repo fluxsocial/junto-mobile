@@ -17,8 +17,8 @@ class AuthRepo {
     try {
       final value = await authService.isLoggedIn();
       return value.wasSuccessful;
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return false;
     }
   }

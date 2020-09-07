@@ -241,8 +241,8 @@ class UserRepo {
         return result.error == null && result.validUsername != false;
       }
       return false;
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
     return false;
   }
@@ -254,8 +254,8 @@ class UserRepo {
         return result.error == null && result.validEmail != false;
       }
       return false;
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
     return false;
   }

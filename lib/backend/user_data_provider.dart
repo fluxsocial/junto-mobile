@@ -49,9 +49,9 @@ class UserDataProvider extends ChangeNotifier {
           isUnAuthorized.value = true;
         }
       }
-    } catch (e) {
+    } catch (e, s) {
       // isUnAuthorized.value = true;
-      logger.logException(e);
+      logger.logException(e, s);
     }
   }
 
@@ -70,8 +70,8 @@ class UserDataProvider extends ChangeNotifier {
       userProfile = user;
       userAddress = user.user.address;
       notifyListeners();
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 

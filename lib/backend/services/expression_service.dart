@@ -85,8 +85,8 @@ class ExpressionServiceCentralized implements ExpressionService {
           _serverResponse.statusCode,
         );
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return null;
     }
   }

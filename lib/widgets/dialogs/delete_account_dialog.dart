@@ -25,7 +25,7 @@ class DeleteAccountDialog extends StatelessWidget {
             .deleteUserAccount(user.userAddress);
         JuntoLoader.hide();
         await context.bloc<AuthBloc>().add(LogoutEvent());
-      } catch (error) {
+      } catch (e, s) {
         JuntoLoader.hide();
         showDialog(
           context: context,
@@ -34,7 +34,7 @@ class DeleteAccountDialog extends StatelessWidget {
                 'Unable to delete your account. Double check your password.',
           ),
         );
-        logger.logException(error);
+        logger.logException(e, s);
       }
     }
 

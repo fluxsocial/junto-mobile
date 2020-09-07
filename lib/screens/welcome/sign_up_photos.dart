@@ -101,8 +101,8 @@ class _SignUpPhotosState extends State<SignUpPhotos> {
         widget.profilePicture.file.value = cropped;
         widget.profilePicture.originalFile.value = image;
       });
-    } catch (error) {
-      logger.logException(error);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 

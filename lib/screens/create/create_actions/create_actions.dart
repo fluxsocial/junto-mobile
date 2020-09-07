@@ -119,8 +119,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       setState(() {
         relationToGroup = relation;
       });
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 
