@@ -21,15 +21,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.onBoardingRepo,
   ) : super(AuthState.loading()) {
     _getLoggedIn();
-    _listenToAuthEvents();
-  }
-
-  void _listenToAuthEvents() {
-    userDataProvider.isUnAuthorized.addListener(() {
-      if (userDataProvider.isUnAuthorized.value) {
-        add(LogoutEvent());
-      }
-    });
   }
 
   Future<void> _getLoggedIn() async {

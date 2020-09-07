@@ -21,7 +21,6 @@ class UserDataProvider extends ChangeNotifier {
 
   final AppRepo appRepository;
   final UserRepo userRepository;
-  final ValueNotifier<bool> isUnAuthorized = ValueNotifier(false);
   String userAddress;
   UserData userProfile;
 
@@ -45,12 +44,11 @@ class UserDataProvider extends ChangeNotifier {
         try {
           userProfile = await userRepository.getUser(userAddress);
           userAddress = userProfile.user.address;
-        } on UnAuthorizedException catch (_) {
-          isUnAuthorized.value = true;
+        } on UnAuthorizedException catch (error) {
+          logger.logException(error);
         }
       }
     } catch (e, s) {
-      isUnAuthorized.value = true;
       logger.logException(e, s);
     }
   }
