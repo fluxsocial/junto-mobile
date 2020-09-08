@@ -47,7 +47,7 @@ class UserRepo {
   }
 
   Future<UserData> getUser(String userAddress) {
-    if (userAddress != null) {
+    if (userAddress == null) {
       logger.logException(Exception("The user's address is null."));
     }
     return _userService.getUser(userAddress);
