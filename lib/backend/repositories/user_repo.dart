@@ -48,10 +48,9 @@ class UserRepo {
 
   Future<UserData> getUser(String userAddress) {
     if (userAddress != null) {
-      return _userService.getUser(userAddress);
-    } else {
-      throw UnAuthorizedException();
+      logger.logException(Exception("The user's address is null."));
     }
+    return _userService.getUser(userAddress);
   }
 
   Future<UserProfile> queryUser(String param, QueryType queryType) {
