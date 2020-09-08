@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserDataProvider extends ChangeNotifier {
@@ -41,12 +40,8 @@ class UserDataProvider extends ChangeNotifier {
         userAddress = userProfile.user.address;
         notifyListeners();
       } else {
-        try {
-          userProfile = await userRepository.getUser(userAddress);
-          userAddress = userProfile.user.address;
-        } on UnAuthorizedException catch (error) {
-          logger.logException(error);
-        }
+        userProfile = await userRepository.getUser(userAddress);
+        userAddress = userProfile.user.address;
       }
     } catch (e, s) {
       logger.logException(e, s);

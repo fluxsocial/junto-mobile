@@ -131,7 +131,7 @@ class JuntoHttp {
         return null;
       }
     } else if (response.statusCode == 401) {
-      throw UnAuthorizedException();
+      throw JuntoException("Forbidden", response.statusCode);
     } else if (response.statusCode >= 400 && response.statusCode <= 499) {
       if (response.body.isNotEmpty) {
         final dynamic responseBody = convert.json.decode(response.body);

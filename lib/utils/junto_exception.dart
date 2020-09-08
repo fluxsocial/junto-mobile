@@ -9,5 +9,3 @@ class JuntoException implements Exception {
     return "JuntoException($message, $errorCode)";
   }
 }
-
-class UnAuthorizedException implements Exception{}
