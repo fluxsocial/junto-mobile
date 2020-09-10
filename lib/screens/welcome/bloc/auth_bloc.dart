@@ -21,6 +21,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.onBoardingRepo,
   ) : super(AuthState.loading()) {
     _getLoggedIn();
+    authRepo.addListener(onShouldLogOut);
+  }
+
+  void onShouldLogOut() {
+    if (authRepo.shouldLogOut) {
+      add(LogoutEvent());
+    }
   }
 
   Future<void> _getLoggedIn() async {
