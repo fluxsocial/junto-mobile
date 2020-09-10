@@ -12,54 +12,54 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 class UserRepo {
   UserRepo(
-    this._userService,
+    this.userService,
     this._notificationRepo,
     this.db,
-    this._expressionService,
+    this.expressionService,
   );
 
-  final UserService _userService;
+  final UserService userService;
   final LocalCache db;
   final NotificationRepo _notificationRepo;
-  final ExpressionService _expressionService;
+  final ExpressionService expressionService;
   QueryResults<ExpressionResponse> cachedDenExpressions;
 
   // Invite someone to join JUNTO
   Future<void> inviteUser(String email, String name) {
-    return _userService.inviteUser(email, name);
+    return userService.inviteUser(email, name);
   }
 
   // Retrieve date of last invitation sent
   Future<Map<String, dynamic>> lastInviteSent() {
-    return _userService.lastInviteSent();
+    return userService.lastInviteSent();
   }
 
   Future<PerspectiveModel> createPerspective(Perspective perspective) {
     assert(perspective.name != null);
     assert(perspective.members != null);
-    return _userService.createPerspective(perspective);
+    return userService.createPerspective(perspective);
   }
 
   Future<void> deletePerspective(
     String perspectiveAddress,
   ) {
-    return _userService.deletePerspective(perspectiveAddress);
+    return userService.deletePerspective(perspectiveAddress);
   }
 
   Future<UserData> getUser(String userAddress) {
     if (userAddress == null) {
       logger.logException(Exception("The user's address is null."));
     }
-    return _userService.getUser(userAddress);
+    return userService.getUser(userAddress);
   }
 
   Future<UserProfile> queryUser(String param, QueryType queryType) {
-    return _userService.queryUser(param, queryType);
+    return userService.queryUser(param, queryType);
   }
 
   Future<List<PerspectiveModel>> getUserPerspective(String userAddress) async {
     if (await DataConnectionChecker().hasConnection) {
-      final results = await _userService.getUserPerspective(userAddress);
+      final results = await userService.getUserPerspective(userAddress);
       db.insertPerspectives(results);
       return results;
     }
@@ -67,7 +67,7 @@ class UserRepo {
   }
 
   Future<List<ExpressionResponse>> getUsersResonations(String userAddress) {
-    return _userService.getUsersResonations(userAddress);
+    return userService.getUsersResonations(userAddress);
   }
 
   Future<QueryResults<ExpressionResponse>> getUsersExpressions(
@@ -82,7 +82,7 @@ class UserRepo {
     DBBoxes cacheBox;
 
     if (await DataConnectionChecker().hasConnection) {
-      cachedDenExpressions = await _userService.getUsersExpressions(
+      cachedDenExpressions = await userService.getUsersExpressions(
         userAddress,
         paginationPos,
         lastTimestamp,
@@ -110,7 +110,7 @@ class UserRepo {
   }
 
   Future<List<PerspectiveModel>> userPerspectives(String userAddress) async {
-    final results = await _userService.userPerspectives(userAddress);
+    final results = await userService.userPerspectives(userAddress);
     db.insertPerspectives(results);
     return results;
   }
@@ -119,40 +119,39 @@ class UserRepo {
     String userAddress,
     String perspectiveAddress,
   ) {
-    return _userService.createPerspectiveUserEntry(
+    return userService.createPerspectiveUserEntry(
         userAddress, perspectiveAddress);
   }
 
   Future<void> addUsersToPerspective(
       String perspectiveAddress, List<String> userAddresses) {
-    return _userService.addUsersToPerspective(
-        perspectiveAddress, userAddresses);
+    return userService.addUsersToPerspective(perspectiveAddress, userAddresses);
   }
 
   Future<void> deleteUsersFromPerspective(
     List<Map<String, String>> userAddresses,
     String perspectiveAddress,
   ) {
-    return _userService.deleteUsersFromPerspective(
+    return userService.deleteUsersFromPerspective(
         userAddresses, perspectiveAddress);
   }
 
   Future<List<UserProfile>> getPerspectiveUsers(
     String perspectiveAddress,
   ) {
-    return _userService.getPerspectiveUsers(perspectiveAddress);
+    return userService.getPerspectiveUsers(perspectiveAddress);
   }
 
   Future<void> connectUser(String userAddress) {
-    return _userService.connectUser(userAddress);
+    return userService.connectUser(userAddress);
   }
 
   Future<Map<String, dynamic>> userRelations() {
-    return _userService.userRelations();
+    return userService.userRelations();
   }
 
   Future<List<UserProfile>> connectedUsers(String userAddress) {
-    return _userService.connectedUsers(userAddress);
+    return userService.connectedUsers(userAddress);
   }
 
   Future<List<UserProfile>> pendingConnections(String userAddress) async {
@@ -174,29 +173,29 @@ class UserRepo {
   }
 
   Future<void> removeUserConnection(String userAddress) {
-    return _userService.removeUserConnection(userAddress);
+    return userService.removeUserConnection(userAddress);
   }
 
   Future<void> respondToConnection(String userAddress, bool response) {
-    return _userService.respondToConnection(userAddress, response);
+    return userService.respondToConnection(userAddress, response);
   }
 
   Future<Map<String, dynamic>> isRelated(
       String userAddress, String targetAddress) {
-    return _userService.isRelated(userAddress, targetAddress);
+    return userService.isRelated(userAddress, targetAddress);
   }
 
   Future<bool> isConnected(String userAddress, String targetAddress) {
-    return _userService.isConnectedUser(userAddress, targetAddress);
+    return userService.isConnectedUser(userAddress, targetAddress);
   }
 
   Future<bool> isFollowing(String userAddress, String targetAddress) {
-    return _userService.isFollowingUser(userAddress, targetAddress);
+    return userService.isFollowingUser(userAddress, targetAddress);
   }
 
   Future<UserProfile> updateUser(
       Map<String, dynamic> user, String userAddress) async {
-    final result = await _userService.updateUser(user, userAddress);
+    final result = await userService.updateUser(user, userAddress);
     final box = await Hive.box(HiveBoxes.kAppBox);
     box.put(HiveKeys.kUserData, jsonEncode(result));
     final Map<String, dynamic> decodedUserData =
@@ -210,7 +209,7 @@ class UserRepo {
   Future<UserProfile> updateProfilePicture(
       String userAddress, File profilePicture) async {
     final key =
-        await _expressionService.createPhoto(false, '.png', profilePicture);
+        await expressionService.createPhoto(false, '.png', profilePicture);
 
     final _profilePictureKeys = <String, dynamic>{
       'profile_picture': <Map<String, dynamic>>[
@@ -225,21 +224,21 @@ class UserRepo {
   }
 
   Future<List<UserProfile>> getFollowers(String userAddress) =>
-      _userService.getFollowers(userAddress);
+      userService.getFollowers(userAddress);
 
   Future<PerspectiveModel> updatePerspective(
           String perspectiveAddress, Map<String, String> perspectiveBody) =>
-      _userService.updatePerspective(perspectiveAddress, perspectiveBody);
+      userService.updatePerspective(perspectiveAddress, perspectiveBody);
 
   Future<bool> usernameAvailable(String username) async {
     try {
       logger.logDebug('Checking if username available in cognito pool');
-      final verified = await _userService.cognitoValidate(username);
+      final verified = await userService.cognitoValidate(username);
       if (verified == true) {
         logger.logDebug('Previous not-verified account had to be removed');
       }
 
-      final result = await _userService.validateUsername(username);
+      final result = await userService.validateUsername(username);
       if (result != null) {
         return result.error == null && result.validUsername != false;
       }
@@ -252,7 +251,7 @@ class UserRepo {
 
   Future<bool> emailAvailable(String email, String username) async {
     try {
-      final result = await _userService.validateUser(email, username);
+      final result = await userService.validateUser(email, username);
       if (result != null) {
         return result.error == null && result.validEmail != false;
       }
@@ -265,7 +264,7 @@ class UserRepo {
 
   Future<void> deleteUserAccount(String userAddress) {
     if (userAddress != null && userAddress.isNotEmpty) {
-      return _userService.deleteUser(userAddress);
+      return userService.deleteUser(userAddress);
     } else {
       throw JuntoException("Please ensure password is not empty", 404);
     }
@@ -273,6 +272,6 @@ class UserRepo {
 
   Future<UserData> sendMetadataPostRegistration(
       UserRegistrationDetails details) async {
-    return _userService.sendMetadataPostRegistration(details);
+    return userService.sendMetadataPostRegistration(details);
   }
 }
