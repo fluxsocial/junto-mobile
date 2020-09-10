@@ -29,7 +29,7 @@ class JuntoApp extends StatelessWidget {
         ChangeNotifierProvider<JuntoThemesProvider>.value(
             value: backend.themesProvider),
         Provider<SearchService>.value(value: backend.searchRepo),
-        Provider<AuthRepo>.value(value: backend.authRepo),
+        ChangeNotifierProvider<AuthRepo>.value(value: backend.authRepo),
         Provider<UserRepo>.value(value: backend.userRepo),
         Provider<CollectiveService>.value(value: backend.collectiveProvider),
         Provider<GroupRepo>.value(value: backend.groupsProvider),
