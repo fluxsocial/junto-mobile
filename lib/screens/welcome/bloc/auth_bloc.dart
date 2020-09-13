@@ -21,26 +21,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.onBoardingRepo,
   ) : super(AuthState.loading()) {
     _getLoggedIn();
-    authRepo.addListener(onShouldLogOut);
-  }
-
-  void onShouldLogOut() {
-    if (authRepo.shouldLogOut) {
-      add(LogoutEvent());
-    }
   }
 
   Future<void> _getLoggedIn() async {
-    try {
-      final result = await authRepo.isLoggedIn();
-      final userAddress = await authRepo.getAddress();
-      if (result == true && (userAddress != null || userAddress.isNotEmpty)) {
-        add(LoggedInEvent());
-      } else {
-        add(LogoutEvent());
-      }
-    } catch (e) {
-      print(e);
+    final result = await authRepo.isLoggedIn();
+    if (result == true) {
+      add(LoggedInEvent());
+    } else {
       add(LogoutEvent());
     }
   }
@@ -92,8 +79,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield AuthState.unauthenticated();
       yield AuthState.unauthenticated(error: true, errorMessage: e.message);
-    } catch (e, s) {
-      logger.logException(e, s);
+    } catch (error) {
+      logger.logException(error);
       yield AuthState.unauthenticated();
     }
   }
@@ -102,8 +89,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AcceptAgreements event, AuthAgreementsRequired state) async* {
     try {
       yield AuthState.authenticated();
-    } catch (e, s) {
-      logger.logException(e, s);
+    } catch (error) {
+      logger.logException(error);
       yield AuthState.unauthenticated();
     }
   }
@@ -129,8 +116,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield AuthState.unauthenticated(
           error: true,
           errorMessage: 'Sorry, we have some problems signing you in');
-    } catch (e, s) {
-      logger.logException(e, s);
+    } catch (error) {
+      logger.logException(error);
       yield AuthState.unauthenticated();
     }
   }
@@ -140,11 +127,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _clearUserInformation();
       yield AuthState.unauthenticated();
-    } on JuntoException catch (e, s) {
-      logger.logException(e, s);
+    } on JuntoException catch (error) {
+      logger.logDebug(error.message);
       yield AuthState.unauthenticated();
-    } catch (e, s) {
-      logger.logException(e, s);
+    } catch (error) {
+      logger.logDebug(error);
       yield AuthState.unauthenticated();
     }
   }
@@ -153,12 +140,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.loading();
     try {
       yield AuthState.authenticated();
-    } on JuntoException catch (e, s) {
-      logger.logException(e, s);
+    } on JuntoException catch (error) {
+      logger.logDebug(error.message);
       await _clearUserInformation();
       yield AuthState.unauthenticated();
-    } catch (e, s) {
-      logger.logException(e, s);
+    } catch (error) {
+      logger.logException(error);
       await _clearUserInformation();
       yield AuthState.unauthenticated();
     }
@@ -182,8 +169,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       logger.logDebug(error.message);
       await _clearUserInformation();
       yield AuthState.unauthenticated();
-    } catch (e, s) {
-      logger.logException(e, s);
+    } catch (error) {
+      logger.logException(error);
       await _clearUserInformation();
       yield AuthState.unauthenticated();
     }
