@@ -10,7 +10,7 @@ class MemberProfilePictureAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.width / 2 - 30,
+      top: MediaQuery.of(context).size.width / 2 - 35,
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -26,7 +26,7 @@ class MemberProfilePictureAvatar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MemberAvatar(
             profilePicture: profile.user.profilePicture,
-            diameter: 60,
+            diameter: 70,
           ),
         ),
       ),
