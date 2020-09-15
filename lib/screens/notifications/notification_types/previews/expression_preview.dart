@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/previews/dynamic_preview.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/previews/link_preview.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/previews/shortform_preview.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/previews/photo_preview.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/previews/audio_preview.dart';
@@ -17,6 +18,10 @@ class NotificationExpressionPreview extends StatelessWidget {
           return NotificationDynamicPreview(item: item);
         }
         break;
+      case 'LinkForm':
+        {
+          return NotificationLinkPreview(item: item);
+        }
       case 'ShortForm':
         {
           return NotificationShortformPreview(item: item);
