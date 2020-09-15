@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/badges_row.dart';
 
 class MemberDenAppbar extends StatefulWidget {
   const MemberDenAppbar(
@@ -119,12 +120,11 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                                   ),
                                 ),
                               ),
-                              // placeholder acknowledgement/badge
-                              Icon(
-                                Icons.beenhere,
-                                size: 17,
-                                color: Theme.of(context).primaryColor,
-                              ),
+                              // Member Badges
+                              if (widget.profile.badges.isNotEmpty)
+                                MemberBadgesRow(
+                                  badges: widget.profile.badges,
+                                ),
                             ]),
                         if (widget.profile.gender[0] != '' &&
                             widget.profile.location[0] != '' &&
