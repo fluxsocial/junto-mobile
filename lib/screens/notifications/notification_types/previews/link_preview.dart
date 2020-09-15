@@ -17,9 +17,6 @@ class NotificationLinkPreview extends StatelessWidget {
     final OEmbedResponse embedlyResponse =
         OEmbedResponse.fromMap(item.sourceExpression.expressionData['data']);
 
-    print(item);
-    print(item.sourceExpression);
-    print(item.sourceExpression.expressionData);
     return Container(
       width: MediaQuery.of(context).size.width - 68,
       padding: const EdgeInsets.symmetric(
