@@ -65,12 +65,6 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.profile.gender);
-    print(widget.profile.location);
-    print(widget.profile.website);
-    print(widget.profile.gender.length);
-    print(widget.profile.location.length);
-    print(widget.profile.website.length);
     return SliverAppBar(
       automaticallyImplyLeading: false,
       brightness: Theme.of(context).brightness,
