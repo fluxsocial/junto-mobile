@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/badges_row.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar({Key key, @required this.profile})
@@ -112,12 +113,11 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                   ),
                                 ),
                               ),
-                              // placeholder acknowledgement/badge
-                              Icon(
-                                Icons.beenhere,
-                                size: 17,
-                                color: Theme.of(context).primaryColor,
-                              ),
+                              // Member Badges
+                              if (widget.profile.user.badges.isNotEmpty)
+                                MemberBadgesRow(
+                                  badges: widget.profile.user.badges,
+                                ),
                             ],
                           ),
                           if (widget.profile.user.gender[0] != '' &&

@@ -11,7 +11,7 @@ class MemberBadgeItem extends StatelessWidget {
       badgeIcon =
           Icon(Icons.beenhere, size: 17, color: Theme.of(context).primaryColor);
     } else {
-      Icon(Icons.beenhere, size: 17, color: Theme.of(context).primaryColor);
+      badgeIcon = Icon(Icons.beenhere, size: 17, color: Theme.of(context).primaryColor);
     }
     return badgeIcon;
   }
