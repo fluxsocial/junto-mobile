@@ -120,9 +120,9 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                               ),
                             ],
                           ),
-                          if (widget.profile.user.gender.isNotEmpty ||
-                              widget.profile.user.location.isNotEmpty ||
-                              widget.profile.user.website.isNotEmpty)
+                          if (widget.profile.user.gender[0] != '' &&
+                              widget.profile.user.location[0] != '' &&
+                              widget.profile.user.website[0] != '')
                             const SizedBox(height: 10),
                           AboutItem(
                             item: widget.profile.user.gender,
