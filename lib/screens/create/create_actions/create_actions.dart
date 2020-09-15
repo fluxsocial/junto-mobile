@@ -275,12 +275,24 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _postCreateAction();
     } catch (error) {
       JuntoLoader.hide();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Something went wrong',
-        ),
-      );
+
+      print(error.message);
+      if (error.message == 'Max number of posts reached.') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText:
+                'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Something went wrong. Please try again.',
+          ),
+        );
+      }
     }
   }
 
