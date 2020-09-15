@@ -9,28 +9,32 @@ class MemberRelationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: toggleMemberRelationships,
-      child: Container(
-        margin: const EdgeInsets.only(left: 15),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 21,
-          vertical: 7,
-        ),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).primaryColor,
-            width: 1,
+    return Positioned(
+      top: MediaQuery.of(context).size.width / 2 + 10,
+      right: 10,
+      child: GestureDetector(
+        onTap: toggleMemberRelationships,
+        child: Container(
+          margin: const EdgeInsets.only(left: 15),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 21,
+            vertical: 7,
           ),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        alignment: Alignment.center,
-        child: Transform.translate(
-          offset: Offset(-9.0, 0),
-          child: Icon(
-            CustomIcons.infinity,
-            size: 8,
-            color: Theme.of(context).primaryColor,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          alignment: Alignment.center,
+          child: Transform.translate(
+            offset: Offset(-9.0, 0),
+            child: Icon(
+              CustomIcons.infinity,
+              size: 8,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
       ),

@@ -65,6 +65,12 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.profile.gender);
+    print(widget.profile.location);
+    print(widget.profile.website);
+    print(widget.profile.gender.length);
+    print(widget.profile.location.length);
+    print(widget.profile.website.length);
     return SliverAppBar(
       automaticallyImplyLeading: false,
       brightness: Theme.of(context).brightness,
@@ -97,11 +103,12 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                       : MemberBackgroundPlaceholder(),
                   Container(
                     key: _keyFlexibleSpace,
-                    margin: const EdgeInsets.only(top: 30),
+                    margin: const EdgeInsets.only(top: 35),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 15,
                     ),
+                    color: Colors.transparent,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -118,15 +125,17 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                                   ),
                                 ),
                               ),
-                              MemberRelationButton(
-                                toggleMemberRelationships:
-                                    widget.toggleMemberRelationships,
+                              // placeholder acknowledgement/badge
+                              Icon(
+                                Icons.beenhere,
+                                size: 17,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ]),
-                        if (widget.profile.gender.isNotEmpty ||
-                            widget.profile.location.isNotEmpty ||
-                            widget.profile.website.isNotEmpty)
-                          const SizedBox(height: 15),
+                        if (widget.profile.gender[0] != '' &&
+                            widget.profile.location[0] != '' &&
+                            widget.profile.website[0] != '')
+                          const SizedBox(height: 10),
                         AboutItem(
                           item: widget.profile.gender,
                           icon: Icon(
@@ -164,6 +173,9 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
             ),
             if (_memberProfile != null)
               MemberProfilePictureAvatar(profile: _memberProfile),
+            MemberRelationButton(
+              toggleMemberRelationships: widget.toggleMemberRelationships,
+            ),
           ],
         ),
       ),
