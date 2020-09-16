@@ -9,10 +9,11 @@ class JuntoHttp {
   JuntoHttp({
     @required this.tokenProvider,
   }) {
-    httpClient = Dio(BaseOptions(
-      baseUrl: _endPoint,
-    ))
-      ..interceptors.add(HeaderInterceptors(tokenProvider));
+    httpClient = Dio(
+      BaseOptions(
+        baseUrl: _endPoint,
+      ),
+    )..interceptors.add(HeaderInterceptors(tokenProvider));
   }
 
   final IdTokenProvider tokenProvider;
