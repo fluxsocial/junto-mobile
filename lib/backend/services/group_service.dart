@@ -46,6 +46,8 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<Map<String, dynamic>> getRelationToGroup(
       String groupAddress, String userAddress) async {
+    print(groupAddress);
+    print(userAddress);
     final http.Response _serverResponse =
         await client.get('/groups/$groupAddress/members/$userAddress');
     final Map<String, dynamic> _data =
@@ -58,6 +60,7 @@ class GroupServiceCentralized implements GroupService {
       String groupAddress, List<Map<String, dynamic>> users) async {
     final http.Response _serverResponse = await client
         .postWithoutEncoding('/groups/$groupAddress/members', body: users);
+    print(_serverResponse.statusCode);
     JuntoHttp.handleResponse(_serverResponse);
   }
 
