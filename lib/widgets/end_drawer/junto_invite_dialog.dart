@@ -20,8 +20,6 @@ class JuntoInviteDialog extends StatefulWidget {
 }
 
 class JuntoInviteDialogState extends State<JuntoInviteDialog> {
-  int invitesLeft;
-  String inviteText;
   TextEditingController nameController;
   TextEditingController emailController;
 
@@ -33,14 +31,12 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
       Navigator.pop(context);
       JuntoLoader.hide();
 
-      await getInviteInfo();
-
       await showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
           context: context,
           dialogText:
-              'Your invitation is on its way! You have ${invitesLeft} ${inviteText} left this week.',
+              'Your invitation is on its way! You can invite someone new tomorrow.',
         ),
       );
     } catch (error) {
@@ -62,18 +58,6 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
     super.initState();
     emailController = TextEditingController();
     nameController = TextEditingController();
-    getInviteInfo();
-  }
-
-  Future<void> getInviteInfo() async {
-    final Map<String, dynamic> inviteInfo =
-        await Provider.of<UserRepo>(context, listen: false).lastInviteSent();
-    final int invitesMadeThisWeek = inviteInfo['invites_made_this_week'];
-
-    setState(() {
-      invitesLeft = invitesMadeThisWeek == null ? 3 : 3 - invitesMadeThisWeek;
-      inviteText = invitesLeft == 1 ? 'invite' : 'invites';
-    });
   }
 
   @override
@@ -104,7 +88,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "You have ${invitesLeft} ${inviteText} left this week - who would you like to bring on?",
+              "You can invite one new person a day to Junto - who would you like to bring on?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,

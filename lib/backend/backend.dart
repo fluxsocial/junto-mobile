@@ -54,6 +54,7 @@ class Backend {
       final themesProvider = JuntoThemesProvider();
       final imageHandler = DeviceImageHandler();
       final authService = CognitoClient();
+
       final client = JuntoHttp(
         httpClient: IOClient(),
         tokenProvider: authService,
