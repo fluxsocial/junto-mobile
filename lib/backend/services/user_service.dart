@@ -46,7 +46,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserData> getUser(String userAddress) async {
-    logger.logDebug("User Address $userAddress");
+    logger.logDebug(userAddress);
     final Response _serverResponse = await client.get('/users/$userAddress');
 
     final Map<String, dynamic> _resultMap =
