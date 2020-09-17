@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
-
 
 @immutable
 class GroupServiceCentralized implements GroupService {
@@ -19,7 +18,7 @@ class GroupServiceCentralized implements GroupService {
     SphereModel sphere,
   ) async {
     final Map<String, dynamic> _postBody = sphere.toJson();
-    final Response _serverResponse = await client.postWithoutEncoding(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/groups',
       body: _postBody,
     );
@@ -36,7 +35,7 @@ class GroupServiceCentralized implements GroupService {
 
   @override
   Future<Group> getGroup(String groupAddress) async {
-    final Response _serverResponse =
+    final http.Response _serverResponse =
         await client.get('/groups/$groupAddress');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
@@ -46,7 +45,7 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<Map<String, dynamic>> getRelationToGroup(
       String groupAddress, String userAddress) async {
-    final Response _serverResponse =
+    final http.Response _serverResponse =
         await client.get('/groups/$groupAddress/members/$userAddress');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
@@ -56,7 +55,7 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<void> addGroupMember(
       String groupAddress, List<Map<String, dynamic>> users) async {
-    final Response _serverResponse = await client
+    final http.Response _serverResponse = await client
         .postWithoutEncoding('/groups/$groupAddress/members', body: users);
     JuntoHttp.handleResponse(_serverResponse);
   }
@@ -67,7 +66,7 @@ class GroupServiceCentralized implements GroupService {
     final Map<String, String> _postBody = <String, String>{
       'user_address': userAddress,
     };
-    final Response _serverResponse = await client.delete(
+    final http.Response _serverResponse = await client.delete(
       '/groups/$groupAddress/members',
       body: <dynamic>[_postBody],
     );
@@ -82,7 +81,7 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<QueryResults<Users>> getGroupMembers(
       String groupAddress, ExpressionQueryParams params) async {
-    final Response _serverResponse = await client
+    final http.Response _serverResponse = await client
         .get('/groups/$groupAddress/members', queryParams: params.toJson());
     final Map<String, dynamic> items =
         await JuntoHttp.handleResponse(_serverResponse);
@@ -100,7 +99,7 @@ class GroupServiceCentralized implements GroupService {
     String groupAddress,
     GroupExpressionQueryParams params,
   ) async {
-    final Response _serverResponse = await client
+    final http.Response _serverResponse = await client
         .get('/groups/$groupAddress/expressions', queryParams: <String, String>{
       'direct_expressions': params.directExpressions.toString(),
       'direct_expression_pagination_position':
@@ -116,7 +115,7 @@ class GroupServiceCentralized implements GroupService {
 
   @override
   Future<Group> updateGroup(Group group) async {
-    final Response _serverResponse = await client.patch(
+    final http.Response _serverResponse = await client.patch(
       '/groups/${group.address}',
       body: group.groupData.toJson(),
     );
@@ -127,7 +126,7 @@ class GroupServiceCentralized implements GroupService {
 
   @override
   Future<void> respondToGroupRequest(String groupAddress, bool decision) async {
-    final Response _serverResponse = await client.postWithoutEncoding(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/groups/$groupAddress/respond',
       body: <String, dynamic>{
         'status': decision,
