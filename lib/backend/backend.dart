@@ -73,7 +73,7 @@ class Backend {
       final appRepo = AppRepo(AppServiceImpl());
       final userRepo =
           UserRepo(userService, notificationRepo, dbService, expressionService);
-      final dataProvider = UserDataProvider(appRepo, userRepo, authRepo);
+      final dataProvider = UserDataProvider(appRepo, userRepo);
       return Backend._(
         searchRepo: SearchRepo(searchService),
         authRepo: authRepo,
