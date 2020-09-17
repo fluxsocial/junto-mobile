@@ -24,21 +24,28 @@ class JuntoHttp {
     Map<String, String> headers,
     Map<String, String> queryParams,
   }) async {
-    return httpClient.get(resource, queryParameters: queryParams);
+    final _uri = '/$kServerVersion$resource';
+    return httpClient.get(_uri, queryParameters: queryParams);
   }
 
   Future<Response> patch(String resource,
       {Map<String, String> headers,
       Map<String, String> queryParams,
       dynamic body}) {
-    return httpClient.patch(resource, data: body);
+    return httpClient.patch(
+      '/$kServerVersion$resource',
+      data: body,
+    );
   }
 
   Future<Response> put(String resource,
       {Map<String, String> headers,
       Map<String, String> queryParams,
       dynamic body}) {
-    return httpClient.put(resource, data: body);
+    return httpClient.put(
+      '/$kServerVersion$resource',
+      data: body,
+    );
   }
 
   Future<Response> delete(
@@ -46,7 +53,7 @@ class JuntoHttp {
     Map<String, String> headers,
     dynamic body,
   }) async {
-    return httpClient.delete(resource, data: body);
+    return httpClient.delete('/$kServerVersion$resource', data: body);
   }
 
   Future<Response> postWithoutEncoding(
@@ -55,7 +62,10 @@ class JuntoHttp {
     dynamic body,
     bool authenticated = true,
   }) async {
-    return httpClient.post(resource, data: body);
+    return httpClient.post(
+      '/$kServerVersion$resource',
+      data: body,
+    );
   }
 
   static dynamic handleResponse(Response response) {
