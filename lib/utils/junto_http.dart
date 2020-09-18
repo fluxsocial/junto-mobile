@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:meta/meta.dart';
 
 class JuntoHttp {
   JuntoHttp({
@@ -60,7 +60,7 @@ class JuntoHttp {
   }
 
   static dynamic handleResponse(Response response) {
-    logger.logDebug("Startus code, ${response.statusCode}");
+    logger.logDebug("Status code, ${response.statusCode}");
     return response.data;
   }
 }
@@ -68,13 +68,14 @@ class JuntoHttp {
 class HeaderInterceptors extends Interceptor {
   HeaderInterceptors(this.tokenProvider) : assert(tokenProvider != null);
   final IdTokenProvider tokenProvider;
+
   Future<String> _getAuthKey() => tokenProvider.getIdToken();
 
   @override
   Future<RequestOptions> onRequest(RequestOptions options) async {
+    final _token = await _getAuthKey();
     options.headers.putIfAbsent("Content-Type", () => 'application/json');
-    options.headers
-        .putIfAbsent("Authorization", () async => await _getAuthKey());
+    options.headers.putIfAbsent("Authorization", () => _token);
     return SynchronousFuture(options);
   }
 }
