@@ -114,10 +114,11 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 ),
                               ),
                               // Member Badges
-                              if (widget.profile.user.badges.isNotEmpty)
-                                MemberBadgesRow(
-                                  badges: widget.profile.user.badges,
-                                ),
+                              if (widget.profile.user.badges != null)
+                                if (widget.profile.user.badges.isNotEmpty)
+                                  MemberBadgesRow(
+                                    badges: widget.profile.user.badges,
+                                  ),
                             ],
                           ),
                           if (widget.profile.user.gender[0] != '' &&

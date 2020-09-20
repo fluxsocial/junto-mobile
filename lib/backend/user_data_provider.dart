@@ -14,12 +14,10 @@ class UserDataProvider extends ChangeNotifier {
   UserDataProvider(
     this.appRepository,
     this.userRepository,
-    this.authRepo,
   ) {
     initialize();
   }
 
-  final AuthRepo authRepo;
   final AppRepo appRepository;
   final UserRepo userRepository;
   String userAddress;
@@ -42,7 +40,6 @@ class UserDataProvider extends ChangeNotifier {
         userAddress = userProfile.user.address;
         notifyListeners();
       } else {
-        userAddress ??= await authRepo.getAddress();
         userProfile = await userRepository.getUser(userAddress);
         userAddress = userProfile.user.address;
       }

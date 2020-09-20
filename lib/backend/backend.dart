@@ -1,3 +1,4 @@
+import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_auth.dart';
@@ -55,6 +56,7 @@ class Backend {
       final authService = CognitoClient();
 
       final client = JuntoHttp(
+        httpClient: IOClient(),
         tokenProvider: authService,
       );
       final userService = UserServiceCentralized(client);
@@ -73,7 +75,7 @@ class Backend {
       final appRepo = AppRepo(AppServiceImpl());
       final userRepo =
           UserRepo(userService, notificationRepo, dbService, expressionService);
-      final dataProvider = UserDataProvider(appRepo, userRepo, authRepo);
+      final dataProvider = UserDataProvider(appRepo, userRepo);
       return Backend._(
         searchRepo: SearchRepo(searchService),
         authRepo: authRepo,

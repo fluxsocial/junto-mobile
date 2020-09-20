@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -30,7 +30,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       _queryParam.putIfAbsent('name', () => query);
     }
 
-    final Response _serverResponse = await client.get(
+    final http.Response _serverResponse = await client.get(
       '/search/users',
       queryParams: _queryParam,
     );
@@ -57,11 +57,11 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       'name': query,
     };
 
-    final Response _serverResponse = await client.get(
+    final http.Response _serverResponse = await client.get(
       '/search/channels',
       queryParams: _queryParam,
     );
-    print(_serverResponse.data);
+    print(_serverResponse.body);
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );
@@ -90,7 +90,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       _queryParam.putIfAbsent('name', () => query);
     }
 
-    final Response _serverResponse = await client.get(
+    final http.Response _serverResponse = await client.get(
       '/search/spheres',
       queryParams: _queryParam,
     );
