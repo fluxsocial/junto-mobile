@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -9,37 +14,50 @@ class JuntoHttp {
   JuntoHttp({
     @required this.tokenProvider,
   }) {
-    httpClient = Dio(
-      BaseOptions(
-        baseUrl: _endPoint,
-      ),
+    _httpClient = Dio(
+      BaseOptions(baseUrl: END_POINT),
     )..interceptors.add(HeaderInterceptors(tokenProvider));
+
+    // Enable self signed certificates on staging environment
+    if (appConfig.flavor == Flavor.tst) {
+      (_httpClient.httpClientAdapter as DefaultHttpClientAdapter)
+          .onHttpClientCreate = (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return client;
+      };
+    }
   }
 
   final IdTokenProvider tokenProvider;
-  final String _endPoint = END_POINT;
-  Dio httpClient;
+  Dio _httpClient;
+
+  Future<Map<String, dynamic>> fetchAppModel() async {
+    final response = await _httpClient.get('/');
+    return response.data as Map<String, dynamic>;
+  }
 
   Future<Response> get(
     String resource, {
     Map<String, String> headers,
     Map<String, String> queryParams,
   }) async {
-    return httpClient.get(resource, queryParameters: queryParams);
+    return _httpClient.get('/$kServerVersion/$resource',
+        queryParameters: queryParams);
   }
 
   Future<Response> patch(String resource,
       {Map<String, String> headers,
       Map<String, String> queryParams,
       dynamic body}) {
-    return httpClient.patch(resource, data: body);
+    return _httpClient.patch('/$kServerVersion/$resource', data: body);
   }
 
   Future<Response> put(String resource,
       {Map<String, String> headers,
       Map<String, String> queryParams,
       dynamic body}) {
-    return httpClient.put(resource, data: body);
+    return _httpClient.put('/$kServerVersion/$resource', data: body);
   }
 
   Future<Response> delete(
@@ -47,7 +65,7 @@ class JuntoHttp {
     Map<String, String> headers,
     dynamic body,
   }) async {
-    return httpClient.delete(resource, data: body);
+    return _httpClient.delete('/$kServerVersion/$resource', data: body);
   }
 
   Future<Response> postWithoutEncoding(
@@ -56,7 +74,7 @@ class JuntoHttp {
     dynamic body,
     bool authenticated = true,
   }) async {
-    return httpClient.post(resource, data: body);
+    return _httpClient.post('/$kServerVersion/$resource', data: body);
   }
 
   static dynamic handleResponse(Response response) {
