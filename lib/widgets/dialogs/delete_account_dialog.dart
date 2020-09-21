@@ -27,6 +27,7 @@ class DeleteAccountDialog extends StatelessWidget {
         await context.bloc<AuthBloc>().add(LogoutEvent());
       } catch (e, s) {
         JuntoLoader.hide();
+        print(e);
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(

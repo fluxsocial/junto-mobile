@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:dio/dio.dart';
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +22,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
@@ -255,6 +256,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         );
       }
       JuntoLoader.showLoader(context);
+
       await Provider.of<ExpressionRepo>(context, listen: false)
           .createExpression(
         _expression,
@@ -262,7 +264,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         _address,
       );
       JuntoLoader.hide();
-
       await showFeedback(
         context,
         icon: Icon(
@@ -274,18 +275,24 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       );
       _postCreateAction();
     } catch (error) {
+      // Hide Junto loader
       JuntoLoader.hide();
-
-      print(error.message);
-      if (error.message == 'Max number of posts reached.') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => const SingleActionDialog(
-            dialogText:
-                'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
-          ),
-        );
+      if (error is DioError) {
+        // if status code is 400, show max posts limit dialog
+        switch (error.response.statusCode) {
+          case 400:
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => const SingleActionDialog(
+                dialogText:
+                    'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
+              ),
+            );
+            break;
+        }
       } else {
+        // Show general error message
+        print(error);
         showDialog(
           context: context,
           builder: (BuildContext context) => const SingleActionDialog(

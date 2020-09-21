@@ -24,7 +24,7 @@ class ExpressionRepo {
   QueryResults<ExpressionResponse> cachedResults;
   QueryResults<ExpressionResponse> packCachedResults;
 
-  Future<ExpressionResponse> createExpression(
+  Future<void> createExpression(
     ExpressionModel expression,
     ExpressionContext context,
     String address,

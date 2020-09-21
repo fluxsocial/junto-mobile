@@ -53,7 +53,7 @@ abstract class CollectiveService {
 abstract class ExpressionService {
   /// Creates an expression on the server.
   /// Method requires [ExpressionModel] as it's only arg.
-  Future<ExpressionResponse> createExpression(
+  Future<void> createExpression(
     ExpressionModel expression,
   );
 

@@ -13,10 +13,8 @@ class MockExpressionService implements ExpressionService {
   List<ExpressionResponse> get collectiveExpressions => kSampleExpressions;
 
   @override
-  Future<ExpressionResponse> createExpression(
-      ExpressionModel expression) async {
+  Future<void> createExpression(ExpressionModel expression) async {
     await Future<void>.delayed(const Duration(seconds: 1));
-    return kExpressionResponse;
   }
 
   @override
