@@ -14,15 +14,12 @@ class AppServiceImpl extends AppService {
   @override
   Future<AppModel> getServerVersion() async {
     try {
-      // if (appConfig.flavor == Flavor.prod) {
-      //   final map = await _client.fetchAppModel();
-      //   return AppModel.fromJson(map);
-      // } else {
-      //   return currentAppVersion;
-      // }
-
-      final map = await _client.fetchAppModel();
-      return AppModel.fromJson(map);
+      if (appConfig.flavor == Flavor.prod) {
+        final map = await _client.fetchAppModel();
+        return AppModel.fromJson(map);
+      } else {
+        return currentAppVersion;
+      }
     } catch (e, s) {
       logger.logException(e, s);
       throw JuntoException("Cannot get server version", -1);

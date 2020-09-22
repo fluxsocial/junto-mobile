@@ -260,7 +260,7 @@ class UserRepo {
       logger.logException(e, s);
     }
     return false;
-  }
+  } 
 
   Future<void> deleteUserAccount(String userAddress) {
     if (userAddress != null && userAddress.isNotEmpty) {
