@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:email_validator/email_validator.dart';
 
 class JuntoInviteDialog extends StatefulWidget {
   const JuntoInviteDialog({
@@ -26,19 +27,37 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
   void inviteUser(BuildContext context, String email, String name) async {
     try {
       JuntoLoader.showLoader(context);
-      await Provider.of<UserRepo>(context, listen: false)
-          .inviteUser(email, name);
-      Navigator.pop(context);
-      JuntoLoader.hide();
+      final bool isValid = EmailValidator.validate(email);
 
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) => SingleActionDialog(
-          context: context,
-          dialogText:
-              'Your invitation is on its way! You can invite someone new tomorrow.',
-        ),
-      );
+      switch (isValid) {
+        case true:
+          await Provider.of<UserRepo>(context, listen: false)
+              .inviteUser(email, name);
+          Navigator.pop(context);
+          JuntoLoader.hide();
+
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              context: context,
+              dialogText:
+                  'Your invitation is on its way! You can invite someone new tomorrow.',
+            ),
+          );
+          break;
+        case false:
+          Navigator.pop(context);
+          JuntoLoader.hide();
+
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              context: context,
+              dialogText: 'Please enter a valid email.',
+            ),
+          );
+          break;
+      }
     } catch (error) {
       Navigator.pop(context);
       JuntoLoader.hide();
@@ -47,7 +66,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
           context: context,
-          dialogText: error.message,
+          dialogText: 'Sorry, something is up. Try again.',
         ),
       );
     }

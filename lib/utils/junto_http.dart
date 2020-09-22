@@ -9,8 +9,8 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 class JuntoHttp {
-  JuntoHttp({this.tokenProvider}) {
-    httpClient = IOClient();
+  JuntoHttp({this.httpClient, this.tokenProvider}) {
+    httpClient ??= IOClient();
   }
 
   final IdTokenProvider tokenProvider;
