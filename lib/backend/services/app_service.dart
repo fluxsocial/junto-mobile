@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';

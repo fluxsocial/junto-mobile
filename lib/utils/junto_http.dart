@@ -1,5 +1,5 @@
 import 'dart:convert' as convert;
-
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/api.dart';
@@ -9,8 +9,8 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 class JuntoHttp {
-  JuntoHttp({this.httpClient, this.tokenProvider}) {
-    httpClient ??= IOClient();
+  JuntoHttp({this.tokenProvider}) {
+    httpClient = IOClient();
   }
 
   final IdTokenProvider tokenProvider;
