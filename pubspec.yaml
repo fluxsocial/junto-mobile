@@ -29,7 +29,7 @@ dependencies:
   equatable: 1.2.3
   json_serializable: 3.3.0
   freezed_annotation: 0.11.0+1
-  dio: 3.0.10
+  http: 0.12.2
   url_launcher: 5.4.11
   feature_discovery: 0.12.0+2
   intl: ^0.16.1

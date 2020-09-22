@@ -1,3 +1,4 @@
+
 import 'package:flutter/services.dart';
 import 'package:flutter_aws_amplify_cognito/flutter_aws_amplify_cognito.dart'
     as aws;
@@ -180,7 +181,7 @@ class CognitoClient extends AuthenticationService {
       }
       return SignInResult.signedOut();
     } on PlatformException catch (e, s) {
-      // logger.logException(e, s);
+      logger.logException(e, s);
       if (e.details != null && e.details is String) {
         if (e.details.contains("There is already a user which is signed in.")) {
           return SignInResult(false, SignInResultError.AlreadyLoggedIn);
