@@ -95,6 +95,3 @@ awsconfiguration.json
 .fvm/
 lib/api_prod.dart
 /ios/Flutter/.last_build_id
-
-# Assets
-assets/raw/nginx-selfsigned.crt

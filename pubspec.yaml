@@ -154,7 +154,6 @@ flutter:
     - assets/images/junto-mobile__sprout.png
     - assets/images/junto-mobile__background.png
     - assets/images/junto-mobile__bench.png
-    - assets/raw/nginx-selfsigned.crt
 
 flutter_intl:
   enabled: true
