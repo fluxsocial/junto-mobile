@@ -49,16 +49,22 @@ class JuntoInvite extends StatelessWidget {
                       final Map<String, dynamic> inviteInfo =
                           await Provider.of<UserRepo>(context, listen: false)
                               .lastInviteSent();
+                      print(inviteInfo);
+
+                      DateTime nextInvite;
+                      DateTime currentTime;
 
                       // Get date time of next invite
-                      final DateTime nextInvite =
-                          await DateTime.parse(inviteInfo['next_invite']);
+                      if (inviteInfo['next_invite'] != null) {
+                        nextInvite =
+                            await DateTime.parse(inviteInfo['next_invite']);
 
-                      // Get the current time
-                      final DateTime currentTime = await DateTime.now();
+                        currentTime = await DateTime.now();
+                      }
 
                       // Show the invite dialog if the next available invite is before the current time
-                      if (nextInvite.isBefore(currentTime)) {
+                      if (inviteInfo['next_invite'] == null ||
+                          nextInvite.isBefore(currentTime)) {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) => JuntoInviteDialog(
@@ -84,7 +90,7 @@ class JuntoInvite extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) => SingleActionDialog(
                           context: context,
-                          dialogText: error,
+                          dialogText: error.toString(),
                         ),
                       );
                     }
