@@ -1,4 +1,3 @@
-import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_auth.dart';
@@ -54,9 +53,7 @@ class Backend {
       final themesProvider = JuntoThemesProvider();
       final imageHandler = DeviceImageHandler();
       final authService = CognitoClient();
-
       final client = JuntoHttp(
-        httpClient: IOClient(),
         tokenProvider: authService,
       );
       final userService = UserServiceCentralized(client);
