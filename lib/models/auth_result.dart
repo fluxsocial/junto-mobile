@@ -106,6 +106,7 @@ class UserRegistrationDetails {
     @required this.backgroundPhoto,
     @required this.gender,
     @required this.website,
+    @required this.badges,
   });
 
   factory UserRegistrationDetails.initial(
@@ -126,6 +127,7 @@ class UserRegistrationDetails {
       bio: '',
       backgroundPhoto: '',
       profileImage: [],
+      badges: [],
     );
   }
 
@@ -138,6 +140,7 @@ class UserRegistrationDetails {
   final String backgroundPhoto;
   final List<String> gender;
   final List<String> website;
+  final List<String> badges;
 
   bool get isComplete => username != null && name != null;
 
@@ -152,6 +155,7 @@ class UserRegistrationDetails {
       'background_photo': backgroundPhoto,
       'gender': gender,
       'website': website,
+      'badges': badges,
     };
   }
 }

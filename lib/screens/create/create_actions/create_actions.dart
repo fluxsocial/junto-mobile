@@ -291,7 +291,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             break;
         }
       } else {
-        // Show general error message
         print(error);
         showDialog(
           context: context,

@@ -57,8 +57,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
     yield AuthState.unauthenticated(loading: true);
     try {
-      logger.logInfo('User signed up, now logging in');
-      // final login = await authRepo.loginUser(details);
       await authRepo.loginUser(event.username, event.password);
       var userData = await userRepo.sendMetadataPostRegistration(event.details);
 
@@ -67,6 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             userData.user.address, event.profilePicture);
         logger.logDebug(
             'User profile picture updated, updating the user profile');
+
         userData = userData.copyWith(user: profile);
       }
       await userDataProvider.updateUser(userData);

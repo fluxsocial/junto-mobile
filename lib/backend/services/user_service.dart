@@ -518,13 +518,13 @@ class UserServiceCentralized implements UserService {
       'gender': details.gender,
       'location': details.location,
       'profile_picture': details.profileImage,
+      'badges': details.badges,
     };
 
     final Response response = await client.postWithoutEncoding(
       '/users',
       body: _body,
     );
-    logger.logDebug(response.data);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromJson(_responseMap);
@@ -533,13 +533,6 @@ class UserServiceCentralized implements UserService {
 
   Future<void> deleteUser(String userAddress) async {
     final Response response = await client.delete('/users/$userAddress');
-    print(response.statusCode);
-    print('deleted user');
-
-    // final Map<String, dynamic> _responseMap =
-    //     JuntoHttp.handleResponse(response);
-    // logger.logDebug("Delete user response ${_responseMap}");
-    return;
   }
 
   @override
