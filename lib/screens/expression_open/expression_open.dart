@@ -1,4 +1,3 @@
-import 'package:embedly_preview/embedly_preview.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -17,7 +16,6 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_
 import 'package:junto_beta_mobile/widgets/comments/comments_list.dart';
 import 'package:junto_beta_mobile/widgets/comments/bottom_comment_bar.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
-import 'package:embedly_preview/theme/embedly_theme_data.dart';
 import 'package:provider/provider.dart';
 
 import 'expressions/audio_open.dart';
