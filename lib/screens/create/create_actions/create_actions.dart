@@ -22,6 +22,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
@@ -273,11 +274,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         message: 'Expression Created!',
       );
       _postCreateAction();
-    } catch (error) {
+    } on JuntoException catch (error) {
       JuntoLoader.hide();
-
-      print(error.message);
-      if (error.message == 'Max number of posts reached.') {
+      // Handle max number of posts/day error
+      if (error.errorCode == 400 ||
+          error.message == 'Max number of posts reached.') {
         showDialog(
           context: context,
           builder: (BuildContext context) => const SingleActionDialog(
@@ -285,14 +286,15 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                 'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
           ),
         );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => const SingleActionDialog(
-            dialogText: 'Something went wrong. Please try again.',
-          ),
-        );
       }
+    } catch (error) {
+      JuntoLoader.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Something went wrong. Please try again.',
+        ),
+      );
     }
   }
 

@@ -134,8 +134,7 @@ class CreateLinkFormState extends State<CreateLinkForm> {
       child: Expanded(
         child: ListView(
           children: <Widget>[
-            if (appConfig.flavor == Flavor.dev ||
-                appConfig.flavor == Flavor.tst)
+            if (appConfig.flavor == Flavor.dev)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextField(
