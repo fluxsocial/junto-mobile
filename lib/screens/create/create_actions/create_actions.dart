@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:dio/dio.dart';
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -274,11 +274,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         message: 'Expression Created!',
       );
       _postCreateAction();
-    } on JuntoException catch (error) {
+    } on DioError catch (error) {
       JuntoLoader.hide();
       // Handle max number of posts/day error
-      if (error.errorCode == 400 ||
-          error.message == 'Max number of posts reached.') {
+      if (error.response.statusCode == 400 ||
+          error.message.toString() == 'Http status error [400]') {
         showDialog(
           context: context,
           builder: (BuildContext context) => const SingleActionDialog(
