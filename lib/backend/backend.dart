@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_auth.dart';
@@ -30,6 +31,7 @@ export 'package:junto_beta_mobile/backend/user_data_provider.dart';
 
 class Backend {
   const Backend._({
+    @required this.client,
     this.searchRepo,
     this.authRepo,
     this.userRepo,
@@ -87,6 +89,7 @@ class Backend {
         themesProvider: themesProvider,
         dataProvider: dataProvider,
         onBoardingRepo: OnBoardingRepo(dataProvider),
+        client: client,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -127,4 +130,5 @@ class Backend {
   final ThemesProvider themesProvider;
   final OnBoardingRepo onBoardingRepo;
   final UserDataProvider dataProvider;
+  final JuntoHttp client;
 }

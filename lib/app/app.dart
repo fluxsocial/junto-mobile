@@ -45,6 +45,7 @@ class JuntoApp extends StatelessWidget {
         ),
       ],
       child: BlocProviders(
+        backend: backend,
         child: MaterialAppWithTheme(),
       ),
     );
