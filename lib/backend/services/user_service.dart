@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/community_center_addresses.dart';
@@ -30,7 +30,7 @@ class UserServiceCentralized implements UserService {
       'members': perspective.members,
       'about': perspective.about,
     };
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/perspectives',
       body: _postBody,
     );
@@ -44,7 +44,7 @@ class UserServiceCentralized implements UserService {
   Future<void> deletePerspective(
     String perspectiveAddress,
   ) async {
-    final http.Response _serverResponse =
+    final Response _serverResponse =
         await client.delete('/perspectives/$perspectiveAddress');
     JuntoHttp.handleResponse(_serverResponse);
   }
@@ -52,8 +52,7 @@ class UserServiceCentralized implements UserService {
   @override
   Future<UserData> getUser(String userAddress) async {
     logger.logDebug(userAddress);
-    final http.Response _serverResponse =
-        await client.get('/users/$userAddress');
+    final Response _serverResponse = await client.get('/users/$userAddress');
 
     final Map<String, dynamic> _resultMap =
         JuntoHttp.handleResponse(_serverResponse);
@@ -63,23 +62,11 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserProfile> queryUser(String param, QueryType queryType) async {
-    final box = await Hive.box(HiveBoxes.kAppBox);
-    final authKey = await box.get("auth");
-    final Uri _uri = Uri.http(
-      END_POINT,
+    final Response _serverResponse = await client.get(
       '/users',
-      _buildQueryParam(param, queryType),
-    );
-
-    final http.Response _serverResponse = await http.get(
-      _uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'cookie': 'auth=$authKey',
-      },
     );
     if (_serverResponse.statusCode == 200) {
-      final Iterable<dynamic> _listData = json.decode(_serverResponse.body);
+      final Iterable<dynamic> _listData = _serverResponse.data;
 
       if (_listData.isNotEmpty) {
         return UserProfile.fromJson(_listData.first);
@@ -93,7 +80,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<List<PerspectiveModel>> getUserPerspective(String userAddress) async {
-    final http.Response response =
+    final Response response =
         await client.get('/users/$userAddress/perspectives');
     final List<dynamic> _listData = JuntoHttp.handleResponse(response);
     final List<PerspectiveModel> _results = _listData
@@ -104,7 +91,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
-    final http.Response response = await client.get(
+    final Response response = await client.get(
       '/users/$userAddress/groups',
     );
 
@@ -117,7 +104,7 @@ class UserServiceCentralized implements UserService {
   Future<List<ExpressionResponse>> getUsersResonations(
     String userAddress,
   ) async {
-    final http.Response response =
+    final Response response =
         await client.get('/users/$userAddress/resonations');
     final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
     return _responseMap
@@ -144,7 +131,7 @@ class UserServiceCentralized implements UserService {
     if (lastTimestamp != null && lastTimestamp.isNotEmpty) {
       parms.putIfAbsent('last_timestamp', () => lastTimestamp);
     }
-    final http.Response response =
+    final Response response =
         await client.get('/users/$userAddress/expressions', queryParams: parms);
 
     final Map<String, dynamic> _responseMap =
@@ -186,7 +173,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<List<PerspectiveModel>> userPerspectives(String userAddress) async {
-    final http.Response _serverResponse =
+    final Response _serverResponse =
         await client.get('/users/$userAddress/perspectives');
     final List<Map<String, dynamic>> items =
         JuntoHttp.handleResponse(_serverResponse);
@@ -203,7 +190,7 @@ class UserServiceCentralized implements UserService {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'user_address': userAddress
     };
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
         '/perspectives/$perspectiveAddress/users',
         body: _postBody);
     final Map<String, dynamic> _decodedResponse =
@@ -218,7 +205,7 @@ class UserServiceCentralized implements UserService {
     for (final String user in userAddresses) {
       users.add(<String, String>{'user_address': user});
     }
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/perspectives/$perspectiveAddress/users',
       body: users,
     );
@@ -230,7 +217,7 @@ class UserServiceCentralized implements UserService {
     List<Map<String, String>> userAddresses,
     String perspectiveAddress,
   ) async {
-    final http.Response _serverResponse = await client
+    final Response _serverResponse = await client
         .delete('/perspectives/$perspectiveAddress/users', body: userAddresses);
     JuntoHttp.handleResponse(_serverResponse);
   }
@@ -239,7 +226,7 @@ class UserServiceCentralized implements UserService {
   Future<List<UserProfile>> getPerspectiveUsers(
     String perspectiveAddress,
   ) async {
-    final http.Response _serverResponse =
+    final Response _serverResponse =
         await client.get('/perspectives/$perspectiveAddress/users');
     final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
     return <UserProfile>[
@@ -249,7 +236,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<void> connectUser(String userAddress) async {
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/users/$userAddress/connect',
     );
     JuntoHttp.handleResponse(_serverResponse);
@@ -257,7 +244,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<void> removeUserConnection(String userAddress) async {
-    final http.Response _serverResponse = await client.delete(
+    final Response _serverResponse = await client.delete(
       '/users/$userAddress/connect',
     );
     logger.logDebug(_serverResponse.statusCode.toString());
@@ -266,7 +253,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<Map<String, dynamic>> userRelations() async {
-    final http.Response _serverResponse = await client.get(
+    final Response _serverResponse = await client.get(
       '/users/self/relations',
     );
 
@@ -360,7 +347,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<List<UserProfile>> connectedUsers(String userAddress) async {
-    final http.Response _serverResponse = await client.get(
+    final Response _serverResponse = await client.get(
       '/users/$userAddress/connections',
     );
     final List<dynamic> _results =
@@ -391,7 +378,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<void> respondToConnection(String userAddress, bool response) async {
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/users/$userAddress/connect/respond',
       body: <String, dynamic>{
         'status': response,
@@ -405,7 +392,7 @@ class UserServiceCentralized implements UserService {
   Future<Map<String, dynamic>> updateUser(
       Map<String, dynamic> body, String userAddress) async {
     // make request to api with encoded json body
-    final http.Response _serverResponse =
+    final Response _serverResponse =
         await client.patch('/users/$userAddress', body: body);
 
     // handle response
@@ -417,7 +404,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<List<UserProfile>> getFollowers(String userAddress) async {
-    final http.Response _serverResponse = await client.get(
+    final Response _serverResponse = await client.get(
       '/users/$userAddress/followers',
       queryParams: <String, String>{
         'pagination_position': '0',
@@ -433,7 +420,7 @@ class UserServiceCentralized implements UserService {
   @override
   Future<PerspectiveModel> updatePerspective(
       String perspectiveAddress, Map<String, String> perspectiveBody) async {
-    final http.Response _serverResponse = await client.patch(
+    final Response _serverResponse = await client.patch(
       '/perspectives/$perspectiveAddress',
       body: perspectiveBody,
     );
@@ -445,10 +432,10 @@ class UserServiceCentralized implements UserService {
   @override
   Future<Map<String, dynamic>> isRelated(
       String userAddress, String targetAddress) async {
-    final http.Response _serverResponse = await client.get(
+    final Response _serverResponse = await client.get(
       '/users/$userAddress/related/$targetAddress',
     );
-    logger.logInfo(_serverResponse.body);
+    logger.logInfo(_serverResponse.data);
     final Map<String, dynamic> result =
         JuntoHttp.handleResponse(_serverResponse);
 
@@ -457,7 +444,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
-    final http.Response _serverResponse = await client.get(
+    final Response _serverResponse = await client.get(
       '/users/$userAddress/connected/$targetAddress',
     );
     final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
@@ -466,7 +453,7 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
-    final http.Response _serverResponse = await client.get(
+    final Response _serverResponse = await client.get(
       '/users/$userAddress/following/$targetAddress',
     );
     final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
@@ -497,7 +484,7 @@ class UserServiceCentralized implements UserService {
       if (email != null) 'email': email,
       if (username != null) 'username': username,
     };
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/users/validate',
       body: _postBody,
       authenticated: false,
@@ -512,7 +499,7 @@ class UserServiceCentralized implements UserService {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       if (username != null) 'username': username,
     };
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/users/validate/username',
       body: _postBody,
       authenticated: false,
@@ -538,11 +525,11 @@ class UserServiceCentralized implements UserService {
       'profile_picture': details.profileImage,
     };
 
-    final http.Response response = await client.postWithoutEncoding(
+    final Response response = await client.postWithoutEncoding(
       '/users',
       body: _body,
     );
-    logger.logDebug(response.body);
+    logger.logDebug(response.data);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromJson(_responseMap);
@@ -550,7 +537,7 @@ class UserServiceCentralized implements UserService {
   }
 
   Future<void> deleteUser(String userAddress) async {
-    final http.Response response = await client.delete('/users/$userAddress');
+    final Response response = await client.delete('/users/$userAddress');
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
@@ -563,7 +550,7 @@ class UserServiceCentralized implements UserService {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       if (username != null) 'username': username,
     };
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/auth/cognito/validate',
       body: _postBody,
       authenticated: false,
@@ -574,7 +561,7 @@ class UserServiceCentralized implements UserService {
   }
 
   Future<void> inviteUser(String email, String name) async {
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/auth/invite',
       body: {
         'email': email,
@@ -586,8 +573,8 @@ class UserServiceCentralized implements UserService {
   }
 
   Future<Map<String, dynamic>> lastInviteSent() async {
-    final http.Response _serverResponse = await client.get('/auth/invite');
-    print(_serverResponse.body);
+    final Response _serverResponse = await client.get('/auth/invite');
+    print(_serverResponse.data);
     final Map<String, dynamic> result =
         JuntoHttp.handleResponse(_serverResponse);
     return result;
