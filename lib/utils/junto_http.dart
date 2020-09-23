@@ -25,7 +25,7 @@ class JuntoHttp {
       return client;
     };
   }
-
+  VoidCallback onUnAuthorized;
   final IdTokenProvider tokenProvider;
   final String _endPoint = END_POINT;
   Dio httpClient;
@@ -82,6 +82,19 @@ class JuntoHttp {
   static dynamic handleResponse(Response response) {
     logger.logDebug("Startus code, ${response.statusCode}");
     return response.data;
+  }
+}
+
+class ErrorInterceptor extends Interceptor {
+  ErrorInterceptor(this.onUnAuthorized);
+  final VoidCallback onUnAuthorized;
+
+  Future<DioError> onError(DioError err) async {
+    final _hasError = err?.response?.statusCode == 401;
+    if (_hasError && onUnAuthorized != null) {
+      onUnAuthorized();
+    }
+    return err;
   }
 }
 

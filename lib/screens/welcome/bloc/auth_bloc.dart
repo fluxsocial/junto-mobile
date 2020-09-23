@@ -1,26 +1,41 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 import 'bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
+  final JuntoHttp http;
   final UserRepo userRepo;
   final UserDataProvider userDataProvider;
   final OnBoardingRepo onBoardingRepo;
 
   AuthBloc(
+    this.http,
     this.authRepo,
     this.userDataProvider,
     this.userRepo,
     this.onBoardingRepo,
   ) : super(AuthState.loading()) {
     _getLoggedIn();
+    _httpCallback();
+  }
+
+  void _httpCallback() {
+    http.httpClient.interceptors.add(
+      ErrorInterceptor(
+        () => add(
+          LogoutEvent(),
+        ),
+      ),
+    );
   }
 
   Future<void> _getLoggedIn() async {
