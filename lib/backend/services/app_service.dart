@@ -13,9 +13,9 @@ class AppServiceImpl extends AppService {
   @override
   Future<AppModel> getServerVersion() async {
     try {
-      Response response = await client.get("https://$END_POINT_without_prefix");
-      final map = JuntoHttp.handleResponse(response);
       if (appConfig.flavor == Flavor.prod) {
+        Response response = await client.get("");
+        final map = JuntoHttp.handleResponse(response);
         return AppModel.fromJson(map);
       } else {
         return currentAppVersion;

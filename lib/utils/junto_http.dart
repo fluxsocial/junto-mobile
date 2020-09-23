@@ -93,8 +93,8 @@ class HeaderInterceptors extends Interceptor {
   @override
   Future<RequestOptions> onRequest(RequestOptions options) async {
     options.headers.putIfAbsent("Content-Type", () => 'application/json');
-    options.headers
-        .putIfAbsent("Authorization", () async => await _getAuthKey());
+    final key = await _getAuthKey();
+    options.headers.putIfAbsent("Authorization", () => key);
     return SynchronousFuture(options);
   }
 }
