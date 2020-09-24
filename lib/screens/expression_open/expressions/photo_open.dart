@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
-import 'package:junto_beta_mobile/widgets/link_text.dart';
 
 class PhotoOpen extends StatelessWidget {
   const PhotoOpen(this.photoExpression);
