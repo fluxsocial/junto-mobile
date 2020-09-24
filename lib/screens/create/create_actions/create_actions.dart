@@ -217,7 +217,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context, color: Colors.white54);
         _expression = await getPhotoExpression(repository);
-        print('get photo exression success');
         JuntoLoader.hide();
       } else if (widget.expressionType == ExpressionType.event) {
         String eventPhoto = '';
