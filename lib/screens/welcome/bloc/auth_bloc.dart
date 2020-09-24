@@ -73,7 +73,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.unauthenticated(loading: true);
     try {
       logger.logInfo('User signed up, now logging in');
-      // final login = await authRepo.loginUser(details);
       await authRepo.loginUser(event.username, event.password);
       var userData = await userRepo.sendMetadataPostRegistration(event.details);
 
