@@ -73,8 +73,6 @@ class ExpressionServiceCentralized implements ExpressionService {
         body: fileAsBytes,
       );
 
-      print('s3 bucket request success');
-
       // if successful, return the key for next steps
       if (_serverResponseTwo.statusCode == 200) {
         return parseData['key'];
@@ -85,7 +83,6 @@ class ExpressionServiceCentralized implements ExpressionService {
         );
       }
     } catch (e, s) {
-      print('some error is happening');
       logger.logException(e, s);
       return null;
     }
