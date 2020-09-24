@@ -174,6 +174,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     final image = widget.expression['image'];
 
     final photoKeys = await repository.createPhotoThumbnails(image);
+
     return ExpressionModel(
       type: widget.expressionType.modelName(),
       expressionData: PhotoFormExpression(
@@ -216,6 +217,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context, color: Colors.white54);
         _expression = await getPhotoExpression(repository);
+        print('get photo exression success');
         JuntoLoader.hide();
       } else if (widget.expressionType == ExpressionType.event) {
         String eventPhoto = '';
@@ -229,6 +231,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           JuntoLoader.hide();
           eventPhoto = _eventPhotoKey;
         }
+
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
           expressionData: EventFormExpression(

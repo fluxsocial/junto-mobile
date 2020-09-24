@@ -52,12 +52,10 @@ class ExpressionServiceCentralized implements ExpressionService {
         _serverUrl,
         body: {'content_type': fileType, 'content_length': contentLength},
       );
-      logger.logDebug(_serverResponse.data);
       logger.logDebug(_serverResponse.statusCode.toString());
 
       // parse response
-      final Map<String, dynamic> parseData =
-          JuntoHttp.handleResponse(_serverResponse);
+      final parseData = JuntoHttp.handleResponse(_serverResponse);
 
       // seralize into new headers
       final Map<String, String> newHeaders = <String, String>{
@@ -75,6 +73,8 @@ class ExpressionServiceCentralized implements ExpressionService {
         body: fileAsBytes,
       );
 
+      print('s3 bucket request success');
+
       // if successful, return the key for next steps
       if (_serverResponseTwo.statusCode == 200) {
         return parseData['key'];
@@ -85,6 +85,7 @@ class ExpressionServiceCentralized implements ExpressionService {
         );
       }
     } catch (e, s) {
+      print('some error is happening');
       logger.logException(e, s);
       return null;
     }
