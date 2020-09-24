@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 class MemberBadgeItem extends StatelessWidget {
   const MemberBadgeItem({this.badge});
 
-  final Widget badge;
+  final String badge;
 
   _buildBadge(BuildContext context) {
     Widget badgeIcon;
-    if (badge == 'crowdfunder') {
+    if (badge == 'Crowdfunder') {
       badgeIcon =
           Icon(Icons.beenhere, size: 17, color: Theme.of(context).primaryColor);
     } else {
-      badgeIcon = Icon(Icons.beenhere, size: 17, color: Theme.of(context).primaryColor);
+      badgeIcon =
+          Icon(Icons.beenhere, size: 17, color: Theme.of(context).primaryColor);
     }
     return badgeIcon;
   }
