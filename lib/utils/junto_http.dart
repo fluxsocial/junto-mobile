@@ -53,15 +53,15 @@ class JuntoHttp {
     String resource, {
     Map<String, dynamic> headers,
     dynamic body,
-  }) async{
-    final response = await  httpClient.put(
+  }) async {
+    final response = await httpClient.put(
       resource,
       data: body,
       options: Options(
         headers: {...headers},
       ),
     );
-   return  response;
+    return response;
   }
 
   Future<Response> delete(
