@@ -24,13 +24,16 @@ class DeleteAccountDialog extends StatelessWidget {
       JuntoLoader.showLoader(context);
       try {
         // Delete user account
+        print('deleting user account');
         await Provider.of<UserRepo>(context, listen: false)
             .deleteUserAccount(user.userAddress);
         // Hide Junto Loader
         JuntoLoader.hide();
         // Log user out
+        print('logging out user');
         await context.bloc<AuthBloc>().add(LogoutEvent());
         // Bring user back to Welcome screen after logging out
+        print('successfully logged out');
         Navigator.of(context).pushAndRemoveUntil(
           FadeRoute(child: Welcome()),
           ModalRoute.withName('/'),

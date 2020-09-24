@@ -19,7 +19,7 @@ class CollectiveProviderCentralized implements CollectiveService {
       'privacy': privacy,
       'parent': parent,
     });
-    final Map<String, dynamic> _map = JuntoHttp.handleResponse(_response);
+    final _map = JuntoHttp.handleResponse(_response);
     return Collective.fromJson(_map);
   }
 
@@ -27,7 +27,7 @@ class CollectiveProviderCentralized implements CollectiveService {
   Future<CollectionResponse> getCollection(String collectionAddress) async {
     final Response _response =
         await client.get('/collection/$collectionAddress');
-    final Map<String, dynamic> _map = JuntoHttp.handleResponse(_response);
+    final _map = JuntoHttp.handleResponse(_response);
     return CollectionResponse.fromJson(_map);
   }
 
