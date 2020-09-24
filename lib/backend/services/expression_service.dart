@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
+import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -66,12 +67,19 @@ class ExpressionServiceCentralized implements ExpressionService {
       // turn file into bytes
       final Uint8List fileAsBytes = file.readAsBytesSync();
 
-      // send put request to s3 bucket with url, new headers, and file as bytes
-      final Response _serverResponseTwo = await client.put(
+      // Temp fix with http client instead of dio
+      final _serverResponseTwo = await http.put(
         parseData['signed_url'],
         headers: newHeaders,
         body: fileAsBytes,
       );
+
+      // send put request to s3 bucket with url, new headers, and file as bytes
+      // final Response _serverResponseTwo = await client.put(
+      //   parseData['signed_url'],
+      //   headers: newHeaders,
+      //   body: fileAsBytes,
+      // );
 
       // if successful, return the key for next steps
       if (_serverResponseTwo.statusCode == 200) {
