@@ -109,7 +109,6 @@ class ExpressionServiceCentralized implements ExpressionService {
         'content_length': file.lengthSync(),
       },
     );
-    logger.logDebug(_serverResponse.data);
     logger.logDebug(
         'Received response from api storage, code: ${_serverResponse.statusCode}');
 
