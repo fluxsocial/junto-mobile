@@ -49,14 +49,19 @@ class JuntoHttp {
     );
   }
 
-  Future<Response> put(String resource,
-      {Map<String, String> headers,
-      Map<String, String> queryParams,
-      dynamic body}) {
-    return httpClient.put(
-      '/$kServerVersion$resource',
+  Future<Response> put(
+    String resource, {
+    Map<String, dynamic> headers,
+    dynamic body,
+  }) async{
+    final response = await  httpClient.put(
+      resource,
       data: body,
+      options: Options(
+        headers: {...headers},
+      ),
     );
+   return  response;
   }
 
   Future<Response> delete(
@@ -105,9 +110,12 @@ class HeaderInterceptors extends Interceptor {
 
   @override
   Future<RequestOptions> onRequest(RequestOptions options) async {
-    options.headers.putIfAbsent("Content-Type", () => 'application/json');
-    final key = await _getAuthKey();
-    options.headers.putIfAbsent("Authorization", () => key);
+    if (options.method != "PUT") {
+      options.headers
+          .putIfAbsent("content-type", () => 'application/json; charset=utf-8');
+      final key = await _getAuthKey();
+      options.headers.putIfAbsent("Authorization", () => key);
+    }
     return SynchronousFuture(options);
   }
 }
