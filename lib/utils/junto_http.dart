@@ -80,7 +80,7 @@ class JuntoHttp {
   }
 
   static dynamic handleResponse(Response response) {
-    logger.logDebug("Startus code, ${response.statusCode}");
+    logger.logDebug("Status code, ${response.statusCode}");
     return response.data;
   }
 }
