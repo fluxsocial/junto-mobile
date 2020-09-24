@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den.dart';
@@ -114,10 +115,12 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 ),
                               ),
                               // Member Badges
-                              if (widget.profile.user.badges.isNotEmpty)
-                                MemberBadgesRow(
-                                  badges: widget.profile.user.badges,
-                                ),
+                              if (widget.profile.user.badges != null &&
+                                  appConfig.flavor == Flavor.dev)
+                                if (widget.profile.user.badges.isNotEmpty)
+                                  MemberBadgesRow(
+                                    badges: widget.profile.user.badges,
+                                  ),
                             ],
                           ),
                           if (widget.profile.user.gender[0] != '' &&

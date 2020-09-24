@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -66,6 +67,7 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
 
   @override
   Widget build(BuildContext context) {
+    print(_memberProfile.user.badges);
     return SliverAppBar(
       automaticallyImplyLeading: false,
       brightness: Theme.of(context).brightness,
@@ -121,7 +123,8 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                                 ),
                               ),
                               // Member Badges
-                              if (widget.profile.badges != null)
+                              if (widget.profile.badges != null &&
+                                  appConfig.flavor == Flavor.dev)
                                 if (widget.profile.badges.isNotEmpty)
                                   MemberBadgesRow(
                                     badges: widget.profile.badges,
