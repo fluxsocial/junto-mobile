@@ -263,11 +263,7 @@ class UserRepo {
   }
 
   Future<void> deleteUserAccount(String userAddress) {
-    if (userAddress != null && userAddress.isNotEmpty) {
-      return userService.deleteUser(userAddress);
-    } else {
-      throw JuntoException("Please ensure password is not empty", 404);
-    }
+    return userService.deleteUser(userAddress);
   }
 
   Future<UserData> sendMetadataPostRegistration(
