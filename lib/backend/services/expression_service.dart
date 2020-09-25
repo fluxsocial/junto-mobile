@@ -131,12 +131,19 @@ class ExpressionServiceCentralized implements ExpressionService {
     };
 
     logger.logDebug('Uploading audio file to api storage');
-    // send put request to s3 bucket with url, new headers, and file as bytes
-    final Response _serverResponseTwo = await client.put(
+
+    // temp audio fix with standard http client
+    final _serverResponseTwo = await client.put(
       parseData['signed_url'],
       headers: newHeaders,
       body: fileAsBytes,
     );
+    // send put request to s3 bucket with url, new headers, and file as bytes
+    // final Response _serverResponseTwo = await client.put(
+    //   parseData['signed_url'],
+    //   headers: newHeaders,
+    //   body: fileAsBytes,
+    // );
 
     // if successful, return the key for next steps
     if (_serverResponseTwo.statusCode == 200) {
