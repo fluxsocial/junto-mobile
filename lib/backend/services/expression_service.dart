@@ -133,7 +133,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     logger.logDebug('Uploading audio file to api storage');
 
     // temp audio fix with standard http client
-    final _serverResponseTwo = await client.put(
+    final _serverResponseTwo = await http.put(
       parseData['signed_url'],
       headers: newHeaders,
       body: fileAsBytes,
