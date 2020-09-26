@@ -34,8 +34,18 @@ class JuntoHttp {
     String resource, {
     Map<String, String> headers,
     Map<String, String> queryParams,
+    bool withoutServerVersion = false,
   }) async {
-    final _uri = '/$kServerVersion$resource';
+    String _uri;
+    switch (withoutServerVersion) {
+      case true:
+        _uri = '$resource';
+        break;
+      case false:
+        _uri = '/$kServerVersion$resource';
+        break;
+    }
+
     return httpClient.get(_uri, queryParameters: queryParams);
   }
 

@@ -7,8 +7,6 @@ class MemberBadgesRow extends StatelessWidget {
   final List<dynamic> badges;
   @override
   Widget build(BuildContext context) {
-    print(badges);
-    print(badges[0]);
     return Container(
       child: Row(
         children: [

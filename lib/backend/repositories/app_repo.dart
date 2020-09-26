@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/api.dart';
@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 /// Repository retrieving and saving various app settings:
 ///
@@ -91,8 +90,8 @@ class AppRepo extends ChangeNotifier {
         return false;
       }
       return false;
-    } on JuntoException catch (error) {
-      logger.logDebug(error.message);
+    } on DioError catch (error) {
+      print(error.response.data);
       return false;
     } catch (e, s) {
       logger.logException(e, s);

@@ -67,7 +67,6 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
 
   @override
   Widget build(BuildContext context) {
-    print(_memberProfile.user.badges);
     return SliverAppBar(
       automaticallyImplyLeading: false,
       brightness: Theme.of(context).brightness,

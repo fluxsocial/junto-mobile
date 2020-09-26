@@ -9,6 +9,12 @@ import 'package:junto_beta_mobile/models/valid_user_model.dart';
 
 class MockUserService implements UserService {
   @override
+  Future<Map<String, dynamic>> serverVersion() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return {};
+  }
+
+  @override
   Future<PerspectiveModel> createPerspective(Perspective perspective) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives.first;

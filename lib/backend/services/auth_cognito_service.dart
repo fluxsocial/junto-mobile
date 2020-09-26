@@ -79,9 +79,6 @@ class CognitoClient extends AuthenticationService {
 
   @override
   Future<ResetPasswordResult> resetPassword(ResetPasswordData data) async {
-    print(data);
-    print(data.username);
-    print(data.password);
     try {
       final result = await aws.FlutterAwsAmplifyCognito.confirmForgotPassword(
           data.username, data.password, data.confirmationCode);

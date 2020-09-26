@@ -31,12 +31,10 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
 
       switch (isValid) {
         case true:
-          print('inviting user');
           await Provider.of<UserRepo>(context, listen: false)
               .inviteUser(email, name);
           Navigator.pop(context);
           JuntoLoader.hide();
-          print('heyo');
 
           await showDialog(
             context: context,

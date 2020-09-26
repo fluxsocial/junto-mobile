@@ -138,7 +138,6 @@ class _EditGroupState extends State<EditGroup> {
     if (_groupData != null &&
         _groupData.photo.isNotEmpty &&
         imageFile == null) {
-      print('returning group avatar');
       return GroupAvatar(
         diameter: 45,
         profilePicture: _groupData.photo,
