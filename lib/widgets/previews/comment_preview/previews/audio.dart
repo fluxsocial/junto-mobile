@@ -41,14 +41,14 @@ class AudioPreview extends StatelessWidget {
         Container(
           child: _displayAudioPreview(),
         ),
-        if (comment.expressionData.caption.isNotEmpty)
+        if (audioCaption.isNotEmpty)
           Container(
             padding: const EdgeInsets.symmetric(
               vertical: 10,
               horizontal: 10,
             ),
             child: Text(
-              comment.expressionData.caption,
+              audioCaption,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.caption,
