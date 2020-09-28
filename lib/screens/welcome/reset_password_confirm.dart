@@ -18,11 +18,11 @@ class ResetPasswordConfirm extends StatefulWidget {
   const ResetPasswordConfirm({
     Key key,
     @required this.signInController,
-    @required this.username,
+    @required this.usernameController,
   }) : super(key: key);
 
   final PageController signInController;
-  final String username;
+  final TextEditingController usernameController;
 
   @override
   _ResetPasswordConfirmState createState() => _ResetPasswordConfirmState();
@@ -90,14 +90,14 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
   }
 
   Future<void> _confirmNewPassword() async {
-    assert(widget.username.isNotEmpty);
+    assert(widget.usernameController.value.text.trim().isNotEmpty);
     if (await _validatePasswords()) {
       try {
         JuntoLoader.showLoader(context);
         final result =
             await Provider.of<AuthRepo>(context, listen: false).resetPassword(
           ResetPasswordData(
-            widget.username,
+            widget.usernameController.value.text.trim(),
             _newPassword.text,
             _verificationCode.text,
           ),
@@ -147,10 +147,10 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
   }
 
   Future<void> _resendVerificationCode() async {
-    assert(widget.username != null);
+    assert(widget.usernameController.value.text.trim() != null);
     try {
       final result = await Provider.of<AuthRepo>(context, listen: false)
-          .resendVerificationCode(widget.username);
+          .resendVerificationCode(widget.usernameController.value.text.trim());
       if (result.wasSuccessful) {
         await showFeedback(context, message: "Confirmation code sent again!");
       } else {
