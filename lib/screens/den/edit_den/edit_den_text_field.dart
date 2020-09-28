@@ -5,11 +5,13 @@ class EditDenTextField extends StatelessWidget {
     this.controller,
     this.hintText,
     this.textCapitalization = TextCapitalization.words,
+    this.textInputAction = TextInputAction.done,
     this.maxLength,
   });
   final TextEditingController controller;
   final String hintText;
   final TextCapitalization textCapitalization;
+  final TextInputAction textInputAction;
   final int maxLength;
 
   @override
@@ -54,7 +56,7 @@ class EditDenTextField extends StatelessWidget {
         maxLines: null,
         maxLength: maxLength,
         style: Theme.of(context).textTheme.caption,
-        textInputAction: TextInputAction.done,
+        textInputAction: textInputAction,
         textCapitalization: textCapitalization,
       ),
     );
