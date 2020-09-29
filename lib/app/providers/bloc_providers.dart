@@ -43,8 +43,7 @@ class BlocProviders extends StatelessWidget {
               CollectiveBloc(RepositoryProvider.of<ExpressionRepo>(ctx)),
         ),
         BlocProvider<AppBloc>(
-          create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context))
-            ..add(CheckServerVersion()),
+          create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context)),
         ),
         BlocProvider<ChannelFilteringBloc>(
           create: (ctx) => ChannelFilteringBloc(

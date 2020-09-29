@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
@@ -30,11 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _httpCallback() {
     http.httpClient.interceptors.add(
-      ErrorInterceptor(
-        () => add(
-          LogoutEvent(),
-        ),
-      ),
+      ErrorInterceptor(() => add(LogoutEvent())),
     );
   }
 
