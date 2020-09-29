@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -9,7 +8,7 @@ part 'app_event.dart';
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppBlocEvent, AppBlocState> {
-  AppBloc(this.repo) : super(AppBlocInitial());
+  AppBloc(this.repo) : super(AppLoadingState());
 
   final AppRepo repo;
 
@@ -21,14 +20,19 @@ class AppBloc extends Bloc<AppBlocEvent, AppBlocState> {
   }
 
   Stream<AppBlocState> _mapEventToState(CheckServerVersion event) async* {
-    if (Platform.isIOS) {
-      if (await repo.isValidVersion()) {
+    yield AppLoadingState();
+    try {
+      final validVersion = await repo.isValidVersion();
+      if (validVersion) {
+        print('Showing SupportedVersion');
         yield SupportedVersion();
       } else {
+        print('Showing UnsupportedState');
         yield UnsupportedState();
       }
-    } else {
-      yield SupportedVersion();
+    } catch (e) {
+      print("App Bloc Error" + e);
+      yield UnsupportedState();
     }
   }
 }

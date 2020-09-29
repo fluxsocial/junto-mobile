@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
@@ -18,7 +19,9 @@ class AppRepo extends ChangeNotifier {
   }
 
   AppService _appService;
+
   int get collectivePageIndex => _collectivePageIndex ?? 0;
+
   int get packsPageIndex => _packsPageIndex ?? 0;
 
   int _collectivePageIndex;
@@ -63,33 +66,18 @@ class AppRepo extends ChangeNotifier {
 
   Future<bool> isValidVersion() async {
     final isProd = appConfig.flavor == Flavor.prod;
-    final isTst =
-        appConfig.flavor == Flavor.tst || appConfig.flavor == Flavor.dev;
     try {
       final serVersion = await _appService.getServerVersion();
       if (isProd) {
         if (Platform.isAndroid) {
           return currentAppVersion.minAndroidBuild >=
               serVersion.minAndroidBuild;
-        }
-        if (Platform.isIOS) {
+        } else {
           return currentAppVersion.minIosBuild >= serVersion.minIosBuild;
         }
+      } else {
         return false;
       }
-
-      if (isTst) {
-        if (Platform.isAndroid) {
-          return currentAppVersion.minAndroidBuildTest >=
-              serVersion.minAndroidBuildTest;
-        }
-        if (Platform.isIOS) {
-          return currentAppVersion.minIosBuildTest >=
-              serVersion.minIosBuildTest;
-        }
-        return false;
-      }
-      return false;
     } on DioError catch (error) {
       print(error.response.data);
       return false;
