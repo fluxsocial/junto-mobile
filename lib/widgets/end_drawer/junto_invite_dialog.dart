@@ -4,7 +4,6 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:email_validator/email_validator.dart';
 
 class JuntoInviteDialog extends StatefulWidget {
   const JuntoInviteDialog({
@@ -21,43 +20,29 @@ class JuntoInviteDialog extends StatefulWidget {
 }
 
 class JuntoInviteDialogState extends State<JuntoInviteDialog> {
+  int invitesLeft;
+  String inviteText;
   TextEditingController nameController;
   TextEditingController emailController;
 
   void inviteUser(BuildContext context, String email, String name) async {
     try {
       JuntoLoader.showLoader(context);
-      final bool isValid = EmailValidator.validate(email);
+      await Provider.of<UserRepo>(context, listen: false)
+          .inviteUser(email, name);
+      Navigator.pop(context);
+      JuntoLoader.hide();
 
-      switch (isValid) {
-        case true:
-          await Provider.of<UserRepo>(context, listen: false)
-              .inviteUser(email, name);
-          Navigator.pop(context);
-          JuntoLoader.hide();
+      await getInviteInfo();
 
-          await showDialog(
-            context: context,
-            builder: (BuildContext context) => SingleActionDialog(
-              context: context,
-              dialogText:
-                  'Your invitation is on its way! You can invite someone new tomorrow.',
-            ),
-          );
-          break;
-        case false:
-          Navigator.pop(context);
-          JuntoLoader.hide();
-
-          await showDialog(
-            context: context,
-            builder: (BuildContext context) => SingleActionDialog(
-              context: context,
-              dialogText: 'Please enter a valid email.',
-            ),
-          );
-          break;
-      }
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          context: context,
+          dialogText:
+              'Your invitation is on its way! You have ${invitesLeft} ${inviteText} left this week.',
+        ),
+      );
     } catch (error) {
       Navigator.pop(context);
       JuntoLoader.hide();
@@ -66,7 +51,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
           context: context,
-          dialogText: 'Sorry, something is up. Try again.',
+          dialogText: error.message,
         ),
       );
     }
@@ -77,6 +62,18 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
     super.initState();
     emailController = TextEditingController();
     nameController = TextEditingController();
+    getInviteInfo();
+  }
+
+  Future<void> getInviteInfo() async {
+    final Map<String, dynamic> inviteInfo =
+        await Provider.of<UserRepo>(context, listen: false).lastInviteSent();
+    final int invitesMadeThisWeek = inviteInfo['invites_made_this_week'];
+
+    setState(() {
+      invitesLeft = invitesMadeThisWeek == null ? 3 : 3 - invitesMadeThisWeek;
+      inviteText = invitesLeft == 1 ? 'invite' : 'invites';
+    });
   }
 
   @override
@@ -107,7 +104,7 @@ class JuntoInviteDialogState extends State<JuntoInviteDialog> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "You can invite one new person a day to Junto - who would you like to bring on?",
+              "You have ${invitesLeft} ${inviteText} left this week - who would you like to bring on?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 17,
