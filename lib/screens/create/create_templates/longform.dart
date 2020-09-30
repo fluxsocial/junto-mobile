@@ -55,9 +55,15 @@ class CreateLongformState extends State<CreateLongform> {
   /// Creates a [LongFormExpression] from the given data entered
   /// by the user.
   LongFormExpression createExpression() {
+    final markupText = metionKey.currentState.controller.markupText;
+    RegExp customRegExp = RegExp(r"\[(@[^:]+):([^\]]+)\]");
+    final match = customRegExp.allMatches(markupText).toList();
+    final mentions = match.map((e) => e.group(2)).toSet().toList();
+
     return LongFormExpression(
       body: _bodyController.value.text.trim(),
-      title: _titleController.value.text.trim(),
+      title: markupText.trim(),
+      mentions: mentions,
     );
   }
 
@@ -242,6 +248,9 @@ class CreateLongformState extends State<CreateLongform> {
                               style: TextStyle(
                                 color: Colors.amber,
                               ),
+                              markupBuilder: (trigger, mention, value) {
+                                return '[$trigger$value:$mention]';
+                              },
                               suggestionBuilder: (data) {
                                 return Container(
                                   color: Colors.amber,

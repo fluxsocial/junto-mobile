@@ -129,23 +129,27 @@ class LongFormExpression {
   LongFormExpression({
     this.title,
     this.body,
+    this.mentions,
   });
 
   factory LongFormExpression.fromJson(Map<String, dynamic> json) {
     return LongFormExpression(
-      title: json['title'] ?? '',
-      body: json['body'] ?? '',
-    );
+        title: json['title'] ?? '',
+        body: json['body'] ?? '',
+        mentions: json['mentions'] ?? []);
   }
 
   @HiveField(0)
   final String title;
   @HiveField(1)
   final String body;
+  @HiveField(2)
+  final List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'body': body,
+        'mentions': mentions,
       };
 }
 
@@ -185,11 +189,10 @@ class LinkFormExpression {
 
   factory LinkFormExpression.fromJson(Map<String, dynamic> json) {
     return LinkFormExpression(
-      title: json['title'],
-      caption: json['caption'],
-      url: json['url'],
-      data: OEmbedResponse.fromMap(json['data'])
-    );
+        title: json['title'],
+        caption: json['caption'],
+        url: json['url'],
+        data: OEmbedResponse.fromMap(json['data']));
   }
 
   @HiveField(0)
