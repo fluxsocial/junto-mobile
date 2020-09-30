@@ -39,8 +39,8 @@ class AcceptButton extends StatelessWidget {
         // accept agreements
         await BlocProvider.of<AuthBloc>(context).add(AcceptAgreements());
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 

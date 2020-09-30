@@ -11,7 +11,6 @@ class TabBarName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.transparent,
       padding: const EdgeInsets.only(
         top: 10,
         bottom: 10,

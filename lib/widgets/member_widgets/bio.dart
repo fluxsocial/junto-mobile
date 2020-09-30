@@ -31,7 +31,7 @@ class MemberBio extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               color: Colors.transparent,
               child: Text(
-                profile.user.bio,
+                profile.user.bio.trim(),
                 style: Theme.of(context).textTheme.caption,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,

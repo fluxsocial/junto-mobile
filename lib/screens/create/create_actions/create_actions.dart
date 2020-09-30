@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:dio/dio.dart';
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +22,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
@@ -119,8 +120,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       setState(() {
         relationToGroup = relation;
       });
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
     }
   }
 
@@ -173,6 +174,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     final image = widget.expression['image'];
 
     final photoKeys = await repository.createPhotoThumbnails(image);
+
     return ExpressionModel(
       type: widget.expressionType.modelName(),
       expressionData: PhotoFormExpression(
@@ -228,6 +230,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           JuntoLoader.hide();
           eventPhoto = _eventPhotoKey;
         }
+
         _expression = ExpressionModel(
           type: widget.expressionType.modelName(),
           expressionData: EventFormExpression(
@@ -273,12 +276,25 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         message: 'Expression Created!',
       );
       _postCreateAction();
+    } on DioError catch (error) {
+      JuntoLoader.hide();
+      // Handle max number of posts/day error
+      if (error.response.statusCode == 400 ||
+          error.message.toString() == 'Http status error [400]') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText:
+                'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
+          ),
+        );
+      }
     } catch (error) {
       JuntoLoader.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Something went wrong',
+          dialogText: 'Something went wrong. Please try again.',
         ),
       );
     }

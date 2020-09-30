@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -17,7 +17,7 @@ class NotificationServiceImpl implements NotificationService {
       NotificationQuery params) async {
     try {
       logger.logInfo('Fetching notifications from API');
-      final http.Response response = await httpClient.get(
+      final Response response = await httpClient.get(
         '/notifications',
         queryParams: params.toJson(),
       );

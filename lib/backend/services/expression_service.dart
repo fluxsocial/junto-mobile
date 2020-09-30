@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
-
 import 'package:http/http.dart' as http;
+
+import 'package:dio/dio.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -26,10 +26,10 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<ExpressionResponse> createExpression(
       ExpressionModel expression) async {
     final Map<String, dynamic> _postBody = expression.toJson();
-    final http.Response _serverResponse =
+
+    final Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
-    logger.logDebug(_serverResponse.body);
-    logger.logDebug(_serverResponse.statusCode.toString());
+
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final ExpressionResponse response = ExpressionResponse.fromJson(parseData);
@@ -49,16 +49,14 @@ class ExpressionServiceCentralized implements ExpressionService {
       final contentLength = file.lengthSync();
 
       // denote file type and get url, headers, and key of s3 bucket
-      final http.Response _serverResponse = await client.postWithoutEncoding(
+      final Response _serverResponse = await client.postWithoutEncoding(
         _serverUrl,
         body: {'content_type': fileType, 'content_length': contentLength},
       );
-      logger.logDebug(_serverResponse.body);
       logger.logDebug(_serverResponse.statusCode.toString());
 
       // parse response
-      final Map<String, dynamic> parseData =
-          JuntoHttp.handleResponse(_serverResponse);
+      final parseData = JuntoHttp.handleResponse(_serverResponse);
 
       // seralize into new headers
       final Map<String, String> newHeaders = <String, String>{
@@ -69,24 +67,31 @@ class ExpressionServiceCentralized implements ExpressionService {
       // turn file into bytes
       final Uint8List fileAsBytes = file.readAsBytesSync();
 
-      // send put request to s3 bucket with url, new headers, and file as bytes
-      final http.Response _serverResponseTwo = await http.put(
+      // Temp fix with http client instead of dio
+      final _serverResponseTwo = await http.put(
         parseData['signed_url'],
         headers: newHeaders,
         body: fileAsBytes,
       );
+
+      // send put request to s3 bucket with url, new headers, and file as bytes
+      // final Response _serverResponseTwo = await client.put(
+      //   parseData['signed_url'],
+      //   headers: newHeaders,
+      //   body: fileAsBytes,
+      // );
 
       // if successful, return the key for next steps
       if (_serverResponseTwo.statusCode == 200) {
         return parseData['key'];
       } else {
         throw JuntoException(
-          _serverResponse.reasonPhrase,
+          _serverResponse.statusMessage,
           _serverResponse.statusCode,
         );
       }
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return null;
     }
   }
@@ -105,14 +110,13 @@ class ExpressionServiceCentralized implements ExpressionService {
       _serverUrl = '/auth/s3?private=false';
     }
     // denote file type and get url, headers, and key of s3 bucket
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       _serverUrl,
       body: {
         'content_type': '.aac',
         'content_length': file.lengthSync(),
       },
     );
-    logger.logDebug(_serverResponse.body);
     logger.logDebug(
         'Received response from api storage, code: ${_serverResponse.statusCode}');
 
@@ -127,12 +131,19 @@ class ExpressionServiceCentralized implements ExpressionService {
     };
 
     logger.logDebug('Uploading audio file to api storage');
-    // send put request to s3 bucket with url, new headers, and file as bytes
-    final http.Response _serverResponseTwo = await http.put(
+
+    // temp audio fix with standard http client
+    final _serverResponseTwo = await http.put(
       parseData['signed_url'],
       headers: newHeaders,
       body: fileAsBytes,
     );
+    // send put request to s3 bucket with url, new headers, and file as bytes
+    // final Response _serverResponseTwo = await client.put(
+    //   parseData['signed_url'],
+    //   headers: newHeaders,
+    //   body: fileAsBytes,
+    // );
 
     // if successful, return the key for next steps
     if (_serverResponseTwo.statusCode == 200) {
@@ -141,7 +152,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     } else {
       logger.logWarning('Error while uploading audio file to api storage');
       throw JuntoException(
-        _serverResponse.reasonPhrase,
+        _serverResponse.statusMessage,
         _serverResponse.statusCode,
       );
     }
@@ -156,7 +167,7 @@ class ExpressionServiceCentralized implements ExpressionService {
       'expression_data': data,
       'channels': <String>[]
     };
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/comments',
       body: _postBody,
     );
@@ -169,7 +180,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<Resonation> postResonation(
     String expressionAddress,
   ) async {
-    final http.Response _serverResponse = await client.postWithoutEncoding(
+    final Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/resonations',
     );
     return Resonation.fromJson(JuntoHttp.handleResponse(_serverResponse));
@@ -179,7 +190,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<ExpressionResponse> getExpression(
     String expressionAddress,
   ) async {
-    final http.Response _response =
+    final Response _response =
         await client.get('/expressions/$expressionAddress');
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_response);
@@ -189,7 +200,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<QueryResults<Comment>> getExpressionsComments(
       String expressionAddress) async {
-    final http.Response response = await client.get(
+    final Response response = await client.get(
         '/expressions/$expressionAddress/comments',
         queryParams: <String, String>{
           'pagination_position': '0',
@@ -207,9 +218,9 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<List<UserProfile>> getExpressionsResonation(
       String expressionAddress) async {
-    final http.Response response =
+    final Response response =
         await client.get('/expressions/$expressionAddress/resonations');
-    final List<dynamic> _listData = json.decode(response.body);
+    final List<dynamic> _listData = response.data;
     final List<UserProfile> _results = _listData
         .map((dynamic data) => UserProfile.fromJson(data))
         .toList(growable: false);
@@ -226,7 +237,7 @@ class ExpressionServiceCentralized implements ExpressionService {
 
   @override
   Future<void> deleteExpression(String expressionAddress) async {
-    final http.Response _serverResponse = await client.delete(
+    final Response _serverResponse = await client.delete(
       '/expressions/$expressionAddress',
     );
     JuntoHttp.handleResponse(_serverResponse);
@@ -235,7 +246,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, dynamic> params) async {
-    final http.Response response = await client.get(
+    final Response response = await client.get(
       '/expressions',
       queryParams: params,
     );
@@ -272,7 +283,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     List<Map<String, String>> users,
   ) async {
     {
-      final http.Response _serverResponse = await client.postWithoutEncoding(
+      final Response _serverResponse = await client.postWithoutEncoding(
         '/expressions/$expressionAddress/members',
         body: users,
       );
@@ -284,7 +295,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<QueryResults<Users>> getEventMembers(
       String expressionAddress, Map<String, String> params) async {
-    final http.Response response = await client.get(
+    final Response response = await client.get(
       '/expressions/$expressionAddress/members',
       queryParams: params,
     );

@@ -1,24 +1,26 @@
 import 'package:corsac_jwt/corsac_jwt.dart';
+import 'package:flutter/foundation.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
 
-class AuthRepo {
-  const AuthRepo(
+class AuthRepo extends ChangeNotifier {
+  AuthRepo(
     this.authService, {
     this.onLogout,
   });
 
   final AuthenticationService authService;
   final void Function() onLogout;
+  bool shouldLogOut = false;
 
   Future<bool> isLoggedIn() async {
     try {
       final value = await authService.isLoggedIn();
       return value.wasSuccessful;
-    } catch (e) {
-      logger.logException(e);
+    } catch (e, s) {
+      logger.logException(e, s);
       return false;
     }
   }
@@ -71,9 +73,13 @@ class AuthRepo {
   Future<String> getAddress() async {
     final token = await authService.getIdToken();
     if (token != null) {
+      shouldLogOut = false;
       final jwt = JWT.parse(token);
+      notifyListeners();
       return jwt.subject;
     } else {
+      shouldLogOut = true;
+      notifyListeners();
       throw Exception("Access token is null");
     }
   }

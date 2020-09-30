@@ -3,6 +3,9 @@ class JuntoException implements Exception {
 
   final String message;
   final int errorCode;
-}
 
-class UnAuthorizedException implements Exception{}
+  @override
+  String toString() {
+    return "JuntoException($message, $errorCode)";
+  }
+}

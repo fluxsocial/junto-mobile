@@ -5,44 +5,39 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 import 'bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo authRepo;
+  final JuntoHttp http;
   final UserRepo userRepo;
   final UserDataProvider userDataProvider;
   final OnBoardingRepo onBoardingRepo;
 
   AuthBloc(
+    this.http,
     this.authRepo,
     this.userDataProvider,
     this.userRepo,
     this.onBoardingRepo,
   ) : super(AuthState.loading()) {
     _getLoggedIn();
-    _listenToAuthEvents();
+    _httpCallback();
   }
 
-  void _listenToAuthEvents() {
-    userDataProvider.isUnAuthorized.addListener(() {
-      if (userDataProvider.isUnAuthorized.value) {
-        add(LogoutEvent());
-      }
-    });
+  void _httpCallback() {
+    http.httpClient.interceptors.add(
+      ErrorInterceptor(() => add(LogoutEvent())),
+    );
   }
 
   Future<void> _getLoggedIn() async {
-    try {
-      final result = await authRepo.isLoggedIn();
-      final userAddress = await authRepo.getAddress();
-      if (result == true && (userAddress != null || userAddress.isNotEmpty)) {
-        add(LoggedInEvent());
-      } else {
-        add(LogoutEvent());
-      }
-    } catch (e) {
-      print(e);
+    final result = await authRepo.isLoggedIn();
+    if (result == true) {
+      add(LoggedInEvent());
+    } else {
       add(LogoutEvent());
     }
   }
@@ -73,7 +68,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.unauthenticated(loading: true);
     try {
       logger.logInfo('User signed up, now logging in');
-      // final login = await authRepo.loginUser(details);
       await authRepo.loginUser(event.username, event.password);
       var userData = await userRepo.sendMetadataPostRegistration(event.details);
 

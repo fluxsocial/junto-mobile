@@ -17,7 +17,7 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).backgroundColor,
         border: Border(
           bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
         ),

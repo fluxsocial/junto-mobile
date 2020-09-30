@@ -306,6 +306,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                             controller: _bioController,
                             hintText: 'Short/Long Bio',
                             textCapitalization: TextCapitalization.sentences,
+                            textInputAction: TextInputAction.newline,
                             maxLength: 1000,
                           ),
                         ],

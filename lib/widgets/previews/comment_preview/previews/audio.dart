@@ -10,9 +10,11 @@ class AudioPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final audioCaption = comment.expressionData.caption.trim();
     final audioTitle = comment.expressionData.title.trim();
     final audioGradients = comment.expressionData.gradient;
     final audioPhoto = comment.expressionData.thumbnail600;
+
     Widget _displayAudioPreview() {
       if (audioGradients.isEmpty && audioPhoto.isEmpty) {
         return AudioPreviewDefault(
@@ -33,8 +35,26 @@ class AudioPreview extends StatelessWidget {
       }
     }
 
-    return Container(
-      child: _displayAudioPreview(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          child: _displayAudioPreview(),
+        ),
+        if (audioCaption.isNotEmpty)
+          Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 10,
+            ),
+            child: Text(
+              audioCaption,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ),
+      ],
     );
   }
 }

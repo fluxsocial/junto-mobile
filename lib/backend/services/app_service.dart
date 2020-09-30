@@ -1,29 +1,30 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/app_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 class AppServiceImpl extends AppService {
+  AppServiceImpl(this.client);
+  final JuntoHttp client;
   @override
   Future<AppModel> getServerVersion() async {
     try {
-      http.Response response;
       if (appConfig.flavor == Flavor.prod) {
-        response = await http.get("https://$END_POINT_without_prefix");
-        final map = JuntoHttp.handleResponse(response);
-        return AppModel.fromJson(map);
+        final Response _response =
+            await client.get('', withoutServerVersion: true);
+        final Map<String, dynamic> _decodedResponse =
+            JuntoHttp.handleResponse(_response);
+
+        return AppModel.fromJson(_decodedResponse);
       } else {
         return currentAppVersion;
       }
-    } catch (error) {
-      logger.logException(error);
+    } on DioError catch (e, s) {
+      logger.logException(e, s);
       throw JuntoException("Cannot get server version", -1);
     }
   }

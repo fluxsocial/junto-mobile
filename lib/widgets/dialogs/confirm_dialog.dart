@@ -81,8 +81,8 @@ class ConfirmDialog extends StatelessWidget {
                         try {
                           confirm();
                           Navigator.pop(context);
-                        } catch (error) {
-                          logger.logException(error);
+                        } catch (e, s) {
+                          logger.logException(e, s);
                           Navigator.pop(context);
                           await showDialog(
                             context: buildContext,

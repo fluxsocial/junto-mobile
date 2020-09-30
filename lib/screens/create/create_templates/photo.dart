@@ -237,7 +237,7 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   Widget _uploadPhotoOptions() {
     return Container(
-      margin: const EdgeInsets.only(bottom: 75),
+      margin: const EdgeInsets.only(bottom: 100),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den.dart';
@@ -9,6 +10,8 @@ import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/about_member.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/badges_row.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar({Key key, @required this.profile})
@@ -76,74 +79,82 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                     MemberBackgroundPhoto(profile: widget.profile),
                   if (photo == null || photo.isEmpty)
                     MemberBackgroundPlaceholder(),
-                  Container(
-                    key: _keyFlexibleSpace,
-                    margin: const EdgeInsets.only(top: 30),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 15,
-                    ),
-                    color: Colors.transparent,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                              child: Text(
-                                name,
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColor,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext context) => AboutMember(
+                            profile: widget.profile,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      key: _keyFlexibleSpace,
+                      margin: const EdgeInsets.only(top: 35),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 15,
+                      ),
+                      color: Colors.transparent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Flexible(
+                                child: Text(
+                                  name,
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ),
-                            ),
-                            EditDenButton(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        JuntoEditDen(),
+                              // Member Badges
+                              if (widget.profile.user.badges != null &&
+                                  appConfig.flavor == Flavor.dev)
+                                if (widget.profile.user.badges.isNotEmpty)
+                                  MemberBadgesRow(
+                                    badges: widget.profile.user.badges,
                                   ),
-                                );
-                              },
+                            ],
+                          ),
+                          if (widget.profile.user.gender[0] != '' &&
+                              widget.profile.user.location[0] != '' &&
+                              widget.profile.user.website[0] != '')
+                            const SizedBox(height: 10),
+                          AboutItem(
+                            item: widget.profile.user.gender,
+                            icon: Icon(
+                              CustomIcons.gender,
+                              size: 17,
+                              color: Theme.of(context).primaryColor,
                             ),
-                          ],
-                        ),
-                        if (widget.profile.user.gender.isNotEmpty ||
-                            widget.profile.user.location.isNotEmpty ||
-                            widget.profile.user.website.isNotEmpty)
-                          const SizedBox(height: 15),
-                        AboutItem(
-                          item: widget.profile.user.gender,
-                          icon: Icon(
-                            CustomIcons.gender,
-                            size: 17,
-                            color: Theme.of(context).primaryColor,
                           ),
-                        ),
-                        AboutItem(
-                          item: widget.profile.user.location,
-                          icon: Image.asset(
-                            'assets/images/junto-mobile__location.png',
-                            height: 15,
-                            color: Theme.of(context).primaryColor,
+                          AboutItem(
+                            item: widget.profile.user.location,
+                            icon: Image.asset(
+                              'assets/images/junto-mobile__location.png',
+                              height: 15,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                        AboutItem(
-                          item: widget.profile.user.website,
-                          isWebsite: true,
-                          icon: Image.asset(
-                            'assets/images/junto-mobile__link.png',
-                            height: 15,
-                            color: Theme.of(context).primaryColor,
+                          AboutItem(
+                            item: widget.profile.user.website,
+                            isWebsite: true,
+                            icon: Image.asset(
+                              'assets/images/junto-mobile__link.png',
+                              height: 15,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                        MemberBio(profile: widget.profile)
-                      ],
+                          MemberBio(profile: widget.profile)
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -151,6 +162,16 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
             ),
             MemberProfilePictureAvatar(
               profile: widget.profile,
+            ),
+            EditDenButton(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute<void>(
+                    builder: (BuildContext context) => JuntoEditDen(),
+                  ),
+                );
+              },
             ),
           ],
         ),

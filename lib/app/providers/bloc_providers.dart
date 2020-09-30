@@ -12,8 +12,12 @@ import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 
 class BlocProviders extends StatelessWidget {
   final Widget child;
-
-  const BlocProviders({Key key, this.child}) : super(key: key);
+  final Backend backend;
+  const BlocProviders({
+    Key key,
+    @required this.backend,
+    @required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +25,12 @@ class BlocProviders extends StatelessWidget {
       providers: [
         BlocProvider<AuthBloc>(
           create: (ctx) => AuthBloc(
-              ctx.repository<AuthRepo>(),
-              ctx.repository<UserDataProvider>(),
-              ctx.repository<UserRepo>(),
-              ctx.repository<OnBoardingRepo>()),
+            backend.client,
+            ctx.repository<AuthRepo>(),
+            ctx.repository<UserDataProvider>(),
+            ctx.repository<UserRepo>(),
+            ctx.repository<OnBoardingRepo>(),
+          ),
         ),
         BlocProvider<PerspectivesBloc>(
           create: (ctx) => PerspectivesBloc(
@@ -37,8 +43,7 @@ class BlocProviders extends StatelessWidget {
               CollectiveBloc(RepositoryProvider.of<ExpressionRepo>(ctx)),
         ),
         BlocProvider<AppBloc>(
-          create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context))
-            ..add(CheckServerVersion()),
+          create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context)),
         ),
         BlocProvider<ChannelFilteringBloc>(
           create: (ctx) => ChannelFilteringBloc(

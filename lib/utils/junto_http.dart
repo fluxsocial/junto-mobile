@@ -1,152 +1,163 @@
-import 'dart:convert' as convert;
-
-import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
-import 'package:junto_beta_mobile/api.dart';
+import 'dart:io';
+import 'package:dio/adapter.dart';
+import 'package:dio/dio.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
+import 'package:flutter/foundation.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:meta/meta.dart';
 
 class JuntoHttp {
-  JuntoHttp({this.httpClient, this.tokenProvider}) {
-    httpClient ??= IOClient();
+  JuntoHttp({
+    @required this.tokenProvider,
+  }) {
+    httpClient = Dio(
+      BaseOptions(
+        baseUrl: _endPoint,
+      ),
+    )..interceptors.add(HeaderInterceptors(tokenProvider));
+
+    (httpClient.httpClientAdapter as DefaultHttpClientAdapter)
+        .onHttpClientCreate = (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
   }
 
+  VoidCallback onUnAuthorized;
   final IdTokenProvider tokenProvider;
   final String _endPoint = END_POINT;
-  http.Client httpClient;
+  Dio httpClient;
 
-  Future<String> _getAuthKey() => tokenProvider.getIdToken();
-
-  Future<Map<String, String>> _getPersistentHeaders(
-      {bool authenticated = true}) async {
-    return <String, String>{
-      'Content-Type': 'application/json',
-      if (authenticated) 'Authorization': await _getAuthKey(),
-    };
-  }
-
-  String _encodeUrl(String resource) {
-    assert(resource.startsWith('/'),
-        'Resources should start with a forward-slash.');
-    return Uri.encodeFull('$_endPoint$resource');
-  }
-
-  Future<Map<String, String>> _withPersistentHeaders(
-      Map<String, String> headers,
-      {bool authenticated = true}) async {
-    return <String, String>{
-      ...await _getPersistentHeaders(authenticated: authenticated),
-      ...headers ?? const <String, String>{}
-    };
-  }
-
-  Future<http.Response> get(String resource,
-      {Map<String, String> headers, Map<String, String> queryParams}) async {
-    Uri _uri;
-    if (appConfig.flavor == Flavor.dev || appConfig.flavor == Flavor.tst) {
-      _uri = Uri.http(
-          END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
-    } else {
-      _uri = Uri.https(
-          END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
+  Future<Response> get(
+    String resource, {
+    Map<String, String> headers,
+    Map<String, String> queryParams,
+    bool withoutServerVersion = false,
+  }) async {
+    String _uri;
+    switch (withoutServerVersion) {
+      case true:
+        _uri = '$resource';
+        break;
+      case false:
+        _uri = '/$kServerVersion$resource';
+        break;
     }
 
     return httpClient.get(
       _uri,
-      headers: await _withPersistentHeaders(headers),
+      queryParameters: queryParams,
+      options: appConfig.flavor == Flavor.prod
+          ? Options(
+              headers: {
+                'host': 'api.junto.foundation',
+              },
+            )
+          : null,
     );
   }
 
-  Future<http.Response> patch(String resource,
+  Future<Response> patch(String resource,
       {Map<String, String> headers,
       Map<String, String> queryParams,
-      dynamic body}) async {
-    Uri _uri;
-    if (appConfig.flavor == Flavor.dev || appConfig.flavor == Flavor.tst) {
-      _uri = Uri.http(
-          END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
-    } else {
-      _uri = Uri.https(
-          END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
-    }
-
+      dynamic body}) {
     return httpClient.patch(
-      _uri,
-      headers: await _withPersistentHeaders(headers),
-      body: convert.json.encode(body),
+      '/$kServerVersion$resource',
+      data: body,
+      options: appConfig.flavor == Flavor.prod
+          ? Options(
+              headers: {'host': 'api.junto.foundation'},
+            )
+          : null,
     );
   }
 
-  Future<http.Response> delete(
+  Future<Response> put(
+    String resource, {
+    Map<String, dynamic> headers,
+    dynamic body,
+  }) async {
+    final response = await httpClient.put(
+      resource,
+      data: body,
+      options: Options(
+        headers: {...headers},
+      ),
+    );
+    return response;
+  }
+
+  Future<Response> delete(
     String resource, {
     Map<String, String> headers,
     dynamic body,
   }) async {
-    final Map<String, String> header = await _withPersistentHeaders(headers);
-    final http.StreamedResponse _streamedResponse = await httpClient.send(
-      http.Request('DELETE', Uri.parse('$_endPoint$resource'))
-        ..headers['Authorization'] = header['Authorization']
-        ..headers['Content-Type'] = header['Content-Type']
-        ..body = convert.json.encode(body),
+    return httpClient.delete(
+      '/$kServerVersion$resource',
+      data: body,
+      options: appConfig.flavor == Flavor.prod
+          ? Options(
+              headers: {'host': 'api.junto.foundation'},
+            )
+          : null,
     );
-    return http.Response.fromStream(_streamedResponse);
   }
 
-  Future<http.Response> postWithoutEncoding(
+  Future<Response> postWithoutEncoding(
     String resource, {
     Map<String, String> headers,
     dynamic body,
     bool authenticated = true,
   }) async {
-    final dynamic jsonBody = convert.json.encode(body);
-    final fullHeaders =
-        await _withPersistentHeaders(headers, authenticated: authenticated);
     return httpClient.post(
-      _encodeUrl(resource),
-      headers: fullHeaders,
-      body: jsonBody,
+      '/$kServerVersion$resource',
+      data: body,
+      options: appConfig.flavor == Flavor.prod
+          ? Options(
+              headers: {'host': 'api.junto.foundation'},
+            )
+          : null,
     );
   }
 
-  /// Function takes [http.Response] as the only param.
-  /// The status code of the [response] is examined. Status codes matching `200`
-  /// [HttpStatus.ok] are deserialized and checked to ensure the body is not empty.
-  /// Empty bodies return a `null` value.
-  /// Status codes matching values other than `200` are decoded and examined for
-  /// the `error` key.
-  static dynamic handleResponse(http.Response response) {
-    logger.logDebug(
-        'Response status code: ${response.statusCode} (${response.reasonPhrase})\nRequest: ${response.request}');
-    if (response.statusCode == 200) {
-      if (response.body.isNotEmpty) {
-        final dynamic responseBody = convert.json.decode(response.body);
-        if (responseBody.runtimeType == Map && responseBody['error'] != null) {
-          throw JuntoException("${responseBody['error']}", response.statusCode);
-        } else {
-          return convert.json.decode(convert.utf8.decode(response.bodyBytes));
-        }
-      } else {
-        return null;
-      }
-    } else if (response.statusCode == 401) {
-      throw UnAuthorizedException();
-    } else if (response.statusCode >= 400 && response.statusCode <= 499) {
-      if (response.body.isNotEmpty) {
-        final dynamic responseBody = convert.json.decode(response.body);
-        if (responseBody is Map && responseBody['error'] != null) {
-          throw JuntoException("${responseBody['error']}", response.statusCode);
-        } else {
-          throw JuntoException(
-              convert.json.decode(response.body), response.statusCode);
-        }
-      }
-      throw JuntoException('${response?.body}', response.statusCode);
-    } else if (response.statusCode >= 500) {
-      throw JuntoException(response.reasonPhrase, response.statusCode);
+  static dynamic handleResponse(Response response) {
+    logger.logDebug("Status code, ${response.statusCode}");
+    return response.data;
+  }
+}
+
+class ErrorInterceptor extends Interceptor {
+  ErrorInterceptor(this.onUnAuthorized);
+
+  final VoidCallback onUnAuthorized;
+
+  Future<DioError> onError(DioError err) async {
+    final _hasError = err?.response?.statusCode == 401;
+    if (_hasError && onUnAuthorized != null ||
+        err.request.path.contains('/users/null')) {
+      onUnAuthorized();
     }
-    throw JuntoException(
-        "${convert.json.decode(response.body)['error']}", response.statusCode);
+    return err;
+  }
+}
+
+class HeaderInterceptors extends Interceptor {
+  HeaderInterceptors(this.tokenProvider) : assert(tokenProvider != null);
+  final IdTokenProvider tokenProvider;
+
+  Future<String> _getAuthKey() => tokenProvider.getIdToken();
+
+  @override
+  Future<RequestOptions> onRequest(RequestOptions options) async {
+    if (options.method != "PUT") {
+      options.headers
+          .putIfAbsent("content-type", () => 'application/json; charset=utf-8');
+      final key = await _getAuthKey();
+      options.headers.putIfAbsent("Authorization", () => key);
+    }
+    return SynchronousFuture(options);
   }
 }

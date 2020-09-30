@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -9,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/member_widgets/background_photo.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/badges_row.dart';
 
 class MemberDenAppbar extends StatefulWidget {
   const MemberDenAppbar(
@@ -97,11 +99,12 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                       : MemberBackgroundPlaceholder(),
                   Container(
                     key: _keyFlexibleSpace,
-                    margin: const EdgeInsets.only(top: 30),
+                    margin: const EdgeInsets.only(top: 35),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 15,
                     ),
+                    color: Colors.transparent,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -118,15 +121,18 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                                   ),
                                 ),
                               ),
-                              MemberRelationButton(
-                                toggleMemberRelationships:
-                                    widget.toggleMemberRelationships,
-                              ),
+                              // Member Badges
+                              if (widget.profile.badges != null &&
+                                  appConfig.flavor == Flavor.dev)
+                                if (widget.profile.badges.isNotEmpty)
+                                  MemberBadgesRow(
+                                    badges: widget.profile.badges,
+                                  ),
                             ]),
-                        if (widget.profile.gender.isNotEmpty ||
-                            widget.profile.location.isNotEmpty ||
-                            widget.profile.website.isNotEmpty)
-                          const SizedBox(height: 15),
+                        if (widget.profile.gender[0] != '' &&
+                            widget.profile.location[0] != '' &&
+                            widget.profile.website[0] != '')
+                          const SizedBox(height: 10),
                         AboutItem(
                           item: widget.profile.gender,
                           icon: Icon(
@@ -164,6 +170,9 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
             ),
             if (_memberProfile != null)
               MemberProfilePictureAvatar(profile: _memberProfile),
+            MemberRelationButton(
+              toggleMemberRelationships: widget.toggleMemberRelationships,
+            ),
           ],
         ),
       ),

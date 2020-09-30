@@ -80,6 +80,7 @@ class UserProfile extends HiveObject {
     @required this.username,
     @required this.website,
     @required this.gender,
+    @required this.badges,
     this.email,
     this.createdAt,
   });
@@ -101,6 +102,7 @@ class UserProfile extends HiveObject {
           json['website'] != null ? List<String>.from(json['website']) : null,
       gender: json['gender'] != null ? List<String>.from(json['gender']) : null,
       email: json['email'] as String,
+      badges: json['badges'] as List<dynamic>,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'])
           : null,
@@ -155,6 +157,10 @@ class UserProfile extends HiveObject {
   @HiveField(11)
   final DateTime createdAt;
 
+  // List of user badges
+  @HiveField(12)
+  final List<dynamic> badges;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -171,7 +177,8 @@ class UserProfile extends HiveObject {
           website == other.website &&
           gender == other.gender &&
           email == other.email &&
-          createdAt == other.createdAt);
+          createdAt == other.createdAt &&
+          badges == other.badges);
 
   @override
   int get hashCode =>
@@ -186,7 +193,8 @@ class UserProfile extends HiveObject {
       website.hashCode ^
       gender.hashCode ^
       email.hashCode ^
-      createdAt.hashCode;
+      createdAt.hashCode ^
+      badges.hashCode;
 
   @override
   String toString() {
@@ -202,7 +210,8 @@ class UserProfile extends HiveObject {
         ' website: $website,'
         ' gender: $gender,'
         ' email: $email,'
-        ' createdAt: $createdAt'
+        ' createdAt: $createdAt,'
+        ' badges: $badges'
         '}';
   }
 
@@ -219,6 +228,7 @@ class UserProfile extends HiveObject {
     List<String> website,
     List<String> gender,
     String email,
+    List<dynamic> badges,
   }) {
     return UserProfile(
       address: address ?? this.address,
@@ -232,6 +242,7 @@ class UserProfile extends HiveObject {
       website: website ?? this.website,
       gender: gender ?? this.gender,
       email: email ?? this.email,
+      badges: badges ?? this.badges,
 //      createdAt: createdAt ?? createdAt,
     );
   }
@@ -250,6 +261,7 @@ class UserProfile extends HiveObject {
       'gender': gender,
       'email': email,
       'created_at': createdAt.toIso8601String(),
+      'badges': badges,
     };
   }
 }

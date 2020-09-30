@@ -24,16 +24,6 @@ class ResetPasswordRequest extends StatefulWidget {
 }
 
 class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   /// Request a verification code from the server.
   Future<void> _requestPasswordReset() async {
     if (widget.usernameController.text.isEmpty) {
