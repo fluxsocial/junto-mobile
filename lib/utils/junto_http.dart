@@ -46,7 +46,13 @@ class JuntoHttp {
         break;
     }
 
-    return httpClient.get(_uri, queryParameters: queryParams);
+    return httpClient.get(
+      _uri,
+      queryParameters: queryParams,
+      options: Options(
+        headers: {'host': 'api.junto.foundation'},
+      ),
+    );
   }
 
   Future<Response> patch(String resource,
@@ -56,6 +62,9 @@ class JuntoHttp {
     return httpClient.patch(
       '/$kServerVersion$resource',
       data: body,
+      options: Options(
+        headers: {'host': 'api.junto.foundation'},
+      ),
     );
   }
 
@@ -79,7 +88,13 @@ class JuntoHttp {
     Map<String, String> headers,
     dynamic body,
   }) async {
-    return httpClient.delete('/$kServerVersion$resource', data: body);
+    return httpClient.delete(
+      '/$kServerVersion$resource',
+      data: body,
+      options: Options(
+        headers: {'host': 'api.junto.foundation'},
+      ),
+    );
   }
 
   Future<Response> postWithoutEncoding(
@@ -91,6 +106,9 @@ class JuntoHttp {
     return httpClient.post(
       '/$kServerVersion$resource',
       data: body,
+      options: Options(
+        headers: {'host': 'api.junto.foundation'},
+      ),
     );
   }
 
