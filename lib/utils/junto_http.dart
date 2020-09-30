@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:junto_beta_mobile/api.dart';
@@ -49,9 +49,13 @@ class JuntoHttp {
     return httpClient.get(
       _uri,
       queryParameters: queryParams,
-      options: Options(
-        headers: {'host': 'api.junto.foundation'},
-      ),
+      options: appConfig.flavor == Flavor.prod
+          ? Options(
+              headers: {
+                'host': 'api.junto.foundation',
+              },
+            )
+          : null,
     );
   }
 
@@ -62,9 +66,11 @@ class JuntoHttp {
     return httpClient.patch(
       '/$kServerVersion$resource',
       data: body,
-      options: Options(
-        headers: {'host': 'api.junto.foundation'},
-      ),
+      options: appConfig.flavor == Flavor.prod
+          ? Options(
+              headers: {'host': 'api.junto.foundation'},
+            )
+          : null,
     );
   }
 
@@ -91,9 +97,11 @@ class JuntoHttp {
     return httpClient.delete(
       '/$kServerVersion$resource',
       data: body,
-      options: Options(
-        headers: {'host': 'api.junto.foundation'},
-      ),
+      options: appConfig.flavor == Flavor.prod
+          ? Options(
+              headers: {'host': 'api.junto.foundation'},
+            )
+          : null,
     );
   }
 
@@ -106,9 +114,11 @@ class JuntoHttp {
     return httpClient.post(
       '/$kServerVersion$resource',
       data: body,
-      options: Options(
-        headers: {'host': 'api.junto.foundation'},
-      ),
+      options: appConfig.flavor == Flavor.prod
+          ? Options(
+              headers: {'host': 'api.junto.foundation'},
+            )
+          : null,
     );
   }
 
