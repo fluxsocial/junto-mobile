@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/providers/bloc_providers.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
@@ -46,7 +47,9 @@ class JuntoApp extends StatelessWidget {
       ],
       child: BlocProviders(
         backend: backend,
-        child: MaterialAppWithTheme(),
+        child: Portal(
+          child: MaterialAppWithTheme(),
+        ),
       ),
     );
   }
