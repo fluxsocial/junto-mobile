@@ -62,8 +62,8 @@ class CreateLongformState extends State<CreateLongform> {
     final mentions = match.map((e) => e.group(2)).toSet().toList();
 
     return LongFormExpression(
-      body: _bodyController.value.text.trim(),
-      title: markupText.trim(),
+      title: _titleController.value.text.trim(),
+      body: markupText.trim(),
       mentions: mentions,
     );
   }
