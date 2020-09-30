@@ -60,9 +60,10 @@ class DynamicPreview extends StatelessWidget {
           MatchText(
             pattern: r"\[(@[^:]+):([^\]]+)\]",
             style: TextStyle(
-              color: Colors.green,
+              color: Theme.of(context).primaryColorDark,
               fontSize: 17,
               height: 1.5,
+              fontWeight: FontWeight.w700,
             ),
             renderText: ({String str, String pattern}) {
               Map<String, String> map = <String, String>{};
