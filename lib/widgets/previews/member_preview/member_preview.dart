@@ -9,14 +9,17 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 /// If this value is not specified and left null, the user will be redirected to
 /// the user "Den".
 class MemberPreview extends StatelessWidget with MemberValidation {
-  const MemberPreview({Key key, this.profile}) : super(key: key);
+  const MemberPreview({Key key, this.profile, this.onUserTap})
+      : super(key: key);
 
   final UserProfile profile;
+  final VoidCallback onUserTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => showUserDen(context, profile),
+      onTap: () =>
+          onUserTap != null ? onUserTap() : showUserDen(context, profile),
       child: Container(
         color: Theme.of(context).colorScheme.background,
         child: Row(

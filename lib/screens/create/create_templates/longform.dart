@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:provider/provider.dart';
 
 class CreateLongform extends StatefulWidget {
@@ -189,7 +190,11 @@ class CreateLongformState extends State<CreateLongform> {
                         'id': e.address,
                         'display': e.username,
                         'full_name': e.name,
-                        'photo': ''
+                        'photo': e.profilePicture.length > 0
+                            ? e.profilePicture[0]
+                            : '',
+                        'bio': e.bio,
+                        'backgroundPhoto': e.backgroundPhoto,
                       });
                     }).toList();
                   }
@@ -251,23 +256,18 @@ class CreateLongformState extends State<CreateLongform> {
                               markupBuilder: (trigger, mention, value) {
                                 return '[$trigger$value:$mention]';
                               },
-                              suggestionBuilder: (data) {
-                                return Container(
-                                  color: Colors.amber,
-                                  child: Text(data['display']),
-                                );
-                              },
                             ),
                           ],
                         ),
                       ),
                       if (_showList)
                         ListView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
                           itemCount: _finalList.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
+                            return MemberPreview(
+                              onUserTap: () {
                                 metionKey.currentState
                                     .addMention(_finalList[index]);
 
@@ -285,13 +285,19 @@ class CreateLongformState extends State<CreateLongform> {
                                   _showList = false;
                                 });
                               },
-                              child: Container(
-                                color: Colors.blue,
-                                padding: EdgeInsets.all(20.0),
-                                child: Text(
-                                  _finalList[index]['display'],
-                                  style: TextStyle(fontSize: 12),
-                                ),
+                              profile: UserProfile(
+                                username: _finalList[index]['display'],
+                                address: _finalList[index]['id'],
+                                profilePicture: [_finalList[index]['photo']],
+                                name: _finalList[index]['full_name'],
+                                verified: true,
+                                backgroundPhoto: _finalList[index]
+                                    ['backgroundPhoto'],
+                                badges: [],
+                                gender: [],
+                                website: [],
+                                bio: _finalList[index]['bio'],
+                                location: [],
                               ),
                             );
                           },
