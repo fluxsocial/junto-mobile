@@ -204,6 +204,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                 ),
                 // Reply Widget
                 BottomCommentBar(
+                  expression: widget.expression,
                   expressionAddress: widget.expression.address,
                   openComments: _openComments,
                   refreshComments: _refreshComments,

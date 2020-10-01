@@ -14,12 +14,14 @@ import 'package:provider/provider.dart';
 class BottomCommentBar extends StatefulWidget {
   const BottomCommentBar({
     Key key,
+    @required this.expression,
     @required this.expressionAddress,
     @required this.refreshComments,
     @required this.openComments,
     @required this.scrollToBottom,
     @required this.focusNode,
   }) : super(key: key);
+  final dynamic expression;
   final String expressionAddress;
   final Function refreshComments;
   final Function openComments;
@@ -148,7 +150,8 @@ class BottomCommentBarState extends State<BottomCommentBar> {
                         controller: commentController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'write a reply...',
+                          hintText:
+                              'reply to ${widget.expression.creator.username}',
                           hintStyle: TextStyle(
                             fontSize: 16,
                             color: Theme.of(context).primaryColorLight,
