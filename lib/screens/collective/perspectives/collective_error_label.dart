@@ -14,6 +14,7 @@ class CollectiveErrorLabel extends StatelessWidget {
         child: Text(
           'Hmm, something is up... If this persists, please try logging out and back in.',
           style: Theme.of(context).textTheme.caption,
+          textAlign: TextAlign.center,
         ),
         onPressed: () =>
             context.bloc<CollectiveBloc>().add(RefreshCollective()),
