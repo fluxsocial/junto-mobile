@@ -34,7 +34,7 @@ class CreateLongformState extends State<CreateLongform> {
   bool _showBottomNav = true;
   TextEditingController _titleController;
   TextEditingController _bodyController;
-  GlobalKey<FlutterMentionsState> metionKey = GlobalKey<FlutterMentionsState>();
+  GlobalKey<FlutterMentionsState> mentionKey = GlobalKey<FlutterMentionsState>();
   bool _showList = false;
   List<Map<String, dynamic>> addedmentions = [];
 
@@ -56,7 +56,7 @@ class CreateLongformState extends State<CreateLongform> {
   /// Creates a [LongFormExpression] from the given data entered
   /// by the user.
   LongFormExpression createExpression() {
-    final markupText = metionKey.currentState.controller.markupText;
+    final markupText = mentionKey.currentState.controller.markupText;
     RegExp customRegExp = RegExp(r"\[(@[^:]+):([^\]]+)\]");
     final match = customRegExp.allMatches(markupText).toList();
     final mentions = match.map((e) => e.group(2)).toSet().toList();
@@ -210,7 +210,7 @@ class CreateLongformState extends State<CreateLongform> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: FlutterMentions(
-                              key: metionKey,
+                              key: mentionKey,
                               suggestionPosition: SuggestionPosition.Bottom,
                               minLines: 1,
                               maxLines: 20,
@@ -287,7 +287,7 @@ class CreateLongformState extends State<CreateLongform> {
                                   itemBuilder: (context, index) {
                                     return MemberPreview(
                                       onUserTap: () {
-                                        metionKey.currentState
+                                        mentionKey.currentState
                                             .addMention(_finalList[index]);
 
                                         if (addedmentions.indexWhere(
