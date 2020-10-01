@@ -34,6 +34,6 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(JuntoAppBarDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }
