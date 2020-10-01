@@ -33,8 +33,8 @@ class SingleColumnExpressionPreview extends StatelessWidget
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (context) => ExpressionOpen(
-              deleteExpression,
-              expression,
+              deleteExpression: deleteExpression,
+              expression: expression,
             ),
           ),
         );
