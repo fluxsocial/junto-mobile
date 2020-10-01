@@ -265,7 +265,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "832edcd51060b3ed8cd017c6e3013dca66dbfe32"
+      resolved-ref: a8e936f269345a2cd2432e4cc91ac907deee7168
       url: "https://github.com/juntofoundation/embedly-preview.git"
     source: git
     version: "0.0.2"
