@@ -47,5 +47,7 @@
 	<false/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We&apos;d like to access your microphone to let you record expressions.</string>
+	<key>NSContactsUsageDescription</key>  
+	<string>This app requires contacts access to function properly.</string>  	
 </dict>
 </plist>
