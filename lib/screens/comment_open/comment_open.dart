@@ -170,6 +170,7 @@ class CommentOpenState extends State<CommentOpen> {
           ),
           // Reply Widget
           BottomCommentBar(
+            expression: widget.comment,
             expressionAddress: widget.comment.address,
             openComments: _openComments,
             refreshComments: _refreshComments,
