@@ -65,7 +65,15 @@ class LongformOpen extends StatelessWidget {
                           map['value'] = match.group(2);
                           return map;
                         },
-                        onTap: (url) {},
+                        onTap: (url) {
+                          // Navigate to JuntoMember() class
+
+                          // Step 1
+                          // Call the getUser() function to get the UserProfile
+
+                          // Step 2
+                          // Navigate to JuntoMember(profile: userProfile)
+                        },
                       ),
                     ],
                   ),
