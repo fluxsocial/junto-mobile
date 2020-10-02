@@ -19,7 +19,6 @@ import 'package:junto_beta_mobile/widgets/end_drawer/junto_account.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'junto_center.dart';
 import 'junto_invite.dart';
@@ -163,38 +162,12 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               context,
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
-                                  return JuntoInvite();
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        JuntoDrawerItem(
-                          icon: Icons.mail_outline,
-                          title: 'Invite',
-                          theme: theme,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) {
                                   return JuntoSms();
                                 },
                               ),
                             );
                           },
                         ),
-
-                        RaisedButton(
-                          onPressed: () async {
-                            const uri = 'sms:+12817399886&body=hello';
-                            if (await canLaunch(uri)) {
-                              await launch(uri);
-                            } else {
-                              throw 'Could not launch $uri';
-                            }
-                          },
-                        )
 
                         // To Do: Eric
                         // JuntoDrawerItem(
