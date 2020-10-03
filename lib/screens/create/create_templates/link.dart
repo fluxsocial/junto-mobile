@@ -70,7 +70,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
   }
 
   LinkFormExpression createExpression() {
-    final markupText = mentionKey.currentState.controller.value.text;
+    final markupText = mentionKey.currentState.controller.markupText;
     final mentions = getMentionUserId(markupText);
 
     return LinkFormExpression(
@@ -80,6 +80,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
           : _titleController.value.text.trim(),
       url: _urlController.value.text.trim(),
       data: null,
+      mentions: mentions,
     );
   }
 
