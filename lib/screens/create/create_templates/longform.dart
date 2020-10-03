@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -12,6 +11,7 @@ import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_e
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +28,8 @@ class CreateLongform extends StatefulWidget {
   }
 }
 
-class CreateLongformState extends State<CreateLongform> {
+class CreateLongformState extends State<CreateLongform>
+    with CreateExpressionHelpers {
   final FocusNode _titleFocus = FocusNode();
   final FocusNode _bodyFocus = FocusNode();
   bool _showBottomNav = true;
@@ -55,10 +56,8 @@ class CreateLongformState extends State<CreateLongform> {
   /// Creates a [LongFormExpression] from the given data entered
   /// by the user.
   LongFormExpression createExpression() {
-    final markupText = mentionKey.currentState.controller.value.text;
-    RegExp customRegExp = RegExp(r"\[(@[^:]+):([^\]]+)\]");
-    final match = customRegExp.allMatches(markupText).toList();
-    final mentions = match.map((e) => e.group(2)).toSet().toList();
+    final markupText = mentionKey.currentState.controller.markupText;
+    final mentions = getMentionUserId(markupText);
 
     return LongFormExpression(
       title: _titleController.value.text.trim(),
@@ -138,35 +137,11 @@ class CreateLongformState extends State<CreateLongform> {
         onNext: _onNext,
         expressionHasData: expressionHasData,
         child: Container(
-          child: BlocBuilder<SearchBloc, dynamic>(
-            builder: (BuildContext context, dynamic state) {
-              List<Map<String, String>> _users = [];
-              if (state is LoadedSearchState) {
-                final _listUsers = state?.results;
-
-                _users = _listUsers.where((element) {
-                  print(addedmentions
-                          .indexWhere((e) => element.address == e['id']) ==
-                      -1);
-                  return addedmentions
-                          .indexWhere((e) => element.address == e['id']) ==
-                      -1;
-                }).map((e) {
-                  return ({
-                    'id': e.address,
-                    'display': e.username,
-                    'full_name': e.name,
-                    'photo':
-                        e.profilePicture.length > 0 ? e.profilePicture[0] : '',
-                    'bio': e.bio,
-                    'backgroundPhoto': e.backgroundPhoto,
-                  });
-                }).toList();
-              }
+          child: BlocBuilder<SearchBloc, SearchState>(
+            builder: (context, state) {
+              final _users = getUserList(state, addedmentions);
 
               final _finalList = [...addedmentions, ..._users];
-
-              print("users: $_finalList");
 
               return Expanded(
                 child: Column(
@@ -258,72 +233,8 @@ class CreateLongformState extends State<CreateLongform> {
                               ],
                             ),
                           ),
-                          if (_showList)
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              left: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).backgroundColor,
-                                  border: Border(
-                                    top: BorderSide(
-                                      color: Theme.of(context).dividerColor,
-                                      width: .75,
-                                    ),
-                                  ),
-                                ),
-                                constraints: BoxConstraints(
-                                  maxHeight:
-                                      MediaQuery.of(context).size.height * .38,
-                                ),
-                                child: ListView.builder(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
-                                  itemCount: _finalList.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return MemberPreview(
-                                      onUserTap: () {
-                                        mentionKey.currentState
-                                            .addMention(_finalList[index]);
-
-                                        if (addedmentions.indexWhere(
-                                                (element) =>
-                                                    element['id'] ==
-                                                    _finalList[index]['id']) ==
-                                            -1) {
-                                          addedmentions = [
-                                            ...addedmentions,
-                                            _finalList[index]
-                                          ];
-                                        }
-
-                                        setState(() {
-                                          _showList = false;
-                                        });
-                                      },
-                                      profile: UserProfile(
-                                        username: _finalList[index]['display'],
-                                        address: _finalList[index]['id'],
-                                        profilePicture: [
-                                          _finalList[index]['photo']
-                                        ],
-                                        name: _finalList[index]['full_name'],
-                                        verified: true,
-                                        backgroundPhoto: _finalList[index]
-                                            ['backgroundPhoto'],
-                                        badges: [],
-                                        gender: [],
-                                        website: [],
-                                        bio: _finalList[index]['bio'],
-                                        location: [],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
+                          if (_showList && _bodyFocus.hasFocus)
+                            buildUserMention(context, _finalList),
                         ],
                       ),
                     ),
@@ -332,6 +243,64 @@ class CreateLongformState extends State<CreateLongform> {
               );
             },
           ),
+        ),
+      ),
+    );
+  }
+
+  Positioned buildUserMention(
+      BuildContext context, List<Map<String, dynamic>> _finalList) {
+    return Positioned(
+      bottom: 0,
+      right: 0,
+      left: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: .75,
+            ),
+          ),
+        ),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * .38,
+        ),
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          itemCount: _finalList.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return MemberPreview(
+              onUserTap: () {
+                mentionKey.currentState.addMention(_finalList[index]);
+
+                if (addedmentions.indexWhere((element) =>
+                        element['id'] == _finalList[index]['id']) ==
+                    -1) {
+                  addedmentions = [...addedmentions, _finalList[index]];
+                }
+
+                setState(() {
+                  _showList = false;
+                });
+              },
+              profile: UserProfile(
+                username: _finalList[index]['display'],
+                address: _finalList[index]['id'],
+                profilePicture: [_finalList[index]['photo']],
+                name: _finalList[index]['full_name'],
+                verified: true,
+                backgroundPhoto: _finalList[index]['backgroundPhoto'],
+                badges: [],
+                gender: [],
+                website: [],
+                bio: _finalList[index]['bio'],
+                location: [],
+              ),
+            );
+          },
         ),
       ),
     );
