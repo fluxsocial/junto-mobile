@@ -84,6 +84,7 @@ class AudioFormExpression {
     this.caption,
     this.thumbnail300,
     this.thumbnail600,
+    this.mentions,
   });
 
   factory AudioFormExpression.fromJson(Map<String, dynamic> json) {
@@ -95,6 +96,7 @@ class AudioFormExpression {
       caption: json['caption'] ?? '',
       thumbnail300: json['thumbnail300'],
       thumbnail600: json['thumbnail600'],
+      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -112,6 +114,8 @@ class AudioFormExpression {
   String thumbnail300;
   @HiveField(6)
   String thumbnail600;
+  @HiveField(7)
+  List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title ?? '',
@@ -121,6 +125,7 @@ class AudioFormExpression {
         'caption': caption ?? '',
         'thumbnail300': thumbnail300 ?? '',
         'thumbnail600': thumbnail600 ?? '',
+        'mentions': mentions,
       };
 }
 
@@ -158,12 +163,14 @@ class ShortFormExpression {
   ShortFormExpression({
     @required this.background,
     @required this.body,
+    this.mentions,
   });
 
   factory ShortFormExpression.fromJson(Map<String, dynamic> json) {
     return ShortFormExpression(
       background: json['background'],
       body: json['body'],
+      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -171,10 +178,13 @@ class ShortFormExpression {
   final List<dynamic> background;
   @HiveField(1)
   final String body;
+  @HiveField(2)
+  final List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'background': background,
         'body': body,
+        'mentions': mentions,
       };
 }
 
@@ -185,14 +195,17 @@ class LinkFormExpression {
     @required this.caption,
     @required this.url,
     @required this.data,
+    this.mentions,
   });
 
   factory LinkFormExpression.fromJson(Map<String, dynamic> json) {
     return LinkFormExpression(
-        title: json['title'],
-        caption: json['caption'],
-        url: json['url'],
-        data: OEmbedResponse.fromMap(json['data']));
+      title: json['title'],
+      caption: json['caption'],
+      url: json['url'],
+      data: OEmbedResponse.fromMap(json['data']),
+      mentions: json['mentions'] ?? [],
+    );
   }
 
   @HiveField(0)
@@ -202,11 +215,14 @@ class LinkFormExpression {
   @HiveField(2)
   final String url;
   final OEmbedResponse data;
+  @HiveField(3)
+  final List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'caption': caption,
         'url': url,
+        'mentions': mentions,
       };
 }
 
@@ -217,6 +233,7 @@ class PhotoFormExpression {
     this.caption,
     this.thumbnail300,
     this.thumbnail600,
+    this.mentions,
   });
 
   factory PhotoFormExpression.fromJson(Map<String, dynamic> json) {
@@ -225,6 +242,7 @@ class PhotoFormExpression {
       caption: json['caption'],
       thumbnail300: json['thumbnail300'],
       thumbnail600: json['thumbnail600'],
+      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -236,12 +254,15 @@ class PhotoFormExpression {
   String thumbnail300;
   @HiveField(3)
   String thumbnail600;
+  @HiveField(4)
+  final List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'image': image,
         'caption': caption,
         'thumbnail300': thumbnail300,
         'thumbnail600': thumbnail600,
+        'mentions': mentions,
       };
 }
 
@@ -314,6 +335,7 @@ class ExpressionResponse extends HiveObject {
     this.numberComments = 0,
     this.comments,
     this.resonations,
+    this.mentions,
   });
 
   factory ExpressionResponse.withCommentsAndResonations(
@@ -338,6 +360,7 @@ class ExpressionResponse extends HiveObject {
       context: json['context'] ?? '',
       // numberComments: json['comments'],
       comments: json['comments'],
+      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -360,6 +383,7 @@ class ExpressionResponse extends HiveObject {
       context: json['context'] ?? '',
       comments: json['comments'],
       resonations: json['resonations'],
+      mentions: json['mentions'] ?? [],
     );
 
     // comments: json['comments'].runtimeType == int
@@ -402,6 +426,8 @@ class ExpressionResponse extends HiveObject {
   final UserProfile creator;
   @HiveField(11)
   final DateTime createdAt;
+  @HiveField(12)
+  final List<String> mentions;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -414,6 +440,7 @@ class ExpressionResponse extends HiveObject {
       'privacy': privacy ?? '',
       'channels': channels,
       'context': context ?? '',
+      'mentions': mentions,
     };
   }
 
@@ -519,6 +546,7 @@ class Comment {
     this.createdAt,
     this.privacy,
     this.context,
+    this.mentions,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
@@ -535,6 +563,7 @@ class Comment {
       createdAt: RFC3339.parseRfc3339(json['created_at']),
       privacy: json['privacy'],
       context: json['context'],
+      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -547,6 +576,7 @@ class Comment {
   final DateTime createdAt;
   final String privacy;
   final String context;
+  final String mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address,
@@ -558,6 +588,7 @@ class Comment {
         'created_at': createdAt.toIso8601String(),
         'privacy': privacy,
         'context': context,
+        'mentions': mentions,
       };
 }
 
