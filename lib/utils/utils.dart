@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 
 mixin AddUserToList<T> {
@@ -17,6 +18,45 @@ mixin AddUserToList<T> {
       newList.add(data);
       return newList;
     }
+  }
+}
+
+mixin CreateExpressionHelpers {
+  List<String> getMentionUserId(String text) {
+    RegExp customRegExp = RegExp(r"\[(@[^:]+):([^\]]+)\]");
+
+    final match = customRegExp.allMatches(text).toList();
+
+    final mentions = match.map((e) => e.group(2)).toSet().toList();
+
+    return mentions;
+  }
+
+  List<Map<String, dynamic>> getUserList(
+    SearchState state,
+    List<Map<String, dynamic>> addedmentions,
+  ) {
+    List<Map<String, dynamic>> users = <Map<String, dynamic>>[];
+
+    if (state is LoadedSearchState) {
+      final _listUsers = state?.results;
+
+      users = _listUsers.where((element) {
+        return addedmentions.indexWhere((e) => element.address == e['id']) ==
+            -1;
+      }).map((e) {
+        return ({
+          'id': e.address,
+          'display': e.username,
+          'full_name': e.name,
+          'photo': e.profilePicture.length > 0 ? e.profilePicture[0] : '',
+          'bio': e.bio,
+          'backgroundPhoto': e.backgroundPhoto,
+        });
+      }).toList();
+    }
+
+    return users ?? [];
   }
 }
 
