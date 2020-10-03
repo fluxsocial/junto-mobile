@@ -33,8 +33,8 @@ class CreateLongformState extends State<CreateLongform> {
   final FocusNode _bodyFocus = FocusNode();
   bool _showBottomNav = true;
   TextEditingController _titleController;
-  TextEditingController _bodyController;
-  GlobalKey<FlutterMentionsState> mentionKey = GlobalKey<FlutterMentionsState>();
+  GlobalKey<FlutterMentionsState> mentionKey =
+      GlobalKey<FlutterMentionsState>();
   bool _showList = false;
   List<Map<String, dynamic>> addedmentions = [];
 
@@ -48,7 +48,6 @@ class CreateLongformState extends State<CreateLongform> {
   void initState() {
     super.initState();
     _titleController = TextEditingController();
-    _bodyController = TextEditingController();
     _titleFocus.addListener(toggleBottomNav);
     _bodyFocus.addListener(toggleBottomNav);
   }
@@ -56,7 +55,7 @@ class CreateLongformState extends State<CreateLongform> {
   /// Creates a [LongFormExpression] from the given data entered
   /// by the user.
   LongFormExpression createExpression() {
-    final markupText = mentionKey.currentState.controller.markupText;
+    final markupText = mentionKey.currentState.controller.value.text;
     RegExp customRegExp = RegExp(r"\[(@[^:]+):([^\]]+)\]");
     final match = customRegExp.allMatches(markupText).toList();
     final mentions = match.map((e) => e.group(2)).toSet().toList();
@@ -69,7 +68,7 @@ class CreateLongformState extends State<CreateLongform> {
   }
 
   bool expressionHasData() {
-    final body = _bodyController.value.text.trim();
+    final body = mentionKey.currentState.controller.text.trim();
     final title = _titleController.value.text.trim();
     // Body cannot be empty if the title is also empty
     if (title.isEmpty) {
@@ -123,7 +122,6 @@ class CreateLongformState extends State<CreateLongform> {
   void dispose() {
     super.dispose();
     _titleController.dispose();
-    _bodyController.dispose();
     _titleFocus.dispose();
     _bodyFocus.dispose();
   }
