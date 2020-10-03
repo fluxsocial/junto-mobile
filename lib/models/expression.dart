@@ -335,7 +335,6 @@ class ExpressionResponse extends HiveObject {
     this.numberComments = 0,
     this.comments,
     this.resonations,
-    this.mentions,
   });
 
   factory ExpressionResponse.withCommentsAndResonations(
@@ -360,7 +359,6 @@ class ExpressionResponse extends HiveObject {
       context: json['context'] ?? '',
       // numberComments: json['comments'],
       comments: json['comments'],
-      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -383,7 +381,6 @@ class ExpressionResponse extends HiveObject {
       context: json['context'] ?? '',
       comments: json['comments'],
       resonations: json['resonations'],
-      mentions: json['mentions'] ?? [],
     );
 
     // comments: json['comments'].runtimeType == int
@@ -426,8 +423,6 @@ class ExpressionResponse extends HiveObject {
   final UserProfile creator;
   @HiveField(11)
   final DateTime createdAt;
-  @HiveField(12)
-  final List<String> mentions;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -440,7 +435,6 @@ class ExpressionResponse extends HiveObject {
       'privacy': privacy ?? '',
       'channels': channels,
       'context': context ?? '',
-      'mentions': mentions,
     };
   }
 
