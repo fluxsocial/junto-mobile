@@ -110,11 +110,50 @@ class JuntoSmsState extends State<JuntoSms> {
       ),
       body: Column(
         children: [
-          TextField(
-            controller: searchController,
-            onChanged: (String value) {
-              filterSearchResults(value);
-            },
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: TextField(
+              scrollPadding: const EdgeInsets.all(0),
+              controller: searchController,
+              onChanged: (String value) {
+                filterSearchResults(value);
+              },
+              buildCounter: (
+                BuildContext context, {
+                int currentLength,
+                int maxLength,
+                bool isFocused,
+              }) =>
+                  null,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(0.0),
+                hintText: 'Search contacts',
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColorLight,
+                ),
+              ),
+              cursorColor: Theme.of(context).primaryColor,
+              cursorWidth: 1,
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).primaryColor,
+              ),
+              maxLength: 80,
+              textInputAction: TextInputAction.search,
+            ),
           ),
           if (_filteredContacts.isNotEmpty || _filteredContacts != null)
             Expanded(
