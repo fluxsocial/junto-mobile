@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:clipboard/clipboard.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 
 class JuntoInviteAppBar extends StatelessWidget {
   @override
@@ -41,21 +39,7 @@ class JuntoInviteAppBar extends StatelessWidget {
               'Build Your Pack',
               style: Theme.of(context).textTheme.subtitle1,
             ),
-            GestureDetector(
-              onTap: () async {
-                FlutterClipboard.copy('https://junto.typeform.com/to/k7BUVK8f');
-                await showFeedback(context,
-                    message: 'Copied shareable invite link!');
-              },
-              child: Container(
-                width: 42,
-                child: Image.asset(
-                  'assets/images/junto-mobile__external-link.png',
-                  height: 17,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
+            const SizedBox(width: 42)
           ],
         ),
       ),
