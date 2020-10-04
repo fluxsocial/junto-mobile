@@ -1,17 +1,24 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
+import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:provider/provider.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
@@ -28,12 +35,16 @@ class CreatePhoto extends StatefulWidget {
 }
 
 // State for CreatePhoto class
-class CreatePhotoState extends State<CreatePhoto> {
+class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   File preCroppedFile;
   File imageFile;
   ImageSource imageSource;
-  TextEditingController _captionController;
+  FocusNode _captionFocus;
   bool _showBottomNav = true;
+  GlobalKey<FlutterMentionsState> mentionKey =
+      GlobalKey<FlutterMentionsState>();
+  bool _showList = false;
+  List<Map<String, dynamic>> addedmentions = [];
 
   Future<void> _onPickPressed({@required ImageSource source}) async {
     try {
@@ -127,9 +138,13 @@ class CreatePhotoState extends State<CreatePhoto> {
   /// Creates a [PhotoFormExpression] from the given data entered
   /// by the user.
   Map<String, dynamic> createExpression() {
+    final markupText = mentionKey.currentState.controller.markupText;
+    final mentions = getMentionUserId(markupText);
+
     return <String, dynamic>{
       'image': imageFile,
-      'caption': _captionController.value.text.trim()
+      'caption': markupText.trim(),
+      'mentions': mentions,
     };
   }
 
@@ -185,51 +200,56 @@ class CreatePhotoState extends State<CreatePhoto> {
   @override
   void initState() {
     super.initState();
-
-    _captionController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-
-    _captionController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CreateExpressionScaffold(
-      expressionType: ExpressionType.photo,
-      onNext: _onNext,
-      showBottomNav: _showBottomNav,
-      expressionHasData: _expressionHasData,
-      child: Expanded(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: imageFile == null
-                  ? Container(
-                      color: Colors.transparent,
-                      width: MediaQuery.of(context).size.width,
-                      child: GestureDetector(
-                        onTap: () {
-                          _onPickPressed(source: ImageSource.gallery);
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              CustomIcons.add,
-                              size: 75,
+    return BlocProvider(
+      create: (BuildContext context) {
+        return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
+      },
+      child: CreateExpressionScaffold(
+        expressionType: ExpressionType.photo,
+        onNext: _onNext,
+        showBottomNav: _showBottomNav,
+        expressionHasData: _expressionHasData,
+        child: Expanded(
+          child: Container(
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: imageFile == null
+                        ? Container(
+                            color: Colors.transparent,
+                            width: MediaQuery.of(context).size.width,
+                            child: GestureDetector(
+                              onTap: () {
+                                _onPickPressed(source: ImageSource.gallery);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    CustomIcons.add,
+                                    size: 75,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : _captionPhoto(),
+                          )
+                        : _captionPhoto(),
+                  ),
+                  if (imageFile == null) _uploadPhotoOptions()
+                ],
+              ),
             ),
-            if (imageFile == null) _uploadPhotoOptions()
-          ],
+          ),
         ),
       ),
     );
@@ -292,76 +312,179 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   Widget _captionPhoto() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Expanded(
-          child: ListView(
-            children: <Widget>[
-              Image.file(imageFile),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                ),
-                child: TextField(
-                  controller: _captionController,
-                  textInputAction: TextInputAction.newline,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: const InputDecoration(
-                    hintText: 'Write a caption...',
-                    border: InputBorder.none,
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        final _users = getUserList(state, addedmentions);
+
+        final _finalList = [...addedmentions, ..._users];
+        return Container(
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        Image.file(imageFile),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          child: FlutterMentions(
+                            key: mentionKey,
+                            focusNode: _captionFocus,
+                            onSearchChanged: (String trigger, String value) {
+                              print(' ');
+                              if (value.isNotEmpty) {
+                                context
+                                    .bloc<SearchBloc>()
+                                    .add(SearchingEvent(value, true));
+
+                                setState(() {
+                                  _showList = true;
+                                });
+                              } else {
+                                setState(() {
+                                  _showList = false;
+                                });
+                              }
+                            },
+                            hideSuggestionList: true,
+                            mentions: [
+                              Mention(
+                                trigger: '@',
+                                data: [..._finalList],
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorDark,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                markupBuilder: (trigger, mention, value) {
+                                  return '[:]';
+                                },
+                              ),
+                            ],
+                            textInputAction: TextInputAction.newline,
+                            textCapitalization: TextCapitalization.sentences,
+                            decoration: const InputDecoration(
+                              hintText: 'Write a caption...',
+                              border: InputBorder.none,
+                            ),
+                            cursorColor: Theme.of(context).primaryColor,
+                            cursorWidth: 1,
+                            maxLines: null,
+                            style: Theme.of(context).textTheme.caption.copyWith(
+                                  fontSize: 17,
+                                ),
+                            keyboardAppearance: Theme.of(context).brightness,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  cursorColor: Theme.of(context).primaryColor,
-                  cursorWidth: 1,
-                  maxLines: null,
-                  style: Theme.of(context).textTheme.caption.copyWith(
-                        fontSize: 17,
-                      ),
-                  keyboardAppearance: Theme.of(context).brightness,
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          child: Row(
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    imageFile = null;
-                  });
-                  _onPickPressed(source: imageSource);
-                  _toggleBottomNav(true);
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .5,
-                  padding: const EdgeInsets.symmetric(vertical: 25),
-                  color: Colors.transparent,
-                  child: Icon(
-                    Icons.keyboard_arrow_left,
-                    color: Theme.of(context).primaryColor,
-                    size: 28,
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              imageFile = null;
+                            });
+                            _onPickPressed(source: imageSource);
+                            _toggleBottomNav(true);
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .5,
+                            padding: const EdgeInsets.symmetric(vertical: 25),
+                            color: Colors.transparent,
+                            child: Icon(
+                              Icons.keyboard_arrow_left,
+                              color: Theme.of(context).primaryColor,
+                              size: 28,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async => _cropPhoto(),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .5,
+                            padding: const EdgeInsets.symmetric(vertical: 25),
+                            color: Colors.transparent,
+                            child: Icon(
+                              Icons.crop,
+                              color: Theme.of(context).primaryColor,
+                              size: 20,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
-              InkWell(
-                onTap: () async => _cropPhoto(),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .5,
-                  padding: const EdgeInsets.symmetric(vertical: 25),
-                  color: Colors.transparent,
-                  child: Icon(
-                    Icons.crop,
-                    color: Theme.of(context).primaryColor,
-                    size: 20,
-                  ),
-                ),
-              )
+              if (_showList) buildUserMention(context, _finalList),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  Positioned buildUserMention(
+      BuildContext context, List<Map<String, dynamic>> _finalList) {
+    return Positioned(
+      bottom: 0,
+      right: 0,
+      left: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: .75,
+            ),
+          ),
         ),
-      ],
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * .38,
+        ),
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          itemCount: _finalList.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return MemberPreview(
+              onUserTap: () {
+                mentionKey.currentState.addMention(_finalList[index]);
+
+                if (addedmentions.indexWhere((element) =>
+                        element['id'] == _finalList[index]['id']) ==
+                    -1) {
+                  addedmentions = [...addedmentions, _finalList[index]];
+                }
+
+                setState(() {
+                  _showList = false;
+                });
+              },
+              profile: UserProfile(
+                username: _finalList[index]['display'],
+                address: _finalList[index]['id'],
+                profilePicture: [_finalList[index]['photo']],
+                name: _finalList[index]['full_name'],
+                verified: true,
+                backgroundPhoto: _finalList[index]['backgroundPhoto'],
+                badges: [],
+                gender: [],
+                website: [],
+                bio: _finalList[index]['bio'],
+                location: [],
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
