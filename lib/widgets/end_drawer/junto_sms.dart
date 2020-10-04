@@ -10,7 +10,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar_placeholder.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import 'junto_invite_appbar.dart';
 
 class JuntoSms extends StatefulWidget {
@@ -21,12 +20,15 @@ class JuntoSms extends StatefulWidget {
 }
 
 class JuntoSmsState extends State<JuntoSms> {
-  Iterable<Contact> _contacts = [];
+  TextEditingController searchController;
+  List<Contact> _contacts = [];
+  List<Contact> _filteredContacts = [];
   UserData _userProfile;
 
   @override
   void initState() {
     super.initState();
+    searchController = TextEditingController();
     getUserInformation();
     _getPermission();
     getContacts();
@@ -42,8 +44,11 @@ class JuntoSmsState extends State<JuntoSms> {
 
   Future<void> getContacts() async {
     Iterable<Contact> contacts = await ContactsService.getContacts();
+    List<Contact> contactsAsList = contacts.toList();
+
     setState(() {
-      _contacts = contacts;
+      _contacts = contactsAsList;
+      _filteredContacts = List.from(_contacts);
     });
   }
 
@@ -63,6 +68,39 @@ class JuntoSmsState extends State<JuntoSms> {
     }
   }
 
+  void filterSearchResults(String query) {
+    List<Contact> searchList = [];
+    searchList.addAll(_contacts);
+
+    if (query.isNotEmpty) {
+      final List<Contact> filteredSearchList = [];
+      searchList.forEach((contact) {
+        if (contact.displayName.toLowerCase().startsWith(query.toLowerCase())) {
+          filteredSearchList.add(contact);
+        }
+      });
+
+      setState(() {
+        _filteredContacts.clear();
+        _filteredContacts.addAll(filteredSearchList);
+      });
+
+      return;
+    } else {
+      setState(() {
+        _filteredContacts.clear();
+        _filteredContacts.addAll(_contacts);
+      });
+      return;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,12 +110,18 @@ class JuntoSmsState extends State<JuntoSms> {
       ),
       body: Column(
         children: [
-          if (_contacts.isNotEmpty || _contacts != null)
+          TextField(
+            controller: searchController,
+            onChanged: (String value) {
+              filterSearchResults(value);
+            },
+          ),
+          if (_filteredContacts.isNotEmpty || _filteredContacts != null)
             Expanded(
               child: ListView.builder(
-                itemCount: _contacts.length,
+                itemCount: _filteredContacts.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final Contact contact = _contacts.elementAt(index);
+                  final Contact contact = _filteredContacts.elementAt(index);
                   String number;
 
                   if (contact.phones.isNotEmpty && contact.phones != null) {
