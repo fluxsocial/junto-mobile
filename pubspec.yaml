@@ -54,6 +54,7 @@ dependencies:
       ref: master
   contacts_service: ^0.4.6     
   permission_handler: ^5.0.1+1 
+  clipboard: ^0.1.2+8
 
 
 dev_dependencies:
@@ -156,6 +157,7 @@ flutter:
     - assets/images/junto-mobile__sprout.png
     - assets/images/junto-mobile__background.png
     - assets/images/junto-mobile__bench.png
+    - assets/images/junto-mobile__external-link.png
 
 flutter_intl:
   enabled: true
