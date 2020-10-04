@@ -44,7 +44,15 @@ class JuntoSmsState extends State<JuntoSms> {
 
   Future<void> getContacts() async {
     Iterable<Contact> contacts = await ContactsService.getContacts();
-    List<Contact> contactsAsList = contacts.toList();
+
+    final List<Contact> tempContactsAsList = [];
+
+    await contacts.forEach((Contact contact) {
+      if (contact != null) {
+        tempContactsAsList.add(contact);
+      }
+    });
+    List<Contact> contactsAsList = tempContactsAsList.toList();
 
     setState(() {
       _contacts = contactsAsList;
@@ -71,11 +79,14 @@ class JuntoSmsState extends State<JuntoSms> {
   void filterSearchResults(String query) {
     List<Contact> searchList = [];
     searchList.addAll(_contacts);
+    final String queryLowercase = query.toLowerCase();
 
-    if (query.isNotEmpty) {
+    if (queryLowercase.isNotEmpty) {
       final List<Contact> filteredSearchList = [];
-      searchList.forEach((contact) {
-        if (contact.displayName.toLowerCase().startsWith(query.toLowerCase())) {
+
+      searchList.forEach((Contact contact) {
+        if (contact.displayName != null &&
+            contact.displayName.toLowerCase().contains(queryLowercase)) {
           filteredSearchList.add(contact);
         }
       });
@@ -84,14 +95,11 @@ class JuntoSmsState extends State<JuntoSms> {
         _filteredContacts.clear();
         _filteredContacts.addAll(filteredSearchList);
       });
-
-      return;
     } else {
       setState(() {
         _filteredContacts.clear();
         _filteredContacts.addAll(_contacts);
       });
-      return;
     }
   }
 
@@ -221,10 +229,10 @@ class JuntoSmsState extends State<JuntoSms> {
                               String uri;
                               if (Platform.isIOS) {
                                 uri = Uri.encodeFull(
-                                    "sms:${number}&body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${_userProfile.user.username}. https://testflight.apple.com/join/LT9d0ob1");
+                                    "sms:${number}&body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${_userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
                               } else if (Platform.isAndroid) {
                                 uri = Uri.encodeFull(
-                                    "sms:${number}?body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${_userProfile.user.username}. https://testflight.apple.com/join/LT9d0ob1");
+                                    "sms:${number}?body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${_userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
                               }
 
                               if (await canLaunch(uri)) {
@@ -259,7 +267,7 @@ class JuntoSmsState extends State<JuntoSms> {
                       ),
                     );
                   } else {
-                    return SizedBox();
+                    return SizedBox(height: 1);
                   }
                 },
               ),
