@@ -232,7 +232,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
                                     fontWeight: FontWeight.w700,
                                   ),
                                   markupBuilder: (trigger, mention, value) {
-                                    return '[:]';
+                                    return '[$trigger$value:$mention]';
                                   },
                                 ),
                               ],

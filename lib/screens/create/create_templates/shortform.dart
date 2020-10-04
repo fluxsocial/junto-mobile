@@ -249,7 +249,7 @@ class CreateShortformState extends State<CreateShortform>
                                         ),
                                         markupBuilder:
                                             (trigger, mention, value) {
-                                          return '[:]';
+                                          return '[$trigger$value:$mention]';
                                         },
                                       ),
                                     ],
