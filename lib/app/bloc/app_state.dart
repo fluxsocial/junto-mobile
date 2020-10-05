@@ -18,3 +18,8 @@ class SupportedVersion extends AppBlocState {
   @override
   List<Object> get props => [];
 }
+
+class AppLoadingState extends AppBlocState {
+  @override
+  List<Object> get props => [];
+}

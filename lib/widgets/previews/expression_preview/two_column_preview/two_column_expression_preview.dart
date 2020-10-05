@@ -34,8 +34,8 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) => ExpressionOpen(
-                deleteExpression,
-                expression,
+                deleteExpression: deleteExpression,
+                expression: expression,
               ),
             ),
           );

@@ -40,8 +40,7 @@ class DeleteAccountDialog extends StatelessWidget {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText:
-                'Unable to delete your account. Double check your password.',
+            dialogText: 'Unable to delete your account. Please try again.',
           ),
         );
         logger.logException(e, s);

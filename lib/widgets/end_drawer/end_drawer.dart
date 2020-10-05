@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 
 import 'junto_center.dart';
 import 'junto_invite.dart';
+import 'junto_contacts.dart';
 import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
@@ -161,7 +162,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               context,
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
-                                  return JuntoInvite();
+                                  return JuntoContacts();
                                 },
                               ),
                             );

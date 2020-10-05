@@ -60,8 +60,9 @@ class NotificationTile extends StatelessWidget {
             context,
             CupertinoPageRoute(
               builder: (context) => ExpressionOpen(
-                (_) {},
-                sourceExpression,
+                commentsVisible: true,
+                deleteExpression: (_) {},
+                expression: sourceExpression,
               ),
             ),
           );

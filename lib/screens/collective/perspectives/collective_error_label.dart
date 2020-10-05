@@ -11,7 +11,11 @@ class CollectiveErrorLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: FlatButton(
-        child: Text('hmm, something is up...'),
+        child: Text(
+          'Hmm, something is up... If this persists, please try logging out and back in.',
+          style: Theme.of(context).textTheme.caption,
+          textAlign: TextAlign.center,
+        ),
         onPressed: () =>
             context.bloc<CollectiveBloc>().add(RefreshCollective()),
       ),

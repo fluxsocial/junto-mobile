@@ -4,10 +4,10 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
-class CommentOpenTop extends StatelessWidget {
+class CommentOpenTop extends StatelessWidget with MemberValidation {
   const CommentOpenTop({
     this.comment,
     this.userAddress,
@@ -28,16 +28,7 @@ class CommentOpenTop extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute<Widget>(
-                  builder: (BuildContext context) => JuntoMember(
-                    profile: comment.creator,
-                  ),
-                ),
-              );
-            },
+            onTap: () => showUserDen(context, comment.creator),
             child: Container(
               color: Colors.transparent,
               child: Row(children: <Widget>[
