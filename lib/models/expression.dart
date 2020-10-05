@@ -570,7 +570,7 @@ class Comment {
   final DateTime createdAt;
   final String privacy;
   final String context;
-  final String mentions;
+  final List<dynamic> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address,

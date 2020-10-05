@@ -15,12 +15,12 @@ import 'package:junto_beta_mobile/widgets/previews/comment_preview/previews/shor
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget with MemberValidation {
-  const CommentPreview(
-      {Key key,
-      @required this.comment,
-      @required this.parent,
-      @required this.userAddress})
-      : super(key: key);
+  const CommentPreview({
+    Key key,
+    @required this.comment,
+    @required this.parent,
+    @required this.userAddress,
+  }) : super(key: key);
 
   /// comment
   final Comment comment;
