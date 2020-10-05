@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:embedly_preview/embedly_preview.dart';
 import 'package:embedly_preview/theme/embedly_theme_data.dart';
@@ -38,8 +39,8 @@ class LinkPreview extends StatelessWidget {
           if (expression.expressionData.caption.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 15),
-              child: Text(
-                expression.expressionData.caption,
+              child: ParsedText(
+                text: expression.expressionData.caption,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -47,6 +48,26 @@ class LinkPreview extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                   fontSize: 17,
                 ),
+                parse: [
+                  MatchText(
+                    pattern: r"\[(@[^:]+):([^\]]+)\]",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: 17,
+                      height: 1.5,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    renderText: ({String str, String pattern}) {
+                      Map<String, String> map = <String, String>{};
+                      RegExp customRegExp = RegExp(pattern);
+                      Match match = customRegExp.firstMatch(str);
+                      map['display'] = match.group(1);
+                      map['value'] = match.group(2);
+                      return map;
+                    },
+                    onTap: (url) {},
+                  ),
+                ],
               ),
             ),
           OEmbedWidget(
