@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/link_text.dart';
@@ -118,7 +121,20 @@ class AudioOpenCaption extends StatelessWidget {
               map['value'] = match.group(2);
               return map;
             },
-            onTap: (url) {},
+            onTap: (url) async {
+              final userData =
+                  await Provider.of<UserRepo>(context, listen: false)
+                      .getUser(url);
+
+              Navigator.push(
+                context,
+                CupertinoPageRoute<Widget>(
+                  builder: (BuildContext context) => JuntoMember(
+                    profile: userData.user,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
