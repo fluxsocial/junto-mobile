@@ -47,17 +47,16 @@ dependencies:
   corsac_jwt: ^0.2.2
   flutter_linkify: 3.1.3
   email_validator: ^1.0.5
-  flutter_mentions: ^1.0.1
+  flutter_mentions: ^1.0.3
   flutter_parsed_text: ^1.2.4
   embedly_preview:
     # path: ../embedly-preview
     git:
       url: https://github.com/juntofoundation/embedly-preview.git
       ref: master
-  contacts_service: ^0.4.6     
-  permission_handler: ^5.0.1+1 
+  contacts_service: ^0.4.6
+  permission_handler: ^5.0.1+1
   clipboard: ^0.1.2+8
-
 
 dev_dependencies:
   test: any
