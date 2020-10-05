@@ -43,16 +43,23 @@ class JuntoContactsState extends State<JuntoContacts> {
   }
 
   Future<void> getContacts() async {
+    // Retrieve contacts from agent's device
     Iterable<Contact> contacts = await ContactsService.getContacts();
 
+    // Create a temp list
     final List<Contact> tempContactsAsList = [];
 
+    // Ignore null contacts
     await contacts.forEach((Contact contact) {
       if (contact != null) {
         tempContactsAsList.add(contact);
       }
     });
+
+    // Convert Iterable to List
     List<Contact> contactsAsList = tempContactsAsList.toList();
+    // Sort list alphabetically
+    contactsAsList.sort((a, b) => a.displayName.compareTo(b.displayName));
 
     setState(() {
       _contacts = contactsAsList;
