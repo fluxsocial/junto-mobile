@@ -212,15 +212,12 @@ class CreateLinkFormState extends State<CreateLinkForm>
                                   context
                                       .bloc<SearchBloc>()
                                       .add(SearchingEvent(value, true));
-
-                                  setState(() {
-                                    _showList = true;
-                                  });
-                                } else {
-                                  setState(() {
-                                    _showList = false;
-                                  });
                                 }
+                              },
+                              onSuggestionVisibleChanged: (val) {
+                                setState(() {
+                                  _showList = val;
+                                });
                               },
                               hideSuggestionList: true,
                               mentions: [

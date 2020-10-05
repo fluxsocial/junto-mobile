@@ -335,20 +335,16 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                             key: mentionKey,
                             focusNode: _captionFocus,
                             onSearchChanged: (String trigger, String value) {
-                              print(' ');
                               if (value.isNotEmpty) {
                                 context
                                     .bloc<SearchBloc>()
                                     .add(SearchingEvent(value, true));
-
-                                setState(() {
-                                  _showList = true;
-                                });
-                              } else {
-                                setState(() {
-                                  _showList = false;
-                                });
                               }
+                            },
+                            onSuggestionVisibleChanged: (val) {
+                              setState(() {
+                                _showList = val;
+                              });
                             },
                             hideSuggestionList: true,
                             mentions: [

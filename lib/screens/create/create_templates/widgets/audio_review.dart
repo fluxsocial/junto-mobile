@@ -476,12 +476,9 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
             onSearchChanged: (String trigger, String value) {
               if (value.isNotEmpty) {
                 context.bloc<SearchBloc>().add(SearchingEvent(value, true));
-
-                toggleSearch(true);
-              } else {
-                toggleSearch(false);
               }
             },
+            onSuggestionVisibleChanged: toggleSearch,
             mentions: [
               Mention(
                 trigger: '@',
