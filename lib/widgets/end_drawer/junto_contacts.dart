@@ -20,6 +20,7 @@ class JuntoContacts extends StatefulWidget {
 }
 
 class JuntoContactsState extends State<JuntoContacts> {
+  PermissionStatus contactsPermission;
   TextEditingController searchController;
   List<Contact> _contacts = [];
   List<Contact> _filteredContacts = [];
@@ -28,9 +29,14 @@ class JuntoContactsState extends State<JuntoContacts> {
   @override
   void initState() {
     super.initState();
+    // instantiate text editing controller
     searchController = TextEditingController();
+    // Get user information to display username in SMS
     getUserInformation();
+    // Determine permissions to access user contacts
     _getPermission();
+
+    // Retrieve user contacts
     getContacts();
   }
 
@@ -57,9 +63,15 @@ class JuntoContactsState extends State<JuntoContacts> {
     });
 
     // Convert Iterable to List
-    List<Contact> contactsAsList = tempContactsAsList.toList();
+    List<Contact> contactsAsList = await tempContactsAsList.toList();
+
     // Sort list alphabetically
-    contactsAsList.sort((a, b) => a.displayName.compareTo(b.displayName));
+    contactsAsList.sort((a, b) {
+      if (a.displayName != null && b.displayName != null) {
+        a.displayName.compareTo(b.displayName);
+      }
+      return 0;
+    });
 
     setState(() {
       _contacts = contactsAsList;
@@ -71,14 +83,19 @@ class JuntoContactsState extends State<JuntoContacts> {
   Future<PermissionStatus> _getPermission() async {
     final PermissionStatus permission = await Permission.contacts.status;
 
-    if (permission != PermissionStatus.granted &&
+    if (permission != PermissionStatus.granted ||
         permission != PermissionStatus.denied) {
       final Map<Permission, PermissionStatus> permissionStatus =
           await [Permission.contacts].request();
-      print(permissionStatus);
+      setState(() {
+        contactsPermission = permissionStatus[Permission.contacts];
+      });
       return permissionStatus[Permission.contacts] ??
           PermissionStatus.undetermined;
     } else {
+      setState(() {
+        contactsPermission = permission;
+      });
       return permission;
     }
   }
@@ -133,6 +150,7 @@ class JuntoContactsState extends State<JuntoContacts> {
             JuntoContactsList(
               filteredContacts: _filteredContacts,
               userProfile: _userProfile,
+              contactsPermission: contactsPermission,
             ),
         ],
       ),
@@ -142,120 +160,143 @@ class JuntoContactsState extends State<JuntoContacts> {
 
 class JuntoContactsList extends StatelessWidget {
   const JuntoContactsList({
+    this.contactsPermission = PermissionStatus.undetermined,
     this.filteredContacts,
     this.userProfile,
   });
-
+  final PermissionStatus contactsPermission;
   final List<Contact> filteredContacts;
   final UserData userProfile;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: filteredContacts.length,
-        itemBuilder: (BuildContext context, int index) {
-          final Contact contact = filteredContacts.elementAt(index);
-          String number;
-
-          if (contact.phones.isNotEmpty && contact.phones != null) {
-            number = contact.phones.first.value;
-          } else {
-            number = '';
-          }
-
-          if (contact.displayName != null && number.isNotEmpty) {
-            return Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
+    if (contactsPermission != PermissionStatus.granted) {
+      return Expanded(
+        child: Center(
+          child: Transform.translate(
+            offset: Offset(0.0, -50.0),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                'You need to allow us to access your contacts to use this feature. Please update your settings.',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
               ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .5,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: filteredContacts.length,
+          itemBuilder: (BuildContext context, int index) {
+            final Contact contact = filteredContacts.elementAt(index);
+            String number;
+
+            if (contact.phones.isNotEmpty && contact.phones != null) {
+              number = contact.phones.first.value;
+            } else {
+              number = '';
+            }
+
+            if (contact.displayName != null && number.isNotEmpty) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: .5,
+                    ),
                   ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      MemberAvatarPlaceholder(
-                        diameter: 45,
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            contact.displayName,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w700,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        MemberAvatarPlaceholder(
+                          diameter: 45,
+                        ),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              contact.displayName,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          ),
-                          Text(
-                            number,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Theme.of(context).primaryColorLight,
+                            Text(
+                              number,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Theme.of(context).primaryColorLight,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(25),
-                    onTap: () async {
-                      String uri;
-                      if (Platform.isIOS) {
-                        uri = Uri.encodeFull(
-                            "sms:${number}&body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
-                      } else if (Platform.isAndroid) {
-                        uri = Uri.encodeFull(
-                            "sms:${number}?body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
-                      }
+                          ],
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(25),
+                      onTap: () async {
+                        String uri;
+                        if (Platform.isIOS) {
+                          uri = Uri.encodeFull(
+                              "sms:${number}&body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
+                        } else if (Platform.isAndroid) {
+                          uri = Uri.encodeFull(
+                              "sms:${number}?body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
+                        }
 
-                      if (await canLaunch(uri)) {
-                        await launch(uri);
-                      } else {
-                        await SingleActionDialog(
-                          context: context,
-                          dialogText: 'Sorry, something is up. Try again.',
-                        );
-                      }
-                      ;
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).dividerColor,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
-                      child: Text(
-                        'Invite',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.w700,
+                        if (await canLaunch(uri)) {
+                          await launch(uri);
+                        } else {
+                          await SingleActionDialog(
+                            context: context,
+                            dialogText: 'Sorry, something is up. Try again.',
+                          );
+                        }
+                        ;
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).dividerColor,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
+                        child: Text(
+                          'Invite',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return SizedBox(height: 1);
-          }
-        },
-      ),
-    );
+                  ],
+                ),
+              );
+            } else {
+              return SizedBox(height: 1);
+            }
+          },
+        ),
+      );
+    }
   }
 }
 
