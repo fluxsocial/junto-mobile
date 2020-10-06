@@ -54,10 +54,13 @@ class ShortformPreview extends StatelessWidget {
           MatchText(
             pattern: r"\[(@[^:]+):([^\]]+)\]",
             style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-              fontSize: 17,
+              color: _hexOne.contains('fff') || _hexTwo.contains('fff')
+                  ? Color(0xff333333)
+                  : Colors.white,
+              fontSize: 20,
               height: 1.5,
               fontWeight: FontWeight.w700,
+              decoration: TextDecoration.underline,
             ),
             renderText: ({String str, String pattern}) {
               Map<String, String> map = <String, String>{};
