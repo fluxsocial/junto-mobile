@@ -225,10 +225,9 @@ class CreateShortformState extends State<CreateShortform>
                                         autofocus: false,
                                         onSearchChanged:
                                             (String trigger, String value) {
-                                          if (value.isNotEmpty) {
-                                            context.bloc<SearchBloc>().add(
-                                                SearchingEvent(value, true));
-                                          }
+                                          context
+                                              .bloc<SearchBloc>()
+                                              .add(SearchingEvent(value, true));
                                         },
                                         onSuggestionVisibleChanged: (val) {
                                           setState(() {
