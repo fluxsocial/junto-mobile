@@ -371,7 +371,7 @@ packages:
       name: flutter_mentions
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.4"
   flutter_parsed_text:
     dependency: "direct main"
     description:
