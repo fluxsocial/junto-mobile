@@ -60,12 +60,10 @@ class AudioPreview extends StatelessWidget {
               parse: [
                 MatchText(
                   pattern: r"\[(@[^:]+):([^\]]+)\]",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorDark,
-                    fontSize: 17,
-                    height: 1.5,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
                   renderText: ({String str, String pattern}) {
                     Map<String, String> map = <String, String>{};
                     RegExp customRegExp = RegExp(pattern);
