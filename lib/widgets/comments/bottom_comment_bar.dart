@@ -82,7 +82,9 @@ class BottomCommentBarState extends State<BottomCommentBar>
         );
         await widget.refreshComments();
         await widget.openComments();
+        await mentionKey.currentState.controller.clear();
         await Future.delayed(Duration(milliseconds: 100));
+
         widget.scrollToBottom();
       } catch (error) {
         debugPrint('Error posting comment $error');
