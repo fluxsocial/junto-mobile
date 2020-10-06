@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_parsed_text/flutter_parsed_text.dart';
-import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
-import 'package:junto_beta_mobile/widgets/link_text.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
@@ -98,45 +93,18 @@ class AudioOpenCaption extends StatelessWidget {
         horizontal: 10,
         vertical: 10,
       ),
-      child: ParsedText(
-        text: caption,
-        style: TextStyle(
+      child: CustomParsedText(
+        caption,
+        defaultTextStyle: TextStyle(
           fontSize: 17,
           color: Theme.of(context).primaryColor,
         ),
-        parse: [
-          MatchText(
-            pattern: r"\[(@[^:]+):([^\]]+)\]",
-            style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-              fontSize: 17,
-              height: 1.5,
-              fontWeight: FontWeight.w700,
-            ),
-            renderText: ({String str, String pattern}) {
-              Map<String, String> map = <String, String>{};
-              RegExp customRegExp = RegExp(pattern);
-              Match match = customRegExp.firstMatch(str);
-              map['display'] = match.group(1);
-              map['value'] = match.group(2);
-              return map;
-            },
-            onTap: (url) async {
-              final userData =
-                  await Provider.of<UserRepo>(context, listen: false)
-                      .getUser(url);
-
-              Navigator.push(
-                context,
-                CupertinoPageRoute<Widget>(
-                  builder: (BuildContext context) => JuntoMember(
-                    profile: userData.user,
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
+        mentionTextStyle: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontSize: 17,
+          height: 1.5,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
