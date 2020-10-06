@@ -176,122 +176,126 @@ class CreateShortformState extends State<CreateShortform>
                 ),
               ),
               Expanded(
-                child: Form(
-                  autovalidate: false,
-                  child: BlocBuilder<SearchBloc, SearchState>(
-                    builder: (context, state) {
-                      final _users = getUserList(state, addedmentions);
+                child: ListView(
+                  children: [
+                    Form(
+                      autovalidate: false,
+                      child: BlocBuilder<SearchBloc, SearchState>(
+                        builder: (context, state) {
+                          final _users = getUserList(state, addedmentions);
 
-                      final _finalList = [...addedmentions, ..._users];
+                          final _finalList = [...addedmentions, ..._users];
 
-                      return Container(
-                        child: Stack(
-                          children: [
-                            Container(
-                              child: GestureDetector(
-                                onTap: () {
-                                  _focus.requestFocus();
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 50.0,
-                                    horizontal: 25.0,
-                                  ),
-                                  constraints: BoxConstraints(
-                                    minHeight:
-                                        MediaQuery.of(context).size.width,
-                                  ),
-                                  width: MediaQuery.of(context).size.width,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomLeft,
-                                      end: Alignment.topRight,
-                                      stops: const <double>[
-                                        0.2,
-                                        0.9,
-                                      ],
-                                      colors: <Color>[
-                                        HexColor.fromHex(gradientOne),
-                                        HexColor.fromHex(gradientTwo),
-                                      ],
-                                    ),
-                                  ),
-                                  child: FlutterMentions(
-                                    key: mentionKey,
-                                    focusNode: _focus,
-                                    autofocus: false,
-                                    onSearchChanged:
-                                        (String trigger, String value) {
-                                      if (value.isNotEmpty) {
-                                        context
-                                            .bloc<SearchBloc>()
-                                            .add(SearchingEvent(value, true));
-                                      }
+                          return Container(
+                            child: Stack(
+                              children: [
+                                Container(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _focus.requestFocus();
                                     },
-                                    onSuggestionVisibleChanged: (val) {
-                                      setState(() {
-                                        _showList = val;
-                                      });
-                                    },
-                                    hideSuggestionList: true,
-                                    mentions: [
-                                      Mention(
-                                        trigger: '@',
-                                        data: [..._finalList],
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 50.0,
+                                        horizontal: 25.0,
+                                      ),
+                                      constraints: BoxConstraints(
+                                        minHeight:
+                                            MediaQuery.of(context).size.width,
+                                      ),
+                                      width: MediaQuery.of(context).size.width,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.bottomLeft,
+                                          end: Alignment.topRight,
+                                          stops: const <double>[
+                                            0.2,
+                                            0.9,
+                                          ],
+                                          colors: <Color>[
+                                            HexColor.fromHex(gradientOne),
+                                            HexColor.fromHex(gradientTwo),
+                                          ],
+                                        ),
+                                      ),
+                                      child: FlutterMentions(
+                                        key: mentionKey,
+                                        focusNode: _focus,
+                                        autofocus: false,
+                                        onSearchChanged:
+                                            (String trigger, String value) {
+                                          if (value.isNotEmpty) {
+                                            context.bloc<SearchBloc>().add(
+                                                SearchingEvent(value, true));
+                                          }
+                                        },
+                                        onSuggestionVisibleChanged: (val) {
+                                          setState(() {
+                                            _showList = val;
+                                          });
+                                        },
+                                        hideSuggestionList: true,
+                                        mentions: [
+                                          Mention(
+                                            trigger: '@',
+                                            data: [..._finalList],
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            markupBuilder:
+                                                (trigger, mention, value) {
+                                              return '[$trigger$value:$mention]';
+                                            },
+                                          ),
+                                        ],
+                                        buildCounter: (
+                                          BuildContext context, {
+                                          int currentLength,
+                                          int maxLength,
+                                          bool isFocused,
+                                        }) =>
+                                            null,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                        ),
+                                        cursorColor:
+                                            gradientOne.contains('fff') ||
+                                                    gradientTwo.contains('fff')
+                                                ? Color(0xff333333)
+                                                : Colors.white,
+                                        cursorWidth: 2,
+                                        maxLines: null,
                                         style: TextStyle(
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
+                                          color: gradientOne.contains('fff') ||
+                                                  gradientTwo.contains('fff')
+                                              ? Color(0xff333333)
+                                              : Colors.white,
+                                          fontSize: 24,
                                           fontWeight: FontWeight.w700,
                                         ),
-                                        markupBuilder:
-                                            (trigger, mention, value) {
-                                          return '[$trigger$value:$mention]';
-                                        },
+                                        maxLength: 220,
+                                        textAlign: TextAlign.center,
+                                        textInputAction: TextInputAction.done,
+                                        textCapitalization:
+                                            TextCapitalization.sentences,
+                                        keyboardAppearance:
+                                            Theme.of(context).brightness,
                                       ),
-                                    ],
-                                    buildCounter: (
-                                      BuildContext context, {
-                                      int currentLength,
-                                      int maxLength,
-                                      bool isFocused,
-                                    }) =>
-                                        null,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
                                     ),
-                                    cursorColor: gradientOne.contains('fff') ||
-                                            gradientTwo.contains('fff')
-                                        ? Color(0xff333333)
-                                        : Colors.white,
-                                    cursorWidth: 2,
-                                    maxLines: null,
-                                    style: TextStyle(
-                                      color: gradientOne.contains('fff') ||
-                                              gradientTwo.contains('fff')
-                                          ? Color(0xff333333)
-                                          : Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    maxLength: 220,
-                                    textAlign: TextAlign.center,
-                                    textInputAction: TextInputAction.done,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    keyboardAppearance:
-                                        Theme.of(context).brightness,
                                   ),
                                 ),
-                              ),
+                                if (_showList && _focus.hasFocus)
+                                  buildUserMention(context, _finalList),
+                              ],
                             ),
-                            if (_showList && _focus.hasFocus)
-                              buildUserMention(context, _finalList),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
