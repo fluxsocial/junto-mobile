@@ -356,7 +356,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                                   fontWeight: FontWeight.w700,
                                 ),
                                 markupBuilder: (trigger, mention, value) {
-                                  return '[:]';
+                                  return '[$trigger$value:$mention]';
                                 },
                               ),
                             ],
