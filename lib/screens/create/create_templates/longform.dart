@@ -139,7 +139,7 @@ class CreateLongformState extends State<CreateLongform>
         child: Container(
           child: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
-              final _users = getUserList(state, addedmentions);
+              final _users = getUserList(state, []);
 
               final _finalList = [...addedmentions, ..._users];
 
@@ -203,11 +203,9 @@ class CreateLongformState extends State<CreateLongform>
                                 print(value);
                               },
                               onSearchChanged: (String trigger, String value) {
-                                if (value.isNotEmpty) {
-                                  context
-                                      .bloc<SearchBloc>()
-                                      .add(SearchingEvent(value, true));
-                                }
+                                context
+                                    .bloc<SearchBloc>()
+                                    .add(SearchingEvent(value, true));
                               },
                               onSuggestionVisibleChanged: (val) {
                                 setState(() {
@@ -231,7 +229,7 @@ class CreateLongformState extends State<CreateLongform>
                             ),
                           ),
                           if (_showList && _bodyFocus.hasFocus)
-                            buildUserMention(context, _finalList),
+                            buildUserMention(context, _users),
                         ],
                       ),
                     ),

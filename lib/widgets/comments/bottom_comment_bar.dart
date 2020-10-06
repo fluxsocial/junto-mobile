@@ -115,7 +115,7 @@ class BottomCommentBarState extends State<BottomCommentBar>
       },
       child: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
-          final _users = getUserList(state, addedmentions);
+          final _users = getUserList(state, []);
 
           final _finalList = [...addedmentions, ..._users];
 
@@ -179,11 +179,9 @@ class BottomCommentBarState extends State<BottomCommentBar>
                               focusNode: widget.focusNode,
                               suggestionPosition: SuggestionPosition.Top,
                               onSearchChanged: (String trigger, String value) {
-                                if (value.isNotEmpty) {
-                                  context
-                                      .bloc<SearchBloc>()
-                                      .add(SearchingEvent(value, true));
-                                }
+                                context
+                                    .bloc<SearchBloc>()
+                                    .add(SearchingEvent(value, true));
                               },
                               mentions: [
                                 Mention(

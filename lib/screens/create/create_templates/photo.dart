@@ -314,7 +314,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   Widget _captionPhoto() {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
-        final _users = getUserList(state, addedmentions);
+        final _users = getUserList(state, []);
 
         final _finalList = [...addedmentions, ..._users];
         return Container(
@@ -335,11 +335,9 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                             key: mentionKey,
                             focusNode: _captionFocus,
                             onSearchChanged: (String trigger, String value) {
-                              if (value.isNotEmpty) {
-                                context
-                                    .bloc<SearchBloc>()
-                                    .add(SearchingEvent(value, true));
-                              }
+                              context
+                                  .bloc<SearchBloc>()
+                                  .add(SearchingEvent(value, true));
                             },
                             onSuggestionVisibleChanged: (val) {
                               setState(() {
@@ -418,7 +416,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                   ),
                 ],
               ),
-              if (_showList) buildUserMention(context, _finalList),
+              if (_showList) buildUserMention(context, _users),
             ],
           ),
         );

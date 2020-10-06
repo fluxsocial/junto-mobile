@@ -159,7 +159,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: BlocBuilder<SearchBloc, SearchState>(
               builder: (context, state) {
-                final _users = getUserList(state, addedmentions);
+                final _users = getUserList(state, []);
 
                 final _finalList = [...addedmentions, ..._users];
 
@@ -208,11 +208,9 @@ class CreateLinkFormState extends State<CreateLinkForm>
                               key: mentionKey,
                               focusNode: _captionFocus,
                               onSearchChanged: (String trigger, String value) {
-                                if (value.isNotEmpty) {
-                                  context
-                                      .bloc<SearchBloc>()
-                                      .add(SearchingEvent(value, true));
-                                }
+                                context
+                                    .bloc<SearchBloc>()
+                                    .add(SearchingEvent(value, true));
                               },
                               onSuggestionVisibleChanged: (val) {
                                 setState(() {
@@ -306,7 +304,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
                         ],
                       ),
                       if (_showList && _captionFocus.hasFocus)
-                        buildUserMention(context, _finalList),
+                        buildUserMention(context, _users),
                     ],
                   ),
                 );

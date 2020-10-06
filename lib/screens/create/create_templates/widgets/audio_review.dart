@@ -50,9 +50,7 @@ class _AudioReviewState extends State<AudioReview>
         },
         child: BlocBuilder<SearchBloc, SearchState>(
           builder: (context, state) {
-            final _users = getUserList(state, addedmentions);
-
-            final _finalList = [...addedmentions, ..._users];
+            final _users = getUserList(state, []);
 
             return Container(
               child: Stack(
@@ -72,7 +70,7 @@ class _AudioReviewState extends State<AudioReview>
                         ),
                     ],
                   ),
-                  if (_showList) buildUserMention(context, _finalList),
+                  if (_showList) buildUserMention(context, _users),
                 ],
               ),
             );
@@ -463,7 +461,7 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
   Widget build(BuildContext context) {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
-        final _users = getUserList(state, addedmentions);
+        final _users = getUserList(state, []);
 
         final _finalList = [...addedmentions, ..._users];
 
@@ -474,9 +472,7 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
             focusNode: captionFocus,
             autofocus: false,
             onSearchChanged: (String trigger, String value) {
-              if (value.isNotEmpty) {
-                context.bloc<SearchBloc>().add(SearchingEvent(value, true));
-              }
+              context.bloc<SearchBloc>().add(SearchingEvent(value, true));
             },
             onSuggestionVisibleChanged: toggleSearch,
             mentions: [

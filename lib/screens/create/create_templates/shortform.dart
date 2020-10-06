@@ -179,10 +179,10 @@ class CreateShortformState extends State<CreateShortform>
                 child: ListView(
                   children: [
                     Form(
-                      autovalidate: false,
+                      autovalidateMode: AutovalidateMode.disabled,
                       child: BlocBuilder<SearchBloc, SearchState>(
                         builder: (context, state) {
-                          final _users = getUserList(state, addedmentions);
+                          final _users = getUserList(state, []);
 
                           final _finalList = [...addedmentions, ..._users];
 
@@ -288,7 +288,7 @@ class CreateShortformState extends State<CreateShortform>
                                   ),
                                 ),
                                 if (_showList && _focus.hasFocus)
-                                  buildUserMention(context, _finalList),
+                                  buildUserMention(context, _users),
                               ],
                             ),
                           );
