@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
+import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
-import 'package:provider/provider.dart';
 
 class AudioOpen extends StatelessWidget {
   AudioOpen(this.expression);
@@ -91,11 +93,18 @@ class AudioOpenCaption extends StatelessWidget {
         horizontal: 10,
         vertical: 10,
       ),
-      child: Text(
+      child: CustomParsedText(
         caption,
-        style: TextStyle(
-          fontSize: 17,
+        maxLines: 7,
+        overflow: TextOverflow.ellipsis,
+        defaultTextStyle: TextStyle(
           color: Theme.of(context).primaryColor,
+          fontSize: 17,
+        ),
+        mentionTextStyle: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

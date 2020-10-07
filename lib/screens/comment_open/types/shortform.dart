@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
+import 'package:flutter/cupertino.dart';
 
 class ShortformOpen extends StatelessWidget {
   const ShortformOpen(this.expression);
@@ -31,15 +33,24 @@ class ShortformOpen extends StatelessWidget {
         horizontal: 25.0,
         vertical: 50.0,
       ),
-      child: SelectableText(
+      child: CustomParsedText(
         expression.expressionData.body.trim(),
-        textAlign: TextAlign.center,
-        style: TextStyle(
+        maxLines: 7,
+        overflow: TextOverflow.ellipsis,
+        defaultTextStyle: TextStyle(
           fontSize: 20.0,
           fontWeight: FontWeight.w700,
           color: _hexOne.contains('fff') || _hexTwo.contains('fff')
               ? Color(0xff333333)
               : Colors.white,
+        ),
+        mentionTextStyle: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
+          color: _hexOne.contains('fff') || _hexTwo.contains('fff')
+              ? Color(0xff333333)
+              : Colors.white,
+          decoration: TextDecoration.underline,
         ),
       ),
     );

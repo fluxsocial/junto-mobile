@@ -77,6 +77,8 @@ class UserPreview extends StatelessWidget {
                 width: 22,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
                     colors: isSelected
                         ? <Color>[
                             JuntoPalette.juntoSecondary,
@@ -86,8 +88,6 @@ class UserPreview extends StatelessWidget {
                             Colors.white,
                             Colors.white,
                           ],
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
                   ),
                   // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
                   border: Border.all(

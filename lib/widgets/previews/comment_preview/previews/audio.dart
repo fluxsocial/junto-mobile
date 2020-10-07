@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:junto_beta_mobile/utils/cache_manager.dart';
@@ -47,11 +49,15 @@ class AudioPreview extends StatelessWidget {
               vertical: 10,
               horizontal: 10,
             ),
-            child: Text(
+            child: CustomParsedText(
               audioCaption,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.caption,
+              defaultTextStyle: Theme.of(context).textTheme.caption,
+              mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
             ),
           ),
       ],

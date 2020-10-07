@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:embedly_preview/embedly_preview.dart';
 import 'package:embedly_preview/theme/embedly_theme_data.dart';
@@ -34,12 +36,20 @@ class LinkOpen extends StatelessWidget {
           if (expression.expressionData.caption.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 15),
-              child: Text(
+              child: CustomParsedText(
                 expression.expressionData.caption,
-                style: TextStyle(
+                maxLines: 7,
+                overflow: TextOverflow.ellipsis,
+                defaultTextStyle: TextStyle(
                   height: 1.5,
                   color: Theme.of(context).primaryColor,
                   fontSize: 17,
+                ),
+                mentionTextStyle: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontSize: 17,
+                  height: 1.5,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),

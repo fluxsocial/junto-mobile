@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class DynamicOpen extends StatelessWidget {
   const DynamicOpen(this.dynamicExpression);
@@ -17,36 +19,39 @@ class DynamicOpen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          dynamicTitle != ''
-              ? Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.only(bottom: 5),
-                  child: SelectableText(
-                    dynamicTitle,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                )
-              : const SizedBox(),
-          dynamicBody != ''
-              ? Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: SelectableText(
-                    dynamicBody,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        height: 1.5,
-                        color: Theme.of(context).primaryColor),
-                  ),
-                )
-              : const SizedBox(),
+          if (dynamicTitle.isNotEmpty)
+            Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(bottom: 5),
+              child: SelectableText(
+                dynamicTitle,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+          if (dynamicBody.isNotEmpty)
+            CustomParsedText(
+              dynamicBody,
+              maxLines: 7,
+              overflow: TextOverflow.ellipsis,
+              defaultTextStyle: TextStyle(
+                height: 1.5,
+                color: Theme.of(context).primaryColor,
+                fontSize: 17,
+              ),
+              mentionTextStyle: TextStyle(
+                color: Theme.of(context).primaryColorDark,
+                fontSize: 17,
+                height: 1.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
         ],
       ),
     );

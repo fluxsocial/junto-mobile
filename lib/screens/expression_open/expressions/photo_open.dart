@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/utils/cache_manager.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 class PhotoOpen extends StatelessWidget {
@@ -43,9 +45,15 @@ class PhotoOpen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 10),
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
+              child: CustomParsedText(
                 photoExpression.expressionData.caption.trim(),
-                style: Theme.of(context).textTheme.caption,
+                defaultTextStyle: Theme.of(context).textTheme.caption,
+                mentionTextStyle: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontSize: 17,
+                  height: 1.5,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             )
         ],

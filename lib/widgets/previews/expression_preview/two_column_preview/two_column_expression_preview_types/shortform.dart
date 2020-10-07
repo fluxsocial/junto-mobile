@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
-import 'package:junto_beta_mobile/widgets/link_text.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatelessWidget {
@@ -39,11 +39,12 @@ class ShortformPreview extends StatelessWidget {
         alignment: Alignment.center,
         // width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
-        child: Text(
+        child: CustomParsedText(
           shortformBody,
           maxLines: 7,
-          textAlign: TextAlign.center,
-          style: TextStyle(
+          disableOnMentiontap: true,
+          alignment: TextAlign.center,
+          defaultTextStyle: TextStyle(
             fontSize: 18,
             color: _hexOne.contains('fff') || _hexTwo.contains('fff')
                 ? Color(0xff333333)
@@ -51,6 +52,13 @@ class ShortformPreview extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
           overflow: TextOverflow.ellipsis,
+          mentionTextStyle: TextStyle(
+            color: Theme.of(context).primaryColorDark,
+            fontSize: 18,
+            height: 1.5,
+            fontWeight: FontWeight.w700,
+            decoration: TextDecoration.underline,
+          ),
         ),
       ),
     );

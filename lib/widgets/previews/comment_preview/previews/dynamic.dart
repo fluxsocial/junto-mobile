@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/widgets/link_text.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class DynamicPreview extends StatelessWidget {
   const DynamicPreview({
@@ -53,15 +54,15 @@ class DynamicPreview extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     final String commentBody = comment.expressionData.body.trim();
     if (commentBody.isNotEmpty) {
-      return Text(
+      return CustomParsedText(
         commentBody,
         maxLines: 7,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          height: 1.5,
-          color: Theme.of(context).primaryColor,
-          fontSize: 17,
-        ),
+        defaultTextStyle: Theme.of(context).textTheme.caption,
+        mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).primaryColorDark,
+            ),
       );
     } else {
       return const SizedBox();

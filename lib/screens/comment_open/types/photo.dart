@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class PhotoOpen extends StatelessWidget {
   const PhotoOpen(this.photoExpression);
@@ -37,9 +38,15 @@ class PhotoOpen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 10),
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                photoExpression.expressionData.caption.trim(),
-                style: Theme.of(context).textTheme.caption,
+              child: CustomParsedText(
+                photoExpression.expressionData.caption,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                defaultTextStyle: Theme.of(context).textTheme.caption,
+                mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
               ),
             )
         ],
