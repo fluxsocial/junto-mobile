@@ -71,22 +71,30 @@ class _AudioReviewState extends State<AudioReview>
                     ],
                   ),
                   if (_showList)
-                    MentionsSearchList(
-                      userList: _users,
-                      onMentionAdd: (index) {
-                        widget.mentionKey.currentState
-                            .addMention(_finalList[index]);
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                      child: MentionsSearchList(
+                        userList: _users,
+                        onMentionAdd: (index) {
+                          widget.mentionKey.currentState
+                              .addMention(_finalList[index]);
 
-                        if (addedmentions.indexWhere((element) =>
-                                element['id'] == _finalList[index]['id']) ==
-                            -1) {
-                          addedmentions = [...addedmentions, _finalList[index]];
-                        }
+                          if (addedmentions.indexWhere((element) =>
+                                  element['id'] == _finalList[index]['id']) ==
+                              -1) {
+                            addedmentions = [
+                              ...addedmentions,
+                              _finalList[index]
+                            ];
+                          }
 
-                        setState(() {
-                          _showList = false;
-                        });
-                      },
+                          setState(() {
+                            _showList = false;
+                          });
+                        },
+                      ),
                     ),
                 ],
               ),
@@ -98,9 +106,11 @@ class _AudioReviewState extends State<AudioReview>
   }
 
   void toggleSearch(bool value) {
-    setState(() {
-      _showList = value;
-    });
+    if (value != _showList) {
+      setState(() {
+        _showList = value;
+      });
+    }
   }
 
   Widget _showAudioReviewTemplate() {

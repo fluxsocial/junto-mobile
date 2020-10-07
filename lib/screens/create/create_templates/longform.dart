@@ -208,9 +208,11 @@ class CreateLongformState extends State<CreateLongform>
                                     .add(SearchingEvent(value, true));
                               },
                               onSuggestionVisibleChanged: (val) {
-                                setState(() {
-                                  _showList = val;
-                                });
+                                if (val != _showList) {
+                                  setState(() {
+                                    _showList = val;
+                                  });
+                                }
                               },
                               hideSuggestionList: true,
                               mentions: [
@@ -229,26 +231,31 @@ class CreateLongformState extends State<CreateLongform>
                             ),
                           ),
                           if (_showList && _bodyFocus.hasFocus)
-                            MentionsSearchList(
-                              userList: _users,
-                              onMentionAdd: (index) {
-                                mentionKey.currentState
-                                    .addMention(_finalList[index]);
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              left: 0,
+                              child: MentionsSearchList(
+                                userList: _users,
+                                onMentionAdd: (index) {
+                                  mentionKey.currentState
+                                      .addMention(_finalList[index]);
 
-                                if (addedmentions.indexWhere((element) =>
-                                        element['id'] ==
-                                        _finalList[index]['id']) ==
-                                    -1) {
-                                  addedmentions = [
-                                    ...addedmentions,
-                                    _finalList[index]
-                                  ];
-                                }
+                                  if (addedmentions.indexWhere((element) =>
+                                          element['id'] ==
+                                          _finalList[index]['id']) ==
+                                      -1) {
+                                    addedmentions = [
+                                      ...addedmentions,
+                                      _finalList[index]
+                                    ];
+                                  }
 
-                                setState(() {
-                                  _showList = false;
-                                });
-                              },
+                                  setState(() {
+                                    _showList = false;
+                                  });
+                                },
+                              ),
                             ),
                         ],
                       ),
