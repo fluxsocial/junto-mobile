@@ -4,14 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
@@ -51,6 +50,7 @@ class _AudioReviewState extends State<AudioReview>
         child: BlocBuilder<SearchBloc, SearchState>(
           builder: (context, state) {
             final _users = getUserList(state, []);
+            final _finalList = [...addedmentions, ..._users];
 
             return Container(
               child: Stack(
@@ -70,7 +70,24 @@ class _AudioReviewState extends State<AudioReview>
                         ),
                     ],
                   ),
-                  if (_showList) buildUserMention(context, _users),
+                  if (_showList)
+                    MentionsSearchList(
+                      userList: _users,
+                      onMentionAdd: (index) {
+                        widget.mentionKey.currentState
+                            .addMention(_finalList[index]);
+
+                        if (addedmentions.indexWhere((element) =>
+                                element['id'] == _finalList[index]['id']) ==
+                            -1) {
+                          addedmentions = [...addedmentions, _finalList[index]];
+                        }
+
+                        setState(() {
+                          _showList = false;
+                        });
+                      },
+                    ),
                 ],
               ),
             );
@@ -84,64 +101,6 @@ class _AudioReviewState extends State<AudioReview>
     setState(() {
       _showList = value;
     });
-  }
-
-  Positioned buildUserMention(
-      BuildContext context, List<Map<String, dynamic>> _finalList) {
-    return Positioned(
-      bottom: 0,
-      right: 0,
-      left: 0,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          border: Border(
-            top: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: .75,
-            ),
-          ),
-        ),
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * .3,
-        ),
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          itemCount: _finalList.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return MemberPreview(
-              onUserTap: () {
-                widget.mentionKey.currentState.addMention(_finalList[index]);
-
-                if (addedmentions.indexWhere((element) =>
-                        element['id'] == _finalList[index]['id']) ==
-                    -1) {
-                  addedmentions = [...addedmentions, _finalList[index]];
-                }
-
-                setState(() {
-                  _showList = false;
-                });
-              },
-              profile: UserProfile(
-                username: _finalList[index]['display'],
-                address: _finalList[index]['id'],
-                profilePicture: [_finalList[index]['photo']],
-                name: _finalList[index]['full_name'],
-                verified: true,
-                backgroundPhoto: _finalList[index]['backgroundPhoto'],
-                badges: [],
-                gender: [],
-                website: [],
-                bio: _finalList[index]['bio'],
-                location: [],
-              ),
-            );
-          },
-        ),
-      ),
-    );
   }
 
   Widget _showAudioReviewTemplate() {
@@ -222,10 +181,6 @@ class AudioReviewDefault extends StatelessWidget {
           addedmentions: addedmentions,
           mentionKey: mentionKey,
         ),
-        // if (captionFocus.hasFocus)
-        //   AudioUnfocus(
-        //     captionFocus: captionFocus,
-        //   ),
       ],
     );
   }
@@ -278,10 +233,6 @@ class AudioReviewWithGradient extends StatelessWidget {
           addedmentions: addedmentions,
           mentionKey: mentionKey,
         ),
-        // if (captionFocus.hasFocus)
-        //   AudioUnfocus(
-        //     captionFocus: captionFocus,
-        //   ),
       ],
     );
   }
@@ -349,10 +300,6 @@ class AudioReviewWithPhoto extends StatelessWidget {
           addedmentions: addedmentions,
           mentionKey: mentionKey,
         ),
-        // if (captionFocus.hasFocus)
-        //   AudioUnfocus(
-        //     captionFocus: captionFocus,
-        //   ),
       ],
     );
   }

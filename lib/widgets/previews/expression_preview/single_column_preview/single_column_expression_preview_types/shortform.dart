@@ -53,9 +53,10 @@ class ShortformPreview extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           mentionTextStyle: TextStyle(
             color: Theme.of(context).primaryColorDark,
-            fontSize: 17,
+            fontSize: 20,
             height: 1.5,
             fontWeight: FontWeight.w700,
+            decoration: TextDecoration.underline,
           ),
         ),
       ),

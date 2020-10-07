@@ -12,7 +12,7 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_a
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
 class CreateLinkForm extends StatefulWidget {
@@ -304,72 +304,32 @@ class CreateLinkFormState extends State<CreateLinkForm>
                         ],
                       ),
                       if (_showList && _captionFocus.hasFocus)
-                        buildUserMention(context, _users),
+                        MentionsSearchList(
+                          userList: _users,
+                          onMentionAdd: (index) {
+                            mentionKey.currentState
+                                .addMention(_finalList[index]);
+
+                            if (addedmentions.indexWhere((element) =>
+                                    element['id'] == _finalList[index]['id']) ==
+                                -1) {
+                              addedmentions = [
+                                ...addedmentions,
+                                _finalList[index]
+                              ];
+                            }
+
+                            setState(() {
+                              _showList = false;
+                            });
+                          },
+                        ),
                     ],
                   ),
                 );
               },
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Positioned buildUserMention(
-      BuildContext context, List<Map<String, dynamic>> _finalList) {
-    return Positioned(
-      bottom: 0,
-      right: 0,
-      left: 0,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          border: Border(
-            top: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: .75,
-            ),
-          ),
-        ),
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * .3,
-        ),
-        height: 300,
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          itemCount: _finalList.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return MemberPreview(
-              onUserTap: () {
-                mentionKey.currentState.addMention(_finalList[index]);
-
-                if (addedmentions.indexWhere((element) =>
-                        element['id'] == _finalList[index]['id']) ==
-                    -1) {
-                  addedmentions = [...addedmentions, _finalList[index]];
-                }
-
-                setState(() {
-                  _showList = false;
-                });
-              },
-              profile: UserProfile(
-                username: _finalList[index]['display'],
-                address: _finalList[index]['id'],
-                profilePicture: [_finalList[index]['photo']],
-                name: _finalList[index]['full_name'],
-                verified: true,
-                backgroundPhoto: _finalList[index]['backgroundPhoto'],
-                badges: [],
-                gender: [],
-                website: [],
-                bio: _finalList[index]['bio'],
-                location: [],
-              ),
-            );
-          },
         ),
       ),
     );
