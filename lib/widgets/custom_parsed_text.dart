@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-class CustomParsedText extends StatelessWidget {
+class CustomParsedText extends StatelessWidget with MemberValidation {
   final TextStyle defaultTextStyle;
   final TextStyle mentionTextStyle;
   final String text;
@@ -50,15 +51,7 @@ class CustomParsedText extends StatelessWidget {
               final userData =
                   await Provider.of<UserRepo>(context, listen: false)
                       .getUser(url);
-
-              Navigator.push(
-                context,
-                CupertinoPageRoute<Widget>(
-                  builder: (BuildContext context) => JuntoMember(
-                    profile: userData.user,
-                  ),
-                ),
-              );
+              await showUserDen(context, userData.user);
             }
           },
         ),

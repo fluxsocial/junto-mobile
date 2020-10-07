@@ -107,7 +107,7 @@ mixin MemberValidation {
   Future<void> showUserDen(BuildContext context, UserProfile profile) async {
     if (await isHostUser(profile)) {
       Navigator.push(
-        context,
+        context, 
         CupertinoPageRoute<dynamic>(
           builder: (BuildContext context) => JuntoDen(),
         ),
