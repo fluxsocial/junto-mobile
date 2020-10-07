@@ -297,16 +297,16 @@ class CreateShortformState extends State<CreateShortform>
                                       userList: _users,
                                       onMentionAdd: (index) {
                                         mentionKey.currentState
-                                            .addMention(_finalList[index]);
+                                            .addMention(_users[index]);
 
                                         if (addedmentions.indexWhere(
                                                 (element) =>
                                                     element['id'] ==
-                                                    _finalList[index]['id']) ==
+                                                    _users[index]['id']) ==
                                             -1) {
                                           addedmentions = [
                                             ...addedmentions,
-                                            _finalList[index]
+                                            _users[index]
                                           ];
                                         }
 

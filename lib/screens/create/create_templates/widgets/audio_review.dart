@@ -79,15 +79,12 @@ class _AudioReviewState extends State<AudioReview>
                         userList: _users,
                         onMentionAdd: (index) {
                           widget.mentionKey.currentState
-                              .addMention(_finalList[index]);
+                              .addMention(_users[index]);
 
                           if (addedmentions.indexWhere((element) =>
-                                  element['id'] == _finalList[index]['id']) ==
+                                  element['id'] == _users[index]['id']) ==
                               -1) {
-                            addedmentions = [
-                              ...addedmentions,
-                              _finalList[index]
-                            ];
+                            addedmentions = [...addedmentions, _users[index]];
                           }
 
                           setState(() {

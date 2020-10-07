@@ -313,16 +313,14 @@ class CreateLinkFormState extends State<CreateLinkForm>
                           child: MentionsSearchList(
                             userList: _users,
                             onMentionAdd: (index) {
-                              mentionKey.currentState
-                                  .addMention(_finalList[index]);
+                              mentionKey.currentState.addMention(_users[index]);
 
                               if (addedmentions.indexWhere((element) =>
-                                      element['id'] ==
-                                      _finalList[index]['id']) ==
+                                      element['id'] == _users[index]['id']) ==
                                   -1) {
                                 addedmentions = [
                                   ...addedmentions,
-                                  _finalList[index]
+                                  _users[index]
                                 ];
                               }
 
