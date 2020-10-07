@@ -103,7 +103,7 @@ class _AudioReviewState extends State<AudioReview>
           ),
         ),
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * .38,
+          maxHeight: MediaQuery.of(context).size.height * .3,
         ),
         child: ListView.builder(
           padding: EdgeInsets.symmetric(horizontal: 10.0),
