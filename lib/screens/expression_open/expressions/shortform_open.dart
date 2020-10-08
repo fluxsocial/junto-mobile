@@ -44,7 +44,9 @@ class ShortformOpen extends StatelessWidget {
               : Colors.white,
         ),
         mentionTextStyle: TextStyle(
-          color: Theme.of(context).primaryColorDark,
+          color: _hexOne.contains('fff') || _hexTwo.contains('fff')
+              ? Color(0xff333333)
+              : Colors.white,
           fontSize: 20,
           height: 1.5,
           fontWeight: FontWeight.w700,

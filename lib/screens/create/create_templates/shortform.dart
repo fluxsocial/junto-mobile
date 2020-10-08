@@ -247,7 +247,7 @@ class CreateShortformState extends State<CreateShortform>
                                                   gradientOne.contains('fff') ||
                                                           gradientTwo
                                                               .contains('fff')
-                                                      ? Colors.black
+                                                      ? Color(0xff333333)
                                                       : Colors.white,
                                               fontWeight: FontWeight.w700,
                                             ),
