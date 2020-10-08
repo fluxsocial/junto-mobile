@@ -20,6 +20,7 @@ enum NotificationType {
   NewSubscription,
   NewConnection,
   NewPackJoin,
+  NewMention,
 }
 
 //We store notifications list in Hive as json not as an object

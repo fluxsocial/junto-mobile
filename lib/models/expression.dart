@@ -16,16 +16,17 @@ class ExpressionModel {
     @required this.type,
     @required this.expressionData,
     this.channels = const <String>[],
+    this.mentions,
     this.context,
   });
 
   factory ExpressionModel.fromJson(Map<String, dynamic> map) {
     return ExpressionModel(
-      type: map['type'] as String,
-      channels: List<String>.from(map['channels']),
-      expressionData: map['expression_data'] as Map<String, dynamic>,
-      context: map['context'] as Map<String, dynamic>,
-    );
+        type: map['type'] as String,
+        channels: List<String>.from(map['channels']),
+        expressionData: map['expression_data'] as Map<String, dynamic>,
+        context: map['context'] as Map<String, dynamic>,
+        mentions: List<String>.from(map['mentions']));
   }
 
   /// Type of expression being created. Server currently supports  LongForm,
@@ -50,12 +51,16 @@ class ExpressionModel {
   /// list of channel UUIDs the expression will be shared to.
   final List<String> channels;
 
+  // List of mentions [uuids]
+  final List<String> mentions;
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'type': type,
       'expression_data': expressionData,
       'context': context,
       'channels': channels,
+      'mentions': mentions,
     };
   }
 
@@ -70,6 +75,7 @@ class ExpressionModel {
       expressionData: expressionData ?? this.expressionData,
       context: context ?? this.context,
       channels: channels ?? this.channels,
+      mentions: mentions ?? this.mentions,
     );
   }
 }
@@ -84,7 +90,6 @@ class AudioFormExpression {
     this.caption,
     this.thumbnail300,
     this.thumbnail600,
-    this.mentions,
   });
 
   factory AudioFormExpression.fromJson(Map<String, dynamic> json) {
@@ -96,7 +101,6 @@ class AudioFormExpression {
       caption: json['caption'] ?? '',
       thumbnail300: json['thumbnail300'],
       thumbnail600: json['thumbnail600'],
-      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -114,8 +118,6 @@ class AudioFormExpression {
   String thumbnail300;
   @HiveField(6)
   String thumbnail600;
-  @HiveField(7)
-  List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title ?? '',
@@ -125,7 +127,6 @@ class AudioFormExpression {
         'caption': caption ?? '',
         'thumbnail300': thumbnail300 ?? '',
         'thumbnail600': thumbnail600 ?? '',
-        'mentions': mentions,
       };
 }
 
@@ -134,27 +135,23 @@ class LongFormExpression {
   LongFormExpression({
     this.title,
     this.body,
-    this.mentions,
   });
 
   factory LongFormExpression.fromJson(Map<String, dynamic> json) {
     return LongFormExpression(
-        title: json['title'] ?? '',
-        body: json['body'] ?? '',
-        mentions: json['mentions'] ?? []);
+      title: json['title'] ?? '',
+      body: json['body'] ?? '',
+    );
   }
 
   @HiveField(0)
   final String title;
   @HiveField(1)
   final String body;
-  @HiveField(2)
-  final List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'body': body,
-        'mentions': mentions,
       };
 }
 
@@ -163,14 +160,12 @@ class ShortFormExpression {
   ShortFormExpression({
     @required this.background,
     @required this.body,
-    this.mentions,
   });
 
   factory ShortFormExpression.fromJson(Map<String, dynamic> json) {
     return ShortFormExpression(
       background: json['background'],
       body: json['body'],
-      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -178,13 +173,10 @@ class ShortFormExpression {
   final List<dynamic> background;
   @HiveField(1)
   final String body;
-  @HiveField(2)
-  final List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'background': background,
         'body': body,
-        'mentions': mentions,
       };
 }
 
@@ -195,7 +187,6 @@ class LinkFormExpression {
     @required this.caption,
     @required this.url,
     @required this.data,
-    this.mentions,
   });
 
   factory LinkFormExpression.fromJson(Map<String, dynamic> json) {
@@ -204,7 +195,6 @@ class LinkFormExpression {
       caption: json['caption'],
       url: json['url'],
       data: OEmbedResponse.fromMap(json['data']),
-      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -215,14 +205,11 @@ class LinkFormExpression {
   @HiveField(2)
   final String url;
   final OEmbedResponse data;
-  @HiveField(3)
-  final List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'caption': caption,
         'url': url,
-        'mentions': mentions,
       };
 }
 
@@ -233,7 +220,6 @@ class PhotoFormExpression {
     this.caption,
     this.thumbnail300,
     this.thumbnail600,
-    this.mentions,
   });
 
   factory PhotoFormExpression.fromJson(Map<String, dynamic> json) {
@@ -242,7 +228,6 @@ class PhotoFormExpression {
       caption: json['caption'],
       thumbnail300: json['thumbnail300'],
       thumbnail600: json['thumbnail600'],
-      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -254,15 +239,12 @@ class PhotoFormExpression {
   String thumbnail300;
   @HiveField(3)
   String thumbnail600;
-  @HiveField(4)
-  final List<String> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'image': image,
         'caption': caption,
         'thumbnail300': thumbnail300,
         'thumbnail600': thumbnail600,
-        'mentions': mentions,
       };
 }
 
@@ -350,14 +332,12 @@ class ExpressionResponse extends HiveObject {
         json['created_at'],
       ),
       resonations: json['resonations'],
-      // numberResonations: json['resonations'],
       creator: UserProfile.fromJson(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
       channels: json['channels'],
       context: json['context'] ?? '',
-      // numberComments: json['comments'],
       comments: json['comments'],
     );
   }
@@ -382,21 +362,6 @@ class ExpressionResponse extends HiveObject {
       comments: json['comments'],
       resonations: json['resonations'],
     );
-
-    // comments: json['comments'].runtimeType == int
-    //     ? json['comments']
-    //     : List<Comment>.from(
-    //         json['comments']['results'].map(
-    //           (dynamic comment) => Comment.fromJson(comment),
-    //         ),
-    //       ),
-    // resonations: json['resonations'].runtimeType == int
-    //     ? json['resonations']
-    //     : List<UserProfile>.from(
-    //         json['resonations']['results'].map(
-    //           (dynamic res) => UserProfile.fromJson(res),
-    //         ),
-    //       ),
   }
 
   @HiveField(0)

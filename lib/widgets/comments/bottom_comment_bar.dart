@@ -66,7 +66,6 @@ class BottomCommentBarState extends State<BottomCommentBar>
           LongFormExpression(
             title: '',
             body: markupText.trim(),
-            mentions: mentions,
           ).toJson(),
         );
         commentController.clear();

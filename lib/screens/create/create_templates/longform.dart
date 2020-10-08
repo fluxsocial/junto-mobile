@@ -57,12 +57,10 @@ class CreateLongformState extends State<CreateLongform>
   /// by the user.
   LongFormExpression createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
-    final mentions = getMentionUserId(markupText);
 
     return LongFormExpression(
       title: _titleController.value.text.trim(),
       body: markupText.trim(),
-      mentions: mentions,
     );
   }
 
@@ -87,6 +85,8 @@ class CreateLongformState extends State<CreateLongform>
   void _onNext() {
     if (expressionHasData() == true) {
       final LongFormExpression expression = createExpression();
+      final mentions = getMentionUserId(expression.body);
+
       Navigator.push(
         context,
         MaterialPageRoute<dynamic>(
@@ -103,6 +103,7 @@ class CreateLongformState extends State<CreateLongform>
                 address: widget.address,
                 expressionContext: widget.expressionContext,
                 expression: expression,
+                mentions: mentions,
               );
             }
           },

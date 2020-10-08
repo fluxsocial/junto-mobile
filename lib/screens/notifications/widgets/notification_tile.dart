@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/screens/notifications/notification_types/comme
 import 'package:junto_beta_mobile/screens/notifications/notification_types/connection_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/pack_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/mention_notification.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +43,9 @@ class NotificationTile extends StatelessWidget {
         break;
       case NotificationType.NewPackJoin:
         content = AcceptPackNotification(item: item);
+        break;
+      case NotificationType.NewMention:
+        content = MentionNotification(item: item);
         break;
     }
 
