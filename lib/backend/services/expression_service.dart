@@ -246,14 +246,11 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, dynamic> params) async {
-    print('getting collective expressions');
-
     final Response response = await client.get(
       '/expressions',
       queryParams: params,
     );
-    print('status code of collective expressions');
-    print(response.statusCode);
+
     final dynamic results = JuntoHttp.handleResponse(response);
     if (results != null && results is Map<dynamic, dynamic>) {
       return QueryResults<ExpressionResponse>(
