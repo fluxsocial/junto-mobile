@@ -44,7 +44,7 @@ class LongformOpen extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     defaultTextStyle: TextStyle(
                       height: 1.5,
-                      color: Theme.of(context).primaryColorDark,
+                      color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 17,
                     ),
