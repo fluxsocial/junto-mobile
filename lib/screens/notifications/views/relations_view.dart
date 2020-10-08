@@ -31,8 +31,7 @@ class NotificationsRelationsView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = notifications[index];
                   if (notifications.length > 0 &&
-                          item.notificationType !=
-                              NotificationType.NewComment &&
+                      item.notificationType != NotificationType.NewComment &&
                       item.notificationType != NotificationType.NewMention) {
                     return NotificationTile(item: item);
                   } else {

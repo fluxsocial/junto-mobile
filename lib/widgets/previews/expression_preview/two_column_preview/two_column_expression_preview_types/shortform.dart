@@ -37,7 +37,6 @@ class ShortformPreview extends StatelessWidget {
           minHeight: MediaQuery.of(context).size.height * .24,
         ),
         alignment: Alignment.center,
-        // width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
         child: CustomParsedText(
           shortformBody,

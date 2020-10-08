@@ -11,7 +11,6 @@ class MentionNotification extends StatelessWidget {
   const MentionNotification({Key key, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print(item);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
