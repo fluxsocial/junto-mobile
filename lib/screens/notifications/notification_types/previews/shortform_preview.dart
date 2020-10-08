@@ -13,7 +13,6 @@ class NotificationShortformPreview extends StatelessWidget {
     final ExpressionSlimModel sourceExpression = item.sourceExpression;
     final String _hexOne =
         item.sourceExpression.expressionData['background'][0];
-
     final String _hexTwo =
         item.sourceExpression.expressionData['background'][1];
 
