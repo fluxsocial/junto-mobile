@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class NotificationShortformPreview extends StatelessWidget {
   const NotificationShortformPreview({this.item});
@@ -26,9 +27,16 @@ class NotificationShortformPreview extends StatelessWidget {
         horizontal: 20.0,
         vertical: 40.0,
       ),
-      child: Text(
+      child: CustomParsedText(
         sourceExpression.expressionData['body'],
-        style: TextStyle(
+        defaultTextStyle: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+          color: _hexOne.contains('fff') || _hexTwo.contains('fff')
+              ? Color(0xff333333)
+              : Colors.white,
+        ),
+        mentionTextStyle: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w700,
           color: _hexOne.contains('fff') || _hexTwo.contains('fff')
@@ -37,7 +45,6 @@ class NotificationShortformPreview extends StatelessWidget {
         ),
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.center,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
