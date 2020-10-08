@@ -36,7 +36,7 @@ class MentionNotification extends StatelessWidget {
               ),
             ],
           ),
-          // NotificationExpressionPreview(item: item),
+          NotificationExpressionPreview(item: item),
         ],
       ),
     );

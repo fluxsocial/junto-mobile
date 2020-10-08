@@ -262,6 +262,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _postCreateAction();
     } on DioError catch (error) {
       JuntoLoader.hide();
+
       // Handle max number of posts/day error
       if (error.response.statusCode == 400 ||
           error.message.toString() == 'Http status error [400]') {
