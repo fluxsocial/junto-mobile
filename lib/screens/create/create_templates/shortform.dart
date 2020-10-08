@@ -50,12 +50,10 @@ class CreateShortformState extends State<CreateShortform>
   /// by the user.
   ShortFormExpression createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
-    final mentions = getMentionUserId(markupText);
 
     return ShortFormExpression(
       body: markupText.trim(),
       background: <dynamic>[gradientOne, gradientTwo],
-      mentions: mentions,
     );
   }
 
@@ -108,6 +106,8 @@ class CreateShortformState extends State<CreateShortform>
   void _onNext() {
     if (expressionHasData() == true) {
       final ShortFormExpression expression = createExpression();
+      final mentions = getMentionUserId(expression.body);
+
       Navigator.push(
         context,
         MaterialPageRoute<dynamic>(
@@ -124,6 +124,7 @@ class CreateShortformState extends State<CreateShortform>
                 address: widget.address,
                 expressionContext: widget.expressionContext,
                 expression: expression,
+                mentions: mentions,
               );
             }
           },
@@ -242,8 +243,12 @@ class CreateShortformState extends State<CreateShortform>
                                             trigger: '@',
                                             data: [..._finalList],
                                             style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
+                                              color:
+                                                  gradientOne.contains('fff') ||
+                                                          gradientTwo
+                                                              .contains('fff')
+                                                      ? Colors.black
+                                                      : Colors.white,
                                               fontWeight: FontWeight.w700,
                                             ),
                                             markupBuilder:

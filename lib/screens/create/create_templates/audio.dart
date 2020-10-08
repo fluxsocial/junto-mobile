@@ -198,7 +198,6 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
         audio: audio.recordingPath,
         gradient: audioGradientValues,
         caption: markupText.trim(),
-        mentions: mentions,
       );
 
       Navigator.push(
@@ -217,6 +216,7 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
                 address: widget.address,
                 expressionContext: widget.expressionContext,
                 expression: audioExpression,
+                mentions: mentions,
               );
             }
           },

@@ -71,7 +71,6 @@ class CreateLinkFormState extends State<CreateLinkForm>
 
   LinkFormExpression createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
-    final mentions = getMentionUserId(markupText);
 
     return LinkFormExpression(
       caption: markupText.trim(),
@@ -80,7 +79,6 @@ class CreateLinkFormState extends State<CreateLinkForm>
           : _titleController.value.text.trim(),
       url: _urlController.value.text.trim(),
       data: null,
-      mentions: mentions,
     );
   }
 
@@ -99,6 +97,8 @@ class CreateLinkFormState extends State<CreateLinkForm>
   void _onNext() {
     if (validate() == true) {
       final LinkFormExpression expression = createExpression();
+      final mentions = getMentionUserId(expression.caption);
+
       Navigator.push(
         context,
         MaterialPageRoute<dynamic>(
@@ -115,6 +115,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
                 address: widget.address,
                 expressionContext: widget.expressionContext,
                 expression: expression,
+                mentions: mentions,
               );
             }
           },
