@@ -58,6 +58,21 @@ mixin CreateExpressionHelpers {
 
     return users ?? [];
   }
+
+  List<Map<String, dynamic>> generateFinalList(
+      List<Map<String, dynamic>> _completeList, _users) {
+    final newList = [..._completeList];
+
+    for (var item in _users) {
+      final found = _completeList.indexWhere((e) => item['id'] == e['id']);
+
+      if (found == -1) {
+        newList.add(item);
+      }
+    }
+
+    return newList;
+  }
 }
 
 /// Mixin containing a helper list method
@@ -107,7 +122,7 @@ mixin MemberValidation {
   Future<void> showUserDen(BuildContext context, UserProfile profile) async {
     if (await isHostUser(profile)) {
       Navigator.push(
-        context, 
+        context,
         CupertinoPageRoute<dynamic>(
           builder: (BuildContext context) => JuntoDen(),
         ),
