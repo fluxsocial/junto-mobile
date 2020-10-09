@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
@@ -39,6 +40,8 @@ class CreateShortformState extends State<CreateShortform>
       GlobalKey<FlutterMentionsState>();
   bool _showList = false;
   List<Map<String, dynamic>> addedmentions = [];
+  List<Map<String, dynamic>> users = [];
+  List<Map<String, dynamic>> completeList = [];
 
   void toggleBottomNav() {
     setState(() {
@@ -181,12 +184,30 @@ class CreateShortformState extends State<CreateShortform>
                   children: [
                     Form(
                       autovalidateMode: AutovalidateMode.disabled,
-                      child: BlocBuilder<SearchBloc, SearchState>(
+                      child: BlocConsumer<SearchBloc, SearchState>(
+                        buildWhen: (prev, cur) {
+                          return !(cur is LoadingSearchState);
+                        },
+                        listener: (context, state) {
+                          if (!(state is LoadingSearchState)) {
+                            final eq =
+                                DeepCollectionEquality.unordered().equals;
+
+                            final _users = getUserList(state, []);
+
+                            final isEqual = eq(users, _users);
+
+                            if (!isEqual) {
+                              setState(() {
+                                users = _users;
+
+                                completeList =
+                                    generateFinalList(completeList, _users);
+                              });
+                            }
+                          }
+                        },
                         builder: (context, state) {
-                          final _users = getUserList(state, []);
-
-                          final _finalList = [...addedmentions, ..._users];
-
                           return Container(
                             child: Stack(
                               children: [
@@ -226,9 +247,15 @@ class CreateShortformState extends State<CreateShortform>
                                         autofocus: false,
                                         onSearchChanged:
                                             (String trigger, String value) {
-                                          context
-                                              .bloc<SearchBloc>()
-                                              .add(SearchingEvent(value, true));
+                                          if (value.isNotEmpty && _showList) {
+                                            context.bloc<SearchBloc>().add(
+                                                SearchingEvent(value, true));
+                                          } else {
+                                            setState(() {
+                                              users = [];
+                                              _showList = false;
+                                            });
+                                          }
                                         },
                                         onSuggestionVisibleChanged: (val) {
                                           if (val != _showList) {
@@ -241,7 +268,10 @@ class CreateShortformState extends State<CreateShortform>
                                         mentions: [
                                           Mention(
                                             trigger: '@',
-                                            data: [..._finalList],
+                                            data: [
+                                              ...addedmentions,
+                                              ...completeList
+                                            ],
                                             style: TextStyle(
                                               color:
                                                   gradientOne.contains('fff') ||
@@ -299,24 +329,25 @@ class CreateShortformState extends State<CreateShortform>
                                     right: 0,
                                     left: 0,
                                     child: MentionsSearchList(
-                                      userList: _users,
+                                      userList: users,
                                       onMentionAdd: (index) {
                                         mentionKey.currentState
-                                            .addMention(_users[index]);
+                                            .addMention(users[index]);
 
                                         if (addedmentions.indexWhere(
                                                 (element) =>
                                                     element['id'] ==
-                                                    _users[index]['id']) ==
+                                                    users[index]['id']) ==
                                             -1) {
                                           addedmentions = [
                                             ...addedmentions,
-                                            _users[index]
+                                            users[index]
                                           ];
                                         }
 
                                         setState(() {
                                           _showList = false;
+                                          users = [];
                                         });
                                       },
                                     ),
