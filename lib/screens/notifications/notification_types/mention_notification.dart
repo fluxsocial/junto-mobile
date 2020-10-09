@@ -17,7 +17,7 @@ class MentionNotification extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              // UserProfilePicture(item: item),
+              UserProfilePicture(item: item),
               const SizedBox(width: 10),
               Flexible(
                 child: RichText(
