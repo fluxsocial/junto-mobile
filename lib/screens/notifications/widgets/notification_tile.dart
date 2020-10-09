@@ -50,7 +50,8 @@ class NotificationTile extends StatelessWidget {
     }
 
     void navigateTo(BuildContext context) async {
-      if (item.notificationType == NotificationType.NewComment) {
+      if (item.notificationType == NotificationType.NewComment ||
+          item.notificationType == NotificationType.NewMention) {
         JuntoLoader.showLoader(context);
 
         try {
