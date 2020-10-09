@@ -68,7 +68,7 @@ class JuntoContactsState extends State<JuntoContacts> {
     // Sort list alphabetically
     contactsAsList.sort((a, b) {
       if (a.displayName != null && b.displayName != null) {
-        a.displayName.compareTo(b.displayName);
+        return a.displayName.compareTo(b.displayName);
       }
       return 0;
     });
@@ -301,7 +301,10 @@ class JuntoContactsList extends StatelessWidget {
 }
 
 class JuntoContactsSearch extends StatelessWidget {
-  const JuntoContactsSearch({this.searchController, this.filterSearchResults});
+  const JuntoContactsSearch({
+    this.searchController,
+    this.filterSearchResults,
+  });
 
   final TextEditingController searchController;
   final Function filterSearchResults;
