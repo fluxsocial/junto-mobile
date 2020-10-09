@@ -264,13 +264,19 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       JuntoLoader.hide();
 
       // Handle max number of posts/day error
-      if (error.response.statusCode == 400 ||
-          error.message.toString() == 'Http status error [400]') {
+      if (error.response.statusCode == 429) {
         showDialog(
           context: context,
           builder: (BuildContext context) => const SingleActionDialog(
             dialogText:
                 'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: error.response.data.toString(),
           ),
         );
       }
