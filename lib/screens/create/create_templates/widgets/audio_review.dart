@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
@@ -39,6 +40,15 @@ class _AudioReviewState extends State<AudioReview>
   bool _showList = false;
 
   List<Map<String, dynamic>> addedmentions = [];
+  List<Map<String, dynamic>> users = [];
+  List<Map<String, dynamic>> completeList = [];
+
+  void hideList() {
+    setState(() {
+      _showList = false;
+      users = [];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +57,28 @@ class _AudioReviewState extends State<AudioReview>
         create: (BuildContext context) {
           return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
         },
-        child: BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, state) {
-            final _users = getUserList(state, []);
-            final _finalList = [...addedmentions, ..._users];
+        child: BlocConsumer<SearchBloc, SearchState>(
+          buildWhen: (prev, cur) {
+            return !(cur is LoadingSearchState);
+          },
+          listener: (context, state) {
+            if (!(state is LoadingSearchState)) {
+              final eq = DeepCollectionEquality.unordered().equals;
 
+              final _users = getUserList(state, []);
+
+              final isEqual = eq(users, _users);
+
+              if (!isEqual) {
+                setState(() {
+                  users = _users;
+
+                  completeList = generateFinalList(completeList, _users);
+                });
+              }
+            }
+          },
+          builder: (context, state) {
             return Container(
               child: Stack(
                 children: [
@@ -76,20 +103,18 @@ class _AudioReviewState extends State<AudioReview>
                       right: 0,
                       left: 0,
                       child: MentionsSearchList(
-                        userList: _users,
+                        userList: users,
                         onMentionAdd: (index) {
                           widget.mentionKey.currentState
-                              .addMention(_users[index]);
+                              .addMention(users[index]);
 
                           if (addedmentions.indexWhere((element) =>
-                                  element['id'] == _users[index]['id']) ==
+                                  element['id'] == users[index]['id']) ==
                               -1) {
-                            addedmentions = [...addedmentions, _users[index]];
+                            addedmentions = [...addedmentions, users[index]];
                           }
 
-                          setState(() {
-                            _showList = false;
-                          });
+                          hideList();
                         },
                       ),
                     ),
@@ -106,6 +131,10 @@ class _AudioReviewState extends State<AudioReview>
     if (value != _showList) {
       setState(() {
         _showList = value;
+
+        if (!value) {
+          users = [];
+        }
       });
     }
   }
@@ -118,8 +147,9 @@ class _AudioReviewState extends State<AudioReview>
         captionController: widget.captionController,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
-        addedmentions: addedmentions,
+        completeMentionList: [...addedmentions, ...completeList],
         mentionKey: widget.mentionKey,
+        showList: _showList,
       );
     } else if (widget.audioPhotoBackground != null &&
         widget.audioGradientValues.isEmpty) {
@@ -129,8 +159,9 @@ class _AudioReviewState extends State<AudioReview>
         audioPhotoBackground: widget.audioPhotoBackground,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
-        addedmentions: addedmentions,
+        completeMentionList: [...addedmentions, ...completeList],
         mentionKey: widget.mentionKey,
+        showList: _showList,
       );
     } else if (widget.audioPhotoBackground == null &&
         widget.audioGradientValues.isNotEmpty) {
@@ -140,8 +171,9 @@ class _AudioReviewState extends State<AudioReview>
         audioGradientValues: widget.audioGradientValues,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
-        addedmentions: addedmentions,
+        completeMentionList: [...addedmentions, ...completeList],
         mentionKey: widget.mentionKey,
+        showList: _showList,
       );
     } else {
       return AudioReviewDefault(
@@ -149,8 +181,9 @@ class _AudioReviewState extends State<AudioReview>
         titleController: widget.titleController,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
-        addedmentions: addedmentions,
+        completeMentionList: [...addedmentions, ...completeList],
         mentionKey: widget.mentionKey,
+        showList: _showList,
       );
     }
   }
@@ -162,16 +195,18 @@ class AudioReviewDefault extends StatelessWidget {
     this.captionController,
     this.captionFocus,
     this.toggleSearch,
-    this.addedmentions,
+    this.completeMentionList,
     this.mentionKey,
+    this.showList,
   });
 
   final TextEditingController titleController;
   final TextEditingController captionController;
   final FocusNode captionFocus;
   final Function(bool) toggleSearch;
-  final List<Map<String, dynamic>> addedmentions;
+  final List<Map<String, dynamic>> completeMentionList;
   final GlobalKey<FlutterMentionsState> mentionKey;
+  final bool showList;
 
   @override
   Widget build(BuildContext context) {
@@ -185,8 +220,9 @@ class AudioReviewDefault extends StatelessWidget {
           captionController: captionController,
           captionFocus: captionFocus,
           toggleSearch: toggleSearch,
-          addedmentions: addedmentions,
+          completeMentionList: completeMentionList,
           mentionKey: mentionKey,
+          showList: showList,
         ),
       ],
     );
@@ -200,8 +236,9 @@ class AudioReviewWithGradient extends StatelessWidget {
     this.captionFocus,
     this.audioGradientValues,
     this.toggleSearch,
-    this.addedmentions,
+    this.completeMentionList,
     this.mentionKey,
+    this.showList,
   });
 
   final TextEditingController titleController;
@@ -209,8 +246,9 @@ class AudioReviewWithGradient extends StatelessWidget {
   final FocusNode captionFocus;
   final List<String> audioGradientValues;
   final Function(bool) toggleSearch;
-  final List<Map<String, dynamic>> addedmentions;
+  final List<Map<String, dynamic>> completeMentionList;
   final GlobalKey<FlutterMentionsState> mentionKey;
+  final bool showList;
 
   @override
   Widget build(BuildContext context) {
@@ -237,8 +275,9 @@ class AudioReviewWithGradient extends StatelessWidget {
           captionController: captionController,
           captionFocus: captionFocus,
           toggleSearch: toggleSearch,
-          addedmentions: addedmentions,
+          completeMentionList: completeMentionList,
           mentionKey: mentionKey,
+          showList: showList,
         ),
       ],
     );
@@ -252,8 +291,9 @@ class AudioReviewWithPhoto extends StatelessWidget {
     this.captionFocus,
     this.audioPhotoBackground,
     this.toggleSearch,
-    this.addedmentions,
+    this.completeMentionList,
     this.mentionKey,
+    this.showList,
   });
 
   final titleController;
@@ -261,8 +301,9 @@ class AudioReviewWithPhoto extends StatelessWidget {
   final FocusNode captionFocus;
   final File audioPhotoBackground;
   final Function(bool) toggleSearch;
-  final List<Map<String, dynamic>> addedmentions;
+  final List<Map<String, dynamic>> completeMentionList;
   final GlobalKey<FlutterMentionsState> mentionKey;
+  final bool showList;
 
   @override
   Widget build(BuildContext context) {
@@ -304,8 +345,9 @@ class AudioReviewWithPhoto extends StatelessWidget {
           captionController: captionController,
           captionFocus: captionFocus,
           toggleSearch: toggleSearch,
-          addedmentions: addedmentions,
+          completeMentionList: completeMentionList,
           mentionKey: mentionKey,
+          showList: showList,
         ),
       ],
     );
@@ -401,24 +443,22 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
     @required this.captionController,
     @required this.captionFocus,
     this.toggleSearch,
-    this.addedmentions,
+    this.completeMentionList,
     this.mentionKey,
+    this.showList,
   }) : super(key: key);
 
   final TextEditingController captionController;
   final FocusNode captionFocus;
   final Function(bool) toggleSearch;
-  final List<Map<String, dynamic>> addedmentions;
+  final List<Map<String, dynamic>> completeMentionList;
   final GlobalKey<FlutterMentionsState> mentionKey;
+  final bool showList;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
-        final _users = getUserList(state, []);
-
-        final _finalList = [...addedmentions, ..._users];
-
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: FlutterMentions(
@@ -426,13 +466,15 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
             focusNode: captionFocus,
             autofocus: false,
             onSearchChanged: (String trigger, String value) {
-              context.bloc<SearchBloc>().add(SearchingEvent(value, true));
+              if (value.isNotEmpty && showList) {
+                context.bloc<SearchBloc>().add(SearchingEvent(value, true));
+              }
             },
             onSuggestionVisibleChanged: toggleSearch,
             mentions: [
               Mention(
                 trigger: '@',
-                data: [..._finalList],
+                data: [...completeMentionList],
                 style: TextStyle(
                   color: Theme.of(context).primaryColorDark,
                   fontWeight: FontWeight.w700,
