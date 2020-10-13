@@ -32,6 +32,17 @@ mixin CreateExpressionHelpers {
     return mentions;
   }
 
+  List<String> getChannelsId(String text) {
+    RegExp customRegExp = RegExp(r"([#][^\s#\@]*)");
+
+    final match = customRegExp.allMatches(text).toList();
+
+    final channels =
+        match.map((e) => e.group(0).replaceAll('#', '')).toSet().toList();
+
+    return channels;
+  }
+
   List<Map<String, dynamic>> getUserList(
     SearchState state,
     List<Map<String, dynamic>> addedmentions,
@@ -52,6 +63,28 @@ mixin CreateExpressionHelpers {
           'photo': e.profilePicture.length > 0 ? e.profilePicture[0] : '',
           'bio': e.bio,
           'backgroundPhoto': e.backgroundPhoto,
+        });
+      }).toList();
+    }
+
+    return users ?? [];
+  }
+
+  List<Map<String, dynamic>> getChannelsList(
+    SearchState state,
+    List<Map<String, dynamic>> addedChannels,
+  ) {
+    List<Map<String, dynamic>> users = <Map<String, dynamic>>[];
+
+    if (state is LoadedSearchChannelState) {
+      final _listUsers = state?.results;
+
+      users = _listUsers.where((element) {
+        return addedChannels.indexWhere((e) => element.name == e['id']) == -1;
+      }).map((e) {
+        return ({
+          'id': e.name,
+          'display': e.name,
         });
       }).toList();
     }

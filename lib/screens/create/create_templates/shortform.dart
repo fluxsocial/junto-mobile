@@ -14,9 +14,12 @@ import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
+
+enum ListType { mention, channels, empty }
 
 /// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
@@ -41,7 +44,11 @@ class CreateShortformState extends State<CreateShortform>
   bool _showList = false;
   List<Map<String, dynamic>> addedmentions = [];
   List<Map<String, dynamic>> users = [];
-  List<Map<String, dynamic>> completeList = [];
+  List<Map<String, dynamic>> completeUserList = [];
+  List<Map<String, dynamic>> addedChannels = [];
+  List<Map<String, dynamic>> channels = [];
+  List<Map<String, dynamic>> completeChannelsList = [];
+  ListType listType = ListType.empty;
 
   void toggleBottomNav() {
     setState(() {
@@ -110,6 +117,7 @@ class CreateShortformState extends State<CreateShortform>
     if (expressionHasData() == true) {
       final ShortFormExpression expression = createExpression();
       final mentions = getMentionUserId(expression.body);
+      final channels = getChannelsId(expression.body);
 
       Navigator.push(
         context,
@@ -128,6 +136,7 @@ class CreateShortformState extends State<CreateShortform>
                 expressionContext: widget.expressionContext,
                 expression: expression,
                 mentions: mentions,
+                channels: channels,
               );
             }
           },
@@ -186,10 +195,12 @@ class CreateShortformState extends State<CreateShortform>
                       autovalidateMode: AutovalidateMode.disabled,
                       child: BlocConsumer<SearchBloc, SearchState>(
                         buildWhen: (prev, cur) {
-                          return !(cur is LoadingSearchState);
+                          return !(cur is LoadingSearchState ||
+                              cur is LoadingSearchChannelState);
                         },
                         listener: (context, state) {
-                          if (!(state is LoadingSearchState)) {
+                          if (!(state is LoadingSearchState) &&
+                              (state is SearchUserState)) {
                             final eq =
                                 DeepCollectionEquality.unordered().equals;
 
@@ -201,8 +212,31 @@ class CreateShortformState extends State<CreateShortform>
                               setState(() {
                                 users = _users;
 
-                                completeList =
-                                    generateFinalList(completeList, _users);
+                                listType = ListType.mention;
+
+                                completeUserList =
+                                    generateFinalList(completeUserList, _users);
+                              });
+                            }
+                          }
+
+                          if (!(state is LoadingSearchChannelState) &&
+                              (state is SearchChannelState)) {
+                            final eq =
+                                DeepCollectionEquality.unordered().equals;
+
+                            final _channels = getChannelsList(state, []);
+
+                            final isEqual = eq(channels, _channels);
+
+                            if (!isEqual) {
+                              setState(() {
+                                channels = _channels;
+
+                                listType = ListType.channels;
+
+                                completeChannelsList = generateFinalList(
+                                    completeChannelsList, _channels);
                               });
                             }
                           }
@@ -248,11 +282,20 @@ class CreateShortformState extends State<CreateShortform>
                                         onSearchChanged:
                                             (String trigger, String value) {
                                           if (value.isNotEmpty && _showList) {
-                                            context.bloc<SearchBloc>().add(
-                                                SearchingEvent(value, true));
+                                            final channel = trigger == '#';
+
+                                            if (!channel) {
+                                              context.bloc<SearchBloc>().add(
+                                                  SearchingEvent(value, true));
+                                            } else {
+                                              context.bloc<SearchBloc>().add(
+                                                  SearchingChannelEvent(value));
+                                            }
                                           } else {
                                             setState(() {
                                               users = [];
+                                              channels = [];
+                                              listType = ListType.empty;
                                               _showList = false;
                                             });
                                           }
@@ -270,21 +313,31 @@ class CreateShortformState extends State<CreateShortform>
                                             trigger: '@',
                                             data: [
                                               ...addedmentions,
-                                              ...completeList
+                                              ...completeUserList
                                             ],
                                             style: TextStyle(
-                                              color:
-                                                  gradientOne.contains('fff') ||
-                                                          gradientTwo
-                                                              .contains('fff')
-                                                      ? Color(0xff333333)
-                                                      : Colors.white,
+                                              color: Theme.of(context)
+                                                  .primaryColorDark,
                                               fontWeight: FontWeight.w700,
                                             ),
                                             markupBuilder:
                                                 (trigger, mention, value) {
                                               return '[$trigger$value:$mention]';
                                             },
+                                          ),
+                                          Mention(
+                                            trigger: '#',
+                                            disableMarkup: true,
+                                            data: [
+                                              ...addedChannels,
+                                              ...completeChannelsList
+                                            ],
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColorDark,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            matchAll: true,
                                           ),
                                         ],
                                         buildCounter: (
@@ -323,7 +376,9 @@ class CreateShortformState extends State<CreateShortform>
                                     ),
                                   ),
                                 ),
-                                if (_showList && _focus.hasFocus)
+                                if (_showList &&
+                                    _focus.hasFocus &&
+                                    listType == ListType.mention)
                                   Positioned(
                                     bottom: 0,
                                     right: 0,
@@ -348,6 +403,37 @@ class CreateShortformState extends State<CreateShortform>
                                         setState(() {
                                           _showList = false;
                                           users = [];
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                if (_showList &&
+                                    _focus.hasFocus &&
+                                    listType == ListType.channels)
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    left: 0,
+                                    child: ChannelsSearchList(
+                                      channels: channels,
+                                      onChannelAdd: (index) {
+                                        mentionKey.currentState
+                                            .addMention(channels[index]);
+
+                                        if (addedChannels.indexWhere(
+                                                (element) =>
+                                                    element['id'] ==
+                                                    channels[index]['id']) ==
+                                            -1) {
+                                          addedChannels = [
+                                            ...addedChannels,
+                                            channels[index]
+                                          ];
+                                        }
+
+                                        setState(() {
+                                          _showList = false;
+                                          channels = [];
                                         });
                                       },
                                     ),

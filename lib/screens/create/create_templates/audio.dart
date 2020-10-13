@@ -191,6 +191,7 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
     if (expressionHasData(audio)) {
       final markupText = mentionKey.currentState.controller.markupText;
       final mentions = getMentionUserId(markupText);
+      final channels = getChannelsId(markupText);
 
       final audioExpression = AudioFormExpression(
         title: titleController.text.trim(),
@@ -217,6 +218,7 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
                 expressionContext: widget.expressionContext,
                 expression: audioExpression,
                 mentions: mentions,
+                channels: channels,
               );
             }
           },

@@ -36,8 +36,34 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (event is SearchingEvent) {
       yield* _mapSearchingEventToState(event);
     }
+
+    if (event is SearchingChannelEvent) {
+      yield* _mapSearchingChannelEventToState(event);
+    }
+
     if (event is FetchMoreSearchResEvent) {
       yield* _mapFetchMoreEventToState(event);
+    }
+  }
+
+  Stream<SearchState> _mapSearchingChannelEventToState(
+      SearchingChannelEvent event) async* {
+    yield LoadingSearchChannelState();
+    if (event.query != null && event.query.isNotEmpty) {
+      try {
+        final result = await _getChannels(event.query);
+
+        if (result.results.isNotEmpty) {
+          yield LoadedSearchChannelState(result.results);
+        } else {
+          yield EmptySearchChannelState();
+        }
+      } catch (error, stack) {
+        logger.logException(error, stack);
+        yield ErrorSearchChannelState("Error searching");
+      }
+    } else {
+      yield EmptySearchChannelState();
     }
   }
 
@@ -46,6 +72,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (event.query != null && event.query.isNotEmpty) {
       try {
         final result = await _getUsers(event.query, null, null, event.username);
+
         if (result.results.isNotEmpty) {
           yield LoadedSearchState(result.results);
         } else {
@@ -87,6 +114,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       [int pos, String time, bool username = true]) async {
     final result = await searchRepo.searchMembers(query,
         paginationPosition: pos, lastTimeStamp: time, username: username);
+    lastTimeStamp = result.lastTimestamp;
+    return result;
+  }
+
+  Future<QueryResults<Channel>> _getChannels(String query,
+      [int paginationPosition = 0, DateTime time]) async {
+    final result = await searchRepo.searchChannel(query,
+        paginationPosition: paginationPosition, lastTimeStamp: time);
     lastTimeStamp = result.lastTimestamp;
     return result;
   }
