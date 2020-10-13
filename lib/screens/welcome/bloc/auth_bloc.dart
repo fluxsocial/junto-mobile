@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
@@ -125,6 +126,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield AuthState.unauthenticated(
           error: true,
           errorMessage: 'Sorry, we have some problems signing you in');
+    } on PlatformException catch (_) {
+      add(LogoutEvent());
+      yield AuthState.unauthenticated();
     } catch (error) {
       logger.logException(error);
       yield AuthState.unauthenticated();
