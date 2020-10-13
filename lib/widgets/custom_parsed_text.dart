@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +45,18 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
             map['value'] = match.group(2);
             return map;
           },
+          onTap: (url) async {
+            if (!disableOnMentiontap) {
+              final userData =
+                  await Provider.of<UserRepo>(context, listen: false)
+                      .getUser(url);
+              await showUserDen(context, userData.user);
+            }
+          },
+        ),
+        MatchText(
+          pattern: r"([#][^\s#\@]*)",
+          style: mentionTextStyle,
           onTap: (url) async {
             if (!disableOnMentiontap) {
               final userData =
