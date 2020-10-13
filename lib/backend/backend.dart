@@ -12,6 +12,7 @@ import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/backend/services/app_service.dart';
 import 'package:junto_beta_mobile/backend/services/auth_cognito_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
 import 'package:junto_beta_mobile/backend/services/expression_service.dart';
@@ -23,7 +24,6 @@ import 'package:junto_beta_mobile/backend/services/search_service.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
 import 'package:junto_beta_mobile/backend/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
-import 'package:junto_beta_mobile/backend/services/app_service.dart';
 
 export 'package:junto_beta_mobile/backend/repositories.dart';
 export 'package:junto_beta_mobile/backend/services.dart';
@@ -49,7 +49,6 @@ class Backend {
   // ignore: missing_return
   static Future<Backend> init() async {
     try {
-      logger.logDebug('Initializing backend');
       final dbService = HiveCache();
       await dbService.init();
       final themesProvider = JuntoThemesProvider();

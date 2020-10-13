@@ -1,10 +1,10 @@
 import 'dart:io';
+
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:junto_beta_mobile/api.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:meta/meta.dart';
 
@@ -124,7 +124,6 @@ class JuntoHttp {
   }
 
   static dynamic handleResponse(Response response) {
-    logger.logDebug("Status code, ${response.statusCode}");
     return response.data;
   }
 }
