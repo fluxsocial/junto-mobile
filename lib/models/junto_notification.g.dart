@@ -84,4 +84,5 @@ const _$NotificationTypeEnumMap = {
   NotificationType.NewSubscription: 'NewSubscription',
   NotificationType.NewConnection: 'NewConnection',
   NotificationType.NewPackJoin: 'NewPackJoin',
+  NotificationType.NewMention: 'NewMention',
 };

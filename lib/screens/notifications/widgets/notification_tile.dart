@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/screens/notifications/notification_types/comme
 import 'package:junto_beta_mobile/screens/notifications/notification_types/connection_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/pack_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/mention_notification.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -43,10 +44,14 @@ class NotificationTile extends StatelessWidget {
       case NotificationType.NewPackJoin:
         content = AcceptPackNotification(item: item);
         break;
+      case NotificationType.NewMention:
+        content = MentionNotification(item: item);
+        break;
     }
 
     void navigateTo(BuildContext context) async {
-      if (item.notificationType == NotificationType.NewComment) {
+      if (item.notificationType == NotificationType.NewComment ||
+          item.notificationType == NotificationType.NewMention) {
         JuntoLoader.showLoader(context);
 
         try {
@@ -60,8 +65,9 @@ class NotificationTile extends StatelessWidget {
             context,
             CupertinoPageRoute(
               builder: (context) => ExpressionOpen(
-                (_) {},
-                sourceExpression,
+                commentsVisible: true,
+                deleteExpression: (_) {},
+                expression: sourceExpression,
               ),
             ),
           );

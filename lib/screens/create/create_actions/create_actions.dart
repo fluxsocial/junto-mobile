@@ -31,6 +31,7 @@ class CreateActions extends StatefulWidget {
     @required this.expressionType,
     @required this.expressionContext,
     @required this.expression,
+    @required this.mentions,
     @required this.address,
   }) : super(key: key);
 
@@ -44,6 +45,9 @@ class CreateActions extends StatefulWidget {
   /// Represents the expression data. Value depends on the type of expression
   /// being created.
   final dynamic expression;
+
+  // List of mentions [uuids]
+  final List<String> mentions;
 
   /// Address of the [Group] or collection to which the expression is being posted.
   /// Can also be null if the [expressionContext] == [ExpressionContext.Collective]
@@ -185,6 +189,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       ).toJson(),
       context: _expressionContext,
       channels: channel,
+      mentions: widget.mentions,
     );
   }
 
@@ -197,6 +202,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       expressionData: expression.toJson(),
       context: _expressionContext,
       channels: channel,
+      mentions: widget.mentions,
     );
   }
 
@@ -214,49 +220,27 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         return;
       }
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
-      if (widget.expressionType == ExpressionType.photo) {
-        JuntoLoader.showLoader(context, color: Colors.white54);
-        _expression = await getPhotoExpression(repository);
-        JuntoLoader.hide();
-      } else if (widget.expressionType == ExpressionType.event) {
-        String eventPhoto = '';
-        if (widget.expression['photo'] != null) {
-          JuntoLoader.showLoader(context);
-          final String _eventPhotoKey = await repository.createPhoto(
-            true,
-            '.png',
-            widget.expression['photo'],
-          );
+      switch (widget.expressionType) {
+        case ExpressionType.photo:
+          JuntoLoader.showLoader(context, color: Colors.white54);
+          _expression = await getPhotoExpression(repository);
           JuntoLoader.hide();
-          eventPhoto = _eventPhotoKey;
-        }
-
-        _expression = ExpressionModel(
-          type: widget.expressionType.modelName(),
-          expressionData: EventFormExpression(
-              photo: eventPhoto,
-              description: widget.expression['description'],
-              title: widget.expression['title'],
-              location: widget.expression['location'],
-              startTime: widget.expression['start_time'],
-              endTime: widget.expression['end_time'],
-              facilitators: <String>[],
-              members: <String>[]).toJson(),
-          channels: channel,
-          context: _expressionContext,
-        );
-      } else if (widget.expressionType == ExpressionType.audio) {
-        JuntoLoader.showLoader(context);
-        _expression = await getAudioExpression(repository);
-        JuntoLoader.hide();
-      } else {
-        _expression = ExpressionModel(
-          type: widget.expressionType.modelName(),
-          expressionData: widget.expression.toJson(),
-          context: _expressionContext,
-          channels: channel,
-        );
+          break;
+        case ExpressionType.audio:
+          JuntoLoader.showLoader(context);
+          _expression = await getAudioExpression(repository);
+          JuntoLoader.hide();
+          break;
+        default:
+          _expression = ExpressionModel(
+            type: widget.expressionType.modelName(),
+            expressionData: widget.expression.toJson(),
+            context: _expressionContext,
+            channels: channel,
+            mentions: widget.mentions,
+          );
       }
+
       JuntoLoader.showLoader(context);
       await Provider.of<ExpressionRepo>(context, listen: false)
           .createExpression(
@@ -278,14 +262,21 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _postCreateAction();
     } on DioError catch (error) {
       JuntoLoader.hide();
+
       // Handle max number of posts/day error
-      if (error.response.statusCode == 400 ||
-          error.message.toString() == 'Http status error [400]') {
+      if (error.response.statusCode == 429) {
         showDialog(
           context: context,
           builder: (BuildContext context) => const SingleActionDialog(
             dialogText:
                 'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: error.response.data.toString(),
           ),
         );
       }

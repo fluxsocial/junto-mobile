@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:embedly_preview/embedly_preview.dart';
 import 'package:embedly_preview/theme/embedly_theme_data.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class LinkPreview extends StatelessWidget {
   const LinkPreview({
@@ -38,15 +40,15 @@ class LinkPreview extends StatelessWidget {
           if (comment.expressionData.caption.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 15),
-              child: Text(
+              child: CustomParsedText(
                 comment.expressionData.caption,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  height: 1.5,
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 17,
-                ),
+                defaultTextStyle: Theme.of(context).textTheme.caption,
+                mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
               ),
             ),
           OEmbedWidget(

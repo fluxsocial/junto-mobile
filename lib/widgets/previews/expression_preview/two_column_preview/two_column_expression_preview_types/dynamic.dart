@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/widgets/link_text.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class DynamicPreview extends StatelessWidget {
   const DynamicPreview({
@@ -47,14 +47,21 @@ class DynamicPreview extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     final String expressionBody = expression.expressionData.body.trim();
     if (expressionBody.isNotEmpty) {
-      return Text(
+      return CustomParsedText(
         expressionBody,
         maxLines: 7,
+        disableOnMentiontap: true,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(
+        defaultTextStyle: TextStyle(
           height: 1.5,
           color: Theme.of(context).primaryColor,
           fontSize: 17,
+        ),
+        mentionTextStyle: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontSize: 17,
+          height: 1.5,
+          fontWeight: FontWeight.w700,
         ),
       );
     } else {

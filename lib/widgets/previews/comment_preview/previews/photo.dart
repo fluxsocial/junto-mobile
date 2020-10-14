@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 // Displays the given [image] and [imageCaption]
@@ -36,11 +38,15 @@ class PhotoPreview extends StatelessWidget {
               vertical: 10,
               horizontal: 10,
             ),
-            child: Text(
+            child: CustomParsedText(
               comment.expressionData.caption,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.caption,
+              defaultTextStyle: Theme.of(context).textTheme.caption,
+              mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
             ),
           ),
       ],

@@ -17,6 +17,7 @@ class NotificationsHandler extends ChangeNotifier {
   Future<void> fetchNotifications() async {
     logger.logInfo('fetching notifications');
     final result = await repository.getJuntoNotifications();
+
     if (result.wasSuccessful) {
       _notifications = result.results;
       _unreadNotificationsCount = _notifications

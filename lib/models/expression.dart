@@ -16,16 +16,17 @@ class ExpressionModel {
     @required this.type,
     @required this.expressionData,
     this.channels = const <String>[],
+    this.mentions,
     this.context,
   });
 
   factory ExpressionModel.fromJson(Map<String, dynamic> map) {
     return ExpressionModel(
-      type: map['type'] as String,
-      channels: List<String>.from(map['channels']),
-      expressionData: map['expression_data'] as Map<String, dynamic>,
-      context: map['context'] as Map<String, dynamic>,
-    );
+        type: map['type'] as String,
+        channels: List<String>.from(map['channels']),
+        expressionData: map['expression_data'] as Map<String, dynamic>,
+        context: map['context'] as Map<String, dynamic>,
+        mentions: List<String>.from(map['mentions']));
   }
 
   /// Type of expression being created. Server currently supports  LongForm,
@@ -50,12 +51,16 @@ class ExpressionModel {
   /// list of channel UUIDs the expression will be shared to.
   final List<String> channels;
 
+  // List of mentions [uuids]
+  final List<String> mentions;
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'type': type,
       'expression_data': expressionData,
       'context': context,
       'channels': channels,
+      'mentions': mentions,
     };
   }
 
@@ -70,6 +75,7 @@ class ExpressionModel {
       expressionData: expressionData ?? this.expressionData,
       context: context ?? this.context,
       channels: channels ?? this.channels,
+      mentions: mentions ?? this.mentions,
     );
   }
 }
@@ -188,7 +194,7 @@ class LinkFormExpression {
       title: json['title'],
       caption: json['caption'],
       url: json['url'],
-      data: OEmbedResponse.fromMap(json['data'])
+      data: OEmbedResponse.fromMap(json['data']),
     );
   }
 
@@ -326,14 +332,12 @@ class ExpressionResponse extends HiveObject {
         json['created_at'],
       ),
       resonations: json['resonations'],
-      // numberResonations: json['resonations'],
       creator: UserProfile.fromJson(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
       channels: json['channels'],
       context: json['context'] ?? '',
-      // numberComments: json['comments'],
       comments: json['comments'],
     );
   }
@@ -358,21 +362,6 @@ class ExpressionResponse extends HiveObject {
       comments: json['comments'],
       resonations: json['resonations'],
     );
-
-    // comments: json['comments'].runtimeType == int
-    //     ? json['comments']
-    //     : List<Comment>.from(
-    //         json['comments']['results'].map(
-    //           (dynamic comment) => Comment.fromJson(comment),
-    //         ),
-    //       ),
-    // resonations: json['resonations'].runtimeType == int
-    //     ? json['resonations']
-    //     : List<UserProfile>.from(
-    //         json['resonations']['results'].map(
-    //           (dynamic res) => UserProfile.fromJson(res),
-    //         ),
-    //       ),
   }
 
   @HiveField(0)
@@ -516,6 +505,7 @@ class Comment {
     this.createdAt,
     this.privacy,
     this.context,
+    this.mentions,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
@@ -532,6 +522,7 @@ class Comment {
       createdAt: RFC3339.parseRfc3339(json['created_at']),
       privacy: json['privacy'],
       context: json['context'],
+      mentions: json['mentions'] ?? [],
     );
   }
 
@@ -544,6 +535,7 @@ class Comment {
   final DateTime createdAt;
   final String privacy;
   final String context;
+  final List<dynamic> mentions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address,
@@ -555,6 +547,7 @@ class Comment {
         'created_at': createdAt.toIso8601String(),
         'privacy': privacy,
         'context': context,
+        'mentions': mentions,
       };
 }
 

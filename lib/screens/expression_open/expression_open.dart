@@ -21,13 +21,14 @@ import 'package:provider/provider.dart';
 import 'expressions/audio_open.dart';
 
 class ExpressionOpen extends StatefulWidget {
-  const ExpressionOpen(
+  const ExpressionOpen({
+    this.commentsVisible = false,
     this.deleteExpression,
     this.expression,
-  );
+  });
 
+  final bool commentsVisible;
   final ExpressionResponse expression;
-
   final ValueChanged<ExpressionResponse> deleteExpression;
 
   @override
@@ -36,7 +37,7 @@ class ExpressionOpen extends StatefulWidget {
 
 class ExpressionOpenState extends State<ExpressionOpen> {
   //  whether the comments are visible or not
-  bool commentsVisible = false;
+  bool commentsVisible;
 
   // whether the expression context is visible
   bool expressionContextVisible = false;
@@ -55,6 +56,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   @override
   void initState() {
     super.initState();
+    commentsVisible = widget.commentsVisible;
     commentController = TextEditingController();
     _scrollController = ScrollController();
     _focusNode = FocusNode();
@@ -204,6 +206,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                 ),
                 // Reply Widget
                 BottomCommentBar(
+                  expression: widget.expression,
                   expressionAddress: widget.expression.address,
                   openComments: _openComments,
                   refreshComments: _refreshComments,

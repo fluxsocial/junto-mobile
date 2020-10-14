@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/widgets/link_text.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class LongformOpen extends StatelessWidget {
   const LongformOpen(this.longformExpression);
@@ -37,14 +38,22 @@ class LongformOpen extends StatelessWidget {
           longformBody != ''
               ? Container(
                   width: MediaQuery.of(context).size.width,
-                  child: Text(
+                  child: CustomParsedText(
                     longformBody,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        height: 1.5,
-                        color: Theme.of(context).primaryColor),
+                    maxLines: 7,
+                    overflow: TextOverflow.ellipsis,
+                    defaultTextStyle: TextStyle(
+                      height: 1.5,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                    ),
+                    mentionTextStyle: TextStyle(
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: 17,
+                      height: 1.5,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 )
               : const SizedBox(),

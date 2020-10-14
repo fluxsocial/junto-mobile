@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:embedly_preview/embedly_preview.dart';
 import 'package:embedly_preview/theme/embedly_theme_data.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class LinkPreview extends StatelessWidget {
   const LinkPreview({
@@ -35,14 +36,21 @@ class LinkPreview extends StatelessWidget {
           if (expression.expressionData.caption.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 5),
-              child: Text(
+              child: CustomParsedText(
                 expression.expressionData.caption,
                 maxLines: 3,
+                disableOnMentiontap: true,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                defaultTextStyle: TextStyle(
                   height: 1.5,
                   color: Theme.of(context).primaryColor,
                   fontSize: 17,
+                ),
+                mentionTextStyle: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontSize: 17,
+                  height: 1.5,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),

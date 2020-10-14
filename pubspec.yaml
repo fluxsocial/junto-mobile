@@ -25,7 +25,7 @@ dependencies:
   package_info: 0.4.1
   keyboard_avoider: 0.1.2
   flutter_bloc: 6.0.1
-  rxdart: 0.24.1
+  rxdart: 0.23.1
   equatable: 1.2.3
   json_serializable: 3.3.0
   freezed_annotation: 0.11.0+1
@@ -46,12 +46,17 @@ dependencies:
   flutter_aws_amplify_cognito: ^1.0.0+7
   corsac_jwt: ^0.2.2
   flutter_linkify: 3.1.3
-  email_validator: ^1.0.5  
+  email_validator: ^1.0.5
+  flutter_mentions: ^1.0.6
+  flutter_parsed_text: ^1.2.4
   embedly_preview:
     # path: ../embedly-preview
-    git: 
+    git:
       url: https://github.com/juntofoundation/embedly-preview.git
       ref: master
+  contacts_service: ^0.4.6
+  permission_handler: ^5.0.1+1
+  clipboard: ^0.1.2+8
 
 dev_dependencies:
   test: any
@@ -65,7 +70,7 @@ dependency_overrides:
   path: 1.7.0
   # Pending https://github.com/agnostech/flutter_amplify/pull/20
   flutter_aws_amplify_cognito:
-#     path: ../flutter_amplify/flutter_aws_amplify_cognito
+    #     path: ../flutter_amplify/flutter_aws_amplify_cognito
     git:
       url: https://github.com/Nash0x7E2/flutter_amplify.git
       path: flutter_aws_amplify_cognito
@@ -127,7 +132,7 @@ flutter:
     - assets/images/junto-mobile__logo-outline--sand.png
     - assets/images/junto-mobile__logo-outline--dark.png
     - assets/images/junto-mobile__logo-outline--fire.png
-    - assets/images/junto-mobile__logo-outline--forest.png    
+    - assets/images/junto-mobile__logo-outline--forest.png
     - assets/images/junto-mobile__outlinelogo--gradient.png
     - assets/images/junto-mobile__infinity.png
     - assets/images/junto-mobile__location.png
@@ -153,6 +158,7 @@ flutter:
     - assets/images/junto-mobile__sprout.png
     - assets/images/junto-mobile__background.png
     - assets/images/junto-mobile__bench.png
+    - assets/images/junto-mobile__external-link.png
 
 flutter_intl:
   enabled: true

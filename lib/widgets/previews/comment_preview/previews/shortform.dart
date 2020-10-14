@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
@@ -33,11 +35,11 @@ class ShortformPreview extends StatelessWidget {
       alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
-      child: Text(
+      child: CustomParsedText(
         shortformBody,
         maxLines: 5,
-        textAlign: TextAlign.center,
-        style: TextStyle(
+        alignment: TextAlign.center,
+        defaultTextStyle: TextStyle(
           fontSize: 20,
           color: _hexOne.contains('fff') || _hexTwo.contains('fff')
               ? Color(0xff333333)
@@ -45,6 +47,14 @@ class ShortformPreview extends StatelessWidget {
           fontWeight: FontWeight.w700,
         ),
         overflow: TextOverflow.ellipsis,
+        mentionTextStyle: TextStyle(
+          color: _hexOne.contains('fff') || _hexTwo.contains('fff')
+              ? Color(0xff333333)
+              : Colors.white,
+          fontSize: 20,
+          height: 1.5,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

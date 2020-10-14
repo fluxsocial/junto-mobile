@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
@@ -7,6 +8,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:provider/provider.dart';
@@ -28,13 +30,15 @@ class CreateAudio extends StatefulWidget {
   }
 }
 
-class CreateAudioState extends State<CreateAudio> {
+class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
   bool _showBottomTools = true;
   FocusNode captionFocus = FocusNode();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController captionController = TextEditingController();
   File audioPhotoBackground;
   List<String> audioGradientValues = [];
+  GlobalKey<FlutterMentionsState> mentionKey =
+      GlobalKey<FlutterMentionsState>();
 
   Future<void> _onPickPressed({String source}) async {
     try {
@@ -158,6 +162,7 @@ class CreateAudioState extends State<CreateAudio> {
                         titleController: titleController,
                         captionController: captionController,
                         captionFocus: captionFocus,
+                        mentionKey: mentionKey,
                       ),
                 if (audio.playBackAvailable && _showBottomTools)
                   AudioBottomTools(
@@ -184,12 +189,15 @@ class CreateAudioState extends State<CreateAudio> {
 
   void _onNext(AudioService audio) {
     if (expressionHasData(audio)) {
+      final markupText = mentionKey.currentState.controller.markupText;
+      final mentions = getMentionUserId(markupText);
+
       final audioExpression = AudioFormExpression(
         title: titleController.text.trim(),
         photo: audioPhotoBackground?.path,
         audio: audio.recordingPath,
         gradient: audioGradientValues,
-        caption: captionController.text.trim(),
+        caption: markupText.trim(),
       );
 
       Navigator.push(
@@ -208,6 +216,7 @@ class CreateAudioState extends State<CreateAudio> {
                 address: widget.address,
                 expressionContext: widget.expressionContext,
                 expression: audioExpression,
+                mentions: mentions,
               );
             }
           },

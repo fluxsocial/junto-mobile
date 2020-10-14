@@ -566,7 +566,7 @@ class WelcomeState extends State<Welcome> {
   String _getErrorMessage(SignUpResult result) {
     switch (result.error) {
       case SignUpResultError.UserAlreadyExists:
-        return 'This username has been reserved or an account with this email already exists.';
+        return 'An account with this email already exists.';
       case SignUpResultError.InvalidPassword:
         return 'Seems like you entered an incorrect password.';
       case SignUpResultError.TooManyRequests:
