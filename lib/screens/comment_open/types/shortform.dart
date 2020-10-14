@@ -50,7 +50,6 @@ class ShortformOpen extends StatelessWidget {
           color: _hexOne.contains('fff') || _hexTwo.contains('fff')
               ? Color(0xff333333)
               : Colors.white,
-          decoration: TextDecoration.underline,
         ),
       ),
     );

@@ -58,7 +58,6 @@ class ShortformPreview extends StatelessWidget {
             fontSize: 20,
             height: 1.5,
             fontWeight: FontWeight.w700,
-            decoration: TextDecoration.underline,
           ),
         ),
       ),
