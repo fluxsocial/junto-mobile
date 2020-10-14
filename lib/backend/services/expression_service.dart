@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data' show Uint8List;
-import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -53,7 +53,6 @@ class ExpressionServiceCentralized implements ExpressionService {
         _serverUrl,
         body: {'content_type': fileType, 'content_length': contentLength},
       );
-      logger.logDebug(_serverResponse.statusCode.toString());
 
       // parse response
       final parseData = JuntoHttp.handleResponse(_serverResponse);
