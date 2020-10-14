@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:dio/dio.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -128,6 +128,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           errorMessage: 'Sorry, we have some problems signing you in');
     } on PlatformException catch (_) {
       add(LogoutEvent());
+      yield AuthState.unauthenticated();
+    } on DioError catch (error) {
+      print(error.response.statusMessage);
+      print(error.response.data);
       yield AuthState.unauthenticated();
     } catch (error) {
       logger.logException(error);
