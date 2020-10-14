@@ -278,6 +278,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                 'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
           ),
         );
+      } else if (error.response.data
+          .toString()
+          .contains('No more than 5 channels allowed')) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+              dialogText: 'You can only add up to 5 channels.'),
+        );
       } else {
         showDialog(
           context: context,
