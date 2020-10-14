@@ -78,5 +78,28 @@ target 'Runner' do
   }
 end
 
-# Prevent Cocoapods from embedding a second Flutter framework and causing an error with the new Xcode build system.
-install! 'cocoapods', :disable_input_output_paths => true
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+        '$(inherited)',
+        ## dart: PermissionGroup.calendar
+        'PERMISSION_EVENTS=0',
+
+        ## dart: PermissionGroup.reminders
+        'PERMISSION_REMINDERS=0',
+
+        ## dart: PermissionGroup.speech
+        'PERMISSION_SPEECH_RECOGNIZER=0',
+
+        ## dart: [PermissionGroup.location, PermissionGroup.locationAlways, PermissionGroup.locationWhenInUse]
+        'PERMISSION_LOCATION=0',
+
+        ## dart: PermissionGroup.sensors
+        'PERMISSION_SENSORS=0'
+      ]
+    end
+  end
+end
