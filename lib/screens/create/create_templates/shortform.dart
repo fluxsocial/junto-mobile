@@ -165,288 +165,270 @@ class CreateShortformState extends State<CreateShortform>
         showBottomNav: _showBottomNav,
         expressionHasData: expressionHasData,
         child: Expanded(
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
-                ),
-                height: 58,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    _gradientSelector('fff8ee', 'ffeee0'),
-                    _gradientSelector('222222', '555555'),
-                    _gradientSelector('2E4F78', '6397C7'),
-                    _gradientSelector('2034BC', 'BD96D6'),
-                    _gradientSelector('6F51A8', 'E8B974'),
-                    _gradientSelector('719cf4', 'ffc7e4'),
-                    _gradientSelector('639acf', '7bdaa5'),
-                    _gradientSelector('E7E26E', '2CBAB1'),
-                    _gradientSelector('FC6073', 'FFD391'),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    Form(
-                      autovalidateMode: AutovalidateMode.disabled,
-                      child: BlocConsumer<SearchBloc, SearchState>(
-                        buildWhen: (prev, cur) {
-                          return !(cur is LoadingSearchState ||
-                              cur is LoadingSearchChannelState);
-                        },
-                        listener: (context, state) {
-                          if (!(state is LoadingSearchState) &&
-                              (state is SearchUserState)) {
-                            final eq =
-                                DeepCollectionEquality.unordered().equals;
+          child: Stack(
+            children: [
+              Column(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    height: 58,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        _gradientSelector('fff8ee', 'ffeee0'),
+                        _gradientSelector('222222', '555555'),
+                        _gradientSelector('2E4F78', '6397C7'),
+                        _gradientSelector('2034BC', 'BD96D6'),
+                        _gradientSelector('6F51A8', 'E8B974'),
+                        _gradientSelector('719cf4', 'ffc7e4'),
+                        _gradientSelector('639acf', '7bdaa5'),
+                        _gradientSelector('E7E26E', '2CBAB1'),
+                        _gradientSelector('FC6073', 'FFD391'),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        Form(
+                          autovalidateMode: AutovalidateMode.disabled,
+                          child: BlocConsumer<SearchBloc, SearchState>(
+                            buildWhen: (prev, cur) {
+                              return !(cur is LoadingSearchState ||
+                                  cur is LoadingSearchChannelState);
+                            },
+                            listener: (context, state) {
+                              if (!(state is LoadingSearchState) &&
+                                  (state is SearchUserState)) {
+                                final eq =
+                                    DeepCollectionEquality.unordered().equals;
 
-                            final _users = getUserList(state, []);
+                                final _users = getUserList(state, []);
 
-                            final isEqual = eq(users, _users);
+                                final isEqual = eq(users, _users);
 
-                            if (!isEqual) {
-                              setState(() {
-                                users = _users;
+                                if (!isEqual) {
+                                  setState(() {
+                                    users = _users;
 
-                                listType = ListType.mention;
+                                    listType = ListType.mention;
 
-                                completeUserList =
-                                    generateFinalList(completeUserList, _users);
-                              });
-                            }
-                          }
+                                    completeUserList = generateFinalList(
+                                        completeUserList, _users);
+                                  });
+                                }
+                              }
 
-                          if (!(state is LoadingSearchChannelState) &&
-                              (state is SearchChannelState)) {
-                            final eq =
-                                DeepCollectionEquality.unordered().equals;
+                              if (!(state is LoadingSearchChannelState) &&
+                                  (state is SearchChannelState)) {
+                                final eq =
+                                    DeepCollectionEquality.unordered().equals;
 
-                            final _channels = getChannelsList(state, []);
+                                final _channels = getChannelsList(state, []);
 
-                            final isEqual = eq(channels, _channels);
+                                final isEqual = eq(channels, _channels);
 
-                            if (!isEqual) {
-                              setState(() {
-                                channels = _channels;
+                                if (!isEqual) {
+                                  setState(() {
+                                    channels = _channels;
 
-                                listType = ListType.channels;
+                                    listType = ListType.channels;
 
-                                completeChannelsList = generateFinalList(
-                                    completeChannelsList, _channels);
-                              });
-                            }
-                          }
-                        },
-                        builder: (context, state) {
-                          return Container(
-                            child: Stack(
-                              children: [
-                                Container(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      _focus.requestFocus();
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 50.0,
-                                        horizontal: 25.0,
-                                      ),
-                                      constraints: BoxConstraints(
-                                        minHeight:
-                                            MediaQuery.of(context).size.width,
-                                      ),
-                                      width: MediaQuery.of(context).size.width,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.bottomLeft,
-                                          end: Alignment.topRight,
-                                          stops: const <double>[
-                                            0.2,
-                                            0.9,
-                                          ],
-                                          colors: <Color>[
-                                            HexColor.fromHex(gradientOne),
-                                            HexColor.fromHex(gradientTwo),
-                                          ],
-                                        ),
-                                      ),
-                                      child: FlutterMentions(
-                                        key: mentionKey,
-                                        focusNode: _focus,
-                                        autofocus: false,
-                                        onSearchChanged:
-                                            (String trigger, String value) {
-                                          if (value.isNotEmpty && _showList) {
-                                            final channel = trigger == '#';
-
-                                            if (!channel) {
-                                              context.bloc<SearchBloc>().add(
-                                                  SearchingEvent(value, true));
-                                            } else {
-                                              context.bloc<SearchBloc>().add(
-                                                  SearchingChannelEvent(value));
-                                            }
-                                          } else {
-                                            setState(() {
-                                              users = [];
-                                              channels = [];
-                                              listType = ListType.empty;
-                                              _showList = false;
-                                            });
-                                          }
-                                        },
-                                        onSuggestionVisibleChanged: (val) {
-                                          if (val != _showList) {
-                                            setState(() {
-                                              _showList = val;
-                                            });
-                                          }
-                                        },
-                                        hideSuggestionList: true,
-                                        mentions: [
-                                          Mention(
-                                            trigger: '@',
-                                            data: [
-                                              ...addedmentions,
-                                              ...completeUserList
-                                            ],
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            markupBuilder:
-                                                (trigger, mention, value) {
-                                              return '[$trigger$value:$mention]';
-                                            },
-                                          ),
-                                          Mention(
-                                            trigger: '#',
-                                            disableMarkup: true,
-                                            data: [
-                                              ...addedChannels,
-                                              ...completeChannelsList
-                                            ],
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            matchAll: true,
-                                          ),
+                                    completeChannelsList = generateFinalList(
+                                        completeChannelsList, _channels);
+                                  });
+                                }
+                              }
+                            },
+                            builder: (context, state) {
+                              return Container(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _focus.requestFocus();
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 50.0,
+                                      horizontal: 25.0,
+                                    ),
+                                    constraints: BoxConstraints(
+                                      minHeight:
+                                          MediaQuery.of(context).size.width,
+                                    ),
+                                    width: MediaQuery.of(context).size.width,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        stops: const <double>[
+                                          0.2,
+                                          0.9,
                                         ],
-                                        buildCounter: (
-                                          BuildContext context, {
-                                          int currentLength,
-                                          int maxLength,
-                                          bool isFocused,
-                                        }) =>
-                                            null,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
+                                        colors: <Color>[
+                                          HexColor.fromHex(gradientOne),
+                                          HexColor.fromHex(gradientTwo),
+                                        ],
+                                      ),
+                                    ),
+                                    child: FlutterMentions(
+                                      key: mentionKey,
+                                      focusNode: _focus,
+                                      autofocus: false,
+                                      onSearchChanged:
+                                          (String trigger, String value) {
+                                        if (value.isNotEmpty && _showList) {
+                                          final channel = trigger == '#';
+
+                                          if (!channel) {
+                                            context.bloc<SearchBloc>().add(
+                                                SearchingEvent(value, true));
+                                          } else {
+                                            context.bloc<SearchBloc>().add(
+                                                SearchingChannelEvent(value));
+                                          }
+                                        } else {
+                                          setState(() {
+                                            users = [];
+                                            channels = [];
+                                            listType = ListType.empty;
+                                            _showList = false;
+                                          });
+                                        }
+                                      },
+                                      onSuggestionVisibleChanged: (val) {
+                                        if (val != _showList) {
+                                          setState(() {
+                                            _showList = val;
+                                          });
+                                        }
+                                      },
+                                      hideSuggestionList: true,
+                                      mentions: [
+                                        Mention(
+                                          trigger: '@',
+                                          data: [
+                                            ...addedmentions,
+                                            ...completeUserList
+                                          ],
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          markupBuilder:
+                                              (trigger, mention, value) {
+                                            return '[$trigger$value:$mention]';
+                                          },
                                         ),
-                                        cursorColor:
-                                            gradientOne.contains('fff') ||
-                                                    gradientTwo.contains('fff')
-                                                ? Color(0xff333333)
-                                                : Colors.white,
-                                        cursorWidth: 2,
-                                        maxLines: null,
-                                        style: TextStyle(
-                                          color: gradientOne.contains('fff') ||
+                                        Mention(
+                                          trigger: '#',
+                                          disableMarkup: true,
+                                          data: [
+                                            ...addedChannels,
+                                            ...completeChannelsList
+                                          ],
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          matchAll: true,
+                                        ),
+                                      ],
+                                      buildCounter: (
+                                        BuildContext context, {
+                                        int currentLength,
+                                        int maxLength,
+                                        bool isFocused,
+                                      }) =>
+                                          null,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
+                                      cursorColor:
+                                          gradientOne.contains('fff') ||
                                                   gradientTwo.contains('fff')
                                               ? Color(0xff333333)
                                               : Colors.white,
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        maxLength: 220,
-                                        textAlign: TextAlign.center,
-                                        textInputAction: TextInputAction.done,
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        keyboardAppearance:
-                                            Theme.of(context).brightness,
+                                      cursorWidth: 2,
+                                      maxLines: null,
+                                      style: TextStyle(
+                                        color: gradientOne.contains('fff') ||
+                                                gradientTwo.contains('fff')
+                                            ? Color(0xff333333)
+                                            : Colors.white,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
                                       ),
+                                      maxLength: 220,
+                                      textAlign: TextAlign.center,
+                                      textInputAction: TextInputAction.done,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
+                                      keyboardAppearance:
+                                          Theme.of(context).brightness,
                                     ),
                                   ),
                                 ),
-                                if (_showList &&
-                                    _focus.hasFocus &&
-                                    listType == ListType.mention)
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    left: 0,
-                                    child: MentionsSearchList(
-                                      userList: users,
-                                      onMentionAdd: (index) {
-                                        mentionKey.currentState
-                                            .addMention(users[index]);
-
-                                        if (addedmentions.indexWhere(
-                                                (element) =>
-                                                    element['id'] ==
-                                                    users[index]['id']) ==
-                                            -1) {
-                                          addedmentions = [
-                                            ...addedmentions,
-                                            users[index]
-                                          ];
-                                        }
-
-                                        setState(() {
-                                          _showList = false;
-                                          users = [];
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                if (_showList &&
-                                    _focus.hasFocus &&
-                                    listType == ListType.channels)
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    left: 0,
-                                    child: ChannelsSearchList(
-                                      channels: channels,
-                                      onChannelAdd: (index) {
-                                        mentionKey.currentState
-                                            .addMention(channels[index]);
-
-                                        if (addedChannels.indexWhere(
-                                                (element) =>
-                                                    element['id'] ==
-                                                    channels[index]['id']) ==
-                                            -1) {
-                                          addedChannels = [
-                                            ...addedChannels,
-                                            channels[index]
-                                          ];
-                                        }
-
-                                        setState(() {
-                                          _showList = false;
-                                          channels = [];
-                                        });
-                                      },
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+              if (_showList && _focus.hasFocus && listType == ListType.mention)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: MentionsSearchList(
+                    userList: users,
+                    onMentionAdd: (index) {
+                      mentionKey.currentState.addMention(users[index]);
+
+                      if (addedmentions.indexWhere((element) =>
+                              element['id'] == users[index]['id']) ==
+                          -1) {
+                        addedmentions = [...addedmentions, users[index]];
+                      }
+
+                      setState(() {
+                        _showList = false;
+                        users = [];
+                      });
+                    },
+                  ),
+                ),
+              if (_showList && _focus.hasFocus && listType == ListType.channels)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: ChannelsSearchList(
+                    channels: channels,
+                    onChannelAdd: (index) {
+                      mentionKey.currentState.addMention(channels[index]);
+
+                      if (addedChannels.indexWhere((element) =>
+                              element['id'] == channels[index]['id']) ==
+                          -1) {
+                        addedChannels = [...addedChannels, channels[index]];
+                      }
+
+                      setState(() {
+                        _showList = false;
+                        channels = [];
+                      });
+                    },
+                  ),
+                ),
             ],
           ),
         ),
