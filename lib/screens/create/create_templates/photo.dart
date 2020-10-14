@@ -171,29 +171,41 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   void _onNext() {
     if (_expressionHasData() == true) {
       final Map<String, dynamic> expression = createExpression();
-      Navigator.push(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) {
-            if (widget.expressionContext == ExpressionContext.Comment) {
-              return CreateCommentActions(
-                expression: expression,
-                address: widget.address,
-                expressionType: ExpressionType.photo,
-              );
-            } else {
-              return CreateActions(
-                expressionType: ExpressionType.photo,
-                address: widget.address,
-                expressionContext: widget.expressionContext,
-                expression: expression,
-                mentions: expression['mentions'],
-                channels: expression['channels'],
-              );
-            }
-          },
-        ),
-      );
+
+      if (expression['channels'].length > 5) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            context: context,
+            dialogText:
+                'You can only add five channels. Please reduce the number of channels you have before continuing.',
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) {
+              if (widget.expressionContext == ExpressionContext.Comment) {
+                return CreateCommentActions(
+                  expression: expression,
+                  address: widget.address,
+                  expressionType: ExpressionType.photo,
+                );
+              } else {
+                return CreateActions(
+                  expressionType: ExpressionType.photo,
+                  address: widget.address,
+                  expressionContext: widget.expressionContext,
+                  expression: expression,
+                  mentions: expression['mentions'],
+                  channels: expression['channels'],
+                );
+              }
+            },
+          ),
+        );
+      }
     } else {
       showDialog(
         context: context,

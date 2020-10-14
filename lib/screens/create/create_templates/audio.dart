@@ -200,30 +200,41 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
         gradient: audioGradientValues,
         caption: markupText.trim(),
       );
-
-      Navigator.push(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) {
-            if (widget.expressionContext == ExpressionContext.Comment) {
-              return CreateCommentActions(
-                expression: audioExpression,
-                address: widget.address,
-                expressionType: ExpressionType.audio,
-              );
-            } else {
-              return CreateActions(
-                expressionType: ExpressionType.audio,
-                address: widget.address,
-                expressionContext: widget.expressionContext,
-                expression: audioExpression,
-                mentions: mentions,
-                channels: channels,
-              );
-            }
-          },
-        ),
-      );
+      print(channels);
+      if (channels.length > 5) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            context: context,
+            dialogText:
+                'You can only add five channels. Please reduce the number of channels you have before continuing.',
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) {
+              if (widget.expressionContext == ExpressionContext.Comment) {
+                return CreateCommentActions(
+                  expression: audioExpression,
+                  address: widget.address,
+                  expressionType: ExpressionType.audio,
+                );
+              } else {
+                return CreateActions(
+                  expressionType: ExpressionType.audio,
+                  address: widget.address,
+                  expressionContext: widget.expressionContext,
+                  expression: audioExpression,
+                  mentions: mentions,
+                  channels: channels,
+                );
+              }
+            },
+          ),
+        );
+      }
     } else {
       showDialog(
         context: context,

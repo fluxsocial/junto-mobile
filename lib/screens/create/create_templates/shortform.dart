@@ -119,29 +119,40 @@ class CreateShortformState extends State<CreateShortform>
       final mentions = getMentionUserId(expression.body);
       final channels = getChannelsId(expression.body);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) {
-            if (widget.expressionContext == ExpressionContext.Comment) {
-              return CreateCommentActions(
-                expression: expression,
-                address: widget.address,
-                expressionType: ExpressionType.shortform,
-              );
-            } else {
-              return CreateActions(
-                expressionType: ExpressionType.shortform,
-                address: widget.address,
-                expressionContext: widget.expressionContext,
-                expression: expression,
-                mentions: mentions,
-                channels: channels,
-              );
-            }
-          },
-        ),
-      );
+      if (channels.length > 5) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            context: context,
+            dialogText:
+                'You can only add five channels. Please reduce the number of channels you have before continuing',
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) {
+              if (widget.expressionContext == ExpressionContext.Comment) {
+                return CreateCommentActions(
+                  expression: expression,
+                  address: widget.address,
+                  expressionType: ExpressionType.shortform,
+                );
+              } else {
+                return CreateActions(
+                  expressionType: ExpressionType.shortform,
+                  address: widget.address,
+                  expressionContext: widget.expressionContext,
+                  expression: expression,
+                  mentions: mentions,
+                  channels: channels,
+                );
+              }
+            },
+          ),
+        );
+      }
     } else {
       showDialog(
         context: context,
