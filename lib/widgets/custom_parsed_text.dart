@@ -45,26 +45,19 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
             map['value'] = match.group(2);
             return map;
           },
-          onTap: (url) async {
-            if (!disableOnMentiontap) {
-              final userData =
-                  await Provider.of<UserRepo>(context, listen: false)
-                      .getUser(url);
-              await showUserDen(context, userData.user);
-            }
-          },
+          onTap: !disableOnMentiontap
+              ? (url) async {
+                  final userData =
+                      await Provider.of<UserRepo>(context, listen: false)
+                          .getUser(url);
+                  await showUserDen(context, userData.user);
+                }
+              : null,
         ),
         MatchText(
           pattern: r"([#][^\s#\@]*)",
           style: mentionTextStyle,
-          onTap: (url) async {
-            if (!disableOnMentiontap) {
-              final userData =
-                  await Provider.of<UserRepo>(context, listen: false)
-                      .getUser(url);
-              await showUserDen(context, userData.user);
-            }
-          },
+          onTap: !disableOnMentiontap ? (url) {} : null,
         ),
       ],
     );

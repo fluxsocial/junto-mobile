@@ -48,7 +48,7 @@ dependencies:
   flutter_linkify: 3.1.3
   email_validator: ^1.0.5
   flutter_mentions: ^1.0.7
-  flutter_parsed_text: ^1.2.4
+  flutter_parsed_text: ^1.2.5
   embedly_preview:
     # path: ../embedly-preview
     git:
