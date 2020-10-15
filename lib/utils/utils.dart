@@ -33,7 +33,7 @@ mixin CreateExpressionHelpers {
   }
 
   List<String> getChannelsId(String text) {
-    RegExp customRegExp = RegExp(r"([#][^\s#\@]*)");
+    RegExp customRegExp = RegExp(r"(\#[a-zA-Z0-9_%]{2,})");
 
     final match = customRegExp.allMatches(text).toList();
 
