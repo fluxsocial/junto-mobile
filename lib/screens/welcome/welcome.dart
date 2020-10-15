@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
@@ -29,8 +31,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class Welcome extends StatefulWidget {
@@ -541,7 +541,6 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _onBlocStateChange(BuildContext context, AuthState state) {
-    print(state);
     if (state is AuthUnauthenticated) {
       if (state.error == true) {
         if (state.errorMessage != null && state.errorMessage.isNotEmpty) {
