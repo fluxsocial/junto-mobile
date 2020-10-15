@@ -47,7 +47,7 @@ dependencies:
   corsac_jwt: ^0.2.2
   flutter_linkify: 3.1.3
   email_validator: ^1.0.5
-  flutter_mentions: ^1.0.7
+  flutter_mentions: ^1.0.9
   flutter_parsed_text: ^1.2.5
   embedly_preview:
     # path: ../embedly-preview
