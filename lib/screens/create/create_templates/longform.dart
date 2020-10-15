@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,11 @@ class CreateLongformState extends State<CreateLongform>
   bool _showList = false;
   List<Map<String, dynamic>> addedmentions = [];
   List<Map<String, dynamic>> users = [];
-  List<Map<String, dynamic>> completeList = [];
+  List<Map<String, dynamic>> completeUserList = [];
+  List<Map<String, dynamic>> addedChannels = [];
+  List<Map<String, dynamic>> channels = [];
+  List<Map<String, dynamic>> completeChannelsList = [];
+  ListType listType = ListType.empty;
 
   void toggleBottomNav() {
     setState(() {
@@ -89,29 +94,42 @@ class CreateLongformState extends State<CreateLongform>
     if (expressionHasData() == true) {
       final LongFormExpression expression = createExpression();
       final mentions = getMentionUserId(expression.body);
+      final channels = getChannelsId(expression.body);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) {
-            if (widget.expressionContext == ExpressionContext.Comment) {
-              return CreateCommentActions(
-                expression: expression,
-                address: widget.address,
-                expressionType: ExpressionType.dynamic,
-              );
-            } else {
-              return CreateActions(
-                expressionType: ExpressionType.dynamic,
-                address: widget.address,
-                expressionContext: widget.expressionContext,
-                expression: expression,
-                mentions: mentions,
-              );
-            }
-          },
-        ),
-      );
+      if (channels.length > 5) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            context: context,
+            dialogText:
+                'You can only add five channels. Please reduce the number of channels you have before continuing.',
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) {
+              if (widget.expressionContext == ExpressionContext.Comment) {
+                return CreateCommentActions(
+                  expression: expression,
+                  address: widget.address,
+                  expressionType: ExpressionType.dynamic,
+                );
+              } else {
+                return CreateActions(
+                  expressionType: ExpressionType.dynamic,
+                  address: widget.address,
+                  expressionContext: widget.expressionContext,
+                  expression: expression,
+                  mentions: mentions,
+                  channels: channels,
+                );
+              }
+            },
+          ),
+        );
+      }
     } else {
       showDialog(
         context: context,
@@ -129,6 +147,14 @@ class CreateLongformState extends State<CreateLongform>
     _bodyFocus.dispose();
   }
 
+  void toggleSearch(bool value) {
+    if (value != _showList) {
+      setState(() {
+        _showList = value;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -143,10 +169,12 @@ class CreateLongformState extends State<CreateLongform>
         child: Container(
           child: BlocConsumer<SearchBloc, SearchState>(
             buildWhen: (prev, cur) {
-              return !(cur is LoadingSearchState);
+              return !(cur is LoadingSearchState ||
+                  cur is LoadingSearchChannelState);
             },
             listener: (context, state) {
-              if (!(state is LoadingSearchState)) {
+              if (!(state is LoadingSearchState) &&
+                  (state is SearchUserState)) {
                 final eq = DeepCollectionEquality.unordered().equals;
 
                 final _users = getUserList(state, []);
@@ -157,7 +185,30 @@ class CreateLongformState extends State<CreateLongform>
                   setState(() {
                     users = _users;
 
-                    completeList = generateFinalList(completeList, _users);
+                    listType = ListType.mention;
+
+                    completeUserList =
+                        generateFinalList(completeUserList, _users);
+                  });
+                }
+              }
+
+              if (!(state is LoadingSearchChannelState) &&
+                  (state is SearchChannelState)) {
+                final eq = DeepCollectionEquality.unordered().equals;
+
+                final _channels = getChannelsList(state, []);
+
+                final isEqual = eq(channels, _channels);
+
+                if (!isEqual) {
+                  setState(() {
+                    channels = _channels;
+
+                    listType = ListType.channels;
+
+                    completeChannelsList =
+                        generateFinalList(completeChannelsList, _channels);
                   });
                 }
               }
@@ -221,40 +272,38 @@ class CreateLongformState extends State<CreateLongform>
                               ),
                               onSearchChanged: (String trigger, String value) {
                                 if (value.isNotEmpty && _showList) {
-                                  context
-                                      .bloc<SearchBloc>()
-                                      .add(SearchingEvent(value, true));
+                                  final channel = trigger == '#';
+
+                                  if (!channel) {
+                                    context
+                                        .bloc<SearchBloc>()
+                                        .add(SearchingEvent(value, true));
+                                  } else {
+                                    context
+                                        .bloc<SearchBloc>()
+                                        .add(SearchingChannelEvent(value));
+                                  }
                                 } else {
                                   setState(() {
                                     users = [];
+                                    channels = [];
+                                    listType = ListType.empty;
                                     _showList = false;
                                   });
                                 }
                               },
-                              onSuggestionVisibleChanged: (val) {
-                                if (val != _showList) {
-                                  setState(() {
-                                    _showList = val;
-                                  });
-                                }
-                              },
+                              onSuggestionVisibleChanged: toggleSearch,
                               hideSuggestionList: true,
-                              mentions: [
-                                Mention(
-                                  trigger: '@',
-                                  data: [...addedmentions, ...completeList],
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  markupBuilder: (trigger, mention, value) {
-                                    return '[$trigger$value:$mention]';
-                                  },
-                                ),
-                              ],
+                              mentions: getMention(
+                                context,
+                                [...addedmentions, ...completeUserList],
+                                [...addedChannels, ...completeChannelsList],
+                              ),
                             ),
                           ),
-                          if (_showList && _bodyFocus.hasFocus)
+                          if (_showList &&
+                              _bodyFocus.hasFocus &&
+                              listType == ListType.mention)
                             Positioned(
                               bottom: 0,
                               right: 0,
@@ -278,6 +327,36 @@ class CreateLongformState extends State<CreateLongform>
                                   setState(() {
                                     _showList = false;
                                     users = [];
+                                  });
+                                },
+                              ),
+                            ),
+                          if (_showList &&
+                              _bodyFocus.hasFocus &&
+                              listType == ListType.channels)
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              left: 0,
+                              child: ChannelsSearchList(
+                                channels: channels,
+                                onChannelAdd: (index) {
+                                  mentionKey.currentState
+                                      .addMention(channels[index]);
+
+                                  if (addedChannels.indexWhere((element) =>
+                                          element['id'] ==
+                                          channels[index]['id']) ==
+                                      -1) {
+                                    addedChannels = [
+                                      ...addedChannels,
+                                      channels[index]
+                                    ];
+                                  }
+
+                                  setState(() {
+                                    _showList = false;
+                                    channels = [];
                                   });
                                 },
                               ),

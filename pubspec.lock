@@ -378,14 +378,14 @@ packages:
       name: flutter_mentions
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.9"
   flutter_parsed_text:
     dependency: "direct main"
     description:
       name: flutter_parsed_text
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.4"
+    version: "1.2.5"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

@@ -16,6 +16,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +49,11 @@ class BottomCommentBarState extends State<BottomCommentBar>
   TextEditingController commentController;
   List<Map<String, dynamic>> addedmentions = [];
   List<Map<String, dynamic>> users = [];
-  List<Map<String, dynamic>> completeList = [];
+  List<Map<String, dynamic>> completeUserList = [];
+  List<Map<String, dynamic>> addedChannels = [];
+  List<Map<String, dynamic>> channels = [];
+  List<Map<String, dynamic>> completeChannelsList = [];
+  ListType listType = ListType.empty;
   GlobalKey<FlutterMentionsState> mentionKey =
       GlobalKey<FlutterMentionsState>();
   bool _showList = false;
@@ -56,8 +61,7 @@ class BottomCommentBarState extends State<BottomCommentBar>
   Future<void> _createComment() async {
     final markupText = mentionKey.currentState.controller.markupText;
     final mentions = getMentionUserId(markupText);
-
-    print(mentions);
+    final channels = getChannelsId(markupText);
 
     if (mentionKey.currentState.controller.text != '') {
       JuntoLoader.showLoader(context);
@@ -110,6 +114,14 @@ class BottomCommentBarState extends State<BottomCommentBar>
     commentController = TextEditingController();
   }
 
+  void toggleSearch(bool value) {
+    if (value != _showList) {
+      setState(() {
+        _showList = value;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -118,10 +130,11 @@ class BottomCommentBarState extends State<BottomCommentBar>
       },
       child: BlocConsumer<SearchBloc, SearchState>(
         buildWhen: (prev, cur) {
-          return !(cur is LoadingSearchState);
+          return !(cur is LoadingSearchState ||
+              cur is LoadingSearchChannelState);
         },
         listener: (context, state) {
-          if (!(state is LoadingSearchState)) {
+          if (!(state is LoadingSearchState) && (state is SearchUserState)) {
             final eq = DeepCollectionEquality.unordered().equals;
 
             final _users = getUserList(state, []);
@@ -132,7 +145,29 @@ class BottomCommentBarState extends State<BottomCommentBar>
               setState(() {
                 users = _users;
 
-                completeList = generateFinalList(completeList, _users);
+                listType = ListType.mention;
+
+                completeUserList = generateFinalList(completeUserList, _users);
+              });
+            }
+          }
+
+          if (!(state is LoadingSearchChannelState) &&
+              (state is SearchChannelState)) {
+            final eq = DeepCollectionEquality.unordered().equals;
+
+            final _channels = getChannelsList(state, []);
+
+            final isEqual = eq(channels, _channels);
+
+            if (!isEqual) {
+              setState(() {
+                channels = _channels;
+
+                listType = ListType.channels;
+
+                completeChannelsList =
+                    generateFinalList(completeChannelsList, _channels);
               });
             }
           }
@@ -142,23 +177,51 @@ class BottomCommentBarState extends State<BottomCommentBar>
             top: false,
             child: Column(
               children: [
-                if (_showList)
-                  MentionsSearchList(
-                    userList: users,
-                    onMentionAdd: (index) {
-                      mentionKey.currentState.addMention(users[index]);
+                if (_showList && listType == ListType.mention)
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: MentionsSearchList(
+                      userList: users,
+                      onMentionAdd: (index) {
+                        mentionKey.currentState.addMention(users[index]);
 
-                      if (addedmentions.indexWhere((element) =>
-                              element['id'] == users[index]['id']) ==
-                          -1) {
-                        addedmentions = [...addedmentions, users[index]];
-                      }
+                        if (addedmentions.indexWhere((element) =>
+                                element['id'] == users[index]['id']) ==
+                            -1) {
+                          addedmentions = [...addedmentions, users[index]];
+                        }
 
-                      setState(() {
-                        _showList = false;
-                        users = [];
-                      });
-                    },
+                        setState(() {
+                          _showList = false;
+                          users = [];
+                        });
+                      },
+                    ),
+                  ),
+                if (_showList && listType == ListType.channels)
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: ChannelsSearchList(
+                      channels: channels,
+                      onChannelAdd: (index) {
+                        mentionKey.currentState.addMention(channels[index]);
+
+                        if (addedChannels.indexWhere((element) =>
+                                element['id'] == channels[index]['id']) ==
+                            -1) {
+                          addedChannels = [...addedChannels, channels[index]];
+                        }
+
+                        setState(() {
+                          _showList = false;
+                          channels = [];
+                        });
+                      },
+                    ),
                   ),
                 Container(
                   padding: const EdgeInsets.only(
@@ -220,30 +283,31 @@ class BottomCommentBarState extends State<BottomCommentBar>
                                   onSearchChanged:
                                       (String trigger, String value) {
                                     if (value.isNotEmpty && _showList) {
-                                      context
-                                          .bloc<SearchBloc>()
-                                          .add(SearchingEvent(value, true));
+                                      final channel = trigger == '#';
+
+                                      if (!channel) {
+                                        context
+                                            .bloc<SearchBloc>()
+                                            .add(SearchingEvent(value, true));
+                                      } else {
+                                        context
+                                            .bloc<SearchBloc>()
+                                            .add(SearchingChannelEvent(value));
+                                      }
                                     } else {
                                       setState(() {
                                         users = [];
+                                        channels = [];
+                                        listType = ListType.empty;
                                         _showList = false;
                                       });
                                     }
                                   },
-                                  mentions: [
-                                    Mention(
-                                      trigger: '@',
-                                      data: [...addedmentions, ...completeList],
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      markupBuilder: (trigger, mention, value) {
-                                        return '[$trigger$value:$mention]';
-                                      },
-                                    ),
-                                  ],
+                                  mentions: getMention(
+                                    context,
+                                    [...addedmentions, ...completeUserList],
+                                    [...addedChannels, ...completeChannelsList],
+                                  ),
                                   hideSuggestionList: true,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
@@ -265,13 +329,7 @@ class BottomCommentBarState extends State<BottomCommentBar>
                                       TextCapitalization.sentences,
                                   keyboardAppearance:
                                       Theme.of(context).brightness,
-                                  onSuggestionVisibleChanged: (val) {
-                                    if (val != _showList) {
-                                      setState(() {
-                                        _showList = val;
-                                      });
-                                    }
-                                  },
+                                  onSuggestionVisibleChanged: toggleSearch,
                                 ),
                               ),
                             ],

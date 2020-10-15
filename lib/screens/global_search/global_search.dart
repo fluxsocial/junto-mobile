@@ -48,10 +48,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
   void onTextChange(String query, BuildContext context) {
     if (mounted) {
       context.bloc<SearchBloc>().add(
-            SearchingEvent(
-              query,
-              _searchByUsername.value,
-            ),
+            SearchingEvent(query, _searchByUsername.value),
           );
     }
   }

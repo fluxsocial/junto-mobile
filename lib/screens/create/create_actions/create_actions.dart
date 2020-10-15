@@ -33,6 +33,7 @@ class CreateActions extends StatefulWidget {
     @required this.expression,
     @required this.mentions,
     @required this.address,
+    @required this.channels,
   }) : super(key: key);
 
   /// Represents the type of expression being created. Possible values include
@@ -48,6 +49,9 @@ class CreateActions extends StatefulWidget {
 
   // List of mentions [uuids]
   final List<String> mentions;
+
+  // List of channels [name]
+  final List<String> channels;
 
   /// Address of the [Group] or collection to which the expression is being posted.
   /// Can also be null if the [expressionContext] == [ExpressionContext.Collective]
@@ -94,6 +98,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   @override
   void initState() {
     super.initState();
+    _channelsList = widget.channels;
+    _channels.value = widget.channels;
     _channelController = TextEditingController();
     _address = widget.address;
     _expressionContext = widget.expressionContext;
@@ -271,6 +277,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             dialogText:
                 'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
           ),
+        );
+      } else if (error.response.data
+          .toString()
+          .contains('No more than 5 channels allowed')) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+              dialogText: 'You can only add up to 5 channels.'),
         );
       } else {
         showDialog(
