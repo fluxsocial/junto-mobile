@@ -20,8 +20,6 @@ import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
-enum ListType { mention, channels, empty }
-
 class BottomCommentBar extends StatefulWidget {
   const BottomCommentBar({
     Key key,
@@ -114,6 +112,14 @@ class BottomCommentBarState extends State<BottomCommentBar>
   void initState() {
     super.initState();
     commentController = TextEditingController();
+  }
+
+  void toggleSearch(bool value) {
+    if (value != _showList) {
+      setState(() {
+        _showList = value;
+      });
+    }
   }
 
   @override
@@ -297,37 +303,11 @@ class BottomCommentBarState extends State<BottomCommentBar>
                                       });
                                     }
                                   },
-                                  mentions: [
-                                    Mention(
-                                      trigger: '@',
-                                      data: [
-                                        ...addedmentions,
-                                        ...completeUserList
-                                      ],
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      markupBuilder: (trigger, mention, value) {
-                                        return '[$trigger$value:$mention]';
-                                      },
-                                    ),
-                                    Mention(
-                                      trigger: '#',
-                                      disableMarkup: true,
-                                      data: [
-                                        ...addedChannels,
-                                        ...completeChannelsList
-                                      ],
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      matchAll: true,
-                                    ),
-                                  ],
+                                  mentions: getMention(
+                                    context,
+                                    [...addedmentions, ...completeUserList],
+                                    [...addedChannels, ...completeChannelsList],
+                                  ),
                                   hideSuggestionList: true,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
@@ -349,13 +329,7 @@ class BottomCommentBarState extends State<BottomCommentBar>
                                       TextCapitalization.sentences,
                                   keyboardAppearance:
                                       Theme.of(context).brightness,
-                                  onSuggestionVisibleChanged: (val) {
-                                    if (val != _showList) {
-                                      setState(() {
-                                        _showList = val;
-                                      });
-                                    }
-                                  },
+                                  onSuggestionVisibleChanged: toggleSearch,
                                 ),
                               ),
                             ],

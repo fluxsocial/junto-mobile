@@ -16,8 +16,6 @@ import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
-enum ListType { mention, channels, empty }
-
 class AudioReview extends StatefulWidget {
   AudioReview({
     this.audioPhotoBackground,
@@ -82,7 +80,6 @@ class _AudioReviewState extends State<AudioReview>
                 cur is LoadingSearchChannelState);
           },
           listener: (context, state) {
-            print("test: hello");
             if (!(state is LoadingSearchState) && (state is SearchUserState)) {
               final eq = DeepCollectionEquality.unordered().equals;
 
@@ -199,11 +196,9 @@ class _AudioReviewState extends State<AudioReview>
   }
 
   void toggleSearch(bool value) {
-    print("test: toggle $value | $_showList");
     if (value != _showList) {
       setState(() {
         _showList = value;
-        print("test: toggle1 $value | $_showList");
       });
     }
   }
@@ -571,29 +566,11 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
               onSearchChanged(context, trigger, value);
             },
             onSuggestionVisibleChanged: toggleSearch,
-            mentions: [
-              Mention(
-                trigger: '@',
-                data: completeMentionList,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColorDark,
-                  fontWeight: FontWeight.w700,
-                ),
-                markupBuilder: (trigger, mention, value) {
-                  return '[$trigger$value:$mention]';
-                },
-              ),
-              Mention(
-                trigger: '#',
-                disableMarkup: true,
-                data: completeChannelList,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColorDark,
-                  fontWeight: FontWeight.w700,
-                ),
-                matchAll: true,
-              ),
-            ],
+            mentions: getMention(
+              context,
+              completeMentionList,
+              completeChannelList,
+            ),
             hideSuggestionList: true,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(0),

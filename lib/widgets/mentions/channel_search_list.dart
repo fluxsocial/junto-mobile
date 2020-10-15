@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
 
+enum ListType { mention, channels, empty }
+
 class ChannelsSearchList extends StatelessWidget {
   const ChannelsSearchList({
     this.channels,

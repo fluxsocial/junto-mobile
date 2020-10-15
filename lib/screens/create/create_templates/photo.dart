@@ -22,8 +22,6 @@ import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
-enum ListType { mention, channels, empty }
-
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
   const CreatePhoto({Key key, this.address, this.expressionContext})
@@ -233,6 +231,14 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
     super.dispose();
   }
 
+  void toggleSearch(bool value) {
+    if (value != _showList) {
+      setState(() {
+        _showList = value;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -421,40 +427,13 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                                 });
                               }
                             },
-                            onSuggestionVisibleChanged: (val) {
-                              if (val != _showList) {
-                                setState(() {
-                                  _showList = val;
-                                });
-                              }
-                            },
+                            onSuggestionVisibleChanged: toggleSearch,
                             hideSuggestionList: true,
-                            mentions: [
-                              Mention(
-                                trigger: '@',
-                                data: [...addedmentions, ...completeUserList],
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                markupBuilder: (trigger, mention, value) {
-                                  return '[$trigger$value:$mention]';
-                                },
-                              ),
-                              Mention(
-                                trigger: '#',
-                                disableMarkup: true,
-                                data: [
-                                  ...addedChannels,
-                                  ...completeChannelsList
-                                ],
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                matchAll: true,
-                              ),
-                            ],
+                            mentions: getMention(
+                              context,
+                              [...addedmentions, ...completeUserList],
+                              [...addedChannels, ...completeChannelsList],
+                            ),
                             textInputAction: TextInputAction.newline,
                             textCapitalization: TextCapitalization.sentences,
                             decoration: const InputDecoration(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -105,6 +106,33 @@ mixin CreateExpressionHelpers {
     }
 
     return newList;
+  }
+
+  List<Mention> getMention(
+      BuildContext context, List<Map<String, dynamic>> mentions, channels) {
+    return [
+      Mention(
+        trigger: '@',
+        data: mentions,
+        style: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontWeight: FontWeight.w700,
+        ),
+        markupBuilder: (trigger, mention, value) {
+          return '[$trigger$value:$mention]';
+        },
+      ),
+      Mention(
+        trigger: '#',
+        disableMarkup: true,
+        data: channels,
+        style: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontWeight: FontWeight.w700,
+        ),
+        matchAll: true,
+      )
+    ];
   }
 }
 

@@ -17,8 +17,6 @@ import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
-enum ListType { mention, channels, empty }
-
 class CreateLinkForm extends StatefulWidget {
   const CreateLinkForm({Key key, this.expressionContext, this.address})
       : super(key: key);
@@ -167,6 +165,14 @@ class CreateLinkFormState extends State<CreateLinkForm>
     }
   }
 
+  void toggleSearch(bool value) {
+    if (value != _showList) {
+      setState(() {
+        _showList = value;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -294,40 +300,13 @@ class CreateLinkFormState extends State<CreateLinkForm>
                                   });
                                 }
                               },
-                              onSuggestionVisibleChanged: (val) {
-                                if (val != _showList) {
-                                  setState(() {
-                                    _showList = val;
-                                  });
-                                }
-                              },
+                              onSuggestionVisibleChanged: toggleSearch,
                               hideSuggestionList: true,
-                              mentions: [
-                                Mention(
-                                  trigger: '@',
-                                  data: [...addedmentions, ...completeUserList],
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  markupBuilder: (trigger, mention, value) {
-                                    return '[$trigger$value:$mention]';
-                                  },
-                                ),
-                                Mention(
-                                  trigger: '#',
-                                  disableMarkup: true,
-                                  data: [
-                                    ...addedChannels,
-                                    ...completeChannelsList
-                                  ],
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  matchAll: true,
-                                ),
-                              ],
+                              mentions: getMention(
+                                context,
+                                [...addedmentions, ...completeUserList],
+                                [...addedChannels, ...completeChannelsList],
+                              ),
                               buildCounter: (
                                 BuildContext context, {
                                 int currentLength,

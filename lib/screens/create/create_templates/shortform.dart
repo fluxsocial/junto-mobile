@@ -19,8 +19,6 @@ import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
-enum ListType { mention, channels, empty }
-
 /// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
   const CreateShortform({Key key, this.expressionContext, this.address})
@@ -84,6 +82,14 @@ class CreateShortformState extends State<CreateShortform>
   void dispose() {
     _focus.dispose();
     super.dispose();
+  }
+
+  void toggleSearch(bool value) {
+    if (value != _showList) {
+      setState(() {
+        _showList = value;
+      });
+    }
   }
 
   Widget _gradientSelector(String hexOne, String hexTwo) {
@@ -310,46 +316,16 @@ class CreateShortformState extends State<CreateShortform>
                                           });
                                         }
                                       },
-                                      onSuggestionVisibleChanged: (val) {
-                                        if (val != _showList) {
-                                          setState(() {
-                                            _showList = val;
-                                          });
-                                        }
-                                      },
+                                      onSuggestionVisibleChanged: toggleSearch,
                                       hideSuggestionList: true,
-                                      mentions: [
-                                        Mention(
-                                          trigger: '@',
-                                          data: [
-                                            ...addedmentions,
-                                            ...completeUserList
-                                          ],
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorDark,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          markupBuilder:
-                                              (trigger, mention, value) {
-                                            return '[$trigger$value:$mention]';
-                                          },
-                                        ),
-                                        Mention(
-                                          trigger: '#',
-                                          disableMarkup: true,
-                                          data: [
-                                            ...addedChannels,
-                                            ...completeChannelsList
-                                          ],
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColorDark,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          matchAll: true,
-                                        ),
-                                      ],
+                                      mentions: getMention(
+                                        context,
+                                        [...addedmentions, ...completeUserList],
+                                        [
+                                          ...addedChannels,
+                                          ...completeChannelsList
+                                        ],
+                                      ),
                                       buildCounter: (
                                         BuildContext context, {
                                         int currentLength,
