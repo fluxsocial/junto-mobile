@@ -21,7 +21,9 @@ class NotificationsAllView extends StatelessWidget {
                   itemCount: notifications.length,
                   itemBuilder: (context, index) {
                     final item = notifications[index];
-                    if (notifications.length > 0) {
+                    if (notifications.length > 0 &&
+                        item.user != null &&
+                        item.user.username.isNotEmpty) {
                       return NotificationTile(item: item);
                     }
                     return const SizedBox();

@@ -28,8 +28,11 @@ class NotificationsMentionsView extends StatelessWidget {
                 itemCount: notifications.length,
                 itemBuilder: (context, index) {
                   final item = notifications[index];
+                  print(item.user);
                   if (notifications.length > 0 &&
-                      item.notificationType == NotificationType.NewMention) {
+                      item.notificationType == NotificationType.NewMention &&
+                      item.user != null &&
+                      item.user.username.isNotEmpty) {
                     return NotificationTile(item: item);
                   } else {
                     return SizedBox();
