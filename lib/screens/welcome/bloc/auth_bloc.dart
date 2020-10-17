@@ -64,6 +64,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is RefreshUser) {
       yield* _mapRefreshUser(event);
     }
+    if (event is DeleteUser) {
+      yield* _mapDeleteUser(event);
+    }
+  }
+
+  Stream<AuthState> _mapDeleteUser(DeleteUser event) async* {
+    yield AuthState.loading();
+    try {
+      await userRepo.deleteUserAccount(event.userAddress);
+      await await authRepo.logoutUser();
+      yield AuthState.unauthenticated();
+    } on JuntoException catch (e) {
+      logger.logError('Error during delete user: ${e.message}');
+      await authRepo.logoutUser();
+      yield AuthState.unauthenticated(error: true, errorMessage: e.message);
+    } catch (error) {
+      logger.logException(error);
+      yield AuthState.unauthenticated(error: true, errorMessage: error.message);
+    }
   }
 
   Stream<AuthState> _mapSignUpEventState(SignUpEvent event) async* {
@@ -83,6 +102,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await userDataProvider.updateUser(userData);
       await userDataProvider.initialize();
       await onBoardingRepo.loadTutorialState();
+      logger.logDebug('Loading new state agreementsRequired');
       yield AuthState.agreementsRequired(userData);
     } on JuntoException catch (e) {
       logger.logError('Error during sign up: ${e.message}');
@@ -91,7 +111,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield AuthState.unauthenticated();
       yield AuthState.unauthenticated(error: true, errorMessage: e.message);
     } catch (error) {
-      logger.logException(error);
+      logger.logException(error, null, "Sign up event");
       yield AuthState.unauthenticated();
     }
   }
