@@ -14,16 +14,20 @@ import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_agreement.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class MaterialAppWithTheme extends StatelessWidget {
+  final GlobalKey<NavigatorState> _navKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
       builder: (context, theme, _) {
         return MaterialApp(
-          home: HomePage(),
+          navigatorKey: _navKey,
+          home: HomePage(navKey: _navKey),
           title: 'JUNTO Alpha',
           debugShowCheckedModeBanner: false,
           theme: theme.currentTheme,
@@ -47,20 +51,34 @@ class MaterialAppWithTheme extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key key, @required this.navKey}) : super(key: key);
 
-  Widget _buildChildFor({@required AuthState state}) {
+  final GlobalKey<NavigatorState> navKey;
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.bloc<AuthBloc>().listen(_buildChildFor);
+  }
+
+  void _buildChildFor(AuthState state) {
     if (state is AuthLoading) {
-      return HomeLoadingPage();
+      widget.navKey?.currentState
+          ?.pushReplacement(FadeRoute(child: HomeLoadingPage()));
     } else if (state is AuthAgreementsRequired) {
-      return SignUpAgreements();
+      widget.navKey?.currentState
+          ?.pushReplacement(FadeRoute(child: SignUpAgreements()));
     } else if (state is AuthAuthenticated) {
-      return HomePageContent();
-    } else if (state is AuthUnauthenticated) {
-      return Welcome();
+      widget.navKey?.currentState
+          ?.pushReplacement(FadeRoute(child: HomePageContent()));
     } else {
-      return Welcome();
+      widget.navKey?.currentState?.pushReplacement(FadeRoute(child: Welcome()));
     }
   }
 
@@ -68,15 +86,15 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        return Stack(
-          children: <Widget>[
-            BackgroundTheme(),
-            AnimatedSwitcher(
-              duration: kThemeAnimationDuration,
-              child: _buildChildFor(state: state),
-            ),
-          ],
-        );
+        if (state is AuthLoading) {
+          return HomeLoadingPage();
+        } else if (state is AuthAgreementsRequired) {
+          return SignUpAgreements();
+        } else if (state is AuthAuthenticated) {
+          return HomePageContent();
+        } else {
+          return Welcome();
+        }
       },
     );
   }
@@ -84,6 +102,7 @@ class HomePage extends StatelessWidget {
 
 class HomePageContent extends StatefulWidget {
   const HomePageContent({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return HomePageContentState();
@@ -141,6 +160,7 @@ class HomePageContentState extends State<HomePageContent>
 
 class HomeLoadingPage extends StatelessWidget {
   const HomeLoadingPage({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
