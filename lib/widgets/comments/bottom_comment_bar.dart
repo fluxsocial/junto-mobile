@@ -178,50 +178,40 @@ class BottomCommentBarState extends State<BottomCommentBar>
             child: Column(
               children: [
                 if (_showList && listType == ListType.mention)
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: MentionsSearchList(
-                      userList: users,
-                      onMentionAdd: (index) {
-                        mentionKey.currentState.addMention(users[index]);
+                  MentionsSearchList(
+                    userList: users,
+                    onMentionAdd: (index) {
+                      mentionKey.currentState.addMention(users[index]);
 
-                        if (addedmentions.indexWhere((element) =>
-                                element['id'] == users[index]['id']) ==
-                            -1) {
-                          addedmentions = [...addedmentions, users[index]];
-                        }
+                      if (addedmentions.indexWhere((element) =>
+                              element['id'] == users[index]['id']) ==
+                          -1) {
+                        addedmentions = [...addedmentions, users[index]];
+                      }
 
-                        setState(() {
-                          _showList = false;
-                          users = [];
-                        });
-                      },
-                    ),
+                      setState(() {
+                        _showList = false;
+                        users = [];
+                      });
+                    },
                   ),
                 if (_showList && listType == ListType.channels)
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: ChannelsSearchList(
-                      channels: channels,
-                      onChannelAdd: (index) {
-                        mentionKey.currentState.addMention(channels[index]);
+                  ChannelsSearchList(
+                    channels: channels,
+                    onChannelAdd: (index) {
+                      mentionKey.currentState.addMention(channels[index]);
 
-                        if (addedChannels.indexWhere((element) =>
-                                element['id'] == channels[index]['id']) ==
-                            -1) {
-                          addedChannels = [...addedChannels, channels[index]];
-                        }
+                      if (addedChannels.indexWhere((element) =>
+                              element['id'] == channels[index]['id']) ==
+                          -1) {
+                        addedChannels = [...addedChannels, channels[index]];
+                      }
 
-                        setState(() {
-                          _showList = false;
-                          channels = [];
-                        });
-                      },
-                    ),
+                      setState(() {
+                        _showList = false;
+                        channels = [];
+                      });
+                    },
                   ),
                 Container(
                   padding: const EdgeInsets.only(
