@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,5 +18,16 @@ Future<void> mainApp() async {
   await Hive.initFlutter();
   Bloc.observer = SimpleBlocObserver();
   final Backend backend = await Backend.init();
+  FirebaseMessaging _messaging = FirebaseMessaging()
+    ..configure(
+      onLaunch: (val) {
+        print('message $val');
+      },
+      onMessage: (val) {
+        print('message $val');
+      },
+    );
+  _messaging.getToken().then((value) => print('ID Token $value'));
+
   runLoggedApp(JuntoApp(backend: backend));
 }
