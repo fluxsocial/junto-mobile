@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -8,9 +9,10 @@ import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 @immutable
 class NotificationServiceImpl implements NotificationService {
-  const NotificationServiceImpl(this.httpClient);
+  NotificationServiceImpl(this.httpClient);
 
   final JuntoHttp httpClient;
+  final FirebaseMessaging _messaging = FirebaseMessaging();
 
   @override
   Future<JuntoNotificationResults> getJuntoNotifications(
@@ -34,6 +36,51 @@ class NotificationServiceImpl implements NotificationService {
       logger.logException(e, s, 'Error while fetching notifications');
 
       return JuntoNotificationResults(wasSuccessful: false);
+    }
+  }
+
+  @override
+  Future<String> getFCMToken() async {
+    return await _messaging.getToken();
+  }
+
+  @override
+  Future<bool> requestPermissions() async {
+    try {
+      return await _messaging.requestNotificationPermissions();
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<void> registerDevice(final String fcmToken) async {
+    try {
+      await httpClient.postWithoutEncoding('/notifications/register', body: {
+        'device_token': fcmToken,
+      });
+    } catch (e) {
+      return;
+    }
+  }
+
+  @override
+  Future<void> manageNotifications(NotificationPrefsModel options) async {
+    try {
+      await httpClient.postWithoutEncoding('/notifications/manage',
+          body: options.toMap());
+    } catch (e) {
+      throw JuntoException('Unable to update notification prefs', -1);
+    }
+  }
+
+  @override
+  Future<NotificationPrefsModel> getNotificationsPrefs() async {
+    try {
+      final response = await httpClient.get('/notifications/manage');
+      return NotificationPrefsModel.fromMap(response.data);
+    } catch (e) {
+      throw JuntoException('Unable to retrieve notification prefs', -1);
     }
   }
 }

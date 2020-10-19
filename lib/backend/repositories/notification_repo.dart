@@ -90,4 +90,17 @@ class NotificationRepo {
         .toList();
     return currentNotifications;
   }
+
+  Future<String> getFCMToken() => service.getFCMToken();
+
+  Future<bool> requestPermissions() => service.requestPermissions();
+
+  Future<void> registerDevice(final String fcmToken) =>
+      service.registerDevice(fcmToken);
+
+  Future<void> manageNotifications(NotificationPrefsModel options) =>
+      service.manageNotifications(options);
+
+  Future<NotificationPrefsModel> getNotificationsPrefs() =>
+      service.getNotificationsPrefs();
 }
