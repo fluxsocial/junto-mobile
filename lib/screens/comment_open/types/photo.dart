@@ -40,8 +40,6 @@ class PhotoOpen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: CustomParsedText(
                 photoExpression.expressionData.caption,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
                 defaultTextStyle: Theme.of(context).textTheme.caption,
                 mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(
                       fontWeight: FontWeight.w700,

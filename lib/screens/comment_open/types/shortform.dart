@@ -35,8 +35,7 @@ class ShortformOpen extends StatelessWidget {
       ),
       child: CustomParsedText(
         expression.expressionData.body.trim(),
-        maxLines: 7,
-        overflow: TextOverflow.ellipsis,
+        alignment: TextAlign.center,
         defaultTextStyle: TextStyle(
           fontSize: 20.0,
           fontWeight: FontWeight.w700,
