@@ -38,8 +38,6 @@ class LinkOpen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 15),
               child: CustomParsedText(
                 expression.expressionData.caption,
-                maxLines: 7,
-                overflow: TextOverflow.ellipsis,
                 defaultTextStyle: TextStyle(
                   height: 1.5,
                   color: Theme.of(context).primaryColor,

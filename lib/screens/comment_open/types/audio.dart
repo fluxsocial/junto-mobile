@@ -95,8 +95,6 @@ class AudioOpenCaption extends StatelessWidget {
       ),
       child: CustomParsedText(
         caption,
-        maxLines: 7,
-        overflow: TextOverflow.ellipsis,
         defaultTextStyle: TextStyle(
           color: Theme.of(context).primaryColor,
           fontSize: 17,
