@@ -18,16 +18,13 @@ Future<void> mainApp() async {
   await Hive.initFlutter();
   Bloc.observer = SimpleBlocObserver();
   final Backend backend = await Backend.init();
-  FirebaseMessaging _messaging = FirebaseMessaging()
+
+  //TODO(Nash+Eric): Decide on how we want to handle notifications that are received in app
+  FirebaseMessaging()
     ..configure(
-      onLaunch: (val) {
-        print('message $val');
-      },
-      onMessage: (val) {
-        print('message $val');
-      },
+      onLaunch: (val) async => print('onLaunch $val'),
+      onMessage: (val) async => print('onMessage $val'),
     );
-  _messaging.getToken().then((value) => print('ID Token $value'));
 
   runLoggedApp(JuntoApp(backend: backend));
 }
