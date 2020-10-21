@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_navigation_observer.dart';
@@ -84,6 +87,7 @@ class HomePage extends StatelessWidget {
 
 class HomePageContent extends StatefulWidget {
   const HomePageContent({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return HomePageContentState();
@@ -102,6 +106,25 @@ class HomePageContentState extends State<HomePageContent>
   void didChangeDependencies() {
     super.didChangeDependencies();
     _checkServerVersion();
+    configureNotifications();
+  }
+
+  Future<void> configureNotifications() async {
+    final notificationRepo = Provider.of<NotificationRepo>(context);
+    final appRepo = Provider.of<AppRepo>(context);
+    try {
+      final _isFirst = await appRepo.isFirstLaunch();
+      if (_isFirst) {
+        final token = await notificationRepo.getFCMToken();
+        await notificationRepo.requestPermissions();
+        await notificationRepo.registerDevice(token);
+        await notificationRepo
+            .manageNotifications(NotificationPrefsModel.enabled());
+        await appRepo.setFirstLaunch();
+      }
+    } catch (e) {
+      logger.logException(e, null, "Error configuring notifications");
+    }
   }
 
   @override
@@ -141,6 +164,7 @@ class HomePageContentState extends State<HomePageContent>
 
 class HomeLoadingPage extends StatelessWidget {
   const HomeLoadingPage({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
