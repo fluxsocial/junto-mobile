@@ -64,6 +64,7 @@ abstract class JuntoNotification with _$JuntoNotification {
   }
 
   static Map<String, dynamic> groupToJson(Group obj) => obj?.toJson();
+
   static UserProfile userFromJson(Map<String, dynamic> json) {
     if (json != null) {
       return UserProfile.fromJson(json);
@@ -110,6 +111,32 @@ class NotificationPrefsModel {
     this.packRelation,
     this.subscribe,
   });
+
+  factory NotificationPrefsModel.disabled() {
+    return NotificationPrefsModel(
+      comment: false,
+      connection: false,
+      connectionRequest: false,
+      general: false,
+      groupJoinRequest: false,
+      mention: false,
+      packRelation: false,
+      subscribe: false,
+    );
+  }
+
+  factory NotificationPrefsModel.enabled() {
+    return NotificationPrefsModel(
+      comment: true,
+      connection: true,
+      connectionRequest: true,
+      general: true,
+      groupJoinRequest: true,
+      mention: true,
+      packRelation: true,
+      subscribe: true,
+    );
+  }
 
   bool comment;
   bool connection;
