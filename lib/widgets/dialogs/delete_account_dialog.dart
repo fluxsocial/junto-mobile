@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   const DeleteAccountDialog({this.buildContext, this.user});
@@ -20,17 +19,12 @@ class DeleteAccountDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deleteController = TextEditingController();
+    final bloc = context.bloc<AuthBloc>();
     Future<void> _deleteAccount() async {
-      JuntoLoader.showLoader(context);
       try {
-        // Delete user account
-        await Provider.of<UserRepo>(context, listen: false)
-            .deleteUserAccount(user.userAddress);
-        // Hide Junto Loader
+        JuntoLoader.showLoader(context);
+        bloc.add(DeleteUser(user.userAddress));
         JuntoLoader.hide();
-        // Log user out
-        await context.bloc<AuthBloc>().add(LogoutEvent());
-        // Bring user back to Welcome screen after logging out
         Navigator.of(context).pushAndRemoveUntil(
           FadeRoute(child: Welcome()),
           ModalRoute.withName('/'),

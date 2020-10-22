@@ -32,3 +32,8 @@ class LoggedInEvent extends AuthEvent {}
 class LogoutEvent extends AuthEvent {}
 
 class RefreshUser extends AuthEvent {}
+
+class DeleteUser extends AuthEvent {
+  DeleteUser(this.userAddress);
+  final String userAddress;
+}
