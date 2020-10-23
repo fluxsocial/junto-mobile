@@ -41,7 +41,6 @@ class JuntoDenState extends State<JuntoDen>
     'Feedback',
     'Replies',
   ];
-  int _currentIndex;
 
   @override
   void initState() {
@@ -53,22 +52,14 @@ class JuntoDenState extends State<JuntoDen>
       initialIndex: 0,
       length: _tabs.length,
     );
-    _tabController.addListener(_setCurrentIndex);
   }
 
   @override
   void dispose() {
     _denController.dispose();
-    _tabController.removeListener(_setCurrentIndex);
     _tabController.dispose();
 
     super.dispose();
-  }
-
-  void _setCurrentIndex() {
-    setState(() {
-      _currentIndex = _tabController.index;
-    });
   }
 
   Widget _buildBody(UserData user) {
@@ -112,26 +103,35 @@ class JuntoDenState extends State<JuntoDen>
         body: TabBarView(
           controller: _tabController,
           children: <Widget>[
-            UserExpressions(
-              privacy: 'Public',
-              userProfile: user.user,
-              rootExpressions: true,
-              subExpressions: false,
-              communityCenterFeedback: false,
+            UserExpressProvider(
+              address: user.user.address,
+              child: UserExpressions(
+                privacy: 'Public',
+                userProfile: user.user,
+                rootExpressions: true,
+                subExpressions: false,
+                communityCenterFeedback: false,
+              ),
             ),
-            UserExpressions(
-              privacy: 'Public',
-              userProfile: user.user,
-              rootExpressions: true,
-              subExpressions: false,
-              communityCenterFeedback: true,
+            UserExpressProvider(
+              address: user.user.address,
+              child: UserExpressions(
+                privacy: 'Public',
+                userProfile: user.user,
+                rootExpressions: true,
+                subExpressions: false,
+                communityCenterFeedback: true,
+              ),
             ),
-            UserExpressions(
-              privacy: 'Public',
-              userProfile: user.user,
-              rootExpressions: false,
-              subExpressions: true,
-              communityCenterFeedback: false,
+            UserExpressProvider(
+              address: user.user.address,
+              child: UserExpressions(
+                privacy: 'Public',
+                userProfile: user.user,
+                rootExpressions: false,
+                subExpressions: true,
+                communityCenterFeedback: false,
+              ),
             ),
           ],
         ),
@@ -146,51 +146,67 @@ class JuntoDenState extends State<JuntoDen>
         return FeatureDiscovery(
           child: NotificationListener<ScrollUpdateNotification>(
             onNotification: (value) => hideOrShowFab(value, _isVisible),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider<DenBloc>(
-                    create: (context) => DenBloc(
-                          Provider.of<UserRepo>(context, listen: false),
-                          Provider.of<UserDataProvider>(context, listen: false),
-                          Provider.of<ExpressionRepo>(context, listen: false),
-                        )),
-                BlocProvider<ChannelFilteringBloc>(
-                  create: (ctx) => ChannelFilteringBloc(
-                    RepositoryProvider.of<SearchRepo>(ctx),
-                    (value) => BlocProvider.of<DenBloc>(ctx).add(
-                      LoadDen(
-                        user.userAddress,
-                        {
-                          'rootExpressions': true,
-                          'subExpressions': false,
-                          'communityFeedback': false,
-                        },
-                        channels: value != null ? [value.name] : null,
-                      ),
-                    ),
-                  ),
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: JuntoFilterDrawer(
+                leftDrawer: const FilterDrawerContent(
+                  ExpressionContextType.Collective,
                 ),
-              ],
-              child: Scaffold(
-                resizeToAvoidBottomInset: false,
-                body: JuntoFilterDrawer(
-                  leftDrawer: const FilterDrawerContent(
-                    ExpressionContextType.Collective,
-                  ),
-                  rightMenu: JuntoDrawer(),
-                  scaffold: Scaffold(
-                    floatingActionButton: BottomNav(),
-                    // DenActionButton(isVisible: _isVisible, user: user),
-                    floatingActionButtonLocation:
-                        FloatingActionButtonLocation.centerDocked,
-                    body: _buildBody(user.userProfile),
-                  ),
+                rightMenu: JuntoDrawer(),
+                scaffold: Scaffold(
+                  floatingActionButton: BottomNav(),
+                  // DenActionButton(isVisible: _isVisible, user: user),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerDocked,
+                  body: _buildBody(user.userProfile),
                 ),
               ),
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class UserExpressProvider extends StatelessWidget {
+  final String address;
+  final Widget child;
+
+  const UserExpressProvider({
+    Key key,
+    @required this.address,
+    @required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DenBloc>(
+            create: (context) => DenBloc(
+                  Provider.of<UserRepo>(context, listen: false),
+                  Provider.of<UserDataProvider>(context, listen: false),
+                  Provider.of<ExpressionRepo>(context, listen: false),
+                )),
+        BlocProvider<ChannelFilteringBloc>(
+          create: (ctx) => ChannelFilteringBloc(
+            RepositoryProvider.of<SearchRepo>(ctx),
+            (value) => BlocProvider.of<DenBloc>(ctx).add(
+              LoadDen(
+                address,
+                {
+                  'rootExpressions': true,
+                  'subExpressions': false,
+                  'communityFeedback': false,
+                },
+                channels: value != null ? [value.name] : null,
+              ),
+            ),
+          ),
+        ),
+      ],
+      child: child,
     );
   }
 }

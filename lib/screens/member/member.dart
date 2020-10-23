@@ -139,109 +139,132 @@ class _JuntoMemberState extends State<JuntoMember>
   Widget build(BuildContext context) {
     return NotificationListener<ScrollUpdateNotification>(
       onNotification: (value) => hideOrShowFab(value, _isVisible),
-      child: BlocProvider(
-        create: (context) => DenBloc(
-          Provider.of<UserRepo>(context, listen: false),
-          Provider.of<UserDataProvider>(context, listen: false),
-          Provider.of<ExpressionRepo>(context, listen: false),
-        ),
-        child: Scaffold(
-          //TODO(dominik/Nash): revert filter drawer
-          // and use bloc to fetch member expressions
-          body: Container(
-            child: Stack(
-              children: <Widget>[
-                Scaffold(
-                  key: scaffoldKey,
-                  body: DefaultTabController(
-                    length: _tabs.length,
-                    child: NestedScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      headerSliverBuilder:
-                          (BuildContext context, bool innerBoxIsScrolled) {
-                        return <Widget>[
-                          SliverPersistentHeader(
-                            delegate: MemberAppbar(
-                              expandedHeight:
-                                  MediaQuery.of(context).size.height * .1,
-                              username: _memberProfile.user.username,
-                            ),
-                            floating: true,
-                            pinned: true,
+      child: Scaffold(
+        //TODO(dominik/Nash): revert filter drawer
+        // and use bloc to fetch member expressions
+        body: Container(
+          child: Stack(
+            children: <Widget>[
+              Scaffold(
+                key: scaffoldKey,
+                body: DefaultTabController(
+                  length: _tabs.length,
+                  child: NestedScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                        SliverPersistentHeader(
+                          delegate: MemberAppbar(
+                            expandedHeight:
+                                MediaQuery.of(context).size.height * .1,
+                            username: _memberProfile.user.username,
                           ),
-                          MemberDenAppbar(
-                            profile: widget.profile,
-                            isConnected: isConnected,
-                            toggleMemberRelationships:
-                                toggleMemberRelationships,
-                          ),
-                          SliverPersistentHeader(
-                            pinned: true,
-                            delegate: JuntoAppBarDelegate(
-                              TabBar(
-                                labelPadding: const EdgeInsets.all(0),
-                                isScrollable: true,
-                                labelColor: Theme.of(context).primaryColorDark,
-                                unselectedLabelColor:
-                                    Theme.of(context).primaryColorLight,
-                                labelStyle:
-                                    Theme.of(context).textTheme.subtitle1,
-                                indicatorWeight: 0.0001,
-                                tabs: <Widget>[
-                                  for (String name in _tabs)
-                                    TabBarName(name: name),
-                                ],
-                              ),
+                          floating: true,
+                          pinned: true,
+                        ),
+                        MemberDenAppbar(
+                          profile: widget.profile,
+                          isConnected: isConnected,
+                          toggleMemberRelationships: toggleMemberRelationships,
+                        ),
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: JuntoAppBarDelegate(
+                            TabBar(
+                              labelPadding: const EdgeInsets.all(0),
+                              isScrollable: true,
+                              labelColor: Theme.of(context).primaryColorDark,
+                              unselectedLabelColor:
+                                  Theme.of(context).primaryColorLight,
+                              labelStyle: Theme.of(context).textTheme.subtitle1,
+                              indicatorWeight: 0.0001,
+                              tabs: <Widget>[
+                                for (String name in _tabs)
+                                  TabBarName(name: name),
+                              ],
                             ),
                           ),
-                        ];
-                      },
-                      body: TabBarView(
-                        children: <Widget>[
-                          UserExpressions(
+                        ),
+                      ];
+                    },
+                    body: TabBarView(
+                      children: <Widget>[
+                        UserExpressProvider(
+                          address: widget.profile.address,
+                          child: UserExpressions(
                             privacy: 'Public',
                             userProfile: widget.profile,
                             rootExpressions: true,
                             subExpressions: false,
                             communityCenterFeedback: false,
                           ),
-                          UserExpressions(
+                        ),
+                        UserExpressProvider(
+                          address: widget.profile.address,
+                          child: UserExpressions(
                             privacy: 'Public',
                             userProfile: widget.profile,
                             rootExpressions: true,
                             subExpressions: false,
                             communityCenterFeedback: true,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 200),
-                  opacity: memberRelationshipsVisible ? 1.0 : 0.0,
-                  child: Visibility(
-                    visible: memberRelationshipsVisible,
-                    child: MemberRelationships(
-                      isFollowing: isFollowing,
-                      isConnected: isConnected,
-                      hasPendingConnection: hasPendingConnection,
-                      hasPendingPackRequest: hasPendingPackRequest,
-                      isPackMember: isPackMember,
-                      userProvider: userProvider,
-                      memberProfile: widget.profile,
-                      userProfile: _userProfile,
-                      toggleMemberRelationships: toggleMemberRelationships,
-                      refreshRelations: refreshRelations,
-                      groupProvider: groupProvider,
-                    ),
+              ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: memberRelationshipsVisible ? 1.0 : 0.0,
+                child: Visibility(
+                  visible: memberRelationshipsVisible,
+                  child: MemberRelationships(
+                    isFollowing: isFollowing,
+                    isConnected: isConnected,
+                    hasPendingConnection: hasPendingConnection,
+                    hasPendingPackRequest: hasPendingPackRequest,
+                    isPackMember: isPackMember,
+                    userProvider: userProvider,
+                    memberProfile: widget.profile,
+                    userProfile: _userProfile,
+                    toggleMemberRelationships: toggleMemberRelationships,
+                    refreshRelations: refreshRelations,
+                    groupProvider: groupProvider,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class UserExpressProvider extends StatelessWidget {
+  final String address;
+  final Widget child;
+
+  const UserExpressProvider({
+    Key key,
+    @required this.address,
+    @required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DenBloc>(
+            create: (context) => DenBloc(
+                  Provider.of<UserRepo>(context, listen: false),
+                  Provider.of<UserDataProvider>(context, listen: false),
+                  Provider.of<ExpressionRepo>(context, listen: false),
+                )),
+      ],
+      child: child,
     );
   }
 }
