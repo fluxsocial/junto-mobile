@@ -48,10 +48,14 @@ class UserExpressions extends StatefulWidget {
   _UserExpressionsState createState() => _UserExpressionsState();
 }
 
-class _UserExpressionsState extends State<UserExpressions> {
+class _UserExpressionsState extends State<UserExpressions>
+    with AutomaticKeepAliveClientMixin {
   void deleteDenExpression(ExpressionResponse expression) {
     context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
