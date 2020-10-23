@@ -96,3 +96,4 @@ awsconfiguration.json
 lib/api_prod.dart
 /ios/Flutter/.last_build_id
 /ios/Runner/GoogleService-Info.plist
+/android/app/src/tst/google-services.json
