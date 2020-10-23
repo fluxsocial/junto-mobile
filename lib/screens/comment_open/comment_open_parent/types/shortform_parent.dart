@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 class ShortformParent extends StatelessWidget {
@@ -23,10 +24,17 @@ class ShortformParent extends StatelessWidget {
         vertical: 40.0,
       ),
       width: MediaQuery.of(context).size.width,
-      child: Text(
+      child: CustomParsedText(
         _body,
-        style: TextStyle(
-          fontSize: 17,
+        defaultTextStyle: TextStyle(
+          fontSize: 17.0,
+          fontWeight: FontWeight.w700,
+          color: _hexOne.contains('fff') || _hexTwo.contains('fff')
+              ? Color(0xff333333)
+              : Colors.white,
+        ),
+        mentionTextStyle: TextStyle(
+          fontSize: 17.0,
           fontWeight: FontWeight.w700,
           color: _hexOne.contains('fff') || _hexTwo.contains('fff')
               ? Color(0xff333333)
@@ -34,7 +42,7 @@ class ShortformParent extends StatelessWidget {
         ),
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.center,
+        alignment: TextAlign.center,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
