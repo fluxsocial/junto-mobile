@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class DynamicParent extends StatelessWidget {
   DynamicParent({this.expression});
@@ -39,12 +40,18 @@ class DynamicParent extends StatelessWidget {
             const SizedBox(height: 10),
 
           if (expression.expressionData.body.isNotEmpty)
-            Text(
+            CustomParsedText(
               expression.expressionData.body,
-              style: TextStyle(
-                fontSize: 15,
+              defaultTextStyle: TextStyle(
+                height: 1.5,
                 color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w500,
+                fontSize: 17,
+              ),
+              mentionTextStyle: TextStyle(
+                color: Theme.of(context).primaryColorDark,
+                fontSize: 17,
+                height: 1.5,
+                fontWeight: FontWeight.w700,
               ),
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
