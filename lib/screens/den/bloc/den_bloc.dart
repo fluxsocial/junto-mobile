@@ -101,15 +101,16 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     dynamic event,
   ) async* {
     try {
-      yield DenLoadingState();
       final userExpressions = await fetchExpressions(_params);
       currentTimeStamp = userExpressions.lastTimestamp;
+
       if (userExpressions.results.isEmpty) {
         yield DenEmptyState();
       } else {
         yield DenLoadedState(userExpressions.results);
       }
     } on JuntoException catch (e) {
+      print(e);
       yield DenErrorState(e.message);
     }
   }

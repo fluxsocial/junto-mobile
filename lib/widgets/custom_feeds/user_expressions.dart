@@ -106,77 +106,78 @@ class _UserExpressionsState extends State<UserExpressions>
   Widget build(BuildContext context) {
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
+        final canFetchMore =
+            state is DenLoadedState && state.expressions.length > 50;
+
         if (state is DenLoadingState) {
           return JuntoProgressIndicator();
         }
-        if (state is DenLoadedState) {
-          final results = state.expressions;
 
-          return CustomRefresh(
-            refresh: () async {
-              await context.bloc<DenBloc>().add(
-                    RefreshDen(),
+        return CustomRefresh(
+          refresh: () async {
+            await context.bloc<DenBloc>().add(
+                  RefreshDen(),
+                );
+          },
+          child: Container(
+            color: Theme.of(context).colorScheme.background,
+            child: CustomScrollView(
+              slivers: <Widget>[
+                if (state is DenErrorState)
+                  JuntoErrorWidget(
+                    errorMessage: state.message,
+                  ),
+                Consumer<UserDataProvider>(
+                    builder: (BuildContext context, UserDataProvider data, _) {
+                  return SliverToBoxAdapter(
+                    child: FilterColumnRow(
+                      twoColumnView:
+                          Provider.of<AppRepo>(context, listen: false)
+                              .twoColumnLayout,
+                    ),
                   );
-            },
-            child: Container(
-              color: Theme.of(context).colorScheme.background,
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  Consumer<UserDataProvider>(builder:
-                      (BuildContext context, UserDataProvider data, _) {
-                    return SliverToBoxAdapter(
-                      child: FilterColumnRow(
-                        twoColumnView:
-                            Provider.of<AppRepo>(context, listen: false)
-                                .twoColumnLayout,
-                      ),
-                    );
-                  }),
+                }),
+                if (state is DenLoadedState)
                   Consumer<UserDataProvider>(
                     builder: (BuildContext context, UserDataProvider data, _) {
                       if (Provider.of<AppRepo>(context, listen: false)
                           .twoColumnLayout) {
                         return TwoColumnList(
-                          data: results == null ? [] : results,
+                          data: state.expressions == null
+                              ? []
+                              : state.expressions,
                           useSliver: true,
                           deleteExpression: deleteDenExpression,
                         );
                       }
                       return SingleColumnSliverListView(
-                        data: results,
+                        data: state.expressions,
                         privacyLayer: widget.privacy,
                         deleteExpression: deleteDenExpression,
                       );
                     },
                   ),
-                  if (appConfig.flavor == Flavor.dev && results.length > 50)
-                    SliverToBoxAdapter(
-                      child: FetchMoreButton(
-                        onPressed: () {
-                          context.bloc<DenBloc>().add(
-                                LoadMoreDen(),
-                              );
-                        },
-                      ),
-                    )
-                ],
-              ),
+                if (state is DenEmptyState)
+                  SliverToBoxAdapter(
+                    child: FeedPlaceholder(
+                      placeholderText: 'No expressions yet!',
+                      image:
+                          'assets/images/junto-mobile__placeholder--feed.png',
+                      verticalOffset: -160,
+                    ),
+                  ),
+                if (appConfig.flavor == Flavor.dev && canFetchMore)
+                  SliverToBoxAdapter(
+                    child: FetchMoreButton(
+                      onPressed: () {
+                        context.bloc<DenBloc>().add(LoadMoreDen());
+                      },
+                    ),
+                  )
+              ],
             ),
-          );
-        }
-        if (state is DenEmptyState) {
-          return FeedPlaceholder(
-            placeholderText: 'No expressions yet!',
-            image: 'assets/images/junto-mobile__placeholder--feed.png',
-            verticalOffset: 0,
-          );
-        }
-        if (state is DenErrorState) {
-          return JuntoErrorWidget(
-            errorMessage: state.message,
-          );
-        }
-        return SizedBox();
+          ),
+        );
       },
     );
   }
