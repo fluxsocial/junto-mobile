@@ -8,8 +8,8 @@ import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/user_custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
-import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -113,7 +113,7 @@ class _UserExpressionsState extends State<UserExpressions>
           return JuntoProgressIndicator();
         }
 
-        return CustomRefresh(
+        return UserCustomRefresh(
           refresh: () async {
             await context.bloc<DenBloc>().add(
                   RefreshDen(),
