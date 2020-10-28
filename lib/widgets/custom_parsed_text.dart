@@ -4,6 +4,7 @@ import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomParsedText extends StatelessWidget with MemberValidation {
   final TextStyle defaultTextStyle;
@@ -59,6 +60,18 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
           style: mentionTextStyle,
           onTap: !disableOnMentiontap ? (url) {} : null,
         ),
+        MatchText(
+          type: ParsedType.URL,
+          style:
+              mentionTextStyle,
+          onTap: !disableOnMentiontap
+              ? (url) async {
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  }
+                }
+              : null,
+        )
       ],
     );
   }
