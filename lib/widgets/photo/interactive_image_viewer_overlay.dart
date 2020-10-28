@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class InteractiveImageViewerOverlay extends StatefulWidget {
   final Widget child;
@@ -70,9 +71,27 @@ class _InteractiveImageViewerOverlayState
 
           entry = OverlayEntry(
             builder: (context) {
-              return Positioned.fromRect(
-                rect: placeholder,
-                child: buildViewer(context),
+              return Stack(
+                children: [
+                  AnimatedSwitcher(
+                    duration: Duration(milliseconds: 250),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return ScaleTransition(child: child, scale: animation);
+                    },
+                    child: placeholder != null
+                        ? Container(
+                            color: Colors.black.withOpacity(0.3),
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                          )
+                        : Container(),
+                  ),
+                  Positioned.fromRect(
+                    rect: placeholder,
+                    child: buildViewer(context),
+                  ),
+                ],
               );
             },
           );
