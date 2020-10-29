@@ -81,7 +81,9 @@ class _InteractiveImageViewerOverlayState
                     },
                     child: placeholder != null
                         ? Container(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Theme.of(context)
+                                .backgroundColor
+                                .withOpacity(.8),
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
                           )
