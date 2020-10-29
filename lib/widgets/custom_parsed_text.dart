@@ -62,12 +62,16 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
         ),
         MatchText(
           type: ParsedType.URL,
-          style:
-              mentionTextStyle,
+          style: mentionTextStyle,
           onTap: !disableOnMentiontap
               ? (url) async {
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  final updatedUrl =
+                      !url.toString().contains(RegExp(r'(http(s)?):'))
+                          ? 'https://$url'
+                          : url;
+
+                  if (await canLaunch(updatedUrl)) {
+                    await launch(updatedUrl);
                   }
                 }
               : null,
