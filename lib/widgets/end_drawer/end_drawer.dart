@@ -90,6 +90,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               Navigator.of(context).pushReplacement(
                                 FadeRoute<void>(
                                   child: JuntoDen(),
+                                  name: 'JuntoCollective',
                                 ),
                               );
                             },

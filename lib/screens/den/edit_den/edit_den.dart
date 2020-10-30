@@ -251,6 +251,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
       Navigator.of(context).pushReplacement(
         FadeRoute<void>(
           child: JuntoDen(),
+          name: 'JuntoCollective',
         ),
       );
     } catch (e, s) {
