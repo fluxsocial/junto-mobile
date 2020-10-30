@@ -185,6 +185,7 @@ mixin MemberValidation {
       Navigator.push(
         context,
         CupertinoPageRoute<dynamic>(
+          settings: RouteSettings(name: 'JuntoCollective'),
           builder: (BuildContext context) => JuntoDen(),
         ),
       );
