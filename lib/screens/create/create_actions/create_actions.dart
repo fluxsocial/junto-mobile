@@ -165,13 +165,16 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       child = JuntoPacks(initialGroup: _address);
     } else if (_expressionContext == ExpressionContext.Group &&
         widget.address == communityCenterAddress) {
-      child = JuntoCommunityCenter();
+      child = JuntoCommunityCenter(
+        tabPos: 1,
+      );
     } else {
       context.bloc<CollectiveBloc>().add(
             RefreshCollective(),
           );
       child = JuntoCollective();
     }
+
     Navigator.of(context).pushAndRemoveUntil(
       FadeRoute<void>(child: child),
       (Route<dynamic> route) {
