@@ -21,10 +21,14 @@ class JuntoCommunityCenterFeedback extends StatefulWidget {
 }
 
 class JuntoCommunityCenterFeedbackState
-    extends State<JuntoCommunityCenterFeedback> {
+    extends State<JuntoCommunityCenterFeedback>
+    with AutomaticKeepAliveClientMixin {
   final String communityCenterAddress = kCommunityCenterAddress;
 
   Future<QueryResults<ExpressionResponse>> getExpressions;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {

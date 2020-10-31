@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
@@ -21,11 +20,15 @@ class JuntoCommunityCenterUpdates extends StatefulWidget {
 }
 
 class JuntoCommunityCenterUpdatesState
-    extends State<JuntoCommunityCenterUpdates> {
+    extends State<JuntoCommunityCenterUpdates>
+    with AutomaticKeepAliveClientMixin {
   // updates address
   String updatesAddress = kUpdatesAddress;
 
   Future<QueryResults<ExpressionResponse>> getExpressions;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {

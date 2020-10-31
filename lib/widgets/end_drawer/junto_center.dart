@@ -12,6 +12,10 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:provider/provider.dart';
 
 class JuntoCommunityCenter extends StatefulWidget {
+  final int tabPos;
+
+  const JuntoCommunityCenter({Key key, this.tabPos = 0}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return JuntoCommunityCenterState();
@@ -85,6 +89,7 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: DefaultTabController(
           length: _tabs.length,
+          initialIndex: widget.tabPos,
           child: NestedScrollView(
             floatHeaderSlivers: true,
             headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
