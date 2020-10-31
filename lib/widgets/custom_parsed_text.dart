@@ -67,8 +67,6 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
             onTap: !disableOnMentiontap
                 ? (url) {
                     Navigator.popUntil(context, (route) {
-                      print('test: ${route.settings} | $url');
-
                       context.bloc<ChannelFilteringBloc>().add(
                             FilterSelected(
                               Channel(
