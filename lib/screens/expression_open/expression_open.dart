@@ -18,6 +18,7 @@ import 'package:junto_beta_mobile/widgets/comments/bottom_comment_bar.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:provider/provider.dart';
 
+import 'parent_expression/expression_open_parent.dart';
 import 'expressions/audio_open.dart';
 
 class ExpressionOpen extends StatefulWidget {
@@ -180,6 +181,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         controller: _scrollController,
                         children: <Widget>[
+                          ...widget.expression.commentThread
+                              .map((e) => ExpressionOpenParent(parent: e))
+                              .toList(),
                           // Expression Top
                           ExpressionOpenTop(
                             expression: widget.expression,
