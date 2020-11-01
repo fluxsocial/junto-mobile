@@ -123,7 +123,6 @@ class CommentOpenState extends State<CommentOpen> {
   @override
   void initState() {
     super.initState();
-    print('test: hell');
     _scrollController = ScrollController();
     _focusNode = FocusNode();
   }
