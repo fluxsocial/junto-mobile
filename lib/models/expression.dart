@@ -317,17 +317,32 @@ class ExpressionResponse extends HiveObject {
     this.numberComments = 0,
     this.comments,
     this.resonations,
+    this.commentThread,
   });
 
   factory ExpressionResponse.withCommentsAndResonations(
       Map<String, dynamic> json) {
-    return ExpressionResponse(
+    List<dynamic> thread;
+
+    thread = json['comment_thread'] != null
+        ? json['comment_thread']['results'] != null
+            ? json['comment_thread']['results']
+            : []
+        : [];
+
+    final compiledThread = thread
+        .map((e) => ExpressionResponse.withCommentsAndResonations(
+            e as Map<String, dynamic>))
+        .toList();
+
+    final response = ExpressionResponse(
       address: json['address'],
       type: json['type'],
       expressionData: generateExpressionData(
         json['type'],
         json['expression_data'],
       ),
+      commentThread: compiledThread,
       createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
@@ -340,6 +355,8 @@ class ExpressionResponse extends HiveObject {
       context: json['context'] ?? '',
       comments: json['comments'],
     );
+
+    return response;
   }
 
   factory ExpressionResponse.fromJson(Map<String, dynamic> json) {
@@ -388,6 +405,8 @@ class ExpressionResponse extends HiveObject {
   final UserProfile creator;
   @HiveField(11)
   final DateTime createdAt;
+  @HiveField(12)
+  final List<ExpressionResponse> commentThread;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
