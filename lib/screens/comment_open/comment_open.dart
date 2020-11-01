@@ -27,7 +27,7 @@ class CommentOpen extends StatefulWidget {
 
   final Comment comment;
   final String userAddress;
-  final dynamic parent;
+  final List<dynamic> parent;
 
   @override
   State<StatefulWidget> createState() {
@@ -123,6 +123,7 @@ class CommentOpenState extends State<CommentOpen> {
   @override
   void initState() {
     super.initState();
+    print('test: hell');
     _scrollController = ScrollController();
     _focusNode = FocusNode();
   }
@@ -142,10 +143,12 @@ class CommentOpenState extends State<CommentOpen> {
               controller: _scrollController,
               children: <Widget>[
                 // Comment Parent
-                CommentOpenParent(
-                  comment: widget.comment,
-                  parent: widget.parent,
-                ),
+                ...widget.parent
+                    .map((e) => CommentOpenParent(
+                          comment: widget.comment,
+                          parent: e,
+                        ))
+                    .toList(),
                 // Comment Open Top
                 CommentOpenTop(
                   comment: widget.comment,
@@ -160,7 +163,7 @@ class CommentOpenState extends State<CommentOpen> {
                 // List of comments
                 CommentsList(
                   commentsVisible: commentsVisible,
-                  expression: widget.comment,
+                  expression: [...widget.parent, widget.comment],
                   userAddress: widget.userAddress,
                   futureComments: futureComments,
                   showComments: _showComments,
