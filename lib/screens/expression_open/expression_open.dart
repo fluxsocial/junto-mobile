@@ -199,7 +199,10 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           // List of comments
                           CommentsList(
                             commentsVisible: commentsVisible,
-                            expression: widget.expression,
+                            expression: [
+                              ...widget.expression.commentThread,
+                              widget.expression
+                            ],
                             futureComments: futureComments,
                             showComments: _showComments,
                           ),
