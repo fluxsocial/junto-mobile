@@ -14,6 +14,7 @@ class SignUpTextFieldWrapper extends StatefulWidget {
     @required this.title,
     @required this.textInputActionType,
     @required this.textCapitalization,
+    this.focusNode,
   }) : super(key: key);
 
   /// Called when the user enters a value in the textfield.
@@ -26,6 +27,7 @@ class SignUpTextFieldWrapper extends StatefulWidget {
   final TextInputAction textInputActionType;
   final TextCapitalization textCapitalization;
   final TextEditingController controller;
+  final FocusNode focusNode;
 
   @override
   State<StatefulWidget> createState() {
@@ -50,6 +52,7 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
             Column(
               children: <Widget>[
                 SignUpTextField(
+                  focusNode: widget.focusNode,
                   valueController: widget.controller,
                   onSubmit: widget.onSubmit,
                   hint: widget.hint,
