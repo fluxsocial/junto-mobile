@@ -6,9 +6,13 @@ import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
-  const SpherePreview({@required this.group});
+  const SpherePreview({
+    @required this.group,
+    this.diameter = 38,
+  });
 
   final Group group;
+  final double diameter;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +23,8 @@ class SpherePreview extends StatelessWidget {
           group.groupData.photo == ''
               ? Container(
                   alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
+                  height: diameter,
+                  width: diameter,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
@@ -36,7 +40,7 @@ class SpherePreview extends StatelessWidget {
                   child: Icon(
                     CustomIcons.spheres,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 17,
+                    size: 15,
                   ),
                 )
               : ClipOval(
@@ -48,8 +52,8 @@ class SpherePreview extends StatelessWidget {
                       placeholder: (BuildContext context, String _) {
                         return Container(
                           alignment: Alignment.center,
-                          height: 45.0,
-                          width: 45.0,
+                          height: diameter,
+                          width: diameter,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.bottomLeft,

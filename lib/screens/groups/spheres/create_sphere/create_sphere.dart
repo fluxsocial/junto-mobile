@@ -16,9 +16,7 @@ import 'package:provider/provider.dart';
 class CreateSphere extends StatefulWidget {
   const CreateSphere({
     Key key,
-    @required this.refreshSpheres,
   }) : super(key: key);
-  final Function refreshSpheres;
 
   @override
   State<StatefulWidget> createState() {

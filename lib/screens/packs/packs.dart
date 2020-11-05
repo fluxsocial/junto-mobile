@@ -74,27 +74,28 @@ class JuntoPacksState extends State<JuntoPacks>
                   : null,
               rightMenu: JuntoDrawer(),
               scaffold: Scaffold(
-                  body: PageView(
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: (int index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                  Provider.of<AppRepo>(context, listen: false)
-                      .setPacksPageIndex(index);
-                },
-                controller: _pageController,
-                children: <Widget>[
-                  PacksList(
-                    packsViewNav: _packsViewNav,
-                    isVisible: _isVisible,
-                  ),
-                  PackOpen(
-                    packsViewNav: _packsViewNav,
-                    isVisible: _isVisible,
-                  ),
-                ],
-              )),
+                body: PageView(
+                  physics: NeverScrollableScrollPhysics(),
+                  onPageChanged: (int index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                    Provider.of<AppRepo>(context, listen: false)
+                        .setPacksPageIndex(index);
+                  },
+                  controller: _pageController,
+                  children: <Widget>[
+                    PacksList(
+                      packsViewNav: _packsViewNav,
+                      isVisible: _isVisible,
+                    ),
+                    PackOpen(
+                      packsViewNav: _packsViewNav,
+                      isVisible: _isVisible,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

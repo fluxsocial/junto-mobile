@@ -9,20 +9,22 @@ import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere.dart';
 import 'package:provider/provider.dart';
 
-class SpheresTempAppBar extends StatefulWidget {
+class CirclesAppbar extends StatefulWidget {
+  const CirclesAppbar({this.currentIndex});
+  final int currentIndex;
   @override
-  _SpheresTempAppBarState createState() => _SpheresTempAppBarState();
+  _CirclesAppbarState createState() => _CirclesAppbarState();
 }
 
-class _SpheresTempAppBarState extends State<SpheresTempAppBar> {
-
+class _CirclesAppbarState extends State<CirclesAppbar> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final repo = Provider.of<OnBoardingRepo>(context);
-    if(repo.showGroupTutorial){
+    if (repo.showGroupTutorial) {
       repo.setViewed(HiveKeys.kGroupTutorial, false);
     }
   }
@@ -109,20 +111,65 @@ class _SpheresTempAppBarState extends State<SpheresTempAppBar> {
                 ),
               ),
               child: Row(
-                children: <Widget>[
-                  Container(
-                    color: Colors.transparent,
-                    padding: const EdgeInsets.only(
-                      right: 20,
-                      top: 10,
-                      bottom: 10,
-                    ),
-                    child: Text(
-                      'GROUPS',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorDark,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.only(
+                          right: 20,
+                          top: 10,
+                          bottom: 10,
+                        ),
+                        child: Text(
+                          'CIRCLES',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: widget.currentIndex == 0
+                                ? Theme.of(context).primaryColorDark
+                                : Theme.of(context).primaryColorLight,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 10,
+                        ),
+                        child: Text(
+                          'REQUESTS',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: widget.currentIndex == 1
+                                ? Theme.of(context).primaryColorDark
+                                : Theme.of(context).primaryColorLight,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<void>(
+                          builder: (BuildContext context) => CreateSphere(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      color: Colors.transparent,
+                      width: 38,
+                      height: 38,
+                      child: Icon(
+                        Icons.add,
+                        size: 24,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ),

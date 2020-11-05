@@ -33,7 +33,7 @@ class MyPacks extends StatelessWidget {
     return Consumer<UserDataProvider>(
       builder: (context, data, child) {
         return Column(
-          children: <Widget>[
+          children: <Widget>[ 
             BlocBuilder<GroupBloc, GroupBlocState>(
               builder: (context, state) {
                 if (state is GroupLoading) {
