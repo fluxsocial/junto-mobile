@@ -9,6 +9,9 @@ class SignUpAbout extends StatefulWidget {
   final TextEditingController pronounController;
   final TextEditingController locationController;
   final TextEditingController websiteController;
+  final FocusNode locationFocusNode;
+  final FocusNode pronounFocusNode;
+  final FocusNode websiteFocusNode;
   final Function nextPage;
 
   const SignUpAbout({
@@ -17,6 +20,9 @@ class SignUpAbout extends StatefulWidget {
     this.pronounController,
     this.locationController,
     this.websiteController,
+    this.locationFocusNode,
+    this.pronounFocusNode,
+    this.websiteFocusNode,
   }) : super(key: key);
 
   @override
@@ -40,10 +46,14 @@ class SignUpAboutState extends State<SignUpAbout> {
     super.dispose();
   }
 
-  bool _lengthValidator(String text, [int charCount = 30]) {
+  bool _lengthValidator(String text, int fieldNumber, [int charCount = 30]) {
     bool lengthOk = text.length <= charCount;
     if (lengthOk) {
-      FocusScope.of(context).nextFocus();
+      if (fieldNumber == 1) {
+        widget.pronounFocusNode.requestFocus();
+      } else {
+        widget.websiteFocusNode.requestFocus();
+      }
       return true;
     } else {
       FocusScope.of(context).unfocus();
@@ -72,11 +82,12 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextField(
                       valueController: widget.locationController,
                       onSubmit: () =>
-                          _lengthValidator(widget.locationController.text),
+                          _lengthValidator(widget.locationController.text, 1),
                       textInputActionType: TextInputAction.next,
                       hint: S.of(context).welcome_location_hint,
                       maxLength: 30,
                       textCapitalization: TextCapitalization.words,
+                      focusNode: widget.locationFocusNode,
                     ),
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_location_label,
@@ -88,10 +99,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextField(
                       valueController: widget.pronounController,
                       onSubmit: () =>
-                          _lengthValidator(widget.pronounController.text),
+                          _lengthValidator(widget.pronounController.text, 2),
                       textInputActionType: TextInputAction.next,
                       hint: S.of(context).welcome_gender_hints,
                       maxLength: 30,
+                      focusNode: widget.pronounFocusNode,
                     ),
                     SignUpTextFieldLabelAndCounter(
                       label: S.of(context).welcome_gender_label,
@@ -103,9 +115,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                     SignUpTextField(
                       valueController: widget.websiteController,
                       textInputActionType: TextInputAction.done,
+                      focusNode: widget.websiteFocusNode,
                       onSubmit: () {
                         if (_lengthValidator(
-                            widget.websiteController.text, 100)) {
+                            widget.websiteController.text, 0, 100)) {
+                          FocusScope.of(context).unfocus();
                           widget.nextPage();
                         }
                       },
