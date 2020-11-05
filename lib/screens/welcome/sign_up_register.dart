@@ -12,11 +12,18 @@ class SignUpRegister extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
+  final FocusNode confirmPasswordFocusNode;
+
   const SignUpRegister({
     Key key,
     this.emailController,
     this.passwordController,
     this.confirmPasswordController,
+    this.emailFocusNode,
+    this.passwordFocusNode,
+    this.confirmPasswordFocusNode,
   }) : super(key: key);
 
   @override
@@ -26,16 +33,10 @@ class SignUpRegister extends StatefulWidget {
 }
 
 class SignUpRegisterState extends State<SignUpRegister> {
-  FocusNode emailNode = FocusNode();
-  FocusNode passwordNode = FocusNode();
-  FocusNode confirmPasswordNode = FocusNode();
   final String passwordRegEx = "(?=.*[A-Z])(?=.*[0-9])";
 
   @override
   void dispose() {
-    emailNode.dispose();
-    passwordNode.dispose();
-    confirmPasswordNode.dispose();
     super.dispose();
   }
 
@@ -105,9 +106,10 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           valueController: widget.emailController,
                           textInputActionType: TextInputAction.next,
                           onSubmit: () {
-                            FocusScope.of(context).requestFocus(passwordNode);
+                            FocusScope.of(context)
+                                .requestFocus(widget.passwordFocusNode);
                           },
-                          focusNode: emailNode,
+                          focusNode: widget.emailFocusNode,
                           hint: S.of(context).welcome_email_hint,
                           maxLength: 1000,
                           textCapitalization: TextCapitalization.none,
@@ -118,9 +120,10 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           valueController: widget.passwordController,
                           textInputActionType: TextInputAction.next,
                           onSubmit: () => _passwordCheck(
-                              widget.passwordController.text,
-                              confirmPasswordNode),
-                          focusNode: passwordNode,
+                            widget.passwordController.text,
+                            widget.confirmPasswordFocusNode,
+                          ),
+                          focusNode: widget.passwordFocusNode,
                           hint: S.of(context).welcome_password_hint,
                           maxLength: 1000,
                           textCapitalization: TextCapitalization.none,
@@ -133,7 +136,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           textInputActionType: TextInputAction.done,
                           onSubmit: () => _passwordCheck(
                               widget.confirmPasswordController.text, null),
-                          focusNode: confirmPasswordNode,
+                          focusNode: widget.confirmPasswordFocusNode,
                           hint: S.of(context).welcome_confirm_password,
                           maxLength: 1000,
                           textCapitalization: TextCapitalization.none,
