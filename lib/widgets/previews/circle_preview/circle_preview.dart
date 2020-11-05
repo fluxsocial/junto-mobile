@@ -46,8 +46,8 @@ class CirclePreview extends StatelessWidget {
               : ClipOval(
                   child: ImageWrapper(
                       imageUrl: group.groupData.photo,
-                      height: 45,
-                      width: 45,
+                      height: diameter,
+                      width: diameter,
                       fit: BoxFit.cover,
                       placeholder: (BuildContext context, String _) {
                         return Container(
@@ -90,7 +90,7 @@ class CirclePreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('s/ ${group.groupData.sphereHandle}',
+                  Text('s/${group.groupData.sphereHandle}',
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.subtitle1),
                   Text(group.groupData.name,
