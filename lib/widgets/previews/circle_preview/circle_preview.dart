@@ -5,8 +5,8 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 // This class renders a preview of a sphere
-class SpherePreview extends StatelessWidget {
-  const SpherePreview({
+class CirclePreview extends StatelessWidget {
+  const CirclePreview({
     @required this.group,
     this.diameter = 38,
   });

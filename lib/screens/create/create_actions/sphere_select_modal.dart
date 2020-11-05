@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview.dart';
 
 class SphereSelectModal extends StatelessWidget {
   const SphereSelectModal({this.spheres, this.onSelect});
@@ -34,7 +34,7 @@ class SphereSelectModal extends StatelessWidget {
                             sphere.groupData.sphereHandle,
                           );
                         },
-                        child: SpherePreview(group: sphere),
+                        child: CirclePreview(group: sphere),
                       ),
                     )
                     .toList(),

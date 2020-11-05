@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 class CirclesListAll extends StatelessWidget with ListDistinct {
@@ -53,7 +53,7 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   children: <Widget>[
                     for (Group group in userSpheres)
-                      SpherePreview(
+                      CirclePreview(
                         group: group,
                       ),
                   ],
