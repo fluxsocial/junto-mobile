@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere.dart';
 import 'package:provider/provider.dart';
 
 class CirclesAppbar extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/action_items/creator/edit_group.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/edit_group.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:provider/provider.dart';
 

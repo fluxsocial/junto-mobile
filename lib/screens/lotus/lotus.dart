@@ -12,7 +12,7 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/circles.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/circles.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
