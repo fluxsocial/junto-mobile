@@ -13,8 +13,12 @@ import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sp
 import 'package:provider/provider.dart';
 
 class CirclesAppbar extends StatefulWidget {
-  const CirclesAppbar({this.currentIndex});
+  const CirclesAppbar({
+    this.currentIndex,
+    this.changePageView,
+  });
   final int currentIndex;
+  final Function changePageView;
   @override
   _CirclesAppbarState createState() => _CirclesAppbarState();
 }
@@ -115,38 +119,48 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                 children: [
                   Row(
                     children: <Widget>[
-                      Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.only(
-                          right: 20,
-                          top: 10,
-                          bottom: 10,
-                        ),
-                        child: Text(
-                          'CIRCLES',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: widget.currentIndex == 0
-                                ? Theme.of(context).primaryColorDark
-                                : Theme.of(context).primaryColorLight,
+                      GestureDetector(
+                        onTap: () {
+                          widget.changePageView(0);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.only(
+                            right: 20,
+                            top: 10,
+                            bottom: 10,
+                          ),
+                          child: Text(
+                            'CIRCLES',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: widget.currentIndex == 0
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight,
+                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          bottom: 10,
-                        ),
-                        child: Text(
-                          'REQUESTS',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: widget.currentIndex == 1
-                                ? Theme.of(context).primaryColorDark
-                                : Theme.of(context).primaryColorLight,
+                      GestureDetector(
+                        onTap: () {
+                          widget.changePageView(1);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                          ),
+                          child: Text(
+                            'REQUESTS',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: widget.currentIndex == 1
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight,
+                            ),
                           ),
                         ),
                       ),

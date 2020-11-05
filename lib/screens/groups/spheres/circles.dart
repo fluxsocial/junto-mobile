@@ -24,9 +24,16 @@ class Circles extends StatefulWidget {
 }
 
 class CirclesState extends State<Circles> with ListDistinct {
+  PageController circlesPageController;
   int _currentIndex = 0;
   UserData _userProfile;
   GroupRepo _userProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    circlesPageController = PageController(initialPage: 0);
+  }
 
   @override
   void didChangeDependencies() {
@@ -40,6 +47,11 @@ class CirclesState extends State<Circles> with ListDistinct {
     return userGroups;
   }
 
+  void changePageView(int index) {
+    circlesPageController.animateToPage(index,
+        duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +63,10 @@ class CirclesState extends State<Circles> with ListDistinct {
             preferredSize: Size.fromHeight(
               MediaQuery.of(context).size.height * .1 + 50,
             ),
-            child: CirclesAppbar(currentIndex: _currentIndex),
+            child: CirclesAppbar(
+              currentIndex: _currentIndex,
+              changePageView: changePageView,
+            ),
           ),
           floatingActionButton: BottomNav(
             address: null,
@@ -61,6 +76,7 @@ class CirclesState extends State<Circles> with ListDistinct {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           body: PageView(
+            controller: circlesPageController,
             onPageChanged: (int index) {
               setState(() {
                 _currentIndex = index;
