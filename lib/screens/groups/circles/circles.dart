@@ -12,8 +12,9 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 
-import 'circles_list_all.dart';
 import 'circles_appbar.dart';
+import 'circles_list_all.dart';
+import 'circles_requests.dart';
 
 // This screen displays the temporary page we'll display until groups are released
 class Circles extends StatefulWidget {
@@ -87,7 +88,7 @@ class CirclesState extends State<Circles> with ListDistinct {
                 userProfile: _userProfile,
                 getUserGroups: getUserGroups,
               ),
-              const SizedBox(),
+              CirclesRequests(),
             ],
           ),
         ),

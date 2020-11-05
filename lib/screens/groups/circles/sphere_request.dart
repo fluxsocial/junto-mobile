@@ -7,13 +7,14 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class SphereRequest extends StatelessWidget {
-  const SphereRequest({this.sphere, this.refreshGroups});
+  const SphereRequest({this.item, this.diameter = 38});
 
-  final Group sphere;
-  final Function refreshGroups;
+  final JuntoNotification item;
+  final double diameter;
 
   @override
   Widget build(BuildContext context) {
+    print(item.group.groupData.sphereHandle);
     return GestureDetector(
       onTap: () async {
         // display sphere
@@ -24,8 +25,8 @@ class SphereRequest extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.center,
-              height: 45.0,
-              width: 45.0,
+              height: diameter,
+              width: diameter,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
@@ -66,11 +67,11 @@ class SphereRequest extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          's/ ${sphere.groupData.sphereHandle}',
+                          's/${item.group.groupData.sphereHandle}',
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
-                        Text(sphere.groupData.name,
+                        Text(item.group.groupData.name,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.bodyText1)
                       ],
@@ -79,17 +80,7 @@ class SphereRequest extends StatelessWidget {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () async {
-                            JuntoLoader.showLoader(context);
-                            try {
-                              await Provider.of<GroupRepo>(context,
-                                      listen: false)
-                                  .respondToGroupRequest(sphere.address, true);
-                              refreshGroups();
-                              JuntoLoader.hide();
-                            } catch (error) {
-                              print(error);
-                              JuntoLoader.hide();
-                            }
+                            // Accept request
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -99,8 +90,8 @@ class SphereRequest extends StatelessWidget {
                                   color: Theme.of(context).primaryColor,
                                   width: 1),
                             ),
-                            height: 38,
-                            width: 38,
+                            height: 33,
+                            width: 33,
                             child: Icon(CustomIcons.check,
                                 size: 20,
                                 color: Theme.of(context).primaryColor),
@@ -109,17 +100,7 @@ class SphereRequest extends StatelessWidget {
                         const SizedBox(width: 10),
                         GestureDetector(
                           onTap: () async {
-                            JuntoLoader.showLoader(context);
-                            try {
-                              await Provider.of<GroupRepo>(context,
-                                      listen: false)
-                                  .respondToGroupRequest(sphere.address, false);
-                              refreshGroups();
-                              JuntoLoader.hide();
-                            } catch (error) {
-                              print(error);
-                              JuntoLoader.hide();
-                            }
+                            // Decline request
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -129,8 +110,8 @@ class SphereRequest extends StatelessWidget {
                                   color: Theme.of(context).primaryColor,
                                   width: 1),
                             ),
-                            height: 38,
-                            width: 38,
+                            height: 33,
+                            width: 33,
                             child: Icon(CustomIcons.cancel,
                                 size: 20,
                                 color: Theme.of(context).primaryColor),
