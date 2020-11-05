@@ -1,4 +1,5 @@
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -100,6 +101,15 @@ class HomePageContentState extends State<HomePageContent>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    final messaging = FirebaseMessaging();
+    messaging.configure(
+      onLaunch: (_) {
+        logger.logDebug('Launch message $_');
+      },
+      onMessage: (_) {
+        logger.logDebug('message $_');
+      },
+    );
   }
 
   @override
