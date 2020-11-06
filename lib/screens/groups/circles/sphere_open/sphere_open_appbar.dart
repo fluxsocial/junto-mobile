@@ -2,20 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/action_items.dart';
-import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/member/action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
-  const SphereOpenAppbar(
-      {Key key,
-      @required this.group,
-      @required this.relationToGroup,
-      @required this.userAddress})
-      : super(key: key);
+  const SphereOpenAppbar({
+    Key key,
+    @required this.group,
+  }) : super(key: key);
 
   final Group group;
-  final String userAddress;
-  final Map<String, dynamic> relationToGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -31,67 +25,41 @@ class SphereOpenAppbar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Icon(
-                  CustomIcons.spheres,
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                alignment: Alignment.centerLeft,
+                color: Colors.transparent,
+                height: 38,
+                width: 38,
+                child: Icon(
+                  CustomIcons.back,
+                  size: 17,
                   color: Theme.of(context).primaryColor,
-                  size: 20,
                 ),
-                const SizedBox(width: 10),
-                Container(
-                  margin: const EdgeInsets.only(right: 5),
-                  child: Text(
-                    's/ ${group.groupData.sphereHandle}',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-              ],
+              ),
             ),
-            Row(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: 38,
-                    color: Colors.transparent,
-                    alignment: Alignment.centerRight,
-                    child: Icon(
-                      CustomIcons.newmoon,
-                      size: 20,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
+            Container(
+              child: Text(
+                's/${group.groupData.sphereHandle}',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: 38,
+                color: Colors.transparent,
+                alignment: Alignment.centerRight,
+                child: Icon(
+                  CustomIcons.newmoon,
+                  size: 20,
+                  color: Theme.of(context).primaryColor,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        context: context,
-                        builder: (BuildContext context) {
-                          return relationToGroup['creator']
-                              ? OwnerActionItems(sphere: group)
-                              : MemberActionItems(
-                                  sphere: group,
-                                  userAddress: userAddress,
-                                );
-                        });
-                  },
-                  child: Container(
-                    width: 38,
-                    color: Colors.transparent,
-                    alignment: Alignment.centerRight,
-                    child: Icon(
-                      CustomIcons.morevertical,
-                      size: 20,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                  ),
-                ),
-              ],
-            )
+              ),
+            ),
           ],
         ),
       ),
