@@ -11,21 +11,12 @@ class SphereOpenMembers extends StatefulWidget {
     Key key,
     @required this.users,
     @required this.group,
+    @required this.creator,
   }) : super(key: key);
 
   final List<Users> users;
   final Group group;
-
-  static Route<dynamic> route(Group group, List<Users> users) {
-    return CupertinoPageRoute<dynamic>(
-      builder: (BuildContext context) {
-        return SphereOpenMembers(
-          users: users,
-          group: group,
-        );
-      },
-    );
-  }
+  final UserProfile creator;
 
   @override
   _SphereOpenMembersState createState() => _SphereOpenMembersState();
@@ -94,15 +85,24 @@ class _SphereOpenMembersState extends State<SphereOpenMembers> {
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
+                    unselectedLabelColor: Theme.of(context).primaryColorLight,
                     labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
                         Container(
-                          margin: const EdgeInsets.only(right: 24),
-                          color: Theme.of(context).colorScheme.background,
-                          child: Tab(
-                            text: name,
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                            right: 20,
+                          ),
+                          child: Text(
+                            name.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                     ],
@@ -120,32 +120,34 @@ class _SphereOpenMembersState extends State<SphereOpenMembers> {
                   Expanded(
                     child: ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: widget.users.map((Users user) {
-                        if (user.permissionLevel == 'Admin') {
-                          return MemberPreview(
-                            profile: user.user,
-                          );
-                        }
-                        return const SizedBox();
-                      }).toList(),
+                      children: [
+                        MemberPreview(profile: widget.creator),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: widget.users.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return MemberPreview(
+                                profile: widget.users[index].user,
+                              );
+                            }),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
               // All group members
               Column(
                 children: <Widget>[
                   Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: widget.users
-                          .map(
-                            (Users user) => MemberPreview(
-                              profile: user.user,
-                            ),
-                          )
-                          .toList(),
-                    ),
+                    child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        itemCount: widget.users.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return MemberPreview(
+                            profile: widget.users[index].user,
+                          );
+                        }),
                   ),
                 ],
               ),

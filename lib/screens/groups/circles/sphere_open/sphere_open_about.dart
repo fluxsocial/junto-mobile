@@ -67,6 +67,7 @@ class SphereOpenAboutState extends State<SphereOpenAbout> {
                         builder: (BuildContext context) => SphereOpenMembers(
                           group: widget.group,
                           users: snapshot.data,
+                          creator: circleCreator,
                         ),
                       ),
                     );
