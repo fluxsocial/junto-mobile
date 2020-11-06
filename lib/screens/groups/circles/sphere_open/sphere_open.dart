@@ -77,15 +77,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     });
   }
 
-  Future<List<Users>> _getMembers() async {
-    final query =
-        await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
-      widget.group.address,
-      ExpressionQueryParams(paginationPosition: '0'),
-    );
-    return query.results;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +92,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           body: TabBarView(
             children: <Widget>[
               SphereOpenAbout(
-                getMembers: _getMembers(),
                 group: widget.group,
               ),
               if (widget.group.address != null)
@@ -134,41 +124,41 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   collapseMode: CollapseMode.pin,
                   background: Column(
                     children: <Widget>[
-                      widget.group.groupData.photo == ''
-                          ? Container(
-                              height: MediaQuery.of(context).size.height * .3,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  stops: const <double>[0.2, 0.9],
-                                  colors: <Color>[
-                                    Theme.of(context).colorScheme.secondary,
-                                    Theme.of(context).colorScheme.primary
-                                  ],
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Icon(
-                                CustomIcons.spheres,
-                                size: 60,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                            )
-                          : ImageWrapper(
-                              imageUrl: widget.group.groupData.photo,
+                      if (widget.group.groupData.photo == '')
+                        Container(
+                          height: MediaQuery.of(context).size.height * .3,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight,
+                              stops: const <double>[0.2, 0.9],
+                              colors: <Color>[
+                                Theme.of(context).colorScheme.secondary,
+                                Theme.of(context).colorScheme.primary
+                              ],
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            CustomIcons.spheres,
+                            size: 60,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        )
+                      else
+                        ImageWrapper(
+                          imageUrl: widget.group.groupData.photo,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * .3,
+                          placeholder: (BuildContext context, String _) {
+                            return Container(
+                              color: Theme.of(context).dividerColor,
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height * .3,
-                              placeholder: (BuildContext context, String _) {
-                                return Container(
-                                  color: Theme.of(context).dividerColor,
-                                  width: MediaQuery.of(context).size.width,
-                                  height:
-                                      MediaQuery.of(context).size.height * .3,
-                                );
-                              },
-                              fit: BoxFit.cover,
-                            ),
+                            );
+                          },
+                          fit: BoxFit.cover,
+                        ),
                       Container(
                         key: _keyFlexibleSpace,
                         padding: const EdgeInsets.symmetric(

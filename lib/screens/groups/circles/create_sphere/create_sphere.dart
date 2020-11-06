@@ -144,7 +144,7 @@ class CreateSphereState extends State<CreateSphere> {
     return ListView(
       children: <Widget>[
         _spherePrivacy('Public',
-            'Anyone can join this circle, read its expressions, and share to it'),
+            'Anyone can join this circle, read its expressions, and share to it.'),
       ],
     );
   }

@@ -81,6 +81,9 @@ class SphereRequest extends StatelessWidget {
                         GestureDetector(
                           onTap: () async {
                             // Accept request
+                            await Provider.of<GroupRepo>(context, listen: false)
+                                .respondToGroupRequest(
+                                    item.group.address, true);
                           },
                           child: Container(
                             decoration: BoxDecoration(
