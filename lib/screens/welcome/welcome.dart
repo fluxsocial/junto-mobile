@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
@@ -29,8 +31,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class Welcome extends StatefulWidget {
@@ -68,6 +68,16 @@ class WelcomeState extends State<Welcome> {
   TextEditingController confirmPasswordController;
   TextEditingController verificationCodeController;
 
+  FocusNode nameFocusNode;
+  FocusNode usernameFocusNode;
+  FocusNode locationFocusNode;
+  FocusNode pronounFocusNode;
+  FocusNode websiteFocusNode;
+  FocusNode emailFocusNode;
+  FocusNode passwordFocusNode;
+  FocusNode confirmPasswordFocusNode;
+  FocusNode verficationCodeFocusNode;
+
   @override
   void initState() {
     super.initState();
@@ -80,6 +90,16 @@ class WelcomeState extends State<Welcome> {
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
     verificationCodeController = TextEditingController();
+
+    nameFocusNode = FocusNode();
+    usernameFocusNode = FocusNode();
+    locationFocusNode = FocusNode();
+    pronounFocusNode = FocusNode();
+    websiteFocusNode = FocusNode();
+    emailFocusNode = FocusNode();
+    passwordFocusNode = FocusNode();
+    confirmPasswordFocusNode = FocusNode();
+    verficationCodeFocusNode = FocusNode();
 
     _currentIndex = 0;
     _welcomeController = PageController(
@@ -102,6 +122,17 @@ class WelcomeState extends State<Welcome> {
     passwordController?.dispose();
     confirmPasswordController?.dispose();
     verificationCodeController?.dispose();
+
+    nameFocusNode.dispose();
+    usernameFocusNode.dispose();
+    locationFocusNode.dispose();
+    pronounFocusNode.dispose();
+    websiteFocusNode.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmPasswordFocusNode.dispose();
+    verficationCodeFocusNode.dispose();
+
     super.dispose();
   }
 
@@ -276,6 +307,7 @@ class WelcomeState extends State<Welcome> {
                         label: S.of(context).welcome_name_label,
                         title: S.of(context).welcome_name_hint,
                         textCapitalization: TextCapitalization.words,
+                        focusNode: nameFocusNode,
                       ),
                       SignUpTextFieldWrapper(
                         controller: usernameController,
@@ -286,6 +318,7 @@ class WelcomeState extends State<Welcome> {
                         label: S.of(context).welcome_username_label,
                         title: S.of(context).welcome_username_hint,
                         textCapitalization: TextCapitalization.none,
+                        focusNode: usernameFocusNode,
                       ),
                       SignUpThemes(),
                       SignUpAbout(
@@ -293,12 +326,18 @@ class WelcomeState extends State<Welcome> {
                         pronounController: pronounController,
                         locationController: locationController,
                         websiteController: websiteController,
+                        pronounFocusNode: pronounFocusNode,
+                        locationFocusNode: locationFocusNode,
+                        websiteFocusNode: websiteFocusNode,
                       ),
                       SignUpPhotos(profilePicture),
                       SignUpRegister(
                         emailController: emailController,
                         passwordController: passwordController,
                         confirmPasswordController: confirmPasswordController,
+                        emailFocusNode: emailFocusNode,
+                        passwordFocusNode: passwordFocusNode,
+                        confirmPasswordFocusNode: confirmPasswordFocusNode,
                       ),
                       SignUpVerify(
                         handleSignUp: _finishSignUp,
@@ -349,7 +388,6 @@ class WelcomeState extends State<Welcome> {
     try {
       final name = nameController.text.trim();
       final username = usernameController.text.toLowerCase().trim();
-
       if (_currentIndex == 1) {
         if (name == null || name.isEmpty || name.length > 50) {
           return;
@@ -494,8 +532,25 @@ class WelcomeState extends State<Welcome> {
   void onPageChanged(int index) {
     setState(() {
       _currentIndex = index;
+
+      if (index == 2) {
+        Future<void>.delayed(const Duration(milliseconds: 400), () {
+          usernameFocusNode.requestFocus();
+        });
+      } else if (index == 4) {
+        Future<void>.delayed(const Duration(milliseconds: 400), () {
+          locationFocusNode.requestFocus();
+        });
+      } else if (index == 6) {
+        Future<void>.delayed(const Duration(milliseconds: 400), () {
+          emailFocusNode.requestFocus();
+        });
+      } else if (index == 7) {
+        Future<void>.delayed(const Duration(milliseconds: 400), () {
+          verficationCodeFocusNode.requestFocus();
+        });
+      }
     });
-    print(_currentIndex);
   }
 
   Future<bool> _animateOnBackPress() async {
@@ -530,6 +585,7 @@ class WelcomeState extends State<Welcome> {
       setState(() {
         _currentIndex = 1;
       });
+      nameFocusNode.requestFocus();
     });
   }
 
@@ -541,7 +597,6 @@ class WelcomeState extends State<Welcome> {
   }
 
   void _onBlocStateChange(BuildContext context, AuthState state) {
-    print(state);
     if (state is AuthUnauthenticated) {
       if (state.error == true) {
         if (state.errorMessage != null && state.errorMessage.isNotEmpty) {

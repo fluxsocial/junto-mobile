@@ -38,8 +38,6 @@ class DynamicOpen extends StatelessWidget {
           if (dynamicBody.isNotEmpty)
             CustomParsedText(
               dynamicBody,
-              maxLines: 7,
-              overflow: TextOverflow.ellipsis,
               defaultTextStyle: TextStyle(
                 height: 1.5,
                 color: Theme.of(context).primaryColor,

@@ -12,11 +12,13 @@ class SignUpVerify extends StatefulWidget {
     @required this.handleSignUp,
     @required this.verificationController,
     @required this.handleVerificationCode,
+    this.verficationCodeFocusNode,
   }) : super(key: key);
 
   final TextEditingController verificationController;
   final VoidCallback handleSignUp;
   final VoidCallback handleVerificationCode;
+  final FocusNode verficationCodeFocusNode;
 
   @override
   State<StatefulWidget> createState() {
@@ -46,6 +48,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
                   children: <Widget>[
                     TextField(
                       controller: widget.verificationController,
+                      focusNode: widget.verficationCodeFocusNode,
                       maxLength: 8,
                       buildCounter: (
                         BuildContext context, {

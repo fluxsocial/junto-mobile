@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
+import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
@@ -41,13 +42,29 @@ class _AudioReviewState extends State<AudioReview>
 
   List<Map<String, dynamic>> addedmentions = [];
   List<Map<String, dynamic>> users = [];
-  List<Map<String, dynamic>> completeList = [];
+  List<Map<String, dynamic>> completeUserList = [];
+  List<Map<String, dynamic>> addedChannels = [];
+  List<Map<String, dynamic>> channels = [];
+  List<Map<String, dynamic>> completeChannelsList = [];
+  ListType listType = ListType.empty;
 
-  void hideList() {
-    setState(() {
-      _showList = false;
-      users = [];
-    });
+  void onSearchChanged(BuildContext context, String trigger, String value) {
+    if (value.isNotEmpty && _showList) {
+      final channel = trigger == '#';
+
+      if (!channel) {
+        context.bloc<SearchBloc>().add(SearchingEvent(value, true));
+      } else {
+        context.bloc<SearchBloc>().add(SearchingChannelEvent(value));
+      }
+    } else {
+      setState(() {
+        _showList = false;
+        users = [];
+        channels = [];
+        listType = ListType.empty;
+      });
+    }
   }
 
   @override
@@ -59,10 +76,11 @@ class _AudioReviewState extends State<AudioReview>
         },
         child: BlocConsumer<SearchBloc, SearchState>(
           buildWhen: (prev, cur) {
-            return !(cur is LoadingSearchState);
+            return !(cur is LoadingSearchState ||
+                cur is LoadingSearchChannelState);
           },
           listener: (context, state) {
-            if (!(state is LoadingSearchState)) {
+            if (!(state is LoadingSearchState) && (state is SearchUserState)) {
               final eq = DeepCollectionEquality.unordered().equals;
 
               final _users = getUserList(state, []);
@@ -73,7 +91,30 @@ class _AudioReviewState extends State<AudioReview>
                 setState(() {
                   users = _users;
 
-                  completeList = generateFinalList(completeList, _users);
+                  listType = ListType.mention;
+
+                  completeUserList =
+                      generateFinalList(completeUserList, _users);
+                });
+              }
+            }
+
+            if (!(state is LoadingSearchChannelState) &&
+                (state is SearchChannelState)) {
+              final eq = DeepCollectionEquality.unordered().equals;
+
+              final _channels = getChannelsList(state, []);
+
+              final isEqual = eq(channels, _channels);
+
+              if (!isEqual) {
+                setState(() {
+                  channels = _channels;
+
+                  listType = ListType.channels;
+
+                  completeChannelsList =
+                      generateFinalList(completeChannelsList, _channels);
                 });
               }
             }
@@ -97,7 +138,7 @@ class _AudioReviewState extends State<AudioReview>
                         ),
                     ],
                   ),
-                  if (_showList)
+                  if (_showList && listType == ListType.mention)
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -114,7 +155,34 @@ class _AudioReviewState extends State<AudioReview>
                             addedmentions = [...addedmentions, users[index]];
                           }
 
-                          hideList();
+                          setState(() {
+                            _showList = false;
+                            users = [];
+                          });
+                        },
+                      ),
+                    ),
+                  if (_showList && listType == ListType.channels)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                      child: ChannelsSearchList(
+                        channels: channels,
+                        onChannelAdd: (index) {
+                          widget.mentionKey.currentState
+                              .addMention(channels[index]);
+
+                          if (addedChannels.indexWhere((element) =>
+                                  element['id'] == channels[index]['id']) ==
+                              -1) {
+                            addedChannels = [...addedChannels, channels[index]];
+                          }
+
+                          setState(() {
+                            _showList = false;
+                            channels = [];
+                          });
                         },
                       ),
                     ),
@@ -131,15 +199,14 @@ class _AudioReviewState extends State<AudioReview>
     if (value != _showList) {
       setState(() {
         _showList = value;
-
-        if (!value) {
-          users = [];
-        }
       });
     }
   }
 
   Widget _showAudioReviewTemplate() {
+    final completeMentionList = [...addedmentions, ...completeUserList];
+    final completeChannelList = [...addedChannels, ...completeChannelsList];
+
     if (widget.audioPhotoBackground == null &&
         widget.audioGradientValues.isEmpty) {
       return AudioReviewDefault(
@@ -147,7 +214,9 @@ class _AudioReviewState extends State<AudioReview>
         captionController: widget.captionController,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
-        completeMentionList: [...addedmentions, ...completeList],
+        completeMentionList: completeMentionList,
+        completeChannelList: completeChannelList,
+        onSearchChanged: onSearchChanged,
         mentionKey: widget.mentionKey,
         showList: _showList,
       );
@@ -159,7 +228,9 @@ class _AudioReviewState extends State<AudioReview>
         audioPhotoBackground: widget.audioPhotoBackground,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
-        completeMentionList: [...addedmentions, ...completeList],
+        completeMentionList: completeMentionList,
+        completeChannelList: completeChannelList,
+        onSearchChanged: onSearchChanged,
         mentionKey: widget.mentionKey,
         showList: _showList,
       );
@@ -171,7 +242,9 @@ class _AudioReviewState extends State<AudioReview>
         audioGradientValues: widget.audioGradientValues,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
-        completeMentionList: [...addedmentions, ...completeList],
+        completeMentionList: completeMentionList,
+        completeChannelList: completeChannelList,
+        onSearchChanged: onSearchChanged,
         mentionKey: widget.mentionKey,
         showList: _showList,
       );
@@ -181,8 +254,10 @@ class _AudioReviewState extends State<AudioReview>
         titleController: widget.titleController,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
-        completeMentionList: [...addedmentions, ...completeList],
+        completeMentionList: completeMentionList,
         mentionKey: widget.mentionKey,
+        completeChannelList: completeChannelList,
+        onSearchChanged: onSearchChanged,
         showList: _showList,
       );
     }
@@ -198,6 +273,8 @@ class AudioReviewDefault extends StatelessWidget {
     this.completeMentionList,
     this.mentionKey,
     this.showList,
+    this.completeChannelList,
+    this.onSearchChanged,
   });
 
   final TextEditingController titleController;
@@ -205,6 +282,8 @@ class AudioReviewDefault extends StatelessWidget {
   final FocusNode captionFocus;
   final Function(bool) toggleSearch;
   final List<Map<String, dynamic>> completeMentionList;
+  final List<Map<String, dynamic>> completeChannelList;
+  final Function onSearchChanged;
   final GlobalKey<FlutterMentionsState> mentionKey;
   final bool showList;
 
@@ -223,6 +302,8 @@ class AudioReviewDefault extends StatelessWidget {
           completeMentionList: completeMentionList,
           mentionKey: mentionKey,
           showList: showList,
+          completeChannelList: completeChannelList,
+          onSearchChanged: onSearchChanged,
         ),
       ],
     );
@@ -239,6 +320,8 @@ class AudioReviewWithGradient extends StatelessWidget {
     this.completeMentionList,
     this.mentionKey,
     this.showList,
+    this.completeChannelList,
+    this.onSearchChanged,
   });
 
   final TextEditingController titleController;
@@ -247,6 +330,8 @@ class AudioReviewWithGradient extends StatelessWidget {
   final List<String> audioGradientValues;
   final Function(bool) toggleSearch;
   final List<Map<String, dynamic>> completeMentionList;
+  final List<Map<String, dynamic>> completeChannelList;
+  final Function onSearchChanged;
   final GlobalKey<FlutterMentionsState> mentionKey;
   final bool showList;
 
@@ -278,6 +363,8 @@ class AudioReviewWithGradient extends StatelessWidget {
           completeMentionList: completeMentionList,
           mentionKey: mentionKey,
           showList: showList,
+          completeChannelList: completeChannelList,
+          onSearchChanged: onSearchChanged,
         ),
       ],
     );
@@ -294,6 +381,8 @@ class AudioReviewWithPhoto extends StatelessWidget {
     this.completeMentionList,
     this.mentionKey,
     this.showList,
+    this.completeChannelList,
+    this.onSearchChanged,
   });
 
   final titleController;
@@ -302,6 +391,8 @@ class AudioReviewWithPhoto extends StatelessWidget {
   final File audioPhotoBackground;
   final Function(bool) toggleSearch;
   final List<Map<String, dynamic>> completeMentionList;
+  final List<Map<String, dynamic>> completeChannelList;
+  final Function onSearchChanged;
   final GlobalKey<FlutterMentionsState> mentionKey;
   final bool showList;
 
@@ -348,6 +439,8 @@ class AudioReviewWithPhoto extends StatelessWidget {
           completeMentionList: completeMentionList,
           mentionKey: mentionKey,
           showList: showList,
+          completeChannelList: completeChannelList,
+          onSearchChanged: onSearchChanged,
         ),
       ],
     );
@@ -446,14 +539,18 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
     this.completeMentionList,
     this.mentionKey,
     this.showList,
+    this.completeChannelList,
+    this.onSearchChanged,
   }) : super(key: key);
 
   final TextEditingController captionController;
   final FocusNode captionFocus;
   final Function(bool) toggleSearch;
   final List<Map<String, dynamic>> completeMentionList;
+  final List<Map<String, dynamic>> completeChannelList;
   final GlobalKey<FlutterMentionsState> mentionKey;
   final bool showList;
+  final Function onSearchChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -466,24 +563,14 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
             focusNode: captionFocus,
             autofocus: false,
             onSearchChanged: (String trigger, String value) {
-              if (value.isNotEmpty && showList) {
-                context.bloc<SearchBloc>().add(SearchingEvent(value, true));
-              }
+              onSearchChanged(context, trigger, value);
             },
             onSuggestionVisibleChanged: toggleSearch,
-            mentions: [
-              Mention(
-                trigger: '@',
-                data: [...completeMentionList],
-                style: TextStyle(
-                  color: Theme.of(context).primaryColorDark,
-                  fontWeight: FontWeight.w700,
-                ),
-                markupBuilder: (trigger, mention, value) {
-                  return '[$trigger$value:$mention]';
-                },
-              ),
-            ],
+            mentions: getMention(
+              context,
+              completeMentionList,
+              completeChannelList,
+            ),
             hideSuggestionList: true,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(0),

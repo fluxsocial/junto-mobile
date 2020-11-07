@@ -3,14 +3,10 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CustomRefresh extends StatelessWidget {
-  CustomRefresh({
-    Key key,
-    this.child,
-    this.refresh,
-  }) : super(key: key);
-
-  final Widget child;
   final Function refresh;
+  final Widget child;
+
+  CustomRefresh({this.refresh, this.child});
 
   @override
   Widget build(BuildContext context) {

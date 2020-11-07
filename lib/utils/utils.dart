@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -32,6 +33,17 @@ mixin CreateExpressionHelpers {
     return mentions;
   }
 
+  List<String> getChannelsId(String text) {
+    RegExp customRegExp = RegExp(r"(\#[a-zA-Z0-9_%]{2,})");
+
+    final match = customRegExp.allMatches(text).toList();
+
+    final channels =
+        match.map((e) => e.group(0).replaceAll('#', '')).toSet().toList();
+
+    return channels;
+  }
+
   List<Map<String, dynamic>> getUserList(
     SearchState state,
     List<Map<String, dynamic>> addedmentions,
@@ -59,6 +71,28 @@ mixin CreateExpressionHelpers {
     return users ?? [];
   }
 
+  List<Map<String, dynamic>> getChannelsList(
+    SearchState state,
+    List<Map<String, dynamic>> addedChannels,
+  ) {
+    List<Map<String, dynamic>> users = <Map<String, dynamic>>[];
+
+    if (state is LoadedSearchChannelState) {
+      final _listUsers = state?.results;
+
+      users = _listUsers.where((element) {
+        return addedChannels.indexWhere((e) => element.name == e['id']) == -1;
+      }).map((e) {
+        return ({
+          'id': e.name,
+          'display': e.name,
+        });
+      }).toList();
+    }
+
+    return users ?? [];
+  }
+
   List<Map<String, dynamic>> generateFinalList(
       List<Map<String, dynamic>> _completeList, _users) {
     final newList = [..._completeList];
@@ -72,6 +106,33 @@ mixin CreateExpressionHelpers {
     }
 
     return newList;
+  }
+
+  List<Mention> getMention(
+      BuildContext context, List<Map<String, dynamic>> mentions, channels) {
+    return [
+      Mention(
+        trigger: '@',
+        data: mentions,
+        style: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontWeight: FontWeight.w700,
+        ),
+        markupBuilder: (trigger, mention, value) {
+          return '[$trigger$value:$mention]';
+        },
+      ),
+      Mention(
+        trigger: '#',
+        disableMarkup: true,
+        data: channels,
+        style: TextStyle(
+          color: Theme.of(context).primaryColorDark,
+          fontWeight: FontWeight.w700,
+        ),
+        matchAll: true,
+      )
+    ];
   }
 }
 
@@ -124,6 +185,7 @@ mixin MemberValidation {
       Navigator.push(
         context,
         CupertinoPageRoute<dynamic>(
+          settings: RouteSettings(name: 'JuntoCollective'),
           builder: (BuildContext context) => JuntoDen(),
         ),
       );

@@ -29,6 +29,8 @@ class NotificationsExpressionView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = notifications[index];
                   if (notifications.length > 0 &&
+                      item.user != null &&
+                      item.user.username.isNotEmpty &&
                       item.notificationType == NotificationType.NewComment) {
                     return NotificationTile(item: item);
                   } else {

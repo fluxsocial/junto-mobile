@@ -55,7 +55,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
   }
 
   void _addSelected() {
-    if (_channelController.value.text != '' && _channels.length < 3) {
+    if (_channelController.value.text != '' && _channels.length < 5) {
       _updateQuery('');
       setState(() {
         widget.channels.value.add(_channelController.value.text);
@@ -66,7 +66,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
   }
 
   void _addItem(String name) {
-    if (name != '' && _channels.length < 3) {
+    if (name != '' && _channels.length < 5) {
       _updateQuery('');
       setState(() {
         _channels.add(name);
@@ -230,7 +230,7 @@ class ChannelSearchField extends StatelessWidget {
                   null,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(0.0),
-                hintText: 'add up to three channels',
+                hintText: 'add up to five channels',
                 border: InputBorder.none,
                 hintStyle: TextStyle(
                     fontSize: 17,

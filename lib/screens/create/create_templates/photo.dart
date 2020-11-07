@@ -18,6 +18,7 @@ import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +48,11 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   bool _showList = false;
   List<Map<String, dynamic>> addedmentions = [];
   List<Map<String, dynamic>> users = [];
-  List<Map<String, dynamic>> completeList = [];
+  List<Map<String, dynamic>> completeUserList = [];
+  List<Map<String, dynamic>> addedChannels = [];
+  List<Map<String, dynamic>> channels = [];
+  List<Map<String, dynamic>> completeChannelsList = [];
+  ListType listType = ListType.empty;
 
   Future<void> _onPickPressed({@required ImageSource source}) async {
     try {
@@ -143,11 +148,13 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   Map<String, dynamic> createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
     final mentions = getMentionUserId(markupText);
+    final channels = getChannelsId(markupText);
 
     return <String, dynamic>{
       'image': imageFile,
       'caption': markupText.trim(),
       'mentions': mentions,
+      'channels': channels,
     };
   }
 
@@ -162,27 +169,41 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   void _onNext() {
     if (_expressionHasData() == true) {
       final Map<String, dynamic> expression = createExpression();
-      Navigator.push(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) {
-            if (widget.expressionContext == ExpressionContext.Comment) {
-              return CreateCommentActions(
-                expression: expression,
-                address: widget.address,
-                expressionType: ExpressionType.photo,
-              );
-            } else {
-              return CreateActions(
-                expressionType: ExpressionType.photo,
-                address: widget.address,
-                expressionContext: widget.expressionContext,
-                expression: expression,
-              );
-            }
-          },
-        ),
-      );
+
+      if (expression['channels'].length > 5) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            context: context,
+            dialogText:
+                'You can only add five channels. Please reduce the number of channels you have before continuing.',
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) {
+              if (widget.expressionContext == ExpressionContext.Comment) {
+                return CreateCommentActions(
+                  expression: expression,
+                  address: widget.address,
+                  expressionType: ExpressionType.photo,
+                );
+              } else {
+                return CreateActions(
+                  expressionType: ExpressionType.photo,
+                  address: widget.address,
+                  expressionContext: widget.expressionContext,
+                  expression: expression,
+                  mentions: expression['mentions'],
+                  channels: expression['channels'],
+                );
+              }
+            },
+          ),
+        );
+      }
     } else {
       showDialog(
         context: context,
@@ -208,6 +229,14 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void toggleSearch(bool value) {
+    if (value != _showList) {
+      setState(() {
+        _showList = value;
+      });
+    }
   }
 
   @override
@@ -317,10 +346,10 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   Widget _captionPhoto() {
     return BlocConsumer<SearchBloc, SearchState>(
       buildWhen: (prev, cur) {
-        return !(cur is LoadingSearchState);
+        return !(cur is LoadingSearchState || cur is LoadingSearchChannelState);
       },
       listener: (context, state) {
-        if (!(state is LoadingSearchState)) {
+        if (!(state is LoadingSearchState) && (state is SearchUserState)) {
           final eq = DeepCollectionEquality.unordered().equals;
 
           final _users = getUserList(state, []);
@@ -331,7 +360,29 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
             setState(() {
               users = _users;
 
-              completeList = generateFinalList(completeList, _users);
+              listType = ListType.mention;
+
+              completeUserList = generateFinalList(completeUserList, _users);
+            });
+          }
+        }
+
+        if (!(state is LoadingSearchChannelState) &&
+            (state is SearchChannelState)) {
+          final eq = DeepCollectionEquality.unordered().equals;
+
+          final _channels = getChannelsList(state, []);
+
+          final isEqual = eq(channels, _channels);
+
+          if (!isEqual) {
+            setState(() {
+              channels = _channels;
+
+              listType = ListType.channels;
+
+              completeChannelsList =
+                  generateFinalList(completeChannelsList, _channels);
             });
           }
         }
@@ -356,37 +407,33 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                             focusNode: _captionFocus,
                             onSearchChanged: (String trigger, String value) {
                               if (value.isNotEmpty && _showList) {
-                                context
-                                    .bloc<SearchBloc>()
-                                    .add(SearchingEvent(value, true));
+                                final channel = trigger == '#';
+
+                                if (!channel) {
+                                  context
+                                      .bloc<SearchBloc>()
+                                      .add(SearchingEvent(value, true));
+                                } else {
+                                  context
+                                      .bloc<SearchBloc>()
+                                      .add(SearchingChannelEvent(value));
+                                }
                               } else {
                                 setState(() {
                                   users = [];
+                                  channels = [];
+                                  listType = ListType.empty;
                                   _showList = false;
                                 });
                               }
                             },
-                            onSuggestionVisibleChanged: (val) {
-                              if (val != _showList) {
-                                setState(() {
-                                  _showList = val;
-                                });
-                              }
-                            },
+                            onSuggestionVisibleChanged: toggleSearch,
                             hideSuggestionList: true,
-                            mentions: [
-                              Mention(
-                                trigger: '@',
-                                data: [...addedmentions, ...completeList],
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                markupBuilder: (trigger, mention, value) {
-                                  return '[$trigger$value:$mention]';
-                                },
-                              ),
-                            ],
+                            mentions: getMention(
+                              context,
+                              [...addedmentions, ...completeUserList],
+                              [...addedChannels, ...completeChannelsList],
+                            ),
                             textInputAction: TextInputAction.newline,
                             textCapitalization: TextCapitalization.sentences,
                             decoration: const InputDecoration(
@@ -445,7 +492,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                   ),
                 ],
               ),
-              if (_showList)
+              if (_showList && listType == ListType.mention)
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -464,6 +511,29 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                       setState(() {
                         _showList = false;
                         users = [];
+                      });
+                    },
+                  ),
+                ),
+              if (_showList && listType == ListType.channels)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: ChannelsSearchList(
+                    channels: channels,
+                    onChannelAdd: (index) {
+                      mentionKey.currentState.addMention(channels[index]);
+
+                      if (addedChannels.indexWhere((element) =>
+                              element['id'] == channels[index]['id']) ==
+                          -1) {
+                        addedChannels = [...addedChannels, channels[index]];
+                      }
+
+                      setState(() {
+                        _showList = false;
+                        channels = [];
                       });
                     },
                   ),

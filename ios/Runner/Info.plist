@@ -48,6 +48,8 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We&apos;d like to access your microphone to let you record expressions.</string>
 	<key>NSContactsUsageDescription</key>  
-	<string>This app requires contacts access to function properly.</string>  	
+	<string>This app requires contacts access to let you invite your friends.</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>We use this access responsibly so you can share your favorite music.</string>  	
 </dict>
 </plist>

@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/utils/cache_manager.dart';
 import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
+import 'package:junto_beta_mobile/widgets/photo/interactive_image_viewer_overlay.dart';
 
 class PhotoOpen extends StatelessWidget {
   const PhotoOpen(this.photoExpression);
@@ -17,28 +18,31 @@ class PhotoOpen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: ImageWrapper(
-              imageUrl: photoExpression.expressionData.image,
-              placeholder: (BuildContext context, String _) {
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: Theme.of(context).dividerColor,
-                  child: CachedNetworkImage(
-                      imageUrl: photoExpression.thumbnailSmall,
-                      fit: BoxFit.cover,
-                      cacheManager: CustomCacheManager(),
-                      placeholder: (BuildContext context, String _) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.width,
-                          color: Theme.of(context).dividerColor,
-                        );
-                      }),
-                );
-              },
-              fit: BoxFit.cover,
+          InteractiveImageViewerOverlay(
+            maxScale: 2,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: ImageWrapper(
+                imageUrl: photoExpression.expressionData.image,
+                placeholder: (BuildContext context, String _) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Theme.of(context).dividerColor,
+                    child: CachedNetworkImage(
+                        imageUrl: photoExpression.thumbnailSmall,
+                        fit: BoxFit.cover,
+                        cacheManager: CustomCacheManager(),
+                        placeholder: (BuildContext context, String _) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.width,
+                            color: Theme.of(context).dividerColor,
+                          );
+                        }),
+                  );
+                },
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           if (photoExpression.expressionData.caption.trim().isNotEmpty)

@@ -8,8 +8,8 @@ import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/user_custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
-import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -48,10 +48,14 @@ class UserExpressions extends StatefulWidget {
   _UserExpressionsState createState() => _UserExpressionsState();
 }
 
-class _UserExpressionsState extends State<UserExpressions> {
+class _UserExpressionsState extends State<UserExpressions>
+    with AutomaticKeepAliveClientMixin {
   void deleteDenExpression(ExpressionResponse expression) {
     context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -102,77 +106,78 @@ class _UserExpressionsState extends State<UserExpressions> {
   Widget build(BuildContext context) {
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
+        final canFetchMore =
+            state is DenLoadedState && state.expressions.length > 50;
+
         if (state is DenLoadingState) {
           return JuntoProgressIndicator();
         }
-        if (state is DenLoadedState) {
-          final results = state.expressions;
 
-          return CustomRefresh(
-            refresh: () async {
-              await context.bloc<DenBloc>().add(
-                    RefreshDen(),
+        return UserCustomRefresh(
+          refresh: () async {
+            await context.bloc<DenBloc>().add(
+                  RefreshDen(),
+                );
+          },
+          child: Container(
+            color: Theme.of(context).colorScheme.background,
+            child: CustomScrollView(
+              slivers: <Widget>[
+                if (state is DenErrorState)
+                  JuntoErrorWidget(
+                    errorMessage: state.message,
+                  ),
+                Consumer<UserDataProvider>(
+                    builder: (BuildContext context, UserDataProvider data, _) {
+                  return SliverToBoxAdapter(
+                    child: FilterColumnRow(
+                      twoColumnView:
+                          Provider.of<AppRepo>(context, listen: false)
+                              .twoColumnLayout,
+                    ),
                   );
-            },
-            child: Container(
-              color: Theme.of(context).colorScheme.background,
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  Consumer<UserDataProvider>(builder:
-                      (BuildContext context, UserDataProvider data, _) {
-                    return SliverToBoxAdapter(
-                      child: FilterColumnRow(
-                        twoColumnView:
-                            Provider.of<AppRepo>(context, listen: false)
-                                .twoColumnLayout,
-                      ),
-                    );
-                  }),
+                }),
+                if (state is DenLoadedState)
                   Consumer<UserDataProvider>(
                     builder: (BuildContext context, UserDataProvider data, _) {
                       if (Provider.of<AppRepo>(context, listen: false)
                           .twoColumnLayout) {
                         return TwoColumnList(
-                          data: results == null ? [] : results,
+                          data: state.expressions == null
+                              ? []
+                              : state.expressions,
                           useSliver: true,
                           deleteExpression: deleteDenExpression,
                         );
                       }
                       return SingleColumnSliverListView(
-                        data: results,
+                        data: state.expressions,
                         privacyLayer: widget.privacy,
                         deleteExpression: deleteDenExpression,
                       );
                     },
                   ),
-                  if (appConfig.flavor == Flavor.dev && results.length > 50)
-                    SliverToBoxAdapter(
-                      child: FetchMoreButton(
-                        onPressed: () {
-                          context.bloc<DenBloc>().add(
-                                LoadMoreDen(),
-                              );
-                        },
-                      ),
-                    )
-                ],
-              ),
+                if (state is DenEmptyState)
+                  SliverToBoxAdapter(
+                    child: FeedPlaceholder(
+                      placeholderText: 'No expressions yet!',
+                      image:
+                          'assets/images/junto-mobile__placeholder--feed.png',
+                      verticalOffset: -160,
+                    ),
+                  ),
+                if (appConfig.flavor == Flavor.dev && canFetchMore)
+                  SliverToBoxAdapter(
+                    child: FetchMoreButton(
+                      onPressed: () {
+                        context.bloc<DenBloc>().add(LoadMoreDen());
+                      },
+                    ),
+                  )
+              ],
             ),
-          );
-        }
-        if (state is DenEmptyState) {
-          return FeedPlaceholder(
-            placeholderText: 'No expressions yet!',
-            image: 'assets/images/junto-mobile__placeholder--feed.png',
-            verticalOffset: 0,
-          );
-        }
-        if (state is DenErrorState) {
-          return JuntoErrorWidget(
-            errorMessage: state.message,
-          );
-        }
-        return SizedBox();
+          ),
+        );
       },
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
+
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -69,12 +70,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.unauthenticated(loading: true);
     try {
       logger.logInfo('User signed up, now logging in');
-      await authRepo.loginUser(event.username, event.password);
+      final address = await authRepo.loginUser(event.username, event.password);
       var userData = await userRepo.sendMetadataPostRegistration(event.details);
 
       if (event.profilePicture != null) {
-        final profile = await userRepo.updateProfilePicture(
-            userData.user.address, event.profilePicture);
+        final profile =
+            await userRepo.updateProfilePicture(address, event.profilePicture);
         logger.logDebug(
             'User profile picture updated, updating the user profile');
         userData = userData.copyWith(user: profile);

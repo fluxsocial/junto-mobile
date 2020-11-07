@@ -40,8 +40,6 @@ class LongformOpen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: CustomParsedText(
                     longformBody,
-                    maxLines: 7,
-                    overflow: TextOverflow.ellipsis,
                     defaultTextStyle: TextStyle(
                       height: 1.5,
                       color: Theme.of(context).primaryColor,
