@@ -18,6 +18,17 @@ class PackPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double diameter = 38.0;
+
+    String packIndicatorText() {
+      String packIndicatorText;
+      if (group.creator['name'].toString().endsWith('s')) {
+        packIndicatorText = "' Pack";
+      } else {
+        packIndicatorText = "'s Pack";
+      }
+      return packIndicatorText;
+    }
+
     return Container(
       color: Colors.transparent,
       child: Row(
@@ -47,7 +58,7 @@ class PackPreview extends StatelessWidget {
                   Text(
                     group.address == userProfile.pack.address
                         ? 'My Pack'
-                        : '${group.creator['name']?.trim()}',
+                        : '${group.creator['name']?.trim()}${packIndicatorText()}',
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.bodyText1.copyWith(
                           color: Theme.of(context).primaryColor,
