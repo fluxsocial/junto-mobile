@@ -181,9 +181,10 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         controller: _scrollController,
                         children: <Widget>[
-                          ...widget.expression.commentThread
-                              .map((e) => ExpressionOpenParent(parent: e))
-                              .toList(),
+                          if (widget.expression.commentThread != null)
+                            ...widget.expression.commentThread
+                                .map((e) => ExpressionOpenParent(parent: e))
+                                .toList(),
                           // Expression Top
                           ExpressionOpenTop(
                             expression: widget.expression,
@@ -200,7 +201,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           CommentsList(
                             commentsVisible: commentsVisible,
                             expression: [
-                              ...widget.expression.commentThread,
+                              if (widget.expression.commentThread != null)
+                                ...widget.expression.commentThread,
                               widget.expression
                             ],
                             futureComments: futureComments,
