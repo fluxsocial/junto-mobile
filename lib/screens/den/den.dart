@@ -2,6 +2,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar_name.dart';
 
@@ -146,19 +148,28 @@ class JuntoDenState extends State<JuntoDen>
         return FeatureDiscovery(
           child: NotificationListener<ScrollUpdateNotification>(
             onNotification: (value) => hideOrShowFab(value, _isVisible),
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: JuntoFilterDrawer(
-                leftDrawer: const FilterDrawerContent(
-                  ExpressionContextType.Collective,
-                ),
-                rightMenu: JuntoDrawer(),
-                scaffold: Scaffold(
-                  floatingActionButton: BottomNav(),
-                  // DenActionButton(isVisible: _isVisible, user: user),
-                  floatingActionButtonLocation:
-                      FloatingActionButtonLocation.centerDocked,
-                  body: _buildBody(user.userProfile),
+            child: WillPopScope(
+              onWillPop: () async {
+                Navigator.pushReplacement(
+                  context,
+                  FadeRoute(child: HomePageContent()),
+                );
+                return false;
+              },
+              child: Scaffold(
+                resizeToAvoidBottomInset: false,
+                body: JuntoFilterDrawer(
+                  leftDrawer: const FilterDrawerContent(
+                    ExpressionContextType.Collective,
+                  ),
+                  rightMenu: JuntoDrawer(),
+                  scaffold: Scaffold(
+                    floatingActionButton: BottomNav(),
+                    // DenActionButton(isVisible: _isVisible, user: user),
+                    floatingActionButtonLocation:
+                        FloatingActionButtonLocation.centerDocked,
+                    body: _buildBody(user.userProfile),
+                  ),
                 ),
               ),
             ),
