@@ -150,11 +150,11 @@ class JuntoDenState extends State<JuntoDen>
             onNotification: (value) => hideOrShowFab(value, _isVisible),
             child: WillPopScope(
               onWillPop: () async {
-                Navigator.pushReplacement(
-                  context,
-                  FadeRoute(child: HomePageContent()),
-                );
-                return false;
+                return Navigator.pushReplacement(
+                      context,
+                      FadeRoute(child: HomePageContent()),
+                    ) ??
+                    false;
               },
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
