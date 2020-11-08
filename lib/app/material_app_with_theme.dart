@@ -131,6 +131,9 @@ class HomePageContentState extends State<HomePageContent>
         await notificationRepo
             .manageNotifications(NotificationPrefsModel.enabled());
         await appRepo.setFirstLaunch();
+        return;
+      } else {
+        return;
       }
     } catch (e) {
       logger.logException(e, null, "Error configuring notifications");
