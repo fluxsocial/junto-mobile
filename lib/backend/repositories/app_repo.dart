@@ -63,8 +63,6 @@ class AppRepo extends ChangeNotifier {
       return true;
     }
   }
-    }
-  }
 
   Future<void> setFirstLaunch() async {
     try {
