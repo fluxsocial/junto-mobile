@@ -16,7 +16,9 @@ class JuntoHttp {
       BaseOptions(
         baseUrl: _endPoint,
       ),
-    )..interceptors.add(HeaderInterceptors(tokenProvider));
+    )
+      ..interceptors.add(HeaderInterceptors(tokenProvider))
+      ..interceptors.add(LoggerInterceptor());
 
     (httpClient.httpClientAdapter as DefaultHttpClientAdapter)
         .onHttpClientCreate = (HttpClient client) {
@@ -158,5 +160,18 @@ class HeaderInterceptors extends Interceptor {
       options.headers.putIfAbsent("Authorization", () => key);
     }
     return SynchronousFuture(options);
+  }
+}
+
+class LoggerInterceptor extends Interceptor {
+  @override
+  Future onResponse(Response response) {
+    if (kDebugMode) {
+      print('Endpoint: ${response.request.baseUrl}${response.request.path} '
+          'Query Params: ${response.request.queryParameters}'
+          ' Body: ${response.request.data}'
+          ' Status Code: ${response.statusCode}');
+    }
+    return super.onResponse(response);
   }
 }
