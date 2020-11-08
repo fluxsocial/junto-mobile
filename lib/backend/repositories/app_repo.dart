@@ -55,12 +55,14 @@ class AppRepo extends ChangeNotifier {
   }
 
   Future<bool> isFirstLaunch() async {
-    _appBox = await Hive.box(HiveBoxes.kAppBox);
+    final _appBox = await Hive.box(HiveBoxes.kAppBox);
     final bool _result = _appBox.get(HiveKeys.kFirstLaunch);
     if (_result != null) {
       return _result;
     } else {
-      return false;
+      return true;
+    }
+  }
     }
   }
 
