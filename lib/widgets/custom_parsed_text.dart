@@ -81,7 +81,8 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
                 : null,
           ),
           MatchText(
-            type: ParsedType.URL,
+            pattern:
+                r"[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:._\+~#=]{2,256}\.[a-z]{2,18}\b([-a-zA-Z0-9@:_\+.~#?&//=]*)",
             style: mentionTextStyle,
             onTap: !disableOnMentiontap
                 ? (url) async {
