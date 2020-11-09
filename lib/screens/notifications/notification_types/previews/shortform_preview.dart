@@ -12,9 +12,13 @@ class NotificationShortformPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final ExpressionSlimModel sourceExpression = item.sourceExpression;
     final String _hexOne =
-        item.sourceExpression.expressionData['background'][0];
+        item.sourceExpression.expressionData['background'].isNotEmpty
+            ? item.sourceExpression.expressionData['background'][0]
+            : '333333';
     final String _hexTwo =
-        item.sourceExpression.expressionData['background'][1];
+        item.sourceExpression.expressionData['background'].isNotEmpty
+            ? item.sourceExpression.expressionData['background'][1]
+            : '222222';
 
     return Container(
       constraints: BoxConstraints(

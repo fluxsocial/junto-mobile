@@ -2,7 +2,7 @@
           package="com.junto.juntobetamobile">
 
     <!-- The INTERNET permission is required for development. Specifically,
-         flutter needs it to communicate with the running application
+         flutter needs it to communicate with the running application 
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
