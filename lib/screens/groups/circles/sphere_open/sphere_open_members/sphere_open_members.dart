@@ -114,47 +114,82 @@ class _SphereOpenMembersState extends State<SphereOpenMembers> {
           },
           body: TabBarView(
             children: <Widget>[
-              // Group facilitators (admins)
-              Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: [
-                        MemberPreview(profile: widget.creator),
-                        ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: widget.users.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return MemberPreview(
-                                profile: widget.users[index].user,
-                              );
-                            }),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              // All group members
-              Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        itemCount: widget.users.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return MemberPreview(
-                            profile: widget.users[index].user,
-                          );
-                        }),
-                  ),
-                ],
-              ),
+              // Circle Facilitators
+              CircleFacilitators(creator: widget.creator, users: widget.users),
+              // All Circle Members
+              CircleMembers(creator: widget.creator, users: widget.users),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class CircleFacilitators extends StatelessWidget {
+  const CircleFacilitators({this.creator, this.users});
+
+  final UserProfile creator;
+  final List<Users> users;
+  @override
+  Widget build(BuildContext context) {
+    // Circle Facilitators (Admins)
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            children: [
+              MemberPreview(profile: creator),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: users.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (users[index].permissionLevel == 'Admin') {
+                      return MemberPreview(
+                        profile: users[index].user,
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class CircleMembers extends StatelessWidget {
+  const CircleMembers({this.creator, this.users});
+
+  final UserProfile creator;
+  final List<Users> users;
+  @override
+  Widget build(BuildContext context) {
+    // All Circle Members
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            children: [
+              MemberPreview(profile: creator),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: users.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return MemberPreview(
+                      profile: users[index].user,
+                    );
+                  }),
+            ],
+          ),
+        )
+      ],
     );
   }
 }
