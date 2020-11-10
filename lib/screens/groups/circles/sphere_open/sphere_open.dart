@@ -15,6 +15,8 @@ import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
+import 'circle_action_buttons.dart';
+
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
@@ -92,6 +94,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       widget.group.address,
       _userAddress,
     );
+    print(_relationToGroup);
     setState(() {
       relationToGroup = _relationToGroup;
     });
@@ -106,6 +109,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           group: widget.group,
         ),
       ),
+      floatingActionButton: CircleActionButtons(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
@@ -143,39 +148,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   background: Column(
                     children: <Widget>[
                       if (widget.group.groupData.photo == '')
-                        Container(
-                          height: MediaQuery.of(context).size.height * .3,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: const <double>[0.2, 0.9],
-                              colors: <Color>[
-                                Theme.of(context).colorScheme.secondary,
-                                Theme.of(context).colorScheme.primary
-                              ],
-                            ),
-                          ),
-                          alignment: Alignment.center,
-                          child: Icon(
-                            CustomIcons.spheres,
-                            size: 60,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                        )
+                        CircleBackgroundPlaceholder()
                       else
-                        ImageWrapper(
-                          imageUrl: widget.group.groupData.photo,
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * .3,
-                          placeholder: (BuildContext context, String _) {
-                            return Container(
-                              color: Theme.of(context).dividerColor,
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * .3,
-                            );
-                          },
-                          fit: BoxFit.cover,
+                        CircleBackground(
+                          photo: widget.group.groupData.photo,
                         ),
                       Container(
                         key: _keyFlexibleSpace,
@@ -192,12 +168,18 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 style: Theme.of(context).textTheme.headline4,
                               ),
                             ),
-                            relationToGroup != null &&
-                                    !relationToGroup['creator'] &&
-                                    !relationToGroup['member'] &&
-                                    !relationToGroup['facilitator']
-                                ? _joinGroup()
-                                : const SizedBox(),
+                            if (relationToGroup != null &&
+                                !relationToGroup['creator'] &&
+                                !relationToGroup['member'] &&
+                                !relationToGroup['facilitator'])
+                              JoinCircleWidget(
+                                groupAddress: widget.group.address,
+                                userProfile: _userProfile.user,
+                              )
+                            else
+                              ShowRelationshipWidget(
+                                relationToGroup: relationToGroup,
+                              ),
                           ],
                         ),
                       ),
@@ -245,13 +227,68 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       ),
     );
   }
+}
 
-  Widget _joinGroup() {
+class CircleBackground extends StatelessWidget {
+  const CircleBackground({this.photo});
+
+  final String photo;
+  @override
+  Widget build(BuildContext context) {
+    return ImageWrapper(
+      imageUrl: photo,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * .3,
+      placeholder: (BuildContext context, String _) {
+        return Container(
+          color: Theme.of(context).dividerColor,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * .3,
+        );
+      },
+      fit: BoxFit.cover,
+    );
+  }
+}
+
+class CircleBackgroundPlaceholder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * .3,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          stops: const <double>[0.2, 0.9],
+          colors: <Color>[
+            Theme.of(context).colorScheme.secondary,
+            Theme.of(context).colorScheme.primary
+          ],
+        ),
+      ),
+      alignment: Alignment.center,
+      child: Icon(
+        CustomIcons.spheres,
+        size: 60,
+        color: Theme.of(context).colorScheme.onPrimary,
+      ),
+    );
+  }
+}
+
+class JoinCircleWidget extends StatelessWidget {
+  const JoinCircleWidget({this.groupAddress, this.userProfile});
+
+  final String groupAddress;
+  final UserProfile userProfile;
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Provider.of<GroupRepo>(context, listen: false).addGroupMember(
-          widget.group.address,
-          <UserProfile>[_userProfile.user],
+          groupAddress,
+          <UserProfile>[userProfile],
           'Member',
         );
       },
@@ -262,16 +299,68 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         ),
         margin: const EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(50),
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: Theme.of(context).primaryColor,
+            width: 1,
+          ),
         ),
         child: Text(
           'JOIN',
           style: TextStyle(
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: Theme.of(context).primaryColor,
             letterSpacing: 1.4,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ShowRelationshipWidget extends StatelessWidget {
+  const ShowRelationshipWidget({this.relationToGroup});
+  final Map<String, dynamic> relationToGroup;
+
+  @override
+  Widget build(BuildContext context) {
+    String relation;
+
+    if (relationToGroup == null) {
+      relation = 'Member';
+    } else if (relationToGroup['creator'] || relationToGroup['facilitator']) {
+      relation = 'Facilitator';
+    } else if (relationToGroup['member']) {
+      relation = 'Member';
+    } else {
+      relation = 'Member';
+    }
+    return GestureDetector(
+      onTap: () {
+        // Open panel for group action items
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 5,
+        ),
+        margin: const EdgeInsets.only(left: 10),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: Theme.of(context).primaryColor,
+            width: 1,
+          ),
+        ),
+        child: Text(
+          relation,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),
