@@ -6,11 +6,10 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/circle_open_expressions/circle_open_expressions.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -40,6 +39,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
   final ValueNotifier<bool> shouldRefresh = ValueNotifier<bool>(true);
   Map<String, dynamic> relationToGroup;
+  Future<QueryResults<ExpressionResponse>> getExpressions;
 
   void _getFlexibleSpaceSize(_) {
     final RenderBox renderBoxFlexibleSpace =
@@ -61,9 +61,29 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     _userAddress = Provider.of<UserDataProvider>(context).userAddress;
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
     _loadRelationship();
+    setGetExpressions();
+  }
+
+  void setGetExpressions() {
+    setState(() {
+      getExpressions = Provider.of<ExpressionRepo>(context, listen: false)
+          .getCollectiveExpressions({
+        'context': widget.group.address,
+        'context_type': 'Group',
+        'pagination_position': '0',
+      });
+    });
+  }
+
+  void deleteExpression(ExpressionResponse expression) async {
+    await Provider.of<ExpressionRepo>(context, listen: false)
+        .deleteExpression(expression.address);
+    // refresh feed
+    setGetExpressions();
   }
 
   Future<void> _loadRelationship() async {
@@ -95,11 +115,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 group: widget.group,
               ),
               if (widget.group.address != null)
-                GroupExpressions(
-                  key: ValueKey<String>(widget.group.address),
-                  group: widget.group,
-                  privacy: 'Public',
-                )
+                CircleOpenExpressions(
+                    getExpressions: getExpressions,
+                    deleteExpression: deleteExpression),
             ],
           ),
           physics: const ClampingScrollPhysics(),
