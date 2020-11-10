@@ -29,8 +29,15 @@ class SphereOpenAboutState extends State<SphereOpenAbout> {
   }
 
   Future<void> getUser() async {
-    final user = await Provider.of<UserRepo>(context, listen: false)
-        .getUser(widget.group.creator);
+    UserData user;
+    if (widget.group.creator.runtimeType == String) {
+      user = await Provider.of<UserRepo>(context, listen: false)
+          .getUser(widget.group.creator);
+    } else {
+      user = await Provider.of<UserRepo>(context, listen: false)
+          .getUser(widget.group.creator['address']);
+    }
+
     setState(() {
       circleCreator = user.user;
     });

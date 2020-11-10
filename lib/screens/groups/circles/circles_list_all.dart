@@ -49,6 +49,8 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                   associatedGroups,
                 ).where((Group group) => group.groupType == 'Sphere').toList();
 
+                userSpheres.forEach((sphere) => print(sphere.creator));
+
                 return Expanded(
                     child: ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
