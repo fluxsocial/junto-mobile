@@ -174,4 +174,16 @@ class LoggerInterceptor extends Interceptor {
     }
     return super.onResponse(response);
   }
+
+  @override
+  Future onError(DioError err) {
+    if (kDebugMode) {
+      final response = err.response;
+      print('Endpoint: ${response.request.baseUrl}${response.request.path} '
+          'Query Params: ${response.request.queryParameters}'
+          ' Body: ${response.request.data}'
+          ' Status Code: ${response.statusCode}');
+    }
+    return super.onError(err);
+  }
 }
