@@ -59,6 +59,7 @@ class NotificationServiceImpl implements NotificationService {
       await httpClient.postWithoutEncoding('/notifications/register', body: {
         'device_token': fcmToken,
       });
+      return;
     } catch (e) {
       return;
     }
