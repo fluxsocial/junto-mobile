@@ -9,6 +9,8 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_appbar.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/circle_action_items_admin.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/member/circle_action_items_member.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/circle_open_expressions/circle_open_expressions.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
@@ -178,6 +180,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               )
                             else
                               ShowRelationshipWidget(
+                                circle: widget.group,
                                 relationToGroup: relationToGroup,
                               ),
                           ],
@@ -321,25 +324,40 @@ class JoinCircleWidget extends StatelessWidget {
 }
 
 class ShowRelationshipWidget extends StatelessWidget {
-  const ShowRelationshipWidget({this.relationToGroup});
+  const ShowRelationshipWidget({this.circle, this.relationToGroup});
+  final Group circle;
   final Map<String, dynamic> relationToGroup;
 
   @override
   Widget build(BuildContext context) {
     String relation;
+    Widget actionItems;
 
     if (relationToGroup == null) {
       relation = 'Member';
     } else if (relationToGroup['creator'] || relationToGroup['facilitator']) {
       relation = 'Facilitator';
+      actionItems = CircleActionItemsAdmin(sphere: circle);
     } else if (relationToGroup['member']) {
       relation = 'Member';
+      actionItems = CircleActionItemsMember(sphere: circle);
     } else {
       relation = 'Member';
+      actionItems = CircleActionItemsMember(sphere: circle);
     }
     return GestureDetector(
       onTap: () {
         // Open panel for group action items
+        showModalBottomSheet(
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          builder: (BuildContext context) => Container(
+            color: Colors.transparent,
+            child: actionItems,
+          ),
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(

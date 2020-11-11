@@ -15,28 +15,18 @@ import 'package:junto_beta_mobile/widgets/avatars/group_avatar_placeholder.dart'
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/avatars/group_avatar.dart';
 
-class EditGroup extends StatefulWidget {
-  const EditGroup({
+class EditCircle extends StatefulWidget {
+  const EditCircle({
     Key key,
     @required this.sphere,
   }) : super(key: key);
   final Group sphere;
 
-  static Route<dynamic> route(Group sphere) {
-    return MaterialPageRoute<dynamic>(builder: (
-      BuildContext context,
-    ) {
-      return EditGroup(
-        sphere: sphere,
-      );
-    });
-  }
-
   @override
-  _EditGroupState createState() => _EditGroupState();
+  _EditCircleState createState() => _EditCircleState();
 }
 
-class _EditGroupState extends State<EditGroup> {
+class _EditCircleState extends State<EditCircle> {
   TextEditingController _nameController;
   TextEditingController _descriptionController;
   File imageFile;

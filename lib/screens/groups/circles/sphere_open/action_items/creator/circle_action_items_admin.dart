@@ -10,8 +10,8 @@ import 'package:provider/provider.dart';
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
 // available for each expression
-class OwnerActionItems extends StatefulWidget {
-  const OwnerActionItems({
+class CircleActionItemsAdmin extends StatefulWidget {
+  const CircleActionItemsAdmin({
     Key key,
     @required this.sphere,
   }) : super(key: key);
@@ -19,10 +19,10 @@ class OwnerActionItems extends StatefulWidget {
   final Group sphere;
 
   @override
-  _OwnerActionItemsState createState() => _OwnerActionItemsState();
+  _CircleActionItemsAdminState createState() => _CircleActionItemsAdminState();
 }
 
-class _OwnerActionItemsState extends State<OwnerActionItems> {
+class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
   Future<void> deleteCircle() async {
     try {
       Provider.of<GroupRepo>(context, listen: false)
@@ -69,7 +69,10 @@ class _OwnerActionItemsState extends State<OwnerActionItems> {
                     Navigator.pop(context);
                     Navigator.push(
                       context,
-                      EditGroup.route(widget.sphere),
+                      CupertinoPageRoute(
+                        builder: (BuildContext context) =>
+                            EditCircle(sphere: widget.sphere),
+                      ),
                     );
                   },
                   title: Row(

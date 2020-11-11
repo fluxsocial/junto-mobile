@@ -1,32 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
 // available for each expression
-class MemberActionItems extends StatelessWidget {
-  const MemberActionItems({
+class CircleActionItemsMember extends StatelessWidget {
+  const CircleActionItemsMember({
     Key key,
     @required this.sphere,
-    @required this.userAddress,
   }) : super(key: key);
 
   final Group sphere;
-  final String userAddress;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery.of(context).size.height * .3,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 10,
-        ),
+        height: MediaQuery.of(context).size.height * .4,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.only(
@@ -54,25 +47,37 @@ class MemberActionItems extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
-                  onTap: () async {
-                    await Provider.of<GroupRepo>(context, listen: false)
-                        .removeGroupMember(
-                      sphere.address,
-                      userAddress,
-                    );
+                  title: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.block,
+                        size: 17,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(width: 15),
+                      Text('Leave Sphere',
+                          style: Theme.of(context).textTheme.headline5),
+                    ],
+                  ),
+                ),
+                ListTile(
+                  contentPadding: const EdgeInsets.all(0),
+                  onTap: () {
+                    // Nav to invite members screen
                   },
                   title: Row(
                     children: <Widget>[
                       Icon(
-                        Icons.settings,
+                        Icons.edit,
                         size: 17,
                         color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 15),
                       Text(
-                        'Leave Circle',
+                        'Invite Members',
                         style: Theme.of(context).textTheme.headline5,
                       ),
                     ],
