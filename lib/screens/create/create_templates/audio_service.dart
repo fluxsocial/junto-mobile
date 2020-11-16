@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -23,7 +23,7 @@ class AudioService with ChangeNotifier {
 
   Duration get maxDuration => _maxDuration;
 
-  Duration _currentPosition;
+  Duration _currentPosition = Duration.zero;
   Duration get currentPosition => _currentPosition;
 
   double _currentPower;
@@ -69,13 +69,16 @@ class AudioService with ChangeNotifier {
 
   void startRecording() async {
     logger.logDebug('Asking for permissions to record audio');
+
     bool hasPermission = await FlutterAudioRecorder.hasPermissions;
     if (hasPermission != true) {
       logger.logWarning('User not granted permissions to record audio');
       //TODO set error
       return;
     }
+
     final appDocDirectory = await _getTempDirectory();
+
     _currentPath = '${appDocDirectory.path}/$_fileName'
         '${DateTime.now().millisecondsSinceEpoch}'
         '.aac';
@@ -84,8 +87,11 @@ class AudioService with ChangeNotifier {
       audioFormat: AudioFormat.AAC,
       sampleRate: _sampleRate,
     );
+
     await _recorder.initialized;
+
     logger.logDebug('Starting recording to $_currentPath');
+
     await _recorder.start();
 
     _recording = await _recorder.current(channel: 0);
@@ -96,19 +102,19 @@ class AudioService with ChangeNotifier {
     await _audioPlayer.play(
       _currentPath,
       isLocal: _isLocal,
-      position: _currentPosition,
     );
+
     _isPlaying = true;
 
     _playbackTimer = Timer.periodic(
       Duration(milliseconds: 50),
       _updateCurrentPlaybackPosition,
     );
-    _audioPlayer.onAudioPositionChanged.listen((Duration event) {});
-    _audioPlayer.onPlayerCompletion.listen((event) {
-      _playbackTimer?.cancel();
-      stopPlayback();
+
+    _audioPlayer.onAudioPositionChanged.listen((Duration event) {
+      _currentPosition = event;
     });
+
     _audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == AudioPlayerState.STOPPED ||
           event == AudioPlayerState.PAUSED) {
@@ -117,16 +123,16 @@ class AudioService with ChangeNotifier {
       if (event == AudioPlayerState.PLAYING) {
         _getDuration();
       }
+      if (event == AudioPlayerState.COMPLETED) {
+        _playbackTimer?.cancel();
+        stopPlayback();
+      }
     });
-    _audioPlayer.onDurationChanged.listen(print);
-    _audioPlayer.onNotificationPlayerStateChanged.listen(print);
   }
 
   Future _getDuration() async {
-    int duration =
-        await Future.delayed(Duration(seconds: 2), _audioPlayer.getDuration);
-    _duration = Duration(milliseconds: duration);
-    return duration;
+    _duration = _audioPlayer.duration;
+    return _duration.inMilliseconds;
   }
 
   void _updateCurrentPlaybackPosition(time) async {
@@ -149,11 +155,10 @@ class AudioService with ChangeNotifier {
   }
 
   Future<Duration> _getCurrentPosition() async {
-    final position = await Future.delayed(
-        Duration(seconds: 2), _audioPlayer.getCurrentPosition);
-
     final duration = Duration(
-        milliseconds: position.clamp(0, recordingDuration.inMilliseconds));
+      milliseconds: _currentPosition.inMilliseconds
+          .clamp(0, recordingDuration.inMilliseconds),
+    );
     return duration;
   }
 
@@ -162,23 +167,29 @@ class AudioService with ChangeNotifier {
       if (_isPlaying) {
         pausePlayback();
       }
+
       final milliseconds = ((val - val.floor()) * 1000).toInt();
+
       final duration =
           Duration(seconds: val.floor(), milliseconds: milliseconds);
-      print('$val $duration');
-      _audioPlayer?.seek(duration);
+
+      _audioPlayer?.seek(duration.inSeconds.toDouble());
+
       _currentPosition = duration;
+
       notifyListeners();
     }
   }
 
   Future<Directory> _getTempDirectory() async {
     Directory appDocDirectory;
+
     if (Platform.isIOS) {
       appDocDirectory = await getApplicationDocumentsDirectory();
     } else {
       appDocDirectory = await getExternalStorageDirectory();
     }
+
     return appDocDirectory;
   }
 
@@ -201,6 +212,7 @@ class AudioService with ChangeNotifier {
       }
       notifyListeners();
     }
+
     if (current.status == RecordingStatus.Stopped) {
       _isRecording = false;
       _timer.cancel();
@@ -210,28 +222,16 @@ class AudioService with ChangeNotifier {
 
   @override
   void dispose() {
-    _disposeAudioPlayer();
+    _audioPlayer?.stop();
     _playbackTimer?.cancel();
     _recorder?.stop();
     super.dispose();
   }
 
-  void _disposeAudioPlayer() async {
-    await _audioPlayer?.stop();
-    await _audioPlayer?.dispose();
-  }
-
   initializeFromWeb(String audio) async {
     _currentPath = audio;
     _isLocal = false;
-    await _audioPlayer.setUrl(
-      _currentPath,
-      isLocal: _isLocal,
-    );
-
-    int duration =
-        await Future.delayed(Duration(seconds: 2), _audioPlayer.getDuration);
-    _duration = Duration(milliseconds: duration);
+    _duration = Duration(milliseconds: _audioPlayer.duration.inMilliseconds);
     _recordingLoaded = true;
     notifyListeners();
   }
