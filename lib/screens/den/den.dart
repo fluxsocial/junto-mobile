@@ -152,7 +152,10 @@ class JuntoDenState extends State<JuntoDen>
               onWillPop: () async {
                 return Navigator.pushReplacement(
                       context,
-                      FadeRoute(child: HomePageContent()),
+                      FadeRoute(
+                        child: HomePageContent(),
+                        name: "/",
+                      ),
                     ) ??
                     false;
               },
