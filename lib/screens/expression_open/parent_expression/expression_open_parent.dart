@@ -135,14 +135,19 @@ class ExpressionOpenParent extends StatelessWidget with MemberValidation {
                 const SizedBox(width: 32.5),
                 Flexible(
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      var sourceExpression = await Provider.of<ExpressionRepo>(
+                              context,
+                              listen: false)
+                          .getExpression(parent.address);
+
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
                           builder: (context) => ExpressionOpen(
                             commentsVisible: true,
                             deleteExpression: (_) {},
-                            expression: parent,
+                            expression: sourceExpression,
                           ),
                         ),
                       );
