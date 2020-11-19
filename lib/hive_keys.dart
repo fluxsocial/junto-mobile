@@ -6,6 +6,7 @@ class HiveKeys {
   static const kUserId = 'userId';
   static const kUserData = 'user_data';
   static const kLayoutView = 'twoColumnView';
+  static const kFirstLaunch = 'isFirstLaunch';
   static const kAuth = 'auth';
   static const kTheme = 'current-theme';
   static const kNightMode = 'night-mode';

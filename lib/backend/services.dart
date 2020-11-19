@@ -159,6 +159,16 @@ enum QueryType { address, email, username }
 abstract class NotificationService {
   Future<JuntoNotificationResults> getJuntoNotifications(
       NotificationQuery params);
+
+  Future<String> getFCMToken();
+
+  Future<bool> requestPermissions();
+
+  Future<void> registerDevice(final String fcmToken);
+
+  Future<void> manageNotifications(NotificationPrefsModel options);
+
+  Future<NotificationPrefsModel> getNotificationsPrefs();
 }
 
 enum DBBoxes {

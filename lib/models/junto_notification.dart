@@ -64,6 +64,7 @@ abstract class JuntoNotification with _$JuntoNotification {
   }
 
   static Map<String, dynamic> groupToJson(Group obj) => obj?.toJson();
+
   static UserProfile userFromJson(Map<String, dynamic> json) {
     if (json != null) {
       return UserProfile.fromJson(json);
@@ -97,4 +98,75 @@ class JuntoNotificationAdapter extends TypeAdapter<JuntoNotification> {
       ..writeByte(0)
       ..write(json);
   }
+}
+
+class NotificationPrefsModel {
+  NotificationPrefsModel({
+    this.comment,
+    this.connection,
+    this.connectionRequest,
+    this.general,
+    this.groupJoinRequest,
+    this.mention,
+    this.packRelation,
+    this.subscribe,
+  });
+
+  factory NotificationPrefsModel.disabled() {
+    return NotificationPrefsModel(
+      comment: false,
+      connection: false,
+      connectionRequest: false,
+      general: false,
+      groupJoinRequest: false,
+      mention: false,
+      packRelation: false,
+      subscribe: false,
+    );
+  }
+
+  factory NotificationPrefsModel.enabled() {
+    return NotificationPrefsModel(
+      comment: true,
+      connection: true,
+      connectionRequest: true,
+      general: true,
+      groupJoinRequest: true,
+      mention: true,
+      packRelation: true,
+      subscribe: true,
+    );
+  }
+
+  bool comment;
+  bool connection;
+  bool connectionRequest;
+  bool general;
+  bool groupJoinRequest;
+  bool mention;
+  bool packRelation;
+  bool subscribe;
+
+  factory NotificationPrefsModel.fromMap(Map<String, dynamic> json) =>
+      NotificationPrefsModel(
+        comment: json["comment"],
+        connection: json["connection"],
+        connectionRequest: json["connection_request"],
+        general: json["general"],
+        groupJoinRequest: json["group_join_request"],
+        mention: json["mention"],
+        packRelation: json["pack_relation"],
+        subscribe: json["subscribe"],
+      );
+
+  Map<String, dynamic> toMap() => {
+        "comment": comment,
+        "connection": connection,
+        "connection_request": connectionRequest,
+        "general": general,
+        "group_join_request": groupJoinRequest,
+        "mention": mention,
+        "pack_relation": packRelation,
+        "subscribe": subscribe,
+      };
 }
