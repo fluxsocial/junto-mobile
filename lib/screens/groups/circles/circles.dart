@@ -72,7 +72,6 @@ class CirclesState extends State<Circles> with ListDistinct {
           floatingActionButton: BottomNav(
             address: null,
             expressionContext: ExpressionContext.Group,
-            source: Screen.groups,
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,

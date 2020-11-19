@@ -38,7 +38,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       GlobalKey<SphereOpenState>();
 
   String _userAddress;
-  UserData _userProfile;
+  UserData _userProfile; 
   double _flexibleHeightSpace;
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
   final ValueNotifier<bool> shouldRefresh = ValueNotifier<bool>(true);

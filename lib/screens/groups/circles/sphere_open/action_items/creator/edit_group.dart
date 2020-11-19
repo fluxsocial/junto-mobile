@@ -250,8 +250,10 @@ class _EditCircleState extends State<EditCircle> {
                         child: Row(children: <Widget>[
                           _displayCurrentProfilePicture(),
                           const SizedBox(width: 10),
-                          Text('Edit profile picture',
-                              style: Theme.of(context).textTheme.caption)
+                          Text(
+                            'Edit group photo',
+                            style: Theme.of(context).textTheme.caption,
+                          )
                         ]),
                       ),
                     ),

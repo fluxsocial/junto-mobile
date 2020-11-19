@@ -20,9 +20,22 @@ class SphereSelectModal extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: Text(
+                'MY CIRCLES',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
             Expanded(
               child: ListView(
                 children: spheres

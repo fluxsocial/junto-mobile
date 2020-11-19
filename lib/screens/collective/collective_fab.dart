@@ -21,9 +21,7 @@ class CollectiveActionButton extends StatelessWidget {
           child: visible ? child : const SizedBox(),
         );
       },
-      child: BottomNav(
-        source: Screen.collective,
-      ),
+      child: BottomNav(),
     );
   }
 }

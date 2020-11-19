@@ -19,7 +19,6 @@ class CircleActionButtons extends StatelessWidget {
       },
       child: BottomNav(
         expressionContext: ExpressionContext.Group,
-        source: Screen.groups,
       ),
     );
   }

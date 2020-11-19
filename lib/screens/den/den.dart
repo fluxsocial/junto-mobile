@@ -232,9 +232,7 @@ class DenActionButton extends StatelessWidget {
           child: child,
         );
       },
-      child: BottomNav(
-        source: Screen.den,
-      ),
+      child: BottomNav(),
     );
   }
 }

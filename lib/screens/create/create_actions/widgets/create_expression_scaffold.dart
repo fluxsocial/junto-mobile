@@ -38,11 +38,7 @@ class CreateExpressionScaffold extends StatelessWidget {
             ),
             resizeToAvoidBottomPadding: false,
             resizeToAvoidBottomInset: false,
-            floatingActionButton: showBottomNav
-                ? BottomNav(
-                    source: Screen.create,
-                  )
-                : null,
+            floatingActionButton: showBottomNav ? BottomNav() : null,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             body: Column(
