@@ -15,10 +15,8 @@ import 'package:junto_beta_mobile/screens/welcome/bloc/auth_state.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_arrows.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_wrapper.dart';
@@ -422,7 +420,6 @@ class WelcomeState extends State<Welcome> {
         // verify email address
         final emailAvailable = await userRepo.emailAvailable(email, username);
         if (emailAvailable) {
-          print('email is available');
           final result = await authRepo.signUp(username, email, password);
           JuntoLoader.hide();
           if (!result.wasSuccessful) {
