@@ -315,9 +315,9 @@ class WelcomeState extends State<Welcome> {
                   ),
                   if (canShowUp)
                     SignUpArrows(
-                      welcomeController: _welcomeController,
                       currentIndex: _currentIndex,
                       onTap: _nextSignUpPage,
+                      previousPage: _previousSignUpPage,
                     ),
                   if (_currentIndex != 0)
                     Positioned(
@@ -527,12 +527,15 @@ class WelcomeState extends State<Welcome> {
     return true;
   }
 
-  void _previousSignUpPage() {
+  void _previousSignUpPage() async {
     _welcomeController.animateToPage(
       _currentIndex - 1,
-      duration: kThemeAnimationDuration,
+      duration: const Duration(milliseconds: 300),
       curve: Curves.decelerate,
     );
+    if (_currentIndex == 5) {
+      await userRepo.usernameAvailable(usernameController.value.text);
+    }
   }
 
   void _onSignUpSelected() {
