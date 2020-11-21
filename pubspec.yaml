@@ -34,7 +34,6 @@ dependencies:
   feature_discovery: 0.12.0+2
   intl: ^0.16.1
   audioplayers: 0.16.2
-  audioplayer: 0.7.0
   flutter_audio_recorder: 0.5.5
   hive: 1.4.2
   hive_flutter: 0.3.1
