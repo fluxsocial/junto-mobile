@@ -49,7 +49,14 @@ packages:
       name: audioplayer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.1"
+    version: "0.7.0"
+  audioplayers:
+    dependency: "direct main"
+    description:
+      name: audioplayers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.16.2"
   bloc:
     dependency: transitive
     description:
