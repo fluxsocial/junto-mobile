@@ -29,6 +29,7 @@ class AuthRepo extends ChangeNotifier {
       String username, String email, String password) async {
     logger.logDebug(
         'Signing up in auth service with username, email and password');
+
     final res = await authService.signUp(SignUpData(username, email, password));
     return res;
   }
