@@ -37,9 +37,7 @@ class AudioService with ChangeNotifier {
 
   Duration _duration;
   Duration get recordingDuration => recordingAvailable
-      ? _isLocal
-          ? _recording.duration
-          : _duration
+      ? _isLocal ? _recording.duration : _duration
       : Duration.zero;
 
   bool _recordingLoaded = false;
@@ -123,10 +121,9 @@ class AudioService with ChangeNotifier {
   }
 
   Future _getDuration() async {
-    int duration =
-        await Future.delayed(Duration(seconds: 2), _audioPlayer.getDuration);
+    final duration = await _audioPlayer.getDuration();
     _duration = Duration(milliseconds: duration);
-    return duration;
+    notifyListeners();
   }
 
   void _updateCurrentPlaybackPosition(time) async {
@@ -149,9 +146,7 @@ class AudioService with ChangeNotifier {
   }
 
   Future<Duration> _getCurrentPosition() async {
-    final position = await Future.delayed(
-        Duration(seconds: 2), _audioPlayer.getCurrentPosition);
-
+    final position = await _audioPlayer.getCurrentPosition();
     final duration = Duration(
         milliseconds: position.clamp(0, recordingDuration.inMilliseconds));
     return duration;
@@ -228,9 +223,7 @@ class AudioService with ChangeNotifier {
       _currentPath,
       isLocal: _isLocal,
     );
-
-    int duration =
-        await Future.delayed(Duration(seconds: 2), _audioPlayer.getDuration);
+    final duration = await _audioPlayer.getDuration();
     _duration = Duration(milliseconds: duration);
     _recordingLoaded = true;
     notifyListeners();
