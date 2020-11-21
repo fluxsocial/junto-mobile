@@ -200,6 +200,8 @@ class CognitoClient extends AuthenticationService {
 
   @override
   Future<SignUpResult> signUp(SignUpData data) async {
+    print('signing up user');
+
     try {
       final result = await aws.FlutterAwsAmplifyCognito.signUp(
         data.username,
@@ -216,6 +218,7 @@ class CognitoClient extends AuthenticationService {
       }
     } on PlatformException catch (e, s) {
       logger.logException(e, s);
+
       if (e.details != null && e.details is String) {
         final details = e.details as String;
         if (details.contains('UsernameExistsException') ||
@@ -227,7 +230,8 @@ class CognitoClient extends AuthenticationService {
         } else if (details.contains('TooManyRequestsException')) {
           return SignUpResult(false, false, SignUpResultError.TooManyRequests);
         } else if (details.contains('CodeDeliveryFailureException')) {
-          //TODO: handle this?
+          return SignUpResult(false, false, SignUpResultError.UnknownError);
+        } else {
           return SignUpResult(false, false, SignUpResultError.UnknownError);
         }
       }

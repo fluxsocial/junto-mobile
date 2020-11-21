@@ -60,9 +60,6 @@ class WelcomeState extends State<Welcome> {
 
   TextEditingController nameController;
   TextEditingController usernameController;
-  TextEditingController locationController;
-  TextEditingController pronounController;
-  TextEditingController websiteController;
   TextEditingController emailController;
   TextEditingController passwordController;
   TextEditingController confirmPasswordController;
@@ -70,9 +67,6 @@ class WelcomeState extends State<Welcome> {
 
   FocusNode nameFocusNode;
   FocusNode usernameFocusNode;
-  FocusNode locationFocusNode;
-  FocusNode pronounFocusNode;
-  FocusNode websiteFocusNode;
   FocusNode emailFocusNode;
   FocusNode passwordFocusNode;
   FocusNode confirmPasswordFocusNode;
@@ -83,9 +77,6 @@ class WelcomeState extends State<Welcome> {
     super.initState();
     nameController = TextEditingController();
     usernameController = TextEditingController();
-    locationController = TextEditingController();
-    pronounController = TextEditingController();
-    websiteController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
@@ -93,9 +84,6 @@ class WelcomeState extends State<Welcome> {
 
     nameFocusNode = FocusNode();
     usernameFocusNode = FocusNode();
-    locationFocusNode = FocusNode();
-    pronounFocusNode = FocusNode();
-    websiteFocusNode = FocusNode();
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
     confirmPasswordFocusNode = FocusNode();
@@ -115,9 +103,6 @@ class WelcomeState extends State<Welcome> {
     _signInController.dispose();
     nameController?.dispose();
     usernameController?.dispose();
-    locationController?.dispose();
-    pronounController?.dispose();
-    websiteController?.dispose();
     emailController?.dispose();
     passwordController?.dispose();
     confirmPasswordController?.dispose();
@@ -125,9 +110,6 @@ class WelcomeState extends State<Welcome> {
 
     nameFocusNode.dispose();
     usernameFocusNode.dispose();
-    locationFocusNode.dispose();
-    pronounFocusNode.dispose();
-    websiteFocusNode.dispose();
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
     confirmPasswordFocusNode.dispose();
@@ -142,15 +124,12 @@ class WelcomeState extends State<Welcome> {
     final password = passwordController.text;
     final email = emailController.text.trim().toLowerCase();
     final name = nameController.text.trim();
-    final location = locationController.text.trim();
-    final website = websiteController.text.trim();
-    final gender = pronounController.text.trim();
 
     final canContinue = await authRepo.verifySignUp(username, verificationCode);
 
     if (canContinue) {
-      final UserRegistrationDetails details = UserRegistrationDetails.initial(
-          email, username, name, location, website, gender);
+      final UserRegistrationDetails details =
+          UserRegistrationDetails.initial(email, username, name);
 
       context.bloc<AuthBloc>().add(
           SignUpEvent(details, profilePicture.file.value, username, password));
@@ -320,16 +299,6 @@ class WelcomeState extends State<Welcome> {
                         textCapitalization: TextCapitalization.none,
                         focusNode: usernameFocusNode,
                       ),
-                      SignUpThemes(),
-                      SignUpAbout(
-                        nextPage: _nextSignUpPage,
-                        pronounController: pronounController,
-                        locationController: locationController,
-                        websiteController: websiteController,
-                        pronounFocusNode: pronounFocusNode,
-                        locationFocusNode: locationFocusNode,
-                        websiteFocusNode: websiteFocusNode,
-                      ),
                       SignUpPhotos(profilePicture),
                       SignUpRegister(
                         emailController: emailController,
@@ -428,10 +397,6 @@ class WelcomeState extends State<Welcome> {
         }
       } else if (_currentIndex == 4) {
         //
-      } else if (_currentIndex == 5) {
-        //
-      } else if (_currentIndex == 6) {
-        //
         final email = emailController.text.trim().toLowerCase();
         final password = passwordController.text;
         final confirmPassword = confirmPasswordController.text;
@@ -457,6 +422,7 @@ class WelcomeState extends State<Welcome> {
         // verify email address
         final emailAvailable = await userRepo.emailAvailable(email, username);
         if (emailAvailable) {
+          print('email is available');
           final result = await authRepo.signUp(username, email, password);
           JuntoLoader.hide();
           if (!result.wasSuccessful) {
@@ -539,13 +505,9 @@ class WelcomeState extends State<Welcome> {
         });
       } else if (index == 4) {
         Future<void>.delayed(const Duration(milliseconds: 400), () {
-          locationFocusNode.requestFocus();
-        });
-      } else if (index == 6) {
-        Future<void>.delayed(const Duration(milliseconds: 400), () {
           emailFocusNode.requestFocus();
         });
-      } else if (index == 7) {
+      } else if (index == 5) {
         Future<void>.delayed(const Duration(milliseconds: 400), () {
           verficationCodeFocusNode.requestFocus();
         });
