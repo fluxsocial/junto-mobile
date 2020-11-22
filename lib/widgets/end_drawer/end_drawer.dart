@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
@@ -36,12 +37,14 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     Navigator.of(context).pop();
     // Sends logout event
     context.bloc<AuthBloc>().add(LogoutEvent());
-    if (ModalRoute.of(context).settings.name != "/") {
-      Navigator.of(context).pushAndRemoveUntil(
+
+    Timer(
+      Duration(milliseconds: 0),
+      () => Navigator.of(context).pushAndRemoveUntil(
         FadeRoute(child: Welcome(), name: "Welcome"),
-        ModalRoute.withName('/'),
-      );
-    }
+        (route) => route.settings.name == "Welcome",
+      ),
+    );
   }
 
   @override

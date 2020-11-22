@@ -68,6 +68,7 @@ class BottomNav extends StatelessWidget {
                   context,
                   FadeRoute(
                     child: HomePageContent(),
+                    name: "/",
                   ),
                 );
               },

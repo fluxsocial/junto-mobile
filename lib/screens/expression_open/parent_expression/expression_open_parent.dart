@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/action_items/comment_parent_action_items.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -135,20 +134,39 @@ class ExpressionOpenParent extends StatelessWidget with MemberValidation {
               children: <Widget>[
                 const SizedBox(width: 32.5),
                 Flexible(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        left: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: 2,
+                  child: GestureDetector(
+                    onTap: () async {
+                      var sourceExpression = await Provider.of<ExpressionRepo>(
+                              context,
+                              listen: false)
+                          .getExpression(parent.address);
+
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => ExpressionOpen(
+                            commentsVisible: true,
+                            deleteExpression: (_) {},
+                            expression: sourceExpression,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: BorderSide(
+                            color: Theme.of(context).dividerColor,
+                            width: 2,
+                          ),
                         ),
                       ),
+                      padding: const EdgeInsets.only(
+                        left: 32.5,
+                        right: 10,
+                      ),
+                      child: _buildBody(),
                     ),
-                    padding: const EdgeInsets.only(
-                      left: 32.5,
-                      right: 10,
-                    ),
-                    child: _buildBody(),
                   ),
                 ),
               ],

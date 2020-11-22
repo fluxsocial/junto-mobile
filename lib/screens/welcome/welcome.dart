@@ -15,10 +15,8 @@ import 'package:junto_beta_mobile/screens/welcome/bloc/auth_state.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_arrows.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_wrapper.dart';
@@ -60,9 +58,6 @@ class WelcomeState extends State<Welcome> {
 
   TextEditingController nameController;
   TextEditingController usernameController;
-  TextEditingController locationController;
-  TextEditingController pronounController;
-  TextEditingController websiteController;
   TextEditingController emailController;
   TextEditingController passwordController;
   TextEditingController confirmPasswordController;
@@ -70,9 +65,6 @@ class WelcomeState extends State<Welcome> {
 
   FocusNode nameFocusNode;
   FocusNode usernameFocusNode;
-  FocusNode locationFocusNode;
-  FocusNode pronounFocusNode;
-  FocusNode websiteFocusNode;
   FocusNode emailFocusNode;
   FocusNode passwordFocusNode;
   FocusNode confirmPasswordFocusNode;
@@ -83,9 +75,6 @@ class WelcomeState extends State<Welcome> {
     super.initState();
     nameController = TextEditingController();
     usernameController = TextEditingController();
-    locationController = TextEditingController();
-    pronounController = TextEditingController();
-    websiteController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
@@ -93,9 +82,6 @@ class WelcomeState extends State<Welcome> {
 
     nameFocusNode = FocusNode();
     usernameFocusNode = FocusNode();
-    locationFocusNode = FocusNode();
-    pronounFocusNode = FocusNode();
-    websiteFocusNode = FocusNode();
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
     confirmPasswordFocusNode = FocusNode();
@@ -115,9 +101,6 @@ class WelcomeState extends State<Welcome> {
     _signInController.dispose();
     nameController?.dispose();
     usernameController?.dispose();
-    locationController?.dispose();
-    pronounController?.dispose();
-    websiteController?.dispose();
     emailController?.dispose();
     passwordController?.dispose();
     confirmPasswordController?.dispose();
@@ -125,9 +108,6 @@ class WelcomeState extends State<Welcome> {
 
     nameFocusNode.dispose();
     usernameFocusNode.dispose();
-    locationFocusNode.dispose();
-    pronounFocusNode.dispose();
-    websiteFocusNode.dispose();
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
     confirmPasswordFocusNode.dispose();
@@ -142,15 +122,12 @@ class WelcomeState extends State<Welcome> {
     final password = passwordController.text;
     final email = emailController.text.trim().toLowerCase();
     final name = nameController.text.trim();
-    final location = locationController.text.trim();
-    final website = websiteController.text.trim();
-    final gender = pronounController.text.trim();
 
     final canContinue = await authRepo.verifySignUp(username, verificationCode);
 
     if (canContinue) {
-      final UserRegistrationDetails details = UserRegistrationDetails.initial(
-          email, username, name, location, website, gender);
+      final UserRegistrationDetails details =
+          UserRegistrationDetails.initial(email, username, name);
 
       context.bloc<AuthBloc>().add(
           SignUpEvent(details, profilePicture.file.value, username, password));
@@ -320,16 +297,6 @@ class WelcomeState extends State<Welcome> {
                         textCapitalization: TextCapitalization.none,
                         focusNode: usernameFocusNode,
                       ),
-                      SignUpThemes(),
-                      SignUpAbout(
-                        nextPage: _nextSignUpPage,
-                        pronounController: pronounController,
-                        locationController: locationController,
-                        websiteController: websiteController,
-                        pronounFocusNode: pronounFocusNode,
-                        locationFocusNode: locationFocusNode,
-                        websiteFocusNode: websiteFocusNode,
-                      ),
                       SignUpPhotos(profilePicture),
                       SignUpRegister(
                         emailController: emailController,
@@ -348,9 +315,9 @@ class WelcomeState extends State<Welcome> {
                   ),
                   if (canShowUp)
                     SignUpArrows(
-                      welcomeController: _welcomeController,
                       currentIndex: _currentIndex,
                       onTap: _nextSignUpPage,
+                      previousPage: _previousSignUpPage,
                     ),
                   if (_currentIndex != 0)
                     Positioned(
@@ -427,10 +394,6 @@ class WelcomeState extends State<Welcome> {
           }
         }
       } else if (_currentIndex == 4) {
-        //
-      } else if (_currentIndex == 5) {
-        //
-      } else if (_currentIndex == 6) {
         //
         final email = emailController.text.trim().toLowerCase();
         final password = passwordController.text;
@@ -539,13 +502,9 @@ class WelcomeState extends State<Welcome> {
         });
       } else if (index == 4) {
         Future<void>.delayed(const Duration(milliseconds: 400), () {
-          locationFocusNode.requestFocus();
-        });
-      } else if (index == 6) {
-        Future<void>.delayed(const Duration(milliseconds: 400), () {
           emailFocusNode.requestFocus();
         });
-      } else if (index == 7) {
+      } else if (index == 5) {
         Future<void>.delayed(const Duration(milliseconds: 400), () {
           verficationCodeFocusNode.requestFocus();
         });
@@ -568,12 +527,15 @@ class WelcomeState extends State<Welcome> {
     return true;
   }
 
-  void _previousSignUpPage() {
+  void _previousSignUpPage() async {
     _welcomeController.animateToPage(
       _currentIndex - 1,
-      duration: kThemeAnimationDuration,
+      duration: const Duration(milliseconds: 300),
       curve: Curves.decelerate,
     );
+    if (_currentIndex == 5) {
+      await userRepo.usernameAvailable(usernameController.value.text);
+    }
   }
 
   void _onSignUpSelected() {

@@ -2,7 +2,7 @@
           package="com.junto.juntobetamobile">
 
     <!-- The INTERNET permission is required for development. Specifically,
-         flutter needs it to communicate with the running application
+         flutter needs it to communicate with the running application 
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -53,6 +53,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

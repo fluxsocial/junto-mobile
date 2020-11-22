@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,5 +18,13 @@ Future<void> mainApp() async {
   await Hive.initFlutter();
   Bloc.observer = SimpleBlocObserver();
   final Backend backend = await Backend.init();
+
+  //TODO(Nash+Eric): Decide on how we want to handle notifications that are received in app
+  FirebaseMessaging()
+    ..configure(
+      onLaunch: (val) async => print('onLaunch $val'),
+      onMessage: (val) async => print('onMessage $val'),
+    );
+
   runLoggedApp(JuntoApp(backend: backend));
 }

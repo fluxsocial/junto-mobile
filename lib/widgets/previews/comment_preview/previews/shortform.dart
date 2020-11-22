@@ -17,8 +17,8 @@ class ShortformPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String shortformBody = comment.expressionData.body.trim();
-    final String _hexOne = comment.expressionData.background[0];
-    final String _hexTwo = comment.expressionData.background[1];
+    final String _hexOne = comment.expressionData.background.isNotEmpty ? comment.expressionData.background[0] : '333333';
+    final String _hexTwo = comment.expressionData.backgroundisNotEmpty ? comment.expressionData.background[1] : '222222';
 
     return Container(
       decoration: BoxDecoration(

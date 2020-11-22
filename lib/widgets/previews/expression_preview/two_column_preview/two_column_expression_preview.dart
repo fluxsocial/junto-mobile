@@ -9,6 +9,8 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/shortform.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/link.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:provider/provider.dart';
 
 import 'two_column_expression_preview_types/audio.dart';
 
@@ -27,15 +29,18 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
           // pending - create conditional statement that renders ExpressionOpenCreated if
           // the expression was created by the user. Otherwise display ExpressionOpen
+          var sourceExpression =
+              await Provider.of<ExpressionRepo>(context, listen: false)
+                  .getExpression(expression.address);
 
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) => ExpressionOpen(
                 deleteExpression: deleteExpression,
-                expression: expression,
+                expression: sourceExpression,
               ),
             ),
           );
