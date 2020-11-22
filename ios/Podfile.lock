@@ -1,5 +1,5 @@
 PODS:
-  - audioplayers (0.0.1):
+  - audioplayer (0.0.1):
     - Flutter
   - AWSAuthCore (2.13.6):
     - AWSCore (= 2.13.6)
@@ -111,7 +111,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - audioplayer (from `.symlinks/plugins/audioplayer/ios`)
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -150,8 +150,8 @@ SPEC REPOS:
     - Protobuf
 
 EXTERNAL SOURCES:
-  audioplayers:
-    :path: ".symlinks/plugins/audioplayers/ios"
+  audioplayer:
+    :path: ".symlinks/plugins/audioplayer/ios"
   contacts_service:
     :path: ".symlinks/plugins/contacts_service/ios"
   firebase_core:
@@ -182,7 +182,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
-  audioplayers: 84f968cea3f2deab00ec4f8ff53358b3c0b3992c
+  audioplayer: 0584f31a697e4b0bbad405ae7903d7a93585e784
   AWSAuthCore: 62e92b5ffbd66b8ba0eac471e7f90ccfa76cf63b
   AWSCognitoIdentityProvider: 05f14f7c892df9ff764268d2ac33b4e95288e603
   AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118

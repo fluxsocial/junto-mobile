@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -43,6 +43,8 @@ class UserDataProvider extends ChangeNotifier {
         userProfile = await userRepository.getUser(userAddress);
         userAddress = userProfile.user.address;
       }
+    } on DioError catch (e) {
+      logger.logException(e);
     } catch (e, s) {
       logger.logException(e, s);
     }

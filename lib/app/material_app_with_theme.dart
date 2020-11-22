@@ -141,15 +141,19 @@ class HomePageContentState extends State<HomePageContent>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     UserData userProfile =
-        Provider.of<UserDataProvider>(context, listen: false).userProfile;
-    if (userProfile == null) {
-      context.bloc<AuthBloc>().add(RefreshUser());
+        await Provider.of<UserDataProvider>(context, listen: false).userProfile;
+    print('printing user profile');
+    print(userProfile);
+    if (userProfile.user.address == null) {
+      await context.bloc<AuthBloc>().add(RefreshUser());
+      logger.logInfo('Finished refreshing user');
     }
     if (state == AppLifecycleState.resumed) {
-      _checkServerVersion();
+      logger.logInfo('checking server version');
+      await _checkServerVersion();
     }
   }
 
