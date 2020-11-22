@@ -145,8 +145,7 @@ class HomePageContentState extends State<HomePageContent>
     super.didChangeAppLifecycleState(state);
     UserData userProfile =
         await Provider.of<UserDataProvider>(context, listen: false).userProfile;
-    print('printing user profile');
-    print(userProfile);
+
     if (userProfile.user.address == null) {
       await context.bloc<AuthBloc>().add(RefreshUser());
       logger.logInfo('Finished refreshing user');
