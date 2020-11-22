@@ -33,7 +33,6 @@ dependencies:
   url_launcher: 5.4.11
   feature_discovery: 0.12.0+2
   intl: ^0.16.1
-  audioplayer: 0.8.1
   just_audio: ^0.5.6
   flutter_audio_recorder: 0.5.5
   hive: 1.4.2
