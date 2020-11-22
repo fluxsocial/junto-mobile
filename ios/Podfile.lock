@@ -1,5 +1,7 @@
 PODS:
-  - audioplayers (0.0.1):
+  - audio_session (0.0.1):
+    - Flutter
+  - audioplayer (0.0.1):
     - Flutter
   - AWSAuthCore (2.13.6):
     - AWSCore (= 2.13.6)
@@ -24,6 +26,8 @@ PODS:
   - FMDB/standard (2.7.5)
   - image_picker (0.0.1):
     - Flutter
+  - just_audio (0.0.1):
+    - Flutter
   - package_info (0.0.1):
     - Flutter
   - path_provider (0.0.1):
@@ -41,12 +45,14 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - audio_session (from `.symlinks/plugins/audio_session/ios`)
+  - audioplayer (from `.symlinks/plugins/audioplayer/ios`)
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - Flutter (from `Flutter`)
   - flutter_audio_recorder (from `.symlinks/plugins/flutter_audio_recorder/ios`)
   - flutter_aws_amplify_cognito (from `.symlinks/plugins/flutter_aws_amplify_cognito/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -65,8 +71,10 @@ SPEC REPOS:
     - FMDB
 
 EXTERNAL SOURCES:
-  audioplayers:
-    :path: ".symlinks/plugins/audioplayers/ios"
+  audio_session:
+    :path: ".symlinks/plugins/audio_session/ios"
+  audioplayer:
+    :path: ".symlinks/plugins/audioplayer/ios"
   contacts_service:
     :path: ".symlinks/plugins/contacts_service/ios"
   Flutter:
@@ -77,6 +85,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_aws_amplify_cognito/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  just_audio:
+    :path: ".symlinks/plugins/just_audio/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider:
@@ -93,7 +103,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
-  audioplayers: 84f968cea3f2deab00ec4f8ff53358b3c0b3992c
+  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  audioplayer: 0584f31a697e4b0bbad405ae7903d7a93585e784
   AWSAuthCore: 62e92b5ffbd66b8ba0eac471e7f90ccfa76cf63b
   AWSCognitoIdentityProvider: 05f14f7c892df9ff764268d2ac33b4e95288e603
   AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
@@ -105,6 +116,7 @@ SPEC CHECKSUMS:
   flutter_aws_amplify_cognito: 7e3a7bf2c46c4b468e724d6fd62277d01c1985a1
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
@@ -115,4 +127,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3b7f149bbfc6aaaac83ccb82aafca46c276e3c5d
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.8.4
