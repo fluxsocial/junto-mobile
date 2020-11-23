@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audioplayer/audioplayer.dart';
+// import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AudioService with ChangeNotifier {
   static const _fileName = 'junto_audio_recording';
   static const _sampleRate = 16000;
   static const _maxDuration = Duration(seconds: 120);
-  final AudioPlayer _audioPlayer;
+  AudioPlayer _audioPlayer;
   FlutterAudioRecorder _recorder;
   Recording _recording;
   Timer _timer;
@@ -19,7 +20,26 @@ class AudioService with ChangeNotifier {
   bool _isLocal = true;
   bool get _isWeb => !_isLocal;
 
-  AudioService() : _audioPlayer = AudioPlayer();
+  AudioService() {
+    _audioPlayer = AudioPlayer();
+    _audioPlayer.createPositionStream().listen((event) {
+      _currentPosition = event;
+      notifyListeners();
+    });
+    _audioPlayer.playerStateStream.listen((event) {
+      if (event.processingState == ProcessingState.completed) {
+        _playbackTimer?.cancel();
+        stopPlayback();
+      } else if (event.processingState == ProcessingState.ready) {
+        _duration = _audioPlayer.duration;
+        _isLoading = false;
+        notifyListeners();
+      } else if (event.processingState == ProcessingState.loading) {
+        _isLoading = true;
+        notifyListeners();
+      }
+    });
+  }
 
   Duration get maxDuration => _maxDuration;
 
@@ -34,6 +54,9 @@ class AudioService with ChangeNotifier {
 
   bool _isPlaying = false;
   bool get isPlaying => _isPlaying;
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   Duration _duration;
   Duration get recordingDuration => recordingAvailable
@@ -99,45 +122,9 @@ class AudioService with ChangeNotifier {
   }
 
   void playRecording() async {
-    await _audioPlayer.play(
-      _currentPath,
-      isLocal: _isLocal,
-    );
-
     _isPlaying = true;
-
-    _playbackTimer = Timer.periodic(
-      Duration(milliseconds: 50),
-      _updateCurrentPlaybackPosition,
-    );
-
-    _audioPlayer.onAudioPositionChanged.listen((Duration event) {
-      _currentPosition = event;
-    });
-
-    _audioPlayer.onPlayerStateChanged.listen((event) {
-      if (event == AudioPlayerState.STOPPED ||
-          event == AudioPlayerState.PAUSED) {
-        _playbackTimer?.cancel();
-      }
-      if (event == AudioPlayerState.PLAYING) {
-        _getDuration();
-      }
-      if (event == AudioPlayerState.COMPLETED) {
-        _playbackTimer?.cancel();
-        stopPlayback();
-      }
-    });
-  }
-
-  Future _getDuration() async {
-    _duration = _audioPlayer.duration;
-    return _duration.inMilliseconds;
-  }
-
-  void _updateCurrentPlaybackPosition(time) async {
-    _currentPosition = await _getCurrentPosition();
     notifyListeners();
+    await _audioPlayer.play();
   }
 
   void stopPlayback() async {
@@ -150,15 +137,11 @@ class AudioService with ChangeNotifier {
   void pausePlayback() async {
     await _audioPlayer.pause();
     _isPlaying = false;
-    _currentPosition = await _getCurrentPosition();
     notifyListeners();
   }
 
   Future<Duration> _getCurrentPosition() async {
-    final duration = Duration(
-      milliseconds: _currentPosition.inMilliseconds
-          .clamp(0, recordingDuration.inMilliseconds),
-    );
+    final duration = _audioPlayer.duration;
     return duration;
   }
 
@@ -173,7 +156,7 @@ class AudioService with ChangeNotifier {
       final duration =
           Duration(seconds: val.floor(), milliseconds: milliseconds);
 
-      _audioPlayer?.seek(duration.inSeconds.toDouble());
+      _audioPlayer?.seek(duration);
 
       _currentPosition = duration;
 
@@ -222,7 +205,7 @@ class AudioService with ChangeNotifier {
 
   @override
   void dispose() {
-    _audioPlayer?.stop();
+    _audioPlayer.dispose();
     _playbackTimer?.cancel();
     _recorder?.stop();
     super.dispose();
@@ -231,7 +214,10 @@ class AudioService with ChangeNotifier {
   initializeFromWeb(String audio) async {
     _currentPath = audio;
     _isLocal = false;
-    _duration = Duration(milliseconds: _audioPlayer.duration.inMilliseconds);
+
+    await _audioPlayer.setUrl(audio);
+
+    _duration = _audioPlayer.duration;
     _recordingLoaded = true;
     notifyListeners();
   }
