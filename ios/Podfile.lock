@@ -1,6 +1,9 @@
 PODS:
+<<<<<<< HEAD
+=======
   - audio_session (0.0.1):
     - Flutter
+>>>>>>> dev
   - audioplayer (0.0.1):
     - Flutter
   - AWSAuthCore (2.13.6):
@@ -115,7 +118,10 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+<<<<<<< HEAD
+=======
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
+>>>>>>> dev
   - audioplayer (from `.symlinks/plugins/audioplayer/ios`)
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -192,7 +198,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
+<<<<<<< HEAD
+=======
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+>>>>>>> dev
   audioplayer: 0584f31a697e4b0bbad405ae7903d7a93585e784
   AWSAuthCore: 62e92b5ffbd66b8ba0eac471e7f90ccfa76cf63b
   AWSCognitoIdentityProvider: 05f14f7c892df9ff764268d2ac33b4e95288e603

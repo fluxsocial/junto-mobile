@@ -72,16 +72,20 @@ class AuthRepo extends ChangeNotifier {
   }
 
   Future<String> getAddress() async {
-    final token = await authService.getIdToken();
-    if (token != null) {
-      shouldLogOut = false;
-      final jwt = JWT.parse(token);
-      notifyListeners();
-      return jwt.subject;
-    } else {
-      shouldLogOut = true;
-      notifyListeners();
-      throw Exception("Access token is null");
+    try {
+      final token = await authService.getIdToken();
+      if (token != null) {
+        shouldLogOut = false;
+        final jwt = JWT.parse(token);
+        notifyListeners();
+        return jwt.subject;
+      } else {
+        shouldLogOut = true;
+        notifyListeners();
+        throw Exception("Access token is null");
+      }
+    } catch (e) {
+      logger.logException(e);
     }
   }
 
