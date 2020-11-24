@@ -8,18 +8,21 @@ class SignUpBirthdayTextField extends StatelessWidget {
   const SignUpBirthdayTextField({
     this.hintText,
     this.maxLength,
+    this.textController,
   });
 
   final String hintText;
   final int maxLength;
+  final TextEditingController textController;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
       builder: (context, theme, child) {
         return TextField(
+          controller: textController,
           keyboardType: TextInputType.number,
-          maxLength: 2,
+          maxLength: maxLength,
           maxLengthEnforced: true,
           buildCounter: (
             BuildContext context, {
