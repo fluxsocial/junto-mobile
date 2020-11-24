@@ -9,19 +9,19 @@ import 'widgets/sign_up_text_field_counter.dart';
 class SignUpBirthday extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Consumer<JuntoThemesProvider>(
       builder: (context, theme, child) {
         return Container(
           color: Colors.transparent,
           width: MediaQuery.of(context).size.width,
           child: Container(
-            margin: EdgeInsets.only(top: size.height * .16),
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: size.height * 0.24),
+                SizedBox(height: MediaQuery.of(context).size.height * .17),
+                SignUpBirthdayTitle(),
+                SizedBox(height: MediaQuery.of(context).size.height * .2),
                 Column(
                   children: <Widget>[
                     Row(children: [
@@ -46,11 +46,7 @@ class SignUpBirthday extends StatelessWidget {
                         ),
                       ),
                     ]),
-                    SignUpTextFieldLabelAndCounter(
-                      label: 'BIRTHDAY',
-                      // maxLength: widget.maxLength,
-                      // valueController: widget.controller,
-                    )
+                    SignUpTextFieldLabelAndCounter(label: 'BIRTHDAY')
                   ],
                 ),
               ],
@@ -58,6 +54,20 @@ class SignUpBirthday extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class SignUpBirthdayTitle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Please enter your birthday. You must be 13 years or older to sign up.',
+      style: TextStyle(
+        color: Colors.white.withOpacity(.70),
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+      ),
     );
   }
 }
