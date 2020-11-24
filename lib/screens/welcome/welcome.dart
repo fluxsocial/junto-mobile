@@ -31,6 +31,8 @@ import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
+import 'sign_up_birthday.dart';
+
 class Welcome extends StatefulWidget {
   const Welcome({Key key}) : super(key: key);
 
@@ -297,6 +299,7 @@ class WelcomeState extends State<Welcome> {
                         textCapitalization: TextCapitalization.none,
                         focusNode: usernameFocusNode,
                       ),
+                      SignUpBirthday(),
                       SignUpPhotos(profilePicture),
                       SignUpRegister(
                         emailController: emailController,
@@ -394,7 +397,6 @@ class WelcomeState extends State<Welcome> {
           }
         }
       } else if (_currentIndex == 4) {
-        //
         final email = emailController.text.trim().toLowerCase();
         final password = passwordController.text;
         final confirmPassword = confirmPasswordController.text;
