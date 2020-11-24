@@ -8,6 +8,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.0.0"
+  amplify_analytics_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_analytics_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1-dev.3"
+  amplify_auth_cognito:
+    dependency: "direct main"
+    description:
+      name: amplify_auth_cognito
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1-dev.3"
+  amplify_auth_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_auth_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1-dev.3"
+  amplify_core:
+    dependency: "direct main"
+    description:
+      name: amplify_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1-dev.3"
+  amplify_core_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_core_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1-dev.3"
+  amplify_storage_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_storage_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1-dev.3"
   analyzer:
     dependency: transitive
     description:

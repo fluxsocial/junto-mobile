@@ -1,33 +1,38 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart' as aws;
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_aws_amplify_cognito/flutter_aws_amplify_cognito.dart'
-    as aws;
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
 
 class CognitoClient extends AuthenticationService {
+  Amplify amplifyInstance = Amplify();
+  aws.AmplifyAuthCognito auth;
+
   CognitoClient() {
     _initialize();
+    _initializeCongnito();
+  }
+
+  Future<void> _initializeCongnito() async {
+    try {
+      auth = aws.AmplifyAuthCognito();
+      amplifyInstance.addPlugin(authPlugins: [auth]);
+
+      // await amplifyInstance.configure();
+    } catch (e, s) {
+      logger.logException(e, s);
+    }
   }
 
   Future<void> _initialize() async {
     try {
-      final result = await aws.FlutterAwsAmplifyCognito.initialize();
-      switch (result) {
-        case aws.UserStatus.GUEST:
-          logger.logInfo('User is not logged in but guest');
-          break;
-        case aws.UserStatus.SIGNED_IN:
-          logger.logInfo('User is logged in');
-          break;
-        case aws.UserStatus.SIGNED_OUT:
-        case aws.UserStatus.SIGNED_OUT_FEDERATED_TOKENS_INVALID:
-        case aws.UserStatus.SIGNED_OUT_USER_POOLS_TOKENS_INVALID:
-        case aws.UserStatus.UNKNOWN:
-        case aws.UserStatus.ERROR:
-          logger.logInfo('User is not logged in');
-          logger.logInfo(result.toString());
-          break;
+      final result = await auth.fetchAuthSession();
+
+      if (result.isSignedIn) {
+        logger.logInfo('User is logged in');
+      } else {
+        logger.logInfo('User is not logged in');
       }
     } catch (e, s) {
       logger.logException(e, s);
@@ -37,22 +42,12 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<ResetPasswordResult> requestPasswordReset(String username) async {
     try {
-      final result =
-          await aws.FlutterAwsAmplifyCognito.forgotPassword(username);
-      if (result != null) {
-        logger.logInfo('Password reset request result: ${result.state}');
-        switch (result.state) {
-          case aws.ForgotPasswordState.CONFIRMATION_CODE:
-            logger.logInfo(
-                "Confirmation code is sent to reset password through ${result.parameters.deliveryMedium}");
-            return ResetPasswordResult(true);
-          case aws.ForgotPasswordState.DONE:
-            return ResetPasswordResult(false);
-          case aws.ForgotPasswordState.UNKNOWN:
-          case aws.ForgotPasswordState.ERROR:
-            return ResetPasswordResult.unknownError();
-        }
+      final result = await Amplify.Auth.resetPassword(username: username);
+
+      if (result.isPasswordReset) {
+        return ResetPasswordResult(true);
       }
+
       return ResetPasswordResult(false);
     } on PlatformException catch (e) {
       if (e.details is String) {
@@ -80,20 +75,16 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<ResetPasswordResult> resetPassword(ResetPasswordData data) async {
     try {
-      final result = await aws.FlutterAwsAmplifyCognito.confirmForgotPassword(
-          data.username, data.password, data.confirmationCode);
+      final result = await Amplify.Auth.confirmPassword(
+        username: data.username,
+        newPassword: data.password,
+        confirmationCode: data.confirmationCode,
+      );
+
       if (result != null) {
-        logger.logInfo('Password reset result: ${result.state}');
-        switch (result.state) {
-          case aws.ForgotPasswordState.DONE:
-            logger.logInfo("Password changed successfully");
-            return ResetPasswordResult(true);
-          case aws.ForgotPasswordState.CONFIRMATION_CODE:
-          case aws.ForgotPasswordState.UNKNOWN:
-          case aws.ForgotPasswordState.ERROR:
-            return ResetPasswordResult.unknownError();
-        }
+        return ResetPasswordResult(true);
       }
+
       return ResetPasswordResult(false);
     } on PlatformException catch (e) {
       if (e.details is String) {
@@ -120,13 +111,12 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<ResetPasswordResult> resendVerifyCode(String data) async {
     try {
-      final result = await aws.FlutterAwsAmplifyCognito.resendSignUp(data);
+      final result = await Amplify.Auth.resendSignUpCode(username: data);
       logger.logInfo(
-          'Result of resending verification code: ${result.confirmationState} ${result.userCodeDeliveryDetails.deliveryMedium}');
-      if (result.userCodeDeliveryDetails.deliveryMedium
-              .toLowerCase()
-              .contains('email') ||
-          result.confirmationState) {
+          'Result of resending verification code: ${result.codeDeliveryDetails.attributeName} ${result.codeDeliveryDetails.deliveryMedium}');
+      if (result.codeDeliveryDetails.deliveryMedium
+          .toLowerCase()
+          .contains('email')) {
         return ResetPasswordResult(true);
       } else {
         return ResetPasswordResult.unknownError();
@@ -157,27 +147,15 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<SignInResult> loginUser(SignInData details) async {
     try {
-      final result = await aws.FlutterAwsAmplifyCognito.signIn(
-        details.username,
-        details.password,
+      aws.SignInResult result = await Amplify.Auth.signIn(
+        username: details.username,
+        password: details.password,
       );
-      if (result != null) {
-        switch (result.signInState) {
-          case aws.SignInState.NEW_PASSWORD_REQUIRED:
-            return SignInResult(false, SignInResultError.PasswordResetRequired);
-          case aws.SignInState.DONE:
-            return SignInResult(true);
-          case aws.SignInState.SMS_MFA:
-          case aws.SignInState.PASSWORD_VERIFIER:
-          case aws.SignInState.CUSTOM_CHALLENGE:
-          case aws.SignInState.DEVICE_SRP_AUTH:
-          case aws.SignInState.DEVICE_PASSWORD_VERIFIER:
-          case aws.SignInState.ADMIN_NO_SRP_AUTH:
-          case aws.SignInState.UNKNOWN:
-          case aws.SignInState.ERROR:
-            return SignInResult.signedOut();
-        }
+
+      if (result != null && result.isSignedIn) {
+        return SignInResult(true);
       }
+
       return SignInResult.signedOut();
     } on PlatformException catch (e, s) {
       logger.logException(e, s);
@@ -201,17 +179,21 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<SignUpResult> signUp(SignUpData data) async {
     try {
-      final result = await aws.FlutterAwsAmplifyCognito.signUp(
-        data.username,
-        data.password,
-        {'email': '${data.email}'},
+      Map<String, dynamic> userAttributes = {
+        "email": data.email,
+      };
+      aws.SignUpResult result = await Amplify.Auth.signUp(
+        username: data.username,
+        password: data.password,
+        options: aws.CognitoSignUpOptions(userAttributes: userAttributes),
       );
-      if (!result.confirmationState) {
+
+      if (!result.isSignUpComplete) {
         logger.logInfo('Verification code sent to user');
         return SignUpResult(true, false);
       } else {
         logger.logError(
-            'Problem with sending verification code to the user: ${result.confirmationState} ${result.userCodeDeliveryDetails?.deliveryMedium}');
+            'Problem with sending verification code to the user: ${result.nextStep.codeDeliveryDetails} ${result.nextStep.additionalInfo}');
         return SignUpResult(false, false);
       }
     } on PlatformException catch (e, s) {
@@ -242,11 +224,12 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<VerifyResult> verifySignUp(VerifyData data) async {
     try {
-      final result = await aws.FlutterAwsAmplifyCognito.confirmSignUp(
-        data.username,
-        data.code,
+      aws.SignUpResult result = await Amplify.Auth.confirmSignUp(
+        username: data.username,
+        confirmationCode: data.code,
       );
-      if (result.confirmationState) {
+
+      if (result.isSignUpComplete) {
         return VerifyResult(true);
       } else {
         return VerifyResult(false);
@@ -267,7 +250,7 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<SignOutResult> logOut() async {
     try {
-      await aws.FlutterAwsAmplifyCognito.signOut();
+      await await Amplify.Auth.signOut();
       return SignOutResult(true);
     } catch (e) {
       return SignOutResult(false);
@@ -277,21 +260,12 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<SignInResult> isLoggedIn() async {
     try {
-      final currentUser = await aws.FlutterAwsAmplifyCognito.currentUserState();
+      final currentUser = await Amplify.Auth.getCurrentUser();
 
-      switch (currentUser) {
-        case aws.UserStatus.GUEST:
-          return SignInResult.signedOut();
-        case aws.UserStatus.SIGNED_IN:
-          return SignInResult(true);
-          break;
-        case aws.UserStatus.SIGNED_OUT:
-        case aws.UserStatus.SIGNED_OUT_FEDERATED_TOKENS_INVALID:
-        case aws.UserStatus.SIGNED_OUT_USER_POOLS_TOKENS_INVALID:
-        case aws.UserStatus.UNKNOWN:
-        case aws.UserStatus.ERROR:
-          return SignInResult.signedOut();
+      if (currentUser != null) {
+        return SignInResult(true);
       }
+
       return SignInResult.signedOut();
     } catch (e, s) {
       logger.logException(e, s);
@@ -301,21 +275,15 @@ class CognitoClient extends AuthenticationService {
 
   Stream<SignInResult> isSignedInStream() {
     try {
-      return aws.FlutterAwsAmplifyCognito.addUserStateListener.map((event) {
-        switch (event) {
-          case aws.UserStatus.GUEST:
-            return SignInResult.signedOut();
-          case aws.UserStatus.SIGNED_IN:
+      return auth.events.listenToAuth((msg) {
+        switch (msg["eventName"]) {
+          case "SIGNED_IN":
             return SignInResult(true);
-            break;
-          case aws.UserStatus.SIGNED_OUT:
-          case aws.UserStatus.SIGNED_OUT_FEDERATED_TOKENS_INVALID:
-          case aws.UserStatus.SIGNED_OUT_USER_POOLS_TOKENS_INVALID:
-          case aws.UserStatus.UNKNOWN:
-          case aws.UserStatus.ERROR:
+          case "SIGNED_OUT":
+            return SignInResult.signedOut();
+          case "SESSION_EXPIRED":
             return SignInResult.signedOut();
         }
-        return SignInResult.signedOut();
       });
     } catch (e) {
       return Stream.value(SignInResult(false));
@@ -327,7 +295,11 @@ class CognitoClient extends AuthenticationService {
     try {
       final loggedIn = await isLoggedIn();
       if (loggedIn.wasSuccessful) {
-        return aws.FlutterAwsAmplifyCognito.getIdToken();
+        aws.CognitoAuthSession session = await Amplify.Auth.fetchAuthSession(
+          options: aws.CognitoSessionOptions(getAWSCredentials: true),
+        );
+
+        return session.userPoolTokens.idToken;
       } else {
         logger.logWarning('Trying to access token when logged out');
         return null;
