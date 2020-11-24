@@ -49,6 +49,7 @@ class ProfilePicture {
 
 class WelcomeState extends State<Welcome> {
   final ProfilePicture profilePicture = ProfilePicture();
+  String birthday;
 
   PageController _welcomeController;
   PageController _signInController;
@@ -60,6 +61,9 @@ class WelcomeState extends State<Welcome> {
 
   TextEditingController nameController;
   TextEditingController usernameController;
+  TextEditingController birthdayMonthController;
+  TextEditingController birthdayDayController;
+  TextEditingController birthdayYearController;
   TextEditingController emailController;
   TextEditingController passwordController;
   TextEditingController confirmPasswordController;
@@ -77,6 +81,9 @@ class WelcomeState extends State<Welcome> {
     super.initState();
     nameController = TextEditingController();
     usernameController = TextEditingController();
+    birthdayMonthController = TextEditingController();
+    birthdayDayController = TextEditingController();
+    birthdayYearController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
@@ -103,6 +110,9 @@ class WelcomeState extends State<Welcome> {
     _signInController.dispose();
     nameController?.dispose();
     usernameController?.dispose();
+    birthdayMonthController?.dispose();
+    birthdayDayController?.dispose();
+    birthdayYearController?.dispose();
     emailController?.dispose();
     passwordController?.dispose();
     confirmPasswordController?.dispose();
@@ -173,6 +183,37 @@ class WelcomeState extends State<Welcome> {
       FocusScope.of(context).unfocus();
       return;
     }
+  }
+
+  bool _birthdayCheck() {
+    // Make sure values are not empty and are integers
+    if (birthdayMonthController.value.text.isEmpty ||
+        birthdayDayController.value.text.isEmpty ||
+        birthdayYearController.value.text.isEmpty) {
+      return false;
+    }
+
+    // Set text controller values as integers
+    final int month = int.parse(birthdayMonthController.value.text);
+    final int day = int.parse(birthdayDayController.value.text);
+    final int year = int.parse(birthdayYearController.value.text);
+
+    // Check if birthay falls in parameters
+    if (month < 1 || month > 12) {
+      return false;
+    } else if (day < 1 || day > 31) {
+      return false;
+    } else if (year > 2009) {
+      return false;
+    }
+
+    final String birthdayAsString =
+        DateTime(year, month, day).toIso8601String();
+
+    setState(() {
+      birthday = birthdayAsString;
+    });
+    return true;
   }
 
   bool _passwordCheck(String password) {
@@ -299,7 +340,11 @@ class WelcomeState extends State<Welcome> {
                         textCapitalization: TextCapitalization.none,
                         focusNode: usernameFocusNode,
                       ),
-                      SignUpBirthday(),
+                      SignUpBirthday(
+                        monthController: birthdayMonthController,
+                        dayController: birthdayDayController,
+                        yearController: birthdayYearController,
+                      ),
                       SignUpPhotos(profilePicture),
                       SignUpRegister(
                         emailController: emailController,
@@ -396,7 +441,20 @@ class WelcomeState extends State<Welcome> {
             return;
           }
         }
-      } else if (_currentIndex == 4) {
+      } else if (_currentIndex == 3) {
+        final bool canContinue = await _birthdayCheck();
+
+        if (!canContinue) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              dialogText:
+                  'Please enter a correct birthday. You must also be at least 13 years old to sign up.',
+            ),
+          );
+          return;
+        }
+      } else if (_currentIndex == 5) {
         final email = emailController.text.trim().toLowerCase();
         final password = passwordController.text;
         final confirmPassword = confirmPasswordController.text;
@@ -535,7 +593,7 @@ class WelcomeState extends State<Welcome> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.decelerate,
     );
-    if (_currentIndex == 5) {
+    if (_currentIndex == 6) {
       await userRepo.usernameAvailable(usernameController.value.text);
     }
   }

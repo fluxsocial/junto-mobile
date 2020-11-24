@@ -7,6 +7,16 @@ import 'widgets/sign_up_birthday_text_field.dart';
 import 'widgets/sign_up_text_field_counter.dart';
 
 class SignUpBirthday extends StatelessWidget {
+  const SignUpBirthday({
+    this.monthController,
+    this.dayController,
+    this.yearController,
+  });
+
+  final TextEditingController monthController;
+  final TextEditingController dayController;
+  final TextEditingController yearController;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
@@ -29,6 +39,7 @@ class SignUpBirthday extends StatelessWidget {
                         child: SignUpBirthdayTextField(
                           hintText: 'Month',
                           maxLength: 2,
+                          textController: monthController,
                         ),
                       ),
                       SignUpBirthdayDivider(),
@@ -36,6 +47,7 @@ class SignUpBirthday extends StatelessWidget {
                         child: SignUpBirthdayTextField(
                           maxLength: 2,
                           hintText: 'Day',
+                          textController: dayController,
                         ),
                       ),
                       SignUpBirthdayDivider(),
@@ -43,6 +55,7 @@ class SignUpBirthday extends StatelessWidget {
                         child: SignUpBirthdayTextField(
                           maxLength: 4,
                           hintText: 'Year',
+                          textController: yearController,
                         ),
                       ),
                     ]),
