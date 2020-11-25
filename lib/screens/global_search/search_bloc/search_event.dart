@@ -1,3 +1,4 @@
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -8,7 +9,7 @@ class SearchingEvent extends SearchEvent {
   SearchingEvent(this.query, this.username);
 
   final String query;
-  final bool username;
+  final QueryUserBy username;
 }
 
 class SearchingChannelEvent extends SearchEvent {

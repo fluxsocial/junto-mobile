@@ -278,7 +278,10 @@ class BottomCommentBarState extends State<BottomCommentBar>
                                       if (!channel) {
                                         context
                                             .bloc<SearchBloc>()
-                                            .add(SearchingEvent(value, true));
+                                            .add(SearchingEvent(
+                                              value,
+                                              QueryUserBy.BOTH,
+                                            ));
                                       } else {
                                         context
                                             .bloc<SearchBloc>()

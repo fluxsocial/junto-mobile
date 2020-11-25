@@ -9,7 +9,7 @@ class SearchRepo extends SearchService {
   @override
   Future<QueryResults<UserProfile>> searchMembers(
     String query, {
-    bool username = false,
+    QueryUserBy username = QueryUserBy.FULLNAME,
     int paginationPosition,
     String lastTimeStamp,
   }) {
