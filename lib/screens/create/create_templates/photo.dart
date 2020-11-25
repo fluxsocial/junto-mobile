@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
@@ -410,9 +411,10 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                                 final channel = trigger == '#';
 
                                 if (!channel) {
-                                  context
-                                      .bloc<SearchBloc>()
-                                      .add(SearchingEvent(value, true));
+                                  context.bloc<SearchBloc>().add(SearchingEvent(
+                                        value,
+                                        QueryUserBy.BOTH,
+                                      ));
                                 } else {
                                   context
                                       .bloc<SearchBloc>()

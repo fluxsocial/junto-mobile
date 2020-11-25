@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
@@ -48,7 +49,12 @@ class _GlobalSearchState extends State<GlobalSearch> {
   void onTextChange(String query, BuildContext context) {
     if (mounted) {
       context.bloc<SearchBloc>().add(
-            SearchingEvent(query, _searchByUsername.value),
+            SearchingEvent(
+              query,
+              _searchByUsername.value
+                  ? QueryUserBy.USERNAME
+                  : QueryUserBy.FULLNAME,
+            ),
           );
     }
   }
@@ -58,7 +64,10 @@ class _GlobalSearchState extends State<GlobalSearch> {
     return BlocProvider(
       create: (BuildContext context) => SearchBloc(
         Provider.of<SearchRepo>(context, listen: false),
-      )..add(SearchingEvent("", _searchByUsername.value)),
+      )..add(SearchingEvent(
+          "",
+          _searchByUsername.value ? QueryUserBy.USERNAME : QueryUserBy.FULLNAME,
+        )),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,

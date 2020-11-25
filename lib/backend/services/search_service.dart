@@ -17,16 +17,19 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
   @override
   Future<QueryResults<UserProfile>> searchMembers(
     String query, {
-    bool username = false,
+    QueryUserBy username = QueryUserBy.FULLNAME,
     int paginationPosition = 0,
     String lastTimeStamp,
   }) async {
     final Map<String, String> _queryParam = <String, String>{
       'pagination_position': paginationPosition.toString()
     };
-    if (username) {
+    if (username == QueryUserBy.USERNAME) {
       _queryParam.putIfAbsent('username', () => query);
+    } else if (username == QueryUserBy.FULLNAME) {
+      _queryParam.putIfAbsent('name', () => query);
     } else {
+      _queryParam.putIfAbsent('username', () => query);
       _queryParam.putIfAbsent('name', () => query);
     }
 

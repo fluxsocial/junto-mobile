@@ -8,7 +8,7 @@ class MockSearch implements SearchService {
   @override
   Future<QueryResults<UserProfile>> searchMembers(
     String query, {
-    bool username = false,
+    QueryUserBy username = QueryUserBy.FULLNAME,
     int paginationPosition = 0,
     String lastTimeStamp,
   }) async {

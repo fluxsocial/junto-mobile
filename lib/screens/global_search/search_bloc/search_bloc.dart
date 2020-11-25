@@ -110,8 +110,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     yield ErrorSearchState("Please enter a search term");
   }
 
-  Future<QueryResults<UserProfile>> _getUsers(String query,
-      [int pos, String time, bool username = true]) async {
+  Future<QueryResults<UserProfile>> _getUsers(
+    String query, [
+    int pos,
+    String time,
+    QueryUserBy username = QueryUserBy.USERNAME,
+  ]) async {
     final result = await searchRepo.searchMembers(query,
         paginationPosition: pos, lastTimeStamp: time, username: username);
     lastTimeStamp = result.lastTimestamp;
