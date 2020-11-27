@@ -138,11 +138,16 @@ class WelcomeState extends State<Welcome> {
     final canContinue = await authRepo.verifySignUp(username, verificationCode);
 
     if (canContinue) {
-      final UserRegistrationDetails details =
-          UserRegistrationDetails.initial(email, username, name);
+      UserRegistrationDetails details = UserRegistrationDetails.initial(
+          email, username, name, '${birthday}Z');
 
-      context.bloc<AuthBloc>().add(
-          SignUpEvent(details, profilePicture.file.value, username, password));
+      context.bloc<AuthBloc>().add(SignUpEvent(
+            details: details,
+            profilePicture: profilePicture.file.value,
+            username: username,
+            password: password,
+            birthday: '${birthday}Z',
+          ));
     } else {
       showDialog(
         context: context,
