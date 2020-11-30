@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 
 class UserDataProvider extends ChangeNotifier {
   UserDataProvider(
@@ -40,8 +41,12 @@ class UserDataProvider extends ChangeNotifier {
         userAddress = userProfile.user.address;
         notifyListeners();
       } else {
-        userProfile = await userRepository.getUser(userAddress);
-        userAddress = userProfile.user.address;
+        try {
+          userProfile = await userRepository.getUser(userAddress);
+          userAddress = userProfile.user.address;
+        } on DioError catch (e) {
+          Welcome.route();
+        }
       }
     } on DioError catch (e) {
       logger.logException(e);

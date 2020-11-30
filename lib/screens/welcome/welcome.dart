@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
@@ -35,6 +36,13 @@ import 'sign_up_birthday.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({Key key}) : super(key: key);
+  static Route<dynamic> route() {
+    return CupertinoPageRoute<dynamic>(
+      builder: (BuildContext context) {
+        return Welcome();
+      },
+    );
+  }
 
   @override
   State<StatefulWidget> createState() {
@@ -212,13 +220,22 @@ class WelcomeState extends State<Welcome> {
       return false;
     }
 
-    final String birthdayAsString =
-        DateTime(year, month, day).toIso8601String();
+    // Check if user is at least 13 years old
+    final minimumAgeRequirement =
+        DateTime.now().subtract(Duration(days: 366 * 13));
+    final birthdayInDateTime = DateTime(year, month, day);
 
-    setState(() {
-      birthday = birthdayAsString;
-    });
-    return true;
+    if (birthdayInDateTime.compareTo(minimumAgeRequirement) >= 0) {
+      return false;
+    } else {
+      final String birthdayAsString =
+          DateTime(year, month, day).toIso8601String();
+
+      setState(() {
+        birthday = birthdayAsString;
+      });
+      return true;
+    }
   }
 
   bool _passwordCheck(String password) {
@@ -484,6 +501,7 @@ class WelcomeState extends State<Welcome> {
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
         final emailAvailable = await userRepo.emailAvailable(email, username);
+
         if (emailAvailable) {
           final result = await authRepo.signUp(username, email, password);
           JuntoLoader.hide();
