@@ -146,9 +146,8 @@ class HomePageContentState extends State<HomePageContent>
     UserData userProfile =
         await Provider.of<UserDataProvider>(context, listen: false).userProfile;
 
-    if (userProfile.user.address == null) {
+    if (userProfile == null || userProfile.user.address == null) {
       await context.bloc<AuthBloc>().add(RefreshUser());
-      logger.logInfo('Finished refreshing user');
     }
     if (state == AppLifecycleState.resumed) {
       logger.logInfo('checking server version');
