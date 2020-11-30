@@ -248,10 +248,8 @@ class CognitoClient extends AuthenticationService {
         data.code,
       );
       if (result.confirmationState) {
-        print('confirmation state is true');
         return VerifyResult(true);
       } else {
-        print('confirmation state is false');
         return VerifyResult(false);
       }
     } on PlatformException catch (e, s) {
@@ -259,7 +257,6 @@ class CognitoClient extends AuthenticationService {
       if (e.details.contains('Current status is CONFIRMED')) {
         return VerifyResult(true);
       } else {
-        print('something is up');
         return VerifyResult(false);
       }
     } catch (e, s) {
