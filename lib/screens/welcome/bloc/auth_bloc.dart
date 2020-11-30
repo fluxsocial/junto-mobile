@@ -192,6 +192,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             error: true,
             errorMessage: 'Please re-enter your login credentials');
       }
+    } on DioError catch (error) {
+      logger.logDebug(error.message);
+      await _clearUserInformation();
+      yield AuthState.unauthenticated();
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
       await _clearUserInformation();
