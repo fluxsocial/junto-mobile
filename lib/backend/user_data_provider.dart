@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/services/navigation_service.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -9,7 +10,6 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 
 class UserDataProvider extends ChangeNotifier {
   UserDataProvider(
@@ -42,10 +42,18 @@ class UserDataProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         try {
+          print('getting user information');
           userProfile = await userRepository.getUser(userAddress);
+          if (userProfile == null || userProfile.user.address == null) {
+            NavigationService().navigateTo('welcome');
+          }
           userAddress = userProfile.user.address;
         } on DioError catch (e) {
-          Welcome.route();
+          print(e);
+          NavigationService().navigateTo('welcome');
+        } catch (e) {
+          print(e);
+          NavigationService().navigateTo('welcome');
         }
       }
     } on DioError catch (e) {
