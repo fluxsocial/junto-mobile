@@ -36,13 +36,6 @@ import 'sign_up_birthday.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({Key key}) : super(key: key);
-  static Route<dynamic> route() {
-    return CupertinoPageRoute<dynamic>(
-      builder: (BuildContext context) {
-        return Welcome();
-      },
-    );
-  }
 
   @override
   State<StatefulWidget> createState() {

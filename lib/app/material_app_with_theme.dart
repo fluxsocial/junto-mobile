@@ -2,6 +2,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/models/auth_result.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -19,6 +20,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_agreement.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/backend/services/navigation_service.dart';
 import 'package:provider/provider.dart';
 
 class MaterialAppWithTheme extends StatelessWidget {
@@ -35,6 +37,17 @@ class MaterialAppWithTheme extends StatelessWidget {
             NotificationNavigationObserver(
                 Provider.of<NotificationsHandler>(context)),
           ],
+          navigatorKey: NavigationService.navigatorKey,
+          onGenerateRoute: (RouteSettings routeSettings) {
+            if (routeSettings.name == 'welcome') {
+              return MaterialPageRoute(
+                builder: (context) => Welcome(),
+              );
+            }
+            return MaterialPageRoute(
+              builder: (context) => Welcome(),
+            );
+          },
           localizationsDelegates: [
             S.delegate,
             GlobalMaterialLocalizations.delegate,
