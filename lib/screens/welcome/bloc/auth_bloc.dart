@@ -123,7 +123,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await userDataProvider.initialize();
 
         yield AuthState.authenticated();
-        print('test ${user.user.toJson()}');
       } else {
         yield AuthState.unauthenticated(
             error: true,
