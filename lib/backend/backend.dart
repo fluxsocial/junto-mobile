@@ -13,7 +13,6 @@ import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/app_service.dart';
-import 'package:junto_beta_mobile/backend/services/navigation_service.dart';
 import 'package:junto_beta_mobile/backend/services/auth_cognito_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
 import 'package:junto_beta_mobile/backend/services/expression_service.dart';
@@ -72,7 +71,6 @@ class Backend {
       final notificationService = NotificationServiceImpl(client);
       final notificationRepo = NotificationRepo(notificationService, dbService);
       final appRepo = AppRepo(AppServiceImpl(client));
-      final navService = NavigationService();
       final userRepo =
           UserRepo(userService, notificationRepo, dbService, expressionService);
       final dataProvider = UserDataProvider(appRepo, userRepo);
