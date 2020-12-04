@@ -1,7 +1,7 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/services/navigation_service.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -41,19 +41,10 @@ class UserDataProvider extends ChangeNotifier {
         userAddress = userProfile.user.address;
         notifyListeners();
       } else {
-        try {
-          print('getting user information');
-          userProfile = await userRepository.getUser(userAddress);
-          if (userProfile == null || userProfile.user.address == null) {
-            NavigationService().navigateTo('welcome');
-          }
+        userProfile = await userRepository.getUser(userAddress);
+        if (userProfile == null || userProfile.user.address == null) {
           userAddress = userProfile.user.address;
-        } on DioError catch (e) {
-          print(e);
-          NavigationService().navigateTo('welcome');
-        } catch (e) {
-          print(e);
-          NavigationService().navigateTo('welcome');
+          notifyListeners();
         }
       }
     } on DioError catch (e) {
