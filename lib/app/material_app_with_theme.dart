@@ -132,9 +132,9 @@ class HomePageContentState extends State<HomePageContent>
       if (_isFirst) {
         final token = await notificationRepo.getFCMToken();
         await notificationRepo.requestPermissions();
-        await notificationRepo.registerDevice(token);
-        await notificationRepo
-            .manageNotifications(NotificationPrefsModel.enabled());
+        // await notificationRepo.registerDevice(token);
+        // await notificationRepo
+        //     .manageNotifications(NotificationPrefsModel.enabled());
         await appRepo.setFirstLaunch();
         return;
       } else {
