@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
@@ -285,7 +286,10 @@ class CreateLinkFormState extends State<CreateLinkForm>
                                   if (!channel) {
                                     context
                                         .bloc<SearchBloc>()
-                                        .add(SearchingEvent(value, true));
+                                        .add(SearchingEvent(
+                                          value,
+                                          QueryUserBy.BOTH,
+                                        ));
                                   } else {
                                     context
                                         .bloc<SearchBloc>()

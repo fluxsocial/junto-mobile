@@ -9,8 +9,8 @@ class SignUpTextFieldLabelAndCounter extends StatelessWidget {
   const SignUpTextFieldLabelAndCounter({
     Key key,
     @required this.label,
-    @required this.maxLength,
-    @required this.valueController,
+    this.maxLength,
+    this.valueController,
     this.compact = false,
   }) : super(key: key);
 

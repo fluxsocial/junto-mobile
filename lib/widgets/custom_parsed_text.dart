@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dialogs/single_action_dialog.dart';
 
 class CustomParsedText extends StatelessWidget with MemberValidation {
   final TextStyle defaultTextStyle;
@@ -81,17 +82,27 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
                 : null,
           ),
           MatchText(
-            type: ParsedType.URL,
+            pattern:
+                r"[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:._\+~#=]{2,256}\.[a-z]{2,18}\b([-a-zA-Z0-9@:_\+.~#?&//=]*)",
             style: mentionTextStyle,
             onTap: !disableOnMentiontap
                 ? (url) async {
-                    final updatedUrl =
-                        !url.toString().contains(RegExp(r'(http(s)?):'))
-                            ? 'https://$url'
-                            : url;
+                    final String updatedUrl =
+                        (!url.toString().contains(RegExp(r'((H|h)ttp(s)?):'))
+                                ? 'https://$url'
+                                : url)
+                            .toLowerCase();
 
                     if (await canLaunch(updatedUrl)) {
                       await launch(updatedUrl);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const SingleActionDialog(
+                          dialogText: 'Hmm, It seems the URL is incorrect.',
+                        ),
+                      );
                     }
                   }
                 : null,
@@ -101,3 +112,6 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
     });
   }
 }
+
+// https://junto.foundation
+// https://junto.foundation

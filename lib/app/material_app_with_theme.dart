@@ -1,11 +1,15 @@
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_navigation_observer.dart';
@@ -31,6 +35,11 @@ class MaterialAppWithTheme extends StatelessWidget {
             NotificationNavigationObserver(
                 Provider.of<NotificationsHandler>(context)),
           ],
+          onGenerateRoute: (RouteSettings routeSettings) {
+            return MaterialPageRoute(
+              builder: (context) => Welcome(),
+            );
+          },
           localizationsDelegates: [
             S.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -84,6 +93,7 @@ class HomePage extends StatelessWidget {
 
 class HomePageContent extends StatefulWidget {
   const HomePageContent({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return HomePageContentState();
@@ -96,24 +106,57 @@ class HomePageContentState extends State<HomePageContent>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    final messaging = FirebaseMessaging();
+    messaging.configure(
+      onLaunch: (_) {
+        logger.logDebug('Launch message $_');
+      },
+      onMessage: (_) {
+        logger.logDebug('message $_');
+      },
+    );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _checkServerVersion();
+    configureNotifications();
+  }
+
+  Future<void> configureNotifications() async {
+    final notificationRepo = Provider.of<NotificationRepo>(context);
+    final appRepo = Provider.of<AppRepo>(context);
+    try {
+      final _isFirst = await appRepo.isFirstLaunch();
+      if (_isFirst) {
+        final token = await notificationRepo.getFCMToken();
+        await notificationRepo.requestPermissions();
+        // await notificationRepo.registerDevice(token);
+        // await notificationRepo
+        //     .manageNotifications(NotificationPrefsModel.enabled());
+        await appRepo.setFirstLaunch();
+        return;
+      } else {
+        return;
+      }
+    } catch (e) {
+      logger.logException(e, null, "Error configuring notifications");
+    }
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     UserData userProfile =
-        Provider.of<UserDataProvider>(context, listen: false).userProfile;
-    if (userProfile == null) {
-      context.bloc<AuthBloc>().add(RefreshUser());
+        await Provider.of<UserDataProvider>(context, listen: false).userProfile;
+
+    if (userProfile == null || userProfile.user.address == null) {
+      await context.bloc<AuthBloc>().add(RefreshUser());
     }
     if (state == AppLifecycleState.resumed) {
-      _checkServerVersion();
+      logger.logInfo('checking server version');
+      await _checkServerVersion();
     }
   }
 
@@ -141,6 +184,7 @@ class HomePageContentState extends State<HomePageContent>
 
 class HomeLoadingPage extends StatelessWidget {
   const HomeLoadingPage({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(

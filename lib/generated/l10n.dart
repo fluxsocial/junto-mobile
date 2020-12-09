@@ -467,7 +467,7 @@ class S {
   /// `Confirm password`
   String get welcome_confirm_password {
     return Intl.message(
-      'Confirm password',
+      'Confirm Password',
       name: 'welcome_confirm_password',
       desc: '',
       args: [],

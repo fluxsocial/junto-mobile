@@ -160,6 +160,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.expression.commentThread.isNotEmpty) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
+    }
     return FeatureDiscovery(
       child: Stack(
         children: <Widget>[

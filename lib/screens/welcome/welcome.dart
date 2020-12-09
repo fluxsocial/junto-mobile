@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
@@ -15,10 +16,8 @@ import 'package:junto_beta_mobile/screens/welcome/bloc/auth_state.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_confirm.dart';
 import 'package:junto_beta_mobile/screens/welcome/reset_password_request.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_arrows.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_wrapper.dart';
@@ -32,6 +31,8 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
+
+import 'sign_up_birthday.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({Key key}) : super(key: key);
@@ -49,6 +50,7 @@ class ProfilePicture {
 
 class WelcomeState extends State<Welcome> {
   final ProfilePicture profilePicture = ProfilePicture();
+  String birthday;
 
   PageController _welcomeController;
   PageController _signInController;
@@ -60,9 +62,9 @@ class WelcomeState extends State<Welcome> {
 
   TextEditingController nameController;
   TextEditingController usernameController;
-  TextEditingController locationController;
-  TextEditingController pronounController;
-  TextEditingController websiteController;
+  TextEditingController birthdayMonthController;
+  TextEditingController birthdayDayController;
+  TextEditingController birthdayYearController;
   TextEditingController emailController;
   TextEditingController passwordController;
   TextEditingController confirmPasswordController;
@@ -70,9 +72,6 @@ class WelcomeState extends State<Welcome> {
 
   FocusNode nameFocusNode;
   FocusNode usernameFocusNode;
-  FocusNode locationFocusNode;
-  FocusNode pronounFocusNode;
-  FocusNode websiteFocusNode;
   FocusNode emailFocusNode;
   FocusNode passwordFocusNode;
   FocusNode confirmPasswordFocusNode;
@@ -83,9 +82,9 @@ class WelcomeState extends State<Welcome> {
     super.initState();
     nameController = TextEditingController();
     usernameController = TextEditingController();
-    locationController = TextEditingController();
-    pronounController = TextEditingController();
-    websiteController = TextEditingController();
+    birthdayMonthController = TextEditingController();
+    birthdayDayController = TextEditingController();
+    birthdayYearController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
@@ -93,9 +92,6 @@ class WelcomeState extends State<Welcome> {
 
     nameFocusNode = FocusNode();
     usernameFocusNode = FocusNode();
-    locationFocusNode = FocusNode();
-    pronounFocusNode = FocusNode();
-    websiteFocusNode = FocusNode();
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
     confirmPasswordFocusNode = FocusNode();
@@ -115,9 +111,9 @@ class WelcomeState extends State<Welcome> {
     _signInController.dispose();
     nameController?.dispose();
     usernameController?.dispose();
-    locationController?.dispose();
-    pronounController?.dispose();
-    websiteController?.dispose();
+    birthdayMonthController?.dispose();
+    birthdayDayController?.dispose();
+    birthdayYearController?.dispose();
     emailController?.dispose();
     passwordController?.dispose();
     confirmPasswordController?.dispose();
@@ -125,9 +121,6 @@ class WelcomeState extends State<Welcome> {
 
     nameFocusNode.dispose();
     usernameFocusNode.dispose();
-    locationFocusNode.dispose();
-    pronounFocusNode.dispose();
-    websiteFocusNode.dispose();
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
     confirmPasswordFocusNode.dispose();
@@ -142,18 +135,20 @@ class WelcomeState extends State<Welcome> {
     final password = passwordController.text;
     final email = emailController.text.trim().toLowerCase();
     final name = nameController.text.trim();
-    final location = locationController.text.trim();
-    final website = websiteController.text.trim();
-    final gender = pronounController.text.trim();
 
     final canContinue = await authRepo.verifySignUp(username, verificationCode);
 
     if (canContinue) {
-      final UserRegistrationDetails details = UserRegistrationDetails.initial(
-          email, username, name, location, website, gender);
+      UserRegistrationDetails details = UserRegistrationDetails.initial(
+          email, username, name, '${birthday}Z');
 
-      context.bloc<AuthBloc>().add(
-          SignUpEvent(details, profilePicture.file.value, username, password));
+      context.bloc<AuthBloc>().add(SignUpEvent(
+            details: details,
+            profilePicture: profilePicture.file.value,
+            username: username,
+            password: password,
+            birthday: '${birthday}Z',
+          ));
     } else {
       showDialog(
         context: context,
@@ -193,6 +188,46 @@ class WelcomeState extends State<Welcome> {
     } else {
       FocusScope.of(context).unfocus();
       return;
+    }
+  }
+
+  bool _birthdayCheck() {
+    // Make sure values are not empty and are integers
+    if (birthdayMonthController.value.text.isEmpty ||
+        birthdayDayController.value.text.isEmpty ||
+        birthdayYearController.value.text.isEmpty) {
+      return false;
+    }
+
+    // Set text controller values as integers
+    final int month = int.parse(birthdayMonthController.value.text);
+    final int day = int.parse(birthdayDayController.value.text);
+    final int year = int.parse(birthdayYearController.value.text);
+
+    // Check if birthay falls in parameters
+    if (month < 1 || month > 12) {
+      return false;
+    } else if (day < 1 || day > 31) {
+      return false;
+    } else if (year > 2009) {
+      return false;
+    }
+
+    // Check if user is at least 13 years old
+    final minimumAgeRequirement =
+        DateTime.now().subtract(Duration(days: 366 * 13));
+    final birthdayInDateTime = DateTime(year, month, day);
+
+    if (birthdayInDateTime.compareTo(minimumAgeRequirement) >= 0) {
+      return false;
+    } else {
+      final String birthdayAsString =
+          DateTime(year, month, day).toIso8601String();
+
+      setState(() {
+        birthday = birthdayAsString;
+      });
+      return true;
     }
   }
 
@@ -320,15 +355,10 @@ class WelcomeState extends State<Welcome> {
                         textCapitalization: TextCapitalization.none,
                         focusNode: usernameFocusNode,
                       ),
-                      SignUpThemes(),
-                      SignUpAbout(
-                        nextPage: _nextSignUpPage,
-                        pronounController: pronounController,
-                        locationController: locationController,
-                        websiteController: websiteController,
-                        pronounFocusNode: pronounFocusNode,
-                        locationFocusNode: locationFocusNode,
-                        websiteFocusNode: websiteFocusNode,
+                      SignUpBirthday(
+                        monthController: birthdayMonthController,
+                        dayController: birthdayDayController,
+                        yearController: birthdayYearController,
                       ),
                       SignUpPhotos(profilePicture),
                       SignUpRegister(
@@ -348,9 +378,9 @@ class WelcomeState extends State<Welcome> {
                   ),
                   if (canShowUp)
                     SignUpArrows(
-                      welcomeController: _welcomeController,
                       currentIndex: _currentIndex,
                       onTap: _nextSignUpPage,
+                      previousPage: _previousSignUpPage,
                     ),
                   if (_currentIndex != 0)
                     Positioned(
@@ -426,12 +456,20 @@ class WelcomeState extends State<Welcome> {
             return;
           }
         }
-      } else if (_currentIndex == 4) {
-        //
+      } else if (_currentIndex == 3) {
+        final bool canContinue = await _birthdayCheck();
+
+        if (!canContinue) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              dialogText:
+                  'Please enter a correct birthday. You must also be at least 13 years old to sign up.',
+            ),
+          );
+          return;
+        }
       } else if (_currentIndex == 5) {
-        //
-      } else if (_currentIndex == 6) {
-        //
         final email = emailController.text.trim().toLowerCase();
         final password = passwordController.text;
         final confirmPassword = confirmPasswordController.text;
@@ -456,6 +494,7 @@ class WelcomeState extends State<Welcome> {
         JuntoLoader.showLoader(context, color: Colors.transparent);
         // verify email address
         final emailAvailable = await userRepo.emailAvailable(email, username);
+
         if (emailAvailable) {
           final result = await authRepo.signUp(username, email, password);
           JuntoLoader.hide();
@@ -539,13 +578,9 @@ class WelcomeState extends State<Welcome> {
         });
       } else if (index == 4) {
         Future<void>.delayed(const Duration(milliseconds: 400), () {
-          locationFocusNode.requestFocus();
-        });
-      } else if (index == 6) {
-        Future<void>.delayed(const Duration(milliseconds: 400), () {
           emailFocusNode.requestFocus();
         });
-      } else if (index == 7) {
+      } else if (index == 5) {
         Future<void>.delayed(const Duration(milliseconds: 400), () {
           verficationCodeFocusNode.requestFocus();
         });
@@ -568,12 +603,15 @@ class WelcomeState extends State<Welcome> {
     return true;
   }
 
-  void _previousSignUpPage() {
+  void _previousSignUpPage() async {
     _welcomeController.animateToPage(
       _currentIndex - 1,
-      duration: kThemeAnimationDuration,
+      duration: const Duration(milliseconds: 300),
       curve: Curves.decelerate,
     );
+    if (_currentIndex == 6) {
+      await userRepo.usernameAvailable(usernameController.value.text);
+    }
   }
 
   void _onSignUpSelected() {

@@ -10,9 +10,13 @@ class ShortformParent extends StatelessWidget {
   Widget build(BuildContext context) {
     final String _body = expression.expressionData.body;
 
-    final String _hexOne = expression.expressionData.background[0];
+    final String _hexOne = expression.expressionData.background.isNotEmpty
+        ? expression.expressionData.background[0]
+        : '333333';
 
-    final String _hexTwo = expression.expressionData.background[1];
+    final String _hexTwo = expression.expressionData.background.isNotEmpty
+        ? expression.expressionData.background[1]
+        : '222222';
 
     return Container(
       constraints: BoxConstraints(

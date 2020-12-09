@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -26,7 +27,11 @@ class UserDataProvider extends ChangeNotifier {
   SharedPreferences sharedPreferences;
 
   Future<void> initialize() async {
-    await getUserInformation();
+    try {
+      await getUserInformation();
+    } catch (e) {
+      logger.logException(e);
+    }
   }
 
   Future<void> getUserInformation() async {
@@ -41,8 +46,13 @@ class UserDataProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         userProfile = await userRepository.getUser(userAddress);
-        userAddress = userProfile.user.address;
+        if (userProfile == null || userProfile.user.address == null) {
+          userAddress = userProfile.user.address;
+          notifyListeners();
+        }
       }
+    } on DioError catch (e) {
+      logger.logException(e);
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -50,10 +60,14 @@ class UserDataProvider extends ChangeNotifier {
 
   /// Update cached user information, called by [updateUser]
   Future<void> _setUserInformation(UserData user) async {
-    final box = await Hive.box(HiveBoxes.kAppBox);
-    final userData = jsonEncode(user);
-    await box.put(HiveKeys.kUserData, userData);
-    await box.put(HiveKeys.kUserId, user.user.address);
+    try {
+      final box = await Hive.box(HiveBoxes.kAppBox);
+      final userData = jsonEncode(user);
+      await box.put(HiveKeys.kUserData, userData);
+      await box.put(HiveKeys.kUserId, user.user.address);
+    } catch (e) {
+      logger.logException(e);
+    }
   }
 
   /// Updates the user information with [user]

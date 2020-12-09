@@ -22,7 +22,9 @@ class AudioPlayButton extends StatelessWidget {
             onTap: () async {
               if (audio.isPlaying) {
                 await audio.pausePlayback();
-              } else if (audio.playBackAvailable && !audio.isPlaying) {
+              } else if (audio.playBackAvailable &&
+                  !audio.isPlaying &&
+                  !audio.isLoading) {
                 await audio.playRecording();
               } else if (audio.playBackAvailable && audio.isPlaying) {
                 await audio.pausePlayback();
@@ -60,7 +62,18 @@ class AudioPlayIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AudioService>(
       builder: (context, audio, child) {
-        if (audio.playBackAvailable && !audio.isPlaying) {
+        if (audio.isLoading) {
+          return Container(
+            color: Colors.transparent,
+            child: SizedBox(
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0,
+              ),
+              height: 20.0,
+              width: 20.0,
+            ),
+          );
+        } else if (audio.playBackAvailable && !audio.isPlaying) {
           return Container(
             color: Colors.transparent,
             child: Icon(

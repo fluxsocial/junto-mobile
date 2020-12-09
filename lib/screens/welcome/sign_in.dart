@@ -18,7 +18,7 @@ class SignIn extends StatefulWidget {
   final PageController signInController;
   final TextEditingController usernameController;
 
-  @override 
+  @override
   _SignInState createState() => _SignInState();
 }
 
@@ -49,7 +49,8 @@ class _SignInState extends State<SignIn> {
       _showValidationError(S.of(context).welcome_invalid_username);
       return;
     }
-    BlocProvider.of<AuthBloc>(context).add(LoginEvent(username, password));
+    await BlocProvider.of<AuthBloc>(context)
+        .add(LoginEvent(username, password));
   }
 
   @override
