@@ -38,13 +38,11 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     // Sends logout event
     context.bloc<AuthBloc>().add(LogoutEvent());
 
-    Timer(
-      Duration(milliseconds: 0),
-      () => Navigator.of(context).pushAndRemoveUntil(
+    if (ModalRoute.of(context).settings.name != "/") {
+      Navigator.of(context).pushReplacement(
         FadeRoute(child: Welcome(), name: "Welcome"),
-        (route) => route.settings.name == "Welcome",
-      ),
-    );
+      );
+    }
   }
 
   @override
