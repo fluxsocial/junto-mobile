@@ -522,6 +522,7 @@ class UserServiceCentralized implements UserService {
       'gender': details.gender,
       'location': details.location,
       'profile_picture': details.profileImage,
+      'birthday': details.birthday,
     };
 
     final Response response = await client.postWithoutEncoding(

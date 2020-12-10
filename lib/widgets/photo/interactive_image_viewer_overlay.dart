@@ -81,6 +81,7 @@ class _InteractiveImageViewerOverlayState
                     },
                     child: placeholder != null
                         ? Container(
+
                             color: Theme.of(context)
                                 .backgroundColor
                                 .withOpacity(.8),

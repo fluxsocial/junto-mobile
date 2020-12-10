@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AudioService with ChangeNotifier {
   static const _fileName = 'junto_audio_recording';
   static const _sampleRate = 16000;
   static const _maxDuration = Duration(seconds: 120);
-  final AudioPlayer _audioPlayer;
+  AudioPlayer _audioPlayer;
   FlutterAudioRecorder _recorder;
   Recording _recording;
   Timer _timer;
@@ -19,11 +20,30 @@ class AudioService with ChangeNotifier {
   bool _isLocal = true;
   bool get _isWeb => !_isLocal;
 
-  AudioService() : _audioPlayer = AudioPlayer();
+  AudioService() {
+    _audioPlayer = AudioPlayer();
+    _audioPlayer.createPositionStream().listen((event) {
+      _currentPosition = event;
+      notifyListeners();
+    });
+    _audioPlayer.playerStateStream.listen((event) {
+      if (event.processingState == ProcessingState.completed) {
+        _playbackTimer?.cancel();
+        stopPlayback();
+      } else if (event.processingState == ProcessingState.ready) {
+        _duration = _audioPlayer.duration;
+        _isLoading = false;
+        notifyListeners();
+      } else if (event.processingState == ProcessingState.loading) {
+        _isLoading = true;
+        notifyListeners();
+      }
+    });
+  }
 
   Duration get maxDuration => _maxDuration;
 
-  Duration _currentPosition;
+  Duration _currentPosition = Duration.zero;
   Duration get currentPosition => _currentPosition;
 
   double _currentPower;
@@ -35,9 +55,14 @@ class AudioService with ChangeNotifier {
   bool _isPlaying = false;
   bool get isPlaying => _isPlaying;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   Duration _duration;
   Duration get recordingDuration => recordingAvailable
-      ? _isLocal ? _recording.duration : _duration
+      ? _isLocal
+          ? _recording.duration
+          : _duration
       : Duration.zero;
 
   bool _recordingLoaded = false;
@@ -67,13 +92,16 @@ class AudioService with ChangeNotifier {
 
   void startRecording() async {
     logger.logDebug('Asking for permissions to record audio');
+
     bool hasPermission = await FlutterAudioRecorder.hasPermissions;
     if (hasPermission != true) {
       logger.logWarning('User not granted permissions to record audio');
       //TODO set error
       return;
     }
+
     final appDocDirectory = await _getTempDirectory();
+
     _currentPath = '${appDocDirectory.path}/$_fileName'
         '${DateTime.now().millisecondsSinceEpoch}'
         '.aac';
@@ -82,8 +110,11 @@ class AudioService with ChangeNotifier {
       audioFormat: AudioFormat.AAC,
       sampleRate: _sampleRate,
     );
+
     await _recorder.initialized;
+
     logger.logDebug('Starting recording to $_currentPath');
+
     await _recorder.start();
 
     _recording = await _recorder.current(channel: 0);
@@ -91,44 +122,9 @@ class AudioService with ChangeNotifier {
   }
 
   void playRecording() async {
-    await _audioPlayer.play(
-      _currentPath,
-      isLocal: _isLocal,
-      position: _currentPosition,
-    );
     _isPlaying = true;
-
-    _playbackTimer = Timer.periodic(
-      Duration(milliseconds: 50),
-      _updateCurrentPlaybackPosition,
-    );
-    _audioPlayer.onAudioPositionChanged.listen((Duration event) {});
-    _audioPlayer.onPlayerCompletion.listen((event) {
-      _playbackTimer?.cancel();
-      stopPlayback();
-    });
-    _audioPlayer.onPlayerStateChanged.listen((event) {
-      if (event == AudioPlayerState.STOPPED ||
-          event == AudioPlayerState.PAUSED) {
-        _playbackTimer?.cancel();
-      }
-      if (event == AudioPlayerState.PLAYING) {
-        _getDuration();
-      }
-    });
-    _audioPlayer.onDurationChanged.listen(print);
-    _audioPlayer.onNotificationPlayerStateChanged.listen(print);
-  }
-
-  Future _getDuration() async {
-    final duration = await _audioPlayer.getDuration();
-    _duration = Duration(milliseconds: duration);
     notifyListeners();
-  }
-
-  void _updateCurrentPlaybackPosition(time) async {
-    _currentPosition = await _getCurrentPosition();
-    notifyListeners();
+    await _audioPlayer.play();
   }
 
   void stopPlayback() async {
@@ -141,14 +137,11 @@ class AudioService with ChangeNotifier {
   void pausePlayback() async {
     await _audioPlayer.pause();
     _isPlaying = false;
-    _currentPosition = await _getCurrentPosition();
     notifyListeners();
   }
 
   Future<Duration> _getCurrentPosition() async {
-    final position = await _audioPlayer.getCurrentPosition();
-    final duration = Duration(
-        milliseconds: position.clamp(0, recordingDuration.inMilliseconds));
+    final duration = _audioPlayer.duration;
     return duration;
   }
 
@@ -157,23 +150,29 @@ class AudioService with ChangeNotifier {
       if (_isPlaying) {
         pausePlayback();
       }
+
       final milliseconds = ((val - val.floor()) * 1000).toInt();
+
       final duration =
           Duration(seconds: val.floor(), milliseconds: milliseconds);
-      print('$val $duration');
+
       _audioPlayer?.seek(duration);
+
       _currentPosition = duration;
+
       notifyListeners();
     }
   }
 
   Future<Directory> _getTempDirectory() async {
     Directory appDocDirectory;
+
     if (Platform.isIOS) {
       appDocDirectory = await getApplicationDocumentsDirectory();
     } else {
       appDocDirectory = await getExternalStorageDirectory();
     }
+
     return appDocDirectory;
   }
 
@@ -196,6 +195,7 @@ class AudioService with ChangeNotifier {
       }
       notifyListeners();
     }
+
     if (current.status == RecordingStatus.Stopped) {
       _isRecording = false;
       _timer.cancel();
@@ -205,26 +205,19 @@ class AudioService with ChangeNotifier {
 
   @override
   void dispose() {
-    _disposeAudioPlayer();
+    _audioPlayer.dispose();
     _playbackTimer?.cancel();
     _recorder?.stop();
     super.dispose();
   }
 
-  void _disposeAudioPlayer() async {
-    await _audioPlayer?.stop();
-    await _audioPlayer?.dispose();
-  }
-
   initializeFromWeb(String audio) async {
     _currentPath = audio;
     _isLocal = false;
-    await _audioPlayer.setUrl(
-      _currentPath,
-      isLocal: _isLocal,
-    );
-    final duration = await _audioPlayer.getDuration();
-    _duration = Duration(milliseconds: duration);
+
+    await _audioPlayer.setUrl(audio);
+
+    _duration = _audioPlayer.duration;
     _recordingLoaded = true;
     notifyListeners();
   }

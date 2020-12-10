@@ -54,6 +54,26 @@ class AppRepo extends ChangeNotifier {
     return;
   }
 
+  Future<bool> isFirstLaunch() async {
+    final _appBox = await Hive.box(HiveBoxes.kAppBox);
+    final bool _result = _appBox.get(HiveKeys.kFirstLaunch);
+    if (_result != null) {
+      return _result;
+    } else {
+      return true;
+    }
+  }
+
+  Future<void> setFirstLaunch() async {
+    try {
+      _appBox = await Hive.box(HiveBoxes.kAppBox);
+      await _appBox.put(HiveKeys.kFirstLaunch, true);
+    } catch (e) {
+      logger.logDebug("Unable to set first launch");
+    }
+    return;
+  }
+
   void setCollectivePageIndex(int index) {
     _collectivePageIndex = index;
     notifyListeners();

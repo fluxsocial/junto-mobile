@@ -80,6 +80,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'User profile picture updated, updating the user profile');
         userData = userData.copyWith(user: profile);
       }
+      userData = userData.copyWith(
+        user: userData.user.copyWith(
+          birthday: event.birthday,
+        ),
+      );
       await userDataProvider.updateUser(userData);
       await userDataProvider.initialize();
       await onBoardingRepo.loadTutorialState();
@@ -114,7 +119,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await userRepo.getUser(address);
         await userDataProvider.updateUser(user);
         await userDataProvider.initialize();
-
         yield AuthState.authenticated();
       } else {
         yield AuthState.unauthenticated(
@@ -128,6 +132,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           error: true,
           errorMessage: 'Sorry, we have some problems signing you in');
     } on PlatformException catch (_) {
+      print('err');
       add(LogoutEvent());
       yield AuthState.unauthenticated();
     } on DioError catch (error) {
@@ -183,6 +188,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             error: true,
             errorMessage: 'Please re-enter your login credentials');
       }
+    } on DioError catch (error) {
+      logger.logDebug(error.message);
+      await _clearUserInformation();
+      yield AuthState.unauthenticated();
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
       await _clearUserInformation();

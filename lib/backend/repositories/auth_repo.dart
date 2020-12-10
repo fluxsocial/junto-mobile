@@ -29,6 +29,7 @@ class AuthRepo extends ChangeNotifier {
       String username, String email, String password) async {
     logger.logDebug(
         'Signing up in auth service with username, email and password');
+
     final res = await authService.signUp(SignUpData(username, email, password));
     return res;
   }
@@ -55,7 +56,7 @@ class AuthRepo extends ChangeNotifier {
         return await getAddress();
       } else {
         if (result.error == SignInResultError.AlreadyLoggedIn) {
-          logger.logInfo('User already logged in, loggin out and relogging');
+          logger.logInfo('User already logged in, logging out and relogging');
           await logoutUser();
           return await loginUser(username, password);
         }
@@ -71,16 +72,20 @@ class AuthRepo extends ChangeNotifier {
   }
 
   Future<String> getAddress() async {
-    final token = await authService.getIdToken();
-    if (token != null) {
-      shouldLogOut = false;
-      final jwt = JWT.parse(token);
-      notifyListeners();
-      return jwt.subject;
-    } else {
-      shouldLogOut = true;
-      notifyListeners();
-      throw Exception("Access token is null");
+    try {
+      final token = await authService.getIdToken();
+      if (token != null) {
+        shouldLogOut = false;
+        final jwt = JWT.parse(token);
+        notifyListeners();
+        return jwt.subject;
+      } else {
+        shouldLogOut = true;
+        notifyListeners();
+        throw Exception("Access token is null");
+      }
+    } catch (e) {
+      logger.logException(e);
     }
   }
 

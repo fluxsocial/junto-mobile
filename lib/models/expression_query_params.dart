@@ -56,7 +56,13 @@ class ExpressionQueryParams {
       params.putIfAbsent('context', () => context);
     }
     if (channels != null) {
-      params.putIfAbsent('channels', () => ListToString.toJson(channels));
+      channels.forEach(
+        (String channel) {
+          params.putIfAbsent(
+              'channel${(channels.indexOf(channel) + 1).toString()}',
+              () => channel);
+        },
+      );
     }
     if (name != null) {
       params.putIfAbsent('name', () => name);

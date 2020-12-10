@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
@@ -53,7 +54,10 @@ class _AudioReviewState extends State<AudioReview>
       final channel = trigger == '#';
 
       if (!channel) {
-        context.bloc<SearchBloc>().add(SearchingEvent(value, true));
+        context.bloc<SearchBloc>().add(SearchingEvent(
+              value,
+              QueryUserBy.BOTH,
+            ));
       } else {
         context.bloc<SearchBloc>().add(SearchingChannelEvent(value));
       }

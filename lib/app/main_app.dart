@@ -17,5 +17,6 @@ Future<void> mainApp() async {
   await Hive.initFlutter();
   Bloc.observer = SimpleBlocObserver();
   final Backend backend = await Backend.init();
+
   runLoggedApp(JuntoApp(backend: backend));
 }

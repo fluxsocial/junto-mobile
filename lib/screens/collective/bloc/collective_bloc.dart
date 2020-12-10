@@ -110,7 +110,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   }
 
   Stream<CollectiveState> _mapFetchCollectiveToState(
-      FetchCollective event) async* { 
+      FetchCollective event) async* {
     try {
       final name = getCurrentName(event);
       yield CollectiveState.loading();
@@ -167,7 +167,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
             currentResult,
             false,
             currentState.name,
-            expressions.results.length == expressionsPerPage -1,
+            expressions.results.length == expressionsPerPage - 1,
           );
         } else {
           yield CollectiveState.populated(
@@ -220,15 +220,21 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
         context: currentContext,
         channels: currentChannels,
       );
-
       _params = <String, String>{
         'context_type': ExpressionQueryParams
             .ExpressionContextTypeEnumMap[currentContextType],
         'pagination_position': '$_currentPage',
-        if (currentChannels.isNotEmpty == true)
-          'channels[0]': currentChannels[0],
         if (currentContext != null) 'context': currentContext,
       };
+      if (currentChannels.isNotEmpty) {
+        currentChannels.forEach(
+          (String channel) {
+            _params.putIfAbsent(
+                'channel${(currentChannels.indexOf(channel) + 1).toString()}',
+                () => channel);
+          },
+        );
+      }
     } else {
       // scrolling down
       _params['last_timestamp'] = _lastTimeStamp;

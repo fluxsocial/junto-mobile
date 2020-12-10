@@ -31,11 +31,20 @@ class NotificationsRelationsView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = notifications[index];
                   if (notifications.length > 0 &&
-                      item.user != null &&
-                      item.user.username.isNotEmpty &&
                       item.notificationType != NotificationType.NewComment &&
                       item.notificationType != NotificationType.NewMention) {
-                    return NotificationTile(item: item);
+                    if (item.notificationType ==
+                            NotificationType.GroupJoinRequest &&
+                        item.creator != null &&
+                        item.creator.username.isNotEmpty) {
+                      return NotificationTile(item: item);
+                    } else if (item.notificationType !=
+                            NotificationType.GroupJoinRequest &&
+                        item.user != null &&
+                        item.user.username.isNotEmpty) {
+                      return NotificationTile(item: item);
+                    }
+                    return SizedBox();
                   } else {
                     return SizedBox();
                   }

@@ -11,8 +11,12 @@ class ShortformOpen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String _hexOne = expression.expressionData.background[0];
-    final String _hexTwo = expression.expressionData.background[1];
+    final String _hexOne = expression.expressionData.background.isNotEmpty
+        ? expression.expressionData.background[0]
+        : '333333';
+    final String _hexTwo = expression.expressionData.background.isNotEmpty
+        ? expression.expressionData.background[1]
+        : '222222';
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
