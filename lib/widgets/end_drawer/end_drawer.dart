@@ -88,10 +88,10 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             title: S.of(context).menu_my_den,
                             theme: theme,
                             onTap: () {
-                              Navigator.of(context).pushReplacement(
+                              Navigator.of(context).push(
                                 FadeRoute<void>(
                                   child: JuntoDen(),
-                                  name: 'JuntoCollective',
+                                  name: 'JuntoDen',
                                 ),
                               );
                             },
