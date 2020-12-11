@@ -12,6 +12,7 @@ import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/screens/home/new_home.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_navigation_observer.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
@@ -172,13 +173,14 @@ class HomePageContentState extends State<HomePageContent>
 
   @override
   Widget build(BuildContext context) {
-    return FeatureDiscovery(
-      child: const JuntoLotus(
-        address: null,
-        expressionContext: ExpressionContext.Collective,
-        source: null,
-      ),
-    );
+    // return FeatureDiscovery(
+    //   child: const JuntoLotus(
+    //     address: null,
+    //     expressionContext: ExpressionContext.Collective,
+    //     source: null,
+    //   ),
+    // );
+    return NewHome();
   }
 }
 

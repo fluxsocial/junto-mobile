@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
@@ -18,9 +17,6 @@ import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar_name.dart';
 
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
-import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -160,19 +156,7 @@ class JuntoDenState extends State<JuntoDen>
               },
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
-                body: JuntoFilterDrawer(
-                  leftDrawer: const FilterDrawerContent(
-                    ExpressionContextType.Collective,
-                  ),
-                  rightMenu: JuntoDrawer(),
-                  scaffold: Scaffold(
-                    floatingActionButton: BottomNav(),
-                    // DenActionButton(isVisible: _isVisible, user: user),
-                    floatingActionButtonLocation:
-                        FloatingActionButtonLocation.centerDocked,
-                    body: _buildBody(user.userProfile),
-                  ),
-                ),
+                body: _buildBody(user.userProfile),
               ),
             ),
           ),
