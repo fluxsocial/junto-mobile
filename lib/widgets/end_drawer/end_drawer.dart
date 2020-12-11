@@ -18,6 +18,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/en
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_account.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
@@ -94,6 +95,21 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               widget.changeScreen(Screen.den);
                             },
                           ),
+                        JuntoDrawerItem(
+                          icon: Icons.search,
+                          title: 'Search',
+                          theme: theme,
+                          onTap: () {
+                            // open relationships
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    GlobalSearch(),
+                              ),
+                            );
+                          },
+                        ),
                         JuntoDrawerItem(
                           icon: CustomIcons.infinity,
                           iconSize: 9,
