@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
@@ -115,57 +115,12 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * .1),
+                    bottom: MediaQuery.of(context).size.height * .1,
+                  ),
                   child: Column(
                     children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 15,
-                        ),
-                        child: Row(
-                          children: [
-                            MemberAvatar(
-                              diameter: 33,
-                              profilePicture: userData.user.profilePicture,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              margin: const EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: Theme.of(context).dividerColor,
-                                  width: .75,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 5),
-                                    child: Text(
-                                      'Collective',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color:
-                                            Theme.of(context).primaryColorLight,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 12,
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                      CreateTopBar(
+                        profilePicture: userData.user.profilePicture,
                       ),
                       _buildExpressionType(),
                     ],
