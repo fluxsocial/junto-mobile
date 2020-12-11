@@ -7,12 +7,10 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CreateAppBar({
     Key key,
-    @required this.expressionType,
     @required this.onNext,
     @required this.expressionHasData,
   }) : super(key: key);
 
-  final ExpressionType expressionType;
   final VoidCallback onNext;
   final Function expressionHasData;
 
@@ -28,6 +26,14 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         elevation: 0,
         titleSpacing: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(.75),
+          child: Container(
+            height: .75,
+            color: Theme.of(context).dividerColor,
+            width: MediaQuery.of(context).size.width,
+          ),
+        ),
         title: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
@@ -57,18 +63,8 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
                     children: <Widget>[
                       Icon(
                         CustomIcons.back,
-                        size: 12,
+                        size: 17,
                         color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        expressionType.appBarName().toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColor,
-                          letterSpacing: 1.7,
-                        ),
                       ),
                     ],
                   ),

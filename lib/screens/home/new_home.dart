@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/widgets/bottom_bar/junto_bottom_bar.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/screens/create/new_create.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
@@ -79,7 +80,7 @@ class NewHomeState extends State<NewHome> {
         break;
       case Screen.create:
         child = FeatureDiscovery(
-          child: JuntoCreate(),
+          child: NewCreate(),
         );
         break;
       case Screen.den:
@@ -102,16 +103,17 @@ class NewHomeState extends State<NewHome> {
       scaffold: Stack(
         children: [
           showScreen(),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: JuntoBottomBar(
-              userData: _userData,
-              changeScreen: changeScreen,
-              currentScreen: _currentScreen,
+          if (_currentScreen != Screen.create)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: JuntoBottomBar(
+                userData: _userData,
+                changeScreen: changeScreen,
+                currentScreen: _currentScreen,
+              ),
             ),
-          ),
         ],
       ),
     );

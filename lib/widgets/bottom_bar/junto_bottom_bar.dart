@@ -74,7 +74,7 @@ class JuntoBottomBar extends StatelessWidget {
                 color: Colors.transparent,
                 child: Icon(
                   CustomIcons.newcreate,
-                  size: 28,
+                  size: 33,
                   color: currentScreen == Screen.create
                       ? Theme.of(context).primaryColorDark
                       : Theme.of(context).primaryColorLight,

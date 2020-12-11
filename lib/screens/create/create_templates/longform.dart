@@ -161,217 +161,207 @@ class CreateLongformState extends State<CreateLongform>
       create: (BuildContext context) {
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
       },
-      child: CreateExpressionScaffold(
-        showBottomNav: _showBottomNav,
-        expressionType: ExpressionType.dynamic,
-        onNext: _onNext,
-        expressionHasData: expressionHasData,
-        child: Container(
-          child: BlocConsumer<SearchBloc, SearchState>(
-            buildWhen: (prev, cur) {
-              return !(cur is LoadingSearchState ||
-                  cur is LoadingSearchChannelState);
-            },
-            listener: (context, state) {
-              if (!(state is LoadingSearchState) &&
-                  (state is SearchUserState)) {
-                final eq = DeepCollectionEquality.unordered().equals;
+      child: Container(
+        child: BlocConsumer<SearchBloc, SearchState>(
+          buildWhen: (prev, cur) {
+            return !(cur is LoadingSearchState ||
+                cur is LoadingSearchChannelState);
+          },
+          listener: (context, state) {
+            if (!(state is LoadingSearchState) && (state is SearchUserState)) {
+              final eq = DeepCollectionEquality.unordered().equals;
 
-                final _users = getUserList(state, []);
+              final _users = getUserList(state, []);
 
-                final isEqual = eq(users, _users);
+              final isEqual = eq(users, _users);
 
-                if (!isEqual) {
-                  setState(() {
-                    users = _users;
+              if (!isEqual) {
+                setState(() {
+                  users = _users;
 
-                    listType = ListType.mention;
+                  listType = ListType.mention;
 
-                    completeUserList =
-                        generateFinalList(completeUserList, _users);
-                  });
-                }
+                  completeUserList =
+                      generateFinalList(completeUserList, _users);
+                });
               }
+            }
 
-              if (!(state is LoadingSearchChannelState) &&
-                  (state is SearchChannelState)) {
-                final eq = DeepCollectionEquality.unordered().equals;
+            if (!(state is LoadingSearchChannelState) &&
+                (state is SearchChannelState)) {
+              final eq = DeepCollectionEquality.unordered().equals;
 
-                final _channels = getChannelsList(state, []);
+              final _channels = getChannelsList(state, []);
 
-                final isEqual = eq(channels, _channels);
+              final isEqual = eq(channels, _channels);
 
-                if (!isEqual) {
-                  setState(() {
-                    channels = _channels;
+              if (!isEqual) {
+                setState(() {
+                  channels = _channels;
 
-                    listType = ListType.channels;
+                  listType = ListType.channels;
 
-                    completeChannelsList =
-                        generateFinalList(completeChannelsList, _channels);
-                  });
-                }
+                  completeChannelsList =
+                      generateFinalList(completeChannelsList, _channels);
+                });
               }
-            },
-            builder: (context, state) {
-              return Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: TextField(
-                        focusNode: _titleFocus,
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        controller: _titleController,
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Title',
-                          hintStyle:
-                              Theme.of(context).textTheme.headline6.copyWith(
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                        ),
-                        cursorColor: Theme.of(context).primaryColor,
-                        cursorWidth: 2,
-                        maxLines: null,
-                        maxLength: 140,
-                        style: Theme.of(context).textTheme.headline6,
-                        keyboardAppearance: Theme.of(context).brightness,
-                        textCapitalization: TextCapitalization.sentences,
-                        keyboardType: TextInputType.text,
+            }
+          },
+          builder: (context, state) {
+            return Expanded(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: TextField(
+                      focusNode: _titleFocus,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      controller: _titleController,
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Title',
+                        hintStyle:
+                            Theme.of(context).textTheme.headline6.copyWith(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
                       ),
+                      cursorColor: Theme.of(context).primaryColor,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      maxLength: 140,
+                      style: Theme.of(context).textTheme.headline6,
+                      keyboardAppearance: Theme.of(context).brightness,
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.text,
                     ),
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: FlutterMentions(
-                              key: mentionKey,
-                              suggestionPosition: SuggestionPosition.Bottom,
-                              minLines: 1,
-                              maxLines: 20,
-                              keyboardAppearance: Theme.of(context).brightness,
-                              cursorWidth: 2,
-                              focusNode: _bodyFocus,
-                              textInputAction: TextInputAction.newline,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .caption
-                                  .copyWith(fontSize: 17),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Write here...',
-                              ),
-                              onSearchChanged: (String trigger, String value) {
-                                if (value.isNotEmpty && _showList) {
-                                  final channel = trigger == '#';
+                  ),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: FlutterMentions(
+                            key: mentionKey,
+                            suggestionPosition: SuggestionPosition.Bottom,
+                            minLines: 1,
+                            maxLines: 20,
+                            keyboardAppearance: Theme.of(context).brightness,
+                            cursorWidth: 2,
+                            focusNode: _bodyFocus,
+                            textInputAction: TextInputAction.newline,
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption
+                                .copyWith(fontSize: 17),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Write here...',
+                            ),
+                            onSearchChanged: (String trigger, String value) {
+                              if (value.isNotEmpty && _showList) {
+                                final channel = trigger == '#';
 
-                                  if (!channel) {
-                                    context
-                                        .bloc<SearchBloc>()
-                                        .add(SearchingEvent(
-                                          value,
-                                          QueryUserBy.BOTH,
-                                        ));
-                                  } else {
-                                    context
-                                        .bloc<SearchBloc>()
-                                        .add(SearchingChannelEvent(value));
-                                  }
+                                if (!channel) {
+                                  context.bloc<SearchBloc>().add(SearchingEvent(
+                                        value,
+                                        QueryUserBy.BOTH,
+                                      ));
                                 } else {
-                                  setState(() {
-                                    users = [];
-                                    channels = [];
-                                    listType = ListType.empty;
-                                    _showList = false;
-                                  });
+                                  context
+                                      .bloc<SearchBloc>()
+                                      .add(SearchingChannelEvent(value));
                                 }
-                              },
-                              onSuggestionVisibleChanged: toggleSearch,
-                              hideSuggestionList: true,
-                              mentions: getMention(
-                                context,
-                                [...addedmentions, ...completeUserList],
-                                [...addedChannels, ...completeChannelsList],
-                              ),
+                              } else {
+                                setState(() {
+                                  users = [];
+                                  channels = [];
+                                  listType = ListType.empty;
+                                  _showList = false;
+                                });
+                              }
+                            },
+                            onSuggestionVisibleChanged: toggleSearch,
+                            hideSuggestionList: true,
+                            mentions: getMention(
+                              context,
+                              [...addedmentions, ...completeUserList],
+                              [...addedChannels, ...completeChannelsList],
                             ),
                           ),
-                          if (_showList &&
-                              _bodyFocus.hasFocus &&
-                              listType == ListType.mention)
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              left: 0,
-                              child: MentionsSearchList(
-                                userList: users,
-                                onMentionAdd: (index) {
-                                  mentionKey.currentState
-                                      .addMention(users[index]);
+                        ),
+                        if (_showList &&
+                            _bodyFocus.hasFocus &&
+                            listType == ListType.mention)
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            left: 0,
+                            child: MentionsSearchList(
+                              userList: users,
+                              onMentionAdd: (index) {
+                                mentionKey.currentState
+                                    .addMention(users[index]);
 
-                                  if (addedmentions.indexWhere((element) =>
-                                          element['id'] ==
-                                          users[index]['id']) ==
-                                      -1) {
-                                    addedmentions = [
-                                      ...addedmentions,
-                                      users[index]
-                                    ];
-                                  }
+                                if (addedmentions.indexWhere((element) =>
+                                        element['id'] == users[index]['id']) ==
+                                    -1) {
+                                  addedmentions = [
+                                    ...addedmentions,
+                                    users[index]
+                                  ];
+                                }
 
-                                  setState(() {
-                                    _showList = false;
-                                    users = [];
-                                  });
-                                },
-                              ),
+                                setState(() {
+                                  _showList = false;
+                                  users = [];
+                                });
+                              },
                             ),
-                          if (_showList &&
-                              _bodyFocus.hasFocus &&
-                              listType == ListType.channels)
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              left: 0,
-                              child: ChannelsSearchList(
-                                channels: channels,
-                                onChannelAdd: (index) {
-                                  mentionKey.currentState
-                                      .addMention(channels[index]);
+                          ),
+                        if (_showList &&
+                            _bodyFocus.hasFocus &&
+                            listType == ListType.channels)
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            left: 0,
+                            child: ChannelsSearchList(
+                              channels: channels,
+                              onChannelAdd: (index) {
+                                mentionKey.currentState
+                                    .addMention(channels[index]);
 
-                                  if (addedChannels.indexWhere((element) =>
-                                          element['id'] ==
-                                          channels[index]['id']) ==
-                                      -1) {
-                                    addedChannels = [
-                                      ...addedChannels,
-                                      channels[index]
-                                    ];
-                                  }
+                                if (addedChannels.indexWhere((element) =>
+                                        element['id'] ==
+                                        channels[index]['id']) ==
+                                    -1) {
+                                  addedChannels = [
+                                    ...addedChannels,
+                                    channels[index]
+                                  ];
+                                }
 
-                                  setState(() {
-                                    _showList = false;
-                                    channels = [];
-                                  });
-                                },
-                              ),
+                                setState(() {
+                                  _showList = false;
+                                  channels = [];
+                                });
+                              },
                             ),
-                        ],
-                      ),
+                          ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            },
-          ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

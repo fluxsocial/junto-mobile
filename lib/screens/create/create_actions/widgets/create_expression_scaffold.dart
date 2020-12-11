@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:provider/provider.dart';
 
-class CreateExpressionScaffold extends StatelessWidget {
-  const CreateExpressionScaffold({
+import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/link.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/audio.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+
+class CreateExpressionScaffold extends StatefulWidget {
+  CreateExpressionScaffold({
     Key key,
     this.child,
     this.onNext,
@@ -24,30 +34,360 @@ class CreateExpressionScaffold extends StatelessWidget {
   final Function expressionHasData;
 
   @override
+  State<StatefulWidget> createState() {
+    return CreateExpressionScaffoldState();
+  }
+}
+
+class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
+  UserData userData;
+  ExpressionType expressionType = ExpressionType.none;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    userData =
+        Provider.of<UserDataProvider>(context, listen: false).userProfile;
+  }
+
+  Widget _buildExpressionType() {
+    Widget child;
+    switch (expressionType) {
+      case ExpressionType.dynamic:
+        child = CreateLongform();
+        break;
+
+      case ExpressionType.shortform:
+        child = CreateShortform();
+        break;
+
+      case ExpressionType.link:
+        child = CreateLinkForm();
+        break;
+
+      case ExpressionType.photo:
+        child = CreatePhoto();
+        break;
+
+      case ExpressionType.audio:
+        child = CreateAudio();
+        break;
+
+      case ExpressionType.none:
+        child = Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Theme.of(context).backgroundColor,
+        );
+        break;
+
+      default:
+        child = CreateLongform();
+        break;
+    }
+    return child;
+  }
+
+  void chooseExpressionType(ExpressionType newExpressionType) {
+    setState(() {
+      expressionType = newExpressionType;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
       child: Scaffold(
+        key: _scaffoldKey,
         body: JuntoFilterDrawer(
           leftDrawer: null,
           rightMenu: JuntoDrawer(),
           scaffold: Scaffold(
             appBar: CreateAppBar(
-              expressionType: expressionType,
-              onNext: onNext,
-              expressionHasData: expressionHasData,
+              onNext: widget.onNext,
+              expressionHasData: widget.expressionHasData,
             ),
             resizeToAvoidBottomPadding: false,
             resizeToAvoidBottomInset: false,
-            floatingActionButton: showBottomNav
-                ? BottomNav(
-                    source: Screen.create,
-                  )
-                : null,
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: Column(
-              children: <Widget>[child],
+            body: Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * .1),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 15,
+                        ),
+                        child: Row(
+                          children: [
+                            MemberAvatar(
+                              diameter: 33,
+                              profilePicture: userData.user.profilePicture,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
+                              margin: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 5),
+                                    child: Text(
+                                      'Collective',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 12,
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      _buildExpressionType(),
+                      // Container(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 50),
+                      //   margin: const EdgeInsets.only(bottom: 100),
+                      //   child: Column(
+                      //     children: [
+                      //       Icon(
+                      //         CustomIcons.enso,
+                      //         size: 70,
+                      //         color: Theme.of(context).primaryColor,
+                      //       ),
+                      //       const SizedBox(height: 15),
+                      //       Text(
+                      //         'Choose an expression type to get started!',
+                      //         textAlign: TextAlign.center,
+                      //         style: TextStyle(
+                      //           fontSize: 20,
+                      //           color: Theme.of(context).primaryColor,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+                Column(
+                  children: [
+                    Expanded(
+                      child: DraggableScrollableSheet(
+                          minChildSize: .1,
+                          maxChildSize: .3,
+                          initialChildSize: .3,
+                          builder: (context, scrollController) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).backgroundColor,
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Theme.of(context).dividerColor,
+                                    width: .75,
+                                  ),
+                                ),
+                              ),
+                              child: ListView(
+                                controller: scrollController,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 7.5,
+                                        width: 100,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).dividerColor,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    child: Icon(
+                                      CustomIcons.create,
+                                      size: 20,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 100,
+                                    color: Theme.of(context).backgroundColor,
+                                    child: Row(
+                                      children: [
+                                        CreateExpressionIcon(
+                                          expressionType:
+                                              ExpressionType.dynamic,
+                                          switchExpressionType:
+                                              chooseExpressionType,
+                                        ),
+                                        CreateExpressionIcon(
+                                          expressionType:
+                                              ExpressionType.shortform,
+                                          switchExpressionType:
+                                              chooseExpressionType,
+                                        ),
+                                        CreateExpressionIcon(
+                                          expressionType: ExpressionType.link,
+                                          switchExpressionType:
+                                              chooseExpressionType,
+                                        ),
+                                        CreateExpressionIcon(
+                                          expressionType: ExpressionType.photo,
+                                          switchExpressionType:
+                                              chooseExpressionType,
+                                        ),
+                                        CreateExpressionIcon(
+                                          expressionType: ExpressionType.audio,
+                                          switchExpressionType:
+                                              chooseExpressionType,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+              ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CreateExpressionIcon extends StatelessWidget {
+  const CreateExpressionIcon({
+    this.expressionType,
+    this.switchExpressionType,
+  });
+
+  final ExpressionType expressionType;
+  final Function switchExpressionType;
+
+  Map<String, dynamic> expressionTypeText(BuildContext context) {
+    String expressionTypeText;
+    Icon expressionTypeIcon;
+
+    switch (expressionType) {
+      case ExpressionType.dynamic:
+        expressionTypeText = 'DYNAMIC';
+        expressionTypeIcon = Icon(
+          CustomIcons.pen,
+          size: 33,
+          color: Theme.of(context).primaryColorLight,
+        );
+        break;
+      case ExpressionType.shortform:
+        expressionTypeText = 'SHORTFORM';
+        expressionTypeIcon = Icon(
+          CustomIcons.feather,
+          size: 20,
+          color: Theme.of(context).primaryColorLight,
+        );
+        break;
+      case ExpressionType.link:
+        expressionTypeText = 'LINK';
+        expressionTypeIcon = Icon(
+          Icons.link,
+          size: 24,
+          color: Theme.of(context).primaryColorLight,
+        );
+        break;
+      case ExpressionType.photo:
+        expressionTypeIcon = Icon(
+          CustomIcons.camera,
+          size: 20,
+          color: Theme.of(context).primaryColorLight,
+        );
+        expressionTypeText = 'PHOTO';
+        break;
+      case ExpressionType.audio:
+        expressionTypeIcon = Icon(
+          Icons.mic,
+          size: 20,
+          color: Theme.of(context).primaryColorLight,
+        );
+        expressionTypeText = 'AUDIO';
+        break;
+
+      default:
+        expressionTypeText = 'DYNAMIC';
+        expressionTypeIcon = Icon(
+          CustomIcons.pen,
+          size: 36,
+          color: Theme.of(context).primaryColorLight,
+        );
+        break;
+    }
+
+    return {
+      'expressionTypeText': expressionTypeText,
+      'expressionTypeIcon': expressionTypeIcon,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => switchExpressionType(expressionType),
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 38,
+                child: expressionTypeText(context)['expressionTypeIcon'],
+              ),
+              const SizedBox(height: 5),
+              Text(
+                expressionTypeText(context)['expressionTypeText'],
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColorLight,
+                ),
+              ),
+            ],
           ),
         ),
       ),

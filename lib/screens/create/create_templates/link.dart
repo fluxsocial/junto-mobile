@@ -180,173 +180,64 @@ class CreateLinkFormState extends State<CreateLinkForm>
       create: (BuildContext context) {
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
       },
-      child: CreateExpressionScaffold(
-        expressionType: ExpressionType.link,
-        onNext: _onNext,
-        showBottomNav: _showBottomNav,
-        expressionHasData: expressionHasData,
-        child: Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: BlocConsumer<SearchBloc, SearchState>(
-              buildWhen: (prev, cur) {
-                return !(cur is LoadingSearchState ||
-                    cur is LoadingSearchChannelState);
-              },
-              listener: (context, state) {
-                if (!(state is LoadingSearchState) &&
-                    (state is SearchUserState)) {
-                  final eq = DeepCollectionEquality.unordered().equals;
+      child: Expanded(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: BlocConsumer<SearchBloc, SearchState>(
+            buildWhen: (prev, cur) {
+              return !(cur is LoadingSearchState ||
+                  cur is LoadingSearchChannelState);
+            },
+            listener: (context, state) {
+              if (!(state is LoadingSearchState) &&
+                  (state is SearchUserState)) {
+                final eq = DeepCollectionEquality.unordered().equals;
 
-                  final _users = getUserList(state, []);
+                final _users = getUserList(state, []);
 
-                  final isEqual = eq(users, _users);
+                final isEqual = eq(users, _users);
 
-                  if (!isEqual) {
-                    setState(() {
-                      users = _users;
+                if (!isEqual) {
+                  setState(() {
+                    users = _users;
 
-                      listType = ListType.mention;
+                    listType = ListType.mention;
 
-                      completeUserList =
-                          generateFinalList(completeUserList, _users);
-                    });
-                  }
+                    completeUserList =
+                        generateFinalList(completeUserList, _users);
+                  });
                 }
+              }
 
-                if (!(state is LoadingSearchChannelState) &&
-                    (state is SearchChannelState)) {
-                  final eq = DeepCollectionEquality.unordered().equals;
+              if (!(state is LoadingSearchChannelState) &&
+                  (state is SearchChannelState)) {
+                final eq = DeepCollectionEquality.unordered().equals;
 
-                  final _channels = getChannelsList(state, []);
+                final _channels = getChannelsList(state, []);
 
-                  final isEqual = eq(channels, _channels);
+                final isEqual = eq(channels, _channels);
 
-                  if (!isEqual) {
-                    setState(() {
-                      channels = _channels;
+                if (!isEqual) {
+                  setState(() {
+                    channels = _channels;
 
-                      listType = ListType.channels;
+                    listType = ListType.channels;
 
-                      completeChannelsList =
-                          generateFinalList(completeChannelsList, _channels);
-                    });
-                  }
+                    completeChannelsList =
+                        generateFinalList(completeChannelsList, _channels);
+                  });
                 }
-              },
-              builder: (context, state) {
-                return Container(
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          if (appConfig.flavor == Flavor.dev)
-                            Container(
-                              child: TextField(
-                                buildCounter: (
-                                  BuildContext context, {
-                                  int currentLength,
-                                  int maxLength,
-                                  bool isFocused,
-                                }) =>
-                                    null,
-                                controller: _titleController,
-                                textInputAction: TextInputAction.done,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Title (optional)',
-                                  hintStyle: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      .copyWith(
-                                        color:
-                                            Theme.of(context).primaryColorLight,
-                                      ),
-                                ),
-                                cursorColor: Theme.of(context).primaryColor,
-                                cursorWidth: 2,
-                                maxLines: null,
-                                maxLength: 140,
-                                style: Theme.of(context).textTheme.headline6,
-                                keyboardAppearance:
-                                    Theme.of(context).brightness,
-                                textCapitalization:
-                                    TextCapitalization.sentences,
-                                keyboardType: TextInputType.text,
-                              ),
-                            ),
-                          Container(
-                            child: FlutterMentions(
-                              key: mentionKey,
-                              focusNode: _captionFocus,
-                              onSearchChanged: (String trigger, String value) {
-                                if (value.isNotEmpty && _showList) {
-                                  final channel = trigger == '#';
-
-                                  if (!channel) {
-                                    context
-                                        .bloc<SearchBloc>()
-                                        .add(SearchingEvent(
-                                          value,
-                                          QueryUserBy.BOTH,
-                                        ));
-                                  } else {
-                                    context
-                                        .bloc<SearchBloc>()
-                                        .add(SearchingChannelEvent(value));
-                                  }
-                                } else {
-                                  setState(() {
-                                    users = [];
-                                    channels = [];
-                                    listType = ListType.empty;
-                                    _showList = false;
-                                  });
-                                }
-                              },
-                              onSuggestionVisibleChanged: toggleSearch,
-                              hideSuggestionList: true,
-                              mentions: getMention(
-                                context,
-                                [...addedmentions, ...completeUserList],
-                                [...addedChannels, ...completeChannelsList],
-                              ),
-                              buildCounter: (
-                                BuildContext context, {
-                                int currentLength,
-                                int maxLength,
-                                bool isFocused,
-                              }) =>
-                                  null,
-                              textInputAction: TextInputAction.newline,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Caption (optional)',
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                    ),
-                              ),
-                              maxLines: null,
-                              cursorColor: Theme.of(context).primaryColor,
-                              cursorWidth: 2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  .copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                              keyboardAppearance: Theme.of(context).brightness,
-                              textCapitalization: TextCapitalization.sentences,
-                              keyboardType: TextInputType.multiline,
-                            ),
-                          ),
+              }
+            },
+            builder: (context, state) {
+              return Container(
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        if (appConfig.flavor == Flavor.dev)
                           Container(
                             child: TextField(
-                              focusNode: _linkFocus,
                               buildCounter: (
                                 BuildContext context, {
                                 int currentLength,
@@ -354,12 +245,11 @@ class CreateLinkFormState extends State<CreateLinkForm>
                                 bool isFocused,
                               }) =>
                                   null,
-                              maxLines: null,
-                              controller: _urlController,
+                              controller: _titleController,
                               textInputAction: TextInputAction.done,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'Link',
+                                hintText: 'Title (optional)',
                                 hintStyle: Theme.of(context)
                                     .textTheme
                                     .headline6
@@ -370,81 +260,171 @@ class CreateLinkFormState extends State<CreateLinkForm>
                               ),
                               cursorColor: Theme.of(context).primaryColor,
                               cursorWidth: 2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  .copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                              maxLines: null,
+                              maxLength: 140,
+                              style: Theme.of(context).textTheme.headline6,
                               keyboardAppearance: Theme.of(context).brightness,
                               textCapitalization: TextCapitalization.sentences,
                               keyboardType: TextInputType.text,
                             ),
                           ),
-                        ],
+                        Container(
+                          child: FlutterMentions(
+                            key: mentionKey,
+                            focusNode: _captionFocus,
+                            onSearchChanged: (String trigger, String value) {
+                              if (value.isNotEmpty && _showList) {
+                                final channel = trigger == '#';
+
+                                if (!channel) {
+                                  context.bloc<SearchBloc>().add(SearchingEvent(
+                                        value,
+                                        QueryUserBy.BOTH,
+                                      ));
+                                } else {
+                                  context
+                                      .bloc<SearchBloc>()
+                                      .add(SearchingChannelEvent(value));
+                                }
+                              } else {
+                                setState(() {
+                                  users = [];
+                                  channels = [];
+                                  listType = ListType.empty;
+                                  _showList = false;
+                                });
+                              }
+                            },
+                            onSuggestionVisibleChanged: toggleSearch,
+                            hideSuggestionList: true,
+                            mentions: getMention(
+                              context,
+                              [...addedmentions, ...completeUserList],
+                              [...addedChannels, ...completeChannelsList],
+                            ),
+                            buildCounter: (
+                              BuildContext context, {
+                              int currentLength,
+                              int maxLength,
+                              bool isFocused,
+                            }) =>
+                                null,
+                            textInputAction: TextInputAction.newline,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Caption (optional)',
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .copyWith(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                            ),
+                            maxLines: null,
+                            cursorColor: Theme.of(context).primaryColor,
+                            cursorWidth: 2,
+                            style:
+                                Theme.of(context).textTheme.headline6.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                            keyboardAppearance: Theme.of(context).brightness,
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.multiline,
+                          ),
+                        ),
+                        Container(
+                          child: TextField(
+                            focusNode: _linkFocus,
+                            buildCounter: (
+                              BuildContext context, {
+                              int currentLength,
+                              int maxLength,
+                              bool isFocused,
+                            }) =>
+                                null,
+                            maxLines: null,
+                            controller: _urlController,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Link',
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .copyWith(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                            ),
+                            cursorColor: Theme.of(context).primaryColor,
+                            cursorWidth: 2,
+                            style:
+                                Theme.of(context).textTheme.headline6.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                            keyboardAppearance: Theme.of(context).brightness,
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (_showList &&
+                        _captionFocus.hasFocus &&
+                        listType == ListType.mention)
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
+                        child: MentionsSearchList(
+                          userList: users,
+                          onMentionAdd: (index) {
+                            mentionKey.currentState.addMention(users[index]);
+
+                            if (addedmentions.indexWhere((element) =>
+                                    element['id'] == users[index]['id']) ==
+                                -1) {
+                              addedmentions = [...addedmentions, users[index]];
+                            }
+
+                            setState(() {
+                              _showList = false;
+                              users = [];
+                            });
+                          },
+                        ),
                       ),
-                      if (_showList &&
-                          _captionFocus.hasFocus &&
-                          listType == ListType.mention)
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          left: 0,
-                          child: MentionsSearchList(
-                            userList: users,
-                            onMentionAdd: (index) {
-                              mentionKey.currentState.addMention(users[index]);
+                    if (_showList &&
+                        _captionFocus.hasFocus &&
+                        listType == ListType.channels)
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
+                        child: ChannelsSearchList(
+                          channels: channels,
+                          onChannelAdd: (index) {
+                            mentionKey.currentState.addMention(channels[index]);
 
-                              if (addedmentions.indexWhere((element) =>
-                                      element['id'] == users[index]['id']) ==
-                                  -1) {
-                                addedmentions = [
-                                  ...addedmentions,
-                                  users[index]
-                                ];
-                              }
+                            if (addedChannels.indexWhere((element) =>
+                                    element['id'] == channels[index]['id']) ==
+                                -1) {
+                              addedChannels = [
+                                ...addedChannels,
+                                channels[index]
+                              ];
+                            }
 
-                              setState(() {
-                                _showList = false;
-                                users = [];
-                              });
-                            },
-                          ),
+                            setState(() {
+                              _showList = false;
+                              channels = [];
+                            });
+                          },
                         ),
-                      if (_showList &&
-                          _captionFocus.hasFocus &&
-                          listType == ListType.channels)
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          left: 0,
-                          child: ChannelsSearchList(
-                            channels: channels,
-                            onChannelAdd: (index) {
-                              mentionKey.currentState
-                                  .addMention(channels[index]);
-
-                              if (addedChannels.indexWhere((element) =>
-                                      element['id'] == channels[index]['id']) ==
-                                  -1) {
-                                addedChannels = [
-                                  ...addedChannels,
-                                  channels[index]
-                                ];
-                              }
-
-                              setState(() {
-                                _showList = false;
-                                channels = [];
-                              });
-                            },
-                          ),
-                        ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                      ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),

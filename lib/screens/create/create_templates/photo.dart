@@ -246,41 +246,35 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       create: (BuildContext context) {
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
       },
-      child: CreateExpressionScaffold(
-        expressionType: ExpressionType.photo,
-        onNext: _onNext,
-        showBottomNav: _showBottomNav,
-        expressionHasData: _expressionHasData,
-        child: Expanded(
+      child: Expanded(
+        child: Container(
           child: Container(
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: imageFile == null
-                        ? Container(
-                            color: Colors.transparent,
-                            width: MediaQuery.of(context).size.width,
-                            child: GestureDetector(
-                              onTap: () {
-                                _onPickPressed(source: ImageSource.gallery);
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    CustomIcons.add,
-                                    size: 75,
-                                  ),
-                                ],
-                              ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: imageFile == null
+                      ? Container(
+                          color: Colors.transparent,
+                          width: MediaQuery.of(context).size.width,
+                          child: GestureDetector(
+                            onTap: () {
+                              _onPickPressed(source: ImageSource.gallery);
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  CustomIcons.add,
+                                  size: 75,
+                                ),
+                              ],
                             ),
-                          )
-                        : _captionPhoto(),
-                  ),
-                  if (imageFile == null) _uploadPhotoOptions()
-                ],
-              ),
+                          ),
+                        )
+                      : _captionPhoto(),
+                ),
+                if (imageFile == null) _uploadPhotoOptions()
+              ],
             ),
           ),
         ),

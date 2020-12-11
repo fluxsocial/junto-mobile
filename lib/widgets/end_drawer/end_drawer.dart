@@ -100,7 +100,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                           title: 'Search',
                           theme: theme,
                           onTap: () {
-                            // open relationships
+                            // open search
                             Navigator.push(
                               context,
                               CupertinoPageRoute<dynamic>(
