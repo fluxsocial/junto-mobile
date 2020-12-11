@@ -14,7 +14,6 @@ import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
@@ -248,34 +247,32 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       },
       child: Expanded(
         child: Container(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: imageFile == null
-                      ? Container(
-                          color: Colors.transparent,
-                          width: MediaQuery.of(context).size.width,
-                          child: GestureDetector(
-                            onTap: () {
-                              _onPickPressed(source: ImageSource.gallery);
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  CustomIcons.add,
-                                  size: 75,
-                                ),
-                              ],
-                            ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: imageFile == null
+                    ? Container(
+                        color: Colors.transparent,
+                        width: MediaQuery.of(context).size.width,
+                        child: GestureDetector(
+                          onTap: () {
+                            _onPickPressed(source: ImageSource.gallery);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                CustomIcons.add,
+                                size: 75,
+                              ),
+                            ],
                           ),
-                        )
-                      : _captionPhoto(),
-                ),
-                if (imageFile == null) _uploadPhotoOptions()
-              ],
-            ),
+                        ),
+                      )
+                    : _captionPhoto(),
+              ),
+              if (imageFile == null) _uploadPhotoOptions()
+            ],
           ),
         ),
       ),
@@ -284,7 +281,6 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
 
   Widget _uploadPhotoOptions() {
     return Container(
-      margin: const EdgeInsets.only(bottom: 100),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(

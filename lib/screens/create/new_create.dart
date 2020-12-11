@@ -30,8 +30,7 @@ class NewCreate extends StatefulWidget {
   }
 }
 
-class NewCreateState extends State<NewCreate>
-    with CreateExpressionHelpers {
+class NewCreateState extends State<NewCreate> with CreateExpressionHelpers {
   final FocusNode _titleFocus = FocusNode();
   final FocusNode _bodyFocus = FocusNode();
   bool _showBottomNav = true;
