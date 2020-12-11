@@ -7,8 +7,6 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:provider/provider.dart';
-
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
@@ -16,6 +14,7 @@ import 'package:junto_beta_mobile/screens/create/create_templates/link.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:provider/provider.dart';
 
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
@@ -41,7 +40,7 @@ class CreateExpressionScaffold extends StatefulWidget {
 
 class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
   UserData userData;
-  ExpressionType expressionType = ExpressionType.none;
+  ExpressionType currentExpressionType = ExpressionType.none;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
@@ -53,7 +52,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
 
   Widget _buildExpressionType() {
     Widget child;
-    switch (expressionType) {
+    switch (currentExpressionType) {
       case ExpressionType.dynamic:
         child = CreateLongform();
         break;
@@ -91,7 +90,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
 
   void chooseExpressionType(ExpressionType newExpressionType) {
     setState(() {
-      expressionType = newExpressionType;
+      currentExpressionType = newExpressionType;
     });
   }
 
@@ -250,27 +249,37 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
                                         CreateExpressionIcon(
                                           expressionType:
                                               ExpressionType.dynamic,
+                                          currentExpressionType:
+                                              currentExpressionType,
                                           switchExpressionType:
                                               chooseExpressionType,
                                         ),
                                         CreateExpressionIcon(
                                           expressionType:
                                               ExpressionType.shortform,
+                                          currentExpressionType:
+                                              currentExpressionType,
                                           switchExpressionType:
                                               chooseExpressionType,
                                         ),
                                         CreateExpressionIcon(
                                           expressionType: ExpressionType.link,
+                                          currentExpressionType:
+                                              currentExpressionType,
                                           switchExpressionType:
                                               chooseExpressionType,
                                         ),
                                         CreateExpressionIcon(
                                           expressionType: ExpressionType.photo,
+                                          currentExpressionType:
+                                              currentExpressionType,
                                           switchExpressionType:
                                               chooseExpressionType,
                                         ),
                                         CreateExpressionIcon(
                                           expressionType: ExpressionType.audio,
+                                          currentExpressionType:
+                                              currentExpressionType,
                                           switchExpressionType:
                                               chooseExpressionType,
                                         ),
@@ -296,15 +305,24 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
 class CreateExpressionIcon extends StatelessWidget {
   const CreateExpressionIcon({
     this.expressionType,
+    this.currentExpressionType,
     this.switchExpressionType,
   });
 
   final ExpressionType expressionType;
+  final ExpressionType currentExpressionType;
   final Function switchExpressionType;
 
-  Map<String, dynamic> expressionTypeText(BuildContext context) {
+  Map<String, dynamic> expressionTypeTraits(BuildContext context) {
     String expressionTypeText;
     Icon expressionTypeIcon;
+
+    Color color;
+    if (currentExpressionType == expressionType) {
+      color = Theme.of(context).primaryColorDark;
+    } else {
+      color = Theme.of(context).primaryColorLight;
+    }
 
     switch (expressionType) {
       case ExpressionType.dynamic:
@@ -312,7 +330,7 @@ class CreateExpressionIcon extends StatelessWidget {
         expressionTypeIcon = Icon(
           CustomIcons.pen,
           size: 33,
-          color: Theme.of(context).primaryColorLight,
+          color: color,
         );
         break;
       case ExpressionType.shortform:
@@ -320,7 +338,7 @@ class CreateExpressionIcon extends StatelessWidget {
         expressionTypeIcon = Icon(
           CustomIcons.feather,
           size: 20,
-          color: Theme.of(context).primaryColorLight,
+          color: color,
         );
         break;
       case ExpressionType.link:
@@ -328,14 +346,14 @@ class CreateExpressionIcon extends StatelessWidget {
         expressionTypeIcon = Icon(
           Icons.link,
           size: 24,
-          color: Theme.of(context).primaryColorLight,
+          color: color,
         );
         break;
       case ExpressionType.photo:
         expressionTypeIcon = Icon(
           CustomIcons.camera,
           size: 20,
-          color: Theme.of(context).primaryColorLight,
+          color: color,
         );
         expressionTypeText = 'PHOTO';
         break;
@@ -343,7 +361,7 @@ class CreateExpressionIcon extends StatelessWidget {
         expressionTypeIcon = Icon(
           Icons.mic,
           size: 20,
-          color: Theme.of(context).primaryColorLight,
+          color: color,
         );
         expressionTypeText = 'AUDIO';
         break;
@@ -353,7 +371,7 @@ class CreateExpressionIcon extends StatelessWidget {
         expressionTypeIcon = Icon(
           CustomIcons.pen,
           size: 36,
-          color: Theme.of(context).primaryColorLight,
+          color: color,
         );
         break;
     }
@@ -361,6 +379,7 @@ class CreateExpressionIcon extends StatelessWidget {
     return {
       'expressionTypeText': expressionTypeText,
       'expressionTypeIcon': expressionTypeIcon,
+      'color': color,
     };
   }
 
@@ -376,17 +395,15 @@ class CreateExpressionIcon extends StatelessWidget {
             children: [
               Container(
                 height: 38,
-                child: expressionTypeText(context)['expressionTypeIcon'],
+                child: expressionTypeTraits(context)['expressionTypeIcon'],
               ),
               const SizedBox(height: 5),
-              Text(
-                expressionTypeText(context)['expressionTypeText'],
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColorLight,
-                ),
-              ),
+              Text(expressionTypeTraits(context)['expressionTypeText'],
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: expressionTypeTraits(context)['color'],
+                  )),
             ],
           ),
         ),
