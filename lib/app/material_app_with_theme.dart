@@ -173,14 +173,9 @@ class HomePageContentState extends State<HomePageContent>
 
   @override
   Widget build(BuildContext context) {
-    // return FeatureDiscovery(
-    //   child: const JuntoLotus(
-    //     address: null,
-    //     expressionContext: ExpressionContext.Collective,
-    //     source: null,
-    //   ),
-    // );
-    return NewHome();
+    return FeatureDiscovery(
+      child: JuntoLotus(),
+    );
   }
 }
 

@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:feature_discovery/feature_discovery.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
@@ -44,6 +45,12 @@ class NewHomeState extends State<NewHome> {
     super.didChangeDependencies();
     userProvider = Provider.of<UserDataProvider>(context, listen: false);
     getUserInformation();
+    fetchNotifications();
+  }
+
+  void fetchNotifications() async {
+    await Provider.of<NotificationsHandler>(context, listen: false)
+        .fetchNotifications();
   }
 
   Future<void> getUserInformation() async {
