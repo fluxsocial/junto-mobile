@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';

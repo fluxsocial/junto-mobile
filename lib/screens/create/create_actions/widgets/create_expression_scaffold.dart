@@ -168,29 +168,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
                         ),
                       ),
                       _buildExpressionType(),
-                      // Container(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 50),
-                      //   margin: const EdgeInsets.only(bottom: 100),
-                      //   child: Column(
-                      //     children: [
-                      //       Icon(
-                      //         CustomIcons.enso,
-                      //         size: 70,
-                      //         color: Theme.of(context).primaryColor,
-                      //       ),
-                      //       const SizedBox(height: 15),
-                      //       Text(
-                      //         'Choose an expression type to get started!',
-                      //         textAlign: TextAlign.center,
-                      //         style: TextStyle(
-                      //           fontSize: 20,
-                      //           color: Theme.of(context).primaryColor,
-                      //           fontWeight: FontWeight.w500,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
