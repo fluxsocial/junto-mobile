@@ -8,8 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_bar/junto_bottom_bar.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
-import 'package:junto_beta_mobile/screens/create/create.dart';
-import 'package:junto_beta_mobile/screens/create/new_create.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
@@ -73,14 +72,18 @@ class NewHomeState extends State<NewHome> {
         child = JuntoCollective();
         break;
       case Screen.groups:
-        child = FeatureDiscovery(child: SpheresTemp());
+        child = FeatureDiscovery(
+          child: SpheresTemp(),
+        );
         break;
       case Screen.packs:
-        child = JuntoPacks(initialGroup: _userData.pack.address);
+        child = JuntoPacks(
+          initialGroup: _userData.pack.address,
+        );
         break;
       case Screen.create:
         child = FeatureDiscovery(
-          child: NewCreate(),
+          child: CreateExpressionScaffold(),
         );
         break;
       case Screen.den:
