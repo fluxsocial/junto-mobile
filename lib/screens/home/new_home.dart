@@ -33,6 +33,7 @@ class NewHomeState extends State<NewHome> {
   UserDataProvider userProvider;
 
   Screen _currentScreen;
+  bool showCreateScreen = false;
 
   @override
   void initState() {
@@ -61,6 +62,11 @@ class NewHomeState extends State<NewHome> {
   void changeScreen(Screen screen) {
     setState(() {
       _currentScreen = screen;
+      if (screen == Screen.create) {
+        showCreateScreen = true;
+      } else {
+        showCreateScreen = false;
+      }
     });
   }
 
@@ -81,11 +87,7 @@ class NewHomeState extends State<NewHome> {
           initialGroup: _userData.pack.address,
         );
         break;
-      case Screen.create:
-        child = FeatureDiscovery(
-          child: CreateExpressionScaffold(),
-        );
-        break;
+
       case Screen.den:
         child = JuntoDen();
         break;
@@ -105,7 +107,11 @@ class NewHomeState extends State<NewHome> {
       ),
       scaffold: Stack(
         children: [
-          showScreen(),
+          if (!showCreateScreen) showScreen(),
+          if (showCreateScreen)
+            FeatureDiscovery(
+              child: CreateExpressionScaffold(),
+            ),
           if (_currentScreen != Screen.create)
             Positioned(
               left: 0,

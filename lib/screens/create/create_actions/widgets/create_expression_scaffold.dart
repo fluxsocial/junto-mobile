@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_context_overlay.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
@@ -23,10 +24,12 @@ class CreateExpressionScaffold extends StatefulWidget {
     Key key,
     this.onNext,
     this.expressionHasData,
+    this.expressionContext = ExpressionContext.Collective,
   }) : super(key: key);
 
   final VoidCallback onNext;
   final Function expressionHasData;
+  final ExpressionContext expressionContext;
 
   @override
   State<StatefulWidget> createState() {
@@ -37,8 +40,17 @@ class CreateExpressionScaffold extends StatefulWidget {
 class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
   UserData userData;
   ExpressionType currentExpressionType = ExpressionType.none;
+  ExpressionContext expressionContext;
+  bool chooseContextVisibility = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    expressionContext = widget.expressionContext;
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -90,6 +102,18 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
     });
   }
 
+  void toggleSocialContextVisibility(bool value) {
+    setState(() {
+      chooseContextVisibility = value;
+    });
+  }
+
+  void selectExpressionContext(ExpressionContext newExpressionContext) {
+    setState(() {
+      expressionContext = newExpressionContext;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
@@ -97,142 +121,159 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
         create: (BuildContext context) {
           return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
         },
-        child: Scaffold(
-          key: _scaffoldKey,
-          body: JuntoFilterDrawer(
-            leftDrawer: null,
-            rightMenu: JuntoDrawer(),
-            scaffold: Scaffold(
-              appBar: CreateAppBar(
-                onNext: widget.onNext,
-                expressionHasData: widget.expressionHasData,
-              ),
-              resizeToAvoidBottomPadding: false,
-              resizeToAvoidBottomInset: false,
-              body: Stack(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * .1,
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        CreateTopBar(
-                          profilePicture: userData.user.profilePicture,
-                        ),
-                        _buildExpressionType(),
-                      ],
-                    ),
+        child: Stack(
+          children: [
+            Scaffold(
+              key: _scaffoldKey,
+              body: JuntoFilterDrawer(
+                leftDrawer: null,
+                rightMenu: JuntoDrawer(),
+                scaffold: Scaffold(
+                  appBar: CreateAppBar(
+                    onNext: widget.onNext,
+                    expressionHasData: widget.expressionHasData,
                   ),
-                  Column(
+                  resizeToAvoidBottomPadding: false,
+                  resizeToAvoidBottomInset: false,
+                  body: Stack(
                     children: [
-                      Expanded(
-                        child: DraggableScrollableSheet(
-                            minChildSize: .1,
-                            maxChildSize: .3,
-                            initialChildSize: .3,
-                            builder: (context, scrollController) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).backgroundColor,
-                                  border: Border(
-                                    top: BorderSide(
-                                      color: Theme.of(context).dividerColor,
-                                      width: .75,
+                      Container(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * .1,
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            CreateTopBar(
+                              profilePicture: userData.user.profilePicture,
+                              toggleSocialContextVisibility:
+                                  toggleSocialContextVisibility,
+                            ),
+                            _buildExpressionType(),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Expanded(
+                            child: DraggableScrollableSheet(
+                                minChildSize: .1,
+                                maxChildSize: .3,
+                                initialChildSize: .3,
+                                builder: (context, scrollController) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).backgroundColor,
+                                      border: Border(
+                                        top: BorderSide(
+                                          color: Theme.of(context).dividerColor,
+                                          width: .75,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                child: ListView(
-                                  controller: scrollController,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                    child: ListView(
+                                      controller: scrollController,
                                       children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 7.5,
+                                              width: 100,
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .dividerColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(25),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                         Container(
-                                          height: 7.5,
-                                          width: 100,
-                                          margin: const EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               vertical: 10),
-                                          decoration: BoxDecoration(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Icon(
+                                            CustomIcons.create,
+                                            size: 20,
                                             color:
-                                                Theme.of(context).dividerColor,
-                                            borderRadius:
-                                                BorderRadius.circular(25),
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 100,
+                                          color:
+                                              Theme.of(context).backgroundColor,
+                                          child: Row(
+                                            children: [
+                                              CreateExpressionIcon(
+                                                expressionType:
+                                                    ExpressionType.dynamic,
+                                                currentExpressionType:
+                                                    currentExpressionType,
+                                                switchExpressionType:
+                                                    chooseExpressionType,
+                                              ),
+                                              CreateExpressionIcon(
+                                                expressionType:
+                                                    ExpressionType.shortform,
+                                                currentExpressionType:
+                                                    currentExpressionType,
+                                                switchExpressionType:
+                                                    chooseExpressionType,
+                                              ),
+                                              CreateExpressionIcon(
+                                                expressionType:
+                                                    ExpressionType.link,
+                                                currentExpressionType:
+                                                    currentExpressionType,
+                                                switchExpressionType:
+                                                    chooseExpressionType,
+                                              ),
+                                              CreateExpressionIcon(
+                                                expressionType:
+                                                    ExpressionType.photo,
+                                                currentExpressionType:
+                                                    currentExpressionType,
+                                                switchExpressionType:
+                                                    chooseExpressionType,
+                                              ),
+                                              CreateExpressionIcon(
+                                                expressionType:
+                                                    ExpressionType.audio,
+                                                currentExpressionType:
+                                                    currentExpressionType,
+                                                switchExpressionType:
+                                                    chooseExpressionType,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      margin: const EdgeInsets.only(bottom: 10),
-                                      child: Icon(
-                                        CustomIcons.create,
-                                        size: 20,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 100,
-                                      color: Theme.of(context).backgroundColor,
-                                      child: Row(
-                                        children: [
-                                          CreateExpressionIcon(
-                                            expressionType:
-                                                ExpressionType.dynamic,
-                                            currentExpressionType:
-                                                currentExpressionType,
-                                            switchExpressionType:
-                                                chooseExpressionType,
-                                          ),
-                                          CreateExpressionIcon(
-                                            expressionType:
-                                                ExpressionType.shortform,
-                                            currentExpressionType:
-                                                currentExpressionType,
-                                            switchExpressionType:
-                                                chooseExpressionType,
-                                          ),
-                                          CreateExpressionIcon(
-                                            expressionType: ExpressionType.link,
-                                            currentExpressionType:
-                                                currentExpressionType,
-                                            switchExpressionType:
-                                                chooseExpressionType,
-                                          ),
-                                          CreateExpressionIcon(
-                                            expressionType:
-                                                ExpressionType.photo,
-                                            currentExpressionType:
-                                                currentExpressionType,
-                                            switchExpressionType:
-                                                chooseExpressionType,
-                                          ),
-                                          CreateExpressionIcon(
-                                            expressionType:
-                                                ExpressionType.audio,
-                                            currentExpressionType:
-                                                currentExpressionType,
-                                            switchExpressionType:
-                                                chooseExpressionType,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
+                                  );
+                                }),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
+            if (chooseContextVisibility)
+              CreateContextOverlay(
+                currentExpressionContext: expressionContext,
+                selectExpressionContext: selectExpressionContext,
+                toggleSocialContextVisibility: toggleSocialContextVisibility,
+              ),
+          ],
         ),
       ),
     );
