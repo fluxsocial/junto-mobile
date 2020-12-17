@@ -145,6 +145,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
                               profilePicture: userData.user.profilePicture,
                               toggleSocialContextVisibility:
                                   toggleSocialContextVisibility,
+                              currentExpressionContext: expressionContext,
                             ),
                             _buildExpressionType(),
                           ],

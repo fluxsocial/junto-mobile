@@ -19,7 +19,7 @@ class CreateContextOverlay extends StatelessWidget {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Theme.of(context).primaryColorDark.withOpacity(.8),
+        color: Colors.black.withOpacity(.7),
         child: Center(
           child: Container(
             decoration: BoxDecoration(

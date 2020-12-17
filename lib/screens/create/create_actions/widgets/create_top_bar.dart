@@ -1,14 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 
 class CreateTopBar extends StatelessWidget {
   const CreateTopBar({
     this.profilePicture,
     this.toggleSocialContextVisibility,
+    this.currentExpressionContext,
   });
 
   final List<dynamic> profilePicture;
   final Function toggleSocialContextVisibility;
+  final ExpressionContext currentExpressionContext;
+
+  String _currentExpressionContext() {
+    String socialContext;
+    switch (currentExpressionContext) {
+      case ExpressionContext.Collective:
+        socialContext = 'Collective';
+        break;
+
+      case ExpressionContext.Group:
+        socialContext = 'My Pack';
+        break;
+      default:
+        socialContext = 'Collective';
+        break;
+    }
+    return socialContext;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -44,7 +65,7 @@ class CreateTopBar extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(right: 5),
                     child: Text(
-                      'Collective',
+                      _currentExpressionContext(),
                       style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).primaryColorLight,
