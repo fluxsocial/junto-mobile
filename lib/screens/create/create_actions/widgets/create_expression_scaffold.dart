@@ -82,11 +82,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
         break;
 
       case ExpressionType.none:
-        child = Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Theme.of(context).backgroundColor,
-        );
+        child = SizedBox();
         break;
 
       default:
