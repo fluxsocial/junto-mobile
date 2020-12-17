@@ -28,17 +28,18 @@ class NewHome extends StatefulWidget {
 }
 
 class NewHomeState extends State<NewHome> {
-  String _userAddress;
   UserData _userData;
   UserDataProvider userProvider;
 
   Screen _currentScreen;
+  Screen _latestScreen;
   bool showCreateScreen = false;
 
   @override
   void initState() {
     super.initState();
     _currentScreen = widget.screen;
+    _latestScreen = widget.screen;
   }
 
   @override
@@ -55,7 +56,6 @@ class NewHomeState extends State<NewHome> {
   }
 
   Future<void> getUserInformation() async {
-    _userAddress = userProvider.userAddress;
     _userData = userProvider.userProfile;
   }
 
@@ -66,8 +66,20 @@ class NewHomeState extends State<NewHome> {
         showCreateScreen = true;
       } else {
         showCreateScreen = false;
+        _latestScreen = screen;
       }
     });
+  }
+
+  void closeCreate() {
+    setState(() {
+      _currentScreen = _latestScreen;
+      showCreateScreen = false;
+      if (_latestScreen == Screen.create) {
+        _currentScreen = Screen.collective;
+      }
+    });
+    print(_currentScreen);
   }
 
   Widget showScreen() {
@@ -110,7 +122,9 @@ class NewHomeState extends State<NewHome> {
           if (!showCreateScreen) showScreen(),
           if (showCreateScreen)
             FeatureDiscovery(
-              child: CreateExpressionScaffold(),
+              child: CreateExpressionScaffold(
+                closeCreate: closeCreate,
+              ),
             ),
           if (_currentScreen != Screen.create)
             Positioned(

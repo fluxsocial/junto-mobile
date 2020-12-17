@@ -148,9 +148,11 @@ class SpheresState extends State<Spheres> with ListDistinct {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    circlesPageController.animateToPage(0,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeIn);
+                    circlesPageController.animateToPage(
+                      0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeIn,
+                    );
                   },
                   child: Container(
                     child: Text(

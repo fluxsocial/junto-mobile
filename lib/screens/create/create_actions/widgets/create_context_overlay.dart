@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_c
 
 class CreateContextOverlay extends StatelessWidget {
   const CreateContextOverlay({
-    this.currentExpressionContext,
+    this.currentExpressionContext = ExpressionContext.Collective,
     this.selectExpressionContext,
     this.toggleSocialContextVisibility,
   });

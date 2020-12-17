@@ -22,15 +22,12 @@ import 'package:provider/provider.dart';
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
     Key key,
-    this.onNext,
-    this.expressionHasData,
-    this.expressionContext = ExpressionContext.Collective,
+    this.expressionContext,
+    this.closeCreate,
   }) : super(key: key);
 
-  final VoidCallback onNext;
-  final Function expressionHasData;
   final ExpressionContext expressionContext;
-
+  final Function closeCreate;
   @override
   State<StatefulWidget> createState() {
     return CreateExpressionScaffoldState();
@@ -42,6 +39,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
   ExpressionType currentExpressionType = ExpressionType.none;
   ExpressionContext expressionContext;
   bool chooseContextVisibility = false;
+  PageController createPageController;
+  int _currentIndex = 0;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -49,6 +48,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
   void initState() {
     super.initState();
     expressionContext = widget.expressionContext;
+    createPageController = PageController(initialPage: 0);
   }
 
   @override
@@ -110,6 +110,24 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
     });
   }
 
+  void closeCreation() {
+    setState(() {});
+  }
+
+  void togglePageView(int page) {
+    createPageController.animateToPage(
+      page,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeIn,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    createPageController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
@@ -120,18 +138,24 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
         child: Stack(
           children: [
             Scaffold(
-              key: _scaffoldKey,
-              body: JuntoFilterDrawer(
-                leftDrawer: null,
-                rightMenu: JuntoDrawer(),
-                scaffold: Scaffold(
-                  appBar: CreateAppBar(
-                    onNext: widget.onNext,
-                    expressionHasData: widget.expressionHasData,
-                  ),
-                  resizeToAvoidBottomPadding: false,
-                  resizeToAvoidBottomInset: false,
-                  body: Stack(
+              appBar: CreateAppBar(
+                closeCreate: widget.closeCreate,
+                togglePageView: togglePageView,
+                currentIndex: _currentIndex,
+              ),
+              resizeToAvoidBottomPadding: false,
+              resizeToAvoidBottomInset: false,
+              body: PageView(
+                controller: createPageController,
+                physics: NeverScrollableScrollPhysics(),
+                onPageChanged: (int index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                children: [
+                  // Create Screen 1 - Make Content
+                  Stack(
                     children: [
                       Container(
                         height: MediaQuery.of(context).size.height,
@@ -157,7 +181,14 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
                       ),
                     ],
                   ),
-                ),
+
+                  // Create Screen 2 - Review Content
+                  Container(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.orange,
+                  ),
+                ],
               ),
             ),
             if (chooseContextVisibility)
