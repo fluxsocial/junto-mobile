@@ -115,11 +115,6 @@ class HomePageContentState extends State<HomePageContent>
     super.didChangeDependencies();
     _checkServerVersion();
     configureNotifications();
-    context.bloc<AuthBloc>().listen((state) {
-      if (state is AuthUnauthenticated) {
-        FirebaseMessaging()..deleteInstanceID();
-      }
-    });
   }
 
   Future<void> configureNotifications() async {
