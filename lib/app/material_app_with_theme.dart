@@ -107,14 +107,7 @@ class HomePageContentState extends State<HomePageContent>
     WidgetsBinding.instance.addObserver(this);
     super.initState();
     final messaging = FirebaseMessaging();
-    messaging.configure(
-      onLaunch: (_) {
-        logger.logDebug('Launch message $_');
-      },
-      onMessage: (_) {
-        logger.logDebug('message $_');
-      },
-    );
+    messaging.configure();
   }
 
   @override
@@ -122,6 +115,11 @@ class HomePageContentState extends State<HomePageContent>
     super.didChangeDependencies();
     _checkServerVersion();
     configureNotifications();
+    context.bloc<AuthBloc>().listen((state) {
+      if (state is AuthUnauthenticated) {
+        FirebaseMessaging()..deleteInstanceID();
+      }
+    });
   }
 
   Future<void> configureNotifications() async {
@@ -132,9 +130,9 @@ class HomePageContentState extends State<HomePageContent>
       if (_isFirst) {
         final token = await notificationRepo.getFCMToken();
         await notificationRepo.requestPermissions();
-        // await notificationRepo.registerDevice(token);
-        // await notificationRepo
-        //     .manageNotifications(NotificationPrefsModel.enabled());
+        await notificationRepo.registerDevice(token);
+        await notificationRepo
+            .manageNotifications(NotificationPrefsModel.enabled());
         await appRepo.setFirstLaunch();
         return;
       } else {
