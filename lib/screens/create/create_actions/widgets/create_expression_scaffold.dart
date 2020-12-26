@@ -5,8 +5,6 @@ import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_a
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_context_overlay.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/choose_expression_sheet.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
@@ -22,11 +20,9 @@ import 'package:provider/provider.dart';
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
     Key key,
-    this.expressionContext,
     this.closeCreate,
   }) : super(key: key);
 
-  final ExpressionContext expressionContext;
   final Function closeCreate;
   @override
   State<StatefulWidget> createState() {
@@ -37,7 +33,7 @@ class CreateExpressionScaffold extends StatefulWidget {
 class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
   UserData userData;
   ExpressionType currentExpressionType = ExpressionType.none;
-  ExpressionContext expressionContext;
+  ExpressionContext expressionContext = ExpressionContext.Collective;
   bool chooseContextVisibility = false;
   PageController createPageController;
   int _currentIndex = 0;
@@ -47,7 +43,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
   @override
   void initState() {
     super.initState();
-    expressionContext = widget.expressionContext;
     createPageController = PageController(initialPage: 0);
   }
 

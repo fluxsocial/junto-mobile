@@ -54,6 +54,8 @@ class ChooseExpressionContext extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(expressionContext);
+    print(currentExpressionContext);
     return GestureDetector(
       onTap: () {
         selectExpressionContext(expressionContext);
