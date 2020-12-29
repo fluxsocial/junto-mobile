@@ -177,7 +177,7 @@ class CreateShortformState extends State<CreateShortform>
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
       },
       child: Expanded(
-              child: Stack(
+        child: Stack(
           children: [
             Column(
               children: <Widget>[
@@ -228,8 +228,8 @@ class CreateShortformState extends State<CreateShortform>
 
                                   listType = ListType.mention;
 
-                                  completeUserList =
-                                      generateFinalList(completeUserList, _users);
+                                  completeUserList = generateFinalList(
+                                      completeUserList, _users);
                                 });
                               }
                             }
@@ -267,7 +267,8 @@ class CreateShortformState extends State<CreateShortform>
                                     horizontal: 25.0,
                                   ),
                                   constraints: BoxConstraints(
-                                    minHeight: MediaQuery.of(context).size.width,
+                                    minHeight:
+                                        MediaQuery.of(context).size.width,
                                   ),
                                   width: MediaQuery.of(context).size.width,
                                   alignment: Alignment.center,
@@ -302,9 +303,8 @@ class CreateShortformState extends State<CreateShortform>
                                                 QueryUserBy.BOTH,
                                               ));
                                         } else {
-                                          context
-                                              .bloc<SearchBloc>()
-                                              .add(SearchingChannelEvent(value));
+                                          context.bloc<SearchBloc>().add(
+                                              SearchingChannelEvent(value));
                                         }
                                       } else {
                                         setState(() {
@@ -320,7 +320,10 @@ class CreateShortformState extends State<CreateShortform>
                                     mentions: getMention(
                                       context,
                                       [...addedmentions, ...completeUserList],
-                                      [...addedChannels, ...completeChannelsList],
+                                      [
+                                        ...addedChannels,
+                                        ...completeChannelsList
+                                      ],
                                     ),
                                     buildCounter: (
                                       BuildContext context, {

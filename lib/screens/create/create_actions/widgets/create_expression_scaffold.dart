@@ -37,8 +37,16 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
   bool chooseContextVisibility = false;
   PageController createPageController;
   int _currentIndex = 0;
+  dynamic expression;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<CreateLongformState> _longformKey =
+      GlobalKey<CreateLongformState>();
+  final GlobalKey<CreateShortformState> _shortformKey =
+      GlobalKey<CreateShortformState>();
+  final GlobalKey<CreateLinkFormState> _linkKey =
+      GlobalKey<CreateLinkFormState>();
+  final GlobalKey<CreatePhotoState> _photoKey = GlobalKey<CreatePhotoState>();
+  final GlobalKey<CreateAudioState> _audioKey = GlobalKey<CreateAudioState>();
 
   @override
   void initState() {
@@ -57,23 +65,23 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
     Widget child;
     switch (currentExpressionType) {
       case ExpressionType.dynamic:
-        child = CreateLongform();
+        child = CreateLongform(key: _longformKey);
         break;
 
       case ExpressionType.shortform:
-        child = CreateShortform();
+        child = CreateShortform(key: _shortformKey);
         break;
 
       case ExpressionType.link:
-        child = CreateLinkForm();
+        child = CreateLinkForm(key: _linkKey);
         break;
 
       case ExpressionType.photo:
-        child = CreatePhoto();
+        child = CreatePhoto(key: _photoKey);
         break;
 
       case ExpressionType.audio:
-        child = CreateAudio();
+        child = CreateAudio(key: _audioKey);
         break;
 
       case ExpressionType.none:
@@ -81,7 +89,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
         break;
 
       default:
-        child = CreateLongform();
+        child = CreateLongform(key: _longformKey);
         break;
     }
     return child;
@@ -115,6 +123,45 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeIn,
     );
+    if (page == 1) {
+      dynamic expressionInProgress;
+
+      switch (currentExpressionType) {
+        case ExpressionType.dynamic:
+          expressionInProgress = _longformKey.currentState.createExpression();
+
+          break;
+
+        case ExpressionType.shortform:
+          expressionInProgress = _shortformKey.currentState.createExpression();
+
+          break;
+
+        case ExpressionType.link:
+          expressionInProgress = _linkKey.currentState.createExpression();
+
+          break;
+
+        case ExpressionType.photo:
+          expressionInProgress = _photoKey.currentState.createExpression();
+
+          break;
+
+        // case ExpressionType.audio:
+        //   expressionInProgress = _audioKey.currentState.createExpression();
+
+        //   break;
+
+        case ExpressionType.none:
+          break;
+
+        default:
+          break;
+      }
+      setState(() {
+        expression = expressionInProgress;
+      });
+    }
   }
 
   @override
