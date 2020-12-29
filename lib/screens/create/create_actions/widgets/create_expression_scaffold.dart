@@ -12,6 +12,10 @@ import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/link.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio.dart';
+import 'package:junto_beta_mobile/screens/create/create_review/longform_review.dart';
+import 'package:junto_beta_mobile/screens/create/create_review/shortform_review.dart';
+import 'package:junto_beta_mobile/screens/create/create_review/photo_review.dart';
+import 'package:junto_beta_mobile/screens/create/create_review/link_review.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
@@ -70,6 +74,40 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
 
       case ExpressionType.shortform:
         child = CreateShortform(key: _shortformKey);
+        break;
+
+      case ExpressionType.link:
+        child = CreateLinkForm(key: _linkKey);
+        break;
+
+      case ExpressionType.photo:
+        child = CreatePhoto(key: _photoKey);
+        break;
+
+      case ExpressionType.audio:
+        child = CreateAudio(key: _audioKey);
+        break;
+
+      case ExpressionType.none:
+        child = SizedBox();
+        break;
+
+      default:
+        child = CreateLongform(key: _longformKey);
+        break;
+    }
+    return child;
+  }
+
+  Widget _buildReview() {
+    Widget child;
+    switch (currentExpressionType) {
+      case ExpressionType.dynamic:
+        child = CreateLongformReview(expression: expression);
+        break;
+
+      case ExpressionType.shortform:
+        child = CreateShortformReview(expression: expression);
         break;
 
       case ExpressionType.link:
@@ -225,10 +263,16 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
                   ),
 
                   // Create Screen 2 - Review Content
-                  Container(
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.orange,
+                  Column(
+                    children: [
+                      CreateTopBar(
+                        profilePicture: userData.user.profilePicture,
+                        toggleSocialContextVisibility:
+                            toggleSocialContextVisibility,
+                        currentExpressionContext: expressionContext,
+                      ),
+                      _buildReview(),
+                    ],
                   ),
                 ],
               ),
