@@ -115,7 +115,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
         break;
 
       case ExpressionType.photo:
-        child = CreatePhoto(key: _photoKey);
+        child = CreatePhotoReview(expression: expression);
         break;
 
       case ExpressionType.audio:
