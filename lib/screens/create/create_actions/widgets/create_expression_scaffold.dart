@@ -111,7 +111,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold> {
         break;
 
       case ExpressionType.link:
-        child = CreateLinkForm(key: _linkKey);
+        child = CreateLinkFormReview(expression: expression);
         break;
 
       case ExpressionType.photo:
