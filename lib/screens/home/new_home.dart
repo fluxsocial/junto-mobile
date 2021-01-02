@@ -124,6 +124,7 @@ class NewHomeState extends State<NewHome> {
             FeatureDiscovery(
               child: CreateExpressionScaffold(
                 closeCreate: closeCreate,
+                changeScreen: changeScreen,
               ),
             ),
           if (_currentScreen != Screen.create)

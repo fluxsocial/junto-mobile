@@ -6,17 +6,12 @@ import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
@@ -24,11 +19,7 @@ import 'package:provider/provider.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
-  const CreatePhoto({Key key, this.address, this.expressionContext})
-      : super(key: key);
-
-  final ExpressionContext expressionContext;
-  final String address;
+  const CreatePhoto({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -42,7 +33,6 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
   File imageFile;
   ImageSource imageSource;
   FocusNode _captionFocus;
-  bool _showBottomNav = true;
   GlobalKey<FlutterMentionsState> mentionKey =
       GlobalKey<FlutterMentionsState>();
   bool _showList = false;
@@ -116,7 +106,6 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       setState(() {
         imageFile = cropped;
       });
-      _toggleBottomNav(false);
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -140,19 +129,24 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       return;
     }
     setState(() => imageFile = cropped);
-    _toggleBottomNav(false);
   }
 
   /// Creates a [PhotoFormExpression] from the given data entered
   /// by the user.
   Map<String, dynamic> createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
-    final mentions = getMentionUserId(markupText);
-    final channels = getChannelsId(markupText);
 
     return <String, dynamic>{
       'image': imageFile,
       'caption': markupText.trim(),
+    };
+  }
+
+  Map<String, List<String>> getMentionsAndChannels() {
+    final markupText = mentionKey.currentState.controller.markupText;
+    final mentions = getMentionUserId(markupText);
+    final channels = getChannelsId(markupText);
+    return <String, List<String>>{
       'mentions': mentions,
       'channels': channels,
     };
@@ -164,71 +158,6 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
     } else {
       return false;
     }
-  }
-
-  void _onNext() {
-    if (_expressionHasData() == true) {
-      final Map<String, dynamic> expression = createExpression();
-
-      if (expression['channels'].length > 5) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => SingleActionDialog(
-            context: context,
-            dialogText:
-                'You can only add five channels. Please reduce the number of channels you have before continuing.',
-          ),
-        );
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) {
-              if (widget.expressionContext == ExpressionContext.Comment) {
-                return CreateCommentActions(
-                  expression: expression,
-                  address: widget.address,
-                  expressionType: ExpressionType.photo,
-                );
-              } else {
-                return CreateActions(
-                  expressionType: ExpressionType.photo,
-                  address: widget.address,
-                  expressionContext: widget.expressionContext,
-                  expression: expression,
-                  mentions: expression['mentions'],
-                  channels: expression['channels'],
-                );
-              }
-            },
-          ),
-        );
-      }
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Please add a photo.',
-        ),
-      );
-      return;
-    }
-  }
-
-  void _toggleBottomNav(bool value) {
-    setState(() {
-      _showBottomNav = value;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void toggleSearch(bool value) {
@@ -453,7 +382,6 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                               imageFile = null;
                             });
                             _onPickPressed(source: imageSource);
-                            _toggleBottomNav(true);
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * .5,

@@ -9,9 +9,9 @@ class CreateLongformReview extends StatelessWidget {
   Widget build(BuildContext context) {
     final String longformTitle = expression.title;
     final String longformBody = expression.body;
-    return Expanded(
-      child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
         children: <Widget>[
           if (longformTitle.isNotEmpty)
             Container(

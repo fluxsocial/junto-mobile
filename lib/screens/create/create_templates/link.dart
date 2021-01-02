@@ -3,26 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/app/app_config.dart';
-import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
 class CreateLinkForm extends StatefulWidget {
-  const CreateLinkForm({Key key, this.expressionContext, this.address})
-      : super(key: key);
-
-  final ExpressionContext expressionContext;
-  final String address;
+  const CreateLinkForm({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => CreateLinkFormState();
@@ -32,7 +23,6 @@ class CreateLinkFormState extends State<CreateLinkForm>
     with CreateExpressionHelpers {
   FocusNode _linkFocus;
   FocusNode _captionFocus;
-  bool _showBottomNav = true;
   String caption;
   String url;
   String title;
@@ -58,8 +48,6 @@ class CreateLinkFormState extends State<CreateLinkForm>
     _urlController = TextEditingController();
     _linkFocus = FocusNode();
     _captionFocus = FocusNode();
-    _linkFocus.addListener(toggleBottomNav);
-    _captionFocus.addListener(toggleBottomNav);
   }
 
   @override
@@ -69,12 +57,6 @@ class CreateLinkFormState extends State<CreateLinkForm>
     _linkFocus.dispose();
     _captionFocus.dispose();
     super.dispose();
-  }
-
-  void toggleBottomNav() {
-    setState(() {
-      _showBottomNav = !_showBottomNav;
-    });
   }
 
   LinkFormExpression createExpression() {
@@ -90,6 +72,13 @@ class CreateLinkFormState extends State<CreateLinkForm>
     );
   }
 
+  Map<String, List<String>> getMentionsAndChannels() {
+    final LinkFormExpression expression = createExpression();
+    final mentions = getMentionUserId(expression.caption);
+    final channels = getChannelsId(expression.caption);
+    return {'mentions': mentions, 'channels': channels};
+  }
+
   bool validate() {
     final text = _urlController.value.text.toLowerCase().trim();
     if (text.startsWith('http://') || text.startsWith('https://')) {
@@ -99,58 +88,6 @@ class CreateLinkFormState extends State<CreateLinkForm>
       return true;
     } else {
       return false;
-    }
-  }
-
-  void _onNext() {
-    if (validate() == true) {
-      final LinkFormExpression expression = createExpression();
-      final mentions = getMentionUserId(expression.caption);
-      final channels = getChannelsId(expression.caption);
-
-      if (channels.length > 5) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => SingleActionDialog(
-            context: context,
-            dialogText:
-                'You can only add five channels. Please reduce the number of channels you have before continuing.',
-          ),
-        );
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) {
-              if (widget.expressionContext == ExpressionContext.Comment) {
-                return CreateCommentActions(
-                  expression: expression,
-                  address: widget.address,
-                  expressionType: ExpressionType.link,
-                );
-              } else {
-                return CreateActions(
-                  expressionType: ExpressionType.link,
-                  address: widget.address,
-                  expressionContext: widget.expressionContext,
-                  expression: expression,
-                  mentions: mentions,
-                  channels: channels,
-                );
-              }
-            },
-          ),
-        );
-      }
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText:
-              "Please enter a valid url. Your link must start with 'http' or 'https'",
-        ),
-      );
-      return;
     }
   }
 

@@ -128,6 +128,25 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
     });
   }
 
+  AudioFormExpression createExpression(AudioService audio) {
+    final markupText = mentionKey.currentState.controller.markupText;
+
+    return AudioFormExpression(
+      audio: audio.recordingPath,
+      title: titleController.text.trim(),
+      photo: audioPhotoBackground?.path,
+      gradient: audioGradientValues,
+      caption: markupText.trim(),
+    );
+  }
+
+  Map<String, List<String>> getMentionsAndChannels() {
+    final markupText = mentionKey.currentState.controller.markupText;
+    final mentions = getMentionUserId(markupText);
+    final channels = getChannelsId(markupText);
+    return {'mentions': mentions, 'channels': channels};
+  }
+
   @override
   void initState() {
     super.initState();

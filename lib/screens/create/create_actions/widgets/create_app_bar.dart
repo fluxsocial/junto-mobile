@@ -7,11 +7,13 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
     @required this.closeCreate,
     @required this.togglePageView,
     @required this.currentIndex,
+    @required this.createExpression,
   }) : super(key: key);
 
   final Function closeCreate;
   final Function togglePageView;
   final int currentIndex;
+  final Function createExpression;
 
   Map<String, Widget> _buildAppBarWidgets(BuildContext context) {
     Widget backWidget;
@@ -71,6 +73,7 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
         ctaWidget = CreateCTAButton(
           cta: () {
             // Create Expression
+            createExpression();
           },
           title: 'Create',
         );

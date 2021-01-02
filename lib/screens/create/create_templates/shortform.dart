@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
@@ -34,7 +30,6 @@ class CreateShortform extends StatefulWidget {
 class CreateShortformState extends State<CreateShortform>
     with CreateExpressionHelpers {
   final FocusNode _focus = FocusNode();
-  bool _showBottomNav = true;
   String gradientOne;
   String gradientTwo;
   GlobalKey<FlutterMentionsState> mentionKey =
@@ -48,12 +43,6 @@ class CreateShortformState extends State<CreateShortform>
   List<Map<String, dynamic>> completeChannelsList = [];
   ListType listType = ListType.empty;
 
-  void toggleBottomNav() {
-    setState(() {
-      _showBottomNav = !_showBottomNav;
-    });
-  }
-
   /// Creates a [ShortFormExpression] from the given data entered
   /// by the user.
   ShortFormExpression createExpression() {
@@ -63,6 +52,13 @@ class CreateShortformState extends State<CreateShortform>
       body: markupText.trim(),
       background: <dynamic>[gradientOne, gradientTwo],
     );
+  }
+
+  Map<String, List<String>> getMentionsAndChannels() {
+    final ShortFormExpression expression = createExpression();
+    final mentions = getMentionUserId(expression.body);
+    final channels = getChannelsId(expression.body);
+    return {'mentions': mentions, 'channels': channels};
   }
 
   bool expressionHasData() {
@@ -75,7 +71,6 @@ class CreateShortformState extends State<CreateShortform>
     super.initState();
     gradientOne = 'fff8ee';
     gradientTwo = 'ffeee0';
-    _focus.addListener(toggleBottomNav);
   }
 
   @override
@@ -117,57 +112,6 @@ class CreateShortformState extends State<CreateShortform>
         ),
       ),
     );
-  }
-
-  void _onNext() {
-    if (expressionHasData() == true) {
-      final ShortFormExpression expression = createExpression();
-      final mentions = getMentionUserId(expression.body);
-      final channels = getChannelsId(expression.body);
-
-      if (channels.length > 5) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => SingleActionDialog(
-            context: context,
-            dialogText:
-                'You can only add five channels. Please reduce the number of channels you have before continuing',
-          ),
-        );
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) {
-              if (widget.expressionContext == ExpressionContext.Comment) {
-                return CreateCommentActions(
-                  expression: expression,
-                  address: widget.address,
-                  expressionType: ExpressionType.shortform,
-                );
-              } else {
-                return CreateActions(
-                  expressionType: ExpressionType.shortform,
-                  address: widget.address,
-                  expressionContext: widget.expressionContext,
-                  expression: expression,
-                  mentions: mentions,
-                  channels: channels,
-                );
-              }
-            },
-          ),
-        );
-      }
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: "Please make sure the text field isn't blank",
-        ),
-      );
-      return;
-    }
   }
 
   @override

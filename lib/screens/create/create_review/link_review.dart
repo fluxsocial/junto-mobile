@@ -11,9 +11,10 @@ class CreateLinkFormReview extends StatelessWidget {
   final LinkFormExpression expression;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (expression.title.isNotEmpty)
             Container(
