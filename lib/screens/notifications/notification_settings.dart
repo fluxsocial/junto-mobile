@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
-import 'package:provider/provider.dart';
 
 class NotificationSettingScreen extends StatefulWidget {
   @override
@@ -64,118 +62,107 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
           ),
         ),
       ),
-      body: BlocProvider(
-        create: (context) => NotificationSettingBloc(
-          Provider.of<NotificationRepo>(context, listen: false),
-        ),
-        child: BlocBuilder<NotificationSettingBloc, NotificationSettingState>(
-          builder: (context, state) {
-            if (state is NotificationSettingInitial) {
-              context
-                  .bloc<NotificationSettingBloc>()
-                  .add(FetchNotificationSetting());
-            } else if (state is NotificationSettingLoaded) {}
+      body: BlocBuilder<NotificationSettingBloc, NotificationSettingState>(
+        builder: (context, state) {
+          final data = state is NotificationSettingLoaded
+              ? state.notificationSettings
+              : NotificationPrefsModel.disabled();
 
-            final data = state is NotificationSettingLoaded
-                ? state.notificationSettings
-                : NotificationPrefsModel.disabled();
+          return Container(
+            child: ListView(
+              children: [
+                NotificationSettingsItem(
+                  title: 'Comment',
+                  value: data.comment,
+                  onChanged: (val) {
+                    final notifs = data.copyWith(comment: val);
 
-            return Container(
-              child: ListView(
-                children: [
-                  NotificationSettingsItem(
-                    title: 'Comment',
-                    value: data.comment,
-                    onChanged: (val) {
-                      final notifs = data.copyWith(comment: val);
+                    context
+                        .bloc<NotificationSettingBloc>()
+                        .add(UpdateNotificationSetting(options: notifs));
+                  },
+                ),
+                NotificationSettingsItem(
+                  title: 'Connection',
+                  value: data.connection,
+                  onChanged: (val) {
+                    final notifs = data.copyWith(connection: val);
 
-                      context
-                          .bloc<NotificationSettingBloc>()
-                          .add(UpdateNotificationSetting(options: notifs));
-                    },
-                  ),
-                  NotificationSettingsItem(
-                    title: 'Connection',
-                    value: data.connection,
-                    onChanged: (val) {
-                      final notifs = data.copyWith(connection: val);
+                    context
+                        .bloc<NotificationSettingBloc>()
+                        .add(UpdateNotificationSetting(options: notifs));
+                  },
+                ),
+                NotificationSettingsItem(
+                  title: 'Connection Request',
+                  value: data.connectionRequest,
+                  onChanged: (val) {
+                    final notifs = data.copyWith(connectionRequest: val);
 
-                      context
-                          .bloc<NotificationSettingBloc>()
-                          .add(UpdateNotificationSetting(options: notifs));
-                    },
-                  ),
-                  NotificationSettingsItem(
-                    title: 'Connection Request',
-                    value: data.connectionRequest,
-                    onChanged: (val) {
-                      final notifs = data.copyWith(connectionRequest: val);
+                    context
+                        .bloc<NotificationSettingBloc>()
+                        .add(UpdateNotificationSetting(options: notifs));
+                  },
+                ),
+                NotificationSettingsItem(
+                  title: 'General',
+                  value: data.general,
+                  onChanged: (val) {
+                    final notifs = data.copyWith(general: val);
 
-                      context
-                          .bloc<NotificationSettingBloc>()
-                          .add(UpdateNotificationSetting(options: notifs));
-                    },
-                  ),
-                  NotificationSettingsItem(
-                    title: 'General',
-                    value: data.general,
-                    onChanged: (val) {
-                      final notifs = data.copyWith(general: val);
+                    context
+                        .bloc<NotificationSettingBloc>()
+                        .add(UpdateNotificationSetting(options: notifs));
+                  },
+                ),
+                NotificationSettingsItem(
+                  title: 'Group Join Request',
+                  value: data.groupJoinRequest,
+                  onChanged: (val) {
+                    final notifs = data.copyWith(groupJoinRequest: val);
 
-                      context
-                          .bloc<NotificationSettingBloc>()
-                          .add(UpdateNotificationSetting(options: notifs));
-                    },
-                  ),
-                  NotificationSettingsItem(
-                    title: 'Group Join Request',
-                    value: data.groupJoinRequest,
-                    onChanged: (val) {
-                      final notifs = data.copyWith(groupJoinRequest: val);
+                    context
+                        .bloc<NotificationSettingBloc>()
+                        .add(UpdateNotificationSetting(options: notifs));
+                  },
+                ),
+                NotificationSettingsItem(
+                  title: 'Mention',
+                  value: data.mention,
+                  onChanged: (val) {
+                    final notifs = data.copyWith(mention: val);
 
-                      context
-                          .bloc<NotificationSettingBloc>()
-                          .add(UpdateNotificationSetting(options: notifs));
-                    },
-                  ),
-                  NotificationSettingsItem(
-                    title: 'Mention',
-                    value: data.mention,
-                    onChanged: (val) {
-                      final notifs = data.copyWith(mention: val);
+                    context
+                        .bloc<NotificationSettingBloc>()
+                        .add(UpdateNotificationSetting(options: notifs));
+                  },
+                ),
+                NotificationSettingsItem(
+                  title: 'Pack Relation',
+                  value: data.packRelation,
+                  onChanged: (val) {
+                    final notifs = data.copyWith(packRelation: val);
 
-                      context
-                          .bloc<NotificationSettingBloc>()
-                          .add(UpdateNotificationSetting(options: notifs));
-                    },
-                  ),
-                  NotificationSettingsItem(
-                    title: 'Pack Relation',
-                    value: data.packRelation,
-                    onChanged: (val) {
-                      final notifs = data.copyWith(packRelation: val);
+                    context
+                        .bloc<NotificationSettingBloc>()
+                        .add(UpdateNotificationSetting(options: notifs));
+                  },
+                ),
+                NotificationSettingsItem(
+                  title: 'Subscribe',
+                  value: data.subscribe,
+                  onChanged: (val) {
+                    final notifs = data.copyWith(subscribe: val);
 
-                      context
-                          .bloc<NotificationSettingBloc>()
-                          .add(UpdateNotificationSetting(options: notifs));
-                    },
-                  ),
-                  NotificationSettingsItem(
-                    title: 'Subscribe',
-                    value: data.subscribe,
-                    onChanged: (val) {
-                      final notifs = data.copyWith(subscribe: val);
-
-                      context
-                          .bloc<NotificationSettingBloc>()
-                          .add(UpdateNotificationSetting(options: notifs));
-                    },
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+                    context
+                        .bloc<NotificationSettingBloc>()
+                        .add(UpdateNotificationSetting(options: notifs));
+                  },
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

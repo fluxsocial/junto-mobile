@@ -12,6 +12,7 @@ import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_navigation_observer.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
@@ -127,7 +128,10 @@ class HomePageContentState extends State<HomePageContent>
   Future<void> configureNotifications() async {
     final notificationRepo = Provider.of<NotificationRepo>(context);
     final appRepo = Provider.of<AppRepo>(context);
+
     try {
+      context.bloc<NotificationSettingBloc>().add(FetchNotificationSetting());
+
       final _isFirst = await appRepo.isFirstLaunch();
       if (_isFirst) {
         final token = await notificationRepo.getFCMToken();
