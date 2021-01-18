@@ -77,7 +77,14 @@ class _JuntoMemberState extends State<JuntoMember>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    getUserInformation();
+    if (isConnected == null &&
+        isFollowed == null &&
+        isFollowing == null &&
+        hasPendingConnection == null &&
+        hasPendingPackRequest == null &&
+        isPackMember == null) {
+      getUserInformation();
+    }
   }
 
   Future<void> getUserInformation() async {
