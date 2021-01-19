@@ -68,10 +68,21 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
             onTap: !disableOnMentiontap
                 ? (url) {
                     Navigator.popUntil(context, (route) {
+                      final name = url.toString().replaceFirst('#', '');
+                      final foundChannel = state.selectedChannel != null
+                          ? state.selectedChannel
+                              .indexWhere((element) => element.name == name)
+                          : -1;
                       context.bloc<ChannelFilteringBloc>().add(
                             FilterSelected(
-                              Channel(
-                                  name: url.toString().replaceFirst('#', '')),
+                              [
+                                if (state.selectedChannel != null)
+                                  ...state.selectedChannel,
+                                if (foundChannel == -1)
+                                  Channel(
+                                    name: url.toString().replaceFirst('#', ''),
+                                  ),
+                              ],
                               ExpressionContextType.Collective,
                             ),
                           );

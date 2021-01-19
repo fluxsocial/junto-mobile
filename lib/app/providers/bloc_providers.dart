@@ -57,7 +57,8 @@ class BlocProviders extends StatelessWidget {
             (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
               FetchCollective(
                 ExpressionQueryParams(
-                  channels: value != null ? [value.name] : null,
+                  channels:
+                      value != null ? value.map((e) => e.name).toList() : null,
                 ),
               ),
             ),
