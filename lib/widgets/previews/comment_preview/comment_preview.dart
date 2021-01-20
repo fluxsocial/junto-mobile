@@ -98,6 +98,8 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                             comment: comment,
                             userAddress: userAddress,
                             source: 'preview',
+                            loadPreviousExpressionComments:
+                                loadPreviousExpressionComments,
                           ),
                         ),
                       );
