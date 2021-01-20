@@ -28,13 +28,10 @@ class DeleteAccountDialog extends StatelessWidget {
             .deleteUserAccount(user.userAddress);
         // Hide Junto Loader
         JuntoLoader.hide();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
         // Log user out
         await context.bloc<AuthBloc>().add(LogoutEvent());
-        // Bring user back to Welcome screen after logging out
-        Navigator.of(context).pushAndRemoveUntil(
-          FadeRoute(child: Welcome()),
-          ModalRoute.withName('/'),
-        );
       } catch (e, s) {
         JuntoLoader.hide();
         showDialog(
