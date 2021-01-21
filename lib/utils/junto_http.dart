@@ -158,6 +158,7 @@ class HeaderInterceptors extends Interceptor {
           .putIfAbsent("content-type", () => 'application/json; charset=utf-8');
       final key = await _getAuthKey();
       options.headers.putIfAbsent("Authorization", () => key);
+      options.headers.putIfAbsent('Accept-Encoding', () => 'br, gzip');
     }
     return SynchronousFuture(options);
   }
