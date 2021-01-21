@@ -52,7 +52,7 @@ dependencies:
   embedly_preview:
     # path: ../embedly-preview
     git:
-      url: https://github.com/juntofoundation/embedly-preview.git
+      url: git@github.com:juntofoundation/embedly-preview.git
       ref: master
   contacts_service: ^0.4.6
   permission_handler: ^5.0.1+1
