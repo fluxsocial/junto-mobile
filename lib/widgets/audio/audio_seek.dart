@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/utils/extensions/duration_ext.dart';
 
 class AudioSeek extends StatelessWidget {
   const AudioSeek({
@@ -35,7 +36,7 @@ class AudioSeek extends StatelessWidget {
                 max: getMaxDuration(audio),
                 min: 0,
                 onChanged: (val) {
-                  audio.seek(val);
+                  audio.seek(val.roundToDouble());
                 },
               ),
             ),
@@ -46,16 +47,25 @@ class AudioSeek extends StatelessWidget {
   }
 
   double getCurrentPosition(AudioService audio) {
+    Duration max;
+    if (audio.recordingAvailable) {
+      max = audio.recordingDuration;
+    } else {
+      max = audio.maxDuration;
+    }
+
     final duration = audio.currentPosition;
-    if (duration != null) return duration.inMilliseconds / 1000;
+    if (duration != null) {
+      return duration.secondCeilRounder(max).inSeconds.toDouble();
+    }
     return 0;
   }
 
   num getMaxDuration(AudioService audio) {
     if (audio.playBackAvailable) {
-      return audio.recordingDuration.inMilliseconds / 1000;
+      return audio.recordingDuration.secondFloorRounder().inSeconds.toDouble();
     }
 
-    return audio.maxDuration.inMilliseconds / 1000;
+    return audio.maxDuration.secondFloorRounder().inSeconds.toDouble();
   }
 }
