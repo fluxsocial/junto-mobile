@@ -213,7 +213,8 @@ class UserExpressProvider extends StatelessWidget {
                   'subExpressions': false,
                   'communityFeedback': false,
                 },
-                channels: value != null ? [value.name] : null,
+                channels:
+                    value != null ? value.map((e) => e.name).toList() : null,
               ),
             ),
           ),
