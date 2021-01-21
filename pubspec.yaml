@@ -31,7 +31,7 @@ dependencies:
   freezed_annotation: 0.11.0+1
   dio: 3.0.10
   url_launcher: 5.4.11
-  feature_discovery: 0.12.0+2
+  feature_discovery: 0.13.0+2
   intl: ^0.16.1
   just_audio: ^0.5.6
   flutter_audio_recorder: 0.5.5
