@@ -270,7 +270,7 @@ class UserProfile extends HiveObject {
       'website': website,
       'gender': gender,
       'email': email,
-      'created_at': createdAt.toIso8601String(),
+      'created_at': createdAt?.toIso8601String(),
       'badges': badges,
       'birthday': birthday,
     };
