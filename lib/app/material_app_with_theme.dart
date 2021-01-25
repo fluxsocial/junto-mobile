@@ -1,5 +1,6 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -61,6 +62,8 @@ class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
   Widget _buildChildFor({@required AuthState state}) {
+    print('test: $state');
+
     if (state is AuthLoading) {
       return HomeLoadingPage();
     } else if (state is AuthAgreementsRequired) {
@@ -78,6 +81,20 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
+        if (state is AuthUnauthenticated) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!(ModalRoute.of(context).isFirst &&
+                ModalRoute.of(context).isCurrent)) {
+              Navigator.of(context).pushAndRemoveUntil(
+                PageRouteBuilder(
+                  pageBuilder: (context, anim1, anim2) => HomePage(),
+                  transitionDuration: Duration(seconds: 0),
+                ),
+                (route) => false,
+              );
+            }
+          });
+        }
         return Stack(
           children: <Widget>[
             BackgroundTheme(),
