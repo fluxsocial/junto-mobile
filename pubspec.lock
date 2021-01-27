@@ -280,7 +280,7 @@ packages:
       path: "."
       ref: master
       resolved-ref: "6bfdc90bd9ded9a12d8d5f9440340b41c0896433"
-      url: "git@github.com:juntofoundation/embedly-preview.git"
+      url: "https://github.com/juntofoundation/embedly-preview.git"
     source: git
     version: "0.0.2"
   equatable:
