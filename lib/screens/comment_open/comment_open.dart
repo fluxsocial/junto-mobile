@@ -108,9 +108,6 @@ class CommentOpenState extends State<CommentOpen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    futureComments = Provider.of<ExpressionRepo>(context, listen: false)
-        .getExpressionsComments(widget.comment.address);
   }
 
   @override
@@ -125,6 +122,9 @@ class CommentOpenState extends State<CommentOpen> {
     super.initState();
     _scrollController = ScrollController();
     _focusNode = FocusNode();
+
+    futureComments = Provider.of<ExpressionRepo>(context, listen: false)
+        .getExpressionsComments(widget.comment.address);
   }
 
   @override
@@ -166,6 +166,14 @@ class CommentOpenState extends State<CommentOpen> {
                   userAddress: widget.userAddress,
                   futureComments: futureComments,
                   showComments: _showComments,
+                  loadPreviousExpressionComments: () {
+                    setState(() {
+                      final address = widget.comment.address;
+                      futureComments =
+                          Provider.of<ExpressionRepo>(context, listen: false)
+                              .getExpressionsComments(address);
+                    });
+                  },
                 ),
               ],
             ),

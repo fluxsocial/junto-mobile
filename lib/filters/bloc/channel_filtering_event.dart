@@ -11,7 +11,7 @@ class FilterQueryUpdated extends ChannelFilteringEvent {
 // user taps on a filter and this is applied to the feed
 class FilterSelected extends ChannelFilteringEvent {
   FilterSelected(this.item, this.contextType);
-  final Channel item;
+  final List<Channel> item;
   final ExpressionContextType contextType;
 }
 

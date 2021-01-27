@@ -111,9 +111,12 @@ class JuntoPacksState extends State<JuntoPacks>
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
           Provider.of<SearchRepo>(ctx, listen: false),
-          (value) => BlocProvider.of<PackBloc>(ctx).add(
-            FetchPacks(channel: value?.name),
-          ),
+          (value) {
+            print('test: $value');
+            BlocProvider.of<PackBloc>(ctx).add(
+              FetchPacks(channel: value.length > 0 ? value[0]?.name : ''),
+            );
+          },
         ),
         lazy: false,
       ),

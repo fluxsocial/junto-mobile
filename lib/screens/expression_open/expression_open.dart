@@ -61,14 +61,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     commentController = TextEditingController();
     _scrollController = ScrollController();
     _focusNode = FocusNode();
+    futureComments = Provider.of<ExpressionRepo>(context, listen: false)
+        .getExpressionsComments(widget.expression.address);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    futureComments = Provider.of<ExpressionRepo>(context, listen: false)
-        .getExpressionsComments(widget.expression.address);
   }
 
   @override
@@ -208,6 +207,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             ],
                             futureComments: futureComments,
                             showComments: _showComments,
+                            loadPreviousExpressionComments: () {
+                              final address = widget.expression.address;
+                              futureComments = Provider.of<ExpressionRepo>(
+                                      context,
+                                      listen: false)
+                                  .getExpressionsComments(address);
+                            },
                           ),
                         ],
                       ),

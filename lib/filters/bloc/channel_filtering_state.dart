@@ -3,7 +3,7 @@ part of 'channel_filtering_bloc.dart';
 @immutable
 abstract class ChannelFilteringState extends Equatable {
   const ChannelFilteringState(this.selectedChannel);
-  final Channel selectedChannel;
+  final List<Channel> selectedChannel;
 }
 
 class ChannelsInitialState extends ChannelFilteringState {
@@ -14,7 +14,7 @@ class ChannelsInitialState extends ChannelFilteringState {
 }
 
 class ChannelsPopulatedState extends ChannelFilteringState {
-  const ChannelsPopulatedState(this.channels, Channel selectedChannel)
+  const ChannelsPopulatedState(this.channels, List<Channel> selectedChannel)
       : super(selectedChannel);
   final List<Channel> channels;
   @override

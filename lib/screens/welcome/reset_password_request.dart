@@ -36,7 +36,7 @@ class _ResetPasswordRequestState extends State<ResetPasswordRequest> {
         JuntoLoader.showLoader(context);
         final username = widget.usernameController.text;
         final result = await Provider.of<AuthRepo>(context, listen: false)
-            .requestPasswordReset(username);
+            .requestPasswordReset(username.trim().toLowerCase());
 
         JuntoLoader.hide();
         if (result.wasSuccessful) {

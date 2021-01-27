@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 
 class BlocProviders extends StatelessWidget {
@@ -32,6 +33,11 @@ class BlocProviders extends StatelessWidget {
             ctx.repository<OnBoardingRepo>(),
           ),
         ),
+        BlocProvider<NotificationSettingBloc>(
+          create: (context) => NotificationSettingBloc(
+            context.repository<NotificationRepo>(),
+          ),
+        ),
         BlocProvider<PerspectivesBloc>(
           create: (ctx) => PerspectivesBloc(
             ctx.repository<UserRepo>(),
@@ -51,7 +57,8 @@ class BlocProviders extends StatelessWidget {
             (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
               FetchCollective(
                 ExpressionQueryParams(
-                  channels: value != null ? [value.name] : null,
+                  channels:
+                      value != null ? value.map((e) => e.name).toList() : null,
                 ),
               ),
             ),
