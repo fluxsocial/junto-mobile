@@ -73,19 +73,23 @@ class JuntoCreateState extends State<JuntoCreate> {
         break;
       case ExpressionType.event:
         _push(
-            context,
-            CreateEvent(
-                expressionContext: widget.expressionContext,
-                address: widget.address),
-            expression);
+          context,
+          CreateEvent(
+            expressionContext: widget.expressionContext,
+            address: widget.address,
+          ),
+          expression,
+        );
         break;
       case ExpressionType.shortform:
         _push(
-            context,
-            CreateShortform(
-                expressionContext: widget.expressionContext,
-                address: widget.address),
-            expression);
+          context,
+          CreateShortform(
+            expressionContext: widget.expressionContext,
+            address: widget.address,
+          ),
+          expression,
+        );
         break;
       case ExpressionType.photo:
         _push(context, CreatePhoto(), expression);
@@ -100,6 +104,9 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
           expression,
         );
+        break;
+      case ExpressionType.none:
+        _push(context, CreateLongform(), expression);
         break;
     }
   }

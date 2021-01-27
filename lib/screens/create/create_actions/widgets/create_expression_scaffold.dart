@@ -112,7 +112,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.none:
-        child = SizedBox();
+        child = CreateLongform(key: _longformKey);
         break;
 
       default:
