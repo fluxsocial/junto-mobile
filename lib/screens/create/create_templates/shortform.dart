@@ -278,6 +278,7 @@ class CreateShortformState extends State<CreateShortform>
                                         null,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      hintText: 'Write here...',
                                     ),
                                     cursorColor: gradientOne.contains('fff') ||
                                             gradientTwo.contains('fff')
