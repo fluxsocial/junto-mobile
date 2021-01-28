@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_search.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 
@@ -22,8 +23,22 @@ class SphereOpenMembers extends StatefulWidget {
   _SphereOpenMembersState createState() => _SphereOpenMembersState();
 }
 
-class _SphereOpenMembersState extends State<SphereOpenMembers> {
+class _SphereOpenMembersState extends State<SphereOpenMembers>
+    with SingleTickerProviderStateMixin {
   final List<String> _tabs = <String>['Facilitators', 'Members'];
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: _tabs.length);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +68,32 @@ class _SphereOpenMembersState extends State<SphereOpenMembers> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 42)
+                const SizedBox(width: 42),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      builder: (BuildContext context) => SphereSearch(
+                        group: widget.group,
+                        permission:
+                            _tabController.index == 0 ? 'Admin' : 'Member',
+                      ),
+                    );
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    width: 22,
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      CustomIcons.add,
+                      color: Theme.of(context).primaryColorDark,
+                      size: 17,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -82,6 +122,7 @@ class _SphereOpenMembersState extends State<SphereOpenMembers> {
               SliverPersistentHeader(
                 delegate: JuntoAppBarDelegate(
                   TabBar(
+                    controller: _tabController,
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
@@ -113,6 +154,7 @@ class _SphereOpenMembersState extends State<SphereOpenMembers> {
             ];
           },
           body: TabBarView(
+            controller: _tabController,
             children: <Widget>[
               // Circle Facilitators
               CircleFacilitators(creator: widget.creator, users: widget.users),

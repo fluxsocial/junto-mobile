@@ -96,7 +96,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       widget.group.address,
       _userAddress,
     );
-    print(_relationToGroup);
     setState(() {
       relationToGroup = _relationToGroup;
     });
@@ -342,7 +341,7 @@ class ShowRelationshipWidget extends StatelessWidget {
     if (relationToGroup == null) {
       relation = 'Member';
     } else if (relationToGroup['creator'] || relationToGroup['facilitator']) {
-      relation = 'Facilitator';
+      relation = relationToGroup['creator'] ? 'Creator' : 'Facilitator';
       actionItems = CircleActionItemsAdmin(
         sphere: circle,
         userProfile: userProfile,
