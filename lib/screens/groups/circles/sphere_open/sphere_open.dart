@@ -38,7 +38,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       GlobalKey<SphereOpenState>();
 
   String _userAddress;
-  UserData _userProfile; 
+  UserData _userProfile;
   double _flexibleHeightSpace;
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
   final ValueNotifier<bool> shouldRefresh = ValueNotifier<bool>(true);
@@ -182,6 +182,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               ShowRelationshipWidget(
                                 circle: widget.group,
                                 relationToGroup: relationToGroup,
+                                userProfile: _userProfile.user,
                               ),
                           ],
                         ),
@@ -324,9 +325,14 @@ class JoinCircleWidget extends StatelessWidget {
 }
 
 class ShowRelationshipWidget extends StatelessWidget {
-  const ShowRelationshipWidget({this.circle, this.relationToGroup});
+  const ShowRelationshipWidget({
+    this.circle,
+    this.relationToGroup,
+    this.userProfile,
+  });
   final Group circle;
   final Map<String, dynamic> relationToGroup;
+  final UserProfile userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -337,13 +343,23 @@ class ShowRelationshipWidget extends StatelessWidget {
       relation = 'Member';
     } else if (relationToGroup['creator'] || relationToGroup['facilitator']) {
       relation = 'Facilitator';
-      actionItems = CircleActionItemsAdmin(sphere: circle);
+      actionItems = CircleActionItemsAdmin(
+        sphere: circle,
+        userProfile: userProfile,
+        isCreator: relationToGroup['creator'],
+      );
     } else if (relationToGroup['member']) {
       relation = 'Member';
-      actionItems = CircleActionItemsMember(sphere: circle);
+      actionItems = CircleActionItemsMember(
+        sphere: circle,
+        userProfile: userProfile,
+      );
     } else {
       relation = 'Member';
-      actionItems = CircleActionItemsMember(sphere: circle);
+      actionItems = CircleActionItemsMember(
+        sphere: circle,
+        userProfile: userProfile,
+      );
     }
     return GestureDetector(
       onTap: () {

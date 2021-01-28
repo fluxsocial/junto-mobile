@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
+import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:provider/provider.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
@@ -9,9 +12,11 @@ class CircleActionItemsMember extends StatelessWidget {
   const CircleActionItemsMember({
     Key key,
     @required this.sphere,
+    @required this.userProfile,
   }) : super(key: key);
 
   final Group sphere;
+  final UserProfile userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +55,20 @@ class CircleActionItemsMember extends StatelessWidget {
                 const SizedBox(height: 10),
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
+                  onTap: () {
+                    try {
+                      Provider.of<GroupRepo>(context, listen: false)
+                          .removeGroupMember(
+                        sphere.address,
+                        userProfile.address,
+                      );
+
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    } catch (e, s) {
+                      logger.logException(e, s);
+                    }
+                  },
                   title: Row(
                     children: <Widget>[
                       Icon(

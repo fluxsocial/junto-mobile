@@ -14,25 +14,19 @@ class CircleActionItemsAdmin extends StatefulWidget {
   const CircleActionItemsAdmin({
     Key key,
     @required this.sphere,
+    @required this.userProfile,
+    @required this.isCreator,
   }) : super(key: key);
 
   final Group sphere;
+  final UserProfile userProfile;
+  final bool isCreator;
 
   @override
   _CircleActionItemsAdminState createState() => _CircleActionItemsAdminState();
 }
 
 class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
-  Future<void> deleteCircle() async {
-    try {
-      Provider.of<GroupRepo>(context, listen: false)
-          .deleteGroup(widget.sphere.address);
-    } catch (e, s) {
-      logger.logException(e, s);
-    }
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -90,6 +84,46 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                     ],
                   ),
                 ),
+                if (widget.isCreator)
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    onTap: () {
+                      Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => ConfirmDialog(
+                          buildContext: context,
+                          confirm: () {
+                            try {
+                              Provider.of<GroupRepo>(context, listen: false)
+                                  .deleteGroup(widget.sphere.address);
+
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            } catch (e, s) {
+                              logger.logException(e, s);
+                            }
+                          },
+                          confirmationText:
+                              'Are you sure you want to delete this circle?',
+                        ),
+                      );
+                    },
+                    title: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.delete,
+                          size: 17,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(width: 15),
+                        Text(
+                          'Delete Circle',
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                      ],
+                    ),
+                  ),
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   onTap: () {
@@ -98,22 +132,33 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                       context: context,
                       builder: (BuildContext context) => ConfirmDialog(
                         buildContext: context,
-                        confirm: () => deleteCircle,
+                        confirm: () {
+                          try {
+                            Provider.of<GroupRepo>(context, listen: false)
+                                .removeGroupMember(widget.sphere.address,
+                                    widget.userProfile.address);
+
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          } catch (e, s) {
+                            logger.logException(e, s);
+                          }
+                        },
                         confirmationText:
-                            'Are you sure you want to delete this circle?',
+                            'Are you sure you want to leave this circle?',
                       ),
                     );
                   },
                   title: Row(
                     children: <Widget>[
                       Icon(
-                        Icons.delete,
+                        Icons.block,
                         size: 17,
                         color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 15),
                       Text(
-                        'Delete Circle',
+                        'Leave Circle',
                         style: Theme.of(context).textTheme.headline5,
                       ),
                     ],
