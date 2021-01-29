@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_open_members.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_search.dart';
 import 'package:provider/provider.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
@@ -90,14 +91,16 @@ class CircleActionItemsMember extends StatelessWidget {
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   onTap: () async {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => SphereOpenMembers(
-                          group: sphere,
-                          users: members,
-                          creator: circleCreator,
-                        ),
+                    Navigator.pop(context);
+
+                    showModalBottomSheet(
+                      context: context,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      builder: (BuildContext context) => SphereSearch(
+                        group: sphere,
+                        permission: 'Member',
                       ),
                     );
                   },
