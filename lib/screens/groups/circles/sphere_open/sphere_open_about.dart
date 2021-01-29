@@ -10,10 +10,12 @@ class SphereOpenAbout extends StatefulWidget {
     this.group,
     this.circleCreator,
     this.members = const <Users>[],
+    this.relationToGroup,
   });
 
   final UserProfile circleCreator;
   final List<Users> members;
+  final Map<String, dynamic> relationToGroup;
 
   final Group group;
   @override
@@ -46,6 +48,7 @@ class SphereOpenAboutState extends State<SphereOpenAbout> {
                     group: widget.group,
                     users: widget.members,
                     creator: widget.circleCreator,
+                    relationToGroup: widget.relationToGroup,
                   ),
                 ),
               );

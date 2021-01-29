@@ -13,11 +13,13 @@ class SphereOpenMembers extends StatefulWidget {
     @required this.users,
     @required this.group,
     @required this.creator,
+    this.relationToGroup,
   }) : super(key: key);
 
   final List<Users> users;
   final Group group;
   final UserProfile creator;
+  final Map<String, dynamic> relationToGroup;
 
   @override
   _SphereOpenMembersState createState() => _SphereOpenMembersState();
@@ -69,31 +71,34 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
                   ),
                 ),
                 const SizedBox(width: 42),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                if (widget.relationToGroup != null &&
+                    (widget.relationToGroup['creator'] ||
+                        widget.relationToGroup['facilitator']))
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        builder: (BuildContext context) => SphereSearch(
+                          group: widget.group,
+                          permission:
+                              _tabController.index == 0 ? 'Admin' : 'Member',
+                        ),
+                      );
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      width: 22,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        CustomIcons.add,
+                        color: Theme.of(context).primaryColorDark,
+                        size: 17,
                       ),
-                      builder: (BuildContext context) => SphereSearch(
-                        group: widget.group,
-                        permission:
-                            _tabController.index == 0 ? 'Admin' : 'Member',
-                      ),
-                    );
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                    width: 22,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      CustomIcons.add,
-                      color: Theme.of(context).primaryColorDark,
-                      size: 17,
                     ),
                   ),
-                ),
               ],
             ),
           ),

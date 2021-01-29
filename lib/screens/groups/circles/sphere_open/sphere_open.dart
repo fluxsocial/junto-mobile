@@ -153,6 +153,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 group: widget.group,
                 circleCreator: circleCreator,
                 members: members,
+                relationToGroup: relationToGroup,
               ),
               if (widget.group.address != null)
                 CircleOpenExpressions(
@@ -191,8 +192,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                       Container(
                         key: _keyFlexibleSpace,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: JuntoStyles.horizontalPadding,
-                            vertical: 15),
+                          horizontal: JuntoStyles.horizontalPadding,
+                          vertical: 15,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
