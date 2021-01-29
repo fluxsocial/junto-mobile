@@ -4,13 +4,16 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_open_members.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:readmore/readmore.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
-import 'package:provider/provider.dart';
 
 class SphereOpenAbout extends StatefulWidget {
-  const SphereOpenAbout({this.group});
+  const SphereOpenAbout({
+    this.group,
+    this.circleCreator,
+    this.members = const <Users>[],
+  });
+
+  final UserProfile circleCreator;
+  final List<Users> members;
 
   final Group group;
   @override
@@ -20,37 +23,9 @@ class SphereOpenAbout extends StatefulWidget {
 }
 
 class SphereOpenAboutState extends State<SphereOpenAbout> {
-  UserProfile circleCreator;
-
   @override
   void initState() {
     super.initState();
-    getUser();
-  }
-
-  Future<void> getUser() async {
-    UserData user;
-    if (widget.group.creator.runtimeType == String) {
-      user = await Provider.of<UserRepo>(context, listen: false)
-          .getUser(widget.group.creator);
-    } else {
-      user = await Provider.of<UserRepo>(context, listen: false)
-          .getUser(widget.group.creator['address']);
-    }
-
-    setState(() {
-      circleCreator = user.user;
-    });
-  }
-
-  Future<List<Users>> getMembers() async {
-    final query =
-        await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
-      widget.group.address,
-      ExpressionQueryParams(paginationPosition: '0'),
-    );
-
-    return query.results;
   }
 
   @override
@@ -61,58 +36,51 @@ class SphereOpenAboutState extends State<SphereOpenAbout> {
         CircleBio(
           group: widget.group,
         ),
-        FutureBuilder<List<Users>>(
-            future: getMembers(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Users>> snapshot) {
-              if (snapshot.hasData) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => SphereOpenMembers(
-                          group: widget.group,
-                          users: snapshot.data,
-                          creator: circleCreator,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: .5,
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        CircleMembers(
-                          snapshot: snapshot,
-                        ),
-                        if (circleCreator != null)
-                          CircleFacilitators(
-                            snapshot: snapshot,
-                            circleCreator: circleCreator,
-                          ),
-                        SeeAllMembers()
-                      ],
-                    ),
+        if (widget.members != null)
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute<dynamic>(
+                  builder: (BuildContext context) => SphereOpenMembers(
+                    group: widget.group,
+                    users: widget.members,
+                    creator: widget.circleCreator,
                   ),
-                );
-              } else {
-                return const SizedBox();
-              }
-            }),
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .5,
+                  ),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  CircleMembers(
+                    members: widget.members,
+                  ),
+                  if (widget.circleCreator != null)
+                    CircleFacilitators(
+                      members: widget.members,
+                      circleCreator: widget.circleCreator,
+                    ),
+                  SeeAllMembers()
+                ],
+              ),
+            ),
+          ),
+        if (widget.members == null) const SizedBox()
       ],
     );
   }
@@ -172,8 +140,10 @@ class CircleBio extends StatelessWidget {
 }
 
 class CircleMembers extends StatelessWidget {
-  const CircleMembers({this.snapshot});
-  final AsyncSnapshot snapshot;
+  const CircleMembers({
+    this.members,
+  });
+  final List<Users> members;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -182,7 +152,7 @@ class CircleMembers extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: Text(
-            'Members (${(snapshot.data.length + 1).toString()})',
+            'Members (${(members.length + 1).toString()})',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
@@ -194,8 +164,8 @@ class CircleMembers extends StatelessWidget {
           color: Colors.transparent,
           margin: const EdgeInsets.only(bottom: 15),
           child: Row(children: <Widget>[
-            for (Users user in snapshot.data)
-              if (snapshot.data.indexOf(user) < 7)
+            for (Users user in members)
+              if (members.indexOf(user) < 7)
                 Container(
                   margin: const EdgeInsets.only(right: 10),
                   child: MemberAvatar(
@@ -211,9 +181,12 @@ class CircleMembers extends StatelessWidget {
 }
 
 class CircleFacilitators extends StatelessWidget {
-  const CircleFacilitators({this.snapshot, this.circleCreator});
+  const CircleFacilitators({
+    this.members,
+    this.circleCreator,
+  });
 
-  final AsyncSnapshot snapshot;
+  final List<Users> members;
   final UserProfile circleCreator;
   @override
   Widget build(BuildContext context) {
@@ -242,7 +215,7 @@ class CircleFacilitators extends StatelessWidget {
                 diameter: 28,
               ),
             ),
-            for (Users user in snapshot.data)
+            for (Users user in members)
               if (user.permissionLevel == 'Admin')
                 Container(
                   margin: const EdgeInsets.only(right: 10),

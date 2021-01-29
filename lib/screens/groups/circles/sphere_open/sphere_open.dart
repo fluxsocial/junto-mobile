@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_appbar.dart';
@@ -44,6 +45,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   final ValueNotifier<bool> shouldRefresh = ValueNotifier<bool>(true);
   Map<String, dynamic> relationToGroup;
   Future<QueryResults<ExpressionResponse>> getExpressions;
+  UserProfile circleCreator;
+  List<Users> members;
 
   void _getFlexibleSpaceSize(_) {
     final RenderBox renderBoxFlexibleSpace =
@@ -60,6 +63,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
+    getUser();
+    getMembers();
   }
 
   @override
@@ -101,6 +106,33 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     });
   }
 
+  Future<void> getUser() async {
+    UserData user;
+    if (widget.group.creator.runtimeType == String) {
+      user = await Provider.of<UserRepo>(context, listen: false)
+          .getUser(widget.group.creator);
+    } else {
+      user = await Provider.of<UserRepo>(context, listen: false)
+          .getUser(widget.group.creator['address']);
+    }
+
+    setState(() {
+      circleCreator = user.user;
+    });
+  }
+
+  Future<void> getMembers() async {
+    final query =
+        await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
+      widget.group.address,
+      ExpressionQueryParams(paginationPosition: '0'),
+    );
+
+    setState(() {
+      members = query.results;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,6 +151,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             children: <Widget>[
               SphereOpenAbout(
                 group: widget.group,
+                circleCreator: circleCreator,
+                members: members,
               ),
               if (widget.group.address != null)
                 CircleOpenExpressions(
@@ -182,6 +216,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 circle: widget.group,
                                 relationToGroup: relationToGroup,
                                 userProfile: _userProfile.user,
+                                members: members,
+                                circleCreator: circleCreator,
                               ),
                           ],
                         ),
@@ -328,10 +364,14 @@ class ShowRelationshipWidget extends StatelessWidget {
     this.circle,
     this.relationToGroup,
     this.userProfile,
+    this.members,
+    this.circleCreator,
   });
   final Group circle;
   final Map<String, dynamic> relationToGroup;
   final UserProfile userProfile;
+  final List<Users> members;
+  final UserProfile circleCreator;
 
   @override
   Widget build(BuildContext context) {
@@ -352,12 +392,16 @@ class ShowRelationshipWidget extends StatelessWidget {
       actionItems = CircleActionItemsMember(
         sphere: circle,
         userProfile: userProfile,
+        members: members,
+        circleCreator: circleCreator,
       );
     } else {
       relation = 'Member';
       actionItems = CircleActionItemsMember(
         sphere: circle,
         userProfile: userProfile,
+        members: members,
+        circleCreator: circleCreator,
       );
     }
     return GestureDetector(

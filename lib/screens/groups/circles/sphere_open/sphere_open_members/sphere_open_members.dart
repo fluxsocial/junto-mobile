@@ -184,18 +184,19 @@ class CircleFacilitators extends StatelessWidget {
             children: [
               MemberPreview(profile: creator),
               ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: users.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (users[index].permissionLevel == 'Admin') {
-                      return MemberPreview(
-                        profile: users[index].user,
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  }),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: users.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (users[index].permissionLevel == 'Admin') {
+                    return MemberPreview(
+                      profile: users[index].user,
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
             ],
           ),
         )
