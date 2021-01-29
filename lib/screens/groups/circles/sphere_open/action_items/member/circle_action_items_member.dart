@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_open_members.dart';
 import 'package:provider/provider.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
@@ -84,8 +87,33 @@ class CircleActionItemsMember extends StatelessWidget {
                 ),
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
-                  onTap: () {
-                    // Nav to invite members screen
+                  onTap: () async {
+                    UserData user;
+                    if (sphere.creator.runtimeType == String) {
+                      user = await Provider.of<UserRepo>(context, listen: false)
+                          .getUser(sphere.creator);
+                    } else {
+                      user = await Provider.of<UserRepo>(context, listen: false)
+                          .getUser(sphere.creator['address']);
+                    }
+
+                    final query =
+                        await Provider.of<GroupRepo>(context, listen: false)
+                            .getGroupMembers(
+                      sphere.address,
+                      ExpressionQueryParams(paginationPosition: '0'),
+                    );
+
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<dynamic>(
+                        builder: (BuildContext context) => SphereOpenMembers(
+                          group: sphere,
+                          users: query.results,
+                          creator: user.user,
+                        ),
+                      ),
+                    );
                   },
                   title: Row(
                     children: <Widget>[
