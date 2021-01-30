@@ -1,24 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_search.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 
 class SphereOpenMembers extends StatefulWidget {
   const SphereOpenMembers({
     Key key,
-    @required this.users,
     @required this.group,
-    @required this.creator,
     this.relationToGroup,
   }) : super(key: key);
 
-  final List<Users> users;
   final Group group;
-  final UserProfile creator;
   final Map<String, dynamic> relationToGroup;
 
   @override
@@ -118,56 +117,77 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
           ),
         ),
       ),
-      body: DefaultTabController(
-        length: _tabs.length,
-        child: NestedScrollView(
-          physics: const ClampingScrollPhysics(),
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverPersistentHeader(
-                delegate: JuntoAppBarDelegate(
-                  TabBar(
-                    controller: _tabController,
-                    labelPadding: const EdgeInsets.all(0),
-                    isScrollable: true,
-                    labelColor: Theme.of(context).primaryColorDark,
-                    unselectedLabelColor: Theme.of(context).primaryColorLight,
-                    labelStyle: Theme.of(context).textTheme.subtitle1,
-                    indicatorWeight: 0.0001,
-                    tabs: <Widget>[
-                      for (String name in _tabs)
-                        Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            right: 20,
-                          ),
-                          child: Text(
-                            name.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+      body: BlocBuilder<CircleBloc, CircleState>(
+        builder: (context, state) {
+          if (state is CircleLoaded) {
+            return DefaultTabController(
+              length: _tabs.length,
+              child: NestedScrollView(
+                physics: const ClampingScrollPhysics(),
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverPersistentHeader(
+                      delegate: JuntoAppBarDelegate(
+                        TabBar(
+                          controller: _tabController,
+                          labelPadding: const EdgeInsets.all(0),
+                          isScrollable: true,
+                          labelColor: Theme.of(context).primaryColorDark,
+                          unselectedLabelColor:
+                              Theme.of(context).primaryColorLight,
+                          labelStyle: Theme.of(context).textTheme.subtitle1,
+                          indicatorWeight: 0.0001,
+                          tabs: <Widget>[
+                            for (String name in _tabs)
+                              Container(
+                                color: Colors.transparent,
+                                padding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                  right: 20,
+                                ),
+                                child: Text(
+                                  name.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
-                    ],
-                  ),
+                      ),
+                      pinned: true,
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
+                    // Circle Facilitators
+                    CircleFacilitators(
+                        creator: state.creator?.user,
+                        users: state.members ?? []),
+                    // All Circle Members
+                    CircleMembers(
+                        creator: state.creator?.user,
+                        users: state.members ?? []),
+                  ],
                 ),
-                pinned: true,
               ),
-            ];
-          },
-          body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              // Circle Facilitators
-              CircleFacilitators(creator: widget.creator, users: widget.users),
-              // All Circle Members
-              CircleMembers(creator: widget.creator, users: widget.users),
-            ],
-          ),
-        ),
+            );
+          }
+
+          return Expanded(
+            child: Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50),
+                child: JuntoProgressIndicator(),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -187,7 +207,7 @@ class CircleFacilitators extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             children: [
-              MemberPreview(profile: creator),
+              if (creator != null) MemberPreview(profile: creator),
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -224,7 +244,7 @@ class CircleMembers extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             children: [
-              MemberPreview(profile: creator),
+              if (creator != null) MemberPreview(profile: creator),
               ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),

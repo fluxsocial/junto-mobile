@@ -46,8 +46,6 @@ class SphereOpenAboutState extends State<SphereOpenAbout> {
                 CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => SphereOpenMembers(
                     group: widget.group,
-                    users: widget.members,
-                    creator: widget.circleCreator,
                     relationToGroup: widget.relationToGroup,
                   ),
                 ),
