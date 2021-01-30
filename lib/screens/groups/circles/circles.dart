@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
@@ -11,6 +12,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 
+import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
 import 'circles_list_all.dart';
 import 'circles_requests.dart';
@@ -27,24 +29,19 @@ class CirclesState extends State<Circles> with ListDistinct {
   PageController circlesPageController;
   int _currentIndex = 0;
   UserData _userProfile;
-  GroupRepo _userProvider;
 
   @override
   void initState() {
     super.initState();
     circlesPageController = PageController(initialPage: 0);
+
+    context.bloc<CircleBloc>().add(FetchMyCircle());
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<GroupRepo>(context, listen: false);
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
-  }
-
-  Future<UserGroupsResponse> getUserGroups() async {
-    final userGroups = _userProvider.getUserGroups(_userProfile.user.address);
-    return userGroups;
   }
 
   void changePageView(int index) {
@@ -74,20 +71,23 @@ class CirclesState extends State<Circles> with ListDistinct {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          body: PageView(
-            controller: circlesPageController,
-            onPageChanged: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
+          body: BlocBuilder<CircleBloc, CircleState>(
+            builder: (context, state) {
+              return PageView(
+                controller: circlesPageController,
+                onPageChanged: (int index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                children: [
+                  CirclesListAll(
+                    userProfile: _userProfile,
+                  ),
+                  CirclesRequests(),
+                ],
+              );
             },
-            children: [
-              CirclesListAll(
-                userProfile: _userProfile,
-                getUserGroups: getUserGroups,
-              ),
-              CirclesRequests(),
-            ],
           ),
         ),
       ),

@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +57,6 @@ class _EditCircleState extends State<EditCircle> {
   }
 
   Future<void> _updateGroup() async {
-    final GroupRepo _repo = Provider.of<GroupRepo>(context, listen: false);
     final String name = _nameController.text;
     final String desc = _descriptionController.text;
 
@@ -73,7 +74,7 @@ class _EditCircleState extends State<EditCircle> {
           _photoKey = key;
         });
       } catch (error) {
-        print(error);
+        print('test: $error');
         JuntoLoader.hide();
       }
     }
@@ -89,7 +90,7 @@ class _EditCircleState extends State<EditCircle> {
     );
     try {
       JuntoLoader.showLoader(context);
-      _repo.updateGroup(updatedGroup);
+      context.bloc<CircleBloc>().add(UpdateCircle(group: updatedGroup));
       JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (e, s) {
@@ -150,96 +151,117 @@ class _EditCircleState extends State<EditCircle> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(45),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          brightness: Theme.of(context).brightness,
-          elevation: 0,
-          titleSpacing: 0,
-          title: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 10),
-                    width: 60,
-                    height: 42,
-                    alignment: Alignment.centerLeft,
-                    color: Colors.transparent,
-                    child: Icon(
-                      CustomIcons.back,
-                      color: Theme.of(context).primaryColorDark,
-                      size: 17,
+    return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
+      return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(45),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            brightness: Theme.of(context).brightness,
+            elevation: 0,
+            titleSpacing: 0,
+            title: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10),
+                      width: 60,
+                      height: 42,
+                      alignment: Alignment.centerLeft,
+                      color: Colors.transparent,
+                      child: Icon(
+                        CustomIcons.back,
+                        color: Theme.of(context).primaryColorDark,
+                        size: 17,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  child: Text(
-                    'Edit Circle',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (_nameController.text != '' &&
-                        _descriptionController.text != '') {
-                      if (imageFile == null &&
-                          _nameController.text == _groupData.name &&
-                          _descriptionController.text ==
-                              _groupData.description) {
-                        return;
-                      } else {
-                        _updateGroup();
-                      }
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(right: 10),
-                    alignment: Alignment.centerRight,
-                    color: Colors.transparent,
-                    width: 60,
-                    height: 42,
+                  Container(
                     child: Text(
-                      'Save',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      'Edit Circle',
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                   ),
-                )
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      if (_nameController.text != '' &&
+                          _descriptionController.text != '') {
+                        if (imageFile == null &&
+                            _nameController.text == _groupData.name &&
+                            _descriptionController.text ==
+                                _groupData.description) {
+                          return;
+                        } else {
+                          _updateGroup();
+                        }
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(right: 10),
+                      alignment: Alignment.centerRight,
+                      color: Colors.transparent,
+                      width: 60,
+                      height: 42,
+                      child: Text(
+                        'Save',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(.75),
-            child: Container(
-              height: .75,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(.75),
+              child: Container(
+                height: .75,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: .75,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: _onPickPressed,
-                      child: Container(
+        body: SafeArea(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: _onPickPressed,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 10),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75),
+                            ),
+                          ),
+                          child: Row(children: <Widget>[
+                            _displayCurrentProfilePicture(),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Edit group photo',
+                              style: Theme.of(context).textTheme.caption,
+                            )
+                          ]),
+                        ),
+                      ),
+                      Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 10),
+                            vertical: 10, horizontal: 10),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
@@ -247,63 +269,44 @@ class _EditCircleState extends State<EditCircle> {
                                 width: .75),
                           ),
                         ),
-                        child: Row(children: <Widget>[
-                          _displayCurrentProfilePicture(),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Edit group photo',
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ]),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              color: Theme.of(context).dividerColor,
-                              width: .75),
+                        child: TextField(
+                          controller: _nameController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Name',
+                          ),
+                          maxLines: null,
+                          style: Theme.of(context).textTheme.caption,
                         ),
                       ),
-                      child: TextField(
-                        controller: _nameController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Name',
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                                color: Theme.of(context).dividerColor,
+                                width: .75),
+                          ),
                         ),
-                        maxLines: null,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              color: Theme.of(context).dividerColor,
-                              width: .75),
+                        child: TextField(
+                          controller: _descriptionController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Bio / Purpose',
+                          ),
+                          maxLines: null,
+                          style: Theme.of(context).textTheme.caption,
                         ),
                       ),
-                      child: TextField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Bio / Purpose',
-                        ),
-                        maxLines: null,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

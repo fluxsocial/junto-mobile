@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -190,62 +191,68 @@ class __SearchBodyState extends State<_SearchBody> {
       child: Column(
         children: [
           Expanded(
-            child: BlocBuilder<SearchBloc, SearchState>(
-              builder: (BuildContext context, SearchState state) {
-                if (state is LoadingSearchState) {
-                  return JuntoProgressIndicator();
-                }
-                if (state is LoadedSearchState) {
-                  return ListView.builder(
-                    controller: _controller,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 0,
-                      horizontal: 15,
-                    ),
-                    itemCount: state.results.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final UserProfile data = state.results[index];
-                      return MemberPreview(
-                        profile: data,
-                        onUserTap: () async {
-                          try {
-                            await Provider.of<GroupRepo>(context, listen: false)
-                                .addGroupMember(
-                              widget.group.address,
-                              [data],
-                              widget.permission,
-                            );
+            child: BlocBuilder<CircleBloc, CircleState>(
+              builder: (context, state) {
+                return BlocBuilder<SearchBloc, SearchState>(
+                  builder: (BuildContext context, SearchState state) {
+                    if (state is LoadingSearchState) {
+                      return JuntoProgressIndicator();
+                    }
+                    if (state is LoadedSearchState) {
+                      return ListView.builder(
+                        controller: _controller,
+                        physics: AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 15,
+                        ),
+                        itemCount: state.results.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final UserProfile data = state.results[index];
+                          return MemberPreview(
+                            profile: data,
+                            onUserTap: () async {
+                              try {
+                                context
+                                    .bloc<CircleBloc>()
+                                    .add(AddMemberToCircle(
+                                      sphereAddress: widget.group.address,
+                                      user: data,
+                                      permissionLevel: widget.permission,
+                                    ));
 
-                            Navigator.pop(context);
-                          } catch (e) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  SingleActionDialog(
-                                context: context,
-                                dialogText:
-                                    'Error occured while adding the member as ${widget.permission}',
-                              ),
-                            );
-                          }
+                                Navigator.pop(context);
+                              } catch (e) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      SingleActionDialog(
+                                    context: context,
+                                    dialogText:
+                                        'Error occured while adding the member as ${widget.permission}',
+                                  ),
+                                );
+                              }
+                            },
+                          );
                         },
                       );
-                    },
-                  );
-                }
-                if (state is EmptySearchState || state is InitialSearchState) {
-                  return SizedBox();
-                }
-                if (state is ErrorSearchState) {
-                  return Center(
-                    child: Transform.translate(
-                      offset: const Offset(0.0, -50),
-                      child: Text('Hmm, something is up...'),
-                    ),
-                  );
-                }
-                return Container();
+                    }
+                    if (state is EmptySearchState ||
+                        state is InitialSearchState) {
+                      return SizedBox();
+                    }
+                    if (state is ErrorSearchState) {
+                      return Center(
+                        child: Transform.translate(
+                          offset: const Offset(0.0, -50),
+                          child: Text('Hmm, something is up...'),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
+                );
               },
             ),
           ),

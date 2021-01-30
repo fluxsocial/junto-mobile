@@ -2,18 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/circle_action_items_admin.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/member/circle_action_items_member.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/circle_open_expressions/circle_open_expressions.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -23,10 +25,10 @@ import 'circle_action_buttons.dart';
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
-    this.group,
+    this.groupIndex,
   }) : super(key: key);
 
-  final Group group;
+  final int groupIndex;
 
   @override
   State<StatefulWidget> createState() {
@@ -46,7 +48,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   Map<String, dynamic> relationToGroup;
   Future<QueryResults<ExpressionResponse>> getExpressions;
   UserProfile circleCreator;
-  List<Users> members;
 
   void _getFlexibleSpaceSize(_) {
     final RenderBox renderBoxFlexibleSpace =
@@ -63,8 +64,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
-    getUser();
-    getMembers();
+
+    final group = context.bloc<CircleBloc>().groups[widget.groupIndex];
+
+    context
+        .bloc<CircleBloc>()
+        .add(LoadCircleMembers(sphereAddress: group.address));
   }
 
   @override
@@ -78,10 +83,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   void setGetExpressions() {
+    final group = context.bloc<CircleBloc>().groups[widget.groupIndex];
+
     setState(() {
       getExpressions = Provider.of<ExpressionRepo>(context, listen: false)
           .getCollectiveExpressions({
-        'context': widget.group.address,
+        'context': group.address,
         'context_type': 'Group',
         'pagination_position': '0',
       });
@@ -96,9 +103,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<void> _loadRelationship() async {
+    final group = context.bloc<CircleBloc>().groups[widget.groupIndex];
+
     final Map<String, dynamic> _relationToGroup =
         await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
-      widget.group.address,
+      group.address,
       _userAddress,
     );
     setState(() {
@@ -106,167 +115,157 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     });
   }
 
-  Future<void> getUser() async {
-    UserData user;
-    if (widget.group.creator.runtimeType == String) {
-      user = await Provider.of<UserRepo>(context, listen: false)
-          .getUser(widget.group.creator);
-    } else {
-      user = await Provider.of<UserRepo>(context, listen: false)
-          .getUser(widget.group.creator['address']);
-    }
-
-    setState(() {
-      circleCreator = user.user;
-    });
-  }
-
-  Future<void> getMembers() async {
-    final query =
-        await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
-      widget.group.address,
-      ExpressionQueryParams(paginationPosition: '0'),
-    );
-
-    setState(() {
-      members = query.results;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(45),
-        child: SphereOpenAppbar(
-          group: widget.group,
-        ),
-      ),
-      floatingActionButton: CircleActionButtons(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: DefaultTabController(
-        length: _tabs.length,
-        child: NestedScrollView(
-          body: TabBarView(
-            children: <Widget>[
-              SphereOpenAbout(
-                group: widget.group,
-                circleCreator: circleCreator,
-                members: members,
-                relationToGroup: relationToGroup,
-              ),
-              if (widget.group.address != null)
-                CircleOpenExpressions(
-                    getExpressions: getExpressions,
-                    deleteExpression: deleteExpression),
-            ],
+    return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
+      if (state is CircleLoaded) {
+        final group = state.groups[widget.groupIndex];
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(45),
+            child: SphereOpenAppbar(
+              group: group,
+            ),
           ),
-          physics: const ClampingScrollPhysics(),
-          headerSliverBuilder: (
-            BuildContext context,
-            bool innerBoxIsScrolled,
-          ) {
-            return <Widget>[
-              SliverAppBar(
-                brightness: Theme.of(context).brightness,
-                automaticallyImplyLeading: false,
-                primary: false,
-                actions: const <Widget>[
-                  SizedBox(
-                    height: 0,
-                    width: 0,
+          floatingActionButton: CircleActionButtons(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: DefaultTabController(
+            length: _tabs.length,
+            child: NestedScrollView(
+              body: TabBarView(
+                children: <Widget>[
+                  SphereOpenAbout(
+                    group: group,
+                    circleCreator: state.creator?.user,
+                    members: state.members,
+                    relationToGroup: relationToGroup,
                   ),
+                  if (group.address != null)
+                    CircleOpenExpressions(
+                        getExpressions: getExpressions,
+                        deleteExpression: deleteExpression),
                 ],
-                backgroundColor: Theme.of(context).colorScheme.background,
-                pinned: false,
-                flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.pin,
-                  background: Column(
-                    children: <Widget>[
-                      if (widget.group.groupData.photo == '')
-                        CircleBackgroundPlaceholder()
-                      else
-                        CircleBackground(
-                          photo: widget.group.groupData.photo,
-                        ),
-                      Container(
-                        key: _keyFlexibleSpace,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: JuntoStyles.horizontalPadding,
-                          vertical: 15,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Flexible(
-                              child: Text(
-                                widget.group.groupData.name,
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                            ),
-                            if (relationToGroup != null &&
-                                !relationToGroup['creator'] &&
-                                !relationToGroup['member'] &&
-                                !relationToGroup['facilitator'])
-                              JoinCircleWidget(
-                                groupAddress: widget.group.address,
-                                userProfile: _userProfile.user,
-                              )
-                            else
-                              ShowRelationshipWidget(
-                                circle: widget.group,
-                                relationToGroup: relationToGroup,
-                                userProfile: _userProfile.user,
-                                members: members,
-                                circleCreator: circleCreator,
-                              ),
-                          ],
-                        ),
+              ),
+              physics: const ClampingScrollPhysics(),
+              headerSliverBuilder: (
+                BuildContext context,
+                bool innerBoxIsScrolled,
+              ) {
+                return <Widget>[
+                  SliverAppBar(
+                    brightness: Theme.of(context).brightness,
+                    automaticallyImplyLeading: false,
+                    primary: false,
+                    actions: const <Widget>[
+                      SizedBox(
+                        height: 0,
+                        width: 0,
                       ),
                     ],
-                  ),
-                ),
-                expandedHeight: _flexibleHeightSpace == null
-                    ? 10000
-                    : MediaQuery.of(context).size.height * .3 +
-                        _flexibleHeightSpace,
-                forceElevated: false,
-              ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: JuntoAppBarDelegate(
-                  TabBar(
-                    labelPadding: const EdgeInsets.all(0),
-                    isScrollable: true,
-                    labelColor: Theme.of(context).primaryColorDark,
-                    unselectedLabelColor: Theme.of(context).primaryColorLight,
-                    labelStyle: Theme.of(context).textTheme.subtitle1,
-                    indicatorWeight: 0.0001,
-                    tabs: <Widget>[
-                      for (String name in _tabs)
-                        Container(
-                          margin: const EdgeInsets.only(right: 20),
-                          color: Theme.of(context).colorScheme.background,
-                          child: Tab(
-                            child: Text(
-                              name,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
+                    backgroundColor: Theme.of(context).colorScheme.background,
+                    pinned: false,
+                    flexibleSpace: FlexibleSpaceBar(
+                      collapseMode: CollapseMode.pin,
+                      background: Column(
+                        children: <Widget>[
+                          if (group.groupData.photo == '')
+                            CircleBackgroundPlaceholder()
+                          else
+                            CircleBackground(
+                              photo: group.groupData.photo,
+                            ),
+                          Container(
+                            key: _keyFlexibleSpace,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: JuntoStyles.horizontalPadding,
+                              vertical: 15,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Flexible(
+                                  child: Text(
+                                    group.groupData.name,
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                  ),
+                                ),
+                                if (relationToGroup != null &&
+                                    !relationToGroup['creator'] &&
+                                    !relationToGroup['member'] &&
+                                    !relationToGroup['facilitator'])
+                                  JoinCircleWidget(
+                                    groupAddress: group.address,
+                                    userProfile: _userProfile.user,
+                                  )
+                                else
+                                  ShowRelationshipWidget(
+                                    circle: group,
+                                    relationToGroup: relationToGroup,
+                                    userProfile: _userProfile.user,
+                                    members: state.members,
+                                    circleCreator: state.creator?.user,
+                                  ),
+                              ],
                             ),
                           ),
-                        ),
-                    ],
+                        ],
+                      ),
+                    ),
+                    expandedHeight: _flexibleHeightSpace == null
+                        ? 10000
+                        : MediaQuery.of(context).size.height * .3 +
+                            _flexibleHeightSpace,
+                    forceElevated: false,
                   ),
-                ),
-              )
-            ];
-          },
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: JuntoAppBarDelegate(
+                      TabBar(
+                        labelPadding: const EdgeInsets.all(0),
+                        isScrollable: true,
+                        labelColor: Theme.of(context).primaryColorDark,
+                        unselectedLabelColor:
+                            Theme.of(context).primaryColorLight,
+                        labelStyle: Theme.of(context).textTheme.subtitle1,
+                        indicatorWeight: 0.0001,
+                        tabs: <Widget>[
+                          for (String name in _tabs)
+                            Container(
+                              margin: const EdgeInsets.only(right: 20),
+                              color: Theme.of(context).colorScheme.background,
+                              child: Tab(
+                                child: Text(
+                                  name,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  )
+                ];
+              },
+            ),
+          ),
+        );
+      }
+
+      return Expanded(
+        child: Center(
+          child: Transform.translate(
+            offset: const Offset(0.0, -50),
+            child: JuntoProgressIndicator(),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

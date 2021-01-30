@@ -112,8 +112,6 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
 
   Stream<CircleState> _mapUpdateCircleToState(UpdateCircle event) async* {
     try {
-      yield CircleLoading();
-
       final group = await groupRepo.updateGroup(event.group);
 
       groups =
@@ -203,7 +201,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       );
     } catch (e, s) {
       logger.logException(e, s);
-      yield CircleError();
+      // yield CircleError();
     }
   }
 
