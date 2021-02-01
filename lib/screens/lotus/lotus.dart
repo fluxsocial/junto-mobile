@@ -69,7 +69,7 @@ class _JuntoLotusState extends State<JuntoLotus> {
         break;
     }
 
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       FadeRoute<void>(
         child: child,
       ),

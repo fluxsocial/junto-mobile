@@ -106,7 +106,6 @@ class JuntoCreateState extends State<JuntoCreate> {
         );
         break;
       case ExpressionType.none:
-        _push(context, CreateLongform(), expression);
         break;
     }
   }

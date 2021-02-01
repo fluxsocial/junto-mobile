@@ -40,6 +40,10 @@ class NewHomeState extends State<NewHome> {
   @override
   void initState() {
     super.initState();
+
+    setState(() {
+      showCreateScreen = widget.screen == Screen.create;
+    });
     _currentScreen = widget.screen;
     _latestScreen = widget.screen;
   }
