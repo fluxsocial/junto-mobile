@@ -143,6 +143,7 @@ class NewHomeState extends State<NewHome> {
         rightMenu: JuntoDrawer(
           changeScreen: changeScreen,
         ),
+        swipeLeftDrawer: false,
         scaffold: Stack(
           children: [
             if (!showCreateScreen) showScreen(),
