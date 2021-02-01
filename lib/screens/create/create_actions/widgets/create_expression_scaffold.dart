@@ -112,7 +112,24 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.none:
-        child = CreateLongform(key: _longformKey);
+        child = Container(
+          padding: EdgeInsets.symmetric(horizontal: 36),
+          height: MediaQuery.of(context).size.height / 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                'Please select an expression type from below options',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+              )
+            ],
+          ),
+        );
         break;
 
       default:
