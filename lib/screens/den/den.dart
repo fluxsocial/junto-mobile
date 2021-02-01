@@ -181,30 +181,43 @@ class UserExpressProvider extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<DenBloc>(
-            create: (context) => DenBloc(
-                  Provider.of<UserRepo>(context, listen: false),
-                  Provider.of<UserDataProvider>(context, listen: false),
-                  Provider.of<ExpressionRepo>(context, listen: false),
-                )),
-        BlocProvider<ChannelFilteringBloc>(
-          create: (ctx) => ChannelFilteringBloc(
-            RepositoryProvider.of<SearchRepo>(ctx),
-            (value) => BlocProvider.of<DenBloc>(ctx).add(
-              LoadDen(
-                address,
-                {
-                  'rootExpressions': true,
-                  'subExpressions': false,
-                  'communityFeedback': false,
-                },
-                channels:
-                    value != null ? value.map((e) => e.name).toList() : null,
-              ),
-            ),
+          create: (context) => DenBloc(
+            Provider.of<UserRepo>(context, listen: false),
+            Provider.of<UserDataProvider>(context, listen: false),
+            Provider.of<ExpressionRepo>(context, listen: false),
           ),
         ),
       ],
-      child: child,
+      child: BlocListener<ChannelFilteringBloc, ChannelFilteringState>(
+        listener: (context, state) {
+          final channels = state.selectedChannel != null
+              ? state.selectedChannel.map((e) => e.name).toList()
+              : null;
+          print('test: $channels');
+          Map<String, dynamic> _param = {
+            'rootExpressions': true,
+            'subExpressions': false,
+            'communityFeedback': false,
+          };
+
+          channels.forEach(
+            (String channel) {
+              _param.putIfAbsent(
+                'channel${(channels.indexOf(channel) + 1).toString()}',
+                () => channel,
+              );
+            },
+          );
+          BlocProvider.of<DenBloc>(context).add(
+            LoadDen(
+              address,
+              _param,
+              channels: channels,
+            ),
+          );
+        },
+        child: child,
+      ),
     );
   }
 }

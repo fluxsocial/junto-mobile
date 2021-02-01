@@ -8,7 +8,7 @@ class LoadDen extends DenEvent {
 
   final String userAddress;
   final List<String> channels;
-  final Map<String, bool> params;
+  final Map<String, dynamic> params;
 }
 
 class LoadMoreDen extends DenEvent {}
