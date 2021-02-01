@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_bar/junto_bottom_bar.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
@@ -110,35 +112,56 @@ class NewHomeState extends State<NewHome> {
     return child;
   }
 
+  Widget showLeftDrawer() {
+    Widget child;
+
+    switch (_currentScreen) {
+      case Screen.collective:
+      case Screen.den:
+        child = FilterDrawerContent(ExpressionContextType.Collective);
+        break;
+      case Screen.groups:
+      case Screen.packs:
+        child = FilterDrawerContent(ExpressionContextType.Group);
+        break;
+      default:
+        child = FilterDrawerContent(ExpressionContextType.Collective);
+    }
+
+    return child;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return JuntoFilterDrawer(
-      leftDrawer: null,
-      rightMenu: JuntoDrawer(
-        changeScreen: changeScreen,
-      ),
-      scaffold: Stack(
-        children: [
-          if (!showCreateScreen) showScreen(),
-          if (showCreateScreen)
-            FeatureDiscovery(
-              child: CreateExpressionScaffold(
-                closeCreate: closeCreate,
-                changeScreen: changeScreen,
+    return Scaffold(
+      body: JuntoFilterDrawer(
+        leftDrawer: showLeftDrawer(),
+        rightMenu: JuntoDrawer(
+          changeScreen: changeScreen,
+        ),
+        scaffold: Stack(
+          children: [
+            if (!showCreateScreen) showScreen(),
+            if (showCreateScreen)
+              FeatureDiscovery(
+                child: CreateExpressionScaffold(
+                  closeCreate: closeCreate,
+                  changeScreen: changeScreen,
+                ),
               ),
-            ),
-          if (_currentScreen != Screen.create)
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: JuntoBottomBar(
-                userData: _userData,
-                changeScreen: changeScreen,
-                currentScreen: _currentScreen,
+            if (_currentScreen != Screen.create)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: JuntoBottomBar(
+                  userData: _userData,
+                  changeScreen: changeScreen,
+                  currentScreen: _currentScreen,
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
