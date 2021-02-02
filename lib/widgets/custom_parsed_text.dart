@@ -87,7 +87,7 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
                             ),
                           );
 
-                      return route.settings.name == "JuntoCollective";
+                      return route.isFirst;
                     });
                   }
                 : null,
