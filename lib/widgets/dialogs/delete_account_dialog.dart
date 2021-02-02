@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -8,8 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   const DeleteAccountDialog({this.buildContext, this.user});
@@ -28,10 +28,12 @@ class DeleteAccountDialog extends StatelessWidget {
             .deleteUserAccount(user.userAddress);
         // Hide Junto Loader
         JuntoLoader.hide();
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
         // Log user out
         await context.bloc<AuthBloc>().add(LogoutEvent());
+
+        Navigator.of(context).pushReplacement(
+          FadeRoute(child: HomePage(), name: "HomePage"),
+        );
       } catch (e, s) {
         JuntoLoader.hide();
         showDialog(

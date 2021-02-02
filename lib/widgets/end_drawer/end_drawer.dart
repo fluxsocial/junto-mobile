@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
@@ -10,7 +11,6 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -36,16 +36,12 @@ class JuntoDrawer extends StatefulWidget {
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
   void _onLogOut() {
-    // Dismiss the dialog
-    Navigator.of(context).pop();
     // Sends logout event
     context.bloc<AuthBloc>().add(LogoutEvent());
 
-    if (ModalRoute.of(context).settings.name != "/") {
-      Navigator.of(context).pushReplacement(
-        FadeRoute(child: Welcome(), name: "Welcome"),
-      );
-    }
+    Navigator.of(context).pushReplacement(
+      FadeRoute(child: HomePage(), name: "HomePage"),
+    );
   }
 
   @override
