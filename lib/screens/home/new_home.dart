@@ -140,52 +140,35 @@ class NewHomeState extends State<NewHome> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (ctx) => ChannelFilteringBloc(
-        RepositoryProvider.of<SearchRepo>(ctx),
-        (value) {
-          if (_currentScreen == Screen.collective) {
-            BlocProvider.of<CollectiveBloc>(ctx).add(
-              FetchCollective(
-                ExpressionQueryParams(
-                  channels:
-                      value != null ? value.map((e) => e.name).toList() : null,
+    return Scaffold(
+      body: JuntoFilterDrawer(
+        leftDrawer: showLeftDrawer(),
+        rightMenu: JuntoDrawer(
+          changeScreen: changeScreen,
+        ),
+        swipeLeftDrawer: false,
+        scaffold: Stack(
+          children: [
+            if (!showCreateScreen) showScreen(),
+            if (showCreateScreen)
+              FeatureDiscovery(
+                child: CreateExpressionScaffold(
+                  closeCreate: closeCreate,
+                  changeScreen: changeScreen,
                 ),
               ),
-            );
-          }
-        },
-      ),
-      child: Scaffold(
-        body: JuntoFilterDrawer(
-          leftDrawer: showLeftDrawer(),
-          rightMenu: JuntoDrawer(
-            changeScreen: changeScreen,
-          ),
-          swipeLeftDrawer: false,
-          scaffold: Stack(
-            children: [
-              if (!showCreateScreen) showScreen(),
-              if (showCreateScreen)
-                FeatureDiscovery(
-                  child: CreateExpressionScaffold(
-                    closeCreate: closeCreate,
-                    changeScreen: changeScreen,
-                  ),
+            if (_currentScreen != Screen.create)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: JuntoBottomBar(
+                  userData: _userData,
+                  changeScreen: changeScreen,
+                  currentScreen: _currentScreen,
                 ),
-              if (_currentScreen != Screen.create)
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: JuntoBottomBar(
-                    userData: _userData,
-                    changeScreen: changeScreen,
-                    currentScreen: _currentScreen,
-                  ),
-                ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
