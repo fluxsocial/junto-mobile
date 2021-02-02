@@ -21,7 +21,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
   String userAddress;
   int currentPage = 0;
   String currentTimeStamp;
-  Map<String, bool> _params;
+  Map<String, dynamic> _params;
 
   @override
   Stream<DenState> mapEventToState(DenEvent event) async* {
@@ -41,7 +41,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
     }
   }
 
-  Stream<DenState> _fetchUserDenExpressions(dynamic event) async* {
+  Stream<DenState> _fetchUserDenExpressions(LoadDen event) async* {
     userAddress = event.userAddress;
     _updateParams(event);
     try {
@@ -116,7 +116,7 @@ class DenBloc extends Bloc<DenEvent, DenState> {
   }
 
   Future<QueryResults<ExpressionResponse>> fetchExpressions(
-      Map<String, bool> params) async {
+      Map<String, dynamic> params) async {
     final result = await userRepo.getUsersExpressions(
       userAddress,
       currentPage,

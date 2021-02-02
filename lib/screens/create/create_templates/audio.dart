@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
@@ -129,6 +128,25 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
     });
   }
 
+  AudioFormExpression createExpression(AudioService audio) {
+    final markupText = mentionKey.currentState.controller.markupText;
+
+    return AudioFormExpression(
+      audio: audio.recordingPath,
+      title: titleController.text.trim(),
+      photo: audioPhotoBackground?.path,
+      gradient: audioGradientValues,
+      caption: markupText.trim(),
+    );
+  }
+
+  Map<String, List<String>> getMentionsAndChannels() {
+    final markupText = mentionKey.currentState.controller.markupText;
+    final mentions = getMentionUserId(markupText);
+    final channels = getChannelsId(markupText);
+    return {'mentions': mentions, 'channels': channels};
+  }
+
   @override
   void initState() {
     super.initState();
@@ -146,33 +164,27 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
     return ChangeNotifierProvider<AudioService>(
       create: (context) => AudioService(),
       child: Consumer<AudioService>(builder: (context, audio, child) {
-        return CreateExpressionScaffold(
-          onNext: () => _onNext(audio),
-          expressionHasData: () => expressionHasData(audio),
-          showBottomNav: !audio.playBackAvailable,
-          expressionType: ExpressionType.audio,
-          child: Expanded(
-            child: Stack(
-              children: <Widget>[
-                !audio.playBackAvailable
-                    ? AudioRecord()
-                    : AudioReview(
-                        audioPhotoBackground: audioPhotoBackground,
-                        audioGradientValues: audioGradientValues,
-                        titleController: titleController,
-                        captionController: captionController,
-                        captionFocus: captionFocus,
-                        mentionKey: mentionKey,
-                      ),
-                if (audio.playBackAvailable && _showBottomTools)
-                  AudioBottomTools(
-                    openPhotoOptions: _audioPhotoOptions,
-                    resetAudioPhotoBackground: _resetAudioPhotoBackground,
-                    resetAudioGradientValues: _resetAudioGradientValues,
-                    setAudioGradientValues: _setAudioGradientValues,
-                  )
-              ],
-            ),
+        return Expanded(
+          child: Stack(
+            children: <Widget>[
+              !audio.playBackAvailable
+                  ? AudioRecord()
+                  : AudioReview(
+                      audioPhotoBackground: audioPhotoBackground,
+                      audioGradientValues: audioGradientValues,
+                      titleController: titleController,
+                      captionController: captionController,
+                      captionFocus: captionFocus,
+                      mentionKey: mentionKey,
+                    ),
+              if (audio.playBackAvailable && _showBottomTools)
+                AudioBottomTools(
+                  openPhotoOptions: _audioPhotoOptions,
+                  resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                  resetAudioGradientValues: _resetAudioGradientValues,
+                  setAudioGradientValues: _setAudioGradientValues,
+                )
+            ],
           ),
         );
       }),

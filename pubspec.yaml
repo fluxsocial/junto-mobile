@@ -161,6 +161,7 @@ flutter:
     - assets/images/junto-mobile__background.png
     - assets/images/junto-mobile__bench.png
     - assets/images/junto-mobile__external-link.png
+    - assets/images/junto-mobile__cancel.png
 
 flutter_intl:
   enabled: true

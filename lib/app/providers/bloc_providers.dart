@@ -51,19 +51,6 @@ class BlocProviders extends StatelessWidget {
         BlocProvider<AppBloc>(
           create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context)),
         ),
-        BlocProvider<ChannelFilteringBloc>(
-          create: (ctx) => ChannelFilteringBloc(
-            RepositoryProvider.of<SearchRepo>(ctx),
-            (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
-              FetchCollective(
-                ExpressionQueryParams(
-                  channels:
-                      value != null ? value.map((e) => e.name).toList() : null,
-                ),
-              ),
-            ),
-          ),
-        ),
       ],
       child: child,
     );
