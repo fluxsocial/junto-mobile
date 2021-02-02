@@ -83,8 +83,9 @@ class HomePage extends StatelessWidget {
       builder: (context, state) {
         if (state is AuthUnauthenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!(ModalRoute.of(context).isFirst &&
-                ModalRoute.of(context).isCurrent)) {
+            if ((state.error != null && !state.error) &&
+                !(ModalRoute.of(context).isFirst &&
+                    ModalRoute.of(context).isCurrent)) {
               Navigator.of(context).pushAndRemoveUntil(
                 PageRouteBuilder(
                   pageBuilder: (context, anim1, anim2) => HomePage(),
