@@ -17,7 +17,7 @@ abstract class Logger {
 class PrintLogger extends Logger {
   String getMethodName() {
     final frames = Trace.current().frames;
-    final frame = frames[3].member;
+    final frame = frames[frames.length - 1].member;
 
     return '[$frame]';
   }
