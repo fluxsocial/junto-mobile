@@ -59,6 +59,7 @@ dependencies:
   clipboard: ^0.1.2+8
   firebase_messaging: 7.0.3
   firebase_core: 0.5.0+1
+  flutter_liquidcore: 1.1.1
 
 dev_dependencies:
   test: any
@@ -162,6 +163,7 @@ flutter:
     - assets/images/junto-mobile__bench.png
     - assets/images/junto-mobile__external-link.png
     - assets/images/junto-mobile__cancel.png
+    - acai/main.js
 
 flutter_intl:
   enabled: true
