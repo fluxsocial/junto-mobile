@@ -25,7 +25,8 @@ class JuntoDenSliverAppbar extends StatefulWidget {
   }
 }
 
-class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
+class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar>
+    with WidgetsBindingObserver {
   double _flexibleHeightSpace;
   final GlobalKey<JuntoDenSliverAppbarState> _keyFlexibleSpace =
       GlobalKey<JuntoDenSliverAppbarState>();
@@ -42,15 +43,19 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
     final Size sizeFlexibleSpace = renderBoxFlexibleSpace.size;
     final double heightFlexibleSpace = sizeFlexibleSpace.height;
 
-    setState(() {
-      _flexibleHeightSpace = heightFlexibleSpace;
-    });
+    if (_flexibleHeightSpace != heightFlexibleSpace) {
+      setState(() {
+        _flexibleHeightSpace = heightFlexibleSpace;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final photo = widget.profile.user.backgroundPhoto;
     final name = widget.profile.user.name.trim();
+
+    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
 
     return SliverAppBar(
       automaticallyImplyLeading: false,
@@ -103,8 +108,11 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                         children: <Widget>[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Flexible(
+                                fit: FlexFit.tight,
+                                flex: 3,
                                 child: Text(
                                   name,
                                   style: TextStyle(
@@ -115,8 +123,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 ),
                               ),
                               // Member Badges
-                              if (widget.profile.user.badges != null &&
-                                  appConfig.flavor == Flavor.dev)
+                              if (widget.profile.user.badges != null)
                                 if (widget.profile.user.badges.isNotEmpty)
                                   MemberBadgesRow(
                                     badges: widget.profile.user.badges,
