@@ -162,6 +162,10 @@ flutter:
     - assets/images/junto-mobile__bench.png
     - assets/images/junto-mobile__external-link.png
     - assets/images/junto-mobile__cancel.png
+    - assets/images/junto-mobile__badge--gold.png
+    - assets/images/junto-mobile__badge--platinum.png
+    - assets/images/junto-mobile__badge--silver.png
+    - assets/images/junto-mobile__badge--crowdfunder.png
 
 flutter_intl:
   enabled: true
