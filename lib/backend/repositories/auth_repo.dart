@@ -56,7 +56,7 @@ class AuthRepo extends ChangeNotifier {
         return await getAddress();
       } else {
         if (result.error == SignInResultError.AlreadyLoggedIn) {
-          logger.logInfo('User already logged in, loggin out and relogging');
+          logger.logInfo('User already logged in, logging out and relogging');
           await logoutUser();
           return await loginUser(username, password);
         }

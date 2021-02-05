@@ -102,3 +102,4 @@ lib/api_prod.dart
 /ios/Runner/GoogleService-Info-Dev.plist
 /android/app/src/profile/google-services.json
 /android/app/src/debug/google-services.json
+/android/app/google-services.json

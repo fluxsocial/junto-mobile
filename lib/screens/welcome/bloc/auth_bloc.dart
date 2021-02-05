@@ -117,13 +117,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.unauthenticated(loading: true);
     try {
       final address = await authRepo.loginUser(event.username, event.password);
-
       if (address != null) {
         final user = await userRepo.getUser(address);
         await userDataProvider.updateUser(user);
-
         await userDataProvider.initialize();
-
         yield AuthState.authenticated();
       } else {
         yield AuthState.unauthenticated(

@@ -154,7 +154,6 @@ class JuntoDenState extends State<JuntoDen>
                       context,
                       FadeRoute(
                         child: HomePageContent(),
-                        name: "/",
                       ),
                     ) ??
                     false;
