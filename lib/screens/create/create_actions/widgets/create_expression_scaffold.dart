@@ -60,6 +60,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   dynamic expression;
   List<String> channels;
   List<String> mentions;
+  bool showExpressionSheet = true;
 
   final GlobalKey<CreateLongformState> _longformKey =
       GlobalKey<CreateLongformState>();
@@ -70,10 +71,29 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   final GlobalKey<CreatePhotoState> _photoKey = GlobalKey<CreatePhotoState>();
   final GlobalKey<CreateAudioState> _audioKey = GlobalKey<CreateAudioState>();
 
+  final FocusNode dynamicCaptionFocusNode = FocusNode();
+  final FocusNode dynamicTitleFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
     createPageController = PageController(initialPage: 0);
+
+    dynamicCaptionFocusNode.addListener(() {
+      if (dynamicCaptionFocusNode.hasFocus) {
+        _toggleExpressionSheetVisibility(false);
+      } else {
+        _toggleExpressionSheetVisibility(true);
+      }
+    });
+
+    dynamicTitleFocusNode.addListener(() {
+      if (dynamicTitleFocusNode.hasFocus) {
+        _toggleExpressionSheetVisibility(false);
+      } else {
+        _toggleExpressionSheetVisibility(true);
+      }
+    });
   }
 
   @override
@@ -87,7 +107,11 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     Widget child;
     switch (currentExpressionType) {
       case ExpressionType.dynamic:
-        child = CreateLongform(key: _longformKey);
+        child = CreateLongform(
+          key: _longformKey,
+          captionFocus: dynamicCaptionFocusNode,
+          titleFocus: dynamicTitleFocusNode,
+        );
         break;
 
       case ExpressionType.shortform:
@@ -138,6 +162,16 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
     }
     return child;
+  }
+
+  _toggleExpressionSheetVisibility(bool visible) {
+    setState(() {
+      if (visible) {
+        showExpressionSheet = true;
+      } else {
+        showExpressionSheet = false;
+      }
+    });
   }
 
   Widget _buildReview() {
@@ -411,6 +445,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   void dispose() {
     super.dispose();
     createPageController.dispose();
+    dynamicCaptionFocusNode.dispose();
+    dynamicTitleFocusNode.dispose();
   }
 
   @override
@@ -461,10 +497,51 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                           ],
                         ),
                       ),
-                      ChooseExpressionSheet(
-                        currentExpressionType: currentExpressionType,
-                        chooseExpressionType: chooseExpressionType,
-                      ),
+                      if (showExpressionSheet)
+                        ChooseExpressionSheet(
+                          currentExpressionType: currentExpressionType,
+                          chooseExpressionType: chooseExpressionType,
+                        ),
+                      if (dynamicCaptionFocusNode.hasFocus)
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              dynamicCaptionFocusNode.unfocus();
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Theme.of(context).dividerColor,
+                                    width: .75,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    alignment: Alignment.center,
+                                    color: Colors.transparent,
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 24,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
 

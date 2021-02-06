@@ -13,7 +13,14 @@ import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
 class CreateLongform extends StatefulWidget {
-  const CreateLongform({Key key}) : super(key: key);
+  const CreateLongform({
+    Key key,
+    this.captionFocus,
+    this.titleFocus,
+  }) : super(key: key);
+
+  final FocusNode captionFocus;
+  final FocusNode titleFocus;
 
   @override
   State<StatefulWidget> createState() {
@@ -155,7 +162,7 @@ class CreateLongformState extends State<CreateLongform>
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: TextField(
-                      focusNode: _titleFocus,
+                      focusNode: widget.titleFocus,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -195,7 +202,7 @@ class CreateLongformState extends State<CreateLongform>
                             maxLines: 20,
                             keyboardAppearance: Theme.of(context).brightness,
                             cursorWidth: 2,
-                            focusNode: _bodyFocus,
+                            focusNode: widget.captionFocus,
                             textInputAction: TextInputAction.newline,
                             style: Theme.of(context)
                                 .textTheme
@@ -238,7 +245,7 @@ class CreateLongformState extends State<CreateLongform>
                           ),
                         ),
                         if (_showList &&
-                            _bodyFocus.hasFocus &&
+                            widget.captionFocus.hasFocus &&
                             listType == ListType.mention)
                           Positioned(
                             bottom: 0,
@@ -267,7 +274,7 @@ class CreateLongformState extends State<CreateLongform>
                             ),
                           ),
                         if (_showList &&
-                            _bodyFocus.hasFocus &&
+                            widget.captionFocus.hasFocus &&
                             listType == ListType.channels)
                           Positioned(
                             bottom: 0,
@@ -299,6 +306,7 @@ class CreateLongformState extends State<CreateLongform>
                       ],
                     ),
                   ),
+            
                 ],
               ),
             );
