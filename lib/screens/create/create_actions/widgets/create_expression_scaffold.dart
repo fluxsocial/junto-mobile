@@ -144,6 +144,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
       case ExpressionType.audio:
         child = CreateAudio(key: _audioKey);
+
         break;
 
       case ExpressionType.none:
@@ -207,9 +208,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.audio:
-        child = CreateAudioReview(
-          expression: expression,
-        );
+        child = CreateAudioReview(expression: expression);
         break;
 
       case ExpressionType.none:
@@ -363,7 +362,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           expressionModel = await getPhotoExpression(repository);
           JuntoLoader.hide();
           break;
-
         case ExpressionType.audio:
           JuntoLoader.showLoader(context, color: Colors.white54);
           expressionModel = await getAudioExpression(repository);
@@ -508,20 +506,28 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                             margin: EdgeInsets.only(
                               bottom: MediaQuery.of(context).size.height * .1,
                             ),
-                            _buildExpressionType(),
-                          ],
-                        ),
+                            child: Column(
+                              children: <Widget>[
+                                CreateTopBar(
+                                  profilePicture: userData.user.profilePicture,
+                                  toggleSocialContextVisibility:
+                                      toggleSocialContextVisibility,
+                                  currentExpressionContext: expressionContext,
+                                ),
+                                _buildExpressionType(),
+                              ],
+                            ),
+                          ),
+                          if (showExpressionSheet)
+                            ChooseExpressionSheet(
+                              currentExpressionType: currentExpressionType,
+                              chooseExpressionType: chooseExpressionType,
+                            ),
+                          if (dynamicCaptionFocusNode.hasFocus)
+                            RemoveFocusWidget(
+                                focusNode: dynamicCaptionFocusNode)
+                        ],
                       ),
-                      if (showExpressionSheet)
-                        ChooseExpressionSheet(
-                          currentExpressionType: currentExpressionType,
-                          chooseExpressionType: chooseExpressionType,
-                        ),
-                      if (dynamicCaptionFocusNode.hasFocus)
-                        RemoveFocusWidget(focusNode: dynamicCaptionFocusNode)
-                    ],
-                  ),
-
 
                       // Create Screen 2 - Review Content
                       Column(
