@@ -1,17 +1,16 @@
-import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -19,30 +18,30 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/en
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_account.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
 import 'junto_center.dart';
 import 'junto_contacts.dart';
-// import 'junto_invite.dart';
 import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
+  const JuntoDrawer({this.changeScreen});
+
+  final Function changeScreen;
   @override
   _JuntoDrawerState createState() => _JuntoDrawerState();
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
   void _onLogOut() {
-    // Dismiss the dialog
-    Navigator.of(context).pop();
     // Sends logout event
     context.bloc<AuthBloc>().add(LogoutEvent());
 
-    if (ModalRoute.of(context).settings.name != "/") {
-      Navigator.of(context).pushReplacement(
-        FadeRoute(child: Welcome(), name: "Welcome"),
-      );
-    }
+    Navigator.of(context).pushReplacement(
+      FadeRoute(child: HomePage(), name: "HomePage"),
+    );
   }
 
   @override
@@ -88,14 +87,25 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             title: S.of(context).menu_my_den,
                             theme: theme,
                             onTap: () {
-                              Navigator.of(context).push(
-                                FadeRoute<void>(
-                                  child: JuntoDen(),
-                                  name: 'JuntoDen',
-                                ),
-                              );
+                              JuntoFilterDrawer.of(context).toggleRightMenu();
+                              widget.changeScreen(Screen.den);
                             },
                           ),
+                        JuntoDrawerItem(
+                          icon: Icons.search,
+                          title: 'Search',
+                          theme: theme,
+                          onTap: () {
+                            // open search
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    GlobalSearch(),
+                              ),
+                            );
+                          },
+                        ),
                         JuntoDrawerItem(
                           icon: CustomIcons.infinity,
                           iconSize: 9,
@@ -170,32 +180,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             );
                           },
                         ),
-
-                        // To Do: Eric
-                        // JuntoDrawerItem(
-                        //   icon: Container(
-                        //     width: 60,
-                        //     alignment: Alignment.centerLeft,
-                        //     child: Icon(
-                        //       Icons.book,
-                        //       color: Colors.white,
-                        //       size: 24,
-                        //     ),
-                        //   ),
-                        //   title: 'Resources',
-                        // theme: theme,
-                        //
-                        //   onTap: () async {
-                        //     await Navigator.push(
-                        //       context,
-                        //       CupertinoPageRoute<dynamic>(
-                        //         builder: (BuildContext context) {
-                        //           return JuntoResources();
-                        //         },
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
                       ],
                     ),
                     Column(

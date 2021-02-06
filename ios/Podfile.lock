@@ -1,16 +1,16 @@
 PODS:
-  - audio_session (0.0.1):
-    - Flutter
-  - AWSAuthCore (2.13.6):
-    - AWSCore (= 2.13.6)
-  - AWSCognitoIdentityProvider (2.13.6):
-    - AWSCognitoIdentityProviderASF (= 1.0.1)
-    - AWSCore (= 2.13.6)
-  - AWSCognitoIdentityProviderASF (1.0.1)
-  - AWSCore (2.13.6)
-  - AWSMobileClient (2.13.6):
-    - AWSAuthCore (= 2.13.6)
-    - AWSCognitoIdentityProvider (= 2.13.6)
+  - AWSAuthCore (2.22.0):
+    - AWSCore (= 2.22.0)
+  - AWSCognitoIdentityProvider (2.22.0):
+    - AWSCognitoIdentityProviderASF (= 2.22.0)
+    - AWSCore (= 2.22.0)
+  - AWSCognitoIdentityProviderASF (2.22.0)
+  - AWSCore (2.22.0)
+  - AWSMobileClient (2.22.0):
+    - AWSAuthCore (= 2.22.0)
+    - AWSCognitoIdentityProvider (= 2.22.0)
+    - AWSCognitoIdentityProviderASF (= 2.22.0)
+    - AWSCore (= 2.22.0)
   - contacts_service (0.2.2):
     - Flutter
   - Firebase/CoreOnly (6.26.0):
@@ -61,8 +61,12 @@ PODS:
   - flutter_audio_recorder (0.5.4):
     - Flutter
   - flutter_aws_amplify_cognito (0.0.2):
-    - AWSMobileClient (~> 2.13.4)
+    - AWSMobileClient (~> 2.22.0)
     - Flutter
+  - "flutter_sound (7.5.1+2)":
+    - Flutter
+    - mobile-ffmpeg-audio (= 4.3.1.LTS)
+    - "tau_sound_core (= 7.5.1+2)"
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -87,8 +91,7 @@ PODS:
     - GoogleUtilities/Logger
   - image_picker (0.0.1):
     - Flutter
-  - just_audio (0.0.1):
-    - Flutter
+  - mobile-ffmpeg-audio (4.3.1.LTS)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
     - nanopb/encode (= 1.30906.0)
@@ -100,28 +103,28 @@ PODS:
     - Flutter
   - "permission_handler (5.0.1+1)":
     - Flutter
-  - PromisesObjC (1.2.11)
-  - Protobuf (3.13.0)
+  - PromisesObjC (1.2.12)
+  - Protobuf (3.14.0)
   - shared_preferences (0.0.1):
     - Flutter
-  - sqflite (0.0.1):
+  - sqflite (0.0.2):
     - Flutter
-    - FMDB (~> 2.7.2)
+    - FMDB (>= 2.7.5)
+  - "tau_sound_core (7.5.1+2)"
   - url_launcher (0.0.1):
     - Flutter
   - vibration (1.4.0):
     - Flutter
 
 DEPENDENCIES:
-  - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_audio_recorder (from `.symlinks/plugins/flutter_audio_recorder/ios`)
   - flutter_aws_amplify_cognito (from `.symlinks/plugins/flutter_aws_amplify_cognito/ios`)
+  - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
-  - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -148,13 +151,13 @@ SPEC REPOS:
     - FMDB
     - GoogleDataTransport
     - GoogleUtilities
+    - mobile-ffmpeg-audio
     - nanopb
     - PromisesObjC
     - Protobuf
+    - tau_sound_core
 
 EXTERNAL SOURCES:
-  audio_session:
-    :path: ".symlinks/plugins/audio_session/ios"
   contacts_service:
     :path: ".symlinks/plugins/contacts_service/ios"
   firebase_core:
@@ -167,10 +170,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_audio_recorder/ios"
   flutter_aws_amplify_cognito:
     :path: ".symlinks/plugins/flutter_aws_amplify_cognito/ios"
+  flutter_sound:
+    :path: ".symlinks/plugins/flutter_sound/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
-  just_audio:
-    :path: ".symlinks/plugins/just_audio/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   path_provider:
@@ -187,12 +190,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
-  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
-  AWSAuthCore: 62e92b5ffbd66b8ba0eac471e7f90ccfa76cf63b
-  AWSCognitoIdentityProvider: 05f14f7c892df9ff764268d2ac33b4e95288e603
-  AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
-  AWSCore: 2b6015f278770e745b4863ac5f45e007e647f298
-  AWSMobileClient: 420a899c4691c7f0991daa35daee82a84396ec63
+  AWSAuthCore: b54e2008da479e5a6ffdb6b482821d8f5a9afaa4
+  AWSCognitoIdentityProvider: 32a91ad644e49e40235a408a8fbb96ea74891f19
+  AWSCognitoIdentityProviderASF: 8b92721c17f2951ecd5bcfb749d5534f2851c2c7
+  AWSCore: 8bd1def9cb0b6770c65b6d394f1c1cbc0a5562b7
+  AWSMobileClient: bba690cc09c6569cc1111141beaa4e2f789f536b
   contacts_service: 849e1f84281804c8bfbec1b4c3eedcb23c5d3eca
   Firebase: 7cf5f9c67f03cb3b606d1d6535286e1080e57eb6
   firebase_core: 00e54a4744164a6b5a250b96dd1ad5afaba7a342
@@ -206,23 +208,25 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 29543feb343b09546ab3aa04d008ee8595b43c44
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_audio_recorder: eb998d4e75e59b39d9e3ca1818a5e0f3a82f5836
-  flutter_aws_amplify_cognito: 7e3a7bf2c46c4b468e724d6fd62277d01c1985a1
+  flutter_aws_amplify_cognito: d43728b9a736b5962f2115c7297b8d712a130846
+  flutter_sound: 73ed7a5b76dc0d8de46a5e30dce0cd39ebae849f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
-  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
+  mobile-ffmpeg-audio: adc36047b8032bc0f8e5c4e6ab7cb110189d9b37
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
-  PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
-  Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  tau_sound_core: 3653b154a8804ea466c3f383e3e7453df8603e61
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   vibration: 2275f5e3ab5da73de1d948dc96c026799e08ff6d
 
 PODFILE CHECKSUM: 3b7f149bbfc6aaaac83ccb82aafca46c276e3c5d
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

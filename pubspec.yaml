@@ -29,11 +29,11 @@ dependencies:
   equatable: 1.2.3
   json_serializable: 3.3.0
   freezed_annotation: 0.11.0+1
+  flutter_sound: 7.5.1+2
   dio: 3.0.10
   url_launcher: 5.4.11
   feature_discovery: 0.12.0+2
   intl: ^0.16.1
-  just_audio: ^0.5.6
   flutter_audio_recorder: 0.5.5
   hive: 1.4.2
   hive_flutter: 0.3.1
@@ -72,11 +72,11 @@ dependency_overrides:
   path: 1.7.0
   # Pending https://github.com/agnostech/flutter_amplify/pull/20
   flutter_aws_amplify_cognito:
-    #     path: ../flutter_amplify/flutter_aws_amplify_cognito
+    # path: ../flutter_amplify/flutter_aws_amplify_cognito
     git:
-      url: https://github.com/Nash0x7E2/flutter_amplify.git
+      url: https://github.com/fayeed/flutter_amplify.git
       path: flutter_aws_amplify_cognito
-      ref: 7ace73c14878d134ff6e86cc18bc16414242b122
+      ref: 6138dcc84aa4d0628f69794b0a5989482410cd95
 
 flutter:
   uses-material-design: true
@@ -161,6 +161,7 @@ flutter:
     - assets/images/junto-mobile__background.png
     - assets/images/junto-mobile__bench.png
     - assets/images/junto-mobile__external-link.png
+    - assets/images/junto-mobile__cancel.png
 
 flutter_intl:
   enabled: true

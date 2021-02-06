@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_appbar.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_background_photo.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_header_space.dart';
@@ -16,7 +15,6 @@ import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_profile_picture.
 import 'package:junto_beta_mobile/screens/den/edit_den/edit_den_text_field.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den/update_photo_options.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
@@ -248,12 +246,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
       final _user = userProvider.userProfile.copyWith(user: updatedUser);
       userProvider.updateUser(_user);
       JuntoLoader.hide();
-      Navigator.of(context).pushReplacement(
-        FadeRoute<void>(
-          child: JuntoDen(),
-          name: 'JuntoCollective',
-        ),
-      );
+      Navigator.of(context).pop();
     } catch (e, s) {
       logger.logException(e, s);
       JuntoLoader.hide();

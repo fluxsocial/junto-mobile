@@ -128,170 +128,161 @@ class CreateEventState extends State<CreateEvent> with DateParser {
 
   @override
   Widget build(BuildContext context) {
-    return CreateExpressionScaffold(
-      expressionType: ExpressionType.event,
-      onNext: _onNext,
-      child: Expanded(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: TextFormField(
-                        validator: Validator.validateNonEmpty,
-                        controller: titleController,
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Name of event',
-                          hintStyle: Theme.of(context).textTheme.headline6,
-                        ),
-                        cursorColor: Theme.of(context).primaryColor,
-                        cursorWidth: 2,
-                        maxLines: null,
-                        maxLength: 140,
-                        textInputAction: TextInputAction.done,
-                        style: Theme.of(context).textTheme.headline6,
+    return Expanded(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: TextFormField(
+                      validator: Validator.validateNonEmpty,
+                      controller: titleController,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Name of event',
+                        hintStyle: Theme.of(context).textTheme.headline6,
                       ),
+                      cursorColor: Theme.of(context).primaryColor,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      maxLength: 140,
+                      textInputAction: TextInputAction.done,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
-                    ValueListenableBuilder<File>(
-                      valueListenable: imageFile,
-                      builder:
-                          (BuildContext context, File value, Widget child) {
-                        if (value == null) {
-                          return EmptyImageWidget(
-                            imageFile: imageFile,
-                            pickImage: _onPickPressed,
-                          );
-                        }
-                        return Column(
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height:
-                                  (MediaQuery.of(context).size.width / 3) * 2,
-                              color: Theme.of(context).dividerColor,
-                              child: Image.file(
-                                value,
-                                fit: BoxFit.cover,
-                              ),
+                  ),
+                  ValueListenableBuilder<File>(
+                    valueListenable: imageFile,
+                    builder: (BuildContext context, File value, Widget child) {
+                      if (value == null) {
+                        return EmptyImageWidget(
+                          imageFile: imageFile,
+                          pickImage: _onPickPressed,
+                        );
+                      }
+                      return Column(
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: (MediaQuery.of(context).size.width / 3) * 2,
+                            color: Theme.of(context).dividerColor,
+                            child: Image.file(
+                              value,
+                              fit: BoxFit.cover,
                             ),
-                            GestureDetector(
-                              onTap: _openChangePhotoModal,
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Theme.of(context).dividerColor,
-                                      width: .75,
-                                    ),
+                          ),
+                          GestureDetector(
+                            onTap: _openChangePhotoModal,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Theme.of(context).dividerColor,
+                                    width: .75,
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      'Change photo',
-                                      style:
-                                          Theme.of(context).textTheme.caption,
-                                    ),
-                                    Icon(
-                                      Icons.keyboard_arrow_right,
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                    )
-                                  ],
-                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Change photo',
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_right,
+                                    color: Theme.of(context).primaryColorLight,
+                                  )
+                                ],
                               ),
                             ),
-                          ],
-                        );
-                      },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  AnimatedBuilder(
+                    animation: Listenable.merge(<ValueNotifier<DateTime>>[
+                      endTime,
+                      startTime,
+                    ]),
+                    builder: (BuildContext context, _) {
+                      return CreateDateSelector(
+                        endTime: endTime,
+                        startTime: startTime,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    child: TextFormField(
+                      controller: locationController,
+                      validator: Validator.validateNonEmpty,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Location',
+                        hintStyle: Theme.of(context).textTheme.caption,
+                      ),
+                      cursorColor: Theme.of(context).primaryColorDark,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.caption,
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
                     ),
-                    const SizedBox(height: 10),
-                    AnimatedBuilder(
-                      animation: Listenable.merge(<ValueNotifier<DateTime>>[
-                        endTime,
-                        startTime,
-                      ]),
-                      builder: (BuildContext context, _) {
-                        return CreateDateSelector(
-                          endTime: endTime,
-                          startTime: startTime,
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      child: TextFormField(
-                        controller: locationController,
-                        validator: Validator.validateNonEmpty,
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: InputDecoration(
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    child: TextFormField(
+                      controller: detailsController,
+                      validator: Validator.validateNonEmpty,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Location',
-                          hintStyle: Theme.of(context).textTheme.caption,
-                        ),
-                        cursorColor: Theme.of(context).primaryColorDark,
-                        cursorWidth: 2,
-                        maxLines: null,
-                        style: Theme.of(context).textTheme.caption,
-                        maxLength: 80,
-                        textInputAction: TextInputAction.done,
-                      ),
+                          hintText: 'Details',
+                          hintStyle: Theme.of(context).textTheme.caption),
+                      cursorColor: Theme.of(context).primaryColorDark,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.caption,
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
                     ),
-                    const SizedBox(height: 10),
-                    Container(
-                      child: TextFormField(
-                        controller: detailsController,
-                        validator: Validator.validateNonEmpty,
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Details',
-                            hintStyle: Theme.of(context).textTheme.caption),
-                        cursorColor: Theme.of(context).primaryColorDark,
-                        cursorWidth: 2,
-                        maxLines: null,
-                        style: Theme.of(context).textTheme.caption,
-                        maxLength: 80,
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

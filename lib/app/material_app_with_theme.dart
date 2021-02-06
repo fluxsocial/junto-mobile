@@ -1,5 +1,6 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,6 +13,8 @@ import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/screens/home/new_home.dart';
+import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_navigation_observer.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
@@ -60,6 +63,8 @@ class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
   Widget _buildChildFor({@required AuthState state}) {
+    print('test: $state');
+
     if (state is AuthLoading) {
       return HomeLoadingPage();
     } else if (state is AuthAgreementsRequired) {
@@ -77,6 +82,21 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
+        if (state is AuthUnauthenticated) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if ((state.error != null && !state.error) &&
+                !(ModalRoute.of(context).isFirst &&
+                    ModalRoute.of(context).isCurrent)) {
+              Navigator.of(context).pushAndRemoveUntil(
+                PageRouteBuilder(
+                  pageBuilder: (context, anim1, anim2) => HomePage(),
+                  transitionDuration: Duration(seconds: 0),
+                ),
+                (route) => false,
+              );
+            }
+          });
+        }
         return Stack(
           children: <Widget>[
             BackgroundTheme(),
@@ -127,7 +147,10 @@ class HomePageContentState extends State<HomePageContent>
   Future<void> configureNotifications() async {
     final notificationRepo = Provider.of<NotificationRepo>(context);
     final appRepo = Provider.of<AppRepo>(context);
+
     try {
+      context.bloc<NotificationSettingBloc>().add(FetchNotificationSetting());
+
       final _isFirst = await appRepo.isFirstLaunch();
       if (_isFirst) {
         final token = await notificationRepo.getFCMToken();
@@ -173,11 +196,7 @@ class HomePageContentState extends State<HomePageContent>
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
-      child: const JuntoLotus(
-        address: null,
-        expressionContext: ExpressionContext.Collective,
-        source: null,
-      ),
+      child: JuntoLotus(),
     );
   }
 }

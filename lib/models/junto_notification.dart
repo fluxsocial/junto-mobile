@@ -138,13 +138,43 @@ class NotificationPrefsModel {
     );
   }
 
+  NotificationPrefsModel copyWith({
+    bool comment,
+    bool connection,
+    bool connectionRequest,
+    bool general,
+    bool groupJoinRequest,
+    bool mention,
+    bool packRelation,
+    bool subscribe,
+  }) {
+    return NotificationPrefsModel(
+      comment: comment ?? this.comment,
+      connection: connection ?? this.connection,
+      connectionRequest: connectionRequest ?? this.connectionRequest,
+      general: general ?? this.general,
+      groupJoinRequest: groupJoinRequest ?? this.groupJoinRequest,
+      mention: mention ?? this.mention,
+      packRelation: packRelation ?? this.packRelation,
+      subscribe: subscribe ?? this.subscribe,
+    );
+  }
+
+  @HiveField(0)
   bool comment;
+  @HiveField(1)
   bool connection;
+  @HiveField(2)
   bool connectionRequest;
+  @HiveField(3)
   bool general;
+  @HiveField(4)
   bool groupJoinRequest;
+  @HiveField(5)
   bool mention;
+  @HiveField(6)
   bool packRelation;
+  @HiveField(7)
   bool subscribe;
 
   factory NotificationPrefsModel.fromMap(Map<String, dynamic> json) =>

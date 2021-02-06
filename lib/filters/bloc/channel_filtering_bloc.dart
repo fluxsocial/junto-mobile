@@ -13,7 +13,7 @@ import 'package:rxdart/rxdart.dart';
 part 'channel_filtering_event.dart';
 part 'channel_filtering_state.dart';
 
-typedef OnFilterApplied = void Function(Channel);
+typedef OnFilterApplied = void Function(List<Channel>);
 
 class ChannelFilteringBloc
     extends Bloc<ChannelFilteringEvent, ChannelFilteringState> {
