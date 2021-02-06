@@ -1,41 +1,24 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
-import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
-import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/audio/audio_preview.dart';
-import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
-import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
-import 'package:provider/provider.dart';
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter_mentions/flutter_mentions.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
-import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/image_cropper.dart';
-import 'package:provider/provider.dart';
 
 class CreateAudioReview extends StatelessWidget {
-  const CreateAudioReview({this.expression});
+  const CreateAudioReview({
+    this.expression,
+  });
 
   final AudioFormExpression expression;
 
   Widget _showCreateAudioReviewTemplate() {
+    print('test: I waas called');
     if (expression.photo == null && expression.gradient.isEmpty) {
       print('returning default');
       return CreateAudioReviewDefault(expression: expression);
@@ -53,10 +36,7 @@ class CreateAudioReview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AudioService>(
-      create: (context) => AudioService(),
-      child: _showCreateAudioReviewTemplate(),
-    );
+    return _showCreateAudioReviewTemplate();
   }
 }
 
