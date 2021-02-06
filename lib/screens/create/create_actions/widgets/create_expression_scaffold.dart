@@ -90,6 +90,18 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     dynamicTitleFocusNode.addListener(() {
       _toggleExpressionSheetVisibility(dynamicTitleFocusNode);
     });
+
+    shortformFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(shortformFocusNode);
+    });
+
+    linkCaptionFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(linkCaptionFocusNode);
+    });
+
+    linkUrlFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(linkUrlFocusNode);
+    });
   }
 
   @override
@@ -111,11 +123,18 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.shortform:
-        child = CreateShortform(key: _shortformKey);
+        child = CreateShortform(
+          key: _shortformKey,
+          shortformFocus: shortformFocusNode,
+        );
         break;
 
       case ExpressionType.link:
-        child = CreateLinkForm(key: _linkKey);
+        child = CreateLinkForm(
+          key: _linkKey,
+          captionFocus: linkCaptionFocusNode,
+          urlFocus: linkUrlFocusNode,
+        );
         break;
 
       case ExpressionType.photo:

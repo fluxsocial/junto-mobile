@@ -17,11 +17,16 @@ import 'package:provider/provider.dart';
 
 /// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
-  const CreateShortform({Key key, this.expressionContext, this.address})
-      : super(key: key);
+  const CreateShortform({
+    Key key,
+    this.expressionContext,
+    this.address,
+    this.shortformFocus,
+  }) : super(key: key);
 
   final ExpressionContext expressionContext;
   final String address;
+  final FocusNode shortformFocus;
 
   @override
   State<StatefulWidget> createState() => CreateShortformState();
@@ -203,7 +208,7 @@ class CreateShortformState extends State<CreateShortform>
                             return Container(
                               child: GestureDetector(
                                 onTap: () {
-                                  _focus.requestFocus();
+                                  widget.shortformFocus.requestFocus();
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -232,7 +237,7 @@ class CreateShortformState extends State<CreateShortform>
                                   ),
                                   child: FlutterMentions(
                                     key: mentionKey,
-                                    focusNode: _focus,
+                                    focusNode: widget.shortformFocus,
                                     autofocus: false,
                                     onSearchChanged:
                                         (String trigger, String value) {
@@ -313,7 +318,9 @@ class CreateShortformState extends State<CreateShortform>
                 ),
               ],
             ),
-            if (_showList && _focus.hasFocus && listType == ListType.mention)
+            if (_showList &&
+                widget.shortformFocus.hasFocus &&
+                listType == ListType.mention)
               Positioned(
                 bottom: 0,
                 right: 0,
@@ -336,7 +343,9 @@ class CreateShortformState extends State<CreateShortform>
                   },
                 ),
               ),
-            if (_showList && _focus.hasFocus && listType == ListType.channels)
+            if (_showList &&
+                widget.shortformFocus.hasFocus &&
+                listType == ListType.channels)
               Positioned(
                 bottom: 0,
                 right: 0,
