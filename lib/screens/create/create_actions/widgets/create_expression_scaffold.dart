@@ -74,6 +74,9 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
   final FocusNode dynamicCaptionFocusNode = FocusNode();
   final FocusNode dynamicTitleFocusNode = FocusNode();
+  final FocusNode shortformFocusNode = FocusNode();
+  final FocusNode linkCaptionFocusNode = FocusNode();
+  final FocusNode linkUrlFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -81,19 +84,11 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     createPageController = PageController(initialPage: 0);
 
     dynamicCaptionFocusNode.addListener(() {
-      if (dynamicCaptionFocusNode.hasFocus) {
-        _toggleExpressionSheetVisibility(false);
-      } else {
-        _toggleExpressionSheetVisibility(true);
-      }
+      _toggleExpressionSheetVisibility(dynamicCaptionFocusNode);
     });
 
     dynamicTitleFocusNode.addListener(() {
-      if (dynamicTitleFocusNode.hasFocus) {
-        _toggleExpressionSheetVisibility(false);
-      } else {
-        _toggleExpressionSheetVisibility(true);
-      }
+      _toggleExpressionSheetVisibility(dynamicTitleFocusNode);
     });
   }
 
@@ -165,14 +160,16 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     return child;
   }
 
-  _toggleExpressionSheetVisibility(bool visible) {
-    setState(() {
-      if (visible) {
-        showExpressionSheet = true;
-      } else {
+  _toggleExpressionSheetVisibility(FocusNode focusNode) {
+    if (focusNode.hasFocus) {
+      setState(() {
         showExpressionSheet = false;
-      }
-    });
+      });
+    } else {
+      setState(() {
+        showExpressionSheet = true;
+      });
+    }
   }
 
   Widget _buildReview() {
