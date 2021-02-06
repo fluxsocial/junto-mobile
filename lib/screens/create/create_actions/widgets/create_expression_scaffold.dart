@@ -113,7 +113,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
       case ExpressionType.none:
         child = Container(
-          padding: EdgeInsets.symmetric(horizontal: 36),
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * .1),
           height: MediaQuery.of(context).size.height / 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,10 +122,10 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(
-                'Please select an expression type from below options',
+                'Select an expression type to get started',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                 ),
               )
             ],

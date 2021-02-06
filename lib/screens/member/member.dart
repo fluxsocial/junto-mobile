@@ -72,6 +72,7 @@ class _JuntoMemberState extends State<JuntoMember>
       privateDen: null,
       publicDen: null,
     );
+    print('junto member address is ' + widget.profile.address);
   }
 
   @override
