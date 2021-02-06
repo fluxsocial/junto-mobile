@@ -62,6 +62,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   List<String> channels;
   List<String> mentions;
   bool showExpressionSheet = true;
+  AudioService _audioService;
 
   final GlobalKey<CreateLongformState> _longformKey =
       GlobalKey<CreateLongformState>();
@@ -142,12 +143,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.audio:
-        child = ChangeNotifierProvider<AudioService>(
-          create: (context) => AudioService(),
-          child: Consumer<AudioService>(builder: (context, audio, child) {
-            return CreateAudio(key: _audioKey);
-          }),
-        );
+        child = CreateAudio(key: _audioKey);
         break;
 
       case ExpressionType.none:
@@ -211,7 +207,9 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.audio:
-        child = CreateAudioReview(expression: expression);
+        child = CreateAudioReview(
+          expression: expression,
+        );
         break;
 
       case ExpressionType.none:
@@ -285,7 +283,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
         case ExpressionType.audio:
           expressionInProgress =
-              _audioKey.currentState.createExpression(AudioService());
+              _audioKey.currentState.createExpression(_audioService);
           mentionsAndChannels = _audioKey.currentState.getMentionsAndChannels();
 
           print(expressionInProgress.title);
@@ -322,11 +320,12 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   }
 
   Future<ExpressionModel> getAudioExpression(ExpressionRepo repository) async {
-    // final AudioFormExpression expression = await repository.createAudio(audio);
+    final AudioFormExpression _expression =
+        await repository.createAudio(expression);
 
     return ExpressionModel(
       type: currentExpressionType.modelName(),
-      expressionData: expression.toJson(),
+      expressionData: _expression.toJson(),
       context: expressionContext,
       channels: channels,
       mentions: mentions,
@@ -365,9 +364,11 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           JuntoLoader.hide();
           break;
 
-        // case ExpressionType.audio:
-        //           JuntoLoader.showLoader(context, color: Colors.white54);
-        //           expressionModel = await getAudioExpressin
+        case ExpressionType.audio:
+          JuntoLoader.showLoader(context, color: Colors.white54);
+          expressionModel = await getAudioExpression(repository);
+          JuntoLoader.hide();
+          break;
 
         default:
           expressionModel = ExpressionModel(
@@ -469,46 +470,43 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
-      child: BlocProvider(
-        create: (BuildContext context) {
-          return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
-        },
-        child: Stack(
-          children: [
-            Scaffold(
-              appBar: CreateAppBar(
-                closeCreate: widget.closeCreate,
-                togglePageView: togglePageView,
-                currentIndex: _currentIndex,
-                createExpression: createExpression,
-              ),
-              resizeToAvoidBottomPadding: false,
-              resizeToAvoidBottomInset: false,
-              body: PageView(
-                controller: createPageController,
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: (int index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-                children: [
-                  // Create Screen 1 - Make Content
-                  Stack(
+      child: ChangeNotifierProvider<AudioService>(
+        create: (context) => AudioService(),
+        child: Consumer<AudioService>(builder: (context, audio, child) {
+          _audioService = audio;
+          return BlocProvider(
+            create: (BuildContext context) {
+              return SearchBloc(
+                  Provider.of<SearchRepo>(context, listen: false));
+            },
+            child: Stack(
+              children: [
+                Scaffold(
+                  appBar: CreateAppBar(
+                    closeCreate: widget.closeCreate,
+                    togglePageView: togglePageView,
+                    currentIndex: _currentIndex,
+                    createExpression: createExpression,
+                  ),
+                  resizeToAvoidBottomPadding: false,
+                  resizeToAvoidBottomInset: false,
+                  body: PageView(
+                    controller: createPageController,
+                    physics: NeverScrollableScrollPhysics(),
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
                     children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).size.height * .1,
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            CreateTopBar(
-                              profilePicture: userData.user.profilePicture,
-                              toggleSocialContextVisibility:
-                                  toggleSocialContextVisibility,
-                              currentExpressionContext: expressionContext,
+                      // Create Screen 1 - Make Content
+                      Stack(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).size.height * .1,
                             ),
                             _buildExpressionType(),
                           ],
@@ -524,35 +522,39 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                     ],
                   ),
 
-                  // Create Screen 2 - Review Content
-                  Column(
-                    children: [
-                      Expanded(
-                        child: ListView(
-                          children: [
-                            CreateTopBar(
-                              profilePicture: userData.user.profilePicture,
-                              toggleSocialContextVisibility:
-                                  toggleSocialContextVisibility,
-                              currentExpressionContext: expressionContext,
+
+                      // Create Screen 2 - Review Content
+                      Column(
+                        children: [
+                          Expanded(
+                            child: ListView(
+                              children: [
+                                CreateTopBar(
+                                  profilePicture: userData.user.profilePicture,
+                                  toggleSocialContextVisibility:
+                                      toggleSocialContextVisibility,
+                                  currentExpressionContext: expressionContext,
+                                ),
+                                _buildReview(),
+                              ],
                             ),
-                            _buildReview(),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                if (chooseContextVisibility)
+                  CreateContextOverlay(
+                    currentExpressionContext: expressionContext,
+                    selectExpressionContext: selectExpressionContext,
+                    toggleSocialContextVisibility:
+                        toggleSocialContextVisibility,
+                  ),
+              ],
             ),
-            if (chooseContextVisibility)
-              CreateContextOverlay(
-                currentExpressionContext: expressionContext,
-                selectExpressionContext: selectExpressionContext,
-                toggleSocialContextVisibility: toggleSocialContextVisibility,
-              ),
-          ],
-        ),
+          );
+        }),
       ),
     );
   }

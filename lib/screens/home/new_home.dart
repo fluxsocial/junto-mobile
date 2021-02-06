@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_bar/junto_bottom_bar.dart';
@@ -140,37 +142,53 @@ class NewHomeState extends State<NewHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: JuntoFilterDrawer(
-        leftDrawer: showLeftDrawer(),
-        rightMenu: JuntoDrawer(
-          changeScreen: changeScreen,
-        ),
-        swipeLeftDrawer: false,
-        scaffold: Stack(
-          children: [
-            if (!showCreateScreen) showScreen(),
-            if (showCreateScreen)
-              FeatureDiscovery(
-                child: CreateExpressionScaffold(
-                  closeCreate: closeCreate,
-                  changeScreen: changeScreen,
-                ),
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthUnauthenticated) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushAndRemoveUntil(
+              PageRouteBuilder(
+                pageBuilder: (context, anim1, anim2) => HomePage(),
+                transitionDuration: Duration(seconds: 0),
               ),
-            if (_currentScreen != Screen.create)
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: JuntoBottomBar(
-                  userData: _userData,
-                  changeScreen: changeScreen,
-                  currentScreen: _currentScreen,
-                ),
-              ),
-          ],
-        ),
-      ),
+              (route) => false,
+            );
+          });
+        }
+
+        return Scaffold(
+          body: JuntoFilterDrawer(
+            leftDrawer: showLeftDrawer(),
+            rightMenu: JuntoDrawer(
+              changeScreen: changeScreen,
+            ),
+            swipeLeftDrawer: false,
+            scaffold: Stack(
+              children: [
+                if (!showCreateScreen) showScreen(),
+                if (showCreateScreen)
+                  FeatureDiscovery(
+                    child: CreateExpressionScaffold(
+                      closeCreate: closeCreate,
+                      changeScreen: changeScreen,
+                    ),
+                  ),
+                if (_currentScreen != Screen.create)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: JuntoBottomBar(
+                      userData: _userData,
+                      changeScreen: changeScreen,
+                      currentScreen: _currentScreen,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

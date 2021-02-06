@@ -161,9 +161,8 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AudioService>(
-      create: (context) => AudioService(),
-      child: Consumer<AudioService>(builder: (context, audio, child) {
+    return Consumer<AudioService>(
+      builder: (context, audio, child) {
         return Expanded(
           child: Stack(
             children: <Widget>[
@@ -187,7 +186,7 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
             ],
           ),
         );
-      }),
+      },
     );
   }
 
