@@ -28,8 +28,6 @@ class CreateLinkForm extends StatefulWidget {
 
 class CreateLinkFormState extends State<CreateLinkForm>
     with CreateExpressionHelpers {
-  FocusNode _linkFocus;
-  FocusNode _captionFocus;
   String caption;
   String url;
   String title;
@@ -53,16 +51,13 @@ class CreateLinkFormState extends State<CreateLinkForm>
     super.initState();
     _titleController = TextEditingController();
     _urlController = TextEditingController();
-    _linkFocus = FocusNode();
-    _captionFocus = FocusNode();
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _urlController.dispose();
-    _linkFocus.dispose();
-    _captionFocus.dispose();
+
     super.dispose();
   }
 

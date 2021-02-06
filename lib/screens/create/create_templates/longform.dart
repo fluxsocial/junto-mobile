@@ -30,8 +30,6 @@ class CreateLongform extends StatefulWidget {
 
 class CreateLongformState extends State<CreateLongform>
     with CreateExpressionHelpers {
-  final FocusNode _titleFocus = FocusNode();
-  final FocusNode _bodyFocus = FocusNode();
   TextEditingController _titleController;
   GlobalKey<FlutterMentionsState> mentionKey =
       GlobalKey<FlutterMentionsState>();
@@ -91,8 +89,6 @@ class CreateLongformState extends State<CreateLongform>
   void dispose() {
     super.dispose();
     _titleController.dispose();
-    _titleFocus.dispose();
-    _bodyFocus.dispose();
   }
 
   void toggleSearch(bool value) {
@@ -306,7 +302,6 @@ class CreateLongformState extends State<CreateLongform>
                       ],
                     ),
                   ),
-            
                 ],
               ),
             );

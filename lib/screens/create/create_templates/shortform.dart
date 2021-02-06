@@ -34,7 +34,6 @@ class CreateShortform extends StatefulWidget {
 
 class CreateShortformState extends State<CreateShortform>
     with CreateExpressionHelpers {
-  final FocusNode _focus = FocusNode();
   String gradientOne;
   String gradientTwo;
   GlobalKey<FlutterMentionsState> mentionKey =
@@ -76,12 +75,6 @@ class CreateShortformState extends State<CreateShortform>
     super.initState();
     gradientOne = 'fff8ee';
     gradientTwo = 'ffeee0';
-  }
-
-  @override
-  void dispose() {
-    _focus.dispose();
-    super.dispose();
   }
 
   void toggleSearch(bool value) {
