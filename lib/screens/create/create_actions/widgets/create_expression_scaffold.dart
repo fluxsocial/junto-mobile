@@ -201,6 +201,49 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     }
   }
 
+  _expressionHasData({Function function}) {
+    bool expressionHasData;
+    switch (currentExpressionType) {
+      case ExpressionType.dynamic:
+        expressionHasData = _longformKey.currentState.expressionHasData();
+        break;
+
+      case ExpressionType.shortform:
+        expressionHasData = _shortformKey.currentState.expressionHasData();
+        break;
+
+      case ExpressionType.link:
+        expressionHasData = _linkKey.currentState.expressionHasData();
+        break;
+
+      case ExpressionType.photo:
+        expressionHasData = false;
+        break;
+
+      case ExpressionType.audio:
+        expressionHasData = false;
+        break;
+
+      default:
+        expressionHasData = false;
+        break;
+    }
+    if (expressionHasData) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => ConfirmDialog(
+          confirmationText:
+              'Are you sure you want to leave this screen? Your expression will not be saved.',
+          confirm: () {
+            function();
+          },
+        ),
+      );
+    } else {
+      function();
+    }
+  }
+
   Widget _buildReview() {
     Widget child;
     switch (currentExpressionType) {
@@ -236,50 +279,13 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   }
 
   void chooseExpressionType(ExpressionType newExpressionType) {
-    bool expressionHasData;
-    switch (currentExpressionType) {
-      case ExpressionType.dynamic:
-        expressionHasData = _longformKey.currentState.expressionHasData();
-        break;
-
-      case ExpressionType.shortform:
-        expressionHasData = _shortformKey.currentState.expressionHasData();
-        break;
-
-      case ExpressionType.link:
-        expressionHasData = _linkKey.currentState.expressionHasData();
-        break;
-
-      case ExpressionType.photo:
-        expressionHasData = false;
-        break;
-
-      case ExpressionType.audio:
-        expressionHasData = false;
-        break;
-
-      default:
-        expressionHasData = false;
-        break;
-    }
-    if (expressionHasData) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => ConfirmDialog(
-          confirmationText:
-              'Are you sure you want to leave this screen? Your expression will not be saved.',
-          confirm: () {
-            setState(() {
-              currentExpressionType = newExpressionType;
-            });
-          },
-        ),
-      );
-    } else {
-      setState(() {
-        currentExpressionType = newExpressionType;
-      });
-    }
+    _expressionHasData(
+      function: () {
+        setState(() {
+          currentExpressionType = newExpressionType;
+        });
+      },
+    );
   }
 
   void toggleSocialContextVisibility(bool value) {
@@ -536,6 +542,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                 Scaffold(
                   appBar: CreateAppBar(
                     closeCreate: widget.closeCreate,
+                    expressionHasData: _expressionHasData,
                     togglePageView: togglePageView,
                     currentIndex: _currentIndex,
                     createExpression: createExpression,

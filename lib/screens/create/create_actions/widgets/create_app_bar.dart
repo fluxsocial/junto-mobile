@@ -8,12 +8,14 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
     @required this.togglePageView,
     @required this.currentIndex,
     @required this.createExpression,
+    @required this.expressionHasData,
   }) : super(key: key);
 
   final Function closeCreate;
   final Function togglePageView;
   final int currentIndex;
   final Function createExpression;
+  final Function expressionHasData;
 
   Map<String, Widget> _buildAppBarWidgets(BuildContext context) {
     Widget backWidget;
@@ -22,21 +24,7 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
       case 0:
         backWidget = GestureDetector(
           onTap: () {
-            closeCreate();
-            // if (expressionHasData()) {
-            //   showDialog(
-            //     context: context,
-            //     builder: (BuildContext context) => ConfirmDialog(
-            //       confirmationText:
-            //           'Are you sure you want to leave this screen? Your expression will not be saved.',
-            //       confirm: () {
-            //         Navigator.pop(context);
-            //       },
-            //     ),
-            //   );
-            // } else {
-            //   Navigator.pop(context);
-            // }
+            expressionHasData(function: closeCreate);
           },
           child: Container(
             color: Colors.transparent,
