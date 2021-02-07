@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'audio_gradient_selector.dart';
 
 class AudioBottomTools extends StatefulWidget {
@@ -23,6 +24,20 @@ class AudioBottomTools extends StatefulWidget {
 
 class AudioBottomToolsState extends State<AudioBottomTools> {
   bool gradientSelectorVisible = false;
+
+  leaveExpressionConfirmation({Function confirm}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => ConfirmDialog(
+        confirmationText:
+            'Are you sure you want to leave this screen? Your expression will not be saved.',
+        confirm: () {
+          confirm();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,6 +55,7 @@ class AudioBottomToolsState extends State<AudioBottomTools> {
               resetAudioPhotoBackground: widget.resetAudioPhotoBackground,
               openPhotoOptions: widget.openPhotoOptions,
               toggleGradientSelector: _toggleGradientSelector,
+              leaveExpressionConfirmation: leaveExpressionConfirmation,
             ),
             secondChild: AudioGradientSelector(
               toggleGradientSelector: _toggleGradientSelector,
@@ -68,11 +84,13 @@ class AudioBottomToolsDefault extends StatelessWidget {
     this.openPhotoOptions,
     this.resetAudioPhotoBackground,
     this.toggleGradientSelector,
+    this.leaveExpressionConfirmation,
   });
 
   final Function resetAudioPhotoBackground;
   final Function openPhotoOptions;
   final Function toggleGradientSelector;
+  final Function leaveExpressionConfirmation;
   @override
   Widget build(BuildContext context) {
     return Consumer<AudioService>(builder: (context, audio, child) {
@@ -91,8 +109,10 @@ class AudioBottomToolsDefault extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () async {
-                  await audio.resetRecording();
-                  resetAudioPhotoBackground();
+                  leaveExpressionConfirmation(confirm: () async {
+                    await audio.resetRecording();
+                    resetAudioPhotoBackground();
+                  });
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 25),

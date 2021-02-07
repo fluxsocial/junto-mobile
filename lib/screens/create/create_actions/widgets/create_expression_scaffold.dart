@@ -221,7 +221,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.audio:
-        expressionHasData = false;
+        expressionHasData =
+            _audioKey.currentState.expressionHasData(_audioService);
         break;
 
       default:
