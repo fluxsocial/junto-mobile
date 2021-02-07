@@ -581,10 +581,11 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                             ),
                           ),
                           if (showExpressionSheet)
-                            ChooseExpressionSheet(
-                              currentExpressionType: currentExpressionType,
-                              chooseExpressionType: chooseExpressionType,
-                            ),
+                            if (!_audioService.playBackAvailable)
+                              ChooseExpressionSheet(
+                                currentExpressionType: currentExpressionType,
+                                chooseExpressionType: chooseExpressionType,
+                              ),
                           if (dynamicCaptionFocusNode.hasFocus)
                             RemoveFocusWidget(
                                 focusNode: dynamicCaptionFocusNode)
