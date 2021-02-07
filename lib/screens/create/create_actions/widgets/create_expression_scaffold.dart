@@ -33,6 +33,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/audio_review.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
@@ -85,23 +86,23 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     createPageController = PageController(initialPage: 0);
 
     dynamicCaptionFocusNode.addListener(() {
-      _toggleExpressionSheetVisibility(dynamicCaptionFocusNode);
+      _toggleExpressionSheetVisibility(focusNode: dynamicCaptionFocusNode);
     });
 
     dynamicTitleFocusNode.addListener(() {
-      _toggleExpressionSheetVisibility(dynamicTitleFocusNode);
+      _toggleExpressionSheetVisibility(focusNode: dynamicTitleFocusNode);
     });
 
     shortformFocusNode.addListener(() {
-      _toggleExpressionSheetVisibility(shortformFocusNode);
+      _toggleExpressionSheetVisibility(focusNode: shortformFocusNode);
     });
 
     linkCaptionFocusNode.addListener(() {
-      _toggleExpressionSheetVisibility(linkCaptionFocusNode);
+      _toggleExpressionSheetVisibility(focusNode: linkCaptionFocusNode);
     });
 
     linkUrlFocusNode.addListener(() {
-      _toggleExpressionSheetVisibility(linkUrlFocusNode);
+      _toggleExpressionSheetVisibility(focusNode: linkUrlFocusNode);
     });
   }
 
@@ -139,7 +140,10 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.photo:
-        child = CreatePhoto(key: _photoKey);
+        child = CreatePhoto(
+          key: _photoKey,
+          toggleExpressionSheetVisibility: _toggleExpressionSheetVisibility,
+        );
         break;
 
       case ExpressionType.audio:
@@ -176,14 +180,23 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     return child;
   }
 
-  _toggleExpressionSheetVisibility(FocusNode focusNode) {
-    if (focusNode.hasFocus) {
-      setState(() {
-        showExpressionSheet = false;
-      });
+  _toggleExpressionSheetVisibility({FocusNode focusNode, bool visibility}) {
+    // if there is a focus Node
+    if (focusNode != null) {
+      // if focus node has focus, hide the expression sheet
+      if (focusNode.hasFocus) {
+        setState(() {
+          showExpressionSheet = false;
+        });
+        // If focus node doesn't have focus, show the expression sheet
+      } else {
+        setState(() {
+          showExpressionSheet = true;
+        });
+      }
     } else {
       setState(() {
-        showExpressionSheet = true;
+        showExpressionSheet = visibility;
       });
     }
   }
@@ -223,9 +236,50 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   }
 
   void chooseExpressionType(ExpressionType newExpressionType) {
-    setState(() {
-      currentExpressionType = newExpressionType;
-    });
+    bool expressionHasData;
+    switch (currentExpressionType) {
+      case ExpressionType.dynamic:
+        expressionHasData = _longformKey.currentState.expressionHasData();
+        break;
+
+      case ExpressionType.shortform:
+        expressionHasData = _shortformKey.currentState.expressionHasData();
+        break;
+
+      case ExpressionType.link:
+        expressionHasData = _linkKey.currentState.expressionHasData();
+        break;
+
+      case ExpressionType.photo:
+        expressionHasData = false;
+        break;
+
+      case ExpressionType.audio:
+        expressionHasData = false;
+        break;
+
+      default:
+        expressionHasData = false;
+        break;
+    }
+    if (expressionHasData) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => ConfirmDialog(
+          confirmationText:
+              'Are you sure you want to leave this screen? Your expression will not be saved.',
+          confirm: () {
+            setState(() {
+              currentExpressionType = newExpressionType;
+            });
+          },
+        ),
+      );
+    } else {
+      setState(() {
+        currentExpressionType = newExpressionType;
+      });
+    }
   }
 
   void toggleSocialContextVisibility(bool value) {

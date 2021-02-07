@@ -10,6 +10,7 @@ class ChooseExpressionSheet extends StatelessWidget {
 
   final ExpressionType currentExpressionType;
   final Function chooseExpressionType;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,6 +20,7 @@ class ChooseExpressionSheet extends StatelessWidget {
               minChildSize: .1,
               maxChildSize: .3,
               initialChildSize: .3,
+              expand: false,
               builder: (context, scrollController) {
                 return Container(
                   decoration: BoxDecoration(
