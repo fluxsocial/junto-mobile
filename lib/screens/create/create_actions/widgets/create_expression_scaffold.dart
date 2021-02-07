@@ -217,7 +217,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.photo:
-        expressionHasData = false;
+        expressionHasData = _photoKey.currentState.expressionHasData();
         break;
 
       case ExpressionType.audio:

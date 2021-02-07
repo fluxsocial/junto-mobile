@@ -16,7 +16,7 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
@@ -112,7 +112,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       setState(() {
         imageFile = cropped;
       });
-      // widget.toggleExpressionSheetVisibility(visibility: false);
+      widget.toggleExpressionSheetVisibility(visibility: false);
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -159,7 +159,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
     };
   }
 
-  bool _expressionHasData() {
+  bool expressionHasData() {
     if (imageFile != null) {
       return true;
     } else {
@@ -505,12 +505,21 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                       children: <Widget>[
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              imageFile = null;
-                            });
-                            widget.toggleExpressionSheetVisibility(
-                                visibility: true);
-                            _onPickPressed(source: imageSource);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => ConfirmDialog(
+                                confirmationText:
+                                    'Are you sure you want to leave this screen? Your expression will not be saved.',
+                                confirm: () {
+                                  setState(() {
+                                    imageFile = null;
+                                  });
+                                  widget.toggleExpressionSheetVisibility(
+                                      visibility: true);
+                                  _onPickPressed(source: imageSource);
+                                },
+                              ),
+                            );
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * .5,
