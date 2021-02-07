@@ -201,47 +201,73 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     }
   }
 
-  _expressionHasData({Function function}) {
+  _expressionHasData({Function function, @required String actionType}) {
     bool expressionHasData;
+    String validationText;
     switch (currentExpressionType) {
       case ExpressionType.dynamic:
         expressionHasData = _longformKey.currentState.expressionHasData();
+        validationText = 'Please fill in the required fields.';
         break;
 
       case ExpressionType.shortform:
         expressionHasData = _shortformKey.currentState.expressionHasData();
+        validationText = "Please make sure the text field isn't blank.";
+
         break;
 
       case ExpressionType.link:
         expressionHasData = _linkKey.currentState.expressionHasData();
+        validationText = 'Add a link before continuing.';
         break;
 
       case ExpressionType.photo:
         expressionHasData = _photoKey.currentState.expressionHasData();
+        validationText = 'Please add a photo.';
         break;
 
       case ExpressionType.audio:
         expressionHasData =
             _audioKey.currentState.expressionHasData(_audioService);
+        validationText = 'Record some audio before continuing.';
         break;
 
       default:
         expressionHasData = false;
+        validationText = 'Please fill in the required fields';
         break;
     }
-    if (expressionHasData) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => ConfirmDialog(
-          confirmationText:
-              'Are you sure you want to leave this screen? Your expression will not be saved.',
-          confirm: () {
-            function();
-          },
-        ),
-      );
-    } else {
-      function();
+
+    switch (actionType) {
+      case 'leaveExpression':
+        if (expressionHasData) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => ConfirmDialog(
+              confirmationText:
+                  'Are you sure you want to leave this screen? Your expression will not be saved.',
+              confirm: () {
+                function();
+              },
+            ),
+          );
+        } else {
+          function();
+        }
+        break;
+      case 'continueExpression':
+        if (!expressionHasData) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              context: context,
+              dialogText: validationText,
+            ),
+          );
+        } else {
+          function();
+        }
+        break;
     }
   }
 
@@ -286,6 +312,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           currentExpressionType = newExpressionType;
         });
       },
+      actionType: 'leaveExpression',
     );
   }
 

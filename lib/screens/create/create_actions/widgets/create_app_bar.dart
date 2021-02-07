@@ -24,7 +24,8 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
       case 0:
         backWidget = GestureDetector(
           onTap: () {
-            expressionHasData(function: closeCreate);
+            expressionHasData(
+                function: closeCreate, actionType: 'leaveExpression');
           },
           child: Container(
             color: Colors.transparent,
@@ -38,7 +39,11 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
         );
         ctaWidget = CreateCTAButton(
           cta: () {
-            togglePageView(1);
+            expressionHasData(
+                function: () {
+                  togglePageView(1);
+                },
+                actionType: 'continueExpression');
           },
           title: 'Next',
         );
