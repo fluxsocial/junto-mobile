@@ -9,6 +9,7 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
     @required this.currentIndex,
     @required this.createExpression,
     @required this.expressionHasData,
+    @required this.removeFocus,
   }) : super(key: key);
 
   final Function closeCreate;
@@ -16,6 +17,7 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int currentIndex;
   final Function createExpression;
   final Function expressionHasData;
+  final Function removeFocus;
 
   Map<String, Widget> _buildAppBarWidgets(BuildContext context) {
     Widget backWidget;
@@ -41,6 +43,7 @@ class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
           cta: () {
             expressionHasData(
                 function: () {
+                  removeFocus();
                   togglePageView(1);
                 },
                 actionType: 'continueExpression');

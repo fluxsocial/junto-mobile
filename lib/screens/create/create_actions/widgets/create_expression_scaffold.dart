@@ -79,6 +79,9 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   final FocusNode shortformFocusNode = FocusNode();
   final FocusNode linkCaptionFocusNode = FocusNode();
   final FocusNode linkUrlFocusNode = FocusNode();
+  final FocusNode photoCaptionFocusNode = FocusNode();
+  final FocusNode audioCaptionFocusNode = FocusNode();
+  final FocusNode audioTitleFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -143,11 +146,16 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         child = CreatePhoto(
           key: _photoKey,
           toggleExpressionSheetVisibility: _toggleExpressionSheetVisibility,
+          captionFocus: photoCaptionFocusNode,
         );
         break;
 
       case ExpressionType.audio:
-        child = CreateAudio(key: _audioKey);
+        child = CreateAudio(
+          key: _audioKey,
+          captionFocus: audioCaptionFocusNode,
+          titleFocus: audioTitleFocusNode,
+        );
 
         break;
 
@@ -178,6 +186,40 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
     }
     return child;
+  }
+
+  removeFocus() {
+    switch (currentExpressionType) {
+      case ExpressionType.dynamic:
+        dynamicCaptionFocusNode.unfocus();
+        dynamicTitleFocusNode.unfocus();
+        break;
+
+      case ExpressionType.shortform:
+        shortformFocusNode.unfocus();
+        break;
+
+      case ExpressionType.link:
+        linkUrlFocusNode.unfocus();
+        linkCaptionFocusNode.unfocus();
+        break;
+
+      case ExpressionType.photo:
+        print('unfocusing photo caption');
+        photoCaptionFocusNode.unfocus();
+        break;
+
+      case ExpressionType.audio:
+        audioCaptionFocusNode.unfocus();
+        audioTitleFocusNode.unfocus();
+        break;
+
+      case ExpressionType.none:
+        break;
+
+      default:
+        break;
+    }
   }
 
   _toggleExpressionSheetVisibility({FocusNode focusNode, bool visibility}) {
@@ -568,6 +610,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                     togglePageView: togglePageView,
                     currentIndex: _currentIndex,
                     createExpression: createExpression,
+                    removeFocus: removeFocus,
                   ),
                   resizeToAvoidBottomPadding: false,
                   resizeToAvoidBottomInset: false,

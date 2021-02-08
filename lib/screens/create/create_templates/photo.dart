@@ -23,9 +23,11 @@ class CreatePhoto extends StatefulWidget {
   const CreatePhoto({
     Key key,
     this.toggleExpressionSheetVisibility,
+    @required this.captionFocus,
   }) : super(key: key);
 
   final Function toggleExpressionSheetVisibility;
+  final FocusNode captionFocus;
 
   @override
   State<StatefulWidget> createState() {
@@ -39,7 +41,6 @@ class CreatePhotoState extends State<CreatePhoto>
   File preCroppedFile;
   File imageFile;
   ImageSource imageSource;
-  FocusNode _captionFocus;
   GlobalKey<FlutterMentionsState> mentionKey =
       GlobalKey<FlutterMentionsState>();
   bool _showList = false;
@@ -453,7 +454,7 @@ class CreatePhotoState extends State<CreatePhoto>
                           ),
                           child: FlutterMentions(
                             key: mentionKey,
-                            focusNode: _captionFocus,
+                            focusNode: widget.captionFocus,
                             onSearchChanged: (String trigger, String value) {
                               if (value.isNotEmpty && _showList) {
                                 final channel = trigger == '#';

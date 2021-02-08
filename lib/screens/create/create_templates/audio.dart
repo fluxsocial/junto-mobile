@@ -18,10 +18,17 @@ import 'widgets/audio_record.dart';
 import 'widgets/audio_review.dart';
 
 class CreateAudio extends StatefulWidget {
-  const CreateAudio({Key key, this.expressionContext, this.address})
-      : super(key: key);
+  const CreateAudio({
+    Key key,
+    this.expressionContext,
+    this.address,
+    @required this.titleFocus,
+    @required this.captionFocus,
+  }) : super(key: key);
   final ExpressionContext expressionContext;
   final String address;
+  final FocusNode titleFocus;
+  final FocusNode captionFocus;
 
   @override
   State<StatefulWidget> createState() {
@@ -35,13 +42,13 @@ class CreateAudioState extends State<CreateAudio>
   bool get wantKeepAlive => true;
 
   bool _showBottomTools = true;
-  FocusNode captionFocus = FocusNode();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController captionController = TextEditingController();
   File audioPhotoBackground;
   List<String> audioGradientValues = [];
   GlobalKey<FlutterMentionsState> mentionKey =
       GlobalKey<FlutterMentionsState>();
+  FocusNode _captionFocus;
 
   Future<void> _onPickPressed({String source}) async {
     try {
@@ -154,13 +161,14 @@ class CreateAudioState extends State<CreateAudio>
   @override
   void initState() {
     super.initState();
-    captionFocus.addListener(_toggleBottomTools);
+    _captionFocus = widget.captionFocus;
+    _captionFocus.addListener(_toggleBottomTools);
   }
 
   @override
   void dispose() {
     super.dispose();
-    captionFocus.removeListener(_toggleBottomTools);
+    widget.captionFocus.removeListener(_toggleBottomTools);
   }
 
   @override
@@ -177,7 +185,8 @@ class CreateAudioState extends State<CreateAudio>
                       audioGradientValues: audioGradientValues,
                       titleController: titleController,
                       captionController: captionController,
-                      captionFocus: captionFocus,
+                      captionFocus: widget.captionFocus,
+                      titleFocus: widget.titleFocus,
                       mentionKey: mentionKey,
                     ),
               if (audio.playBackAvailable && _showBottomTools)
