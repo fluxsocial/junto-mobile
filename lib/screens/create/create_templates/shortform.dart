@@ -277,6 +277,14 @@ class CreateShortformState extends State<CreateShortform>
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: 'Write here...',
+                                      hintStyle: TextStyle(
+                                        color: gradientOne.contains('fff') ||
+                                                gradientTwo.contains('fff')
+                                            ? Color(0xff333333)
+                                            : Colors.white,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                     cursorColor: gradientOne.contains('fff') ||
                                             gradientTwo.contains('fff')
