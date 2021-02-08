@@ -29,7 +29,11 @@ class CreateAudio extends StatefulWidget {
   }
 }
 
-class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
+class CreateAudioState extends State<CreateAudio>
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   bool _showBottomTools = true;
   FocusNode captionFocus = FocusNode();
   final TextEditingController titleController = TextEditingController();

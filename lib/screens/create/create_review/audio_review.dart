@@ -48,6 +48,7 @@ class CreateAudioReviewDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         CreateAudioReviewBody(
           hasBackground: false,
@@ -69,6 +70,7 @@ class CreateAudioReviewWithGradient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
@@ -103,6 +105,7 @@ class CreateAudioReviewWithPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Stack(children: [
           Container(
