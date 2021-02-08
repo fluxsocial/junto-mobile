@@ -275,7 +275,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
       default:
         expressionHasData = false;
-        validationText = 'Please fill in the required fields';
+        validationText = 'Please fill in the required fields.';
         break;
     }
 
@@ -286,7 +286,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
             context: context,
             builder: (BuildContext context) => ConfirmDialog(
               confirmationText:
-                  'Are you sure you want to leave this screen? Your expression will not be saved.',
+                  "Are you sure you want to leave this screen? Your expression won't be saved.",
               confirm: () {
                 function();
               },

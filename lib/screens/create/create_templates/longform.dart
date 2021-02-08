@@ -29,7 +29,7 @@ class CreateLongform extends StatefulWidget {
 }
 
 class CreateLongformState extends State<CreateLongform>
-    with CreateExpressionHelpers {
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
   TextEditingController _titleController;
   GlobalKey<FlutterMentionsState> mentionKey =
       GlobalKey<FlutterMentionsState>();
@@ -310,4 +310,7 @@ class CreateLongformState extends State<CreateLongform>
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
