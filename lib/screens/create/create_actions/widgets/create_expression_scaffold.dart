@@ -353,28 +353,22 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           expressionInProgress = _shortformKey.currentState.createExpression();
           mentionsAndChannels =
               _shortformKey.currentState.getMentionsAndChannels();
-
           break;
 
         case ExpressionType.link:
           expressionInProgress = _linkKey.currentState.createExpression();
           mentionsAndChannels = _linkKey.currentState.getMentionsAndChannels();
-
           break;
 
         case ExpressionType.photo:
           expressionInProgress = _photoKey.currentState.createExpression();
           mentionsAndChannels = _photoKey.currentState.getMentionsAndChannels();
-
           break;
 
         case ExpressionType.audio:
           expressionInProgress =
               _audioKey.currentState.createExpression(_audioService);
           mentionsAndChannels = _audioKey.currentState.getMentionsAndChannels();
-
-          print(expressionInProgress.title);
-
           break;
 
         case ExpressionType.none:
@@ -620,23 +614,29 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                       ),
 
                       // Create Screen 2 - Review Content
-                      Column(
-                        children: [
-                          Expanded(
-                            child: ListView(
-                              children: [
-                                CreateTopBar(
-                                  profilePicture: userData.user.profilePicture,
-                                  toggleSocialContextVisibility:
-                                      toggleSocialContextVisibility,
-                                  currentExpressionContext: expressionContext,
-                                ),
-                                _buildReview(),
-                              ],
+                      // We show a sized box when PageView index is 0 so we don't display a review screen
+                      // that is not consistent with the expression type, which causes an error
+                      if (_currentIndex == 0)
+                        SizedBox()
+                      else
+                        Column(
+                          children: [
+                            Expanded(
+                              child: ListView(
+                                children: [
+                                  CreateTopBar(
+                                    profilePicture:
+                                        userData.user.profilePicture,
+                                    toggleSocialContextVisibility:
+                                        toggleSocialContextVisibility,
+                                    currentExpressionContext: expressionContext,
+                                  ),
+                                  _buildReview(),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
                     ],
                   ),
                 ),
