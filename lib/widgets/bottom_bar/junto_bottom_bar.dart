@@ -42,7 +42,7 @@ class JuntoBottomBar extends StatelessWidget {
                 height: 60,
                 child: Icon(
                   CustomIcons.newcollective,
-                  size: 28,
+                  size: 33,
                   color: currentScreen == Screen.collective
                       ? Theme.of(context).primaryColorDark
                       : Theme.of(context).primaryColorLight,
@@ -58,7 +58,7 @@ class JuntoBottomBar extends StatelessWidget {
                 color: Colors.transparent,
                 child: Icon(
                   CustomIcons.newcircles,
-                  size: 28,
+                  size: 33,
                   color: currentScreen == Screen.groups
                       ? Theme.of(context).primaryColorDark
                       : Theme.of(context).primaryColorLight,
@@ -74,7 +74,7 @@ class JuntoBottomBar extends StatelessWidget {
                 color: Colors.transparent,
                 child: Icon(
                   CustomIcons.newcreate,
-                  size: 33,
+                  size: 38,
                   color: currentScreen == Screen.create
                       ? Theme.of(context).primaryColorDark
                       : Theme.of(context).primaryColorLight,
@@ -90,7 +90,7 @@ class JuntoBottomBar extends StatelessWidget {
                 color: Colors.transparent,
                 child: Icon(
                   CustomIcons.newpacks,
-                  size: 28,
+                  size: 33,
                   color: currentScreen == Screen.packs
                       ? Theme.of(context).primaryColorDark
                       : Theme.of(context).primaryColorLight,
@@ -108,11 +108,11 @@ class JuntoBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 28,
-                      width: 28,
+                      height: 33,
+                      width: 33,
                       child: MemberAvatar(
                         profilePicture: userData.user.profilePicture,
-                        diameter: 28,
+                        diameter: 33,
                       ),
                     ),
                   ],
