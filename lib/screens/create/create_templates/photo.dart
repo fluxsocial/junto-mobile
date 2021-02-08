@@ -34,7 +34,11 @@ class CreatePhoto extends StatefulWidget {
 }
 
 // State for CreatePhoto class
-class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
+class CreatePhotoState extends State<CreatePhoto>
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   File preCroppedFile;
   File imageFile;
   ImageSource imageSource;
