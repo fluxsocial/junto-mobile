@@ -18,7 +18,6 @@ class CreateAudioReview extends StatelessWidget {
   final AudioFormExpression expression;
 
   Widget _showCreateAudioReviewTemplate() {
-    print('test: I waas called');
     if (expression.photo == null && expression.gradient.isEmpty) {
       print('returning default');
       return CreateAudioReviewDefault(expression: expression);

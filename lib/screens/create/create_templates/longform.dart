@@ -82,7 +82,6 @@ class CreateLongformState extends State<CreateLongform>
     if (body.isNotEmpty) {
       return true;
     }
-    print('hellos');
     return false;
   }
 

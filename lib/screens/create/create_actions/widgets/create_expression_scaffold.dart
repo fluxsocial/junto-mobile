@@ -205,7 +205,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.photo:
-        print('unfocusing photo caption');
         photoCaptionFocusNode.unfocus();
         break;
 
