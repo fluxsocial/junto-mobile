@@ -13,7 +13,14 @@ import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
 
 class CreateLinkForm extends StatefulWidget {
-  const CreateLinkForm({Key key}) : super(key: key);
+  const CreateLinkForm({
+    Key key,
+    this.captionFocus,
+    this.urlFocus,
+  }) : super(key: key);
+
+  final FocusNode captionFocus;
+  final FocusNode urlFocus;
 
   @override
   State<StatefulWidget> createState() => CreateLinkFormState();
@@ -21,8 +28,6 @@ class CreateLinkForm extends StatefulWidget {
 
 class CreateLinkFormState extends State<CreateLinkForm>
     with CreateExpressionHelpers {
-  FocusNode _linkFocus;
-  FocusNode _captionFocus;
   String caption;
   String url;
   String title;
@@ -46,16 +51,13 @@ class CreateLinkFormState extends State<CreateLinkForm>
     super.initState();
     _titleController = TextEditingController();
     _urlController = TextEditingController();
-    _linkFocus = FocusNode();
-    _captionFocus = FocusNode();
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _urlController.dispose();
-    _linkFocus.dispose();
-    _captionFocus.dispose();
+
     super.dispose();
   }
 
@@ -171,43 +173,43 @@ class CreateLinkFormState extends State<CreateLinkForm>
                   children: [
                     Column(
                       children: [
-                        if (appConfig.flavor == Flavor.dev)
-                          Container(
-                            child: TextField(
-                              buildCounter: (
-                                BuildContext context, {
-                                int currentLength,
-                                int maxLength,
-                                bool isFocused,
-                              }) =>
-                                  null,
-                              controller: _titleController,
-                              textInputAction: TextInputAction.done,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Title (optional)',
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                    ),
-                              ),
-                              cursorColor: Theme.of(context).primaryColor,
-                              cursorWidth: 2,
-                              maxLines: null,
-                              maxLength: 140,
-                              style: Theme.of(context).textTheme.headline6,
-                              keyboardAppearance: Theme.of(context).brightness,
-                              textCapitalization: TextCapitalization.sentences,
-                              keyboardType: TextInputType.text,
-                            ),
-                          ),
+                        // if (appConfig.flavor == Flavor.dev)
+                        //   Container(
+                        //     child: TextField(
+                        //       buildCounter: (
+                        //         BuildContext context, {
+                        //         int currentLength,
+                        //         int maxLength,
+                        //         bool isFocused,
+                        //       }) =>
+                        //           null,
+                        //       controller: _titleController,
+                        //       textInputAction: TextInputAction.done,
+                        //       decoration: InputDecoration(
+                        //         border: InputBorder.none,
+                        //         hintText: 'Title (optional)',
+                        //         hintStyle: Theme.of(context)
+                        //             .textTheme
+                        //             .headline6
+                        //             .copyWith(
+                        //               color:
+                        //                   Theme.of(context).primaryColorLight,
+                        //             ),
+                        //       ),
+                        //       cursorColor: Theme.of(context).primaryColor,
+                        //       cursorWidth: 2,
+                        //       maxLines: null,
+                        //       maxLength: 140,
+                        //       style: Theme.of(context).textTheme.headline6,
+                        //       keyboardAppearance: Theme.of(context).brightness,
+                        //       textCapitalization: TextCapitalization.sentences,
+                        //       keyboardType: TextInputType.text,
+                        //     ),
+                        //   ),
                         Container(
                           child: FlutterMentions(
                             key: mentionKey,
-                            focusNode: _captionFocus,
+                            focusNode: widget.captionFocus,
                             onSearchChanged: (String trigger, String value) {
                               if (value.isNotEmpty && _showList) {
                                 final channel = trigger == '#';
@@ -270,7 +272,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
                         ),
                         Container(
                           child: TextField(
-                            focusNode: _linkFocus,
+                            focusNode: widget.urlFocus,
                             buildCounter: (
                               BuildContext context, {
                               int currentLength,
@@ -305,7 +307,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
                       ],
                     ),
                     if (_showList &&
-                        _captionFocus.hasFocus &&
+                        widget.captionFocus.hasFocus &&
                         listType == ListType.mention)
                       Positioned(
                         bottom: 0,
@@ -330,7 +332,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
                         ),
                       ),
                     if (_showList &&
-                        _captionFocus.hasFocus &&
+                        widget.captionFocus.hasFocus &&
                         listType == ListType.channels)
                       Positioned(
                         bottom: 0,

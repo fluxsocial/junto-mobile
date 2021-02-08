@@ -16,10 +16,16 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
-  const CreatePhoto({Key key}) : super(key: key);
+  const CreatePhoto({
+    Key key,
+    this.toggleExpressionSheetVisibility,
+  }) : super(key: key);
+
+  final Function toggleExpressionSheetVisibility;
 
   @override
   State<StatefulWidget> createState() {
@@ -28,7 +34,8 @@ class CreatePhoto extends StatefulWidget {
 }
 
 // State for CreatePhoto class
-class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
+class CreatePhotoState extends State<CreatePhoto>
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
   File preCroppedFile;
   File imageFile;
   ImageSource imageSource;
@@ -106,6 +113,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       setState(() {
         imageFile = cropped;
       });
+      widget.toggleExpressionSheetVisibility(visibility: false);
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -152,7 +160,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
     };
   }
 
-  bool _expressionHasData() {
+  bool expressionHasData() {
     if (imageFile != null) {
       return true;
     } else {
@@ -170,6 +178,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (BuildContext context) {
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
@@ -185,7 +194,127 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                         width: MediaQuery.of(context).size.width,
                         child: GestureDetector(
                           onTap: () {
-                            _onPickPressed(source: ImageSource.gallery);
+                            showModalBottomSheet(
+                              context: context,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              builder: (BuildContext context) => Container(
+                                color: Colors.transparent,
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .36,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                height: 5,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .1,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .dividerColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 10),
+                                          ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            onTap: () async {
+                                              Navigator.pop(context);
+                                              _onPickPressed(
+                                                source: ImageSource.gallery,
+                                              );
+                                            },
+                                            title: Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.photo_library,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  size: 17,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  'Library',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5
+                                                      .copyWith(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            onTap: () async {
+                                              Navigator.pop(context);
+                                              _onPickPressed(
+                                                source: ImageSource.camera,
+                                              );
+                                            },
+                                            title: Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.photo_library,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  size: 17,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  'Camera',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5
+                                                      .copyWith(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +329,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                       )
                     : _captionPhoto(),
               ),
-              if (imageFile == null) _uploadPhotoOptions()
+              // if (imageFile == null) _uploadPhotoOptions()
             ],
           ),
         ),
@@ -378,10 +507,21 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                       children: <Widget>[
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              imageFile = null;
-                            });
-                            _onPickPressed(source: imageSource);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => ConfirmDialog(
+                                confirmationText:
+                                    'Are you sure you want to leave this screen? Your expression will not be saved.',
+                                confirm: () {
+                                  setState(() {
+                                    imageFile = null;
+                                  });
+                                  widget.toggleExpressionSheetVisibility(
+                                      visibility: true);
+                                  _onPickPressed(source: imageSource);
+                                },
+                              ),
+                            );
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * .5,
@@ -464,4 +604,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

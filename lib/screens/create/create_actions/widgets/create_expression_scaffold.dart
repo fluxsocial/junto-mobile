@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_a
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_context_overlay.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/choose_expression_sheet.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/remove_focus_widget.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
@@ -32,6 +33,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/audio_review.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
@@ -60,6 +62,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   dynamic expression;
   List<String> channels;
   List<String> mentions;
+  bool showExpressionSheet = true;
   AudioService _audioService;
 
   final GlobalKey<CreateLongformState> _longformKey =
@@ -71,10 +74,36 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   final GlobalKey<CreatePhotoState> _photoKey = GlobalKey<CreatePhotoState>();
   final GlobalKey<CreateAudioState> _audioKey = GlobalKey<CreateAudioState>();
 
+  final FocusNode dynamicCaptionFocusNode = FocusNode();
+  final FocusNode dynamicTitleFocusNode = FocusNode();
+  final FocusNode shortformFocusNode = FocusNode();
+  final FocusNode linkCaptionFocusNode = FocusNode();
+  final FocusNode linkUrlFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
-    createPageController = PageController(initialPage: 0);
+    createPageController = PageController(initialPage: 0, keepPage: true);
+
+    dynamicCaptionFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: dynamicCaptionFocusNode);
+    });
+
+    dynamicTitleFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: dynamicTitleFocusNode);
+    });
+
+    shortformFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: shortformFocusNode);
+    });
+
+    linkCaptionFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: linkCaptionFocusNode);
+    });
+
+    linkUrlFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: linkUrlFocusNode);
+    });
   }
 
   @override
@@ -88,28 +117,44 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     Widget child;
     switch (currentExpressionType) {
       case ExpressionType.dynamic:
-        child = CreateLongform(key: _longformKey);
+        child = CreateLongform(
+          key: _longformKey,
+          captionFocus: dynamicCaptionFocusNode,
+          titleFocus: dynamicTitleFocusNode,
+        );
         break;
 
       case ExpressionType.shortform:
-        child = CreateShortform(key: _shortformKey);
+        child = CreateShortform(
+          key: _shortformKey,
+          shortformFocus: shortformFocusNode,
+        );
         break;
 
       case ExpressionType.link:
-        child = CreateLinkForm(key: _linkKey);
+        child = CreateLinkForm(
+          key: _linkKey,
+          captionFocus: linkCaptionFocusNode,
+          urlFocus: linkUrlFocusNode,
+        );
         break;
 
       case ExpressionType.photo:
-        child = CreatePhoto(key: _photoKey);
+        child = CreatePhoto(
+          key: _photoKey,
+          toggleExpressionSheetVisibility: _toggleExpressionSheetVisibility,
+        );
         break;
 
       case ExpressionType.audio:
         child = CreateAudio(key: _audioKey);
+
         break;
 
       case ExpressionType.none:
         child = Container(
-          padding: EdgeInsets.symmetric(horizontal: 36),
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * .1),
           height: MediaQuery.of(context).size.height / 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -117,10 +162,10 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(
-                'Please select an expression type from below options',
+                'Select an expression type to get started',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                 ),
               )
             ],
@@ -133,6 +178,97 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
     }
     return child;
+  }
+
+  _toggleExpressionSheetVisibility({FocusNode focusNode, bool visibility}) {
+    // if there is a focus Node
+    if (focusNode != null) {
+      // if focus node has focus, hide the expression sheet
+      if (focusNode.hasFocus) {
+        setState(() {
+          showExpressionSheet = false;
+        });
+        // If focus node doesn't have focus, show the expression sheet
+      } else {
+        setState(() {
+          showExpressionSheet = true;
+        });
+      }
+    } else {
+      setState(() {
+        showExpressionSheet = visibility;
+      });
+    }
+  }
+
+  _expressionHasData({Function function, @required String actionType}) {
+    bool expressionHasData;
+    String validationText;
+    switch (currentExpressionType) {
+      case ExpressionType.dynamic:
+        expressionHasData = _longformKey.currentState.expressionHasData();
+        validationText = 'Please fill in the required fields.';
+        break;
+
+      case ExpressionType.shortform:
+        expressionHasData = _shortformKey.currentState.expressionHasData();
+        validationText = "Please make sure the text field isn't blank.";
+
+        break;
+
+      case ExpressionType.link:
+        expressionHasData = _linkKey.currentState.expressionHasData();
+        validationText = 'Add a link before continuing.';
+        break;
+
+      case ExpressionType.photo:
+        expressionHasData = _photoKey.currentState.expressionHasData();
+        validationText = 'Please add a photo.';
+        break;
+
+      case ExpressionType.audio:
+        expressionHasData =
+            _audioKey.currentState.expressionHasData(_audioService);
+        validationText = 'Record some audio before continuing.';
+        break;
+
+      default:
+        expressionHasData = false;
+        validationText = 'Please fill in the required fields';
+        break;
+    }
+
+    switch (actionType) {
+      case 'leaveExpression':
+        if (expressionHasData) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => ConfirmDialog(
+              confirmationText:
+                  'Are you sure you want to leave this screen? Your expression will not be saved.',
+              confirm: () {
+                function();
+              },
+            ),
+          );
+        } else {
+          function();
+        }
+        break;
+      case 'continueExpression':
+        if (!expressionHasData) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              context: context,
+              dialogText: validationText,
+            ),
+          );
+        } else {
+          function();
+        }
+        break;
+    }
   }
 
   Widget _buildReview() {
@@ -155,9 +291,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.audio:
-        child = CreateAudioReview(
-          expression: expression,
-        );
+        child = CreateAudioReview(expression: expression);
         break;
 
       case ExpressionType.none:
@@ -172,9 +306,14 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   }
 
   void chooseExpressionType(ExpressionType newExpressionType) {
-    setState(() {
-      currentExpressionType = newExpressionType;
-    });
+    _expressionHasData(
+      function: () {
+        setState(() {
+          currentExpressionType = newExpressionType;
+        });
+      },
+      actionType: 'leaveExpression',
+    );
   }
 
   void toggleSocialContextVisibility(bool value) {
@@ -214,28 +353,22 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           expressionInProgress = _shortformKey.currentState.createExpression();
           mentionsAndChannels =
               _shortformKey.currentState.getMentionsAndChannels();
-
           break;
 
         case ExpressionType.link:
           expressionInProgress = _linkKey.currentState.createExpression();
           mentionsAndChannels = _linkKey.currentState.getMentionsAndChannels();
-
           break;
 
         case ExpressionType.photo:
           expressionInProgress = _photoKey.currentState.createExpression();
           mentionsAndChannels = _photoKey.currentState.getMentionsAndChannels();
-
           break;
 
         case ExpressionType.audio:
           expressionInProgress =
               _audioKey.currentState.createExpression(_audioService);
           mentionsAndChannels = _audioKey.currentState.getMentionsAndChannels();
-
-          print(expressionInProgress.title);
-
           break;
 
         case ExpressionType.none:
@@ -311,7 +444,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           expressionModel = await getPhotoExpression(repository);
           JuntoLoader.hide();
           break;
-
         case ExpressionType.audio:
           JuntoLoader.showLoader(context, color: Colors.white54);
           expressionModel = await getAudioExpression(repository);
@@ -411,6 +543,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   void dispose() {
     super.dispose();
     createPageController.dispose();
+    dynamicCaptionFocusNode.dispose();
+    dynamicTitleFocusNode.dispose();
   }
 
   @override
@@ -430,6 +564,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                 Scaffold(
                   appBar: CreateAppBar(
                     closeCreate: widget.closeCreate,
+                    expressionHasData: _expressionHasData,
                     togglePageView: togglePageView,
                     currentIndex: _currentIndex,
                     createExpression: createExpression,
@@ -466,31 +601,42 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                               ],
                             ),
                           ),
-                          ChooseExpressionSheet(
-                            currentExpressionType: currentExpressionType,
-                            chooseExpressionType: chooseExpressionType,
-                          ),
+                          if (showExpressionSheet)
+                            if (!_audioService.playBackAvailable)
+                              ChooseExpressionSheet(
+                                currentExpressionType: currentExpressionType,
+                                chooseExpressionType: chooseExpressionType,
+                              ),
+                          if (dynamicCaptionFocusNode.hasFocus)
+                            RemoveFocusWidget(
+                                focusNode: dynamicCaptionFocusNode)
                         ],
                       ),
 
                       // Create Screen 2 - Review Content
-                      Column(
-                        children: [
-                          Expanded(
-                            child: ListView(
-                              children: [
-                                CreateTopBar(
-                                  profilePicture: userData.user.profilePicture,
-                                  toggleSocialContextVisibility:
-                                      toggleSocialContextVisibility,
-                                  currentExpressionContext: expressionContext,
-                                ),
-                                _buildReview(),
-                              ],
+                      // We show a sized box when PageView index is 0 so we don't display a review screen
+                      // that is not consistent with the expression type, which causes an error
+                      if (_currentIndex == 0)
+                        SizedBox()
+                      else
+                        Column(
+                          children: [
+                            Expanded(
+                              child: ListView(
+                                children: [
+                                  CreateTopBar(
+                                    profilePicture:
+                                        userData.user.profilePicture,
+                                    toggleSocialContextVisibility:
+                                        toggleSocialContextVisibility,
+                                    currentExpressionContext: expressionContext,
+                                  ),
+                                  _buildReview(),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
                     ],
                   ),
                 ),
