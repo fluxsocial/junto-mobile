@@ -33,7 +33,7 @@ class CreateShortform extends StatefulWidget {
 }
 
 class CreateShortformState extends State<CreateShortform>
-    with CreateExpressionHelpers {
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
   String gradientOne;
   String gradientTwo;
   GlobalKey<FlutterMentionsState> mentionKey =
@@ -374,4 +374,7 @@ class CreateShortformState extends State<CreateShortform>
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
