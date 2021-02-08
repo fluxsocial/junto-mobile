@@ -23,6 +23,7 @@ import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:flutter_fadein/flutter_fadein.dart';
 
 class NewHome extends StatefulWidget {
   const NewHome({this.screen = Screen.collective});
@@ -34,7 +35,7 @@ class NewHome extends StatefulWidget {
   }
 }
 
-class NewHomeState extends State<NewHome> {
+class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   UserData _userData;
   UserDataProvider userProvider;
 
@@ -80,16 +81,18 @@ class NewHomeState extends State<NewHome> {
         _latestScreen = screen;
       }
     });
+    print(showCreateScreen);
   }
 
   void closeCreate() {
     setState(() {
-      _currentScreen = _latestScreen;
       showCreateScreen = false;
+      _currentScreen = _latestScreen;
       if (_latestScreen == Screen.create) {
         _currentScreen = Screen.collective;
       }
     });
+    print(showCreateScreen);
     print(_currentScreen);
   }
 
@@ -115,7 +118,11 @@ class NewHomeState extends State<NewHome> {
         child = JuntoDen();
         break;
       default:
-        child = JuntoCollective();
+        child = Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Theme.of(context).backgroundColor,
+        );
     }
 
     return child;
@@ -165,12 +172,15 @@ class NewHomeState extends State<NewHome> {
             swipeLeftDrawer: false,
             scaffold: Stack(
               children: [
-                if (!showCreateScreen) showScreen(),
+                showScreen(),
                 if (showCreateScreen)
-                  FeatureDiscovery(
-                    child: CreateExpressionScaffold(
-                      closeCreate: closeCreate,
-                      changeScreen: changeScreen,
+                  FadeIn(
+                    duration: Duration(milliseconds: 300),
+                    child: FeatureDiscovery(
+                      child: CreateExpressionScaffold(
+                        closeCreate: closeCreate,
+                        changeScreen: changeScreen,
+                      ),
                     ),
                   ),
                 if (_currentScreen != Screen.create)
