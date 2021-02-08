@@ -29,7 +29,7 @@ class DeleteAccountDialog extends StatelessWidget {
         // Hide Junto Loader
         JuntoLoader.hide();
         // Log user out
-        await context.bloc<AuthBloc>().add(LogoutEvent());
+        await context.bloc<AuthBloc>().add(LogoutEvent(manualLogout: true));
 
         Navigator.of(context).pushReplacement(
           FadeRoute(child: HomePage(), name: "HomePage"),

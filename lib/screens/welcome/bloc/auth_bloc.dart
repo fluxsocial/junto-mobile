@@ -25,7 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.userDataProvider,
     this.userRepo,
     this.onBoardingRepo,
-      this.notificationRepo
+    this.notificationRepo,
   ) : super(AuthState.loading()) {
     _getLoggedIn();
     _httpCallback();
@@ -39,7 +39,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _getLoggedIn() async {
     final result = await authRepo.isLoggedIn();
-    if (result == true) {
+
+    if (result == true && userDataProvider.userAddress != null) {
       add(LoggedInEvent());
     } else {
       add(LogoutEvent());
@@ -150,9 +151,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLogout(LogoutEvent event) async* {
     yield AuthState.loading();
     try {
+      if (event.manualLogout) {
+        final token = await notificationRepo.getFCMToken();
+        await notificationRepo.unRegisterDevice(token);
+      }
       await _clearUserInformation();
-      final token = await notificationRepo.getFCMToken();
-      await notificationRepo.unRegisterDevice(token);
       yield AuthState.unauthenticated();
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
