@@ -25,3 +25,7 @@
 
 # https://github.com/flutter/flutter/issues/58479
 -keep class androidx.lifecycle.** { *; }
+
+# https://stackoverflow.com/questions/44207343/android-and-aws-cognito-unable-to-unmarshall-error-response-with-proguard
+-keep class com.amazonaws.services.cognitoidentityprovider.** { *; }
+-keep class * extends com.amazonaws.AmazonClientException { *; }

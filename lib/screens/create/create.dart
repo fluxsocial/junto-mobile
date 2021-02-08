@@ -66,45 +66,33 @@ class JuntoCreateState extends State<JuntoCreate> {
   void _navigateTo(BuildContext context, ExpressionType expression) {
     switch (expression) {
       case ExpressionType.dynamic:
-        _push(
-            context,
-            CreateLongform(
-                expressionContext: widget.expressionContext,
-                address: widget.address),
-            expression);
+        _push(context, CreateLongform(), expression);
         break;
       case ExpressionType.link:
-        _push(
-            context,
-            CreateLinkForm(
-                expressionContext: widget.expressionContext,
-                address: widget.address),
-            expression);
+        _push(context, CreateLinkForm(), expression);
         break;
       case ExpressionType.event:
         _push(
-            context,
-            CreateEvent(
-                expressionContext: widget.expressionContext,
-                address: widget.address),
-            expression);
+          context,
+          CreateEvent(
+            expressionContext: widget.expressionContext,
+            address: widget.address,
+          ),
+          expression,
+        );
         break;
       case ExpressionType.shortform:
         _push(
-            context,
-            CreateShortform(
-                expressionContext: widget.expressionContext,
-                address: widget.address),
-            expression);
+          context,
+          CreateShortform(
+            expressionContext: widget.expressionContext,
+            address: widget.address,
+          ),
+          expression,
+        );
         break;
       case ExpressionType.photo:
-        _push(
-            context,
-            CreatePhoto(
-              expressionContext: widget.expressionContext,
-              address: widget.address,
-            ),
-            expression);
+        _push(context, CreatePhoto(), expression);
         break;
 
       case ExpressionType.audio:
@@ -116,6 +104,8 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
           expression,
         );
+        break;
+      case ExpressionType.none:
         break;
     }
   }

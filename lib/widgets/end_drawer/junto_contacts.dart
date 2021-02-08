@@ -33,8 +33,6 @@ class JuntoContactsState extends State<JuntoContacts> {
     searchController = TextEditingController();
     // Get user information to display username in SMS
     getUserInformation();
-    // Determine permissions to access user contacts
-    _getPermission();
 
     // Retrieve user contacts
     getContacts();
@@ -49,34 +47,39 @@ class JuntoContactsState extends State<JuntoContacts> {
   }
 
   Future<void> getContacts() async {
-    // Retrieve contacts from agent's device
-    Iterable<Contact> contacts = await ContactsService.getContacts();
+    // Determine permissions to access user contacts
+    final permission = await _getPermission();
 
-    // Create a temp list
-    final List<Contact> tempContactsAsList = [];
+    if (permission.isGranted) {
+      // Retrieve contacts from agent's device
+      Iterable<Contact> contacts = await ContactsService.getContacts();
 
-    // Ignore null contacts
-    await contacts.forEach((Contact contact) {
-      if (contact != null) {
-        tempContactsAsList.add(contact);
-      }
-    });
+      // Create a temp list
+      final List<Contact> tempContactsAsList = [];
 
-    // Convert Iterable to List
-    List<Contact> contactsAsList = await tempContactsAsList.toList();
+      // Ignore null contacts
+      await contacts.forEach((Contact contact) {
+        if (contact != null) {
+          tempContactsAsList.add(contact);
+        }
+      });
 
-    // Sort list alphabetically
-    contactsAsList.sort((a, b) {
-      if (a.displayName != null && b.displayName != null) {
-        return a.displayName.compareTo(b.displayName);
-      }
-      return 0;
-    });
+      // Convert Iterable to List
+      List<Contact> contactsAsList = await tempContactsAsList.toList();
 
-    setState(() {
-      _contacts = contactsAsList;
-      _filteredContacts = List.from(_contacts);
-    });
+      // Sort list alphabetically
+      contactsAsList.sort((a, b) {
+        if (a.displayName != null && b.displayName != null) {
+          return a.displayName.compareTo(b.displayName);
+        }
+        return 0;
+      });
+
+      setState(() {
+        _contacts = contactsAsList;
+        _filteredContacts = List.from(_contacts);
+      });
+    }
   }
 
   //Check contacts permission

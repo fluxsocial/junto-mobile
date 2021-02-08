@@ -36,6 +36,10 @@ class LoginEvent extends AuthEvent {
 /// re-opening, etc..
 class LoggedInEvent extends AuthEvent {}
 
-class LogoutEvent extends AuthEvent {}
+class LogoutEvent extends AuthEvent {
+  final bool manualLogout;
+
+  LogoutEvent({this.manualLogout = false});
+}
 
 class RefreshUser extends AuthEvent {}

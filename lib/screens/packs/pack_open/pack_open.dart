@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_tabs.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_actions_button.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 
@@ -58,10 +57,6 @@ class PacksLoadedScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserDataProvider>(builder: (context, user, _) {
       return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: PacksActionButtons(
-          isVisible: isVisible,
-        ),
         body: DefaultTabController(
           length: state.pack.address == user.userProfile.pack.address ? 3 : 2,
           child: NestedScrollView(
