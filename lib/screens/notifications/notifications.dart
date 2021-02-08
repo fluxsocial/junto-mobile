@@ -54,17 +54,18 @@ class NotificationsScreen extends StatelessWidget {
                   S.of(context).notifications_title,
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
-                IconButton(
-                  icon: Icon(Icons.settings),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => NotificationSettingScreen(),
-                      ),
-                    );
-                  },
-                ),
+                SizedBox(width: 42),
+                // IconButton(
+                //   icon: Icon(Icons.settings),
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       CupertinoPageRoute(
+                //         builder: (context) => NotificationSettingScreen(),
+                //       ),
+                //     );
+                //   },
+                // ),
               ],
             ),
           ),
