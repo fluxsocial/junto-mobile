@@ -27,7 +27,7 @@ class CreateLinkForm extends StatefulWidget {
 }
 
 class CreateLinkFormState extends State<CreateLinkForm>
-    with CreateExpressionHelpers {
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
   String caption;
   String url;
   String title;
@@ -368,4 +368,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
