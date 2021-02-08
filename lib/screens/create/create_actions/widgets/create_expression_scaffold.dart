@@ -83,7 +83,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   @override
   void initState() {
     super.initState();
-    createPageController = PageController(initialPage: 0);
+    createPageController = PageController(initialPage: 0, keepPage: true);
 
     dynamicCaptionFocusNode.addListener(() {
       _toggleExpressionSheetVisibility(focusNode: dynamicCaptionFocusNode);

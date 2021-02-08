@@ -34,7 +34,8 @@ class CreatePhoto extends StatefulWidget {
 }
 
 // State for CreatePhoto class
-class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
+class CreatePhotoState extends State<CreatePhoto>
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
   File preCroppedFile;
   File imageFile;
   ImageSource imageSource;
@@ -177,6 +178,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (BuildContext context) {
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
@@ -602,4 +604,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
