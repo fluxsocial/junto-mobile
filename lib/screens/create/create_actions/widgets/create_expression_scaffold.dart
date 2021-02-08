@@ -587,6 +587,12 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     createPageController.dispose();
     dynamicCaptionFocusNode.dispose();
     dynamicTitleFocusNode.dispose();
+    shortformFocusNode.dispose();
+    linkCaptionFocusNode.dispose();
+    linkUrlFocusNode.dispose();
+    photoCaptionFocusNode.dispose();
+    audioTitleFocusNode.dispose();
+    audioCaptionFocusNode.dispose();
   }
 
   @override
