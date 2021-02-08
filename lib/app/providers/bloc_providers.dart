@@ -31,6 +31,7 @@ class BlocProviders extends StatelessWidget {
             ctx.repository<UserDataProvider>(),
             ctx.repository<UserRepo>(),
             ctx.repository<OnBoardingRepo>(),
+            ctx.repository<NotificationRepo>(),
           ),
         ),
         BlocProvider<NotificationSettingBloc>(

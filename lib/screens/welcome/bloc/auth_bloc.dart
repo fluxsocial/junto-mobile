@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRepo userRepo;
   final UserDataProvider userDataProvider;
   final OnBoardingRepo onBoardingRepo;
+  final NotificationRepo notificationRepo;
 
   AuthBloc(
     this.http,
@@ -24,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.userDataProvider,
     this.userRepo,
     this.onBoardingRepo,
+      this.notificationRepo
   ) : super(AuthState.loading()) {
     _getLoggedIn();
     _httpCallback();
@@ -149,6 +151,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.loading();
     try {
       await _clearUserInformation();
+      final token = await notificationRepo.getFCMToken();
+      await notificationRepo.unRegisterDevice(token);
       yield AuthState.unauthenticated();
     } on JuntoException catch (error) {
       logger.logDebug(error.message);

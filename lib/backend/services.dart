@@ -168,6 +168,8 @@ abstract class NotificationService {
 
   Future<void> registerDevice(final String fcmToken);
 
+  Future<void> unRegisterDevice(final String fcmToken);
+
   Future<void> manageNotifications(NotificationPrefsModel options);
 
   Future<NotificationPrefsModel> getNotificationsPrefs();
