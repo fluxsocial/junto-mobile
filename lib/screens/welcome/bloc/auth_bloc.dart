@@ -139,8 +139,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       add(LogoutEvent());
       yield AuthState.unauthenticated();
     } on DioError catch (error) {
-      print(error.response.statusMessage);
-      print(error.response.data);
+      print(error);
       yield AuthState.unauthenticated();
     } catch (error) {
       logger.logException(error);

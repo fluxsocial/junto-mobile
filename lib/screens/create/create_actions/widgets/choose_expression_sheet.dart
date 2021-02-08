@@ -34,6 +34,7 @@ class ChooseExpressionSheet extends StatelessWidget {
                   ),
                   child: ListView(
                     controller: scrollController,
+                    padding: const EdgeInsets.all(0),
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +42,7 @@ class ChooseExpressionSheet extends StatelessWidget {
                           Container(
                             height: 7.5,
                             width: 100,
-                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            margin: const EdgeInsets.symmetric(vertical: 15),
                             decoration: BoxDecoration(
                               color: Theme.of(context).dividerColor,
                               borderRadius: BorderRadius.circular(25),
@@ -49,18 +50,11 @@ class ChooseExpressionSheet extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: Icon(
-                          CustomIcons.create,
-                          size: 20,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
+                      const SizedBox(height: 15),
                       Container(
                         height: 100,
                         color: Theme.of(context).backgroundColor,
+                        margin: EdgeInsets.only(bottom: 15),
                         child: Row(
                           children: [
                             CreateExpressionIcon(
@@ -87,6 +81,18 @@ class ChooseExpressionSheet extends StatelessWidget {
                               expressionType: ExpressionType.audio,
                               currentExpressionType: currentExpressionType,
                               switchExpressionType: chooseExpressionType,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          children: [
+                            Icon(
+                              CustomIcons.create,
+                              size: 20,
+                              color: Theme.of(context).primaryColor,
                             ),
                           ],
                         ),

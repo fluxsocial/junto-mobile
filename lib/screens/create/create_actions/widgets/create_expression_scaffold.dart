@@ -160,25 +160,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
 
       case ExpressionType.none:
-        child = Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * .1),
-          height: MediaQuery.of(context).size.height / 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text(
-                'Select an expression type to get started',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              )
-            ],
-          ),
-        );
+        child = SizedBox();
         break;
 
       default:
