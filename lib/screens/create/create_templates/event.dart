@@ -1,18 +1,20 @@
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/image_widgets.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
 import 'package:junto_beta_mobile/widgets/time_pickers.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// Allows the user to create an event
 class CreateEvent extends StatefulWidget {
@@ -82,21 +84,36 @@ class CreateEventState extends State<CreateEvent> with DateParser {
 
   Future<void> _onPickPressed() async {
     final imagePicker = ImagePicker();
-    final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
-    final File image = File(pickedImage.path);
-    if (image == null) {
-      imageFile.value = null;
-      return;
+    final permission =
+        Platform.isAndroid ? Permission.storage : Permission.photos;
+    if (await permission.request().isGranted) {
+      final pickedImage =
+          await imagePicker.getImage(source: ImageSource.gallery);
+      final File image = File(pickedImage.path);
+      if (image == null) {
+        imageFile.value = null;
+        return;
+      }
+      final File cropped =
+          await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
+        '3:2',
+      ]);
+      if (cropped == null) {
+        imageFile.value = null;
+        return;
+      }
+      imageFile.value = cropped;
+    } else {
+      showDialog(
+        context: context,
+        child: SettingsPopup(
+          buildContext: context,
+          // TODO: @Eric - Need to update the text
+          text: 'Access not granted to access gallery',
+          onTap: AppSettings.openAppSettings,
+        ),
+      );
     }
-    final File cropped =
-        await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
-      '3:2',
-    ]);
-    if (cropped == null) {
-      imageFile.value = null;
-      return;
-    }
-    imageFile.value = cropped;
   }
 
   void _onNext() {
