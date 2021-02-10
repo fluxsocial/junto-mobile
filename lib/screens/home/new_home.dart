@@ -4,11 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/circles.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +18,6 @@ import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_e
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
@@ -105,7 +103,7 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
         break;
       case Screen.groups:
         child = FeatureDiscovery(
-          child: SpheresTemp(),
+          child: Circles(),
         );
         break;
       case Screen.packs:
