@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CreateSpherePageOne extends StatefulWidget {
   const CreateSpherePageOne({
@@ -31,21 +34,36 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
 
   Future<void> _onPickPressed() async {
     final imagePicker = ImagePicker();
-    final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
-    final File image = File(pickedImage.path);
-    if (image == null) {
-      setState(() => widget.imageFile.value = null);
-      return;
+    final permission =
+        Platform.isAndroid ? Permission.storage : Permission.photos;
+    if (await permission.request().isGranted) {
+      final pickedImage =
+          await imagePicker.getImage(source: ImageSource.gallery);
+      final File image = File(pickedImage.path);
+      if (image == null) {
+        setState(() => widget.imageFile.value = null);
+        return;
+      }
+      final File cropped =
+          await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
+        '3:2',
+      ]);
+      if (cropped == null) {
+        setState(() => widget.imageFile.value = null);
+        return;
+      }
+      setState(() => widget.imageFile.value = cropped);
+    } else {
+      showDialog(
+        context: context,
+        child: SettingsPopup(
+          buildContext: context,
+          // TODO: @Eric - Need to update the text
+          text: 'Access not granted to access gallery',
+          onTap: AppSettings.openAppSettings,
+        ),
+      );
     }
-    final File cropped =
-        await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
-      '3:2',
-    ]);
-    if (cropped == null) {
-      setState(() => widget.imageFile.value = null);
-      return;
-    }
-    setState(() => widget.imageFile.value = cropped);
   }
 
   void _openChangePhotoModal() {

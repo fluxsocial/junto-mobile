@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -78,6 +81,18 @@ class JuntoContactsState extends State<JuntoContacts> {
       setState(() {
         _contacts = contactsAsList;
         _filteredContacts = List.from(_contacts);
+      });
+    } else {
+      Timer(Duration(milliseconds: 500), () {
+        showDialog(
+          context: context,
+          child: SettingsPopup(
+            buildContext: context,
+            // TODO: @Eric - Need to update the text
+            text: 'Access not granted to access contacts',
+            onTap: AppSettings.openAppSettings,
+          ),
+        );
       });
     }
   }
