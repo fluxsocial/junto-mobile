@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/circles.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
@@ -50,6 +51,8 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     });
     _currentScreen = widget.screen;
     _latestScreen = widget.screen;
+
+    context.bloc<CircleBloc>().add(FetchMyCircle());
   }
 
   @override

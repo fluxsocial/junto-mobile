@@ -30,8 +30,6 @@ class CirclesState extends State<Circles> with ListDistinct {
   void initState() {
     super.initState();
     circlesPageController = PageController(initialPage: 0);
-
-    context.bloc<CircleBloc>().add(FetchMyCircle());
   }
 
   @override
