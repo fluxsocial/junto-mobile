@@ -10,21 +10,29 @@ import 'package:feature_discovery/feature_discovery.dart';
 class JuntoCommunityCenterFab extends StatelessWidget {
   // community center address
   final String communityCenterAddress = kCommunityCenterAddress;
+  final Function onTap;
+
+  JuntoCommunityCenterFab({Key key, this.onTap}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          FadeRoute<void>(
-            child: FeatureDiscovery(
-              child: JuntoCreate(
-                channels: <String>[],
-                address: communityCenterAddress,
-                expressionContext: ExpressionContext.Group,
+        if (onTap != null) {
+          onTap();
+        } else {
+          Navigator.of(context).push(
+            FadeRoute<void>(
+              child: FeatureDiscovery(
+                child: JuntoCreate(
+                  channels: <String>[],
+                  address: communityCenterAddress,
+                  expressionContext: ExpressionContext.Group,
+                ),
               ),
             ),
-          ),
-        );
+          );
+        }
       },
       child: Container(
         height: 60,

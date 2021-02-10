@@ -159,7 +159,9 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               context,
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
-                                  return JuntoCommunityCenter();
+                                  return JuntoCommunityCenter(
+                                    changeScreen: widget.changeScreen,
+                                  );
                                 },
                               ),
                             );
