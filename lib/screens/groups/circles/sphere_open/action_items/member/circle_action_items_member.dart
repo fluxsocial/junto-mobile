@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_search.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
@@ -62,15 +63,29 @@ class CircleActionItemsMember extends StatelessWidget {
                   ListTile(
                     contentPadding: const EdgeInsets.all(0),
                     onTap: () {
-                      try {
-                        context.bloc<CircleBloc>().add(LeaveCircle(
-                            sphereAdress: sphere.address,
-                            userAddress: userProfile.address));
+                      Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => ConfirmDialog(
+                          buildContext: context,
+                          confirm: () {
+                            try {
+                              context.bloc<CircleBloc>().add(
+                                    LeaveCircle(
+                                      sphereAdress: sphere.address,
+                                      userAddress: userProfile.address,
+                                    ),
+                                  );
 
-                        Navigator.of(context).pop();
-                      } catch (e, s) {
-                        logger.logException(e, s);
-                      }
+                              Navigator.pop(context);
+                            } catch (e, s) {
+                              logger.logException(e, s);
+                            }
+                          },
+                          confirmationText:
+                              'Are you sure you want to leave this circle?',
+                        ),
+                      );
                     },
                     title: Row(
                       children: <Widget>[
