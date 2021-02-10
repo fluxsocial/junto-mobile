@@ -23,6 +23,9 @@ class CreateTopBar extends StatelessWidget {
       case ExpressionContext.Group:
         socialContext = 'My Pack';
         break;
+      case ExpressionContext.CommunityCenter:
+        socialContext = 'Community Center';
+        break;
       default:
         socialContext = 'Collective';
         break;

@@ -62,6 +62,11 @@ class CreateContextOverlay extends StatelessWidget {
                         currentExpressionContext: currentExpressionContext,
                         selectExpressionContext: selectExpressionContext,
                       ),
+                      ChooseExpressionContext(
+                        expressionContext: ExpressionContext.CommunityCenter,
+                        currentExpressionContext: currentExpressionContext,
+                        selectExpressionContext: selectExpressionContext,
+                      ),
                     ],
                   ),
                 ),

@@ -22,7 +22,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {

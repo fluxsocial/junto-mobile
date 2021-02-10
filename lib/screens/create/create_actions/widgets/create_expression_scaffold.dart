@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
@@ -34,7 +35,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/audio_review.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
-
 
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
@@ -356,6 +356,11 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       setState(() {
         expressionContext = newExpressionContext;
         socialContextAddress = userData.pack.address;
+      });
+    } else if (newExpressionContext == ExpressionContext.CommunityCenter) {
+      setState(() {
+        expressionContext = newExpressionContext;
+        socialContextAddress = kCommunityCenterAddress;
       });
     }
   }
