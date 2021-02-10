@@ -72,12 +72,20 @@ class _JuntoMemberState extends State<JuntoMember>
       privateDen: null,
       publicDen: null,
     );
+    print('junto member address is ' + widget.profile.address);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    getUserInformation();
+    if (isConnected == null &&
+        isFollowed == null &&
+        isFollowing == null &&
+        hasPendingConnection == null &&
+        hasPendingPackRequest == null &&
+        isPackMember == null) {
+      getUserInformation();
+    }
   }
 
   Future<void> getUserInformation() async {

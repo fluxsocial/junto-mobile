@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
@@ -19,10 +18,17 @@ import 'widgets/audio_record.dart';
 import 'widgets/audio_review.dart';
 
 class CreateAudio extends StatefulWidget {
-  const CreateAudio({Key key, this.expressionContext, this.address})
-      : super(key: key);
+  const CreateAudio({
+    Key key,
+    this.expressionContext,
+    this.address,
+    @required this.titleFocus,
+    @required this.captionFocus,
+  }) : super(key: key);
   final ExpressionContext expressionContext;
   final String address;
+  final FocusNode titleFocus;
+  final FocusNode captionFocus;
 
   @override
   State<StatefulWidget> createState() {
@@ -30,15 +36,19 @@ class CreateAudio extends StatefulWidget {
   }
 }
 
-class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
+class CreateAudioState extends State<CreateAudio>
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   bool _showBottomTools = true;
-  FocusNode captionFocus = FocusNode();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController captionController = TextEditingController();
   File audioPhotoBackground;
   List<String> audioGradientValues = [];
   GlobalKey<FlutterMentionsState> mentionKey =
       GlobalKey<FlutterMentionsState>();
+  FocusNode _captionFocus;
 
   Future<void> _onPickPressed({String source}) async {
     try {
@@ -129,53 +139,67 @@ class CreateAudioState extends State<CreateAudio> with CreateExpressionHelpers {
     });
   }
 
+  AudioFormExpression createExpression(AudioService audio) {
+    final markupText = mentionKey.currentState.controller.markupText;
+
+    return AudioFormExpression(
+      audio: audio.recordingPath,
+      title: titleController.text.trim(),
+      photo: audioPhotoBackground?.path,
+      gradient: audioGradientValues,
+      caption: markupText.trim(),
+    );
+  }
+
+  Map<String, List<String>> getMentionsAndChannels() {
+    final markupText = mentionKey.currentState.controller.markupText;
+    final mentions = getMentionUserId(markupText);
+    final channels = getChannelsId(markupText);
+    return {'mentions': mentions, 'channels': channels};
+  }
+
   @override
   void initState() {
     super.initState();
-    captionFocus.addListener(_toggleBottomTools);
+    _captionFocus = widget.captionFocus;
+    _captionFocus.addListener(_toggleBottomTools);
   }
 
   @override
   void dispose() {
     super.dispose();
-    captionFocus.removeListener(_toggleBottomTools);
+    widget.captionFocus.removeListener(_toggleBottomTools);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AudioService>(
-      create: (context) => AudioService(),
-      child: Consumer<AudioService>(builder: (context, audio, child) {
-        return CreateExpressionScaffold(
-          onNext: () => _onNext(audio),
-          expressionHasData: () => expressionHasData(audio),
-          showBottomNav: !audio.playBackAvailable,
-          expressionType: ExpressionType.audio,
-          child: Expanded(
-            child: Stack(
-              children: <Widget>[
-                !audio.playBackAvailable
-                    ? AudioRecord()
-                    : AudioReview(
-                        audioPhotoBackground: audioPhotoBackground,
-                        audioGradientValues: audioGradientValues,
-                        titleController: titleController,
-                        captionController: captionController,
-                        captionFocus: captionFocus,
-                        mentionKey: mentionKey,
-                      ),
-                if (audio.playBackAvailable && _showBottomTools)
-                  AudioBottomTools(
-                    openPhotoOptions: _audioPhotoOptions,
-                    resetAudioPhotoBackground: _resetAudioPhotoBackground,
-                    resetAudioGradientValues: _resetAudioGradientValues,
-                    setAudioGradientValues: _setAudioGradientValues,
-                  )
-              ],
-            ),
+    return Consumer<AudioService>(
+      builder: (context, audio, child) {
+        return Expanded(
+          child: Stack(
+            children: <Widget>[
+              !audio.playBackAvailable
+                  ? AudioRecord()
+                  : AudioReview(
+                      audioPhotoBackground: audioPhotoBackground,
+                      audioGradientValues: audioGradientValues,
+                      titleController: titleController,
+                      captionController: captionController,
+                      captionFocus: widget.captionFocus,
+                      titleFocus: widget.titleFocus,
+                      mentionKey: mentionKey,
+                    ),
+              if (audio.playBackAvailable && _showBottomTools)
+                AudioBottomTools(
+                  openPhotoOptions: _audioPhotoOptions,
+                  resetAudioPhotoBackground: _resetAudioPhotoBackground,
+                  resetAudioGradientValues: _resetAudioGradientValues,
+                  setAudioGradientValues: _setAudioGradientValues,
+                )
+            ],
           ),
         );
-      }),
+      },
     );
   }
 

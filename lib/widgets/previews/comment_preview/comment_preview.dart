@@ -20,6 +20,7 @@ class CommentPreview extends StatelessWidget with MemberValidation {
     @required this.comment,
     @required this.parent,
     @required this.userAddress,
+    @required this.loadPreviousExpressionComments,
   }) : super(key: key);
 
   /// comment
@@ -30,6 +31,8 @@ class CommentPreview extends StatelessWidget with MemberValidation {
 
   // address of user
   final String userAddress;
+
+  final VoidCallback loadPreviousExpressionComments;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,9 @@ class CommentPreview extends StatelessWidget with MemberValidation {
               parent: parent,
             ),
           ),
-        );
+        ).then((value) {
+          loadPreviousExpressionComments();
+        });
       },
       child: Container(
         padding: const EdgeInsets.only(bottom: 20),
@@ -93,6 +98,8 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                             comment: comment,
                             userAddress: userAddress,
                             source: 'preview',
+                            loadPreviousExpressionComments:
+                                loadPreviousExpressionComments,
                           ),
                         ),
                       );

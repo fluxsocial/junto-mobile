@@ -105,4 +105,6 @@ class NotificationRepo {
 
   Future<NotificationPrefsModel> getNotificationsPrefs() =>
       service.getNotificationsPrefs();
+
+  Future<void> unRegisterDevice(String token)=> service.unRegisterDevice(token);
 }

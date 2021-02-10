@@ -23,7 +23,7 @@ class MentionsSearchList extends StatelessWidget {
         ),
       ),
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * .3,
+        maxHeight: MediaQuery.of(context).size.height * .225,
       ),
       child: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 10.0),

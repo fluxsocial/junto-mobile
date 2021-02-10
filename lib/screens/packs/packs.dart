@@ -6,15 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_bloc/pack_bloc.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/packs/packs_list.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
@@ -67,37 +63,28 @@ class JuntoPacksState extends State<JuntoPacks>
         child: MultiBlocProvider(
           providers: _getBlocProviders(),
           child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: JuntoFilterDrawer(
-              leftDrawer: _currentIndex == 1
-                  ? const FilterDrawerContent(ExpressionContextType.Group)
-                  : null,
-              rightMenu: JuntoDrawer(),
-              scaffold: Scaffold(
-                body: PageView(
-                  physics: NeverScrollableScrollPhysics(),
-                  onPageChanged: (int index) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                    Provider.of<AppRepo>(context, listen: false)
-                        .setPacksPageIndex(index);
-                  },
-                  controller: _pageController,
-                  children: <Widget>[
-                    PacksList(
-                      packsViewNav: _packsViewNav,
-                      isVisible: _isVisible,
-                    ),
-                    PackOpen(
-                      packsViewNav: _packsViewNav,
-                      isVisible: _isVisible,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+              resizeToAvoidBottomInset: false,
+              body: PageView(
+                physics: NeverScrollableScrollPhysics(),
+                onPageChanged: (int index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                  Provider.of<AppRepo>(context, listen: false)
+                      .setPacksPageIndex(index);
+                },
+                controller: _pageController,
+                children: <Widget>[
+                  PacksList(
+                    packsViewNav: _packsViewNav,
+                    isVisible: _isVisible,
+                  ),
+                  PackOpen(
+                    packsViewNav: _packsViewNav,
+                    isVisible: _isVisible,
+                  ),
+                ],
+              )),
         ),
       ),
     );
@@ -124,9 +111,12 @@ class JuntoPacksState extends State<JuntoPacks>
       BlocProvider<ChannelFilteringBloc>(
         create: (ctx) => ChannelFilteringBloc(
           Provider.of<SearchRepo>(ctx, listen: false),
-          (value) => BlocProvider.of<PackBloc>(ctx).add(
-            FetchPacks(channel: value?.name),
-          ),
+          (value) {
+            print('test: $value');
+            BlocProvider.of<PackBloc>(ctx).add(
+              FetchPacks(channel: value.length > 0 ? value[0]?.name : ''),
+            );
+          },
         ),
         lazy: false,
       ),

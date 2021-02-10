@@ -47,6 +47,17 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
     final focusNode = Provider.of<FocusNode>(context, listen: false);
     return BlocBuilder<ChannelFilteringBloc, ChannelFilteringState>(
         builder: (BuildContext context, ChannelFilteringState state) {
+      List<Channel> filteredList = [];
+
+      if (state is ChannelsPopulatedState) {
+        final selectedSet = state.selectedChannel != null
+            ? state.selectedChannel.map((e) => e.name).toList()
+            : [];
+        filteredList = state.channels
+            .where((element) => !selectedSet.contains(element.name))
+            .toList();
+      }
+
       return FilterDrawerWrapper(
         focusNode: focusNode,
         children: <Widget>[
@@ -60,21 +71,43 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
                 ),
                 if (state is ChannelsPopulatedState &&
                     state.selectedChannel != null)
-                  SelectedChannel(channel: state.selectedChannel),
+                  Row(
+                    children: [
+                      ...state.selectedChannel
+                          .map((e) => SelectedChannelChip(
+                              channel: e.name,
+                              onTap: () {
+                                context.bloc<ChannelFilteringBloc>().add(
+                                      FilterSelected(
+                                        state.selectedChannel
+                                            .where((element) =>
+                                                element.name != e.name)
+                                            .toList(),
+                                        widget.contextType,
+                                      ),
+                                    );
+                              }))
+                          .toList(),
+                    ],
+                  ),
                 if (state is ChannelsPopulatedState)
                   Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(0),
-                      itemCount: state.channels.length,
+                      itemCount: filteredList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final Channel item = state.channels[index];
+                        final Channel item = filteredList[index];
                         if (item != null) {
                           return InkWell(
                             onTap: () {
                               context.bloc<ChannelFilteringBloc>().add(
-                                  FilterSelected(item, widget.contextType));
+                                      FilterSelected([
+                                    if (state.selectedChannel != null)
+                                      ...state.selectedChannel,
+                                    item
+                                  ], widget.contextType));
                               textEditingController.clear();
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
                             },
                             child: FilterDrawerChannelPreview(
                               channel: item,
