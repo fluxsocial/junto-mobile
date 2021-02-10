@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -64,10 +60,6 @@ class CirclesState extends State<Circles> with ListDistinct {
               currentIndex: _currentIndex,
               changePageView: changePageView,
             ),
-          ),
-          floatingActionButton: BottomNav(
-            address: null,
-            expressionContext: ExpressionContext.Group,
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,

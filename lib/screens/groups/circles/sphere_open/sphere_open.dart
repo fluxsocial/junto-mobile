@@ -20,8 +20,6 @@ import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
-import 'circle_action_buttons.dart';
-
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
@@ -127,9 +125,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               group: group,
             ),
           ),
-          floatingActionButton: CircleActionButtons(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
           body: DefaultTabController(
             length: _tabs.length,
             child: NestedScrollView(
