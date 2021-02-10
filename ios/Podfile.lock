@@ -1,4 +1,6 @@
 PODS:
+  - "app_settings (3.0.0+1)":
+    - Flutter
   - AWSAuthCore (2.22.0):
     - AWSCore (= 2.22.0)
   - AWSCognitoIdentityProvider (2.22.0):
@@ -117,6 +119,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -158,6 +161,8 @@ SPEC REPOS:
     - tau_sound_core
 
 EXTERNAL SOURCES:
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
   contacts_service:
     :path: ".symlinks/plugins/contacts_service/ios"
   firebase_core:
@@ -190,6 +195,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
+  app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   AWSAuthCore: b54e2008da479e5a6ffdb6b482821d8f5a9afaa4
   AWSCognitoIdentityProvider: 32a91ad644e49e40235a408a8fbb96ea74891f19
   AWSCognitoIdentityProviderASF: 8b92721c17f2951ecd5bcfb749d5534f2851c2c7
@@ -229,4 +235,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3b7f149bbfc6aaaac83ccb82aafca46c276e3c5d
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1
