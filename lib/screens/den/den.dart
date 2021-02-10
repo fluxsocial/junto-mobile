@@ -193,7 +193,6 @@ class UserExpressProvider extends StatelessWidget {
           final channels = state.selectedChannel != null
               ? state.selectedChannel.map((e) => e.name).toList()
               : null;
-          print('test: $channels');
           Map<String, dynamic> _param = {
             'rootExpressions': true,
             'subExpressions': false,

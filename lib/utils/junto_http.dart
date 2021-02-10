@@ -39,8 +39,6 @@ class JuntoHttp {
     Map<String, String> queryParams,
     bool withoutServerVersion = false,
   }) async {
-    final key = await tokenProvider.getIdToken();
-    print('test: ${key}');
     String _uri;
     switch (withoutServerVersion) {
       case true:
