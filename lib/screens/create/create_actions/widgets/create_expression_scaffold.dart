@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
@@ -35,16 +36,20 @@ import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.
 import 'package:junto_beta_mobile/screens/create/create_review/audio_review.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
-
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
     Key key,
     this.closeCreate,
     this.changeScreen,
+    this.expressionContext,
+    this.group,
   }) : super(key: key);
 
   final Function closeCreate;
-  final Function changeScreen;
+  final Function(Screen, [ExpressionContext, Group]) changeScreen;
+  final ExpressionContext expressionContext;
+  final Group group;
+
   @override
   State<StatefulWidget> createState() {
     return CreateExpressionScaffoldState();
@@ -63,6 +68,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   dynamic expression;
   List<String> channels;
   List<String> mentions;
+  Group selectedGroup;
   bool showExpressionSheet = true;
   AudioService _audioService;
 
@@ -87,6 +93,13 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   @override
   void initState() {
     super.initState();
+
+    selectExpressionContext(widget.expressionContext);
+
+    if (widget.group != null) {
+      setSelectedGroup(widget.group);
+    }
+
     createPageController = PageController(initialPage: 0, keepPage: true);
 
     dynamicCaptionFocusNode.addListener(() {
@@ -352,12 +365,28 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         expressionContext = newExpressionContext;
         socialContextAddress = null;
       });
-    } else if (newExpressionContext == ExpressionContext.Group) {
+    } else if (newExpressionContext == ExpressionContext.MyPack) {
       setState(() {
         expressionContext = newExpressionContext;
         socialContextAddress = userData.pack.address;
       });
+    } else if (newExpressionContext == ExpressionContext.CommunityCenter) {
+      setState(() {
+        expressionContext = newExpressionContext;
+        socialContextAddress = kCommunityCenterAddress;
+      });
+    } else if (newExpressionContext == ExpressionContext.Group) {
+      setState(() {
+        expressionContext = newExpressionContext;
+      });
     }
+  }
+
+  void setSelectedGroup(Group group) {
+    setState(() {
+      socialContextAddress = group.address;
+      selectedGroup = group;
+    });
   }
 
   void togglePageView(int page) {
@@ -514,7 +543,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         case ExpressionContext.Collective:
           screen = Screen.collective;
           break;
-        case ExpressionContext.Group:
+        case ExpressionContext.MyPack:
           screen = Screen.packs;
           break;
         default:
