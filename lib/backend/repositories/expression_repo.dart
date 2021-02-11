@@ -5,7 +5,14 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services/image_handler.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
-enum ExpressionContext { Group, Collection, Collective, Comment }
+enum ExpressionContext {
+  Group,
+  Collection,
+  Collective,
+  Comment,
+  CommunityCenter,
+  MyPack
+}
 
 class ImageThumbnails {
   final String keyPhoto;
@@ -37,7 +44,8 @@ class ExpressionRepo {
 
     ExpressionModel _expression;
 
-    if (context == ExpressionContext.Group) {
+    if (context == ExpressionContext.Group ||
+        context == ExpressionContext.CommunityCenter) {
       assert(address != null);
       _expression = expression.copyWith(
         context: <String, dynamic>{

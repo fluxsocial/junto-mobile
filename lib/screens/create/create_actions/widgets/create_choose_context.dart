@@ -12,7 +12,7 @@ class ChooseExpressionContext extends StatelessWidget {
   final ExpressionContext currentExpressionContext;
   final Function selectExpressionContext;
 
-  Map<String, dynamic> _expressionContextTraits() {
+  Map<String, dynamic> _expressionContextTraits(BuildContext context) {
     dynamic icon;
     String socialContext;
     String description;
@@ -26,13 +26,22 @@ class ChooseExpressionContext extends StatelessWidget {
           size: 33,
         );
         break;
-      case ExpressionContext.Group:
+      case ExpressionContext.MyPack:
         socialContext = 'My Pack';
         description = 'Share to just my Pack members';
         icon = Icon(
           CustomIcons.newpacks,
           color: Colors.white,
           size: 28,
+        );
+        break;
+      case ExpressionContext.CommunityCenter:
+        socialContext = 'Community Center';
+        description = 'Share your feedback with the team and community';
+        icon = Image.asset(
+          'assets/images/junto-mobile__sprout.png',
+          height: 18,
+          color: Colors.white,
         );
         break;
       default:
@@ -98,30 +107,31 @@ class ChooseExpressionContext extends StatelessWidget {
                     ),
                   ),
                   alignment: Alignment.center,
-                  child: _expressionContextTraits()['icon'],
+                  child: _expressionContextTraits(context)['icon'],
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _expressionContextTraits()['social_context'],
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w500,
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _expressionContextTraits(context)['social_context'],
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    Text(
-                      _expressionContextTraits()['description'],
-                    )
-                  ],
+                      Text(
+                        _expressionContextTraits(context)['description'],
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
             Radio(
-              onChanged: (expressionContext) {
-                selectExpressionContext(expressionContext);
-              },
+              onChanged: selectExpressionContext,
               value: expressionContext,
               groupValue: currentExpressionContext,
               activeColor: Theme.of(context).colorScheme.primary,
