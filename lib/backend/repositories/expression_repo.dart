@@ -10,7 +10,8 @@ enum ExpressionContext {
   Collection,
   Collective,
   Comment,
-  CommunityCenter
+  CommunityCenter,
+  MyPack
 }
 
 class ImageThumbnails {

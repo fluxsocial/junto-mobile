@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
@@ -29,7 +30,7 @@ import 'junto_themes_page.dart';
 class JuntoDrawer extends StatefulWidget {
   const JuntoDrawer({this.changeScreen});
 
-  final Function changeScreen;
+  final Function(Screen, [ExpressionContext, Group]) changeScreen;
   @override
   _JuntoDrawerState createState() => _JuntoDrawerState();
 }

@@ -42,6 +42,8 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   Screen _currentScreen;
   Screen _latestScreen;
   bool showCreateScreen = false;
+  ExpressionContext _expressionContext;
+  Group _group;
 
   @override
   void initState() {
@@ -71,9 +73,15 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     _userData = userProvider.userProfile;
   }
 
-  void changeScreen(Screen screen) {
+  void changeScreen(
+    Screen screen, [
+    ExpressionContext expressionContext,
+    Group group,
+  ]) {
     setState(() {
       _currentScreen = screen;
+      _expressionContext = expressionContext ?? ExpressionContext.Collective;
+      _group = group;
       if (screen == Screen.create) {
         showCreateScreen = true;
       } else {
@@ -180,6 +188,8 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
                       child: CreateExpressionScaffold(
                         closeCreate: closeCreate,
                         changeScreen: changeScreen,
+                        expressionContext: _expressionContext,
+                        group: _group,
                       ),
                     ),
                   ),

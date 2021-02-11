@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class JuntoCommunityCenter extends StatefulWidget {
   final int tabPos;
-  final Function changeScreen;
+  final Function(Screen, [ExpressionContext, Group]) changeScreen;
 
   const JuntoCommunityCenter({
     Key key,
@@ -95,7 +95,10 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
           onTap: () {
             Navigator.of(context).pop();
             Navigator.of(context).pop();
-            widget.changeScreen(Screen.create);
+            widget.changeScreen(
+              Screen.create,
+              ExpressionContext.CommunityCenter,
+            );
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
@@ -15,7 +17,7 @@ class JuntoBottomBar extends StatelessWidget {
   });
 
   final UserData userData;
-  final Function changeScreen;
+  final Function(Screen, [ExpressionContext, Group]) changeScreen;
   final Screen currentScreen;
 
   @override

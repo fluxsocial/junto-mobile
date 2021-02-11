@@ -26,7 +26,7 @@ class ChooseExpressionContext extends StatelessWidget {
           size: 33,
         );
         break;
-      case ExpressionContext.Group:
+      case ExpressionContext.MyPack:
         socialContext = 'My Pack';
         description = 'Share to just my Pack members';
         icon = Icon(
