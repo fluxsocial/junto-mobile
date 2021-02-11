@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 
 class ChooseExpressionContext extends StatelessWidget {
   const ChooseExpressionContext({
     this.expressionContext,
     this.currentExpressionContext,
     this.selectExpressionContext,
+    this.group,
+    this.gotoGroupSelection,
   });
   final ExpressionContext expressionContext;
   final ExpressionContext currentExpressionContext;
   final Function selectExpressionContext;
+  final Group group;
+  final Function gotoGroupSelection;
 
   Map<String, dynamic> _expressionContextTraits(BuildContext context) {
     dynamic icon;
@@ -44,6 +49,18 @@ class ChooseExpressionContext extends StatelessWidget {
           color: Colors.white,
         );
         break;
+      // TODO: @eric - Copy needs to be updated
+      case ExpressionContext.Group:
+        socialContext = 'Group';
+        description = group != null
+            ? 'Share to just ${group.groupData.name}'
+            : 'Share to any of your joined group';
+        icon = Image.asset(
+          'assets/images/junto-mobile__sprout.png',
+          height: 18,
+          color: Colors.white,
+        );
+        break;
       default:
         socialContext = 'Collective';
         description = 'Share publicy on Junto';
@@ -67,6 +84,9 @@ class ChooseExpressionContext extends StatelessWidget {
     print(currentExpressionContext);
     return GestureDetector(
       onTap: () {
+        if (expressionContext == ExpressionContext.Group) {
+          gotoGroupSelection();
+        }
         selectExpressionContext(expressionContext);
       },
       child: Container(

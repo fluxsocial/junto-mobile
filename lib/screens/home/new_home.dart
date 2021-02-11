@@ -114,7 +114,9 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
         break;
       case Screen.groups:
         child = FeatureDiscovery(
-          child: Circles(),
+          child: Circles(
+            changeScreen: changeScreen,
+          ),
         );
         break;
       case Screen.packs:

@@ -656,6 +656,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                                   toggleSocialContextVisibility:
                                       toggleSocialContextVisibility,
                                   currentExpressionContext: expressionContext,
+                                  selectedGroup: selectedGroup,
                                 ),
                                 _buildExpressionType(),
                               ],
@@ -690,6 +691,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                                     toggleSocialContextVisibility:
                                         toggleSocialContextVisibility,
                                     currentExpressionContext: expressionContext,
+                                    selectedGroup: selectedGroup,
                                   ),
                                   _buildReview(),
                                 ],
@@ -706,6 +708,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                     selectExpressionContext: selectExpressionContext,
                     toggleSocialContextVisibility:
                         toggleSocialContextVisibility,
+                    selectedGroup: selectedGroup,
+                    setSelectedGroup: setSelectedGroup,
                   ),
               ],
             ),

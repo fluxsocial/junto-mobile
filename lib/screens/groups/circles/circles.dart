@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -15,6 +16,9 @@ import 'circles_requests.dart';
 
 // This screen displays the temporary page we'll display until groups are released
 class Circles extends StatefulWidget {
+  final Function(Screen, [ExpressionContext, Group]) changeScreen;
+
+  const Circles({Key key, this.changeScreen}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return CirclesState();
@@ -73,6 +77,7 @@ class CirclesState extends State<Circles> with ListDistinct {
                 children: [
                   CirclesListAll(
                     userProfile: _userProfile,
+                    changeScreen: widget.changeScreen,
                   ),
                   CirclesRequests(),
                 ],

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
+import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/circle_refresh.dart';
@@ -13,9 +15,11 @@ import 'bloc/circle_bloc.dart';
 class CirclesListAll extends StatelessWidget with ListDistinct {
   const CirclesListAll({
     this.userProfile,
+    this.changeScreen,
   });
 
   final UserData userProfile;
+  final Function(Screen, [ExpressionContext, Group]) changeScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +54,10 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) =>
-                                    SphereOpen(groupIndex: index),
+                                builder: (context) => SphereOpen(
+                                  groupIndex: index,
+                                  changeScreen: changeScreen,
+                                ),
                               ),
                             );
                           },

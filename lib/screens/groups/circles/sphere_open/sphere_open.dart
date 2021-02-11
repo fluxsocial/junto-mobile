@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -14,6 +15,7 @@ import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/circle_action_items_admin.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/member/circle_action_items_member.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/circle_open_expressions/circle_open_expressions.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_fab.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
@@ -24,9 +26,11 @@ class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
     this.groupIndex,
+    this.changeScreen,
   }) : super(key: key);
 
   final int groupIndex;
+  final Function(Screen, [ExpressionContext, Group]) changeScreen;
 
   @override
   State<StatefulWidget> createState() {
@@ -119,6 +123,18 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       if (state is CircleLoaded) {
         final group = state.groups[widget.groupIndex];
         return Scaffold(
+          floatingActionButton: JuntoCommunityCenterFab(
+            onTap: () {
+              Navigator.of(context).pop();
+              widget.changeScreen(
+                Screen.create,
+                ExpressionContext.Group,
+                group,
+              );
+            },
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
             child: SphereOpenAppbar(

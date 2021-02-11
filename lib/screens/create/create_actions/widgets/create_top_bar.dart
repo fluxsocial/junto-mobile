@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 
@@ -7,11 +8,13 @@ class CreateTopBar extends StatelessWidget {
     this.profilePicture,
     this.toggleSocialContextVisibility,
     this.currentExpressionContext,
+    this.selectedGroup,
   });
 
   final List<dynamic> profilePicture;
   final Function toggleSocialContextVisibility;
   final ExpressionContext currentExpressionContext;
+  final Group selectedGroup;
 
   String _currentExpressionContext() {
     String socialContext;
@@ -19,9 +22,13 @@ class CreateTopBar extends StatelessWidget {
       case ExpressionContext.Collective:
         socialContext = 'Collective';
         break;
-
-      case ExpressionContext.Group:
+      case ExpressionContext.MyPack:
         socialContext = 'My Pack';
+        break;
+      case ExpressionContext.Group:
+        socialContext = selectedGroup != null
+            ? 'Group - ${selectedGroup.groupData.name}'
+            : 'Group';
         break;
       case ExpressionContext.CommunityCenter:
         socialContext = 'Community Center';
