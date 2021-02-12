@@ -86,13 +86,13 @@ class AudioService with ChangeNotifier {
     notifyListeners();
   }
 
-  void startRecording() async {
+  void startRecording(VoidCallback permissionPopup) async {
     logger.logDebug('Asking for permissions to record audio');
 
     bool hasPermission = await FlutterAudioRecorder.hasPermissions;
     if (hasPermission != true) {
       logger.logWarning('User not granted permissions to record audio');
-      //TODO set error
+      permissionPopup();
       return;
     }
 
