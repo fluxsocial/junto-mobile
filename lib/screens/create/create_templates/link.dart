@@ -78,7 +78,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
     return {'mentions': mentions, 'channels': channels};
   }
 
-  bool validate({bool create = true}) {
+  bool validate() {
     final text = _urlController.value.text.toLowerCase().trim();
     if (text.startsWith('http://') || text.startsWith('https://')) {
       return true;
@@ -90,7 +90,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
     }
   }
 
-  bool expressionHasData({bool create = true}) {
+  bool expressionHasData() {
     final LinkFormExpression expression = createExpression();
 
     if (expression.caption.isNotEmpty ||
