@@ -1,9 +1,13 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/repositories/notification_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
+import 'package:provider/provider.dart';
 
 class NotificationSettingScreen extends StatefulWidget {
   @override
@@ -12,6 +16,29 @@ class NotificationSettingScreen extends StatefulWidget {
 }
 
 class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> configureNotifications() async {
+    final notificationRepo = Provider.of<NotificationRepo>(context);
+
+    final granted = await notificationRepo.requestPermissions();
+
+    if (!granted) {
+      showDialog(
+        context: context,
+        child: SettingsPopup(
+          buildContext: context,
+          // TODO: @Eric - Need to update the text
+          text: 'Access not granted for notifications',
+          onTap: AppSettings.openNotificationSettings,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

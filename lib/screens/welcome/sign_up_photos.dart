@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'widgets/sign_up_profile_picture.dart';
 
@@ -72,35 +75,49 @@ class _SignUpPhotosState extends State<SignUpPhotos> {
   Future<void> _onPickPressed(BuildContext context) async {
     try {
       final imagePicker = ImagePicker();
-      final pickedImage =
-          await imagePicker.getImage(source: ImageSource.gallery);
-      final File image = File(pickedImage.path);
+      final permission =
+          Platform.isAndroid ? Permission.storage : Permission.photos;
+      if (await permission.request().isGranted) {
+        final pickedImage =
+            await imagePicker.getImage(source: ImageSource.gallery);
+        final File image = File(pickedImage.path);
 
-      if (image == null && widget.profilePicture.file.value == null) {
-        logger.logDebug('No image selected and no profile picture exists');
-        return;
-      } else if (image == null && widget.profilePicture.file.value != null) {
-        logger.logDebug(
-            'No new image selected but profile picture already exists');
-        return;
-      }
+        if (image == null && widget.profilePicture.file.value == null) {
+          logger.logDebug('No image selected and no profile picture exists');
+          return;
+        } else if (image == null && widget.profilePicture.file.value != null) {
+          logger.logDebug(
+              'No new image selected but profile picture already exists');
+          return;
+        }
 
-      final File cropped = await ImageCroppingDialog.show(
-        context,
-        image,
-        aspectRatios: <String>[
-          '1:1',
-        ],
-      );
-      Navigator.of(context).focusScopeNode.unfocus();
-      if (cropped == null) {
-        logger.logDebug('No new image selected and cropping cancelled');
-        return;
+        final File cropped = await ImageCroppingDialog.show(
+          context,
+          image,
+          aspectRatios: <String>[
+            '1:1',
+          ],
+        );
+        Navigator.of(context).focusScopeNode.unfocus();
+        if (cropped == null) {
+          logger.logDebug('No new image selected and cropping cancelled');
+          return;
+        }
+        setState(() {
+          widget.profilePicture.file.value = cropped;
+          widget.profilePicture.originalFile.value = image;
+        });
+      } else {
+        showDialog(
+          context: context,
+          child: SettingsPopup(
+            buildContext: context,
+            // TODO: @Eric - Need to update the text
+            text: 'Access not granted to access gallery',
+            onTap: AppSettings.openAppSettings,
+          ),
+        );
       }
-      setState(() {
-        widget.profilePicture.file.value = cropped;
-        widget.profilePicture.originalFile.value = image;
-      });
     } catch (e, s) {
       logger.logException(e, s);
     }

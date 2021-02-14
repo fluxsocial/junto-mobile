@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +11,8 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_a
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'audio_service.dart';
 import 'widgets/audio_bottom_tools.dart';
@@ -55,11 +58,49 @@ class CreateAudioState extends State<CreateAudio>
       final imagePicker = ImagePicker();
       PickedFile file;
       if (source == 'Camera') {
-        file = await imagePicker.getImage(source: ImageSource.camera);
+        if (await Permission.camera.request().isGranted) {
+          file = await imagePicker.getImage(source: ImageSource.camera);
+        } else {
+          showDialog(
+            context: context,
+            child: SettingsPopup(
+              buildContext: context,
+              // TODO: @Eric - Need to update the text
+              text: 'Access not granted to access camera',
+              onTap: AppSettings.openAppSettings,
+            ),
+          );
+        }
       } else if (source == 'Gallery') {
-        file = await imagePicker.getImage(source: ImageSource.gallery);
+        final permission =
+            Platform.isAndroid ? Permission.storage : Permission.photos;
+        if (await permission.request().isGranted) {
+          file = await imagePicker.getImage(source: ImageSource.gallery);
+        } else {
+          showDialog(
+            context: context,
+            child: SettingsPopup(
+              buildContext: context,
+              // TODO: @Eric - Need to update the text
+              text: 'Access not granted to access gallery',
+              onTap: AppSettings.openAppSettings,
+            ),
+          );
+        }
       } else {
-        file = await imagePicker.getImage(source: ImageSource.camera);
+        if (await Permission.camera.request().isGranted) {
+          file = await imagePicker.getImage(source: ImageSource.camera);
+        } else {
+          showDialog(
+            context: context,
+            child: SettingsPopup(
+              buildContext: context,
+              // TODO: @Eric - Need to update the text
+              text: 'Access not granted to access camera',
+              onTap: AppSettings.openAppSettings,
+            ),
+          );
+        }
       }
       final image = File(file.path);
 
