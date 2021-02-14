@@ -52,7 +52,7 @@ class CirclesState extends State<Circles> with ListDistinct {
     return Scaffold(
       body: JuntoFilterDrawer(
         leftDrawer: null,
-        rightMenu: JuntoDrawer(),
+        rightMenu: null,
         scaffold: Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(
