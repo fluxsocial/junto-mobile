@@ -24,8 +24,11 @@ class AppRepo extends ChangeNotifier {
 
   int get packsPageIndex => _packsPageIndex ?? 0;
 
+  int get groupsPageIndex => _groupPageIndex ?? 0;
+
   int _collectivePageIndex;
   int _packsPageIndex;
+  int _groupPageIndex;
   Box _appBox;
 
   bool _twoColumn = true;
@@ -81,6 +84,11 @@ class AppRepo extends ChangeNotifier {
 
   void setPacksPageIndex(int index) {
     _packsPageIndex = index;
+    notifyListeners();
+  }
+
+  void setGroupsPageIndex(int index) {
+    _groupPageIndex = index;
     notifyListeners();
   }
 

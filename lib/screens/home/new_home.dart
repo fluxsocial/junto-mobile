@@ -80,14 +80,18 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     Group group,
   ]) {
     setState(() {
-      _currentScreen = screen;
-      _expressionContext = expressionContext ?? ExpressionContext.Collective;
-      _group = group;
-      if (screen == Screen.create) {
-        showCreateScreen = true;
-      } else {
-        showCreateScreen = false;
-        _latestScreen = screen;
+      if (_currentScreen != screen) {
+        _currentScreen = screen;
+        _expressionContext = expressionContext ?? ExpressionContext.Collective;
+        if (group != null) {
+          _group = group;
+        }
+        if (screen == Screen.create) {
+          showCreateScreen = true;
+        } else {
+          showCreateScreen = false;
+          _latestScreen = screen;
+        }
       }
     });
     print(showCreateScreen);
@@ -116,6 +120,12 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
         child = FeatureDiscovery(
           child: Circles(
             changeScreen: changeScreen,
+            group: _group,
+            setActiveGroup: (Group activeGroup) {
+              setState(() {
+                _group = activeGroup;
+              });
+            },
           ),
         );
         break;

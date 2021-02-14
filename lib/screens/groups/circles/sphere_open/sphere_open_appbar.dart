@@ -7,9 +7,11 @@ class SphereOpenAppbar extends StatelessWidget {
   const SphereOpenAppbar({
     Key key,
     @required this.group,
+    @required this.onBack,
   }) : super(key: key);
 
   final Group group;
+  final Function onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,11 @@ class SphereOpenAppbar extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                if (onBack != null) {
+                  onBack();
+                } else {
+                  Navigator.pop(context);
+                }
               },
               child: Container(
                 alignment: Alignment.centerLeft,

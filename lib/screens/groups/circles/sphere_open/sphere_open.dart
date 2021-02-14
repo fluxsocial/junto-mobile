@@ -25,12 +25,14 @@ import 'package:provider/provider.dart';
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
-    this.groupIndex,
+    this.group,
     this.changeScreen,
+    this.goBack,
   }) : super(key: key);
 
-  final int groupIndex;
+  final Group group;
   final Function(Screen, [ExpressionContext, Group]) changeScreen;
+  final Function goBack;
 
   @override
   State<StatefulWidget> createState() {
@@ -67,11 +69,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
 
-    final group = context.bloc<CircleBloc>().groups[widget.groupIndex];
-
     context
         .bloc<CircleBloc>()
-        .add(LoadCircleMembers(sphereAddress: group.address));
+        .add(LoadCircleMembers(sphereAddress: widget.group.address));
   }
 
   @override
@@ -85,12 +85,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   void setGetExpressions() {
-    final group = context.bloc<CircleBloc>().groups[widget.groupIndex];
-
     setState(() {
       getExpressions = Provider.of<ExpressionRepo>(context, listen: false)
           .getCollectiveExpressions({
-        'context': group.address,
+        'context': widget.group.address,
         'context_type': 'Group',
         'pagination_position': '0',
       });
@@ -105,13 +103,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<void> _loadRelationship() async {
-    final group = context.bloc<CircleBloc>().groups[widget.groupIndex];
-
     final Map<String, dynamic> _relationToGroup =
         await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
-      group.address,
+      widget.group.address,
       _userAddress,
     );
+
     setState(() {
       relationToGroup = _relationToGroup;
     });
@@ -121,11 +118,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   Widget build(BuildContext context) {
     return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
       if (state is CircleLoaded) {
-        final group = state.groups[widget.groupIndex];
+        final group = widget.group;
         return Scaffold(
           floatingActionButton: JuntoCommunityCenterFab(
             onTap: () {
-              Navigator.of(context).pop();
               widget.changeScreen(
                 Screen.create,
                 ExpressionContext.Group,
@@ -139,6 +135,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             preferredSize: const Size.fromHeight(45),
             child: SphereOpenAppbar(
               group: group,
+              onBack: widget.goBack,
             ),
           ),
           body: DefaultTabController(
