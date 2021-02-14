@@ -133,11 +133,17 @@ class CreateSphereState extends State<CreateSphere> {
   }
 
   void sphereAddMember(UserProfile member) {
-    _sphereMembers.add(member.address);
+    setState(() {
+      if (!_sphereMembers.contains(member.address)) {
+        _sphereMembers.add(member.address);
+      }
+    });
   }
 
   void _sphereRemoveMember(UserProfile member) {
-    _sphereMembers.remove(member.address);
+    setState(() {
+      _sphereMembers.remove(member.address);
+    });
   }
 
   Widget _createSphereThree() {
@@ -338,6 +344,8 @@ class CreateSphereState extends State<CreateSphere> {
 
   @override
   Widget build(BuildContext context) {
+    print('test: ${_sphereMembers}');
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
@@ -370,6 +378,7 @@ class CreateSphereState extends State<CreateSphere> {
                     future: getUserRelationships(),
                     addMember: sphereAddMember,
                     removeMember: _sphereRemoveMember,
+                    selectedMembers: _sphereMembers,
                     tabs: _tabs,
                   ),
                   _createSphereThree()
