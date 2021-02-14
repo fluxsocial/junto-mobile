@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,8 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:image_picker/image_picker.dart';
@@ -107,22 +110,37 @@ class _EditCircleState extends State<EditCircle> {
 
   Future<void> _onPickPressed() async {
     final imagePicker = ImagePicker();
-    final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
-    final File image = File(pickedImage.path);
-    if (image == null) {
-      return;
+    final permission =
+        Platform.isAndroid ? Permission.storage : Permission.photos;
+    if (await permission.request().isGranted) {
+      final pickedImage =
+          await imagePicker.getImage(source: ImageSource.gallery);
+      final File image = File(pickedImage.path);
+      if (image == null) {
+        return;
+      }
+      final File cropped =
+          await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
+        '3:2',
+      ]);
+      if (cropped == null) {
+        return;
+      }
+      setState(() {
+        imageFile = cropped;
+        groupPicture.add(imageFile);
+      });
+    } else {
+      showDialog(
+        context: context,
+        child: SettingsPopup(
+          buildContext: context,
+          // TODO: @Eric - Need to update the text
+          text: 'Access not granted to access gallery',
+          onTap: AppSettings.openAppSettings,
+        ),
+      );
     }
-    final File cropped =
-        await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
-      '3:2',
-    ]);
-    if (cropped == null) {
-      return;
-    }
-    setState(() {
-      imageFile = cropped;
-      groupPicture.add(imageFile);
-    });
   }
 
   Widget _displayCurrentProfilePicture() {
