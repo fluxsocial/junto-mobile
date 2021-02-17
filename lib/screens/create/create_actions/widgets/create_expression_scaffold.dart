@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_context_overlay.dart';
@@ -39,14 +40,10 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
     Key key,
-    this.closeCreate,
-    this.changeScreen,
     this.expressionContext,
     this.group,
   }) : super(key: key);
 
-  final Function closeCreate;
-  final Function(Screen, [ExpressionContext, Group]) changeScreen;
   final ExpressionContext expressionContext;
   final Group group;
 
@@ -553,9 +550,13 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           screen = Screen.collective;
           break;
       }
-      widget.changeScreen(screen, expressionContext, widget.group);
+      await Provider.of<AppRepo>(context, listen: false).changeScreen(
+        screen: screen,
+        newExpressionContext: expressionContext,
+        newGroup: widget.group,
+      );
       // Close creation screen
-      widget.closeCreate();
+      await Provider.of<AppRepo>(context, listen: false).closeCreate();
     } on DioError catch (error) {
       JuntoLoader.hide();
 
@@ -625,7 +626,10 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
               children: [
                 Scaffold(
                   appBar: CreateAppBar(
-                    closeCreate: widget.closeCreate,
+                    closeCreate: () async {
+                      await Provider.of<AppRepo>(context, listen: false)
+                          .closeCreate();
+                    },
                     expressionHasData: _expressionHasData,
                     togglePageView: togglePageView,
                     currentIndex: _currentIndex,

@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:provider/provider.dart';
 
 class JuntoBottomBar extends StatelessWidget {
   JuntoBottomBar({
     this.userData,
-    this.changeScreen,
     this.currentScreen,
   });
 
   final UserData userData;
-  final Function(Screen, [ExpressionContext, Group]) changeScreen;
   final Screen currentScreen;
+
+  Future<void> changeScreen(BuildContext context, Screen screen) async {
+    await Provider.of<AppRepo>(context, listen: false)
+        .changeScreen(screen: screen);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class JuntoBottomBar extends StatelessWidget {
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () => changeScreen(Screen.collective),
+              onTap: () => changeScreen(context, Screen.collective),
               child: Container(
                 color: Colors.transparent,
                 height: 60,
@@ -54,7 +57,7 @@ class JuntoBottomBar extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () => changeScreen(Screen.groups),
+              onTap: () => changeScreen(context, Screen.groups),
               child: Container(
                 height: 60,
                 color: Colors.transparent,
@@ -70,7 +73,7 @@ class JuntoBottomBar extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () => changeScreen(Screen.create),
+              onTap: () => changeScreen(context, Screen.create),
               child: Container(
                 height: 60,
                 color: Colors.transparent,
@@ -86,7 +89,7 @@ class JuntoBottomBar extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () => changeScreen(Screen.packs),
+              onTap: () => changeScreen(context, Screen.packs),
               child: Container(
                 height: 60,
                 color: Colors.transparent,

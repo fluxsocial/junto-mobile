@@ -23,6 +23,7 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 
 class NewHome extends StatefulWidget {
   const NewHome({this.screen = Screen.collective});
@@ -38,23 +39,16 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   UserData _userData;
   UserDataProvider userProvider;
 
-  Screen _currentScreen;
-  Screen _latestScreen;
-  bool showCreateScreen = false;
-  ExpressionContext _expressionContext;
-  Group _group;
-
   @override
   void initState() {
     super.initState();
 
-    setState(() {
-      showCreateScreen = widget.screen == Screen.create;
-    });
-    _currentScreen = widget.screen;
-    _latestScreen = widget.screen;
-
     context.bloc<CircleBloc>().add(FetchMyCircle());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppRepo>(context, listen: false).initHome(widget.screen);
+      fetchNotifications();
+    });
   }
 
   @override
@@ -62,7 +56,6 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     super.didChangeDependencies();
     userProvider = Provider.of<UserDataProvider>(context, listen: false);
     getUserInformation();
-    fetchNotifications();
   }
 
   void fetchNotifications() async {
@@ -74,58 +67,17 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     _userData = userProvider.userProfile;
   }
 
-  void changeScreen(
-    Screen screen, [
-    ExpressionContext expressionContext,
-    Group group,
-  ]) {
-    setState(() {
-      if (_currentScreen != screen) {
-        _currentScreen = screen;
-        _expressionContext = expressionContext ?? ExpressionContext.Collective;
-        if (group != null) {
-          _group = group;
-        }
-        if (screen == Screen.create) {
-          showCreateScreen = true;
-        } else {
-          showCreateScreen = false;
-          _latestScreen = screen;
-        }
-      }
-    });
-    print(showCreateScreen);
-  }
-
-  void closeCreate() {
-    setState(() {
-      showCreateScreen = false;
-      _currentScreen = _latestScreen;
-      if (_latestScreen == Screen.create) {
-        _currentScreen = Screen.collective;
-      }
-    });
-    print(showCreateScreen);
-    print(_currentScreen);
-  }
-
-  Widget showScreen() {
+  Widget showScreen(Screen currentScreen, Group group) {
     Widget child;
 
-    switch (_currentScreen) {
+    switch (currentScreen) {
       case Screen.collective:
         child = JuntoCollective();
         break;
       case Screen.groups:
         child = FeatureDiscovery(
           child: Circles(
-            changeScreen: changeScreen,
-            group: _group,
-            setActiveGroup: (Group activeGroup) {
-              setState(() {
-                _group = activeGroup;
-              });
-            },
+            group: group,
           ),
         );
         break;
@@ -149,10 +101,10 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     return child;
   }
 
-  Widget showLeftDrawer() {
+  Widget showLeftDrawer(Screen currentScreen) {
     Widget child;
 
-    switch (_currentScreen) {
+    switch (currentScreen) {
       case Screen.collective:
       case Screen.den:
         child = FilterDrawerContent(ExpressionContextType.Collective);
@@ -172,6 +124,7 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
+        print(state);
         if (state is AuthUnauthenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushAndRemoveUntil(
@@ -184,43 +137,40 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
           });
         }
 
-        return Scaffold(
-          body: JuntoFilterDrawer(
-            leftDrawer: showLeftDrawer(),
-            rightMenu: JuntoDrawer(
-              changeScreen: changeScreen,
-            ),
-            swipeLeftDrawer: false,
-            scaffold: Stack(
-              children: [
-                showScreen(),
-                if (showCreateScreen)
-                  FadeIn(
-                    duration: Duration(milliseconds: 300),
-                    child: FeatureDiscovery(
-                      child: CreateExpressionScaffold(
-                        closeCreate: closeCreate,
-                        changeScreen: changeScreen,
-                        expressionContext: _expressionContext,
-                        group: _group,
+        return Consumer<AppRepo>(builder: (context, snapshot, _) {
+          return Scaffold(
+            body: JuntoFilterDrawer(
+              leftDrawer: showLeftDrawer(snapshot.currentScreen),
+              rightMenu: JuntoDrawer(),
+              swipeLeftDrawer: false,
+              scaffold: Stack(
+                children: [
+                  showScreen(snapshot.currentScreen, snapshot.group),
+                  if (snapshot.showCreateScreen)
+                    FadeIn(
+                      duration: Duration(milliseconds: 300),
+                      child: FeatureDiscovery(
+                        child: CreateExpressionScaffold(
+                          expressionContext: snapshot.expressionContext,
+                          group: snapshot.group,
+                        ),
                       ),
                     ),
-                  ),
-                if (_currentScreen != Screen.create)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: JuntoBottomBar(
-                      userData: _userData,
-                      changeScreen: changeScreen,
-                      currentScreen: _currentScreen,
+                  if (snapshot.currentScreen != Screen.create)
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: JuntoBottomBar(
+                        userData: _userData,
+                        currentScreen: snapshot.currentScreen,
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        });
       },
     );
   }

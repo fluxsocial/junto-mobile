@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
@@ -26,12 +27,10 @@ class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
     this.group,
-    this.changeScreen,
     this.goBack,
   }) : super(key: key);
 
   final Group group;
-  final Function(Screen, [ExpressionContext, Group]) changeScreen;
   final Function goBack;
 
   @override
@@ -121,11 +120,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         final group = widget.group;
         return Scaffold(
           floatingActionButton: JuntoCommunityCenterFab(
-            onTap: () {
-              widget.changeScreen(
-                Screen.create,
-                ExpressionContext.Group,
-                group,
+            onTap: () async {
+              await Provider.of<AppRepo>(context, listen: false).changeScreen(
+                screen: Screen.create,
+                newExpressionContext: ExpressionContext.Group,
+                newGroup: group,
               );
             },
           ),

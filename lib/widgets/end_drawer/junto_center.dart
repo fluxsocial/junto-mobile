@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_appbar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_fab.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_feedback.dart';
@@ -14,12 +15,10 @@ import 'package:provider/provider.dart';
 
 class JuntoCommunityCenter extends StatefulWidget {
   final int tabPos;
-  final Function(Screen, [ExpressionContext, Group]) changeScreen;
 
   const JuntoCommunityCenter({
     Key key,
     this.tabPos = 0,
-    this.changeScreen,
   }) : super(key: key);
 
   @override
@@ -92,12 +91,12 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
     return FeatureDiscovery(
       child: Scaffold(
         floatingActionButton: JuntoCommunityCenterFab(
-          onTap: () {
+          onTap: () async {
             Navigator.of(context).pop();
             Navigator.of(context).pop();
-            widget.changeScreen(
-              Screen.create,
-              ExpressionContext.CommunityCenter,
+            await Provider.of<AppRepo>(context, listen: false).changeScreen(
+              screen: Screen.create,
+              newExpressionContext: ExpressionContext.CommunityCenter,
             );
           },
         ),
