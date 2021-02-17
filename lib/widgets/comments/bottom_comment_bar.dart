@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
@@ -13,8 +16,6 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
-import 'package:junto_beta_mobile/screens/create/create.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
@@ -213,134 +214,153 @@ class BottomCommentBarState extends State<BottomCommentBar>
                       });
                     },
                   ),
-                Container(
-                  padding: const EdgeInsets.only(
-                    left: 10,
-                    right: 10,
-                    top: 15.0,
-                    bottom: 15.0,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        width: .5,
-                        color: Theme.of(context).dividerColor,
+                Consumer<AppRepo>(builder: (context, snapshot, _) {
+                  return Container(
+                    padding: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 15.0,
+                      bottom: 15.0,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: .5,
+                          color: Theme.of(context).dividerColor,
+                        ),
                       ),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            FadeRoute<void>(
-                              child: FeatureDiscovery(
-                                child: JuntoCreate(
-                                  channels: <String>[],
-                                  address: widget.expressionAddress,
-                                  expressionContext: ExpressionContext.Comment,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(right: 15),
-                          color: Colors.transparent,
-                          child: Icon(
-                            CustomIcons.create,
-                            size: 17,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 15),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          constraints: const BoxConstraints(maxHeight: 180),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: FlutterMentions(
-                                  key: mentionKey,
-                                  focusNode: widget.focusNode,
-                                  suggestionPosition: SuggestionPosition.Top,
-                                  onSearchChanged:
-                                      (String trigger, String value) {
-                                    if (value.isNotEmpty && _showList) {
-                                      final channel = trigger == '#';
-
-                                      if (!channel) {
-                                        context
-                                            .bloc<SearchBloc>()
-                                            .add(SearchingEvent(
-                                              value,
-                                              QueryUserBy.BOTH,
-                                            ));
-                                      } else {
-                                        context
-                                            .bloc<SearchBloc>()
-                                            .add(SearchingChannelEvent(value));
-                                      }
-                                    } else {
-                                      setState(() {
-                                        users = [];
-                                        channels = [];
-                                        listType = ListType.empty;
-                                        _showList = false;
-                                      });
-                                    }
-                                  },
-                                  mentions: getMention(
-                                    context,
-                                    [...addedmentions, ...completeUserList],
-                                    [...addedChannels, ...completeChannelsList],
-                                  ),
-                                  hideSuggestionList: true,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText:
-                                        'reply to ${widget.expression.creator.username}',
-                                    hintStyle: TextStyle(
-                                      fontSize: 16,
-                                      color:
-                                          Theme.of(context).primaryColorLight,
-                                      fontWeight: FontWeight.w500,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              enableDrag: false,
+                              isScrollControlled: true,
+                              builder: (context) {
+                                return Padding(
+                                  padding: EdgeInsets.fromLTRB(0,
+                                      AppBar().preferredSize.height / 2, 0, 0),
+                                  child: FadeIn(
+                                    duration: Duration(milliseconds: 300),
+                                    child: FeatureDiscovery(
+                                      child: CreateCommentExpressionScaffold(
+                                        expressionContext:
+                                            snapshot.expressionContext ??
+                                                ExpressionContext.Comment,
+                                        group: snapshot.group,
+                                        commentAddress:
+                                            widget.expressionAddress,
+                                      ),
                                     ),
                                   ),
-                                  maxLines: null,
-                                  cursorColor: Theme.of(context).primaryColor,
-                                  cursorWidth: 2,
-                                  style: Theme.of(context).textTheme.caption,
-                                  textInputAction: TextInputAction.newline,
-                                  textCapitalization:
-                                      TextCapitalization.sentences,
-                                  keyboardAppearance:
-                                      Theme.of(context).brightness,
-                                  onSuggestionVisibleChanged: toggleSearch,
-                                ),
-                              ),
-                            ],
+                                );
+                              },
+                              context: context,
+                            ).then((value) {
+                              widget.refreshComments();
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(right: 15),
+                            color: Colors.transparent,
+                            child: Icon(
+                              CustomIcons.create,
+                              size: 17,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: _createComment,
-                        child: Icon(
-                          Icons.send,
-                          size: 20,
-                          color: Theme.of(context).primaryColor,
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 15),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            constraints: const BoxConstraints(maxHeight: 180),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: FlutterMentions(
+                                    key: mentionKey,
+                                    focusNode: widget.focusNode,
+                                    suggestionPosition: SuggestionPosition.Top,
+                                    onSearchChanged:
+                                        (String trigger, String value) {
+                                      if (value.isNotEmpty && _showList) {
+                                        final channel = trigger == '#';
+
+                                        if (!channel) {
+                                          context
+                                              .bloc<SearchBloc>()
+                                              .add(SearchingEvent(
+                                                value,
+                                                QueryUserBy.BOTH,
+                                              ));
+                                        } else {
+                                          context.bloc<SearchBloc>().add(
+                                              SearchingChannelEvent(value));
+                                        }
+                                      } else {
+                                        setState(() {
+                                          users = [];
+                                          channels = [];
+                                          listType = ListType.empty;
+                                          _showList = false;
+                                        });
+                                      }
+                                    },
+                                    mentions: getMention(
+                                      context,
+                                      [...addedmentions, ...completeUserList],
+                                      [
+                                        ...addedChannels,
+                                        ...completeChannelsList
+                                      ],
+                                    ),
+                                    hideSuggestionList: true,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText:
+                                          'reply to ${widget.expression.creator.username}',
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    maxLines: null,
+                                    cursorColor: Theme.of(context).primaryColor,
+                                    cursorWidth: 2,
+                                    style: Theme.of(context).textTheme.caption,
+                                    textInputAction: TextInputAction.newline,
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
+                                    keyboardAppearance:
+                                        Theme.of(context).brightness,
+                                    onSuggestionVisibleChanged: toggleSearch,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: _createComment,
+                          child: Icon(
+                            Icons.send,
+                            size: 20,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }),
               ],
             ),
           );
