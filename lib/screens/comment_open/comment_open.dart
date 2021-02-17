@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/comments/comments_list.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 
 import 'comment_open_bottom.dart';
 import 'comment_open_parent/comment_open_parent.dart';
@@ -129,65 +130,80 @@ class CommentOpenState extends State<CommentOpen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(45.0),
-        child: CommentOpenAppbar(),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              controller: _scrollController,
+    return ChangeNotifierProvider<AudioService>(
+      create: (context) => AudioService(),
+      lazy: false,
+      child: Consumer<AudioService>(
+        builder: (context, audio, child) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(45.0),
+              child: CommentOpenAppbar(),
+            ),
+            body: Column(
               children: <Widget>[
-                // Comment Parent
-                ...widget.parent
-                    .map((e) => CommentOpenParent(
-                          comment: widget.comment,
-                          parent: e,
-                        ))
-                    .toList(),
-                // Comment Open Top
-                CommentOpenTop(
-                  comment: widget.comment,
-                  userAddress: widget.userAddress,
+                Expanded(
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    controller: _scrollController,
+                    children: <Widget>[
+                      // Comment Parent
+                      ...widget.parent
+                          .map((e) => CommentOpenParent(
+                                comment: widget.comment,
+                                parent: e,
+                              ))
+                          .toList(),
+                      // Comment Open Top
+                      CommentOpenTop(
+                        comment: widget.comment,
+                        userAddress: widget.userAddress,
+                      ),
+                      // Comment Body
+                      _buildExpression(),
+                      // Comment Bottom
+                      CommentOpenBottom(
+                        comment: widget.comment,
+                      ),
+                      // List of comments
+                      CommentsList(
+                        commentsVisible: commentsVisible,
+                        expression: [...widget.parent, widget.comment],
+                        userAddress: widget.userAddress,
+                        futureComments: futureComments,
+                        showComments: _showComments,
+                        stopPlayback: () {
+                          audio.pausePlayback();
+                        },
+                        loadPreviousExpressionComments: () {
+                          setState(() {
+                            final address = widget.comment.address;
+                            futureComments = Provider.of<ExpressionRepo>(
+                              context,
+                              listen: false,
+                            ).getExpressionsComments(address);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                // Comment Body
-                _buildExpression(),
-                // Comment Bottom
-                CommentOpenBottom(
-                  comment: widget.comment,
-                ),
-                // List of comments
-                CommentsList(
-                  commentsVisible: commentsVisible,
-                  expression: [...widget.parent, widget.comment],
-                  userAddress: widget.userAddress,
-                  futureComments: futureComments,
-                  showComments: _showComments,
-                  loadPreviousExpressionComments: () {
-                    setState(() {
-                      final address = widget.comment.address;
-                      futureComments =
-                          Provider.of<ExpressionRepo>(context, listen: false)
-                              .getExpressionsComments(address);
-                    });
+                // Reply Widget
+                BottomCommentBar(
+                  expression: widget.comment,
+                  expressionAddress: widget.comment.address,
+                  openComments: _openComments,
+                  refreshComments: _refreshComments,
+                  scrollToBottom: _scrollToBottom,
+                  focusNode: _focusNode,
+                  stopPlayback: () {
+                    audio.pausePlayback();
                   },
                 ),
               ],
             ),
-          ),
-          // Reply Widget
-          BottomCommentBar(
-            expression: widget.comment,
-            expressionAddress: widget.comment.address,
-            openComments: _openComments,
-            refreshComments: _refreshComments,
-            scrollToBottom: _scrollToBottom,
-            focusNode: _focusNode,
-          ),
-        ],
+          );
+        },
       ),
     );
   }

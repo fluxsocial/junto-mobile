@@ -30,6 +30,7 @@ class BottomCommentBar extends StatefulWidget {
     @required this.openComments,
     @required this.scrollToBottom,
     @required this.focusNode,
+    @required this.stopPlayback,
   }) : super(key: key);
   final dynamic expression;
   final String expressionAddress;
@@ -37,6 +38,7 @@ class BottomCommentBar extends StatefulWidget {
   final Function openComments;
   final Function scrollToBottom;
   final FocusNode focusNode;
+  final VoidCallback stopPlayback;
 
   @override
   BottomCommentBarState createState() => BottomCommentBarState();
@@ -235,6 +237,7 @@ class BottomCommentBarState extends State<BottomCommentBar>
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
+                            widget.stopPlayback();
                             showModalBottomSheet(
                               enableDrag: false,
                               isScrollControlled: true,
