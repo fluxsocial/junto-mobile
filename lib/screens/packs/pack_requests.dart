@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 
 class PackRequests extends StatelessWidget {
   @override
@@ -12,30 +13,33 @@ class PackRequests extends StatelessWidget {
     return Consumer<NotificationsHandler>(
       builder: (context, data, child) {
         final notifications = data.notifications;
-        if (notifications.length > 0) {
+        final packNotification = notifications
+            .where((element) =>
+                element.notificationType == NotificationType.GroupJoinRequest &&
+                element.group.groupType == 'Pack')
+            .toList();
+        if (packNotification.length > 0) {
           return ListView.builder(
-            itemCount: notifications.length,
+            itemCount: packNotification.length,
             itemBuilder: (context, index) {
               final item = notifications[index];
-              if (notifications.length > 0 &&
-                  item.notificationType == NotificationType.GroupJoinRequest) {
-                if (item.group.groupType == 'Pack') {
-                  return PackRequest(
-                    userProfile: item.creator,
-                    pack: item.group,
-                    refreshGroups: () async {
-                      await context.bloc<GroupBloc>().add(
-                            FetchMyPack(),
-                          );
-                    },
-                  );
-                }
-              }
-              return const SizedBox();
+              return PackRequest(
+                userProfile: item.creator,
+                pack: item.group,
+                refreshGroups: () async {
+                  await context.bloc<GroupBloc>().add(
+                        FetchMyPack(),
+                      );
+                },
+              );
             },
           );
+        } else {
+          return FeedPlaceholder(
+            placeholderText: 'No pack requests yet!',
+            image: 'assets/images/junto-mobile__bench.png',
+          );
         }
-        return const SizedBox();
       },
     );
   }
