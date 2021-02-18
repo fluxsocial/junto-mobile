@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 
 class EditPerspectiveAddMembers extends StatefulWidget {
   const EditPerspectiveAddMembers({
@@ -171,51 +172,67 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                   return TabBarView(
                     children: <Widget>[
                       // subscriptions
-                      ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        children: _filteredFollowingMembers
-                            .map(
-                              (dynamic connection) => MemberPreviewSelect(
-                                profile: connection,
-                                onSelect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.add(user.address);
-                                  });
-                                },
-                                onDeselect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.remove(user.address);
-                                  });
-                                },
-                                isSelected: _perspectiveMembers
-                                    .contains(connection.address),
-                              ),
-                            )
-                            .toList(),
-                      ),
+                      if (_filteredFollowingMembers.length > 0)
+                        ListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          children: _filteredFollowingMembers
+                              .map(
+                                (dynamic connection) => MemberPreviewSelect(
+                                  profile: connection,
+                                  onSelect: (UserProfile user) {
+                                    setState(() {
+                                      _perspectiveMembers.add(user.address);
+                                    });
+                                  },
+                                  onDeselect: (UserProfile user) {
+                                    setState(() {
+                                      _perspectiveMembers.remove(user.address);
+                                    });
+                                  },
+                                  isSelected: _perspectiveMembers
+                                      .contains(connection.address),
+                                ),
+                              )
+                              .toList(),
+                        )
+                      else
+                        FeedPlaceholder(
+                          placeholderText: memberList.length > 0
+                              ? 'No more subscriptions to add'
+                              : 'No subscriptions yet!',
+                          image: 'assets/images/junto-mobile__bench.png',
+                        ),
                       // connections
-                      ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        children: _filteredConnectionsMembers
-                            .map(
-                              (dynamic connection) => MemberPreviewSelect(
-                                profile: connection,
-                                onSelect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.add(user.address);
-                                  });
-                                },
-                                onDeselect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.remove(user.address);
-                                  });
-                                },
-                                isSelected: _perspectiveMembers
-                                    .contains(connection.address),
-                              ),
-                            )
-                            .toList(),
-                      ),
+                      if (_filteredConnectionsMembers.length > 0)
+                        ListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          children: _filteredConnectionsMembers
+                              .map(
+                                (dynamic connection) => MemberPreviewSelect(
+                                  profile: connection,
+                                  onSelect: (UserProfile user) {
+                                    setState(() {
+                                      _perspectiveMembers.add(user.address);
+                                    });
+                                  },
+                                  onDeselect: (UserProfile user) {
+                                    setState(() {
+                                      _perspectiveMembers.remove(user.address);
+                                    });
+                                  },
+                                  isSelected: _perspectiveMembers
+                                      .contains(connection.address),
+                                ),
+                              )
+                              .toList(),
+                        )
+                      else
+                        FeedPlaceholder(
+                          placeholderText: memberList.length > 0
+                              ? 'No more connections to add'
+                              : 'No connections yet!',
+                          image: 'assets/images/junto-mobile__bench.png',
+                        ),
                     ],
                   );
                 } else if (snapshot.hasError) {
