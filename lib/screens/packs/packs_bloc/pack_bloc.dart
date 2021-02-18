@@ -188,7 +188,8 @@ class PackBloc extends Bloc<PackEvent, PackState> {
       final publicExpressions = currentState.publicExpressions.results.toList();
       publicExpressions
           .removeWhere((element) => element.address == event.expressionAddress);
-      final privateExpression = currentState.publicExpressions.results.toList();
+      final privateExpression =
+          currentState.privateExpressions.results.toList();
       privateExpression
           .removeWhere((element) => element.address == event.expressionAddress);
 
