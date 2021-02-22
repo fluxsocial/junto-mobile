@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
+import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
 
 class BlocProviders extends StatelessWidget {
   final Widget child;
@@ -51,6 +52,10 @@ class BlocProviders extends StatelessWidget {
         ),
         BlocProvider<AppBloc>(
           create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context)),
+        ),
+        BlocProvider<RelationBloc>(
+          create: (ctx) =>
+              RelationBloc(RepositoryProvider.of<UserRepo>(context)),
         ),
         BlocProvider(
           create: (ctx) => ChannelFilteringBloc(
