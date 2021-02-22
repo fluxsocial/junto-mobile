@@ -208,6 +208,7 @@ class EditPerspectiveState extends State<EditPerspective> {
                                     perspective: widget.perspective,
                                     refreshPerspectiveMembers:
                                         _refreshPerspectiveMembers,
+                                    perspectiveMembers: _perspectiveMembers,
                                   ),
                                 ),
                               );

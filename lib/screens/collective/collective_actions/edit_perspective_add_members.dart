@@ -14,11 +14,15 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
 
 class EditPerspectiveAddMembers extends StatefulWidget {
-  const EditPerspectiveAddMembers(
-      {this.perspective, this.refreshPerspectiveMembers});
+  const EditPerspectiveAddMembers({
+    this.perspective,
+    this.refreshPerspectiveMembers,
+    this.perspectiveMembers,
+  });
 
   final PerspectiveModel perspective;
   final Function refreshPerspectiveMembers;
+  final List<UserProfile> perspectiveMembers;
 
   @override
   State<StatefulWidget> createState() {
@@ -30,9 +34,6 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
     with ListDistinct {
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
   final List<String> _perspectiveMembers = <String>[];
-
-  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
-      AsyncMemoizer<Map<String, dynamic>>();
 
   @override
   void initState() {
@@ -151,12 +152,19 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
             body: BlocBuilder<RelationBloc, RelationState>(
               builder: (context, state) {
                 if (state is RelationLoadedState) {
+                  final memberList =
+                      widget.perspectiveMembers.map((e) => e.address).toList();
+
                   // get list of connections
                   final List<UserProfile> _connectionsMembers =
                       state.connections;
+                  final _filteredConnectionsMembers = _connectionsMembers.where(
+                      (element) => !memberList.contains(element.address));
 
                   // get list of following
                   final List<UserProfile> _followingMembers = state.following;
+                  final _filteredFollowingMembers = _followingMembers.where(
+                      (element) => !memberList.contains(element.address));
                   return TabBarView(
                     children: <Widget>[
                       // subscriptions
@@ -175,7 +183,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                         },
                         child: ListView(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          children: _followingMembers
+                          children: _filteredFollowingMembers
                               .map(
                                 (dynamic connection) => MemberPreviewSelect(
                                   profile: connection,
@@ -199,7 +207,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                       // connections
                       ListView(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        children: _connectionsMembers
+                        children: _filteredConnectionsMembers
                             .map(
                               (dynamic connection) => MemberPreviewSelect(
                                 profile: connection,
