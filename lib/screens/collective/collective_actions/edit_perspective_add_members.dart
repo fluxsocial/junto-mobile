@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
@@ -168,22 +169,57 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                   return TabBarView(
                     children: <Widget>[
                       // subscriptions
-                      NotificationListener<ScrollNotification>(
-                        onNotification: (ScrollNotification notification) {
-                          final metrics = notification.metrics;
-                          double scrollPercent =
-                              (metrics.pixels / metrics.maxScrollExtent) * 100;
-                          if (scrollPercent.roundToDouble() == 60.0) {
-                            context
-                                .bloc<RelationBloc>()
-                                .add(FetchMoreRelationship());
-                            return true;
-                          }
-                          return false;
-                        },
-                        child: ListView(
+                      if (_filteredFollowingMembers.length > 0)
+                        NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification notification) {
+                            final metrics = notification.metrics;
+                            double scrollPercent =
+                                (metrics.pixels / metrics.maxScrollExtent) *
+                                    100;
+                            if (scrollPercent.roundToDouble() == 60.0) {
+                              context
+                                  .bloc<RelationBloc>()
+                                  .add(FetchMoreRelationship());
+                              return true;
+                            }
+                            return false;
+                          },
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            children: _filteredFollowingMembers
+                                .map(
+                                  (dynamic connection) => MemberPreviewSelect(
+                                    profile: connection,
+                                    onSelect: (UserProfile user) {
+                                      setState(() {
+                                        _perspectiveMembers.add(user.address);
+                                      });
+                                    },
+                                    onDeselect: (UserProfile user) {
+                                      setState(() {
+                                        _perspectiveMembers
+                                            .remove(user.address);
+                                      });
+                                    },
+                                    isSelected: _perspectiveMembers
+                                        .contains(connection.address),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        )
+                      else
+                        FeedPlaceholder(
+                          placeholderText: memberList.length > 0
+                              ? 'No more subscriptions to add'
+                              : 'No subscriptions yet!',
+                          image: 'assets/images/junto-mobile__bench.png',
+                        ),
+                      // connections
+                      if (_filteredConnectionsMembers.length > 0)
+                        ListView(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          children: _filteredFollowingMembers
+                          children: _filteredConnectionsMembers
                               .map(
                                 (dynamic connection) => MemberPreviewSelect(
                                   profile: connection,
@@ -202,31 +238,14 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                                 ),
                               )
                               .toList(),
+                        )
+                      else
+                        FeedPlaceholder(
+                          placeholderText: memberList.length > 0
+                              ? 'No more connections to add'
+                              : 'No connections yet!',
+                          image: 'assets/images/junto-mobile__bench.png',
                         ),
-                      ),
-                      // connections
-                      ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        children: _filteredConnectionsMembers
-                            .map(
-                              (dynamic connection) => MemberPreviewSelect(
-                                profile: connection,
-                                onSelect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.add(user.address);
-                                  });
-                                },
-                                onDeselect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.remove(user.address);
-                                  });
-                                },
-                                isSelected: _perspectiveMembers
-                                    .contains(connection.address),
-                              ),
-                            )
-                            .toList(),
-                      ),
                     ],
                   );
                 } else if (state is RelationErrorState) {
