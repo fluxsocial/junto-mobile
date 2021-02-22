@@ -55,15 +55,17 @@ class _ConnectionsState extends State<Connections> {
                   ),
                   Expanded(
                     child: NotificationListener<ScrollNotification>(
-                      onNotification: (ScrollNotification info) {
-                        if (info.metrics.pixels ==
-                            info.metrics.maxScrollExtent) {
+                      onNotification: (ScrollNotification notification) {
+                        final metrics = notification.metrics;
+                        double scrollPercent =
+                            (metrics.pixels / metrics.maxScrollExtent) * 100;
+                        if (scrollPercent.roundToDouble() == 60.0) {
                           context
                               .bloc<RelationBloc>()
                               .add(FetchMoreRelationship());
+                          return true;
                         }
-
-                        return;
+                        return false;
                       },
                       child: ListView(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
