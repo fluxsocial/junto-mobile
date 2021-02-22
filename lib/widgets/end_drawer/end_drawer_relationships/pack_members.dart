@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:provider/provider.dart';
+import './search_bar.dart';
 
 class PackMembers extends StatefulWidget {
   const PackMembers({this.userAddress});
@@ -42,14 +43,25 @@ class PackMembersState extends State<PackMembers> {
           final List<Users> packMembers = snapshot.data;
 
           if (packMembers.length > 0) {
-            return ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              children: packMembers
-                  .map(
-                    (dynamic packMember) =>
-                        MemberPreview(profile: packMember.user),
-                  )
-                  .toList(),
+            return Container(
+              child: Column(
+                children: [
+                  SearchBar(
+                    hintText: 'Search Packs',
+                  ),
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: packMembers
+                          .map(
+                            (dynamic packMember) =>
+                                MemberPreview(profile: packMember.user),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
             );
           } else {
             return FeedPlaceholder(

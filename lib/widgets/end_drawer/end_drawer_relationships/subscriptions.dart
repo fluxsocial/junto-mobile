@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:provider/provider.dart';
+import './search_bar.dart';
 
 class Subscriptions extends StatelessWidget {
   @override
@@ -30,14 +31,25 @@ class Subscriptions extends StatelessWidget {
               snapshot.data['following']['results'];
 
           if (_followingMembers.length > 0) {
-            return ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              children: _followingMembers
-                  .map(
-                    (dynamic subscription) =>
-                        MemberPreview(profile: subscription),
-                  )
-                  .toList(),
+            return Container(
+              child: Column(
+                children: [
+                  SearchBar(
+                    hintText: 'Search Subscription',
+                  ),
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _followingMembers
+                          .map(
+                            (dynamic subscription) =>
+                                MemberPreview(profile: subscription),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
             );
           } else {
             return FeedPlaceholder(

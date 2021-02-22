@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:provider/provider.dart';
+import './search_bar.dart';
 
 class Connections extends StatelessWidget {
   @override
@@ -29,13 +30,25 @@ class Connections extends StatelessWidget {
               snapshot.data['connections']['results'];
 
           if (_connectionsMembers.length > 0) {
-            return ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              children: _connectionsMembers
-                  .map(
-                    (dynamic connection) => MemberPreview(profile: connection),
-                  )
-                  .toList(),
+            return Container(
+              child: Column(
+                children: [
+                  SearchBar(
+                    hintText: 'Search Connections',
+                  ),
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _connectionsMembers
+                          .map(
+                            (dynamic connection) =>
+                                MemberPreview(profile: connection),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
             );
           } else {
             return FeedPlaceholder(
