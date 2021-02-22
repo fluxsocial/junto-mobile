@@ -114,12 +114,6 @@ class CreateSphereState extends State<CreateSphere> {
     super.dispose();
   }
 
-  Future<Map<String, dynamic>> getUserRelationships() async {
-    return _memoizer.runOnce(
-      () => Provider.of<UserRepo>(context, listen: false).userRelations(),
-    );
-  }
-
   void _validateSphereCreation() {
     if (_formKey.currentState.validate()) {
       if (FocusScope.of(context).hasFocus) {
@@ -367,7 +361,6 @@ class CreateSphereState extends State<CreateSphere> {
                     imageFile: imageFile,
                   ),
                   CreateSpherePageTwo(
-                    future: getUserRelationships(),
                     addMember: sphereAddMember,
                     removeMember: _sphereRemoveMember,
                     tabs: _tabs,

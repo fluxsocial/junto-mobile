@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
+import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
 
-class CreateSpherePageTwo extends StatelessWidget {
+class CreateSpherePageTwo extends StatefulWidget {
   const CreateSpherePageTwo({
     Key key,
     @required this.tabs,
-    @required this.future,
     @required this.addMember,
     @required this.removeMember,
   }) : super(key: key);
   final List<String> tabs;
-  final Future<Map<String, dynamic>> future;
   final ValueChanged<UserProfile> addMember;
   final ValueChanged<UserProfile> removeMember;
 
   @override
+  _CreateSpherePageTwoState createState() => _CreateSpherePageTwoState();
+}
+
+class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
+  @override
+  void initState() {
+    super.initState();
+    context.bloc<RelationBloc>().add(FetchRealtionship());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: tabs.length,
+      length: widget.tabs.length,
       child: NestedScrollView(
         physics: const ClampingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -34,7 +45,7 @@ class CreateSpherePageTwo extends StatelessWidget {
                   labelStyle: Theme.of(context).textTheme.subtitle1,
                   indicatorWeight: 0.0001,
                   tabs: <Widget>[
-                    for (String name in tabs)
+                    for (String name in widget.tabs)
                       Container(
                         margin: const EdgeInsets.only(right: 24),
                         color: Theme.of(context).colorScheme.background,
@@ -49,32 +60,42 @@ class CreateSpherePageTwo extends StatelessWidget {
             ),
           ];
         },
-        body: FutureBuilder<Map<String, dynamic>>(
-          future: future,
-          builder: (BuildContext context,
-              AsyncSnapshot<Map<String, dynamic>> snapshot) {
-            if (snapshot.hasData) {
+        body: BlocBuilder<RelationBloc, RelationState>(
+          builder: (context, state) {
+            if (state is RelationLoadedState) {
               // get list of connections
-              final List<UserProfile> _connectionsMembers =
-                  snapshot.data['connections']['results'];
+              final List<UserProfile> _connectionsMembers = state.connections;
 
               // get list of following
-              final List<UserProfile> _followingMembers =
-                  snapshot.data['following']['results'];
+              final List<UserProfile> _followingMembers = state.following;
 
               return TabBarView(
                 children: <Widget>[
-                  ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: <Widget>[
-                      for (UserProfile member in _followingMembers)
-                        MemberPreviewSelect(
-                          profile: member,
-                          onSelect: addMember,
-                          onDeselect: removeMember,
-                          isSelected: false, //TODO: Update with dynamic val
-                        ),
-                    ],
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification notification) {
+                      final metrics = notification.metrics;
+                      double scrollPercent =
+                          (metrics.pixels / metrics.maxScrollExtent) * 100;
+                      if (scrollPercent.roundToDouble() == 60.0) {
+                        context
+                            .bloc<RelationBloc>()
+                            .add(FetchMoreRelationship());
+                        return true;
+                      }
+                      return false;
+                    },
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: <Widget>[
+                        for (UserProfile member in _followingMembers)
+                          MemberPreviewSelect(
+                            profile: member,
+                            onSelect: widget.addMember,
+                            onDeselect: widget.removeMember,
+                            isSelected: false, //TODO: Update with dynamic val
+                          ),
+                      ],
+                    ),
                   ),
                   // connections
                   ListView(
@@ -83,15 +104,15 @@ class CreateSpherePageTwo extends StatelessWidget {
                       for (UserProfile connection in _connectionsMembers)
                         MemberPreviewSelect(
                           profile: connection,
-                          onSelect: addMember,
-                          onDeselect: removeMember,
+                          onSelect: widget.addMember,
+                          onDeselect: widget.removeMember,
                           isSelected: false, //TODO: Update with dynamic val
                         ),
                     ],
                   ),
                 ],
               );
-            } else if (snapshot.hasError) {
+            } else if (state is RelationErrorState) {
               return TabBarView(
                 children: <Widget>[
                   Center(
