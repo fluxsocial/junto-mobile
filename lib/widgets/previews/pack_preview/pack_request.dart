@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:provider/provider.dart';
 
@@ -91,6 +92,9 @@ class PackRequest extends StatelessWidget {
                               await Provider.of<GroupRepo>(context,
                                       listen: false)
                                   .respondToGroupRequest(pack.address, true);
+                              await Provider.of<NotificationsHandler>(context,
+                                      listen: false)
+                                  .fetchNotifications();
                               refreshGroups();
                               JuntoLoader.hide();
                             } catch (e, s) {
@@ -124,6 +128,9 @@ class PackRequest extends StatelessWidget {
                               await Provider.of<GroupRepo>(context,
                                       listen: false)
                                   .respondToGroupRequest(pack.address, false);
+                              await Provider.of<NotificationsHandler>(context,
+                                      listen: false)
+                                  .fetchNotifications();
                               refreshGroups();
                               JuntoLoader.hide();
                             } catch (e, s) {

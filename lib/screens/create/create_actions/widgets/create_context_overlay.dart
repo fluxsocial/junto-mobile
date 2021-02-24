@@ -116,17 +116,17 @@ class _CreateContextOverlayState extends State<CreateContextOverlay> {
                             selectExpressionContext:
                                 widget.selectExpressionContext,
                           ),
-                          ChooseExpressionContext(
-                            expressionContext: ExpressionContext.Group,
-                            currentExpressionContext:
-                                widget.currentExpressionContext,
-                            selectExpressionContext:
-                                widget.selectExpressionContext,
-                            group: widget.selectedGroup,
-                            gotoGroupSelection: () {
-                              _controller.jumpToPage(1);
-                            },
-                          ),
+                          // ChooseExpressionContext(
+                          //   expressionContext: ExpressionContext.Group,
+                          //   currentExpressionContext:
+                          //       widget.currentExpressionContext,
+                          //   selectExpressionContext:
+                          //       widget.selectExpressionContext,
+                          //   group: widget.selectedGroup,
+                          //   gotoGroupSelection: () {
+                          //     _controller.jumpToPage(1);
+                          //   },
+                          // ),
                         ],
                       ),
                       BlocBuilder<CircleBloc, CircleState>(
@@ -142,8 +142,6 @@ class _CreateContextOverlayState extends State<CreateContextOverlay> {
                                     _controller.jumpToPage(0);
                                     widget
                                         .setSelectedGroup(state.groups[index]);
-                                    // Navigator.pop(context);
-                                    // widget.toggleSocialContextVisibility(false);
                                   },
                                   child: CirclePreview(
                                     group: state.groups[index],

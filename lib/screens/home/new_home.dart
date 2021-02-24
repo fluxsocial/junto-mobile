@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/circles.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_temp.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:provider/provider.dart';
@@ -75,11 +76,18 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
         child = JuntoCollective();
         break;
       case Screen.groups:
-        child = FeatureDiscovery(
-          child: Circles(
-            group: group,
-          ),
-        );
+        // child = FeatureDiscovery(
+        //   child: Circles(
+        //     changeScreen: changeScreen,
+        //     group: _group,
+        //     setActiveGroup: (Group activeGroup) {
+        //       setState(() {
+        //         _group = activeGroup;
+        //       });
+        //     },
+        //   ),
+        // );
+        child = FeatureDiscovery(child: SpheresTemp());
         break;
       case Screen.packs:
         child = JuntoPacks(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -61,14 +60,12 @@ class CreateLinkFormState extends State<CreateLinkForm>
     super.dispose();
   }
 
-  LinkFormExpression createExpression() {
+  dynamic createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
 
     return LinkFormExpression(
       caption: markupText.trim(),
-      title: appConfig.flavor == Flavor.prod
-          ? ''
-          : _titleController.value.text.trim(),
+      title: _titleController.value.text.trim(),
       url: _urlController.value.text.trim(),
       data: null,
     );
@@ -95,13 +92,13 @@ class CreateLinkFormState extends State<CreateLinkForm>
 
   bool expressionHasData() {
     final LinkFormExpression expression = createExpression();
+
     if (expression.caption.isNotEmpty ||
         expression.title.isNotEmpty ||
         expression.url.isNotEmpty) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   void toggleSearch(bool value) {
@@ -173,39 +170,37 @@ class CreateLinkFormState extends State<CreateLinkForm>
                   children: [
                     Column(
                       children: [
-                        // if (appConfig.flavor == Flavor.dev)
-                        //   Container(
-                        //     child: TextField(
-                        //       buildCounter: (
-                        //         BuildContext context, {
-                        //         int currentLength,
-                        //         int maxLength,
-                        //         bool isFocused,
-                        //       }) =>
-                        //           null,
-                        //       controller: _titleController,
-                        //       textInputAction: TextInputAction.done,
-                        //       decoration: InputDecoration(
-                        //         border: InputBorder.none,
-                        //         hintText: 'Title (optional)',
-                        //         hintStyle: Theme.of(context)
-                        //             .textTheme
-                        //             .headline6
-                        //             .copyWith(
-                        //               color:
-                        //                   Theme.of(context).primaryColorLight,
-                        //             ),
-                        //       ),
-                        //       cursorColor: Theme.of(context).primaryColor,
-                        //       cursorWidth: 2,
-                        //       maxLines: null,
-                        //       maxLength: 140,
-                        //       style: Theme.of(context).textTheme.headline6,
-                        //       keyboardAppearance: Theme.of(context).brightness,
-                        //       textCapitalization: TextCapitalization.sentences,
-                        //       keyboardType: TextInputType.text,
-                        //     ),
-                        //   ),
+                        Container(
+                          child: TextField(
+                            buildCounter: (
+                              BuildContext context, {
+                              int currentLength,
+                              int maxLength,
+                              bool isFocused,
+                            }) =>
+                                null,
+                            controller: _titleController,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Title (optional)',
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .copyWith(
+                                    color: Theme.of(context).primaryColorLight,
+                                  ),
+                            ),
+                            cursorColor: Theme.of(context).primaryColor,
+                            cursorWidth: 2,
+                            maxLines: null,
+                            maxLength: 140,
+                            style: Theme.of(context).textTheme.headline6,
+                            keyboardAppearance: Theme.of(context).brightness,
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
                         Container(
                           child: FlutterMentions(
                             key: mentionKey,

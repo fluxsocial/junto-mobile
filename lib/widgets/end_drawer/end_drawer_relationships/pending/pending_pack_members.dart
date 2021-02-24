@@ -14,27 +14,26 @@ class PendingPackMembers extends StatelessWidget {
     return Consumer<NotificationsHandler>(
       builder: (context, data, child) {
         final notifications = data.notifications;
-        if (notifications.length > 0) {
+        final packNotification = notifications
+            .where((element) =>
+                element.notificationType == NotificationType.GroupJoinRequest &&
+                element.group.groupType == 'Pack')
+            .toList();
+        if (packNotification.length > 0) {
           return ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            itemCount: notifications.length,
+            itemCount: packNotification.length,
             itemBuilder: (context, index) {
-              final item = notifications[index];
-              if (notifications.length > 0 &&
-                  item.notificationType == NotificationType.GroupJoinRequest) {
-                if (item.group.groupType == 'Pack') {
-                  return PackRequest(
-                    userProfile: item.creator,
-                    pack: item.group,
-                    refreshGroups: () async {
-                      await context.bloc<GroupBloc>().add(
-                            FetchMyPack(),
-                          );
-                    },
-                  );
-                }
-              }
-              return const SizedBox();
+              final item = packNotification[index];
+              return PackRequest(
+                userProfile: item.creator,
+                pack: item.group,
+                refreshGroups: () async {
+                  await context.bloc<GroupBloc>().add(
+                        FetchMyPack(),
+                      );
+                },
+              );
             },
           );
         } else {
