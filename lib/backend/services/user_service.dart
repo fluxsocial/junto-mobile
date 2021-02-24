@@ -346,34 +346,32 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<List<UserProfile>> connectedUsers(String userAddress) async {
+  Future<Map<String, dynamic>> connectedUsers(String userAddress,
+      [String paginationPos, String lastTimeStamp]) async {
     final Response _serverResponse = await client.get(
       '/users/$userAddress/connections',
+      queryParams: <String, String>{
+        'pagination_position': paginationPos ?? '0',
+      },
     );
-    final List<dynamic> _results =
+    print('test: $_serverResponse');
+    final Map<String, dynamic> _results =
         await JuntoHttp.handleResponse(_serverResponse);
 
     final List<UserProfile> _resultsList = <UserProfile>[];
 
     // ignore: avoid_function_literals_in_foreach_calls
-    _results.forEach((dynamic result) {
+    _results['results'].forEach((dynamic result) {
       _resultsList.add(
-        UserProfile(
-          address: result['user']['address'],
-          bio: result['user']['bio'],
-          username: result['user']['username'],
-          name: result['user']['name'],
-          profilePicture: <String>[],
-          backgroundPhoto: result['user']['background_photo'],
-          gender: List<String>.from(result['user']['gender']),
-          location: List<String>.from(result['user']['location']),
-          verified: true,
-          website: List<String>.from(result['user']['website']),
-        ),
+        UserProfile.fromJson(result),
       );
     });
 
-    return _resultsList;
+    return {
+      'users': _resultsList,
+      "last_timestamp": _results['last_timestamp'],
+      "result_count": _results['result_count'],
+    };
   }
 
   @override
@@ -403,18 +401,47 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<List<UserProfile>> getFollowers(String userAddress) async {
+  Future<Map<String, dynamic>> getFollowers(String userAddress,
+      [String paginationPos, String lastTimeStamp]) async {
     final Response _serverResponse = await client.get(
       '/users/$userAddress/followers',
       queryParams: <String, String>{
-        'pagination_position': '0',
+        'pagination_position': paginationPos ?? '0',
+        'last_timestamp': '2021-02-24T05:53:33.347Z',
       },
     );
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
-    return <UserProfile>[
-      for (dynamic data in _data['results']) UserProfile.fromJson(data)
-    ];
+    return {
+      "users": <UserProfile>[
+        for (dynamic data in _data['results'])
+          UserProfile.fromJson(data['user'])
+      ],
+      "last_timestamp": _data['last_timestamp'],
+      "result_count": _data['result_count'],
+    };
+  }
+
+  @override
+  Future<Map<String, dynamic>> getFollowingUsers(String userAddress,
+      [String paginationPos, String lastTimeStamp]) async {
+    final Response _serverResponse = await client.get(
+      '/users/$userAddress/following',
+      queryParams: <String, String>{
+        'pagination_position': paginationPos ?? '0',
+      },
+    );
+    print('test: $_serverResponse');
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    return {
+      "users": <UserProfile>[
+        for (dynamic data in _data['results'])
+          UserProfile.fromJson(data['user'])
+      ],
+      "last_timestamp": _data['last_timestamp'],
+      "result_count": _data['result_count'],
+    };
   }
 
   @override

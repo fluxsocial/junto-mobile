@@ -55,7 +55,7 @@ class BlocProviders extends StatelessWidget {
         ),
         BlocProvider<RelationBloc>(
           create: (ctx) =>
-              RelationBloc(RepositoryProvider.of<UserRepo>(context)),
+              RelationBloc(ctx.repository<UserRepo>(), ctx.repository<UserDataProvider>()),
         ),
         BlocProvider(
           create: (ctx) => ChannelFilteringBloc(
