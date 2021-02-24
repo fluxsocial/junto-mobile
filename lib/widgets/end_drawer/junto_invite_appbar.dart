@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:clipboard/clipboard.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:share/share.dart';
 
 class JuntoInviteAppBar extends StatelessWidget {
+  final UserData userProfile;
+
+  const JuntoInviteAppBar({Key key, this.userProfile}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -43,9 +47,10 @@ class JuntoInviteAppBar extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () async {
-                FlutterClipboard.copy('https://junto.typeform.com/to/k7BUVK8f');
-                await showFeedback(context,
-                    message: 'Copied shareable invite link!');
+                Share.share(
+                  "Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f",
+                  subject: 'Check Junto out!',
+                );
               },
               child: Container(
                 width: 42,
