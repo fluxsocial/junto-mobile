@@ -61,6 +61,7 @@ dependencies:
   firebase_core: 0.5.0+1
   flutter_fadein: ^1.1.1
   app_settings: 4.0.4
+  share: 0.6.5+4
 
 dev_dependencies:
   test: any
