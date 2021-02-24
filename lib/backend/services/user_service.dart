@@ -354,7 +354,6 @@ class UserServiceCentralized implements UserService {
         'pagination_position': paginationPos ?? '0',
       },
     );
-    print('test: $_serverResponse');
     final Map<String, dynamic> _results =
         await JuntoHttp.handleResponse(_serverResponse);
 
@@ -431,7 +430,6 @@ class UserServiceCentralized implements UserService {
         'pagination_position': paginationPos ?? '0',
       },
     );
-    print('test: $_serverResponse');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return {
