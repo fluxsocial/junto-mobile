@@ -20,6 +20,16 @@ class RelationLoadedState extends RelationState {
   final List<UserProfile> following;
   final List<UserProfile> followers;
   final List<UserProfile> connections;
+  final int followerResultCount;
+  final int followingResultCount;
+  final int connctionResultCount;
 
-  RelationLoadedState({this.following, this.followers, this.connections});
+  RelationLoadedState({
+    this.followerResultCount,
+    this.followingResultCount,
+    this.connctionResultCount,
+    this.following,
+    this.followers,
+    this.connections,
+  });
 }

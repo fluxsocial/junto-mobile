@@ -1,11 +1,21 @@
 part of 'relation_bloc.dart';
 
+enum RelationContext { following, follower, connections }
+
 @immutable
 abstract class RelationEvent {}
 
-class FetchRealtionship extends RelationEvent {}
+class FetchRealtionship extends RelationEvent {
+  final RelationContext context;
 
-class FetchMoreRelationship extends RelationEvent {}
+  FetchRealtionship(this.context);
+}
+
+class FetchMoreRelationship extends RelationEvent {
+  final RelationContext context;
+
+  FetchMoreRelationship(this.context);
+}
 
 class SearchRelationship extends RelationEvent {
   final String query;
