@@ -21,7 +21,9 @@ class _SubscriptionsState extends State<Subscriptions> {
   @override
   void initState() {
     super.initState();
-    context.bloc<RelationBloc>().add(FetchRealtionship());
+    context
+        .bloc<RelationBloc>()
+        .add(FetchRealtionship(RelationContext.following));
   }
 
   @override
@@ -57,10 +59,11 @@ class _SubscriptionsState extends State<Subscriptions> {
                         final metrics = notification.metrics;
                         double scrollPercent =
                             (metrics.pixels / metrics.maxScrollExtent) * 100;
-                        if (scrollPercent.roundToDouble() == 60.0) {
-                          context
-                              .bloc<RelationBloc>()
-                              .add(FetchMoreRelationship());
+                        if (scrollPercent.roundToDouble() == 60.0 &&
+                            state.followingResultCount >
+                                _followingMembers.length) {
+                          context.bloc<RelationBloc>().add(
+                              FetchMoreRelationship(RelationContext.following));
                           return true;
                         }
                         return false;

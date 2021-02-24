@@ -39,7 +39,12 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
   @override
   void initState() {
     super.initState();
-    context.bloc<RelationBloc>().add(FetchRealtionship());
+    context
+        .bloc<RelationBloc>()
+        .add(FetchRealtionship(RelationContext.following));
+    context
+        .bloc<RelationBloc>()
+        .add(FetchRealtionship(RelationContext.connections));
   }
 
   Future<void> addMembersToPerspective() async {
@@ -176,10 +181,14 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                             double scrollPercent =
                                 (metrics.pixels / metrics.maxScrollExtent) *
                                     100;
-                            if (scrollPercent.roundToDouble() == 60.0) {
+                            if (scrollPercent.roundToDouble() == 60.0 &&
+                                state.followingResultCount >
+                                    _followingMembers.length) {
                               context
                                   .bloc<RelationBloc>()
-                                  .add(FetchMoreRelationship());
+                                  .add(FetchMoreRelationship(
+                                    RelationContext.following,
+                                  ));
                               return true;
                             }
                             return false;
@@ -217,27 +226,47 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                         ),
                       // connections
                       if (_filteredConnectionsMembers.length > 0)
-                        ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          children: _filteredConnectionsMembers
-                              .map(
-                                (dynamic connection) => MemberPreviewSelect(
-                                  profile: connection,
-                                  onSelect: (UserProfile user) {
-                                    setState(() {
-                                      _perspectiveMembers.add(user.address);
-                                    });
-                                  },
-                                  onDeselect: (UserProfile user) {
-                                    setState(() {
-                                      _perspectiveMembers.remove(user.address);
-                                    });
-                                  },
-                                  isSelected: _perspectiveMembers
-                                      .contains(connection.address),
-                                ),
-                              )
-                              .toList(),
+                        NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification notification) {
+                            final metrics = notification.metrics;
+                            double scrollPercent =
+                                (metrics.pixels / metrics.maxScrollExtent) *
+                                    100;
+                            if (scrollPercent.roundToDouble() == 60.0 &&
+                                state.connctionResultCount >
+                                    _connectionsMembers.length) {
+                              context
+                                  .bloc<RelationBloc>()
+                                  .add(FetchMoreRelationship(
+                                    RelationContext.connections,
+                                  ));
+                              return true;
+                            }
+                            return false;
+                          },
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            children: _filteredConnectionsMembers
+                                .map(
+                                  (dynamic connection) => MemberPreviewSelect(
+                                    profile: connection,
+                                    onSelect: (UserProfile user) {
+                                      setState(() {
+                                        _perspectiveMembers.add(user.address);
+                                      });
+                                    },
+                                    onDeselect: (UserProfile user) {
+                                      setState(() {
+                                        _perspectiveMembers
+                                            .remove(user.address);
+                                      });
+                                    },
+                                    isSelected: _perspectiveMembers
+                                        .contains(connection.address),
+                                  ),
+                                )
+                                .toList(),
+                          ),
                         )
                       else
                         FeedPlaceholder(

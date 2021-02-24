@@ -25,7 +25,12 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
   @override
   void initState() {
     super.initState();
-    context.bloc<RelationBloc>().add(FetchRealtionship());
+    context
+        .bloc<RelationBloc>()
+        .add(FetchRealtionship(RelationContext.following));
+    context
+        .bloc<RelationBloc>()
+        .add(FetchRealtionship(RelationContext.connections));
   }
 
   @override
@@ -76,10 +81,12 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                       final metrics = notification.metrics;
                       double scrollPercent =
                           (metrics.pixels / metrics.maxScrollExtent) * 100;
-                      if (scrollPercent.roundToDouble() == 60.0) {
-                        context
-                            .bloc<RelationBloc>()
-                            .add(FetchMoreRelationship());
+                      if (scrollPercent.roundToDouble() == 60.0 &&
+                          state.followingResultCount >
+                              _followingMembers.length) {
+                        context.bloc<RelationBloc>().add(FetchMoreRelationship(
+                              RelationContext.following,
+                            ));
                         return true;
                       }
                       return false;
@@ -98,17 +105,33 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                     ),
                   ),
                   // connections
-                  ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: <Widget>[
-                      for (UserProfile connection in _connectionsMembers)
-                        MemberPreviewSelect(
-                          profile: connection,
-                          onSelect: widget.addMember,
-                          onDeselect: widget.removeMember,
-                          isSelected: false, //TODO: Update with dynamic val
-                        ),
-                    ],
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification notification) {
+                      final metrics = notification.metrics;
+                      double scrollPercent =
+                          (metrics.pixels / metrics.maxScrollExtent) * 100;
+                      if (scrollPercent.roundToDouble() == 60.0 &&
+                          state.connctionResultCount >
+                              _connectionsMembers.length) {
+                        context.bloc<RelationBloc>().add(FetchMoreRelationship(
+                              RelationContext.connections,
+                            ));
+                        return true;
+                      }
+                      return false;
+                    },
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: <Widget>[
+                        for (UserProfile connection in _connectionsMembers)
+                          MemberPreviewSelect(
+                            profile: connection,
+                            onSelect: widget.addMember,
+                            onDeselect: widget.removeMember,
+                            isSelected: false, //TODO: Update with dynamic val
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               );

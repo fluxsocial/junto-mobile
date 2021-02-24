@@ -24,7 +24,9 @@ class _ConnectionsState extends State<Connections> {
   @override
   void initState() {
     super.initState();
-    context.bloc<RelationBloc>().add(FetchRealtionship());
+    context
+        .bloc<RelationBloc>()
+        .add(FetchRealtionship(RelationContext.connections));
   }
 
   @override
@@ -59,10 +61,14 @@ class _ConnectionsState extends State<Connections> {
                         final metrics = notification.metrics;
                         double scrollPercent =
                             (metrics.pixels / metrics.maxScrollExtent) * 100;
-                        if (scrollPercent.roundToDouble() == 60.0) {
+                        if (scrollPercent.roundToDouble() == 60.0 &&
+                            state.connctionResultCount >
+                                _connectionsMembers.length) {
                           context
                               .bloc<RelationBloc>()
-                              .add(FetchMoreRelationship());
+                              .add(FetchMoreRelationship(
+                                RelationContext.connections,
+                              ));
                           return true;
                         }
                         return false;
