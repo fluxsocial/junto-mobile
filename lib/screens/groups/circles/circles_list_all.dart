@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/circle_refresh.dart';
@@ -14,12 +12,10 @@ import 'bloc/circle_bloc.dart';
 class CirclesListAll extends StatelessWidget with ListDistinct {
   const CirclesListAll({
     this.userProfile,
-    this.changeScreen,
     this.onGroupSelected,
   });
 
   final UserData userProfile;
-  final Function(Screen, [ExpressionContext, Group]) changeScreen;
   final Function(Group) onGroupSelected;
 
   @override

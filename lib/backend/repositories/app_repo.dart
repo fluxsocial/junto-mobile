@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -8,6 +9,8 @@ import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 /// Repository retrieving and saving various app settings:
 ///
@@ -31,10 +34,61 @@ class AppRepo extends ChangeNotifier {
   int _groupPageIndex;
   Box _appBox;
 
+  Screen currentScreen;
+  Screen latestScreen;
+  bool showCreateScreen = false;
+  ExpressionContext expressionContext;
+  Group group;
+
   bool _twoColumn = true;
 
   /// Exposes the current layout config.
   bool get twoColumnLayout => _twoColumn;
+
+  Future<void> initHome(Screen screen) async {
+    showCreateScreen = screen == Screen.create;
+    currentScreen = screen;
+    latestScreen = screen;
+    notifyListeners();
+  }
+
+  Future<void> changeScreen({
+    Screen screen,
+    ExpressionContext newExpressionContext,
+    Group newGroup,
+  }) async {
+    if (currentScreen != screen) {
+      currentScreen = screen;
+      expressionContext = newExpressionContext ?? ExpressionContext.Collective;
+      if (newGroup != null) {
+        group = newGroup;
+      }
+      if (screen == Screen.create) {
+        showCreateScreen = true;
+      } else {
+        showCreateScreen = false;
+        latestScreen = screen;
+      }
+    }
+
+    notifyListeners();
+    print(showCreateScreen);
+  }
+
+  Future<void> closeCreate() async {
+    showCreateScreen = false;
+    currentScreen = latestScreen;
+    if (latestScreen == Screen.create) {
+      currentScreen = Screen.collective;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> setActiveGroup(Group group) async {
+    this.group = group;
+    notifyListeners();
+  }
 
   /// Loads the previously save configuration. If there is none, it starts with a
   /// default of false.

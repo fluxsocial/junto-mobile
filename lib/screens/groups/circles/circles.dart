@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -17,15 +16,11 @@ import 'sphere_open/sphere_open.dart';
 
 // This screen displays the temporary page we'll display until groups are released
 class Circles extends StatefulWidget {
-  final Function(Screen, [ExpressionContext, Group]) changeScreen;
   final Group group;
-  final Function(Group) setActiveGroup;
 
   const Circles({
     Key key,
-    this.changeScreen,
     this.group,
-    this.setActiveGroup,
   }) : super(key: key);
   @override
   State<StatefulWidget> createState() {
@@ -75,18 +70,18 @@ class CirclesState extends State<Circles>
             CircleMain(
               userProfile: _userProfile,
               widget: widget,
-              onGroupSelected: (Group group) {
+              onGroupSelected: (Group group) async {
                 circlesPageController.animateToPage(
                   1,
                   duration: Duration(milliseconds: 250),
                   curve: Curves.easeIn,
                 );
-                widget.setActiveGroup(group);
+                await Provider.of<AppRepo>(context, listen: false)
+                    .setActiveGroup(group);
               },
             ),
             SphereOpen(
               group: widget.group,
-              changeScreen: widget.changeScreen,
               goBack: () {
                 circlesPageController.animateToPage(
                   0,
@@ -159,7 +154,6 @@ class _CircleMainState extends State<CircleMain> {
             children: [
               CirclesListAll(
                 userProfile: widget._userProfile,
-                changeScreen: widget.widget.changeScreen,
                 onGroupSelected: widget.onGroupSelected,
               ),
               CirclesRequests(),

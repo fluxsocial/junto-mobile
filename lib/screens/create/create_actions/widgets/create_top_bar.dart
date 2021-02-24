@@ -9,12 +9,14 @@ class CreateTopBar extends StatelessWidget {
     this.toggleSocialContextVisibility,
     this.currentExpressionContext,
     this.selectedGroup,
+    this.hideContextSelector = false,
   });
 
   final List<dynamic> profilePicture;
   final Function toggleSocialContextVisibility;
   final ExpressionContext currentExpressionContext;
   final Group selectedGroup;
+  final bool hideContextSelector;
 
   String _currentExpressionContext() {
     String socialContext;
@@ -57,40 +59,41 @@ class CreateTopBar extends StatelessWidget {
               diameter: 33,
               profilePicture: profilePicture,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 5,
-              ),
-              margin: const EdgeInsets.only(left: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: Theme.of(context).dividerColor,
-                  width: .75,
+            if (!hideContextSelector)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
                 ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(right: 5),
-                    child: Text(
-                      _currentExpressionContext(),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).primaryColorLight,
-                        fontWeight: FontWeight.w700,
+                margin: const EdgeInsets.only(left: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(right: 5),
+                      child: Text(
+                        _currentExpressionContext(),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).primaryColorLight,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
-                  ),
-                  Icon(
-                    Icons.keyboard_arrow_down,
-                    size: 12,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                ],
+                    Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 12,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
