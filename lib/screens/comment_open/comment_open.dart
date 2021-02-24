@@ -197,7 +197,9 @@ class CommentOpenState extends State<CommentOpen> {
                   scrollToBottom: _scrollToBottom,
                   focusNode: _focusNode,
                   stopPlayback: () {
-                    audio.pausePlayback();
+                    if (audio.isPlaying) {
+                      audio.pausePlayback();
+                    }
                   },
                 ),
               ],
