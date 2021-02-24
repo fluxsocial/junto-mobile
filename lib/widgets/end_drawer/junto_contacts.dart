@@ -28,6 +28,17 @@ class JuntoContactsState extends State<JuntoContacts> {
   List<Contact> _contacts = [];
   List<Contact> _filteredContacts = [];
   UserData _userProfile;
+  List<String> numbers = [];
+
+  void selectContacts(Contact contact) {
+    setState(() {
+      if (numbers.contains(contact.phones.first.value)) {
+        numbers.remove(contact.phones.first.value);
+      } else {
+        numbers.add(contact.phones.first.value);
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -156,7 +167,9 @@ class JuntoContactsState extends State<JuntoContacts> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
-        child: JuntoInviteAppBar(),
+        child: JuntoInviteAppBar(
+          userProfile: _userProfile,
+        ),
       ),
       body: Column(
         children: [
@@ -169,7 +182,64 @@ class JuntoContactsState extends State<JuntoContacts> {
               filteredContacts: _filteredContacts,
               userProfile: _userProfile,
               contactsPermission: contactsPermission,
+              selectContacts: selectContacts,
+              selectedNumbers: numbers,
             ),
+          if (numbers.length > 0)
+            GestureDetector(
+              onTap: () async {
+                String uri;
+                if (Platform.isIOS) {
+                  uri = Uri.encodeFull(
+                      "sms:${numbers.join(',')}&body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${_userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
+                } else if (Platform.isAndroid) {
+                  uri = Uri.encodeFull(
+                      "sms:${numbers.join(',')}?body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${_userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
+                }
+
+                if (await canLaunch(uri)) {
+                  await launch(uri);
+                } else {
+                  await SingleActionDialog(
+                    context: context,
+                    dialogText: 'Sorry, something is up. Try again.',
+                  );
+                }
+                ;
+              },
+              child: Container(
+                height: 50.0,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.green,
+                child: Center(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 24.0,
+                      width: 24.0,
+                      margin: EdgeInsets.only(right: 8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          numbers.length.toString(),
+                          style: TextStyle(color: Colors.green, fontSize: 16.0),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Invite to Junto',
+                      style: TextStyle(color: Colors.white, fontSize: 18.0),
+                    ),
+                  ],
+                )),
+              ),
+            )
         ],
       ),
     );
@@ -181,10 +251,15 @@ class JuntoContactsList extends StatelessWidget {
     this.contactsPermission = PermissionStatus.undetermined,
     this.filteredContacts,
     this.userProfile,
+    this.selectedNumbers,
+    this.selectContacts,
   });
   final PermissionStatus contactsPermission;
   final List<Contact> filteredContacts;
   final UserData userProfile;
+  final List<String> selectedNumbers;
+  final Function selectContacts;
+
   @override
   Widget build(BuildContext context) {
     if (contactsPermission != PermissionStatus.granted) {
@@ -222,90 +297,81 @@ class JuntoContactsList extends StatelessWidget {
             }
 
             if (contact.displayName != null && number.isNotEmpty) {
-              return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                      width: .5,
-                    ),
+              return GestureDetector(
+                onTap: () {
+                  selectContacts(contact);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        MemberAvatarPlaceholder(
-                          diameter: 45,
-                        ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              contact.displayName,
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              number,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Theme.of(context).primaryColorLight,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(25),
-                      onTap: () async {
-                        String uri;
-                        if (Platform.isIOS) {
-                          uri = Uri.encodeFull(
-                              "sms:${number}&body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
-                        } else if (Platform.isAndroid) {
-                          uri = Uri.encodeFull(
-                              "sms:${number}?body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
-                        }
-
-                        if (await canLaunch(uri)) {
-                          await launch(uri);
-                        } else {
-                          await SingleActionDialog(
-                            context: context,
-                            dialogText: 'Sorry, something is up. Try again.',
-                          );
-                        }
-                        ;
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).dividerColor,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 5),
-                        child: Text(
-                          'Invite',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                        width: .5,
                       ),
                     ),
-                  ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Stack(
+                            children: [
+                              MemberAvatarPlaceholder(
+                                diameter: 45,
+                              ),
+                              if (selectedNumbers
+                                  .contains(contact.phones.first.value))
+                                Positioned(
+                                  bottom: 0.0,
+                                  right: 0.0,
+                                  child: Container(
+                                    height: 18.0,
+                                    width: 18.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.check,
+                                      size: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                contact.displayName,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                number,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               );
             } else {
