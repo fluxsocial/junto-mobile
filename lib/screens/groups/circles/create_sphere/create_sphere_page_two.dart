@@ -11,11 +11,13 @@ class CreateSpherePageTwo extends StatelessWidget {
     @required this.future,
     @required this.addMember,
     @required this.removeMember,
+    @required this.selectedMembers,
   }) : super(key: key);
   final List<String> tabs;
   final Future<Map<String, dynamic>> future;
   final ValueChanged<UserProfile> addMember;
   final ValueChanged<UserProfile> removeMember;
+  final List<String> selectedMembers;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,7 @@ class CreateSpherePageTwo extends StatelessWidget {
                           profile: member,
                           onSelect: addMember,
                           onDeselect: removeMember,
-                          isSelected: false, //TODO: Update with dynamic val
+                          isSelected: selectedMembers.contains(member.address),
                         ),
                     ],
                   ),
@@ -85,7 +87,8 @@ class CreateSpherePageTwo extends StatelessWidget {
                           profile: connection,
                           onSelect: addMember,
                           onDeselect: removeMember,
-                          isSelected: false, //TODO: Update with dynamic val
+                          isSelected:
+                              selectedMembers.contains(connection.address),
                         ),
                     ],
                   ),

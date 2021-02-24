@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 
@@ -52,7 +53,15 @@ class BlocProviders extends StatelessWidget {
         BlocProvider<AppBloc>(
           create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context)),
         ),
-        BlocProvider(
+        BlocProvider<CircleBloc>(
+          create: (ctx) => CircleBloc(
+            RepositoryProvider.of<GroupRepo>(context),
+            RepositoryProvider.of<UserRepo>(context),
+            RepositoryProvider.of<UserDataProvider>(context),
+            RepositoryProvider.of<NotificationRepo>(context),
+          ),
+        ),
+        BlocProvider<ChannelFilteringBloc>(
           create: (ctx) => ChannelFilteringBloc(
             RepositoryProvider.of<SearchRepo>(ctx),
             (value) {

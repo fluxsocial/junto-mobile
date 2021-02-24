@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview.dart';
 
 class SphereSelectModal extends StatelessWidget {
   const SphereSelectModal({this.spheres, this.onSelect});
@@ -20,9 +20,22 @@ class SphereSelectModal extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: Text(
+                'MY CIRCLES',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
             Expanded(
               child: ListView(
                 children: spheres
@@ -34,7 +47,7 @@ class SphereSelectModal extends StatelessWidget {
                             sphere.groupData.sphereHandle,
                           );
                         },
-                        child: SpherePreview(group: sphere),
+                        child: CirclePreview(group: sphere),
                       ),
                     )
                     .toList(),

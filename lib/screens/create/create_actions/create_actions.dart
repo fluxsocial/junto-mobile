@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
@@ -22,6 +23,8 @@ import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/circles.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
@@ -94,9 +97,13 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   // relation to community center
   Map<String, dynamic> relationToGroup;
 
+  // group handle
+  String _groupHandle = 'share to a specific circle';
+
   @override
   void initState() {
     super.initState();
+    print(widget.expressionContext);
     _channelsList = widget.channels;
     _channels.value = widget.channels;
     _channelController = TextEditingController();
@@ -159,6 +166,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     if (_expressionContext == ExpressionContext.Collective) {
       context.bloc<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
+    } else if (_expressionContext == ExpressionContext.Group &&
+        _currentExpressionContext == 'Circles') {
+      child = FeatureDiscovery(
+        child: Circles(),
+      );
     } else if (_expressionContext == ExpressionContext.Group &&
         widget.address != communityCenterAddress) {
       child = JuntoPacks(initialGroup: _address);
@@ -307,6 +319,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     }
   }
 
+  void selectGroup(String groupAddress, String groupHandle) {
+    setState(() {
+      _address = groupAddress;
+      _groupHandle = 'share to c/${groupHandle}';
+    });
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -346,6 +366,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                       const SizedBox(width: 15),
                       _expressionContextSelector(
                           expressionContext: 'Collective'),
+                      _expressionContextSelector(expressionContext: 'Circles'),
                       _expressionContextSelector(expressionContext: 'My Pack'),
                     ]),
                   ),
@@ -455,6 +476,20 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             : Theme.of(context).primaryColor,
         size: 28,
       );
+    } else if (expressionContext == 'Circles') {
+      _setExpressionContextDescription = () {
+        setState(() {
+          _expressionContext = ExpressionContext.Group;
+          _currentExpressionContextDescription = _groupHandle;
+        });
+      };
+      _expressionContextIcon = Icon(
+        CustomIcons.newcircles,
+        color: _currentExpressionContext == expressionContext
+            ? Colors.white
+            : Theme.of(context).primaryColor,
+        size: 28,
+      );
     } else if (expressionContext == 'Community Center') {
       _setExpressionContextDescription = () {
         setState(() {
@@ -494,6 +529,44 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         setState(() {
           _currentExpressionContext = expressionContext;
         });
+
+        // if the context is a sphere, get the user's list of spheres and open
+        // the SphereSelectModal
+        if (expressionContext == 'Circles') {
+          JuntoLoader.showLoader(context);
+          final UserGroupsResponse _userGroups =
+              await Provider.of<GroupRepo>(context, listen: false)
+                  .getUserGroups(_userAddress);
+          JuntoLoader.hide();
+          final List<Group> ownedGroups = _userGroups.owned;
+          final List<Group> associatedGroups = _userGroups.associated;
+          final List<Group> userSpheres =
+              distinct<Group>(ownedGroups, associatedGroups)
+                  .where((Group group) => group.groupType == 'Sphere')
+                  .toList();
+          if (userSpheres.isNotEmpty) {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              context: context,
+              builder: (BuildContext context) {
+                return SphereSelectModal(
+                  spheres: userSpheres,
+                  onSelect: selectGroup,
+                );
+              },
+            );
+          }
+          if (userSpheres.isEmpty) {
+            showFeedback(context, message: 'You are not apart of any spheres');
+            setState(() {
+              _currentExpressionContext = 'Collective';
+            });
+          }
+        }
+
         _setExpressionContextDescription();
       },
       child: Container(

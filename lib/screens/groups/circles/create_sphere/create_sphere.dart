@@ -6,8 +6,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere_page_one.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere_page_two.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere_page_one.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere_page_two.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
@@ -16,9 +16,7 @@ import 'package:provider/provider.dart';
 class CreateSphere extends StatefulWidget {
   const CreateSphere({
     Key key,
-    @required this.refreshSpheres,
   }) : super(key: key);
-  final Function refreshSpheres;
 
   @override
   State<StatefulWidget> createState() {
@@ -135,18 +133,26 @@ class CreateSphereState extends State<CreateSphere> {
   }
 
   void sphereAddMember(UserProfile member) {
-    _sphereMembers.add(member.address);
+    setState(() {
+      if (!_sphereMembers.contains(member.address)) {
+        _sphereMembers.add(member.address);
+      }
+    });
   }
 
   void _sphereRemoveMember(UserProfile member) {
-    _sphereMembers.remove(member.address);
+    setState(() {
+      _sphereMembers.remove(member.address);
+    });
   }
 
   Widget _createSphereThree() {
     return ListView(
       children: <Widget>[
         _spherePrivacy('Public',
-            'Anyone can join this circle, read its expressions, and share to it'),
+            'Anyone can join this circle, read its expressions, and share to it.'),
+        _spherePrivacy('Private',
+            'Only invited and existing members can read its expressions, and share to it.'),
       ],
     );
   }
@@ -338,6 +344,8 @@ class CreateSphereState extends State<CreateSphere> {
 
   @override
   Widget build(BuildContext context) {
+    print('test: ${_sphereMembers}');
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
@@ -370,6 +378,7 @@ class CreateSphereState extends State<CreateSphere> {
                     future: getUserRelationships(),
                     addMember: sphereAddMember,
                     removeMember: _sphereRemoveMember,
+                    selectedMembers: _sphereMembers,
                     tabs: _tabs,
                   ),
                   _createSphereThree()

@@ -17,12 +17,11 @@ class SpheresTempAppBar extends StatefulWidget {
 }
 
 class _SpheresTempAppBarState extends State<SpheresTempAppBar> {
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final repo = Provider.of<OnBoardingRepo>(context);
-    if(repo.showGroupTutorial){
+    if (repo.showGroupTutorial) {
       repo.setViewed(HiveKeys.kGroupTutorial, false);
     }
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'spheres_temp_appbar.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_temp_app.dart';
 
 // This screen displays the temporary page we'll display until groups are released
 class SpheresTemp extends StatelessWidget {

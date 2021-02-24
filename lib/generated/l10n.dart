@@ -247,7 +247,7 @@ class S {
   /// `GROUPS`
   String get lotus_groups {
     return Intl.message(
-      'GROUPS',
+      'CIRCLES',
       name: 'lotus_groups',
       desc: '',
       args: [],

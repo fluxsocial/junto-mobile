@@ -5,10 +5,14 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
 // This class renders a preview of a sphere
-class SpherePreview extends StatelessWidget {
-  const SpherePreview({@required this.group});
+class CirclePreview extends StatelessWidget {
+  const CirclePreview({
+    @required this.group,
+    this.diameter = 38,
+  });
 
   final Group group;
+  final double diameter;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +23,8 @@ class SpherePreview extends StatelessWidget {
           group.groupData.photo == ''
               ? Container(
                   alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
+                  height: diameter,
+                  width: diameter,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
@@ -36,20 +40,20 @@ class SpherePreview extends StatelessWidget {
                   child: Icon(
                     CustomIcons.spheres,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 17,
+                    size: 15,
                   ),
                 )
               : ClipOval(
                   child: ImageWrapper(
                       imageUrl: group.groupData.photo,
-                      height: 45,
-                      width: 45,
+                      height: diameter,
+                      width: diameter,
                       fit: BoxFit.cover,
                       placeholder: (BuildContext context, String _) {
                         return Container(
                           alignment: Alignment.center,
-                          height: 45.0,
-                          width: 45.0,
+                          height: diameter,
+                          width: diameter,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.bottomLeft,
@@ -86,7 +90,7 @@ class SpherePreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('s/ ${group.groupData.sphereHandle}',
+                  Text('s/${group.groupData.sphereHandle}',
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.subtitle1),
                   Text(group.groupData.name,

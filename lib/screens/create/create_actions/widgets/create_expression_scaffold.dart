@@ -546,11 +546,14 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         case ExpressionContext.MyPack:
           screen = Screen.packs;
           break;
+        case ExpressionContext.Group:
+          screen = Screen.groups;
+          break;
         default:
           screen = Screen.collective;
           break;
       }
-      widget.changeScreen(screen);
+      widget.changeScreen(screen, expressionContext, widget.group);
       // Close creation screen
       widget.closeCreate();
     } on DioError catch (error) {
@@ -656,6 +659,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                                   toggleSocialContextVisibility:
                                       toggleSocialContextVisibility,
                                   currentExpressionContext: expressionContext,
+                                  selectedGroup: selectedGroup,
                                 ),
                                 _buildExpressionType(),
                               ],
@@ -690,6 +694,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                                     toggleSocialContextVisibility:
                                         toggleSocialContextVisibility,
                                     currentExpressionContext: expressionContext,
+                                    selectedGroup: selectedGroup,
                                   ),
                                   _buildReview(),
                                 ],
@@ -706,6 +711,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                     selectExpressionContext: selectExpressionContext,
                     toggleSocialContextVisibility:
                         toggleSocialContextVisibility,
+                    selectedGroup: selectedGroup,
+                    setSelectedGroup: setSelectedGroup,
                   ),
               ],
             ),
