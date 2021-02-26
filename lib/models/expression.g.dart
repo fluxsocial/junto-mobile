@@ -165,6 +165,57 @@ class PhotoFormExpressionAdapter extends TypeAdapter<PhotoFormExpression> {
   }
 }
 
+class EventFormExpressionAdapter extends TypeAdapter<EventFormExpression> {
+  @override
+  final typeId = 9;
+
+  @override
+  EventFormExpression read(BinaryReader reader) {
+    var numOfFields = reader.readByte();
+    var fields = <int, dynamic>{
+      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return EventFormExpression(
+      title: fields[0] as String,
+      description: fields[1] as String,
+      photo: fields[2] as String,
+      location: fields[3] as String,
+      startTime: fields[4] as String,
+      endTime: fields[5] as String,
+      facilitators: (fields[6] as List)?.cast<String>(),
+      members: (fields[7] as List)?.cast<String>(),
+      thumbnail300: fields[8] as String,
+      thumbnail600: fields[9] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, EventFormExpression obj) {
+    writer
+      ..writeByte(10)
+      ..writeByte(0)
+      ..write(obj.title)
+      ..writeByte(1)
+      ..write(obj.description)
+      ..writeByte(2)
+      ..write(obj.photo)
+      ..writeByte(3)
+      ..write(obj.location)
+      ..writeByte(4)
+      ..write(obj.startTime)
+      ..writeByte(5)
+      ..write(obj.endTime)
+      ..writeByte(6)
+      ..write(obj.facilitators)
+      ..writeByte(7)
+      ..write(obj.members)
+      ..writeByte(8)
+      ..write(obj.thumbnail300)
+      ..writeByte(9)
+      ..write(obj.thumbnail600);
+  }
+}
+
 class ExpressionResponseAdapter extends TypeAdapter<ExpressionResponse> {
   @override
   final typeId = 0;
@@ -188,13 +239,14 @@ class ExpressionResponseAdapter extends TypeAdapter<ExpressionResponse> {
       numberComments: fields[4] as int,
       comments: fields[6] as dynamic,
       resonations: fields[5] as dynamic,
+      commentThread: (fields[12] as List)?.cast<ExpressionResponse>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ExpressionResponse obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.address)
       ..writeByte(1)
@@ -218,6 +270,8 @@ class ExpressionResponseAdapter extends TypeAdapter<ExpressionResponse> {
       ..writeByte(10)
       ..write(obj.creator)
       ..writeByte(11)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(12)
+      ..write(obj.commentThread);
   }
 }
