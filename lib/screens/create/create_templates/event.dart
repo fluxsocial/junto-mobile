@@ -15,14 +15,24 @@ import 'package:junto_beta_mobile/widgets/image_widgets.dart';
 import 'package:junto_beta_mobile/widgets/settings_popup.dart';
 import 'package:junto_beta_mobile/widgets/time_pickers.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 /// Allows the user to create an event
 class CreateEvent extends StatefulWidget {
-  const CreateEvent({Key key, this.expressionContext, this.address})
-      : super(key: key);
+  CreateEvent({
+    Key key,
+    this.expressionContext,
+    this.address,
+    @required this.detailsFocusNode,
+    @required this.nameFocusNode,
+    @required this.locationFocusNode,
+  }) : super(key: key);
 
   final ExpressionContext expressionContext;
   final String address;
+  final FocusNode nameFocusNode;
+  final FocusNode locationFocusNode;
+  final FocusNode detailsFocusNode;
 
   @override
   CreateEventState createState() => CreateEventState();
@@ -35,8 +45,10 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   TextEditingController detailsController;
 
   ValueNotifier<File> imageFile = ValueNotifier<File>(null);
-  ValueNotifier<DateTime> startTime = ValueNotifier<DateTime>(null);
-  ValueNotifier<DateTime> endTime = ValueNotifier<DateTime>(null);
+  ValueNotifier<DateTime> startTime = ValueNotifier<DateTime>(DateTime.now());
+  ValueNotifier<DateTime> endTime = ValueNotifier<DateTime>(DateTime.now());
+  List<UserProfile> members = [];
+  List<UserProfile> facilitators = [];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -57,16 +69,26 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   }
 
   Map<String, dynamic> createExpression() {
-    return <String, dynamic>{
-      'description': detailsController.value.text.trim(),
-      'photo': imageFile.value,
+    return {
       'title': titleController.value.text.trim(),
-      'location': locationController.text.trim(),
-      'start_time': startTime.value.toUtc().toIso8601String(),
-      'end_time': endTime.value.toUtc().toIso8601String(),
-      'facilitators': <String>[],
-      'members': <String>[]
+      'description': detailsController.value.text.trim(),
+      'location': locationController.value.text.trim(),
+      'photo': imageFile.value != null ? File(imageFile.value.path) : null,
+      'startTime': startTime.value.toUtc().toIso8601String(),
+      'endTime': endTime.value.toUtc().toIso8601String(),
+      'facilitators': facilitators.map((e) => e.address).toList(),
+      'members': members.map((e) => e.address).toList(),
     };
+  }
+
+  bool expressionHasData() {
+    final dynamic expression = createExpression();
+
+    if (expression['title'].isNotEmpty) {
+      return true;
+    }
+
+    return false;
   }
 
   void _openChangePhotoModal() {
@@ -160,6 +182,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                     child: TextFormField(
                       validator: Validator.validateNonEmpty,
                       controller: titleController,
+                      focusNode: widget.nameFocusNode,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -251,6 +274,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                     child: TextFormField(
                       controller: locationController,
                       validator: Validator.validateNonEmpty,
+                      focusNode: widget.locationFocusNode,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -276,6 +300,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                     child: TextFormField(
                       controller: detailsController,
                       validator: Validator.validateNonEmpty,
+                      focusNode: widget.detailsFocusNode,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,

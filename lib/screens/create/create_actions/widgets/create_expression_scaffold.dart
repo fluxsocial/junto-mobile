@@ -17,10 +17,12 @@ import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/link.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/longform_review.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/shortform_review.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/photo_review.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/link_review.dart';
+import 'package:junto_beta_mobile/screens/create/create_review/event_review.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
@@ -77,6 +79,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       GlobalKey<CreateLinkFormState>();
   final GlobalKey<CreatePhotoState> _photoKey = GlobalKey<CreatePhotoState>();
   final GlobalKey<CreateAudioState> _audioKey = GlobalKey<CreateAudioState>();
+  final GlobalKey<CreateEventState> _eventKey = GlobalKey<CreateEventState>();
 
   final FocusNode dynamicCaptionFocusNode = FocusNode();
   final FocusNode dynamicTitleFocusNode = FocusNode();
@@ -86,6 +89,9 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   final FocusNode photoCaptionFocusNode = FocusNode();
   final FocusNode audioCaptionFocusNode = FocusNode();
   final FocusNode audioTitleFocusNode = FocusNode();
+  final FocusNode eventNameFocusNode = FocusNode();
+  final FocusNode eventLocationFocusNode = FocusNode();
+  final FocusNode eventDetailsFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -117,6 +123,18 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
     linkUrlFocusNode.addListener(() {
       _toggleExpressionSheetVisibility(focusNode: linkUrlFocusNode);
+    });
+
+    eventNameFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: eventNameFocusNode);
+    });
+
+    eventLocationFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: eventLocationFocusNode);
+    });
+
+    eventDetailsFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: eventDetailsFocusNode);
     });
   }
 
@@ -169,6 +187,15 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         );
 
         break;
+      case ExpressionType.event:
+        child = CreateEvent(
+          key: _eventKey,
+          detailsFocusNode: eventDetailsFocusNode,
+          locationFocusNode: eventLocationFocusNode,
+          nameFocusNode: eventNameFocusNode,
+        );
+
+        break;
 
       case ExpressionType.none:
         child = SizedBox();
@@ -204,6 +231,12 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       case ExpressionType.audio:
         audioCaptionFocusNode.unfocus();
         audioTitleFocusNode.unfocus();
+        break;
+
+      case ExpressionType.event:
+        eventDetailsFocusNode.unfocus();
+        eventLocationFocusNode.unfocus();
+        eventNameFocusNode.unfocus();
         break;
 
       case ExpressionType.none:
@@ -264,6 +297,10 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         expressionHasData =
             _audioKey.currentState.expressionHasData(_audioService);
         validationText = 'Record some audio before continuing.';
+        break;
+      case ExpressionType.event:
+        expressionHasData = _eventKey.currentState.expressionHasData();
+        validationText = 'Make sure text fields are blank.';
         break;
 
       default:
@@ -326,6 +363,10 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
       case ExpressionType.audio:
         child = CreateAudioReview(expression: expression);
+        break;
+
+      case ExpressionType.event:
+        child = CreateEventReview(expression: expression);
         break;
 
       case ExpressionType.none:
@@ -421,6 +462,11 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           mentionsAndChannels = _audioKey.currentState.getMentionsAndChannels();
           break;
 
+        case ExpressionType.event:
+          expressionInProgress = _eventKey.currentState.createExpression();
+          mentionsAndChannels = {'mentions': [], 'channels': []};
+          break;
+
         case ExpressionType.none:
           break;
 
@@ -482,6 +528,31 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     );
   }
 
+  Future<ExpressionModel> getEventExpression(ExpressionRepo repository) async {
+    final image = expression['photo'];
+
+    final photoKeys = await repository.createPhotoThumbnails(image);
+
+    return ExpressionModel(
+      type: currentExpressionType.modelName(),
+      expressionData: EventFormExpression(
+        title: expression['title'],
+        description: expression['description'],
+        location: expression['location'],
+        facilitators: expression['facilitators'],
+        members: expression['members'],
+        startTime: expression['startTime'],
+        endTime: expression['endTime'],
+        photo: photoKeys.keyPhoto,
+        thumbnail300: photoKeys.key300,
+        thumbnail600: photoKeys.key600,
+      ).toJson(),
+      context: expressionContext,
+      channels: channels,
+      mentions: mentions,
+    );
+  }
+
   Future<void> createExpression() async {
     ExpressionModel expressionModel;
 
@@ -497,6 +568,12 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         case ExpressionType.audio:
           JuntoLoader.showLoader(context, color: Colors.white54);
           expressionModel = await getAudioExpression(repository);
+          JuntoLoader.hide();
+          break;
+
+        case ExpressionType.event:
+          JuntoLoader.showLoader(context, color: Colors.white54);
+          expressionModel = await getEventExpression(repository);
           JuntoLoader.hide();
           break;
 
@@ -558,6 +635,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       // Close creation screen
       await Provider.of<AppRepo>(context, listen: false).closeCreate();
     } on DioError catch (error) {
+      print('test: ${error.message}');
       JuntoLoader.hide();
 
       // Handle max number of posts/day error
@@ -586,7 +664,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         );
       }
     } catch (error) {
-      JuntoLoader.hide();
+      print('test: $error');
+      // JuntoLoader.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) => const SingleActionDialog(
