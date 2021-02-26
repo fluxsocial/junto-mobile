@@ -76,18 +76,11 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
         child = JuntoCollective();
         break;
       case Screen.groups:
-        // child = FeatureDiscovery(
-        //   child: Circles(
-        //     changeScreen: changeScreen,
-        //     group: _group,
-        //     setActiveGroup: (Group activeGroup) {
-        //       setState(() {
-        //         _group = activeGroup;
-        //       });
-        //     },
-        //   ),
-        // );
-        child = FeatureDiscovery(child: SpheresTemp());
+        child = FeatureDiscovery(
+          child: Circles(
+            group: group,
+          ),
+        );
         break;
       case Screen.packs:
         child = JuntoPacks(
