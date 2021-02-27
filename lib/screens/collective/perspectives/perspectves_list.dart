@@ -64,6 +64,9 @@ class PerspectivesList extends StatelessWidget {
                         child: PerspectiveItem(
                           perspective: perspective,
                           onTap: () {
+                            print('perspective address is' +
+                                'perspective.address');
+
                             collectiveViewNav();
                             onPerspectivesChanged(perspective, context);
                           },
