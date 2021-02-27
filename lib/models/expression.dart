@@ -248,7 +248,8 @@ class PhotoFormExpression {
       };
 }
 
-class EventFormExpression {
+@HiveType(typeId: 9)
+class EventFormExpression extends HiveObject {
   EventFormExpression({
     this.title,
     this.description,
@@ -277,15 +278,25 @@ class EventFormExpression {
     );
   }
 
+  @HiveField(0)
   final String title;
+  @HiveField(1)
   final String description;
+  @HiveField(2)
   final String photo;
+  @HiveField(3)
   final String location;
+  @HiveField(4)
   final String startTime;
+  @HiveField(5)
   final String endTime;
+  @HiveField(6)
   final List<String> facilitators;
+  @HiveField(7)
   final List<String> members;
+  @HiveField(8)
   final String thumbnail300;
+  @HiveField(9)
   final String thumbnail600;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
