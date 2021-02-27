@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed_new.dart';
 
 import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
@@ -80,16 +81,26 @@ class CirclesState extends State<Circles>
                     .setActiveGroup(group);
               },
             ),
-            SphereOpen(
-              group: widget.group,
-              goBack: () {
+            if (widget.group != null &&
+                widget.group.address == 'junto-collective-group')
+              Scaffold(body: ExpressionFeed(goBack: () {
                 circlesPageController.animateToPage(
                   0,
                   duration: Duration(milliseconds: 250),
                   curve: Curves.easeIn,
                 );
-              },
-            )
+              }))
+            else
+              SphereOpen(
+                group: widget.group,
+                goBack: () {
+                  circlesPageController.animateToPage(
+                    0,
+                    duration: Duration(milliseconds: 250),
+                    curve: Curves.easeIn,
+                  );
+                },
+              )
           ],
         ),
       ),
@@ -156,7 +167,8 @@ class _CircleMainState extends State<CircleMain> {
                 userProfile: widget._userProfile,
                 onGroupSelected: widget.onGroupSelected,
               ),
-              CirclesRequests(),
+              // Temporarily remove requests - This PageView will also include Private groups users are apart of
+              // CirclesRequests(),
             ],
           );
         },

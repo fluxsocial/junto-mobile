@@ -22,6 +22,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed_new.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
