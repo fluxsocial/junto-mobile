@@ -615,7 +615,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       // Change screen to social context of expression created
       switch (expressionContext) {
         case ExpressionContext.Collective:
-          screen = Screen.collective;
+          screen = Screen.groups;
           break;
         case ExpressionContext.MyPack:
           screen = Screen.packs;
@@ -624,7 +624,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           screen = Screen.groups;
           break;
         default:
-          screen = Screen.collective;
+          screen = Screen.groups;
           break;
       }
       await Provider.of<AppRepo>(context, listen: false).changeScreen(
