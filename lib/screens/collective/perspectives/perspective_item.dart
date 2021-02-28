@@ -77,7 +77,7 @@ class PerspectiveItem extends StatelessWidget {
                     perspective.name,
                     style: TextStyle(
                       fontSize: 15,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
