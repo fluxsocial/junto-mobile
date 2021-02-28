@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:junto_beta_mobile/widgets/drawer/widgets/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
 
 class FilterDrawerNew extends StatefulWidget {
   @override
@@ -346,6 +346,7 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                             ],
                           ),
                         ),
+                        PerspectivesList()
                       ],
                     ),
                   ],
