@@ -27,7 +27,7 @@ import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 
 class NewHome extends StatefulWidget {
-  const NewHome({this.screen = Screen.collective});
+  const NewHome({this.screen = Screen.groups});
 
   final Screen screen;
   @override

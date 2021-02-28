@@ -79,7 +79,7 @@ class AppRepo extends ChangeNotifier {
     showCreateScreen = false;
     currentScreen = latestScreen;
     if (latestScreen == Screen.create) {
-      currentScreen = Screen.collective;
+      currentScreen = Screen.groups;
     }
 
     notifyListeners();
