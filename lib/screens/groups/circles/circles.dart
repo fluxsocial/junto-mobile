@@ -147,10 +147,7 @@ class _CircleMainState extends State<CircleMain> {
         preferredSize: Size.fromHeight(
           MediaQuery.of(context).size.height * .1 + 50,
         ),
-        child: CirclesAppbar(
-          currentIndex: _currentIndex,
-          changePageView: changePageView,
-        ),
+        child: CirclesAppbar(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BlocBuilder<CircleBloc, CircleState>(

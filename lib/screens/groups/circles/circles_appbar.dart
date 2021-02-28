@@ -15,12 +15,6 @@ import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sp
 import 'package:provider/provider.dart';
 
 class CirclesAppbar extends StatefulWidget {
-  const CirclesAppbar({
-    this.currentIndex,
-    this.changePageView,
-  });
-  final int currentIndex;
-  final Function changePageView;
   @override
   _CirclesAppbarState createState() => _CirclesAppbarState();
 }
@@ -140,27 +134,20 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                   children: [
                     Row(
                       children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            widget.changePageView(0);
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.only(
-                              right: 20,
-                              top: 10,
-                              bottom: 10,
-                            ),
-                            child: Text(
-                              'PUBLIC',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: widget.currentIndex == 0
-                                    ? Theme.of(context).primaryColorDark
-                                    : Theme.of(context).primaryColorLight,
-                                letterSpacing: .75,
-                              ),
+                        Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.only(
+                            right: 20,
+                            top: 10,
+                            bottom: 10,
+                          ),
+                          child: Text(
+                            'PUBLIC',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: Theme.of(context).primaryColorDark,
+                              letterSpacing: .75,
                             ),
                           ),
                         ),
