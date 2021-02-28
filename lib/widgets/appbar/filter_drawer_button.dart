@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_new.dart';
+import 'package:junto_beta_mobile/widgets/filter_drawer_new/filter_drawer_new.dart';
 
 class FilterDrawerButton extends StatelessWidget {
   const FilterDrawerButton({
