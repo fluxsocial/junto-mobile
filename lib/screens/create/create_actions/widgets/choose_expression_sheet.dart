@@ -82,11 +82,12 @@ class ChooseExpressionSheet extends StatelessWidget {
                               currentExpressionType: currentExpressionType,
                               switchExpressionType: chooseExpressionType,
                             ),
-                            CreateExpressionIcon(
-                              expressionType: ExpressionType.event,
-                              currentExpressionType: currentExpressionType,
-                              switchExpressionType: chooseExpressionType,
-                            ),
+                            // Temp disable event expression
+                            // CreateExpressionIcon(
+                            //   expressionType: ExpressionType.event,
+                            //   currentExpressionType: currentExpressionType,
+                            //   switchExpressionType: chooseExpressionType,
+                            // ),
                           ],
                         ),
                       ),
