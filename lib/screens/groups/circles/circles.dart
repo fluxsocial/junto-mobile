@@ -60,6 +60,7 @@ class CirclesState extends State<Circles>
         rightMenu: null,
         scaffold: PageView(
           controller: circlesPageController,
+          physics: NeverScrollableScrollPhysics(),
           onPageChanged: (int index) {
             setState(() {
               _currentIndex = index;
@@ -155,21 +156,9 @@ class _CircleMainState extends State<CircleMain> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BlocBuilder<CircleBloc, CircleState>(
         builder: (context, state) {
-          return PageView(
-            controller: circlesPageController,
-            onPageChanged: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            children: [
-              CirclesListAll(
-                userProfile: widget._userProfile,
-                onGroupSelected: widget.onGroupSelected,
-              ),
-              // Temporarily remove requests - This PageView will also include Private groups users are apart of
-              // CirclesRequests(),
-            ],
+          return CirclesListAll(
+            userProfile: widget._userProfile,
+            onGroupSelected: widget.onGroupSelected,
           );
         },
       ),
