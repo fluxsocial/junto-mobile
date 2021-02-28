@@ -75,27 +75,30 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: 42,
-                          alignment: Alignment.bottomLeft,
-                          color: Colors.transparent,
-                          child: AppbarLogo(theme: theme),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 5),
-                          child: Text(
-                            'Communities',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: Theme.of(context).primaryColor,
+                    Container(
+                      // color: Colors.orange,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          // Container(
+                          //   height: 42,
+                          //   alignment: Alignment.bottomLeft,
+                          //   color: Colors.transparent,
+                          //   child: AppbarLogo(theme: theme),
+                          // ),
+                          Container(
+                            // margin: EdgeInsets.only(left: 7.5),
+                            child: Text(
+                              'Communities',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context).primaryColor,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Container(
                       child: Row(
@@ -156,32 +159,11 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                                 color: widget.currentIndex == 0
                                     ? Theme.of(context).primaryColorDark
                                     : Theme.of(context).primaryColorLight,
+                                letterSpacing: .75,
                               ),
                             ),
                           ),
                         ),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     widget.changePageView(1);
-                        //   },
-                        //   child: Container(
-                        //     color: Colors.transparent,
-                        //     padding: const EdgeInsets.only(
-                        //       top: 10,
-                        //       bottom: 10,
-                        //     ),
-                        //     child: Text(
-                        //       'REQUESTS',
-                        //       style: TextStyle(
-                        //         fontSize: 12,
-                        //         fontWeight: FontWeight.w700,
-                        //         color: widget.currentIndex == 1
-                        //             ? Theme.of(context).primaryColorDark
-                        //             : Theme.of(context).primaryColorLight,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                     GestureDetector(
