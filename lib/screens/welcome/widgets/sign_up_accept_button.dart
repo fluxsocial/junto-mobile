@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
+import 'package:junto_beta_mobile/app/app_config.dart';
 import 'package:provider/provider.dart';
 
 class AcceptButton extends StatelessWidget {
@@ -33,9 +34,12 @@ class AcceptButton extends StatelessWidget {
         // Add member to community center on sign up
         await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
             communityCenterAddress, [user.userProfile.user], 'Member');
-        // Add member to updates on sign up
-        await Provider.of<GroupRepo>(context, listen: false)
-            .addGroupMember(updatesAddress, [user.userProfile.user], 'Member');
+        if (appConfig.flavor == Flavor.prod) {
+          // Add member to updates on sign up if they are in production
+          await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
+              updatesAddress, [user.userProfile.user], 'Member');
+        }
+
         // accept agreements
         await BlocProvider.of<AuthBloc>(context).add(AcceptAgreements());
       }
