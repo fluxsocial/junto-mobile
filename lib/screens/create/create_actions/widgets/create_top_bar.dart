@@ -22,21 +22,13 @@ class CreateTopBar extends StatelessWidget {
     String socialContext;
     switch (currentExpressionContext) {
       case ExpressionContext.Collective:
-        socialContext = 'Collective';
-        break;
-      case ExpressionContext.MyPack:
-        socialContext = 'My Pack';
+        socialContext = 'c/junto';
         break;
       case ExpressionContext.Group:
-        socialContext = selectedGroup != null
-            ? 'Group - ${selectedGroup.groupData.name}'
-            : 'Group';
-        break;
-      case ExpressionContext.CommunityCenter:
-        socialContext = 'Community Center';
+        socialContext = 'c/${selectedGroup.groupData.sphereHandle}';
         break;
       default:
-        socialContext = 'Collective';
+        socialContext = 'c/junto';
         break;
     }
     return socialContext;
