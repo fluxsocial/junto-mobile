@@ -402,16 +402,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       setState(() {
         expressionContext = newExpressionContext;
         socialContextAddress = null;
-      });
-    } else if (newExpressionContext == ExpressionContext.MyPack) {
-      setState(() {
-        expressionContext = newExpressionContext;
-        socialContextAddress = userData.pack.address;
-      });
-    } else if (newExpressionContext == ExpressionContext.CommunityCenter) {
-      setState(() {
-        expressionContext = newExpressionContext;
-        socialContextAddress = kCommunityCenterAddress;
+        selectedGroup = Group();
       });
     } else if (newExpressionContext == ExpressionContext.Group) {
       setState(() {
@@ -616,9 +607,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       switch (expressionContext) {
         case ExpressionContext.Collective:
           screen = Screen.groups;
-          break;
-        case ExpressionContext.MyPack:
-          screen = Screen.packs;
           break;
         case ExpressionContext.Group:
           screen = Screen.groups;

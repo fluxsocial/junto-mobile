@@ -4,8 +4,8 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview.dart';
-import 'package:junto_beta_mobile/widgets/previews/circle_preview/collective_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview_create.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/collective_preview_create.dart';
 
 class CreateContextOverlay extends StatefulWidget {
   CreateContextOverlay({
@@ -73,10 +73,18 @@ class _CreateContextOverlayState extends State<CreateContextOverlay> {
                         child: ListView(
                           padding: EdgeInsets.all(0),
                           children: [
-                            CollectivePreview(
-                              callback: () {
-                                // Select Collective Group
+                            GestureDetector(
+                              onTap: () {
+                                widget.selectExpressionContext(
+                                    ExpressionContext.Collective);
+                                widget.setSelectedGroup(
+                                  Group(address: 'junto-collective-group'),
+                                );
                               },
+                              child: CollectivePreviewCreate(
+                                selectedGroup: widget.selectedGroup,
+                                group: Group(address: 'junto-collective-group'),
+                              ),
                             ),
                             ListView.builder(
                               padding: EdgeInsets.all(0),
@@ -87,7 +95,8 @@ class _CreateContextOverlayState extends State<CreateContextOverlay> {
                                 onTap: () {
                                   widget.setSelectedGroup(state.groups[index]);
                                 },
-                                child: CirclePreview(
+                                child: CirclePreviewCreate(
+                                  selectedGroup: widget.selectedGroup,
                                   group: state.groups[index],
                                 ),
                               ),
