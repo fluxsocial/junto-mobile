@@ -120,17 +120,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       if (state is CircleLoaded) {
         final group = widget.group;
         return Scaffold(
-          floatingActionButton: JuntoCommunityCenterFab(
-            onTap: () async {
-              await Provider.of<AppRepo>(context, listen: false).changeScreen(
-                screen: Screen.create,
-                newExpressionContext: ExpressionContext.Group,
-                newGroup: group,
-              );
-            },
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
             child: SphereOpenAppbar(

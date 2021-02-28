@@ -90,7 +90,7 @@ class CirclePreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('s/${group.groupData.sphereHandle}',
+                  Text('c/${group.groupData.sphereHandle}',
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.subtitle1),
                   Text(group.groupData.name,
