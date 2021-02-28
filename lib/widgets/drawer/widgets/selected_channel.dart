@@ -44,7 +44,7 @@ class SelectedChannelChip extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7.5),
         margin: const EdgeInsets.only(top: 15, right: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColorLight,

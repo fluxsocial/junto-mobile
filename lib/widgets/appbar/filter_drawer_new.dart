@@ -90,11 +90,15 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        child: Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 38,
-                          color: Theme.of(context).primaryColorLight,
+                      Transform.translate(
+                        offset: Offset(-10, 0),
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 38,
+                            color: Theme.of(context).primaryColorLight,
+                          ),
                         ),
                       ),
                       Row(
@@ -193,36 +197,16 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Channels',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 5),
+                                  child: Text(
+                                    'Channels',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Theme.of(context).primaryColorDark,
+                                      fontWeight: FontWeight.w700,
                                     ),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        height: 38,
-                                        width: 38,
-                                        child: Text(
-                                          'Edit',
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 ),
                                 FilterDrawerTextField(
                                   textEditingController: textEditingController,
@@ -230,29 +214,33 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                                 ),
                                 if (state is ChannelsPopulatedState &&
                                     state.selectedChannel != null)
-                                  Row(
-                                    children: [
-                                      ...state.selectedChannel
-                                          .map((e) => SelectedChannelChip(
-                                              channel: e.name,
-                                              onTap: () {
-                                                context
-                                                    .bloc<
-                                                        ChannelFilteringBloc>()
-                                                    .add(
-                                                      FilterSelected(
-                                                        state.selectedChannel
-                                                            .where((element) =>
-                                                                element.name !=
-                                                                e.name)
-                                                            .toList(),
-                                                        ExpressionContextType
-                                                            .Collective,
-                                                      ),
-                                                    );
-                                              }))
-                                          .toList(),
-                                    ],
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 5),
+                                    child: Row(
+                                      children: [
+                                        ...state.selectedChannel
+                                            .map((e) => SelectedChannelChip(
+                                                channel: e.name,
+                                                onTap: () {
+                                                  context
+                                                      .bloc<
+                                                          ChannelFilteringBloc>()
+                                                      .add(
+                                                        FilterSelected(
+                                                          state.selectedChannel
+                                                              .where((element) =>
+                                                                  element
+                                                                      .name !=
+                                                                  e.name)
+                                                              .toList(),
+                                                          ExpressionContextType
+                                                              .Collective,
+                                                        ),
+                                                      );
+                                                }))
+                                            .toList(),
+                                      ],
+                                    ),
                                   ),
                                 if (state is ChannelsPopulatedState)
                                   Expanded(
