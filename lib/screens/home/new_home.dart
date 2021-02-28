@@ -141,7 +141,7 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
         return Consumer<AppRepo>(builder: (context, snapshot, _) {
           return Scaffold(
             body: JuntoFilterDrawer(
-              leftDrawer: showLeftDrawer(snapshot.currentScreen),
+              leftDrawer: null,
               rightMenu: JuntoDrawer(),
               swipeLeftDrawer: false,
               scaffold: Stack(
