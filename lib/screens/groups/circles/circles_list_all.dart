@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/circle_refresh.dart';
 import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/collective_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/on_perspectives_changed.dart';
@@ -23,6 +24,16 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
 
   @override
   Widget build(BuildContext context) {
+    final juntoPerspective = PerspectiveModel(
+      address: null,
+      name: 'JUNTO',
+      about: null,
+      creator: null,
+      createdAt: null,
+      isDefault: true,
+      userCount: null,
+      users: null,
+    );
     return CircleRefresh(
       child: Column(
         children: <Widget>[
@@ -46,7 +57,15 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                       child: ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     children: <Widget>[
-                      JuntoCollectivePreview(onGroupSelected: onGroupSelected),
+                      CollectivePreview(
+                        callback: () {
+                          onPerspectivesChanged(juntoPerspective, context);
+
+                          onGroupSelected(
+                            Group(address: 'junto-collective-group'),
+                          );
+                        },
+                      ),
                       ...state.groups.map((group) {
                         return GestureDetector(
                           onTap: () {
@@ -71,79 +90,6 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
               },
             ),
         ],
-      ),
-    );
-  }
-}
-
-class JuntoCollectivePreview extends StatelessWidget {
-  const JuntoCollectivePreview({this.onGroupSelected});
-
-  final Function onGroupSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final juntoPerspective = PerspectiveModel(
-      address: null,
-      name: 'JUNTO',
-      about: null,
-      creator: null,
-      createdAt: null,
-      isDefault: true,
-      userCount: null,
-      users: null,
-    );
-
-    return GestureDetector(
-      onTap: () {
-        onPerspectivesChanged(juntoPerspective, context);
-
-        onGroupSelected(
-          Group(address: 'junto-collective-group'),
-        );
-      },
-      child: Container(
-        color: Colors.transparent,
-        child: Row(
-          children: <Widget>[
-            ClipOval(
-              child: Image.asset(
-                'assets/images/junto-mobile__app-icon.png',
-                height: 38,
-                width: 38,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: .5,
-                      color: Theme.of(context).dividerColor,
-                    ),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('c/junto',
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.subtitle1),
-                    Text(
-                      'Junto Collective',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
       ),
     );
   }
