@@ -29,6 +29,7 @@ class PerspectivesList extends StatelessWidget {
           return Center(child: JuntoProgressIndicator());
         }
         if (state is PerspectivesFetched) {
+          print(state.perspectives);
           return Column(
             children: <Widget>[
               // display Subscriptions perspective first
@@ -81,6 +82,7 @@ class PerspectivesList extends StatelessWidget {
             ],
           );
         }
+        print('hello');
         return Container();
       },
     );

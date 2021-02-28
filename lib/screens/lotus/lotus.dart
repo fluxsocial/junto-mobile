@@ -17,6 +17,9 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/home/new_home.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+
 
 class JuntoLotus extends StatefulWidget {
   @override
@@ -90,6 +93,16 @@ class _JuntoLotusState extends State<JuntoLotus> {
         'lotus_create_id',
       },
     );
+  }
+
+  void initializeBloc() {
+    context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeBloc();
   }
 
   @override
