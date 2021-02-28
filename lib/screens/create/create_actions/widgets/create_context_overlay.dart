@@ -78,12 +78,12 @@ class _CreateContextOverlayState extends State<CreateContextOverlay> {
                                 widget.selectExpressionContext(
                                     ExpressionContext.Collective);
                                 widget.setSelectedGroup(
-                                  Group(address: 'junto-collective-group'),
+                                  Group(address: null),
                                 );
                               },
                               child: CollectivePreviewCreate(
                                 selectedGroup: widget.selectedGroup,
-                                group: Group(address: 'junto-collective-group'),
+                                group: Group(address: null),
                               ),
                             ),
                             ListView.builder(
