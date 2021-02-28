@@ -22,13 +22,13 @@ class FilterDrawerChannelPreview extends StatelessWidget {
                 end: Alignment.topRight,
                 stops: const <double>[0.2, 0.9],
                 colors: <Color>[
-                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.primary,
                   Theme.of(context).colorScheme.primary
                 ],
               ),
               borderRadius: BorderRadius.circular(100),
             ),
-            child: const Icon(
+            child: Icon(
               CustomIcons.newhashtag,
               color: Colors.white,
               size: 24,
@@ -40,14 +40,6 @@ class FilterDrawerChannelPreview extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 vertical: 20,
               ),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    width: .5,
-                    color: Color(0xff444444),
-                  ),
-                ),
-              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,9 +47,9 @@ class FilterDrawerChannelPreview extends StatelessWidget {
                   Text(
                     channel.name,
                     textAlign: TextAlign.start,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 17,
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
