@@ -62,7 +62,7 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                           onPerspectivesChanged(juntoPerspective, context);
 
                           onGroupSelected(
-                            Group(address: 'junto-collective-group'),
+                            Group(address: null),
                           );
                         },
                       ),

@@ -17,12 +17,12 @@ import 'sphere_open/sphere_open.dart';
 
 // This screen displays the temporary page we'll display until groups are released
 class Circles extends StatefulWidget {
-  final Group group;
-
   const Circles({
     Key key,
     this.group,
   }) : super(key: key);
+
+  final Group group;
   @override
   State<StatefulWidget> createState() {
     return CirclesState();
@@ -82,8 +82,7 @@ class CirclesState extends State<Circles>
                     .setActiveGroup(group);
               },
             ),
-            if (widget.group != null &&
-                widget.group.address == 'junto-collective-group')
+            if (widget.group != null && widget.group.address == null)
               Scaffold(body: ExpressionFeed(goBack: () {
                 circlesPageController.animateToPage(
                   0,
