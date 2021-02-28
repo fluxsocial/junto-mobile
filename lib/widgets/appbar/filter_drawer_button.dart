@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_new.dart';
 
 class FilterDrawerButton extends StatelessWidget {
   const FilterDrawerButton({
@@ -13,7 +14,16 @@ class FilterDrawerButton extends StatelessWidget {
       button: true,
       hint: S.of(context).toggle_filter_drawer,
       child: GestureDetector(
-        onTap: () => JuntoFilterDrawer.of(context).toggle(),
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            isScrollControlled: true,
+            builder: (BuildContext context) => FilterDrawerNew(),
+          );
+        },
         child: Container(
           color: Colors.transparent,
           padding: const EdgeInsets.all(10),
