@@ -18,6 +18,8 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
   FocusNode focusNode;
   double channelsContainerHeight = 200.0;
   TextEditingController textEditingController;
+  int _currentIndex = 0;
+  PageController pageViewController;
 
   animateChannelsContainer() {
     if (focusNode.hasFocus) {
@@ -38,6 +40,7 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
 
     textEditingController = TextEditingController()
       ..addListener(_onSearchChanged);
+    pageViewController = PageController();
   }
 
   Future<void> _onSearchChanged() async {
@@ -51,6 +54,12 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
     textEditingController.removeListener(_onSearchChanged);
     textEditingController.dispose();
     super.dispose();
+  }
+
+  void setCurrentIndex(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
@@ -103,62 +112,64 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                       ),
                       Row(
                         children: [
-                          ClipOval(
-                            child: Container(
-                              height: 38,
-                              width: 38,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  stops: const <double>[0.3, 0.9],
-                                  colors: <Color>[
-                                    Theme.of(context).colorScheme.primary,
-                                    Theme.of(context).colorScheme.primary,
+                          GestureDetector(
+                            onTap: () {
+                              pageViewController.animateToPage(
+                                0,
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.easeIn,
+                              );
+                            },
+                            child: ClipOval(
+                              child: Container(
+                                height: 38,
+                                width: 38,
+                                color: _currentIndex == 0
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).dividerColor,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/junto-mobile__custom-filter.png',
+                                      height: 15,
+                                      color: _currentIndex == 0
+                                          ? Colors.white
+                                          : Theme.of(context).primaryColorDark,
+                                    ),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/junto-mobile__custom-filter.png',
-                                    height: 15,
-                                    color: Colors.white,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                ],
                               ),
                             ),
                           ),
                           const SizedBox(width: 10),
-                          ClipOval(
-                            child: Container(
-                              height: 38,
-                              width: 38,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  stops: const <double>[0.3, 0.9],
-                                  colors: <Color>[
-                                    Theme.of(context).dividerColor,
-                                    Theme.of(context).dividerColor,
+                          GestureDetector(
+                            onTap: () {
+                              pageViewController.animateToPage(
+                                1,
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.easeIn,
+                              );
+                            },
+                            child: ClipOval(
+                              child: Container(
+                                height: 38,
+                                width: 38,
+                                color: _currentIndex == 1
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).dividerColor,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/junto-mobile__perspective--white.png',
+                                      height: 15,
+                                      color: _currentIndex == 1
+                                          ? Colors.white
+                                          : Theme.of(context).primaryColorDark,
+                                    ),
                                   ],
                                 ),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/junto-mobile__perspective--white.png',
-                                    height: 15,
-                                    color: Theme.of(context).primaryColorDark,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                ],
                               ),
                             ),
                           ),
@@ -170,6 +181,11 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
               // Filter Pages
               Expanded(
                 child: PageView(
+                  controller: pageViewController,
+                  physics: NeverScrollableScrollPhysics(),
+                  onPageChanged: (int index) {
+                    setCurrentIndex(index);
+                  },
                   children: [
                     // Custom Filter (starting with channels in V1)
                     Column(
@@ -283,6 +299,51 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                                   ),
                               ],
                             ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // Perspectives
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Perspectives',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'ALL',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: Theme.of(context).primaryColor,
+                                  letterSpacing: .5,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Theme.of(context).dividerColor,
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 20,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
