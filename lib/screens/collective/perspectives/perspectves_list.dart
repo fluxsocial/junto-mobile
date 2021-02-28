@@ -36,7 +36,6 @@ class PerspectivesList extends StatelessWidget {
               ListView(
                 padding: const EdgeInsets.all(0),
                 shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
                 children:
                     state.perspectives.map((PerspectiveModel perspective) {
                   if (perspective.isDefault == true) {

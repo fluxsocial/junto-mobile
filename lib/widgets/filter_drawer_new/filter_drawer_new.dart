@@ -351,6 +351,7 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                             ],
                           ),
                         ),
+                        const SizedBox(height: 10),
                         PerspectivesList()
                       ],
                     ),
