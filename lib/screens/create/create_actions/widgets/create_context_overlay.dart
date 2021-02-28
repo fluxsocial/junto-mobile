@@ -94,6 +94,9 @@ class _CreateContextOverlayState extends State<CreateContextOverlay> {
                               itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
                                   widget.setSelectedGroup(state.groups[index]);
+                                  widget.selectExpressionContext(
+                                    ExpressionContext.Group,
+                                  );
                                 },
                                 child: CirclePreviewCreate(
                                   selectedGroup: widget.selectedGroup,
