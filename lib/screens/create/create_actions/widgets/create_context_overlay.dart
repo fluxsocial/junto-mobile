@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_c
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/collective_preview.dart';
 
 class CreateContextOverlay extends StatefulWidget {
   CreateContextOverlay({
@@ -71,7 +72,7 @@ class _CreateContextOverlayState extends State<CreateContextOverlay> {
                   ),
                   child: Text(
                     _currentIndex == 0
-                        ? 'Where would you like to share?'
+                        ? 'Choose a Community'
                         : 'Select a Group',
                     style: TextStyle(
                       fontSize: 20,
@@ -101,52 +102,34 @@ class _CreateContextOverlayState extends State<CreateContextOverlay> {
                             selectExpressionContext:
                                 widget.selectExpressionContext,
                           ),
-                          ChooseExpressionContext(
-                            expressionContext: ExpressionContext.MyPack,
-                            currentExpressionContext:
-                                widget.currentExpressionContext,
-                            selectExpressionContext:
-                                widget.selectExpressionContext,
-                          ),
-                          ChooseExpressionContext(
-                            expressionContext:
-                                ExpressionContext.CommunityCenter,
-                            currentExpressionContext:
-                                widget.currentExpressionContext,
-                            selectExpressionContext:
-                                widget.selectExpressionContext,
-                          ),
-                          // ChooseExpressionContext(
-                          //   expressionContext: ExpressionContext.Group,
-                          //   currentExpressionContext:
-                          //       widget.currentExpressionContext,
-                          //   selectExpressionContext:
-                          //       widget.selectExpressionContext,
-                          //   group: widget.selectedGroup,
-                          //   gotoGroupSelection: () {
-                          //     _controller.jumpToPage(1);
-                          //   },
-                          // ),
                         ],
                       ),
                       BlocBuilder<CircleBloc, CircleState>(
                         builder: (context, state) {
                           if (state is CircleLoaded) {
                             return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: ListView.builder(
-                                itemCount: state.groups.length,
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                  onTap: () {
-                                    _controller.jumpToPage(0);
-                                    widget
-                                        .setSelectedGroup(state.groups[index]);
-                                  },
-                                  child: CirclePreview(
-                                    group: state.groups[index],
+                              padding: EdgeInsets.symmetric(horizontal: 15.0),
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  CollectivePreview(),
+                                  ListView.builder(
+                                    physics: ClampingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: state.groups.length,
+                                    itemBuilder: (context, index) =>
+                                        GestureDetector(
+                                      onTap: () {
+                                        _controller.jumpToPage(0);
+                                        widget.setSelectedGroup(
+                                            state.groups[index]);
+                                      },
+                                      child: CirclePreview(
+                                        group: state.groups[index],
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             );
                           }
