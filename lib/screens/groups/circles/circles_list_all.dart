@@ -107,35 +107,12 @@ class JuntoCollectivePreview extends StatelessWidget {
         child: Row(
           children: <Widget>[
             ClipOval(
-              child: ImageWrapper(
-                  imageUrl: 'assets/images/junto-mobile__logo--rainbow.png',
-                  height: 38,
-                  width: 38,
-                  fit: BoxFit.cover,
-                  placeholder: (BuildContext context, String _) {
-                    return Container(
-                      alignment: Alignment.center,
-                      height: 38,
-                      width: 38,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomLeft,
-                          end: Alignment.topRight,
-                          stops: const <double>[0.3, 0.9],
-                          colors: <Color>[
-                            Theme.of(context).colorScheme.secondary,
-                            Theme.of(context).colorScheme.primary
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Icon(
-                        CustomIcons.spheres,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        size: 17,
-                      ),
-                    );
-                  }),
+              child: Image.asset(
+                'assets/images/junto-mobile__app-icon.png',
+                height: 38,
+                width: 38,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(

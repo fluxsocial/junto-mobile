@@ -169,6 +169,7 @@ flutter:
     - assets/images/junto-mobile__badge--platinum.png
     - assets/images/junto-mobile__badge--silver.png
     - assets/images/junto-mobile__badge--crowdfunder.png
+    - assets/images/junto-mobile__app-icon.png
 
 flutter_intl:
   enabled: true
