@@ -101,12 +101,17 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                     children: [
                       Transform.translate(
                         offset: Offset(-10, 0),
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 38,
-                            color: Theme.of(context).primaryColorLight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 38,
+                              color: Theme.of(context).primaryColorLight,
+                            ),
                           ),
                         ),
                       ),

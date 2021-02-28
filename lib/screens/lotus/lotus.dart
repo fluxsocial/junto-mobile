@@ -20,7 +20,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 
-
 class JuntoLotus extends StatefulWidget {
   @override
   _JuntoLotusState createState() => _JuntoLotusState();
