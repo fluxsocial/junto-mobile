@@ -146,28 +146,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                           },
                         ),
                         JuntoDrawerItem(
-                          icon: Padding(
-                            padding: const EdgeInsets.only(right: 32),
-                            child: Image.asset(
-                              'assets/images/junto-mobile__sprout.png',
-                              height: 20,
-                              color: JuntoPalette().juntoWhite(theme: theme),
-                            ),
-                          ),
-                          title: 'Center',
-                          theme: theme,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) {
-                                  return JuntoCommunityCenter();
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        JuntoDrawerItem(
                           icon: Icons.mail_outline,
                           title: 'Invite',
                           theme: theme,

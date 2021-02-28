@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_appbar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_fab.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_feedback.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_updates.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -28,9 +27,8 @@ class JuntoCommunityCenter extends StatefulWidget {
 }
 
 class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
-  final List<String> _tabs = ['UPDATES', 'FEEDBACK'];
+  final List<String> _tabs = ['FEEDBACK'];
   Map<String, dynamic> relationToFeedback;
-  Map<String, dynamic> relationToUpdates;
 
   @override
   void initState() {
@@ -54,21 +52,9 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
       joinFeedbackGroup(userProfile);
     }
 
-    // get relation to updates group
-    final Map<String, dynamic> updatesRelation =
-        await Provider.of<GroupRepo>(context, listen: false)
-            .getRelationToGroup(kCommunityCenterAddress, userProfile.address);
-
-    // If the member is not apart of the updates group, add them
-    if (updatesRelation['member'] == false &&
-        updatesRelation['creator'] == false) {
-      joinUpdatesGroup(userProfile);
-    }
-
     // set state
     setState(() {
       relationToFeedback = feedbackRelation;
-      relationToUpdates = updatesRelation;
     });
   }
 
@@ -77,13 +63,6 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
     // Add member to community center on sign up
     await Provider.of<GroupRepo>(context, listen: false)
         .addGroupMember(kCommunityCenterAddress, [userProfile], 'Member');
-  }
-
-  // Join Community Center Updates Group
-  Future<void> joinUpdatesGroup(UserProfile userProfile) async {
-    // Add member to updates on sign up
-    await Provider.of<GroupRepo>(context, listen: false)
-        .addGroupMember(kUpdatesAddress, [userProfile], 'Member');
   }
 
   @override
@@ -121,7 +100,6 @@ class JuntoCommunityCenterState extends State<JuntoCommunityCenter> {
             },
             body: TabBarView(
               children: <Widget>[
-                JuntoCommunityCenterUpdates(),
                 JuntoCommunityCenterFeedback(),
               ],
             ),

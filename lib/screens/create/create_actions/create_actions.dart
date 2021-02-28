@@ -71,9 +71,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   // community center address
   final String communityCenterAddress = kCommunityCenterAddress;
 
-  // updates address
-  String updatesAddress = kUpdatesAddress;
-
   String _currentExpressionContext;
   ExpressionContext _expressionContext;
   String _currentExpressionContextDescription;
@@ -124,29 +121,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     }
   }
 
-  Future<void> getRelationToGroup() async {
-    // get relation to updates group
-    try {
-      final Map<String, dynamic> relation =
-          await Provider.of<GroupRepo>(context, listen: false)
-              .getRelationToGroup(
-        updatesAddress,
-        _userAddress,
-      );
-      setState(() {
-        relationToGroup = relation;
-      });
-    } catch (e, s) {
-      logger.logException(e, s);
-    }
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _userAddress = Provider.of<UserDataProvider>(context).userAddress;
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
-    getRelationToGroup();
   }
 
   @override
@@ -228,17 +207,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<void> _createExpression() async {
     try {
-      if (_address == updatesAddress &&
-          !relationToGroup['facilitator'] &&
-          !relationToGroup['creator']) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => const SingleActionDialog(
-            dialogText: 'You must be an admin to post updates.',
-          ),
-        );
-        return;
-      }
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
       switch (widget.expressionType) {
         case ExpressionType.photo:
@@ -502,22 +470,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _expressionContextIcon = Image.asset(
         'assets/images/junto-mobile__sprout.png',
         height: 17,
-        color: _currentExpressionContext == expressionContext
-            ? Colors.white
-            : Theme.of(context).primaryColor,
-      );
-    } else if (expressionContext == 'Updates') {
-      _setExpressionContextDescription = () {
-        setState(() {
-          _expressionContext = ExpressionContext.Group;
-          _currentExpressionContextDescription =
-              'share updates to the Junto community';
-          _address = updatesAddress;
-        });
-      };
-      _expressionContextIcon = Icon(
-        Icons.update,
-        size: 24,
         color: _currentExpressionContext == expressionContext
             ? Colors.white
             : Theme.of(context).primaryColor,
