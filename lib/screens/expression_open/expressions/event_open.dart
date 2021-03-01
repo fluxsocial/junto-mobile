@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
+import 'package:intl/intl.dart';
 
 class EventOpen extends StatelessWidget {
   const EventOpen(this.expression);
@@ -19,6 +20,14 @@ class EventOpen extends StatelessWidget {
     final String eventLocation = eventExpression.location;
     final String eventImage = eventExpression.photo;
     final String eventDescription = eventExpression.description;
+
+    final startDate = DateTime.parse(eventStartTime);
+    final endDate = DateTime.parse(eventEndTime);
+
+    final formatter = DateFormat('dd-MMM-yyyy hh:m:s');
+
+    final startTime = formatter.format(startDate);
+    final endTime = formatter.format(endDate);
 
     return Container(
       child: Column(
@@ -69,19 +78,31 @@ class EventOpen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(
-                    //       horizontal: 10, vertical: 10),
-                    //   child: Row(
-                    //     children: <Widget>[
-                    //       Icon(Icons.timer,
-                    //           color: Theme.of(context).primaryColor, size: 20),
-                    //       const SizedBox(width: 5),
-                    //       Text(eventStartTime,
-                    //           style: Theme.of(context).textTheme.caption),
-                    //     ],
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.timer,
+                              color: Theme.of(context).primaryColor, size: 20),
+                          const SizedBox(width: 5),
+                          Text(startTime,
+                              style: Theme.of(context).textTheme.caption),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.timer,
+                              color: Theme.of(context).primaryColor, size: 20),
+                          const SizedBox(width: 5),
+                          Text(endTime,
+                              style: Theme.of(context).textTheme.caption),
+                        ],
+                      ),
+                    ),
                     eventLocation != ''
                         ? Padding(
                             padding: const EdgeInsets.only(

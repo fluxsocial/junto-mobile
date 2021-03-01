@@ -40,10 +40,11 @@ class EventPreview extends StatelessWidget {
                 Text(expression.expressionData.title,
                     style: Theme.of(context).textTheme.headline6),
                 const SizedBox(height: 2.5),
-                Text(
-                  expression.expressionData.location,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
+                if (expression.expressionData.location.length > 0)
+                  Text(
+                    expression.expressionData.location,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
               ],
             ),
           )
