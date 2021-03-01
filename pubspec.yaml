@@ -49,11 +49,11 @@ dependencies:
   email_validator: ^1.0.5
   flutter_mentions: ^1.0.10
   flutter_parsed_text: ^1.2.5
-  embedly_preview:
+  flutter_peekalink:
     # path: ../embedly-preview
     git:
-      url: https://github.com/juntofoundation/embedly-preview.git
-      ref: master
+      url: https://github.com/juntofoundation/flutter-peekalink
+      ref: main
   contacts_service: ^0.4.6
   permission_handler: ^5.0.1+1
   clipboard: ^0.1.2+8
