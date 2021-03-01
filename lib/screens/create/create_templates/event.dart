@@ -71,8 +71,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   Map<String, dynamic> createExpression() {
     return {
       'title': titleController.value.text.trim(),
-      'description': detailsController.value.text.trim(),
-      'location': locationController.value.text.trim(),
+      'description': detailsController.value.text.trim() ?? '',
+      'location': locationController.value.text.trim() ?? '',
       'photo': imageFile.value != null ? File(imageFile.value.path) : null,
       'startTime': startTime.value.toUtc().toIso8601String(),
       'endTime': endTime.value.toUtc().toIso8601String(),
@@ -84,7 +84,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   bool expressionHasData() {
     final dynamic expression = createExpression();
 
-    if (expression['title'].isNotEmpty) {
+    if (expression['title'].isNotEmpty && expression['photo'] != null) {
       return true;
     }
 

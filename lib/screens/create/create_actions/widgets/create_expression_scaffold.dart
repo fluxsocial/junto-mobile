@@ -300,7 +300,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         break;
       case ExpressionType.event:
         expressionHasData = _eventKey.currentState.expressionHasData();
-        validationText = 'Make sure text fields are blank.';
+        validationText = 'Make sure name of the event & phot is not empty.';
         break;
 
       default:
