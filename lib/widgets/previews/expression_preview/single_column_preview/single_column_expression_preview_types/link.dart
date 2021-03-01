@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:embedly_preview/embedly_preview.dart';
-import 'package:embedly_preview/theme/embedly_theme_data.dart';
+import 'package:flutter_peekalink/flutter_peekalink.dart';
+import 'package:flutter_peekalink/theme/peekalink_theme_data.dart';
 import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class LinkPreview extends StatelessWidget {
@@ -57,10 +57,10 @@ class LinkPreview extends StatelessWidget {
                 ),
               ),
             ),
-          OEmbedWidget(
+          PeekalinkWidget(
             data: expression.expressionData.data,
             expanded: false,
-            theme: EmbedlyThemeData(
+            theme: PeekalinkThemeData(
               brightness: Theme.of(context).brightness,
               backgroundColor: Theme.of(context).backgroundColor,
               headingText: TextStyle(

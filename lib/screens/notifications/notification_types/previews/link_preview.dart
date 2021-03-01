@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:embedly_preview/embedly_preview.dart';
-import 'package:embedly_preview/theme/embedly_theme_data.dart';
+import 'package:flutter_peekalink/flutter_peekalink.dart';
+import 'package:flutter_peekalink/theme/peekalink_theme_data.dart';
 import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class NotificationLinkPreview extends StatelessWidget {
@@ -15,8 +15,8 @@ class NotificationLinkPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final String title = item.sourceExpression.expressionData['title'];
     final String caption = item.sourceExpression.expressionData['caption'];
-    final OEmbedResponse embedlyResponse =
-        OEmbedResponse.fromMap(item.sourceExpression.expressionData['data']);
+    final PeekalinkResponse embedlyResponse =
+        PeekalinkResponse.fromMap(item.sourceExpression.expressionData['data']);
 
     return Container(
       width: MediaQuery.of(context).size.width - 68,
@@ -65,10 +65,10 @@ class NotificationLinkPreview extends StatelessWidget {
                     fontSize: 17,
                   )),
             ),
-          OEmbedWidget(
+          PeekalinkWidget(
             data: embedlyResponse,
             expanded: false,
-            theme: EmbedlyThemeData(
+            theme: PeekalinkThemeData(
               brightness: Theme.of(context).brightness,
               backgroundColor: Theme.of(context).backgroundColor,
               headingText: TextStyle(

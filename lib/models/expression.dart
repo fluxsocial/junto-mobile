@@ -1,4 +1,4 @@
-import 'package:embedly_preview/embedly_preview.dart';
+import 'package:flutter_peekalink/flutter_peekalink.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -194,7 +194,7 @@ class LinkFormExpression {
       title: json['title'],
       caption: json['caption'],
       url: json['url'],
-      data: OEmbedResponse.fromMap(json['data']),
+      data: PeekalinkResponse.fromMap(json['data']),
     );
   }
 
@@ -204,7 +204,7 @@ class LinkFormExpression {
   final String caption;
   @HiveField(2)
   final String url;
-  final OEmbedResponse data;
+  final PeekalinkResponse data;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
