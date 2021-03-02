@@ -17,12 +17,14 @@ class CircleActionItemsMember extends StatelessWidget {
     @required this.userProfile,
     @required this.members,
     @required this.circleCreator,
+    this.goBack,
   }) : super(key: key);
 
   final Group sphere;
   final UserProfile userProfile;
   final List<Users> members;
   final UserProfile circleCreator;
+  final Function goBack;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,7 @@ class CircleActionItemsMember extends StatelessWidget {
                                     ),
                                   );
 
-                              Navigator.pop(context);
+                              goBack();
                             } catch (e, s) {
                               logger.logException(e, s);
                             }

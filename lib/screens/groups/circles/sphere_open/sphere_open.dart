@@ -4,11 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
@@ -16,13 +14,11 @@ import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/circle_action_items_admin.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/member/circle_action_items_member.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/circle_open_expressions/circle_open_expressions.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_fab.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed_new.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -204,6 +200,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                     userProfile: _userProfile.user,
                                     members: state.members,
                                     circleCreator: state.creator?.user,
+                                    goBack: widget.goBack,
                                   ),
                               ],
                             ),
@@ -364,12 +361,14 @@ class ShowRelationshipWidget extends StatelessWidget {
     this.userProfile,
     this.members,
     this.circleCreator,
+    this.goBack,
   });
   final Group circle;
   final Map<String, dynamic> relationToGroup;
   final UserProfile userProfile;
   final List<Users> members;
   final UserProfile circleCreator;
+  final Function goBack;
 
   @override
   Widget build(BuildContext context) {
@@ -384,6 +383,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         sphere: circle,
         userProfile: userProfile,
         isCreator: relationToGroup['creator'],
+        goBack: goBack,
       );
     } else if (relationToGroup['member']) {
       relation = 'Member';
@@ -392,6 +392,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         userProfile: userProfile,
         members: members,
         circleCreator: circleCreator,
+        goBack: goBack,
       );
     } else {
       relation = 'Member';
@@ -400,6 +401,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         userProfile: userProfile,
         members: members,
         circleCreator: circleCreator,
+        goBack: goBack,
       );
     }
     return GestureDetector(
