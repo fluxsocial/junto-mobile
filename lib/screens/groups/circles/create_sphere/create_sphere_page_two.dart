@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/search_bar.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
@@ -24,15 +27,30 @@ class CreateSpherePageTwo extends StatefulWidget {
 }
 
 class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
+  TextEditingController _subController;
+  TextEditingController _conController;
+
   @override
   void initState() {
     super.initState();
+
+    _subController = TextEditingController();
+    _conController = TextEditingController();
+
     context
         .bloc<RelationBloc>()
         .add(FetchRealtionship(RelationContext.following, ''));
     context
         .bloc<RelationBloc>()
         .add(FetchRealtionship(RelationContext.connections, ''));
+  }
+
+  @override
+  void dispose() {
+    _subController.dispose();
+    _conController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -67,109 +85,173 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
             ),
           ];
         },
-        body: BlocBuilder<RelationBloc, RelationState>(
-          builder: (context, state) {
-            if (state is RelationLoadedState) {
-              // get list of connections
-              final List<UserProfile> _connectionsMembers = state.connections;
-
-              // get list of following
-              final List<UserProfile> _followingMembers = state.following;
-
-              return TabBarView(
-                children: <Widget>[
-                  NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification notification) {
-                      final metrics = notification.metrics;
-                      double scrollPercent =
-                          (metrics.pixels / metrics.maxScrollExtent) * 100;
-                      if (scrollPercent.roundToDouble() == 60.0 &&
-                          state.followingResultCount >
-                              _followingMembers.length) {
-                        context.bloc<RelationBloc>().add(FetchMoreRelationship(
-                              RelationContext.following,
-                              '',
-                            ));
-                        return true;
-                      }
-                      return false;
+        body: TabBarView(
+          children: <Widget>[
+            Container(
+              child: Column(
+                children: [
+                  SearchBar(
+                    hintText: 'Search Connections',
+                    textEditingController: _subController,
+                    onTextChange: (val) {
+                      context.bloc<RelationBloc>().add(
+                          FetchRealtionship(RelationContext.following, val));
                     },
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: <Widget>[
-                        for (UserProfile member in _followingMembers)
-                          MemberPreviewSelect(
-                            profile: member,
-                            onSelect: widget.addMember,
-                            onDeselect: widget.removeMember,
-                            isSelected: false, //TODO: Update with dynamic val
-                          ),
-                      ],
-                    ),
                   ),
-                  // connections
-                  NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification notification) {
-                      final metrics = notification.metrics;
-                      double scrollPercent =
-                          (metrics.pixels / metrics.maxScrollExtent) * 100;
-                      if (scrollPercent.roundToDouble() == 60.0 &&
-                          state.connctionResultCount >
-                              _connectionsMembers.length) {
-                        context.bloc<RelationBloc>().add(FetchMoreRelationship(
-                              RelationContext.connections,
-                              '',
-                            ));
-                        return true;
+                  BlocBuilder<RelationBloc, RelationState>(
+                    builder: (context, state) {
+                      if (state is RelationErrorState) {
+                        print(state.message);
+                        return JuntoErrorWidget(
+                            errorMessage: 'Hmm, something went wrong');
+                      } else if (state is RelationLoadingState) {
+                        return Center(
+                          child: JuntoProgressIndicator(),
+                        );
+                      } else if (state is RelationLoadedState) {
+                        // get list of following
+                        final List<UserProfile> _followingMembers =
+                            state.following;
+
+                        if (_followingMembers.length > 0) {
+                          return Expanded(
+                            child: NotificationListener<ScrollNotification>(
+                              onNotification:
+                                  (ScrollNotification notification) {
+                                final metrics = notification.metrics;
+                                double scrollPercent =
+                                    (metrics.pixels / metrics.maxScrollExtent) *
+                                        100;
+                                if (scrollPercent.roundToDouble() == 60.0 &&
+                                    state.followingResultCount >
+                                        _followingMembers.length) {
+                                  context
+                                      .bloc<RelationBloc>()
+                                      .add(FetchMoreRelationship(
+                                        RelationContext.following,
+                                        _subController.value.text,
+                                      ));
+                                  return true;
+                                }
+                                return false;
+                              },
+                              child: ListView(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                children: <Widget>[
+                                  for (UserProfile member in _followingMembers)
+                                    MemberPreviewSelect(
+                                      profile: member,
+                                      onSelect: widget.addMember,
+                                      onDeselect: widget.removeMember,
+                                      isSelected: widget.selectedMembers
+                                          .contains(member.address),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return FeedPlaceholder(
+                            placeholderText: 'No subscriptions yet!',
+                            image: 'assets/images/junto-mobile__bench.png',
+                          );
+                        }
+                      } else {
+                        return FeedPlaceholder(
+                          placeholderText: 'No subscriptions yet!',
+                          image: 'assets/images/junto-mobile__bench.png',
+                        );
                       }
-                      return false;
                     },
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: <Widget>[
-                        for (UserProfile connection in _connectionsMembers)
-                          MemberPreviewSelect(
-                            profile: connection,
-                            onSelect: widget.addMember,
-                            onDeselect: widget.removeMember,
-                            isSelected: false, //TODO: Update with dynamic val
-                          ),
-                      ],
-                    ),
                   ),
                 ],
-              );
-            } else if (state is RelationErrorState) {
-              return TabBarView(
-                children: <Widget>[
-                  Center(
-                    child: Transform.translate(
-                      offset: const Offset(0.0, -50),
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
+              ),
+            ),
+            // connections
+            Container(
+              child: Column(
+                children: [
+                  SearchBar(
+                    hintText: 'Search Connections',
+                    textEditingController: _conController,
+                    onTextChange: (val) {
+                      context.bloc<RelationBloc>().add(
+                          FetchRealtionship(RelationContext.connections, val));
+                    },
                   ),
-                  Center(
-                    child: Transform.translate(
-                      offset: const Offset(0.0, -50),
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
+                  BlocBuilder<RelationBloc, RelationState>(
+                    builder: (context, state) {
+                      if (state is RelationErrorState) {
+                        print(state.message);
+                        return JuntoErrorWidget(
+                            errorMessage: 'Hmm, something went wrong');
+                      } else if (state is RelationLoadingState) {
+                        return Center(
+                          child: JuntoProgressIndicator(),
+                        );
+                      } else if (state is RelationLoadedState) {
+                        // get list of connections
+                        final List<UserProfile> _connectionsMembers =
+                            state.connections;
+
+                        if (_connectionsMembers.length > 0) {
+                          return Expanded(
+                            child: NotificationListener<ScrollNotification>(
+                              onNotification:
+                                  (ScrollNotification notification) {
+                                final metrics = notification.metrics;
+                                double scrollPercent =
+                                    (metrics.pixels / metrics.maxScrollExtent) *
+                                        100;
+                                if (scrollPercent.roundToDouble() == 60.0 &&
+                                    state.connctionResultCount >
+                                        _connectionsMembers.length) {
+                                  context
+                                      .bloc<RelationBloc>()
+                                      .add(FetchMoreRelationship(
+                                        RelationContext.connections,
+                                        _conController.value.text,
+                                      ));
+                                  return true;
+                                }
+                                return false;
+                              },
+                              child: ListView(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                children: <Widget>[
+                                  for (UserProfile connection
+                                      in _connectionsMembers)
+                                    MemberPreviewSelect(
+                                      profile: connection,
+                                      onSelect: widget.addMember,
+                                      onDeselect: widget.removeMember,
+                                      isSelected: widget.selectedMembers
+                                          .contains(connection.address),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return FeedPlaceholder(
+                            placeholderText: 'No connections yet!',
+                            image: 'assets/images/junto-mobile__bench.png',
+                          );
+                        }
+                      } else {
+                        return FeedPlaceholder(
+                          placeholderText: 'No connections yet!',
+                          image: 'assets/images/junto-mobile__bench.png',
+                        );
+                      }
+                    },
                   ),
                 ],
-              );
-            }
-            return TabBarView(
-              children: <Widget>[
-                Center(
-                  child: JuntoProgressIndicator(),
-                ),
-                Center(
-                  child: JuntoProgressIndicator(),
-                ),
-              ],
-            );
-          },
+              ),
+            ),
+          ],
         ),
       ),
     );
