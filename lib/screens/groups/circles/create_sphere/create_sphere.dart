@@ -341,6 +341,7 @@ class CreateSphereState extends State<CreateSphere> {
     print('test: ${_sphereMembers}');
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: _buildAppBar(),
