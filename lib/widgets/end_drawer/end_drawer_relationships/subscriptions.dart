@@ -23,37 +23,36 @@ class _SubscriptionsState extends State<Subscriptions> {
     super.initState();
     context
         .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.following));
+        .add(FetchRealtionship(RelationContext.following, ''));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RelationBloc, RelationState>(
-      builder: (context, state) {
-        if (state is RelationErrorState) {
-          print(state.message);
-          return JuntoErrorWidget(errorMessage: 'Hmm, something went wrong');
-        } else if (state is RelationLoadingState) {
-          return Center(
-            child: JuntoProgressIndicator(),
-          );
-        } else if (state is RelationLoadedState) {
-          print('getting following');
-
-          final List<UserProfile> _followingMembers = state.following;
-          if (_followingMembers.length > 0) {
-            return Container(
-              child: Column(
-                children: [
-                  SearchBar(
-                    hintText: 'Search Subscription',
-                    textEditingController: _textEditingController,
-                    onTextChange: (val) {
-                      print('hello');
-                      context.bloc<RelationBloc>().add(SearchRelationship(val));
-                    },
-                  ),
-                  Expanded(
+    return Container(
+      child: Column(
+        children: [
+          SearchBar(
+            hintText: 'Search Subscription',
+            textEditingController: _textEditingController,
+            onTextChange: (val) {
+              context
+                  .bloc<RelationBloc>()
+                  .add(FetchRealtionship(RelationContext.following, val));
+            },
+          ),
+          BlocBuilder<RelationBloc, RelationState>(
+            builder: (context, state) {
+              if (state is RelationErrorState) {
+                return JuntoErrorWidget(
+                    errorMessage: 'Hmm, something went wrong');
+              } else if (state is RelationLoadingState) {
+                return Center(
+                  child: JuntoProgressIndicator(),
+                );
+              } else if (state is RelationLoadedState) {
+                final List<UserProfile> _followingMembers = state.following;
+                if (_followingMembers.length > 0) {
+                  return Expanded(
                     child: NotificationListener<ScrollNotification>(
                       onNotification: (ScrollNotification notification) {
                         final metrics = notification.metrics;
@@ -62,8 +61,12 @@ class _SubscriptionsState extends State<Subscriptions> {
                         if (scrollPercent.roundToDouble() == 60.0 &&
                             state.followingResultCount >
                                 _followingMembers.length) {
-                          context.bloc<RelationBloc>().add(
-                              FetchMoreRelationship(RelationContext.following));
+                          context
+                              .bloc<RelationBloc>()
+                              .add(FetchMoreRelationship(
+                                RelationContext.following,
+                                _textEditingController.value.text,
+                              ));
                           return true;
                         }
                         return false;
@@ -78,23 +81,23 @@ class _SubscriptionsState extends State<Subscriptions> {
                             .toList(),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return FeedPlaceholder(
-              placeholderText: 'No subscriptions yet!',
-              image: 'assets/images/junto-mobile__bench.png',
-            );
-          }
-        }
+                  );
+                } else {
+                  return FeedPlaceholder(
+                    placeholderText: 'No subscriptions yet!',
+                    image: 'assets/images/junto-mobile__bench.png',
+                  );
+                }
+              }
 
-        return FeedPlaceholder(
-          placeholderText: 'No subscriptions yet!',
-          image: 'assets/images/junto-mobile__bench.png',
-        );
-      },
+              return FeedPlaceholder(
+                placeholderText: 'No subscriptions yet!',
+                image: 'assets/images/junto-mobile__bench.png',
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

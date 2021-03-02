@@ -27,36 +27,38 @@ class _SubscribersState extends State<Subscribers> {
     super.initState();
     context
         .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.follower));
+        .add(FetchRealtionship(RelationContext.follower, ''));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RelationBloc, RelationState>(
-      builder: (context, state) {
-        if (state is RelationErrorState) {
-          print(state.message);
-          return JuntoErrorWidget(errorMessage: 'Hmm, something went wrong');
-        } else if (state is RelationLoadingState) {
-          return Center(
-            child: JuntoProgressIndicator(),
-          );
-        } else if (state is RelationLoadedState) {
-          print('getting followers');
-          final List<UserProfile> _followerMembers = state.followers;
+    return Container(
+      child: Column(
+        children: [
+          SearchBar(
+            hintText: 'Search Subscriber',
+            textEditingController: _textEditingController,
+            onTextChange: (val) {
+              context
+                  .bloc<RelationBloc>()
+                  .add(FetchRealtionship(RelationContext.follower, val));
+            },
+          ),
+          BlocBuilder<RelationBloc, RelationState>(
+            builder: (context, state) {
+              if (state is RelationErrorState) {
+                print(state.message);
+                return JuntoErrorWidget(
+                    errorMessage: 'Hmm, something went wrong');
+              } else if (state is RelationLoadingState) {
+                return Center(
+                  child: JuntoProgressIndicator(),
+                );
+              } else if (state is RelationLoadedState) {
+                final List<UserProfile> _followerMembers = state.followers;
 
-          if (_followerMembers.length > 0) {
-            return Container(
-              child: Column(
-                children: [
-                  SearchBar(
-                    hintText: 'Search Subscriber',
-                    textEditingController: _textEditingController,
-                    onTextChange: (val) {
-                      context.bloc<RelationBloc>().add(SearchRelationship(val));
-                    },
-                  ),
-                  Expanded(
+                if (_followerMembers.length > 0) {
+                  return Expanded(
                     child: NotificationListener<ScrollNotification>(
                       onNotification: (ScrollNotification notification) {
                         final metrics = notification.metrics;
@@ -69,6 +71,7 @@ class _SubscribersState extends State<Subscribers> {
                               .bloc<RelationBloc>()
                               .add(FetchMoreRelationship(
                                 RelationContext.follower,
+                                _textEditingController.value.text,
                               ));
                           return true;
                         }
@@ -84,23 +87,23 @@ class _SubscribersState extends State<Subscribers> {
                             .toList(),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return FeedPlaceholder(
-              placeholderText: 'No subscribers yet!',
-              image: 'assets/images/junto-mobile__bench.png',
-            );
-          }
-        }
+                  );
+                } else {
+                  return FeedPlaceholder(
+                    placeholderText: 'No subscribers yet!',
+                    image: 'assets/images/junto-mobile__bench.png',
+                  );
+                }
+              }
 
-        return FeedPlaceholder(
-          placeholderText: 'No subscribers yet!',
-          image: 'assets/images/junto-mobile__bench.png',
-        );
-      },
+              return FeedPlaceholder(
+                placeholderText: 'No subscribers yet!',
+                image: 'assets/images/junto-mobile__bench.png',
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

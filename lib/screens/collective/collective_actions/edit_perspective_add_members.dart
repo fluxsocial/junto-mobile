@@ -41,10 +41,10 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
     super.initState();
     context
         .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.following));
+        .add(FetchRealtionship(RelationContext.following, ''));
     context
         .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.connections));
+        .add(FetchRealtionship(RelationContext.connections, ''));
   }
 
   Future<void> addMembersToPerspective() async {
@@ -188,6 +188,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                                   .bloc<RelationBloc>()
                                   .add(FetchMoreRelationship(
                                     RelationContext.following,
+                                    '',
                                   ));
                               return true;
                             }
@@ -239,6 +240,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                                   .bloc<RelationBloc>()
                                   .add(FetchMoreRelationship(
                                     RelationContext.connections,
+                                    '',
                                   ));
                               return true;
                             }

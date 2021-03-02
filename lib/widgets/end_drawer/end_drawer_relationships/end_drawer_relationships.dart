@@ -13,7 +13,6 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pe
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pack_members.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
@@ -40,7 +39,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
     'SUBSCRIPTIONS',
     'SUBSCRIBERS',
     'CONNECTIONS',
-    'MY PACK',
   ];
 
   Future<void> getUserRelationships() async {
@@ -80,6 +78,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
@@ -263,7 +262,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
               Connections(),
 
               // pack members
-              PackMembers(userAddress: widget.userAddress),
             ],
           ),
         ),

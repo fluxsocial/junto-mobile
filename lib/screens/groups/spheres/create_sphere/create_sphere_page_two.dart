@@ -27,10 +27,10 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
     super.initState();
     context
         .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.following));
+        .add(FetchRealtionship(RelationContext.following, ''));
     context
         .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.connections));
+        .add(FetchRealtionship(RelationContext.connections, ''));
   }
 
   @override
@@ -86,6 +86,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                               _followingMembers.length) {
                         context.bloc<RelationBloc>().add(FetchMoreRelationship(
                               RelationContext.following,
+                              '',
                             ));
                         return true;
                       }
@@ -115,6 +116,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                               _connectionsMembers.length) {
                         context.bloc<RelationBloc>().add(FetchMoreRelationship(
                               RelationContext.connections,
+                              '',
                             ));
                         return true;
                       }
