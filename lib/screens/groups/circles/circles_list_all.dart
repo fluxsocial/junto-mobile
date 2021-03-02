@@ -67,14 +67,16 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                         },
                       ),
                       ...state.groups.map((group) {
-                        return GestureDetector(
-                          onTap: () {
-                            onGroupSelected(group);
-                          },
-                          child: CirclePreview(
-                            group: group,
-                          ),
-                        );
+                        return group.groupData.sphereHandle != 'juntoupdates'
+                            ? GestureDetector(
+                                onTap: () {
+                                  onGroupSelected(group);
+                                },
+                                child: CirclePreview(
+                                  group: group,
+                                ),
+                              )
+                            : SizedBox();
                       }).toList(),
                     ],
                   ));

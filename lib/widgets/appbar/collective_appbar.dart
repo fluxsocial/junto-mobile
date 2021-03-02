@@ -110,7 +110,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                                       horizontal: 10,
                                     ),
                                     child: Text(
-                                      appbarTitle ?? 'JUNTO',
+                                      'c/junto',
                                       style:
                                           Theme.of(context).textTheme.subtitle1,
                                       textAlign: TextAlign.center,
