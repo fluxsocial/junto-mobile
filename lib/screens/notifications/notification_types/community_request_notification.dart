@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/notifications/widgets/user_profile_picture.dart';
-import 'package:junto_beta_mobile/screens/notifications/widgets/pack_request_response.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/community_request_response.dart';
 import 'package:junto_beta_mobile/screens/notifications/utils/username_text_span.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 
@@ -67,9 +67,7 @@ class CommunityRequestNotification extends StatelessWidget {
                 ),
               ),
             ),
-          PackRequestResponse(
-            notification: item,
-          ),
+          CommunityRequestResponse(notification: item),
         ],
       ),
     );
