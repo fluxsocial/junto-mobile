@@ -40,7 +40,7 @@ class _ConnectionsState extends State<Connections> {
             onTextChange: (val) {
               context
                   .bloc<RelationBloc>()
-                  .add(FetchRealtionship(RelationContext.connections, ''));
+                  .add(FetchRealtionship(RelationContext.connections, val));
             },
           ),
           BlocBuilder<RelationBloc, RelationState>(
