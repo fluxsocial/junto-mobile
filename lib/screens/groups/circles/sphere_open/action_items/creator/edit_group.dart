@@ -73,9 +73,6 @@ class _EditCircleState extends State<EditCircle> {
           '.png',
           groupPicture[0],
         );
-        setState(() {
-          _photoKey = key;
-        });
       } catch (error) {
         print('test: $error');
         JuntoLoader.hide();
@@ -87,7 +84,7 @@ class _EditCircleState extends State<EditCircle> {
         name: name,
         description: desc,
         principles: '',
-        photo: _photoKey,
+        photo: _photoKey.length > 0 ? _photoKey : null,
         sphereHandle: _groupData.sphereHandle,
       ),
     );
