@@ -149,10 +149,10 @@ class UserRepo {
     return userService.userRelations();
   }
 
-  Future<Map<String, dynamic>> connectedUsers(String userAddress,
+  Future<Map<String, dynamic>> connectedUsers(String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) {
     return userService.connectedUsers(
-        userAddress, paginationPos, lastTimeStamp);
+        userAddress, query, paginationPos, lastTimeStamp);
   }
 
   Future<List<UserProfile>> pendingConnections(String userAddress) async {
@@ -224,13 +224,16 @@ class UserRepo {
     );
   }
 
-  Future<Map<String, dynamic>> getFollowers(String userAddress,
+  Future<Map<String, dynamic>> getFollowers(String userAddress, String query,
           [String paginationPos, String lastTimeStamp]) =>
-      userService.getFollowers(userAddress, paginationPos, lastTimeStamp);
+      userService.getFollowers(
+          userAddress, query, paginationPos, lastTimeStamp);
 
-  Future<Map<String, dynamic>> getFollowingUsers(String userAddress,
+  Future<Map<String, dynamic>> getFollowingUsers(
+          String userAddress, String query,
           [String paginationPos, String lastTimeStamp]) =>
-      userService.getFollowingUsers(userAddress, paginationPos, lastTimeStamp);
+      userService.getFollowingUsers(
+          userAddress, query, paginationPos, lastTimeStamp);
 
   Future<PerspectiveModel> updatePerspective(
           String perspectiveAddress, Map<String, String> perspectiveBody) =>

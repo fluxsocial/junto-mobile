@@ -346,12 +346,13 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> connectedUsers(String userAddress,
+  Future<Map<String, dynamic>> connectedUsers(String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) async {
     final Response _serverResponse = await client.get(
       '/users/$userAddress/connections',
       queryParams: <String, String>{
         'pagination_position': paginationPos ?? '0',
+        'filter': query,
       },
     );
     final Map<String, dynamic> _results =
@@ -400,13 +401,14 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> getFollowers(String userAddress,
+  Future<Map<String, dynamic>> getFollowers(String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) async {
     final Response _serverResponse = await client.get(
       '/users/$userAddress/followers',
       queryParams: <String, String>{
         'pagination_position': paginationPos ?? '0',
         'last_timestamp': '2021-02-24T05:53:33.347Z',
+        'filter': query
       },
     );
     final Map<String, dynamic> _data =
@@ -422,12 +424,14 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> getFollowingUsers(String userAddress,
+  Future<Map<String, dynamic>> getFollowingUsers(
+      String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) async {
     final Response _serverResponse = await client.get(
       '/users/$userAddress/following',
       queryParams: <String, String>{
         'pagination_position': paginationPos ?? '0',
+        'filter': query
       },
     );
     final Map<String, dynamic> _data =

@@ -118,7 +118,7 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> connectedUsers(String userAddress,
+  Future<Map<String, dynamic>> connectedUsers(String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return {'users': kUsers};
@@ -166,7 +166,8 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> getFollowers(String userAddress,
+  Future<Map<String, dynamic>> getFollowers(
+      String userAddress, final String query,
       [String paginationPos, String lastTimeStamp]) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return {
@@ -175,7 +176,8 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<Map<String, dynamic>> getFollowingUsers(String userAddress,
+  Future<Map<String, dynamic>> getFollowingUsers(
+      String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return {

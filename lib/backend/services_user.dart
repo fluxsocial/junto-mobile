@@ -76,7 +76,7 @@ abstract class UserService {
   Future<Map<String, dynamic>> userRelations();
 
   /// Gets a list of pending user connections
-  Future<Map<String, dynamic>> connectedUsers(String userAddress,
+  Future<Map<String, dynamic>> connectedUsers(String userAddress, String query,
       [String paginationPos, String lastTimeStamp]);
 
   /// Returns true/false of user's relations to another member
@@ -98,11 +98,12 @@ abstract class UserService {
       UserRegistrationDetails details);
 
   /// Returns a list of followers for the given user address.
-  Future<Map<String, dynamic>> getFollowers(String userAddress,
+  Future<Map<String, dynamic>> getFollowers(String userAddress, String query,
       [String paginationPos, String lastTimeStamp]);
 
   /// Returns a list of followers for the given user address.
-  Future<Map<String, dynamic>> getFollowingUsers(String userAddress,
+  Future<Map<String, dynamic>> getFollowingUsers(
+      String userAddress, String query,
       [String paginationPos, String lastTimeStamp]);
 
   /// Checks if username and email are valid

@@ -31,9 +31,9 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
     TransitionFunction<RelationEvent, RelationState> transitionFn,
   ) {
     final nonDebounceStream =
-        events.where((event) => event is! SearchRelationship);
+        events.where((event) => event is! FetchRealtionship);
     final debounceStream = events
-        .where((event) => event is SearchRelationship)
+        .where((event) => event is FetchRealtionship)
         .debounceTime(const Duration(milliseconds: 600));
     return super.transformEvents(
         MergeStream([nonDebounceStream, debounceStream]), transitionFn);
@@ -47,8 +47,6 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
       yield* _mapFetchRealtionshipEventToState(event);
     } else if (event is FetchMoreRelationship) {
       yield* _mapFetchMoreRelationshipEventToState(event);
-    } else if (event is SearchRelationship) {
-      yield* _mapSearchRelationshipEventToState(event);
     }
   }
 
@@ -74,19 +72,28 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
       if (event.context == RelationContext.follower) {
         currentFollowerPos = 0;
         final results = await userRepo.getFollowers(
-            userDataProvider.userAddress, currentFollowerPos.toString());
+          userDataProvider.userAddress,
+          event.query,
+          currentFollowerPos.toString(),
+        );
         _followers = results['users'];
         followerResultCount = results['result_count'];
       } else if (event.context == RelationContext.following) {
         currentFollowingPos = 0;
         final results = await userRepo.getFollowingUsers(
-            userDataProvider.userAddress, currentFollowingPos.toString());
+          userDataProvider.userAddress,
+          event.query,
+          currentFollowingPos.toString(),
+        );
         _following = results['users'];
         followingResultCount = results['result_count'];
       } else if (event.context == RelationContext.connections) {
         currentFollowerPos = 0;
         final results = await userRepo.connectedUsers(
-            userDataProvider.userAddress, currentConnectionsPos.toString());
+          userDataProvider.userAddress,
+          event.query,
+          currentConnectionsPos.toString(),
+        );
         _connections = results['users'];
         connectionResultCount = results['result_count'];
       }
@@ -114,17 +121,26 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
       if (event.context == RelationContext.follower) {
         currentFollowerPos += 15;
         final results = await userRepo.getFollowers(
-            userDataProvider.userAddress, currentFollowerPos.toString());
+          userDataProvider.userAddress,
+          event.query,
+          currentFollowerPos.toString(),
+        );
         _followers = results['users'];
       } else if (event.context == RelationContext.following) {
         currentFollowingPos += 15;
         final results = await userRepo.getFollowingUsers(
-            userDataProvider.userAddress, currentFollowingPos.toString());
+          userDataProvider.userAddress,
+          event.query,
+          currentFollowingPos.toString(),
+        );
         _following = results['users'];
       } else if (event.context == RelationContext.connections) {
         currentFollowerPos += 15;
         final results = await userRepo.connectedUsers(
-            userDataProvider.userAddress, currentConnectionsPos.toString());
+          userDataProvider.userAddress,
+          event.query,
+          currentConnectionsPos.toString(),
+        );
         _connections = results['users'];
       }
       final currentState = state as RelationLoadedState;
@@ -136,28 +152,6 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
         followerResultCount: currentState.followerResultCount,
         followingResultCount: currentState.followingResultCount,
         connctionResultCount: currentState.connctionResultCount,
-      );
-    } catch (error, stack) {
-      logger.logException(error, stack);
-      yield RelationErrorState('Error while fetching relationships');
-    }
-  }
-
-  Stream<RelationState> _mapSearchRelationshipEventToState(
-      SearchRelationship event) async* {
-    yield RelationLoadingState();
-
-    try {
-      final _query = event.query;
-      final relations = await getUserRelations();
-      final _connections = relations['connections']['results'];
-      final _following = relations['following']['results'];
-      final _followers = relations['followers']['results'];
-
-      yield RelationLoadedState(
-        followers: _followers,
-        following: _following,
-        connections: _connections,
       );
     } catch (error, stack) {
       logger.logException(error, stack);
