@@ -114,7 +114,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   Widget build(BuildContext context) {
     return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
       if (state is CircleLoaded) {
-        final group = widget.group;
+        final group = state.groups
+            .firstWhere((element) => element.address == widget.group.address);
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
