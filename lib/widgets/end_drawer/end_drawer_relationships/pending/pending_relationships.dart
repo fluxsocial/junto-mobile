@@ -27,7 +27,7 @@ class PendingRelationships extends StatefulWidget {
 }
 
 class PendingRelationshipsState extends State<PendingRelationships> {
-  final List<String> _tabs = <String>['CONNECTION REQUESTS', 'PACK REQUESTS'];
+  final List<String> _tabs = <String>['CONNECTION REQUESTS'];
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -122,7 +122,6 @@ class PendingRelationshipsState extends State<PendingRelationships> {
             },
             body: TabBarView(children: <Widget>[
               PendingConnections(),
-              PendingPackMembers(),
             ]),
           ),
         ),
