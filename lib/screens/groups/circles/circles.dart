@@ -58,6 +58,7 @@ class CirclesState extends State<Circles>
       body: JuntoFilterDrawer(
         leftDrawer: null,
         rightMenu: null,
+        swipe: false,
         scaffold: PageView(
           controller: circlesPageController,
           physics: NeverScrollableScrollPhysics(),
