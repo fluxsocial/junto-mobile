@@ -60,6 +60,9 @@ class _EditCircleState extends State<EditCircle> {
   }
 
   Future<void> _updateGroup() async {
+    print('test: 1');
+    JuntoLoader.showLoader(context);
+
     final String name = _nameController.text;
     final String desc = _descriptionController.text;
 
@@ -88,8 +91,8 @@ class _EditCircleState extends State<EditCircle> {
         sphereHandle: _groupData.sphereHandle,
       ),
     );
+
     try {
-      JuntoLoader.showLoader(context);
       context.bloc<CircleBloc>().add(UpdateCircle(group: updatedGroup));
       JuntoLoader.hide();
       Navigator.pop(context);
