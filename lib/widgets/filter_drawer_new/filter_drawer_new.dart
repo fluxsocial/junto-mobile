@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:junto_beta_mobile/widgets/drawer/widgets/widgets.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
+import './filter_reset_button.dart';
 
 class FilterDrawerNew extends StatefulWidget {
   @override
@@ -44,9 +45,11 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
   }
 
   Future<void> _onSearchChanged() async {
-    context
-        .bloc<ChannelFilteringBloc>()
-        .add(FilterQueryUpdated(textEditingController.text));
+    if (textEditingController.value.text.length > 0) {
+      context
+          .bloc<ChannelFilteringBloc>()
+          .add(FilterQueryUpdated(textEditingController.text));
+    }
   }
 
   @override
@@ -193,119 +196,141 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                   },
                   children: [
                     // Custom Filter (starting with channels in V1)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Stack(
+                      alignment: AlignmentDirectional.centerStart,
                       children: [
-                        Text(
-                          'Filter',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        AnimatedContainer(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).dividerColor,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          width: MediaQuery.of(context).size.width,
-                          height: channelsContainerHeight,
-                          duration: Duration(milliseconds: 200),
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 5),
-                                  child: Text(
-                                    'Channels',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Theme.of(context).primaryColorDark,
-                                      fontWeight: FontWeight.w700,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Filter',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            const SizedBox(height: 25),
+                            AnimatedContainer(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).dividerColor,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              height: channelsContainerHeight,
+                              duration: Duration(milliseconds: 200),
+                              child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(bottom: 5),
+                                      child: Text(
+                                        'Channels',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                FilterDrawerTextField(
-                                  textEditingController: textEditingController,
-                                  focusNode: focusNode,
-                                ),
-                                if (state is ChannelsPopulatedState &&
-                                    state.selectedChannel != null)
-                                  Container(
-                                    margin: const EdgeInsets.only(bottom: 5),
-                                    child: Row(
-                                      children: [
-                                        ...state.selectedChannel
-                                            .map((e) => SelectedChannelChip(
-                                                channel: e.name,
+                                    FilterDrawerTextField(
+                                      textEditingController:
+                                          textEditingController,
+                                      focusNode: focusNode,
+                                    ),
+                                    if (state is ChannelsPopulatedState &&
+                                        state.selectedChannel != null)
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 5),
+                                        child: Row(
+                                          children: [
+                                            ...state.selectedChannel
+                                                .map((e) => SelectedChannelChip(
+                                                    channel: e.name,
+                                                    onTap: () {
+                                                      context
+                                                          .bloc<
+                                                              ChannelFilteringBloc>()
+                                                          .add(
+                                                            FilterSelected(
+                                                              state
+                                                                  .selectedChannel
+                                                                  .where((element) =>
+                                                                      element
+                                                                          .name !=
+                                                                      e.name)
+                                                                  .toList(),
+                                                              ExpressionContextType
+                                                                  .Collective,
+                                                            ),
+                                                          );
+                                                    }))
+                                                .toList(),
+                                          ],
+                                        ),
+                                      ),
+                                    if (state is ChannelsPopulatedState)
+                                      Expanded(
+                                        child: ListView.builder(
+                                          padding: const EdgeInsets.all(0),
+                                          itemCount: filteredList.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final Channel item =
+                                                filteredList[index];
+                                            if (item != null) {
+                                              return InkWell(
                                                 onTap: () {
                                                   context
                                                       .bloc<
                                                           ChannelFilteringBloc>()
-                                                      .add(
-                                                        FilterSelected(
-                                                          state.selectedChannel
-                                                              .where((element) =>
-                                                                  element
-                                                                      .name !=
-                                                                  e.name)
-                                                              .toList(),
-                                                          ExpressionContextType
-                                                              .Collective,
-                                                        ),
-                                                      );
-                                                }))
-                                            .toList(),
-                                      ],
-                                    ),
-                                  ),
-                                if (state is ChannelsPopulatedState)
-                                  Expanded(
-                                    child: ListView.builder(
-                                      padding: const EdgeInsets.all(0),
-                                      itemCount: filteredList.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        final Channel item =
-                                            filteredList[index];
-                                        if (item != null) {
-                                          return InkWell(
-                                            onTap: () {
-                                              context
-                                                  .bloc<ChannelFilteringBloc>()
-                                                  .add(FilterSelected(
-                                                    [
-                                                      if (state
-                                                              .selectedChannel !=
-                                                          null)
-                                                        ...state
-                                                            .selectedChannel,
-                                                      item
-                                                    ],
-                                                    ExpressionContextType
-                                                        .Collective,
-                                                  ));
-                                              textEditingController.clear();
-                                              // Navigator.pop(context);
-                                            },
-                                            child: FilterDrawerChannelPreview(
-                                              channel: item,
-                                            ),
-                                          );
-                                        } else {
-                                          return Container();
-                                        }
-                                      },
-                                    ),
-                                  ),
-                              ],
+                                                      .add(FilterSelected(
+                                                        [
+                                                          if (state
+                                                                  .selectedChannel !=
+                                                              null)
+                                                            ...state
+                                                                .selectedChannel,
+                                                          item
+                                                        ],
+                                                        ExpressionContextType
+                                                            .Collective,
+                                                      ));
+                                                  textEditingController.clear();
+                                                  // Navigator.pop(context);
+                                                },
+                                                child:
+                                                    FilterDrawerChannelPreview(
+                                                  channel: item,
+                                                ),
+                                              );
+                                            } else {
+                                              return Container();
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
+                        Positioned(
+                          bottom: 0.0,
+                          left: -4.0,
+                          child: FilterResetButton(
+                            onTap: () {
+                              context
+                                  .bloc<ChannelFilteringBloc>()
+                                  .add(FilterReset());
+                            },
+                          ),
+                        )
                       ],
                     ),
 
