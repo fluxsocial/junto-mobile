@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_choose_context.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview_create.dart';
+import 'package:junto_beta_mobile/widgets/previews/circle_preview/collective_preview_create.dart';
 
-class CreateContextOverlay extends StatelessWidget {
-  const CreateContextOverlay({
+class CreateContextOverlay extends StatefulWidget {
+  CreateContextOverlay({
     this.currentExpressionContext = ExpressionContext.Collective,
     this.selectExpressionContext,
     this.toggleSocialContextVisibility,
+    this.selectedGroup,
+    this.setSelectedGroup,
   });
 
   final ExpressionContext currentExpressionContext;
   final Function selectExpressionContext;
   final Function toggleSocialContextVisibility;
+  final Group selectedGroup;
+  final Function(Group) setSelectedGroup;
+
+  @override
+  _CreateContextOverlayState createState() => _CreateContextOverlayState();
+}
+
+class _CreateContextOverlayState extends State<CreateContextOverlay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +53,7 @@ class CreateContextOverlay extends StatelessWidget {
                     right: 10,
                   ),
                   child: Text(
-                    'Where would you like to share?',
+                    'Choose a Community',
                     style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).primaryColor,
@@ -46,33 +61,59 @@ class CreateContextOverlay extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(height: 12.5),
                 Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.only(
-                      top: 25,
-                    ),
-                    children: [
-                      ChooseExpressionContext(
-                        expressionContext: ExpressionContext.Collective,
-                        currentExpressionContext: currentExpressionContext,
-                        selectExpressionContext: selectExpressionContext,
-                      ),
-                      ChooseExpressionContext(
-                        expressionContext: ExpressionContext.MyPack,
-                        currentExpressionContext: currentExpressionContext,
-                        selectExpressionContext: selectExpressionContext,
-                      ),
-                      ChooseExpressionContext(
-                        expressionContext: ExpressionContext.CommunityCenter,
-                        currentExpressionContext: currentExpressionContext,
-                        selectExpressionContext: selectExpressionContext,
-                      ),
-                    ],
-                  ),
+                  child: BlocBuilder<CircleBloc, CircleState>(
+                      builder: (context, state) {
+                    if (state is CircleLoaded) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 15.0,
+                        ),
+                        child: ListView(
+                          padding: EdgeInsets.all(0),
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                widget.selectExpressionContext(
+                                    ExpressionContext.Collective);
+                                widget.setSelectedGroup(
+                                  Group(address: null),
+                                );
+                              },
+                              child: CollectivePreviewCreate(
+                                selectedGroup: widget.selectedGroup,
+                                group: Group(address: null),
+                              ),
+                            ),
+                            ListView.builder(
+                              padding: EdgeInsets.all(0),
+                              shrinkWrap: true,
+                              physics: ClampingScrollPhysics(),
+                              itemCount: state.groups.length,
+                              itemBuilder: (context, index) => GestureDetector(
+                                onTap: () {
+                                  widget.setSelectedGroup(state.groups[index]);
+                                  widget.selectExpressionContext(
+                                    ExpressionContext.Group,
+                                  );
+                                },
+                                child: CirclePreviewCreate(
+                                  selectedGroup: widget.selectedGroup,
+                                  group: state.groups[index],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return JuntoLoader();
+                  }),
                 ),
                 GestureDetector(
                   onTap: () {
-                    toggleSocialContextVisibility(false);
+                    widget.toggleSocialContextVisibility(false);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(25),

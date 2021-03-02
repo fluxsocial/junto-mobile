@@ -4,11 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/circles.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_temp.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:provider/provider.dart';
@@ -19,14 +20,14 @@ import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_e
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/spheres_temp.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 
 class NewHome extends StatefulWidget {
-  const NewHome({this.screen = Screen.collective});
+  const NewHome({this.screen = Screen.groups});
 
   final Screen screen;
   @override
@@ -39,21 +40,16 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   UserData _userData;
   UserDataProvider userProvider;
 
-  Screen _currentScreen;
-  Screen _latestScreen;
-  bool showCreateScreen = false;
-  ExpressionContext _expressionContext;
-  Group _group;
-
   @override
   void initState() {
     super.initState();
 
-    setState(() {
-      showCreateScreen = widget.screen == Screen.create;
+    context.bloc<CircleBloc>().add(FetchMyCircle());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppRepo>(context, listen: false).initHome(widget.screen);
+      fetchNotifications();
     });
-    _currentScreen = widget.screen;
-    _latestScreen = widget.screen;
   }
 
   @override
@@ -61,7 +57,6 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     super.didChangeDependencies();
     userProvider = Provider.of<UserDataProvider>(context, listen: false);
     getUserInformation();
-    fetchNotifications();
   }
 
   void fetchNotifications() async {
@@ -73,47 +68,18 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     _userData = userProvider.userProfile;
   }
 
-  void changeScreen(
-    Screen screen, [
-    ExpressionContext expressionContext,
-    Group group,
-  ]) {
-    setState(() {
-      _currentScreen = screen;
-      _expressionContext = expressionContext ?? ExpressionContext.Collective;
-      _group = group;
-      if (screen == Screen.create) {
-        showCreateScreen = true;
-      } else {
-        showCreateScreen = false;
-        _latestScreen = screen;
-      }
-    });
-    print(showCreateScreen);
-  }
-
-  void closeCreate() {
-    setState(() {
-      showCreateScreen = false;
-      _currentScreen = _latestScreen;
-      if (_latestScreen == Screen.create) {
-        _currentScreen = Screen.collective;
-      }
-    });
-    print(showCreateScreen);
-    print(_currentScreen);
-  }
-
-  Widget showScreen() {
+  Widget showScreen(Screen currentScreen, Group group) {
     Widget child;
 
-    switch (_currentScreen) {
+    switch (currentScreen) {
       case Screen.collective:
         child = JuntoCollective();
         break;
       case Screen.groups:
         child = FeatureDiscovery(
-          child: SpheresTemp(),
+          child: Circles(
+            group: group,
+          ),
         );
         break;
       case Screen.packs:
@@ -136,10 +102,10 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
     return child;
   }
 
-  Widget showLeftDrawer() {
+  Widget showLeftDrawer(Screen currentScreen) {
     Widget child;
 
-    switch (_currentScreen) {
+    switch (currentScreen) {
       case Screen.collective:
       case Screen.den:
         child = FilterDrawerContent(ExpressionContextType.Collective);
@@ -159,6 +125,7 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
+        print(state);
         if (state is AuthUnauthenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushAndRemoveUntil(
@@ -171,43 +138,40 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
           });
         }
 
-        return Scaffold(
-          body: JuntoFilterDrawer(
-            leftDrawer: showLeftDrawer(),
-            rightMenu: JuntoDrawer(
-              changeScreen: changeScreen,
-            ),
-            swipeLeftDrawer: false,
-            scaffold: Stack(
-              children: [
-                showScreen(),
-                if (showCreateScreen)
-                  FadeIn(
-                    duration: Duration(milliseconds: 300),
-                    child: FeatureDiscovery(
-                      child: CreateExpressionScaffold(
-                        closeCreate: closeCreate,
-                        changeScreen: changeScreen,
-                        expressionContext: _expressionContext,
-                        group: _group,
+        return Consumer<AppRepo>(builder: (context, snapshot, _) {
+          return Scaffold(
+            body: JuntoFilterDrawer(
+              leftDrawer: null,
+              rightMenu: JuntoDrawer(),
+              swipeLeftDrawer: false,
+              scaffold: Stack(
+                children: [
+                  showScreen(snapshot.currentScreen, snapshot.group),
+                  if (snapshot.showCreateScreen)
+                    FadeIn(
+                      duration: Duration(milliseconds: 300),
+                      child: FeatureDiscovery(
+                        child: CreateExpressionScaffold(
+                          expressionContext: snapshot.expressionContext,
+                          group: snapshot.group,
+                        ),
                       ),
                     ),
-                  ),
-                if (_currentScreen != Screen.create)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: JuntoBottomBar(
-                      userData: _userData,
-                      changeScreen: changeScreen,
-                      currentScreen: _currentScreen,
+                  if (snapshot.currentScreen != Screen.create)
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: JuntoBottomBar(
+                        userData: _userData,
+                        currentScreen: snapshot.currentScreen,
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
+          );
+        });
       },
     );
   }

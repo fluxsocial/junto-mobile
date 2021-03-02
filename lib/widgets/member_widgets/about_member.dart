@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/badges_row.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_full.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio_full.dart';
@@ -31,7 +32,21 @@ class AboutMember extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 children: <Widget>[
                   MemberProfilePictureFull(profile: profile),
-                  AboutMemberName(profile: profile),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AboutMemberName(profile: profile),
+                      if (profile.user.badges != null &&
+                          profile.user.badges.isNotEmpty)
+                        Container(
+                          margin: EdgeInsets.only(top: 8.0),
+                          child: MemberBadgesRow(
+                            badges: profile.user.badges,
+                          ),
+                        ),
+                    ],
+                  ),
                   AboutItem(
                     item: profile.user.gender,
                     icon: Icon(CustomIcons.gender,

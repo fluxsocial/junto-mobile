@@ -82,6 +82,12 @@ class ChooseExpressionSheet extends StatelessWidget {
                               currentExpressionType: currentExpressionType,
                               switchExpressionType: chooseExpressionType,
                             ),
+                            // Temp disable event expression
+                            // CreateExpressionIcon(
+                            //   expressionType: ExpressionType.event,
+                            //   currentExpressionType: currentExpressionType,
+                            //   switchExpressionType: chooseExpressionType,
+                            // ),
                           ],
                         ),
                       ),
@@ -169,6 +175,14 @@ class CreateExpressionIcon extends StatelessWidget {
           color: color,
         );
         expressionTypeText = 'AUDIO';
+        break;
+      case ExpressionType.event:
+        expressionTypeIcon = Icon(
+          Icons.event,
+          size: 20,
+          color: color,
+        );
+        expressionTypeText = 'EVENT';
         break;
 
       default:

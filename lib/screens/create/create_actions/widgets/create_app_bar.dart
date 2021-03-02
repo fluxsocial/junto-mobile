@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 class CreateAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CreateAppBar({

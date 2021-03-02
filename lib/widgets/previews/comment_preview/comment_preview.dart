@@ -21,6 +21,7 @@ class CommentPreview extends StatelessWidget with MemberValidation {
     @required this.parent,
     @required this.userAddress,
     @required this.loadPreviousExpressionComments,
+    this.stopPlayback,
   }) : super(key: key);
 
   /// comment
@@ -33,12 +34,14 @@ class CommentPreview extends StatelessWidget with MemberValidation {
   final String userAddress;
 
   final VoidCallback loadPreviousExpressionComments;
+  final VoidCallback stopPlayback;
 
   @override
   Widget build(BuildContext context) {
     final String replyText = comment.comments == 1 ? 'reply' : 'replies';
     return GestureDetector(
       onTap: () {
+        stopPlayback();
         Navigator.push(
           context,
           CupertinoPageRoute<dynamic>(

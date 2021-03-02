@@ -281,11 +281,11 @@ class CreateAudioState extends State<CreateAudio>
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) {
               if (widget.expressionContext == ExpressionContext.Comment) {
-                return CreateCommentActions(
-                  expression: audioExpression,
-                  address: widget.address,
-                  expressionType: ExpressionType.audio,
-                );
+                // return CreateCommentActions(
+                //   expression: audioExpression,
+                //   address: widget.address,
+                //   expressionType: ExpressionType.audio,
+                // );
               } else {
                 return CreateActions(
                   expressionType: ExpressionType.audio,

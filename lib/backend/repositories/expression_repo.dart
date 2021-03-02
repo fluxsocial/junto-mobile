@@ -45,7 +45,8 @@ class ExpressionRepo {
     ExpressionModel _expression;
 
     if (context == ExpressionContext.Group ||
-        context == ExpressionContext.CommunityCenter) {
+        context == ExpressionContext.CommunityCenter ||
+        context == ExpressionContext.MyPack) {
       assert(address != null);
       _expression = expression.copyWith(
         context: <String, dynamic>{

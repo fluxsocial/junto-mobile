@@ -13,6 +13,7 @@ class CommentsList extends StatelessWidget {
     this.futureComments,
     this.showComments,
     this.loadPreviousExpressionComments,
+    this.stopPlayback,
   });
 
   final bool commentsVisible;
@@ -21,6 +22,7 @@ class CommentsList extends StatelessWidget {
   final Future<QueryResults<Comment>> futureComments;
   final Function showComments;
   final VoidCallback loadPreviousExpressionComments;
+  final VoidCallback stopPlayback;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +91,7 @@ class CommentsList extends StatelessWidget {
                         userAddress: userAddress,
                         loadPreviousExpressionComments:
                             loadPreviousExpressionComments,
+                        stopPlayback: stopPlayback,
                       );
                     },
                   ),

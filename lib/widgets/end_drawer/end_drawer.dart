@@ -8,8 +8,8 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
@@ -28,9 +28,8 @@ import 'junto_contacts.dart';
 import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
-  const JuntoDrawer({this.changeScreen});
+  const JuntoDrawer();
 
-  final Function(Screen, [ExpressionContext, Group]) changeScreen;
   @override
   _JuntoDrawerState createState() => _JuntoDrawerState();
 }
@@ -87,9 +86,11 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             ),
                             title: S.of(context).menu_my_den,
                             theme: theme,
-                            onTap: () {
+                            onTap: () async {
                               JuntoFilterDrawer.of(context).toggleRightMenu();
-                              widget.changeScreen(Screen.den);
+
+                              await Provider.of<AppRepo>(context, listen: false)
+                                  .changeScreen(screen: Screen.den);
                             },
                           ),
                         JuntoDrawerItem(
@@ -139,30 +140,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
                                   return JuntoThemesPage();
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        JuntoDrawerItem(
-                          icon: Padding(
-                            padding: const EdgeInsets.only(right: 32),
-                            child: Image.asset(
-                              'assets/images/junto-mobile__sprout.png',
-                              height: 20,
-                              color: JuntoPalette().juntoWhite(theme: theme),
-                            ),
-                          ),
-                          title: 'Center',
-                          theme: theme,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) {
-                                  return JuntoCommunityCenter(
-                                    changeScreen: widget.changeScreen,
-                                  );
                                 },
                               ),
                             );

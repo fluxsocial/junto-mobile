@@ -16,10 +16,9 @@ import 'package:junto_beta_mobile/screens/notifications/notifications_handler.da
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/home/new_home.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 
 class JuntoLotus extends StatefulWidget {
   @override
@@ -28,7 +27,6 @@ class JuntoLotus extends StatefulWidget {
 
 class _JuntoLotusState extends State<JuntoLotus> {
   OnBoardingRepo repo;
-  UserData userProfile;
 
   @override
   void didChangeDependencies() {
@@ -94,6 +92,16 @@ class _JuntoLotusState extends State<JuntoLotus> {
         'lotus_create_id',
       },
     );
+  }
+
+  void initializeBloc() {
+    context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeBloc();
   }
 
   @override
@@ -181,83 +189,30 @@ class _JuntoLotusState extends State<JuntoLotus> {
                         ),
                       ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           JuntoDescribedFeatureOverlay(
                             icon: Icon(
-                              CustomIcons.newcollective,
+                              CustomIcons.newcircles,
                               size: 38,
                               color: Theme.of(context).primaryColor,
                             ),
-                            featureId: 'lotus_collective_id',
+                            featureId: 'lotus_groups_id',
                             title:
-                                'Collective: Interact with everyone on Junto.',
+                                'Groups: Create and interact in public or private groups.',
                             learnMore: false,
                             hasUpNext: false,
                             isLastFeature: false,
+                            contentLocation: ContentLocation.above,
                             child: LotusButton(
-                              label: s.lotus_collective,
+                              label: 'COMMUNITIES',
                               icon: CustomIcons.newcollective,
                               theme: theme,
-                              onTap: () => _navigateTo(Screen.collective),
+                              iconSize: 38,
+                              onTap: () => _navigateTo(Screen.groups),
                             ),
                           ),
-                          Container(
-                            color: Colors.transparent,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  child: JuntoDescribedFeatureOverlay(
-                                    icon: Icon(
-                                      CustomIcons.newpacks,
-                                      size: 38,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    featureId: 'lotus_packs_id',
-                                    title:
-                                        'Packs: Interact with your closest friends and their closest friends.',
-                                    learnMore: false,
-                                    hasUpNext: false,
-                                    isLastFeature: false,
-                                    contentLocation: ContentLocation.above,
-                                    child: LotusButton(
-                                      label: s.lotus_packs,
-                                      icon: CustomIcons.newpacks,
-                                      iconSize: 38,
-                                      theme: theme,
-                                      onTap: () => _navigateTo(Screen.packs),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  child: JuntoDescribedFeatureOverlay(
-                                    icon: Icon(
-                                      CustomIcons.newcircles,
-                                      size: 38,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    featureId: 'lotus_groups_id',
-                                    title:
-                                        'Groups: Create and interact in public or private groups.',
-                                    learnMore: false,
-                                    hasUpNext: false,
-                                    isLastFeature: false,
-                                    contentLocation: ContentLocation.above,
-                                    child: LotusButton(
-                                      label: s.lotus_groups,
-                                      icon: CustomIcons.newcircles,
-                                      theme: theme,
-                                      iconSize: 38,
-                                      onTap: () => _navigateTo(Screen.groups),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SizedBox(height: 25),
                           JuntoDescribedFeatureOverlay(
                             icon: Icon(
                               CustomIcons.newcreate,
@@ -279,7 +234,7 @@ class _JuntoLotusState extends State<JuntoLotus> {
                               onTap: () => _navigateTo(Screen.create),
                             )),
                           ),
-                          const SizedBox(height: 25),
+                          SizedBox(height: 25),
                         ],
                       )
                     ],
