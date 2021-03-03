@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
@@ -16,13 +15,13 @@ import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/circle_action_items_admin.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/member/circle_action_items_member.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/circle_open_expressions/circle_open_expressions.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/junto_center/junto_center_fab.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed_new.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -72,6 +71,15 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     context
         .bloc<CircleBloc>()
         .add(LoadCircleMembers(sphereAddress: widget.group.address));
+
+    context.bloc<CollectiveBloc>().add(
+          FetchCollective(
+            ExpressionQueryParams(
+              context: widget.group.address,
+              contextType: ExpressionContextType.Group,
+            ),
+          ),
+        );
   }
 
   @override
@@ -81,25 +89,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     _userAddress = Provider.of<UserDataProvider>(context).userAddress;
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
     _loadRelationship();
-    setGetExpressions();
-  }
-
-  void setGetExpressions() {
-    setState(() {
-      getExpressions = Provider.of<ExpressionRepo>(context, listen: false)
-          .getCollectiveExpressions({
-        'context': widget.group.address,
-        'context_type': 'Group',
-        'pagination_position': '0',
-      });
-    });
-  }
-
-  void deleteExpression(ExpressionResponse expression) async {
-    await Provider.of<ExpressionRepo>(context, listen: false)
-        .deleteExpression(expression.address);
-    // refresh feed
-    setGetExpressions();
   }
 
   Future<void> _loadRelationship() async {
@@ -138,10 +127,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     members: state.members,
                     relationToGroup: relationToGroup,
                   ),
-                  if (group.address != null)
-                    CircleOpenExpressions(
-                        getExpressions: getExpressions,
-                        deleteExpression: deleteExpression),
+                  if (group.address != null) CircleOpenExpressions(),
                 ],
               ),
               physics: const ClampingScrollPhysics(),
