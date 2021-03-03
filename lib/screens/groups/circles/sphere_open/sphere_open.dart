@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -107,7 +106,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   Widget build(BuildContext context) {
     return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
       if (state is CircleLoaded) {
-        final group = widget.group;
+        final group = state.groups
+            .firstWhere((element) => element.address == widget.group.address);
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
@@ -190,6 +190,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                     userProfile: _userProfile.user,
                                     members: state.members,
                                     circleCreator: state.creator?.user,
+                                    goBack: widget.goBack,
                                   ),
                               ],
                             ),
@@ -350,12 +351,14 @@ class ShowRelationshipWidget extends StatelessWidget {
     this.userProfile,
     this.members,
     this.circleCreator,
+    this.goBack,
   });
   final Group circle;
   final Map<String, dynamic> relationToGroup;
   final UserProfile userProfile;
   final List<Users> members;
   final UserProfile circleCreator;
+  final Function goBack;
 
   @override
   Widget build(BuildContext context) {
@@ -370,6 +373,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         sphere: circle,
         userProfile: userProfile,
         isCreator: relationToGroup['creator'],
+        goBack: goBack,
       );
     } else if (relationToGroup['member']) {
       relation = 'Member';
@@ -378,6 +382,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         userProfile: userProfile,
         members: members,
         circleCreator: circleCreator,
+        goBack: goBack,
       );
     } else {
       relation = 'Member';
@@ -386,6 +391,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         userProfile: userProfile,
         members: members,
         circleCreator: circleCreator,
+        goBack: goBack,
       );
     }
     return GestureDetector(
