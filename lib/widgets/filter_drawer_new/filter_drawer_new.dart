@@ -8,6 +8,9 @@ import 'package:junto_beta_mobile/widgets/drawer/widgets/widgets.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
 
 class FilterDrawerNew extends StatefulWidget {
+  const FilterDrawerNew({this.collectiveScreen});
+
+  final bool collectiveScreen;
   @override
   State<StatefulWidget> createState() {
     return FilterDrawerNewState();
@@ -147,37 +150,42 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: () {
-                              pageViewController.animateToPage(
-                                1,
-                                duration: Duration(milliseconds: 200),
-                                curve: Curves.easeIn,
-                              );
-                            },
-                            child: ClipOval(
+                          if (widget.collectiveScreen)
+                            GestureDetector(
+                              onTap: () {
+                                pageViewController.animateToPage(
+                                  1,
+                                  duration: Duration(milliseconds: 200),
+                                  curve: Curves.easeIn,
+                                );
+                              },
                               child: Container(
-                                height: 38,
-                                width: 38,
-                                color: _currentIndex == 1
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).dividerColor,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/junto-mobile__perspective--white.png',
-                                      height: 15,
-                                      color: _currentIndex == 1
-                                          ? Colors.white
-                                          : Theme.of(context).primaryColorDark,
+                                margin: const EdgeInsets.only(left: 10),
+                                child: ClipOval(
+                                  child: Container(
+                                    height: 38,
+                                    width: 38,
+                                    color: _currentIndex == 1
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Theme.of(context).dividerColor,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/junto-mobile__perspective--white.png',
+                                          height: 15,
+                                          color: _currentIndex == 1
+                                              ? Colors.white
+                                              : Theme.of(context)
+                                                  .primaryColorDark,
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     ]),
@@ -308,53 +316,53 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                         ),
                       ],
                     ),
-
-                    // Perspectives
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Perspectives',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
+                    if (widget.collectiveScreen)
+                      // Perspectives
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Relations',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 25),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'ALL',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColor,
-                                  letterSpacing: .5,
+                          const SizedBox(height: 25),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'ALL',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                    letterSpacing: .5,
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Theme.of(context).dividerColor,
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 20,
+                                  ),
                                 ),
-                                child: Icon(
-                                  Icons.add,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 20,
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        PerspectivesList()
-                      ],
-                    ),
+                          const SizedBox(height: 10),
+                          PerspectivesList()
+                        ],
+                      ),
                   ],
                 ),
               ),

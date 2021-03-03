@@ -157,7 +157,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       title:
                           'Click this icon to filter this perspective by channel (topic).',
                       isLastFeature: true,
-                      child: const FilterDrawerButton(),
+                      child: const FilterDrawerButton(
+                        collectiveScreen: true,
+                      ),
                     ),
                     Row(
                       children: <Widget>[

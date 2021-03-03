@@ -24,7 +24,9 @@ class FilterColumnRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           //todo: add some animation/splash
-          const FilterDrawerButton(),
+          const FilterDrawerButton(
+            collectiveScreen: false,
+          ),
           Row(
             children: <Widget>[
               GestureDetector(
