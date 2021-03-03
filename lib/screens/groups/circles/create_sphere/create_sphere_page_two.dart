@@ -13,12 +13,10 @@ import 'create_spehere_search.dart';
 class CreateSpherePageTwo extends StatefulWidget {
   const CreateSpherePageTwo({
     Key key,
-    @required this.tabs,
     @required this.addMember,
     @required this.removeMember,
     @required this.selectedMembers,
   }) : super(key: key);
-  final List<String> tabs;
   final ValueChanged<UserProfile> addMember;
   final ValueChanged<UserProfile> removeMember;
   final List<String> selectedMembers;
@@ -30,6 +28,7 @@ class CreateSpherePageTwo extends StatefulWidget {
 class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
   TextEditingController _subController;
   TextEditingController _conController;
+  final List<String> _tabs = <String>['Subscriptions', 'Connections', 'Search'];
 
   @override
   void initState() {
@@ -57,7 +56,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: widget.tabs.length,
+      length: _tabs.length,
       child: NestedScrollView(
         physics: const ClampingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -71,7 +70,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                   labelStyle: Theme.of(context).textTheme.subtitle1,
                   indicatorWeight: 0.0001,
                   tabs: <Widget>[
-                    for (String name in widget.tabs)
+                    for (String name in _tabs)
                       Container(
                         margin: const EdgeInsets.only(right: 24),
                         color: Theme.of(context).colorScheme.background,

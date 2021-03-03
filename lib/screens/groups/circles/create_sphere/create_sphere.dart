@@ -40,7 +40,6 @@ class CreateSphereState extends State<CreateSphere> {
   GlobalKey<FormState> _formKey;
 
   final List<String> _sphereMembers = <String>[];
-  final List<String> _tabs = <String>['Subscriptions', 'Connections', 'Search'];
 
   Future<void> _createSphere() async {
     JuntoLoader.showLoader(context);
@@ -371,7 +370,6 @@ class CreateSphereState extends State<CreateSphere> {
                     addMember: sphereAddMember,
                     removeMember: _sphereRemoveMember,
                     selectedMembers: _sphereMembers,
-                    tabs: _tabs,
                   ),
                   _createSphereThree()
                 ],
