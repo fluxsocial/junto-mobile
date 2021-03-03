@@ -217,7 +217,7 @@ class __SearchBodyState extends State<_SearchBody> {
                                     .bloc<CircleBloc>()
                                     .add(AddMemberToCircle(
                                       sphereAddress: widget.group.address,
-                                      user: data,
+                                      user: [data],
                                       permissionLevel: widget.permission,
                                     ));
 
