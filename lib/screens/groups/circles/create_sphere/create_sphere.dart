@@ -150,9 +150,8 @@ class CreateSphereState extends State<CreateSphere> {
     return ListView(
       children: <Widget>[
         _spherePrivacy('Public',
-            'Anyone can join this circle, read its expressions, and share to it.'),
-        _spherePrivacy('Private',
-            'Only invited and existing members can read its expressions, and share to it.'),
+            'Anyone can join this community, read its expressions, and share to it.'),
+
       ],
     );
   }
@@ -279,7 +278,7 @@ class CreateSphereState extends State<CreateSphere> {
               ),
             if (_currentIndex == 0)
               Text(
-                'Create Circle',
+                'Create Community',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             if (_currentIndex == 2)

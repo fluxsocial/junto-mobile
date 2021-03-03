@@ -27,7 +27,7 @@ class GroupAvatarPlaceholder extends StatelessWidget {
         borderRadius: BorderRadius.circular(100),
       ),
       child: Icon(
-        CustomIcons.spheres,
+        CustomIcons.newcollective,
         color: Colors.white,
         size: diameter / 3,
       ),

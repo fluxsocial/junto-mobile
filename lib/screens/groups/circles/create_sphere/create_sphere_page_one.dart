@@ -233,7 +233,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                   null,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Circle Name*',
+                hintText: 'Community name*',
                 hintStyle: Theme.of(context).textTheme.caption,
               ),
               cursorColor: JuntoPalette.juntoGrey,
@@ -267,7 +267,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                   null,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Unique Username*',
+                hintText: 'Unique username*',
                 hintStyle: Theme.of(context).textTheme.caption,
               ),
               cursorColor: Theme.of(context).primaryColorDark,
@@ -301,7 +301,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
               controller: widget.sphereDescriptionController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Bio / Purpose*',
+                hintText: 'Bio*',
                 hintStyle: Theme.of(context).textTheme.caption,
               ),
               cursorColor: Theme.of(context).primaryColorDark,

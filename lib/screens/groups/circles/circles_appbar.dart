@@ -15,6 +15,13 @@ import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sp
 import 'package:provider/provider.dart';
 
 class CirclesAppbar extends StatefulWidget {
+  const CirclesAppbar({
+    this.changePageView,
+    this.currentIndex,
+  });
+
+  final Function changePageView;
+  final int currentIndex;
   @override
   _CirclesAppbarState createState() => _CirclesAppbarState();
 }
@@ -104,7 +111,7 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                               featureId: 'groups_info_id',
                               isLastFeature: true,
                               title:
-                                  'Groups are public, private, or secret communities you can create on Junto. We will open this layer soon.',
+                                  'Communities are groups you can create in Junto. We will open up Private groups soon.',
                               learnMore: false,
                               child: JuntoInfoIcon(),
                             ),
@@ -132,20 +139,51 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                   children: [
                     Row(
                       children: <Widget>[
-                        Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.only(
-                            right: 20,
-                            top: 10,
-                            bottom: 10,
+                        GestureDetector(
+                          onTap: () {
+                            widget.changePageView(0);
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.only(
+                              right: 15,
+                              top: 10,
+                              bottom: 10,
+                            ),
+                            child: Text(
+                              'PUBLIC',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: widget.currentIndex == 0
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight,
+                                letterSpacing: .75,
+                              ),
+                            ),
                           ),
-                          child: Text(
-                            'PUBLIC',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Theme.of(context).primaryColorDark,
-                              letterSpacing: .75,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            widget.changePageView(1);
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.only(
+                              right: 15,
+                              top: 10,
+                              bottom: 10,
+                            ),
+                            child: Text(
+                              'REQUESTS',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: widget.currentIndex == 1
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight,
+                                letterSpacing: .75,
+                              ),
                             ),
                           ),
                         ),
