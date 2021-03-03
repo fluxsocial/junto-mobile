@@ -40,9 +40,7 @@ class CreateSphereState extends State<CreateSphere> {
   GlobalKey<FormState> _formKey;
 
   final List<String> _sphereMembers = <String>[];
-  final List<String> _tabs = <String>['Subscriptions', 'Connections'];
-  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
-      AsyncMemoizer<Map<String, dynamic>>();
+  final List<String> _tabs = <String>['Subscriptions', 'Connections', 'Search'];
 
   Future<void> _createSphere() async {
     JuntoLoader.showLoader(context);

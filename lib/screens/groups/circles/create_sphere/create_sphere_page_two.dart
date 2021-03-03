@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
+import 'create_spehere_search.dart';
 
 class CreateSpherePageTwo extends StatefulWidget {
   const CreateSpherePageTwo({
@@ -251,6 +252,11 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                 ],
               ),
             ),
+            CreateSphereSearch(
+              onSelect: widget.addMember,
+              onDeselect: widget.removeMember,
+              selectedMembers: widget.selectedMembers,
+            )
           ],
         ),
       ),
