@@ -60,7 +60,7 @@ class LoadCircleMembersMore extends CircleEvent {
 // TODO: @fayeed once added show a message to the user. Will also be used for adding facilitator
 class AddMemberToCircle extends CircleEvent {
   final String sphereAddress;
-  final UserProfile user;
+  final List<UserProfile> user;
   // Can be one of these values: Admin | Member
   final String permissionLevel;
 
