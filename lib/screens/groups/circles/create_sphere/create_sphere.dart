@@ -247,13 +247,13 @@ class CreateSphereState extends State<CreateSphere> {
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Container(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 5),
                 color: Colors.transparent,
                 width: 48,
                 alignment: Alignment.centerLeft,
                 child: Icon(
-                  CustomIcons.back,
-                  size: 20,
+                  Icons.keyboard_arrow_down,
+                  size: 28,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
@@ -339,7 +339,13 @@ class CreateSphereState extends State<CreateSphere> {
           color: Colors.transparent,
           child: Container(
             height: MediaQuery.of(context).size.height * .9,
-            color: Theme.of(context).backgroundColor,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
