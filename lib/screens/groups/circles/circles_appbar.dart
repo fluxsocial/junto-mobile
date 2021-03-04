@@ -191,13 +191,21 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<void>(
-                            builder: (BuildContext context) => CreateSphere(),
+                        showModalBottomSheet(
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        ).then((value) =>
-                            context.bloc<CircleBloc>().add(FetchMyCircle()));
+                          isScrollControlled: true,
+                          builder: (BuildContext context) => CreateSphere(),
+                        );
+                        // Navigator.push(
+                        //   context,
+                        //   CupertinoPageRoute<void>(
+                        //     builder: (BuildContext context) => CreateSphere(),
+                        //   ),
+                        // ).then((value) =>
+                        //     context.bloc<CircleBloc>().add(FetchMyCircle()));
                       },
                       child: Container(
                         alignment: Alignment.centerRight,

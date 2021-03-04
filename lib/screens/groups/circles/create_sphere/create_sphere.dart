@@ -151,7 +151,6 @@ class CreateSphereState extends State<CreateSphere> {
       children: <Widget>[
         _spherePrivacy('Public',
             'Anyone can join this community, read its expressions, and share to it.'),
-
       ],
     );
   }
@@ -229,97 +228,85 @@ class CreateSphereState extends State<CreateSphere> {
   }
 
   Widget _buildAppBar() {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      brightness: Theme.of(context).brightness,
-      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-      elevation: 0,
-      titleSpacing: 0,
-      title: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            if (_currentIndex == 0)
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  color: Colors.transparent,
-                  width: 48,
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    CustomIcons.back,
-                    size: 20,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-            if (_currentIndex != 0)
-              GestureDetector(
-                onTap: () {
-                  createSphereController.previousPage(
-                    curve: Curves.easeIn,
-                    duration: const Duration(
-                      milliseconds: 300,
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  color: Colors.transparent,
-                  width: 60,
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    CustomIcons.back,
-                    size: 17,
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                ),
-              ),
-            if (_currentIndex == 0)
-              Text(
-                'Create Community',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            if (_currentIndex == 2)
-              GestureDetector(
-                onTap: _createSphere,
-                child: Container(
-                  color: Colors.transparent,
-                  padding: const EdgeInsets.only(right: 10),
-                  width: 60,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'create',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ),
-              ),
-            if (_currentIndex != 2)
-              GestureDetector(
-                onTap: _onNextPress,
-                child: Container(
-                  color: Colors.transparent,
-                  padding: const EdgeInsets.only(right: 10),
-                  width: 48,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'next',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ),
-              )
-          ],
-        ),
+    return Container(
+      height: 60,
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
       ),
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.75),
-        child: Container(
-          height: .75,
-          decoration: BoxDecoration(
-            color: Theme.of(context).dividerColor,
-          ),
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          if (_currentIndex == 0)
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: const EdgeInsets.only(left: 10),
+                color: Colors.transparent,
+                width: 48,
+                alignment: Alignment.centerLeft,
+                child: Icon(
+                  CustomIcons.back,
+                  size: 20,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+          if (_currentIndex != 0)
+            GestureDetector(
+              onTap: () {
+                createSphereController.previousPage(
+                  curve: Curves.easeIn,
+                  duration: const Duration(
+                    milliseconds: 300,
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.only(left: 10),
+                color: Colors.transparent,
+                width: 60,
+                alignment: Alignment.centerLeft,
+                child: Icon(
+                  CustomIcons.back,
+                  size: 17,
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              ),
+            ),
+          if (_currentIndex == 0)
+            Text(
+              'Create Community',
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+          if (_currentIndex == 2)
+            GestureDetector(
+              onTap: _createSphere,
+              child: Container(
+                color: Colors.transparent,
+                padding: const EdgeInsets.only(right: 10),
+                width: 60,
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'create',
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ),
+            ),
+          if (_currentIndex != 2)
+            GestureDetector(
+              onTap: _onNextPress,
+              child: Container(
+                color: Colors.transparent,
+                padding: const EdgeInsets.only(right: 10),
+                width: 48,
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'next',
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ),
+            )
+        ],
       ),
     );
   }
@@ -345,16 +332,30 @@ class CreateSphereState extends State<CreateSphere> {
   Widget build(BuildContext context) {
     print('test: ${_sphereMembers}');
 
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(45),
-        child: _buildAppBar(),
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: Container(
+    return
+        // Scaffold(
+        //   appBar: PreferredSize(
+        //     preferredSize: const Size.fromHeight(45),
+        //     child: _buildAppBar(),
+        //   ),
+        //   backgroundColor: Theme.of(context).backgroundColor,
+        //   body:
+        Container(
+      color: Colors.transparent,
+      child: Container(
+        height: MediaQuery.of(context).size.height * .9,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            _buildAppBar(),
             Expanded(
               child: PageView(
                 controller: createSphereController,
@@ -386,6 +387,7 @@ class CreateSphereState extends State<CreateSphere> {
             )
           ],
         ),
+        // ),
       ),
     );
   }
