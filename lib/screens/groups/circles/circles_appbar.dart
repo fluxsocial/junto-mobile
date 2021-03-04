@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
-import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere.dart';
@@ -199,13 +198,6 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                           isScrollControlled: true,
                           builder: (BuildContext context) => CreateSphere(),
                         );
-                        // Navigator.push(
-                        //   context,
-                        //   CupertinoPageRoute<void>(
-                        //     builder: (BuildContext context) => CreateSphere(),
-                        //   ),
-                        // ).then((value) =>
-                        //     context.bloc<CircleBloc>().add(FetchMyCircle()));
                       },
                       child: Container(
                         alignment: Alignment.centerRight,

@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/circle_refresh.dart';
 import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/circle_preview/collective_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/on_perspectives_changed.dart';
+import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 
 import 'bloc/circle_bloc.dart';
 
@@ -67,16 +66,18 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                         },
                       ),
                       ...state.groups.map((group) {
-                        return group.groupData.sphereHandle != 'juntoupdates'
-                            ? GestureDetector(
-                                onTap: () {
-                                  onGroupSelected(group);
-                                },
-                                child: CirclePreview(
-                                  group: group,
-                                ),
-                              )
-                            : SizedBox();
+                        return GestureDetector(
+                          onTap: () {
+                            onGroupSelected(group);
+
+                            context
+                                .bloc<ChannelFilteringBloc>()
+                                .add(FilterClear());
+                          },
+                          child: CirclePreview(
+                            group: group,
+                          ),
+                        );
                       }).toList(),
                     ],
                   ));
