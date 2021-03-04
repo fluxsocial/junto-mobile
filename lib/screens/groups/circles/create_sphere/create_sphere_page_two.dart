@@ -106,31 +106,40 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
             Container(
               child: Column(
                 children: [
-                  SearchBar(
-                    hintText: 'search',
-                    textEditingController: _subController,
-                    onTextChange: (val) {
-                      context.bloc<RelationBloc>().add(
-                          FetchRealtionship(RelationContext.following, val));
-                    },
+                  Container(
+                    margin: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 10,
+                    ),
+                    child: SearchBar(
+                      hintText: 'Search',
+                      textEditingController: _subController,
+                      onTextChange: (val) {
+                        context.bloc<RelationBloc>().add(
+                            FetchRealtionship(RelationContext.following, val));
+                      },
+                    ),
                   ),
-                  BlocBuilder<RelationBloc, RelationState>(
-                      builder: (context, state) {
-                    if (state is RelationErrorState) {
-                      print(state.message);
-                      return JuntoErrorWidget(
-                          errorMessage: 'Hmm, something went wrong');
-                    } else if (state is RelationLoadingState) {
-                      return Center(
-                        child: JuntoProgressIndicator(),
-                      );
-                    } else if (state is RelationLoadedState) {
-                      // get list of following
-                      final List<UserProfile> _followingMembers =
-                          state.following;
-                      if (_followingMembers.length > 0) {
-                        return Expanded(
-                          child: NotificationListener<ScrollNotification>(
+                  Expanded(
+                    child: BlocBuilder<RelationBloc, RelationState>(
+                        builder: (context, state) {
+                      if (state is RelationErrorState) {
+                        print(state.message);
+                        return Center(
+                          child: JuntoErrorWidget(
+                              errorMessage: 'Hmm, something went wrong'),
+                        );
+                      } else if (state is RelationLoadingState) {
+                        return Center(
+                          child: JuntoProgressIndicator(),
+                        );
+                      } else if (state is RelationLoadedState) {
+                        // get list of following
+                        final List<UserProfile> _followingMembers =
+                            state.following;
+                        if (_followingMembers.length > 0) {
+                          return NotificationListener<ScrollNotification>(
                             onNotification: (ScrollNotification notification) {
                               final metrics = notification.metrics;
                               double scrollPercent =
@@ -163,12 +172,14 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                                   ),
                               ],
                             ),
-                          ),
-                        );
+                          );
+                        }
                       }
-                    }
-                    return SizedBox();
-                  }),
+                      return Center(
+                        child: JuntoProgressIndicator(),
+                      );
+                    }),
+                  )
                 ],
               ),
             ),
@@ -176,32 +187,41 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
             Container(
               child: Column(
                 children: [
-                  SearchBar(
-                    hintText: 'Search Connections',
-                    textEditingController: _conController,
-                    onTextChange: (val) {
-                      context.bloc<RelationBloc>().add(
-                          FetchRealtionship(RelationContext.connections, val));
-                    },
+                  Container(
+                    margin: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 10,
+                    ),
+                    child: SearchBar(
+                      hintText: 'Search',
+                      textEditingController: _conController,
+                      onTextChange: (val) {
+                        context.bloc<RelationBloc>().add(FetchRealtionship(
+                            RelationContext.connections, val));
+                      },
+                    ),
                   ),
-                  BlocBuilder<RelationBloc, RelationState>(
-                    builder: (context, state) {
-                      if (state is RelationErrorState) {
-                        print(state.message);
-                        return JuntoErrorWidget(
-                            errorMessage: 'Hmm, something went wrong');
-                      } else if (state is RelationLoadingState) {
-                        return Center(
-                          child: JuntoProgressIndicator(),
-                        );
-                      } else if (state is RelationLoadedState) {
-                        // get list of connections
-                        final List<UserProfile> _connectionsMembers =
-                            state.connections;
+                  Expanded(
+                    child: BlocBuilder<RelationBloc, RelationState>(
+                      builder: (context, state) {
+                        if (state is RelationErrorState) {
+                          print(state.message);
+                          return Center(
+                            child: JuntoErrorWidget(
+                                errorMessage: 'Hmm, something went wrong'),
+                          );
+                        } else if (state is RelationLoadingState) {
+                          return Center(
+                            child: JuntoProgressIndicator(),
+                          );
+                        } else if (state is RelationLoadedState) {
+                          // get list of connections
+                          final List<UserProfile> _connectionsMembers =
+                              state.connections;
 
-                        if (_connectionsMembers.length > 0) {
-                          return Expanded(
-                            child: NotificationListener<ScrollNotification>(
+                          if (_connectionsMembers.length > 0) {
+                            return NotificationListener<ScrollNotification>(
                               onNotification:
                                   (ScrollNotification notification) {
                                 final metrics = notification.metrics;
@@ -236,21 +256,20 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                                     ),
                                 ],
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            return FeedPlaceholder(
+                              placeholderText: 'No connections yet!',
+                              image: 'assets/images/junto-mobile__bench.png',
+                            );
+                          }
                         } else {
-                          return FeedPlaceholder(
-                            placeholderText: 'No connections yet!',
-                            image: 'assets/images/junto-mobile__bench.png',
+                          return Center(
+                            child: JuntoProgressIndicator(),
                           );
                         }
-                      } else {
-                        return FeedPlaceholder(
-                          placeholderText: 'No connections yet!',
-                          image: 'assets/images/junto-mobile__bench.png',
-                        );
-                      }
-                    },
+                      },
+                    ),
                   ),
                 ],
               ),

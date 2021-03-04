@@ -104,6 +104,12 @@ class _CreateSphereSearchState extends State<CreateSphereSearch> {
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(0.0),
                         border: InputBorder.none,
+                        hintText: 'Search',
+                        hintStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).primaryColorLight,
+                        ),
                       ),
                       cursorColor: Theme.of(context).primaryColor,
                       cursorWidth: 1,
