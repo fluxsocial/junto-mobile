@@ -38,11 +38,13 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
   void showTutorial() {
     FeatureDiscovery.clearPreferences(context, <String>{
       'groups_info_id',
+      'create_group_id',
     });
     FeatureDiscovery.discoverFeatures(
       context,
       const <String>{
         'groups_info_id',
+        'create_group_id',
       },
     );
   }
@@ -108,7 +110,7 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                             child: JuntoDescribedFeatureOverlay(
                               icon: OverlayInfoIcon(),
                               featureId: 'groups_info_id',
-                              isLastFeature: true,
+                              isLastFeature: false,
                               title:
                                   'Communities are groups you can create in Junto. We will open up Private groups soon.',
                               learnMore: true,
@@ -203,15 +205,27 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                           builder: (BuildContext context) => CreateSphere(),
                         );
                       },
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        color: Colors.transparent,
-                        width: 38,
-                        height: 38,
-                        child: Icon(
+                      child: JuntoDescribedFeatureOverlay(
+                        icon: Icon(
                           Icons.add,
                           size: 24,
                           color: Theme.of(context).primaryColor,
+                        ),
+                        featureId: 'create_group_id',
+                        isLastFeature: true,
+                        title:
+                            'Press this icon to create your own Public Community. We will open Private Communities soon.',
+                        learnMore: false,
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          color: Colors.transparent,
+                          width: 38,
+                          height: 38,
+                          child: Icon(
+                            Icons.add,
+                            size: 24,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
                     ),
