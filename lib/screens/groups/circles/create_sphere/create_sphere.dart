@@ -233,6 +233,12 @@ class CreateSphereState extends State<CreateSphere> {
       height: 60,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: .75,
+          ),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -276,37 +282,33 @@ class CreateSphereState extends State<CreateSphere> {
             ),
           if (_currentIndex == 0)
             Text(
-              'Create Community',
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-          if (_currentIndex == 2)
-            GestureDetector(
-              onTap: _createSphere,
-              child: Container(
-                color: Colors.transparent,
-                padding: const EdgeInsets.only(right: 10),
-                width: 60,
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'create',
-                  style: Theme.of(context).textTheme.caption,
-                ),
+              'Create',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).primaryColor,
               ),
             ),
-          if (_currentIndex != 2)
-            GestureDetector(
-              onTap: _onNextPress,
-              child: Container(
-                color: Colors.transparent,
-                padding: const EdgeInsets.only(right: 10),
-                width: 48,
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'next',
-                  style: Theme.of(context).textTheme.caption,
-                ),
+          if (_currentIndex == 1)
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 10,
               ),
-            )
+              child: CreateCommunityButton(
+                cta: _createSphere,
+                title: 'Create',
+              ),
+            ),
+          if (_currentIndex != 1)
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 10,
+              ),
+              child: CreateCommunityButton(
+                cta: _onNextPress,
+                title: 'Next',
+              ),
+            ),
         ],
       ),
     );
@@ -333,16 +335,15 @@ class CreateSphereState extends State<CreateSphere> {
   Widget build(BuildContext context) {
     return BlocBuilder<CircleBloc, CircleState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(45),
-            child: _buildAppBar(),
-          ),
-          backgroundColor: Theme.of(context).backgroundColor,
-          body: Container(
+        return Container(
+          color: Colors.transparent,
+          child: Container(
+            height: MediaQuery.of(context).size.height * .9,
+            color: Theme.of(context).backgroundColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                _buildAppBar(),
                 Expanded(
                   child: PageView(
                     controller: createSphereController,
@@ -382,64 +383,39 @@ class CreateSphereState extends State<CreateSphere> {
   }
 }
 
-// <<<<<<< HEAD
-//     print('test: ${_sphereMembers}');
+class CreateCommunityButton extends StatelessWidget {
+  const CreateCommunityButton({
+    this.cta,
+    this.title,
+  });
 
-//     return
-//         // Scaffold(
-//         //   appBar: PreferredSize(
-//         //     preferredSize: const Size.fromHeight(45),
-//         //     child: _buildAppBar(),
-//         //   ),
-//         //   backgroundColor: Theme.of(context).backgroundColor,
-//         //   body:
-//         Container(
-//       color: Colors.transparent,
-//       child: Container(
-//         height: MediaQuery.of(context).size.height * .9,
-//         decoration: BoxDecoration(
-//           color: Theme.of(context).colorScheme.background,
-//           borderRadius: const BorderRadius.only(
-//             topLeft: Radius.circular(10),
-//             topRight: Radius.circular(10),
-//           ),
-//         ),
+  final Function cta;
+  final String title;
 
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: <Widget>[
-//             _buildAppBar(),
-//             Expanded(
-//               child: PageView(
-//                 controller: createSphereController,
-//                 physics: const NeverScrollableScrollPhysics(),
-//                 onPageChanged: (int index) {
-//                   setState(() {
-//                     print(index);
-//                     _currentIndex = index;
-//                   });
-//                 },
-//                 children: <Widget>[
-//                   CreateSpherePageOne(
-//                     formKey: _formKey,
-//                     sphereDescriptionController: sphereDescriptionController,
-//                     sphereHandleController: sphereHandleController,
-//                     sphereNameController: sphereNameController,
-//                     imageFile: imageFile,
-//                   ),
-//                   CreateSpherePageTwo(
-//                     future: getUserRelationships(),
-//                     addMember: sphereAddMember,
-//                     removeMember: _sphereRemoveMember,
-//                     selectedMembers: _sphereMembers,
-//                     tabs: _tabs,
-//                   ),
-//                   _createSphereThree()
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//         // ),
-//       ),
-// =======
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: cta,
+      child: Container(
+        padding: const EdgeInsets.only(
+          left: 10,
+          right: 10,
+          top: 5,
+          bottom: 5,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    );
+  }
+}
