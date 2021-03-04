@@ -244,20 +244,41 @@ class CreateSphereState extends State<CreateSphere> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           if (_currentIndex == 0)
-            GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                padding: const EdgeInsets.only(left: 5),
-                color: Colors.transparent,
-                width: 48,
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 28,
-                  color: Theme.of(context).primaryColor,
-                ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Row(
+                children: [
+                  Icon(
+                    CustomIcons.newcollective,
+                    size: 28,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    'Create',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ],
               ),
             ),
+          // GestureDetector(
+          //   onTap: () => Navigator.pop(context),
+          //   child: Container(
+          //     padding: const EdgeInsets.only(left: 5),
+          //     color: Colors.transparent,
+          //     width: 48,
+          //     alignment: Alignment.centerLeft,
+          //     child: Icon(
+          //       Icons.keyboard_arrow_down,
+          //       size: 28,
+          //       color: Theme.of(context).primaryColor,
+          //     ),
+          //   ),
+          // ),
           if (_currentIndex != 0)
             GestureDetector(
               onTap: () {
@@ -280,15 +301,7 @@ class CreateSphereState extends State<CreateSphere> {
                 ),
               ),
             ),
-          if (_currentIndex == 0)
-            Text(
-              'Create',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
+
           if (_currentIndex == 1)
             Padding(
               padding: const EdgeInsets.only(
