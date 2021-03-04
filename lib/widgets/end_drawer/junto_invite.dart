@@ -33,10 +33,10 @@ class JuntoInvite extends StatelessWidget {
                       const SizedBox(height: 40),
                       JuntoLogoOutline(),
                       JuntoInviteText(
-                        "Junto was created from the desire to have more meaningful experiences on social media. On Junto, you can build your Pack - people closest to you that evoke the most unfiltered version of yourself.",
+                        "We envision Junto to grow through the creation of each individual's closest relationships. Right now, you can invite three people per week.",
                       ),
                       JuntoInviteText(
-                        "We envision the growth of Junto to take place through the creation of each individual's closest relationships. Thank you for participating in building this grassroots community with us.",
+                        "You can also support our open source development by copying the link in the top right and sharing our ongoing Indiegogo campaign! Those who contribute will get instant access to the private beta.",
                       ),
                     ],
                   ),
