@@ -15,7 +15,7 @@ class FilterResetButton extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width - 40.0,
         child: FlatButton(
-          color: const Color(0xff444444),
+          color: Theme.of(context).colorScheme.primary,
           onPressed: onTap,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0),

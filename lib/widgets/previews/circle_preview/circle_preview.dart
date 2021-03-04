@@ -38,9 +38,9 @@ class CirclePreview extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Icon(
-                    CustomIcons.spheres,
+                    CustomIcons.newcollective,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 15,
+                    size: diameter / 1.5,
                   ),
                 )
               : ClipOval(
@@ -67,9 +67,9 @@ class CirclePreview extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                           ),
                           child: Icon(
-                            CustomIcons.spheres,
+                            CustomIcons.newcollective,
                             color: Theme.of(context).colorScheme.onPrimary,
-                            size: 17,
+                            size: diameter / 1.5,
                           ),
                         );
                       }),

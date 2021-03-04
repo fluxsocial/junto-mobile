@@ -4,9 +4,10 @@ import 'package:junto_beta_mobile/widgets/filter_drawer_new/filter_drawer_new.da
 
 class FilterDrawerButton extends StatelessWidget {
   const FilterDrawerButton({
+    this.collectiveScreen = false,
     Key key,
   }) : super(key: key);
-
+  final bool collectiveScreen;
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -20,7 +21,9 @@ class FilterDrawerButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
             isScrollControlled: true,
-            builder: (BuildContext context) => FilterDrawerNew(),
+            builder: (BuildContext context) => FilterDrawerNew(
+              collectiveScreen: collectiveScreen,
+            ),
           );
         },
         child: Container(

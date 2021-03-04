@@ -13,7 +13,6 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pe
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pack_members.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
@@ -40,7 +39,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
     'SUBSCRIPTIONS',
     'SUBSCRIBERS',
     'CONNECTIONS',
-    'MY PACK',
   ];
 
   Future<void> getUserRelationships() async {
@@ -188,7 +186,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                           '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
                           '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
                           '"Connections" are your first degree friendships. Choosing to connect with someone is like friending them (mutual).',
-                          'Your "Pack" is your closest group of friends (not mutual). Visit the tutorial in your Pack feed for more information.'
                         ],
                         child: JuntoInfoIcon(),
                       ),
@@ -261,9 +258,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
 
               // connections
               Connections(),
-
-              // pack members
-              PackMembers(userAddress: widget.userAddress),
             ],
           ),
         ),

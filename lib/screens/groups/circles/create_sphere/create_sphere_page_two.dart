@@ -40,8 +40,13 @@ class CreateSpherePageTwo extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(right: 24),
                         color: Theme.of(context).colorScheme.background,
-                        child: Tab(
-                          text: name,
+                        child: Text(
+                          name.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: .5,
+                          ),
                         ),
                       ),
                   ],

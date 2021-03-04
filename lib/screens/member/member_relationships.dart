@@ -221,7 +221,6 @@ class MemberRelationships extends StatelessWidget {
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
         connectWithUser: connectWithUser,
-        inviteToPack: inviteToPack,
       );
     } else if (isFollowing &&
         !isConnected &&
@@ -233,7 +232,6 @@ class MemberRelationships extends StatelessWidget {
         buildContext: buildContext,
         unsubscribeToUser: unsubscribeToUser,
         connectWithUser: connectWithUser,
-        inviteToPack: inviteToPack,
       );
     } else if (isConnected &&
             hasPendingPackRequest != true &&
@@ -247,7 +245,6 @@ class MemberRelationships extends StatelessWidget {
         subscribeToUser: subscribeToUser,
         unsubscribeToUser: unsubscribeToUser,
         disconnectWithUser: disconnectWithUser,
-        inviteToPack: inviteToPack,
         hasPendingConnection: hasPendingConnection,
         isConnected: isConnected,
         isFollowing: isFollowing,
@@ -273,7 +270,6 @@ class MemberRelationships extends StatelessWidget {
       buildContext: buildContext,
       subscribeToUser: subscribeToUser,
       connectWithUser: connectWithUser,
-      inviteToPack: inviteToPack,
     );
   }
 }

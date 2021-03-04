@@ -85,7 +85,7 @@ class CircleActionItemsMember extends StatelessWidget {
                             }
                           },
                           confirmationText:
-                              'Are you sure you want to leave this circle?',
+                              'Are you sure you want to leave this community?',
                         ),
                       );
                     },
@@ -97,7 +97,7 @@ class CircleActionItemsMember extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                         ),
                         const SizedBox(width: 15),
-                        Text('Leave Sphere',
+                        Text('Leave Community',
                             style: Theme.of(context).textTheme.headline5),
                       ],
                     ),

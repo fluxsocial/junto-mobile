@@ -293,8 +293,8 @@ class CircleBackgroundPlaceholder extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: Icon(
-        CustomIcons.spheres,
-        size: 60,
+        CustomIcons.newcollective,
+        size: 80,
         color: Theme.of(context).colorScheme.onPrimary,
       ),
     );

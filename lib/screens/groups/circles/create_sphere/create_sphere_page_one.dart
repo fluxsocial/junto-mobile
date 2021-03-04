@@ -110,6 +110,12 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                     contentPadding: const EdgeInsets.all(0),
                     title: Row(
                       children: <Widget>[
+                        Icon(
+                          Icons.photo_library,
+                          size: 20,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(width: 10),
                         Text(
                           'Upload new photo',
                           style: Theme.of(context).textTheme.headline5,
@@ -127,6 +133,12 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                     },
                     title: Row(
                       children: <Widget>[
+                        Icon(
+                          Icons.delete,
+                          size: 20,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(width: 10),
                         Text(
                           'Remove photo',
                           style: Theme.of(context).textTheme.headline5,
@@ -147,22 +159,37 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
   Widget build(BuildContext context) {
     return Form(
       key: widget.formKey,
-      autovalidate: false,
       child: ListView(
         children: <Widget>[
           if (imageFile == null)
             GestureDetector(
               onTap: _onPickPressed,
               child: Container(
-                margin: const EdgeInsets.only(bottom: 15),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: .75,
+                    ),
+                  ),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width,
-                height: (MediaQuery.of(context).size.width / 3) * 2,
-                color: Theme.of(context).dividerColor,
-                child: Icon(
-                  CustomIcons.camera,
-                  size: 38,
-                  color: Theme.of(context).primaryColorLight,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.photo_library,
+                      size: 24,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Photo',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -196,9 +223,19 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        'Change Photo',
-                        style: Theme.of(context).textTheme.caption,
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.photo_library,
+                            size: 24,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Change photo',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ],
                       ),
                       Icon(
                         Icons.keyboard_arrow_right,
@@ -233,7 +270,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                   null,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Circle Name*',
+                hintText: 'Name*',
                 hintStyle: Theme.of(context).textTheme.caption,
               ),
               cursorColor: JuntoPalette.juntoGrey,
@@ -267,7 +304,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                   null,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Unique Username*',
+                hintText: 'Username*',
                 hintStyle: Theme.of(context).textTheme.caption,
               ),
               cursorColor: Theme.of(context).primaryColorDark,
@@ -301,7 +338,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
               controller: widget.sphereDescriptionController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Bio / Purpose*',
+                hintText: 'Bio*',
                 hintStyle: Theme.of(context).textTheme.caption,
               ),
               cursorColor: Theme.of(context).primaryColorDark,
