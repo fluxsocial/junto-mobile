@@ -83,6 +83,12 @@ class _CreateSphereSearchState extends State<CreateSphereSearch> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                Icon(
+                  Icons.search,
+                  color: Theme.of(context).primaryColorLight,
+                  size: 17,
+                ),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Builder(builder: (context) {
                     return TextField(
@@ -97,19 +103,13 @@ class _CreateSphereSearchState extends State<CreateSphereSearch> {
                           null,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(0.0),
-                        hintText: 'search members',
                         border: InputBorder.none,
-                        hintStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColorLight,
-                        ),
                       ),
                       cursorColor: Theme.of(context).primaryColor,
                       cursorWidth: 1,
                       maxLines: 1,
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColor,
                       ),

@@ -58,6 +58,7 @@ class CirclesState extends State<Circles>
       body: JuntoFilterDrawer(
         leftDrawer: null,
         rightMenu: null,
+        swipe: false,
         scaffold: PageView(
           controller: circlesPageController,
           physics: NeverScrollableScrollPhysics(),
@@ -147,14 +148,39 @@ class _CircleMainState extends State<CircleMain> {
         preferredSize: Size.fromHeight(
           MediaQuery.of(context).size.height * .1 + 50,
         ),
-        child: CirclesAppbar(),
+        child: CirclesAppbar(
+          changePageView: changePageView,
+          currentIndex: _currentIndex,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BlocBuilder<CircleBloc, CircleState>(
         builder: (context, state) {
-          return CirclesListAll(
-            userProfile: widget._userProfile,
-            onGroupSelected: widget.onGroupSelected,
+          return Column(
+            children: [
+              Expanded(
+                child: PageView(
+                  controller: circlesPageController,
+                  onPageChanged: (int index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  children: [
+                    CirclesListAll(
+                      userProfile: widget._userProfile,
+                      onGroupSelected: widget.onGroupSelected,
+                    ),
+                    CirclesRequests(),
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height,
+                    //   width: MediaQuery.of(context).size.width,
+                    //   color: Colors.orange,
+                    // )
+                  ],
+                ),
+              ),
+            ],
           );
         },
       ),

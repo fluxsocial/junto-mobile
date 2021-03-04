@@ -16,11 +16,13 @@ class CircleActionItemsAdmin extends StatefulWidget {
     @required this.sphere,
     @required this.userProfile,
     @required this.isCreator,
+    this.goBack,
   }) : super(key: key);
 
   final Group sphere;
   final UserProfile userProfile;
   final bool isCreator;
+  final Function goBack;
 
   @override
   _CircleActionItemsAdminState createState() => _CircleActionItemsAdminState();
@@ -98,9 +100,10 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                               confirm: () {
                                 try {
                                   context.bloc<CircleBloc>().add(DeleteCircle(
-                                      sphereAddress: widget.sphere.address));
+                                        sphereAddress: widget.sphere.address,
+                                      ));
 
-                                  Navigator.pop(context);
+                                  widget.goBack();
                                 } catch (e, s) {
                                   logger.logException(e, s);
                                 }
@@ -125,45 +128,47 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                           ],
                         ),
                       ),
-                    ListTile(
-                      contentPadding: const EdgeInsets.all(0),
-                      onTap: () {
-                        Navigator.pop(context);
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => ConfirmDialog(
-                            buildContext: context,
-                            confirm: () {
-                              try {
-                                context.bloc<CircleBloc>().add(LeaveCircle(
-                                    sphereAdress: widget.sphere.address,
-                                    userAddress: widget.userProfile.address));
+                    if (!widget.isCreator)
+                      ListTile(
+                        contentPadding: const EdgeInsets.all(0),
+                        onTap: () {
+                          Navigator.pop(context);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => ConfirmDialog(
+                              buildContext: context,
+                              confirm: () {
+                                try {
+                                  context.bloc<CircleBloc>().add(LeaveCircle(
+                                        sphereAdress: widget.sphere.address,
+                                        userAddress: widget.userProfile.address,
+                                      ));
 
-                                Navigator.pop(context);
-                              } catch (e, s) {
-                                logger.logException(e, s);
-                              }
-                            },
-                            confirmationText:
-                                'Are you sure you want to leave this circle?',
-                          ),
-                        );
-                      },
-                      title: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.block,
-                            size: 17,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          const SizedBox(width: 15),
-                          Text(
-                            'Leave Circle',
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                        ],
+                                  widget.goBack();
+                                } catch (e, s) {
+                                  logger.logException(e, s);
+                                }
+                              },
+                              confirmationText:
+                                  'Are you sure you want to leave this circle?',
+                            ),
+                          );
+                        },
+                        title: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.block,
+                              size: 17,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            const SizedBox(width: 15),
+                            Text(
+                              'Leave Circle',
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),

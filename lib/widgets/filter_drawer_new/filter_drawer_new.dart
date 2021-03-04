@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -6,8 +7,13 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:junto_beta_mobile/widgets/drawer/widgets/widgets.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
+import './filter_reset_button.dart';
 
 class FilterDrawerNew extends StatefulWidget {
+  const FilterDrawerNew({this.collectiveScreen});
+
+  final bool collectiveScreen;
   @override
   State<StatefulWidget> createState() {
     return FilterDrawerNewState();
@@ -41,6 +47,8 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
     textEditingController = TextEditingController()
       ..addListener(_onSearchChanged);
     pageViewController = PageController();
+
+    context.bloc<ChannelFilteringBloc>().add(FilterClear());
   }
 
   Future<void> _onSearchChanged() async {
@@ -72,9 +80,11 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
         final selectedSet = state.selectedChannel != null
             ? state.selectedChannel.map((e) => e.name).toList()
             : [];
-        filteredList = state.channels
-            .where((element) => !selectedSet.contains(element.name))
-            .toList();
+        filteredList = focusNode.hasFocus
+            ? state.channels
+                .where((element) => !selectedSet.contains(element.name))
+                .toList()
+            : [];
       }
       return Container(
         color: Colors.transparent,
@@ -147,37 +157,42 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: () {
-                              pageViewController.animateToPage(
-                                1,
-                                duration: Duration(milliseconds: 200),
-                                curve: Curves.easeIn,
-                              );
-                            },
-                            child: ClipOval(
+                          if (widget.collectiveScreen)
+                            GestureDetector(
+                              onTap: () {
+                                pageViewController.animateToPage(
+                                  1,
+                                  duration: Duration(milliseconds: 200),
+                                  curve: Curves.easeIn,
+                                );
+                              },
                               child: Container(
-                                height: 38,
-                                width: 38,
-                                color: _currentIndex == 1
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).dividerColor,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/junto-mobile__perspective--white.png',
-                                      height: 15,
-                                      color: _currentIndex == 1
-                                          ? Colors.white
-                                          : Theme.of(context).primaryColorDark,
+                                margin: const EdgeInsets.only(left: 10),
+                                child: ClipOval(
+                                  child: Container(
+                                    height: 38,
+                                    width: 38,
+                                    color: _currentIndex == 1
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Theme.of(context).dividerColor,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/junto-mobile__perspective--white.png',
+                                          height: 15,
+                                          color: _currentIndex == 1
+                                              ? Colors.white
+                                              : Theme.of(context)
+                                                  .primaryColorDark,
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     ]),
@@ -193,168 +208,201 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                   },
                   children: [
                     // Custom Filter (starting with channels in V1)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Stack(
+                      alignment: AlignmentDirectional.centerStart,
                       children: [
-                        Text(
-                          'Filter',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        AnimatedContainer(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).dividerColor,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          width: MediaQuery.of(context).size.width,
-                          height: channelsContainerHeight,
-                          duration: Duration(milliseconds: 200),
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 5),
-                                  child: Text(
-                                    'Channels',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Theme.of(context).primaryColorDark,
-                                      fontWeight: FontWeight.w700,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Filter',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            const SizedBox(height: 25),
+                            AnimatedContainer(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).dividerColor,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              height: channelsContainerHeight,
+                              duration: Duration(milliseconds: 200),
+                              child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(bottom: 5),
+                                      child: Text(
+                                        'Channels',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                FilterDrawerTextField(
-                                  textEditingController: textEditingController,
-                                  focusNode: focusNode,
-                                ),
-                                if (state is ChannelsPopulatedState &&
-                                    state.selectedChannel != null)
-                                  Container(
-                                    margin: const EdgeInsets.only(bottom: 5),
-                                    child: Row(
-                                      children: [
-                                        ...state.selectedChannel
-                                            .map((e) => SelectedChannelChip(
-                                                channel: e.name,
+                                    FilterDrawerTextField(
+                                      textEditingController:
+                                          textEditingController,
+                                      focusNode: focusNode,
+                                    ),
+                                    if (state is ChannelsPopulatedState &&
+                                        state.selectedChannel != null)
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 5),
+                                        child: Row(
+                                          children: [
+                                            ...state.selectedChannel
+                                                .map((e) => SelectedChannelChip(
+                                                    channel: e.name,
+                                                    onTap: () {
+                                                      context
+                                                          .bloc<
+                                                              ChannelFilteringBloc>()
+                                                          .add(
+                                                            FilterSelected(
+                                                              state
+                                                                  .selectedChannel
+                                                                  .where((element) =>
+                                                                      element
+                                                                          .name !=
+                                                                      e.name)
+                                                                  .toList(),
+                                                              ExpressionContextType
+                                                                  .Collective,
+                                                            ),
+                                                          );
+                                                    }))
+                                                .toList(),
+                                          ],
+                                        ),
+                                      ),
+                                    if (state is ChannelsPopulatedState)
+                                      Expanded(
+                                        child: ListView.builder(
+                                          padding: const EdgeInsets.all(0),
+                                          itemCount: filteredList.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final Channel item =
+                                                filteredList[index];
+                                            if (item != null) {
+                                              return InkWell(
                                                 onTap: () {
                                                   context
                                                       .bloc<
                                                           ChannelFilteringBloc>()
-                                                      .add(
-                                                        FilterSelected(
-                                                          state.selectedChannel
-                                                              .where((element) =>
-                                                                  element
-                                                                      .name !=
-                                                                  e.name)
-                                                              .toList(),
-                                                          ExpressionContextType
-                                                              .Collective,
-                                                        ),
-                                                      );
-                                                }))
-                                            .toList(),
-                                      ],
+                                                      .add(FilterSelected(
+                                                        [
+                                                          if (state
+                                                                  .selectedChannel !=
+                                                              null)
+                                                            ...state
+                                                                .selectedChannel,
+                                                          item
+                                                        ],
+                                                        ExpressionContextType
+                                                            .Collective,
+                                                      ));
+                                                  textEditingController.clear();
+                                                  // Navigator.pop(context);
+                                                },
+                                                child:
+                                                    FilterDrawerChannelPreview(
+                                                  channel: item,
+                                                ),
+                                              );
+                                            } else {
+                                              return Container();
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                          bottom: 0.0,
+                          left: -4.0,
+                          child: FilterResetButton(
+                            onTap: () {
+                              context
+                                  .bloc<ChannelFilteringBloc>()
+                                  .add(FilterReset());
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                    if (widget.collectiveScreen)
+                      // Perspectives
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Relations',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'ALL',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                    letterSpacing: .5,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            CreatePerspectivePage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Theme.of(context).dividerColor,
+                                    ),
+                                    child: Icon(
+                                      Icons.add,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 20,
                                     ),
                                   ),
-                                if (state is ChannelsPopulatedState)
-                                  Expanded(
-                                    child: ListView.builder(
-                                      padding: const EdgeInsets.all(0),
-                                      itemCount: filteredList.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        final Channel item =
-                                            filteredList[index];
-                                        if (item != null) {
-                                          return InkWell(
-                                            onTap: () {
-                                              context
-                                                  .bloc<ChannelFilteringBloc>()
-                                                  .add(FilterSelected(
-                                                    [
-                                                      if (state
-                                                              .selectedChannel !=
-                                                          null)
-                                                        ...state
-                                                            .selectedChannel,
-                                                      item
-                                                    ],
-                                                    ExpressionContextType
-                                                        .Collective,
-                                                  ));
-                                              textEditingController.clear();
-                                              // Navigator.pop(context);
-                                            },
-                                            child: FilterDrawerChannelPreview(
-                                              channel: item,
-                                            ),
-                                          );
-                                        } else {
-                                          return Container();
-                                        }
-                                      },
-                                    ),
-                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-
-                    // Perspectives
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Perspectives',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'ALL',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColor,
-                                  letterSpacing: .5,
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: Theme.of(context).dividerColor,
-                                ),
-                                child: Icon(
-                                  Icons.add,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 20,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        PerspectivesList()
-                      ],
-                    ),
+                          const SizedBox(height: 10),
+                          PerspectivesList()
+                        ],
+                      ),
                   ],
                 ),
               ),

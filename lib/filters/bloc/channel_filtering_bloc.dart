@@ -61,13 +61,15 @@ class ChannelFilteringBloc
   Stream<ChannelFilteringState> _mapFilterUpdatedToState(
       FilterQueryUpdated event) async* {
     try {
+      state.selectedChannel;
       final result = await searchRepository.searchChannel(event.term);
       logger.logDebug(
           'Channels available for query ${event.term} ${result.results.length}');
+
       yield ChannelsPopulatedState(result.results, state.selectedChannel);
     } catch (e, s) {
       logger.logException(e, s, 'Error during updating the filter');
-      yield const ChannelsErrorState();
+      yield ChannelsErrorState();
     }
   }
 
@@ -80,11 +82,11 @@ class ChannelFilteringBloc
   Stream<ChannelFilteringState> _mapFilterResetToState(
       FilterReset event) async* {
     onFilterApplied(null);
-    yield const ChannelsPopulatedState([], null);
+    yield ChannelsPopulatedState([], null);
   }
 
   Stream<ChannelFilteringState> _mapFilterClearToState(
       FilterClear event) async* {
-    yield const ChannelsPopulatedState([], null);
+    yield ChannelsPopulatedState([], state.selectedChannel);
   }
 }

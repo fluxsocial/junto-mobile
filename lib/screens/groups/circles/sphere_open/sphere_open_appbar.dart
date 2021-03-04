@@ -49,7 +49,7 @@ class SphereOpenAppbar extends StatelessWidget {
             ),
             Container(
               child: Text(
-                's/${group.groupData.sphereHandle}',
+                'c/${group.groupData.sphereHandle}',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ),

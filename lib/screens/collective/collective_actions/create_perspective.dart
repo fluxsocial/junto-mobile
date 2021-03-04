@@ -199,7 +199,7 @@ class _PerspectivesPageViewState extends State<PerspectivesPageView> {
                     child: ListView(
                       children: <Widget>[
                         PerspectiveTextField(
-                          name: 'New Perspective',
+                          name: 'List Name',
                           validator: _nameValidator,
                           controller: widget.nameController,
                           textInputActionType: TextInputAction.next,
@@ -214,7 +214,6 @@ class _PerspectivesPageViewState extends State<PerspectivesPageView> {
                         ),
                       ],
                     ),
-                    autovalidate: false,
                   ),
                 ),
               ],

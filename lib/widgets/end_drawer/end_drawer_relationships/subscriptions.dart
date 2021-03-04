@@ -31,29 +31,38 @@ class _SubscriptionsState extends State<Subscriptions> {
     return Container(
       child: Column(
         children: [
-          SearchBar(
-            hintText: 'Search Subscription',
-            textEditingController: _textEditingController,
-            onTextChange: (val) {
-              context
-                  .bloc<RelationBloc>()
-                  .add(FetchRealtionship(RelationContext.following, val));
-            },
+          Container(
+            margin: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              top: 10,
+            ),
+            child: SearchBar(
+              hintText: 'Search',
+              textEditingController: _textEditingController,
+              onTextChange: (val) {
+                context
+                    .bloc<RelationBloc>()
+                    .add(FetchRealtionship(RelationContext.following, val));
+              },
+            ),
           ),
-          BlocBuilder<RelationBloc, RelationState>(
-            builder: (context, state) {
-              if (state is RelationErrorState) {
-                return JuntoErrorWidget(
-                    errorMessage: 'Hmm, something went wrong');
-              } else if (state is RelationLoadingState) {
-                return Center(
-                  child: JuntoProgressIndicator(),
-                );
-              } else if (state is RelationLoadedState) {
-                final List<UserProfile> _followingMembers = state.following;
-                if (_followingMembers.length > 0) {
-                  return Expanded(
-                    child: NotificationListener<ScrollNotification>(
+          Expanded(
+            child: BlocBuilder<RelationBloc, RelationState>(
+              builder: (context, state) {
+                if (state is RelationErrorState) {
+                  return Center(
+                    child: JuntoErrorWidget(
+                        errorMessage: 'Hmm, something went wrong'),
+                  );
+                } else if (state is RelationLoadingState) {
+                  return Center(
+                    child: JuntoProgressIndicator(),
+                  );
+                } else if (state is RelationLoadedState) {
+                  final List<UserProfile> _followingMembers = state.following;
+                  if (_followingMembers.length > 0) {
+                    return NotificationListener<ScrollNotification>(
                       onNotification: (ScrollNotification notification) {
                         final metrics = notification.metrics;
                         double scrollPercent =
@@ -80,21 +89,22 @@ class _SubscriptionsState extends State<Subscriptions> {
                             )
                             .toList(),
                       ),
-                    ),
-                  );
-                } else {
-                  return FeedPlaceholder(
-                    placeholderText: 'No subscriptions yet!',
-                    image: 'assets/images/junto-mobile__bench.png',
-                  );
+                    );
+                  } else {
+                    return FeedPlaceholder(
+                      placeholderText: 'No subscriptions yet!',
+                      image: 'assets/images/junto-mobile__bench.png',
+                    );
+                  }
                 }
-              }
 
-              return FeedPlaceholder(
-                placeholderText: 'No subscriptions yet!',
-                image: 'assets/images/junto-mobile__bench.png',
-              );
-            },
+                return Expanded(
+                  child: Center(
+                    child: JuntoProgressIndicator(),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

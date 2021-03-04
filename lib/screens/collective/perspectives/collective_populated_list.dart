@@ -23,7 +23,7 @@ class CollectivePopulatedList extends StatelessWidget {
     } else if (state.name == 'Connections') {
       return 'No expressions yet. Start connecting with people you want to hear from!';
     } else {
-      return 'No expressions yet. Start customizing and adding people to your perspectives!';
+      return 'No expressions yet!';
     }
   }
 

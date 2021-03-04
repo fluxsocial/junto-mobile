@@ -44,9 +44,9 @@ class SphereRequest extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Icon(
-                    CustomIcons.spheres,
+                    CustomIcons.newcollective,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 17,
+                    size: diameter / 1.5,
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -71,7 +71,7 @@ class SphereRequest extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              's/${item.group.groupData.sphereHandle}',
+                              'c/${item.group.groupData.sphereHandle}',
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.subtitle1,
                             ),
@@ -101,8 +101,9 @@ class SphereRequest extends StatelessWidget {
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(100),
                                   border: Border.all(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 1),
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1,
+                                  ),
                                 ),
                                 height: 33,
                                 width: 33,
@@ -133,7 +134,8 @@ class SphereRequest extends StatelessWidget {
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.circular(100),
                                   border: Border.all(
-                                      color: Theme.of(context).primaryColor,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                       width: 1),
                                 ),
                                 height: 33,
@@ -141,7 +143,7 @@ class SphereRequest extends StatelessWidget {
                                 child: Icon(
                                   CustomIcons.cancel,
                                   size: 20,
-                                  color: Theme.of(context).primaryColor,
+                                  color: Theme.of(context).primaryColorLight,
                                 ),
                               ),
                             ),

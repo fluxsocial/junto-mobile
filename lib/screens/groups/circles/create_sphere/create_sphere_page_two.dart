@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
-import 'create_spehere_search.dart';
+import 'create_sphere_search.dart';
 
 class CreateSpherePageTwo extends StatefulWidget {
   const CreateSpherePageTwo({
@@ -28,7 +28,11 @@ class CreateSpherePageTwo extends StatefulWidget {
 class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
   TextEditingController _subController;
   TextEditingController _conController;
-  final List<String> _tabs = <String>['Subscriptions', 'Connections', 'Search'];
+  final List<String> _tabs = <String>[
+    'All',
+    'Subscriptions',
+    'Connections',
+  ];
 
   @override
   void initState() {
@@ -72,10 +76,15 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                   tabs: <Widget>[
                     for (String name in _tabs)
                       Container(
-                        margin: const EdgeInsets.only(right: 24),
+                        margin: const EdgeInsets.only(right: 15),
                         color: Theme.of(context).colorScheme.background,
-                        child: Tab(
-                          text: name,
+                        child: Text(
+                          name.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: .5,
+                          ),
                         ),
                       ),
                   ],
@@ -87,11 +96,18 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
         },
         body: TabBarView(
           children: <Widget>[
+            CreateSphereSearch(
+              onSelect: widget.addMember,
+              onDeselect: widget.removeMember,
+              selectedMembers: widget.selectedMembers,
+            ),
+            // Subscriptions
+
             Container(
               child: Column(
                 children: [
                   SearchBar(
-                    hintText: 'Search Connections',
+                    hintText: 'search',
                     textEditingController: _subController,
                     onTextChange: (val) {
                       context.bloc<RelationBloc>().add(
@@ -99,76 +115,64 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                     },
                   ),
                   BlocBuilder<RelationBloc, RelationState>(
-                    builder: (context, state) {
-                      if (state is RelationErrorState) {
-                        print(state.message);
-                        return JuntoErrorWidget(
-                            errorMessage: 'Hmm, something went wrong');
-                      } else if (state is RelationLoadingState) {
-                        return Center(
-                          child: JuntoProgressIndicator(),
-                        );
-                      } else if (state is RelationLoadedState) {
-                        // get list of following
-                        final List<UserProfile> _followingMembers =
-                            state.following;
-
-                        if (_followingMembers.length > 0) {
-                          return Expanded(
-                            child: NotificationListener<ScrollNotification>(
-                              onNotification:
-                                  (ScrollNotification notification) {
-                                final metrics = notification.metrics;
-                                double scrollPercent =
-                                    (metrics.pixels / metrics.maxScrollExtent) *
-                                        100;
-                                if (scrollPercent.roundToDouble() == 60.0 &&
-                                    state.followingResultCount >
-                                        _followingMembers.length) {
-                                  context
-                                      .bloc<RelationBloc>()
-                                      .add(FetchMoreRelationship(
-                                        RelationContext.following,
-                                        _subController.value.text,
-                                      ));
-                                  return true;
-                                }
-                                return false;
-                              },
-                              child: ListView(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                children: <Widget>[
-                                  for (UserProfile member in _followingMembers)
-                                    MemberPreviewSelect(
-                                      profile: member,
-                                      onSelect: widget.addMember,
-                                      onDeselect: widget.removeMember,
-                                      isSelected: widget.selectedMembers
-                                          .contains(member.address),
-                                    ),
-                                ],
-                              ),
+                      builder: (context, state) {
+                    if (state is RelationErrorState) {
+                      print(state.message);
+                      return JuntoErrorWidget(
+                          errorMessage: 'Hmm, something went wrong');
+                    } else if (state is RelationLoadingState) {
+                      return Center(
+                        child: JuntoProgressIndicator(),
+                      );
+                    } else if (state is RelationLoadedState) {
+                      // get list of following
+                      final List<UserProfile> _followingMembers =
+                          state.following;
+                      if (_followingMembers.length > 0) {
+                        return Expanded(
+                          child: NotificationListener<ScrollNotification>(
+                            onNotification: (ScrollNotification notification) {
+                              final metrics = notification.metrics;
+                              double scrollPercent =
+                                  (metrics.pixels / metrics.maxScrollExtent) *
+                                      100;
+                              if (scrollPercent.roundToDouble() == 60.0 &&
+                                  state.followingResultCount >
+                                      _followingMembers.length) {
+                                context
+                                    .bloc<RelationBloc>()
+                                    .add(FetchMoreRelationship(
+                                      RelationContext.following,
+                                      _subController.value.text,
+                                    ));
+                                return true;
+                              }
+                              return false;
+                            },
+                            child: ListView(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              children: <Widget>[
+                                for (UserProfile member in _followingMembers)
+                                  MemberPreviewSelect(
+                                    profile: member,
+                                    onSelect: widget.addMember,
+                                    onDeselect: widget.removeMember,
+                                    isSelected: widget.selectedMembers
+                                        .contains(member.address),
+                                  ),
+                              ],
                             ),
-                          );
-                        } else {
-                          return FeedPlaceholder(
-                            placeholderText: 'No subscriptions yet!',
-                            image: 'assets/images/junto-mobile__bench.png',
-                          );
-                        }
-                      } else {
-                        return FeedPlaceholder(
-                          placeholderText: 'No subscriptions yet!',
-                          image: 'assets/images/junto-mobile__bench.png',
+                          ),
                         );
                       }
-                    },
-                  ),
+                    }
+                    return SizedBox();
+                  }),
                 ],
               ),
             ),
-            // connections
+            // Connections
             Container(
               child: Column(
                 children: [
@@ -251,11 +255,6 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                 ],
               ),
             ),
-            CreateSphereSearch(
-              onSelect: widget.addMember,
-              onDeselect: widget.removeMember,
-              selectedMembers: widget.selectedMembers,
-            )
           ],
         ),
       ),

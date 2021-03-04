@@ -14,37 +14,55 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: TextField(
-        controller: textEditingController,
-        onChanged: onTextChange,
-        buildCounter: (
-          BuildContext context, {
-          int currentLength,
-          int maxLength,
-          bool isFocused,
-        }) =>
-            null,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(0.0),
-          hintText: hintText,
-          border: InputBorder.none,
-          hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).primaryColorLight),
-        ),
-        cursorColor: Theme.of(context).primaryColor,
-        cursorWidth: 1,
-        maxLines: 1,
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: Theme.of(context).primaryColor,
-        ),
-        maxLength: 80,
-        textInputAction: TextInputAction.search,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).dividerColor,
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.search,
+            color: Theme.of(context).primaryColorLight,
+            size: 17,
+          ),
+          const SizedBox(width: 5),
+          Expanded(
+            child: Container(
+              height: 40,
+              child: TextField(
+                controller: textEditingController,
+                onChanged: onTextChange,
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).primaryColorLight),
+                ),
+                cursorColor: Theme.of(context).primaryColor,
+                cursorWidth: 1,
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor,
+                ),
+                maxLength: 80,
+                textInputAction: TextInputAction.search,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

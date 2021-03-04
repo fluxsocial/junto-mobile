@@ -6,55 +6,76 @@ import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/single_listview.dart';
-import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/collective_populated_list.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/collective_feed_refresh.dart';
+import 'package:junto_beta_mobile/widgets/fetch_more.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CircleOpenExpressions extends StatelessWidget {
-  CircleOpenExpressions({this.getExpressions, this.deleteExpression});
-  final Future<QueryResults<ExpressionResponse>> getExpressions;
-  final Function deleteExpression;
+class CircleOpenExpressions extends StatefulWidget {
+  CircleOpenExpressions();
+
+  @override
+  _CircleOpenExpressionsState createState() => _CircleOpenExpressionsState();
+}
+
+class _CircleOpenExpressionsState extends State<CircleOpenExpressions> {
+  void _removeExpression(ExpressionResponse expression) {
+    final bloc = context.bloc<CollectiveBloc>();
+    bloc.add(DeleteCollective(expression.address));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AppRepo>(builder: (context, AppRepo appRepo, _) {
-      return FutureBuilder<QueryResults<ExpressionResponse>>(
-        future: getExpressions,
-        builder: (BuildContext context,
-            AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot) {
-          if (snapshot.hasData && snapshot.data.results.length == 0) {
-            return FeedPlaceholder(
-              placeholderText: 'No expressions yet!',
-              image: 'assets/images/junto-mobile__placeholder--feed.png',
-            );
-          } else if (snapshot.hasData) {
-            return Column(
-              children: <Widget>[
-                FilterColumnRow(
-                  twoColumnView: Provider.of<AppRepo>(context, listen: false)
-                      .twoColumnLayout,
-                ),
-                appRepo.twoColumnLayout
-                    ? Expanded(
-                        child: TwoColumnList(
-                          data: snapshot.data.results,
-                          deleteExpression: deleteExpression,
-                        ),
-                      )
-                    : Expanded(
-                        child: SingleColumnListView(
-                          data: snapshot.data.results,
-                          privacyLayer: 'Public',
-                          deleteExpression: deleteExpression,
-                        ),
-                      ),
-              ],
-            );
-          } else if (snapshot.hasError) {
+      return BlocBuilder<CollectiveBloc, CollectiveState>(
+        builder: (context, state) {
+          final canFetch = state is CollectivePopulated &&
+              (state.availableMore && !state.loadingMore);
+
+          if (state is CollectiveError) {
             return JuntoErrorWidget(
               errorMessage: 'Hmm, something went wrong',
             );
+          } else if (state is CollectivePopulated) {
+            return CollectiveFeedRefresh(
+              child: CustomScrollView(
+                shrinkWrap: true,
+                slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: FilterColumnRow(
+                      twoColumnView:
+                          Provider.of<AppRepo>(context, listen: false)
+                              .twoColumnLayout,
+                    ),
+                  ),
+                  // Empty SliverToBoxAdaptor is necessary, otherwise switching
+                  //  between single and two column layouts creates an issue.
+                  const SliverToBoxAdapter(),
+                  if (state is CollectivePopulated)
+                    CollectivePopulatedList(
+                      state,
+                      deleteExpression: _removeExpression,
+                    ),
+                  if (state is CollectivePopulated && state.loadingMore == true)
+                    JuntoProgressIndicator(),
+                  if (state is CollectiveLoading) JuntoProgressIndicator(),
+                  if (canFetch)
+                    // pagination
+                    SliverToBoxAdapter(
+                      child: FetchMoreButton(
+                        onPressed: () {
+                          context.bloc<CollectiveBloc>().add(
+                                FetchMoreCollective(),
+                              );
+                        },
+                      ),
+                    ),
+                ],
+              ),
+            );
           }
+
           return Container(
             height: MediaQuery.of(context).size.height,
             alignment: Alignment.center,

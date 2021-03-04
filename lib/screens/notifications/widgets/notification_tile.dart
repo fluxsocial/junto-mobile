@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/notifications/notification_types/accep
 import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_pack_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/connection_request_notification.dart';
+import 'package:junto_beta_mobile/screens/notifications/notification_types/community_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/pack_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/mention_notification.dart';
@@ -30,7 +31,9 @@ class NotificationTile extends StatelessWidget {
         content = ConnectionRequestNotification(item: item);
         break;
       case NotificationType.GroupJoinRequest:
-        content = PackRequestNotification(item: item);
+        if (item.group.groupType == 'Sphere') {
+          content = CommunityRequestNotification(item: item);
+        }
         break;
       case NotificationType.NewComment:
         content = CommentNotification(item: item);
@@ -42,7 +45,7 @@ class NotificationTile extends StatelessWidget {
         content = AcceptConnectionNotification(item: item);
         break;
       case NotificationType.NewPackJoin:
-        content = AcceptPackNotification(item: item);
+        content = SizedBox();
         break;
       case NotificationType.NewMention:
         content = MentionNotification(item: item);
@@ -93,27 +96,31 @@ class NotificationTile extends StatelessWidget {
       }
     }
 
-    return GestureDetector(
-      onTap: () {
-        navigateTo(context);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: item.unread == true
-              ? Theme.of(context).dividerColor.withOpacity(.3)
-              : Theme.of(context).backgroundColor,
-          border: Border(
-            bottom: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: .75,
+    if (item.notificationType != NotificationType.NewPackJoin) {
+      return GestureDetector(
+        onTap: () {
+          navigateTo(context);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: item.unread == true
+                ? Theme.of(context).dividerColor.withOpacity(.3)
+                : Theme.of(context).backgroundColor,
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
+              ),
             ),
           ),
+          padding: const EdgeInsets.symmetric(
+            vertical: 15,
+          ),
+          child: content ?? const SizedBox(),
         ),
-        padding: const EdgeInsets.symmetric(
-          vertical: 15,
-        ),
-        child: content ?? const SizedBox(),
-      ),
-    );
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }

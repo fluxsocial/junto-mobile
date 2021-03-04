@@ -51,6 +51,36 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       yield* _mapLoadCircleMembersMoreToState(event);
     } else if (event is RemoveMemberFromCircle) {
       yield* _mapRemoveMemberFromCircleToState(event);
+    } else if (event is CreateCircleEvent) {
+      yield* _mapCreateCircleToState(event);
+    }
+  }
+
+  Stream<CircleState> _mapCreateCircleToState(CreateCircleEvent event) async* {
+    try {
+      yield CircleLoading();
+      final typeState = state as CircleLoaded;
+      final tempGroup = event.sphere;
+      final group = Group(
+        address: tempGroup.address,
+        createdAt: tempGroup.createdAt,
+        creator: tempGroup.creator,
+        privacy: tempGroup.privacy,
+        groupData: tempGroup.groupData,
+        groupType: tempGroup.groupType,
+        facilitators: null,
+        members: null,
+      );
+      groups = [...typeState.groups, group];
+      yield CircleLoaded(
+        groups: groups,
+        groupJoinNotifications: notifications,
+        members: members,
+        creator: creator,
+      );
+    } catch (e, s) {
+      logger.logException(e, s);
+      yield CircleError();
     }
   }
 
@@ -90,6 +120,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       final unfilteredGroups = await groupRepo.getUserGroups(uid);
       final result = await notificationRepo.getJuntoNotifications(
           connectionRequests: true);
+      groups = _buildUserSphere(unfilteredGroups);
       if (result.wasSuccessful) {
         final unFilteredNotifications = result.results
             .where((element) =>
@@ -99,7 +130,6 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         yield CircleLoaded(
             groups: groups, groupJoinNotifications: notifications);
       } else {
-        groups = _buildUserSphere(unfilteredGroups);
         yield CircleLoaded(groups: groups, groupJoinNotifications: []);
       }
     } on JuntoException catch (error) {

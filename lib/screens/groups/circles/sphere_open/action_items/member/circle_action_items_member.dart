@@ -17,12 +17,14 @@ class CircleActionItemsMember extends StatelessWidget {
     @required this.userProfile,
     @required this.members,
     @required this.circleCreator,
+    this.goBack,
   }) : super(key: key);
 
   final Group sphere;
   final UserProfile userProfile;
   final List<Users> members;
   final UserProfile circleCreator;
+  final Function goBack;
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +79,13 @@ class CircleActionItemsMember extends StatelessWidget {
                                     ),
                                   );
 
-                              Navigator.pop(context);
+                              goBack();
                             } catch (e, s) {
                               logger.logException(e, s);
                             }
                           },
                           confirmationText:
-                              'Are you sure you want to leave this circle?',
+                              'Are you sure you want to leave this community?',
                         ),
                       );
                     },
@@ -95,7 +97,7 @@ class CircleActionItemsMember extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                         ),
                         const SizedBox(width: 15),
-                        Text('Leave Sphere',
+                        Text('Leave Community',
                             style: Theme.of(context).textTheme.headline5),
                       ],
                     ),
