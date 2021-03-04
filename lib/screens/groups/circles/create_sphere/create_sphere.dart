@@ -12,6 +12,8 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 
 class CreateSphere extends StatefulWidget {
   const CreateSphere({
@@ -63,9 +65,6 @@ class CreateSphereState extends State<CreateSphere> {
       }
     }
 
-    //TODO: remove usage of shared prefs
-    // get user address from shared preferences
-
     // create sphere body
     final SphereModel sphere = SphereModel(
       name: sphereName,
@@ -79,7 +78,9 @@ class CreateSphereState extends State<CreateSphere> {
     );
 
     try {
-      await Provider.of<GroupRepo>(context, listen: false).createSphere(sphere);
+      final response = await Provider.of<GroupRepo>(context, listen: false)
+          .createSphere(sphere);
+      context.bloc<CircleBloc>().add(CreateCircleEvent(response));
       JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
@@ -344,50 +345,53 @@ class CreateSphereState extends State<CreateSphere> {
 
   @override
   Widget build(BuildContext context) {
-    print('test: ${_sphereMembers}');
-
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(45),
-        child: _buildAppBar(),
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: PageView(
-                controller: createSphereController,
-                physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (int index) {
-                  setState(() {
-                    print(index);
-                    _currentIndex = index;
-                  });
-                },
-                children: <Widget>[
-                  CreateSpherePageOne(
-                    formKey: _formKey,
-                    sphereDescriptionController: sphereDescriptionController,
-                    sphereHandleController: sphereHandleController,
-                    sphereNameController: sphereNameController,
-                    imageFile: imageFile,
+    return BlocBuilder<CircleBloc, CircleState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(45),
+            child: _buildAppBar(),
+          ),
+          backgroundColor: Theme.of(context).backgroundColor,
+          body: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: PageView(
+                    controller: createSphereController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    onPageChanged: (int index) {
+                      setState(() {
+                        print(index);
+                        _currentIndex = index;
+                      });
+                    },
+                    children: <Widget>[
+                      CreateSpherePageOne(
+                        formKey: _formKey,
+                        sphereDescriptionController:
+                            sphereDescriptionController,
+                        sphereHandleController: sphereHandleController,
+                        sphereNameController: sphereNameController,
+                        imageFile: imageFile,
+                      ),
+                      CreateSpherePageTwo(
+                        future: getUserRelationships(),
+                        addMember: sphereAddMember,
+                        removeMember: _sphereRemoveMember,
+                        selectedMembers: _sphereMembers,
+                        tabs: _tabs,
+                      ),
+                      _createSphereThree()
+                    ],
                   ),
-                  CreateSpherePageTwo(
-                    future: getUserRelationships(),
-                    addMember: sphereAddMember,
-                    removeMember: _sphereRemoveMember,
-                    selectedMembers: _sphereMembers,
-                    tabs: _tabs,
-                  ),
-                  _createSphereThree()
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

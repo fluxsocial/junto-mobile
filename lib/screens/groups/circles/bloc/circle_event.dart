@@ -72,3 +72,9 @@ class RemoveMemberFromCircle extends CircleEvent {
     this.userAddress,
   });
 }
+
+class CreateCircleEvent extends CircleEvent {
+  final SphereResponse sphere;
+
+  CreateCircleEvent(this.sphere);
+}
