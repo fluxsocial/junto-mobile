@@ -42,7 +42,7 @@ class CirclePreviewCreate extends StatelessWidget {
                   child: Icon(
                     CustomIcons.newcollective,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 15,
+                    size: diameter / 1.5,
                   ),
                 )
               : ClipOval(
@@ -71,7 +71,7 @@ class CirclePreviewCreate extends StatelessWidget {
                           child: Icon(
                             CustomIcons.newcollective,
                             color: Theme.of(context).colorScheme.onPrimary,
-                            size: 17,
+                            size: diameter / 1.5,
                           ),
                         );
                       }),

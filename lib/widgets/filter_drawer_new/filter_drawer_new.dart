@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -6,6 +7,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:junto_beta_mobile/widgets/drawer/widgets/widgets.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 import './filter_reset_button.dart';
 
 class FilterDrawerNew extends StatefulWidget {
@@ -370,17 +372,28 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                                     letterSpacing: .5,
                                   ),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Theme.of(context).dividerColor,
-                                  ),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 20,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            CreatePerspectivePage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Theme.of(context).dividerColor,
+                                    ),
+                                    child: Icon(
+                                      Icons.add,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 20,
+                                    ),
                                   ),
                                 ),
                               ],

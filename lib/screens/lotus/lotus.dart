@@ -77,18 +77,14 @@ class _JuntoLotusState extends State<JuntoLotus> {
   void showTutorial() {
     FeatureDiscovery.clearPreferences(context, <String>{
       'lotus_info_id',
-      'lotus_collective_id',
       'lotus_groups_id',
-      'lotus_packs_id',
       'lotus_create_id',
     });
     FeatureDiscovery.discoverFeatures(
       context,
       const <String>{
         'lotus_info_id',
-        'lotus_collective_id',
         'lotus_groups_id',
-        'lotus_packs_id',
         'lotus_create_id',
       },
     );
@@ -144,11 +140,8 @@ class _JuntoLotusState extends State<JuntoLotus> {
                                         featureId: 'lotus_info_id',
                                         oneFeature: false,
                                         title:
-                                            "Welcome to Junto! This is the intention screen, your medium for navigation. Click 'Next' for a brief description of each section of the app.",
-                                        learnMore: true,
-                                        learnMoreText: [
-                                          'The purpose of the intention screen is to reduce noise and to invite a more mindful, self-directed experience. Instead of immediately being dropped into a feed when you open the app, this screen makes your initial experience a choice and encourages more reflection when you start using Junto.'
-                                        ],
+                                            "Welcome to Junto! You can use this icon to access our tutorial throughout the app. Click 'Next' for a brief description of each section of the app.",
+                                        learnMore: false,
                                         hasUpNext: false,
                                         child: JuntoInfoIcon(
                                           neutralBackground: false,
@@ -193,13 +186,13 @@ class _JuntoLotusState extends State<JuntoLotus> {
                         children: <Widget>[
                           JuntoDescribedFeatureOverlay(
                             icon: Icon(
-                              CustomIcons.newcircles,
+                              CustomIcons.newcollective,
                               size: 38,
                               color: Theme.of(context).primaryColor,
                             ),
                             featureId: 'lotus_groups_id',
                             title:
-                                'Groups: Create and interact in public or private groups.',
+                                'Communities: Create and interact in public or private groups.',
                             learnMore: false,
                             hasUpNext: false,
                             isLastFeature: false,
