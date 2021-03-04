@@ -78,6 +78,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: AppBar(

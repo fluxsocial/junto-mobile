@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspecti
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
+import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
 
 class BlocProviders extends StatelessWidget {
   final Widget child;
@@ -52,6 +53,10 @@ class BlocProviders extends StatelessWidget {
         ),
         BlocProvider<AppBloc>(
           create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context)),
+        ),
+        BlocProvider<RelationBloc>(
+          create: (ctx) => RelationBloc(
+              ctx.repository<UserRepo>(), ctx.repository<UserDataProvider>()),
         ),
         BlocProvider<CircleBloc>(
           create: (ctx) => CircleBloc(

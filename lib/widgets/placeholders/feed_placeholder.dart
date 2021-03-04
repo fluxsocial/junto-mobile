@@ -20,7 +20,7 @@ class FeedPlaceholder extends StatelessWidget {
       child: Container(
         color: Colors.transparent,
         height: MediaQuery.of(context).size.height -
-            (MediaQuery.of(context).size.height * .1 + 50),
+            (MediaQuery.of(context).size.height * .15 + 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

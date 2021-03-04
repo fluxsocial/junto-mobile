@@ -216,12 +216,10 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       AddMemberToCircle event) async* {
     try {
       await groupRepo.addGroupMember(
-          event.sphereAddress, [event.user], event.permissionLevel);
-
-      members = [
-        Users(user: event.user, permissionLevel: event.permissionLevel),
-        ...members
-      ];
+        event.sphereAddress,
+        [...event.user],
+        event.permissionLevel,
+      );
 
       yield CircleLoaded(
         groups: groups,

@@ -8,34 +8,27 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 
-class SphereSearch extends StatefulWidget {
-  const SphereSearch({
+class CreateSphereSearch extends StatefulWidget {
+  const CreateSphereSearch({
     Key key,
-    this.onProfileSelected,
-    this.group,
-    this.permission,
+    this.onSelect,
+    this.onDeselect,
+    this.selectedMembers,
   }) : super(key: key);
 
-  static Route<dynamic> route(ValueChanged<UserProfile> onProfileSelected) {
-    return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
-      return SphereSearch(onProfileSelected: onProfileSelected);
-    });
-  }
-
-  final ValueChanged<UserProfile> onProfileSelected;
-  final Group group;
-  final String permission;
+  final ValueChanged<UserProfile> onSelect;
+  final ValueChanged<UserProfile> onDeselect;
+  final List<String> selectedMembers;
 
   @override
-  _SphereSearchState createState() => _SphereSearchState();
+  _CreateSphereSearchState createState() => _CreateSphereSearchState();
 }
 
-class _SphereSearchState extends State<SphereSearch> {
+class _CreateSphereSearchState extends State<CreateSphereSearch> {
   final ValueNotifier<bool> _searchByUsername = ValueNotifier(true);
   Timer debounceTimer;
   TextEditingController _textEditingController;
@@ -90,6 +83,12 @@ class _SphereSearchState extends State<SphereSearch> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                Icon(
+                  Icons.search,
+                  color: Theme.of(context).primaryColorLight,
+                  size: 17,
+                ),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Builder(builder: (context) {
                     return TextField(
@@ -104,10 +103,10 @@ class _SphereSearchState extends State<SphereSearch> {
                           null,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(0.0),
-                        hintText: 'search members',
                         border: InputBorder.none,
+                        hintText: 'Search',
                         hintStyle: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColorLight,
                         ),
@@ -116,7 +115,7 @@ class _SphereSearchState extends State<SphereSearch> {
                       cursorWidth: 1,
                       maxLines: 1,
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColor,
                       ),
@@ -130,9 +129,9 @@ class _SphereSearchState extends State<SphereSearch> {
           ),
         ),
         body: _SearchBody(
-          username: _searchByUsername,
-          group: widget.group,
-          permission: widget.permission,
+          onSelect: widget.onSelect,
+          onDeselect: widget.onDeselect,
+          selectedMembers: widget.selectedMembers,
         ),
       ),
     );
@@ -142,13 +141,14 @@ class _SphereSearchState extends State<SphereSearch> {
 class _SearchBody extends StatefulWidget {
   const _SearchBody({
     Key key,
-    this.username,
-    this.group,
-    this.permission,
+    this.onSelect,
+    this.onDeselect,
+    this.selectedMembers,
   }) : super(key: key);
-  final ValueNotifier<bool> username;
-  final Group group;
-  final String permission;
+
+  final ValueChanged<UserProfile> onSelect;
+  final ValueChanged<UserProfile> onDeselect;
+  final List<String> selectedMembers;
 
   @override
   __SearchBodyState createState() => __SearchBodyState();
@@ -209,31 +209,13 @@ class __SearchBodyState extends State<_SearchBody> {
                         itemCount: state.results.length,
                         itemBuilder: (BuildContext context, int index) {
                           final UserProfile data = state.results[index];
-                          return MemberPreview(
-                            profile: data,
-                            onUserTap: () async {
-                              try {
-                                context
-                                    .bloc<CircleBloc>()
-                                    .add(AddMemberToCircle(
-                                      sphereAddress: widget.group.address,
-                                      user: [data],
-                                      permissionLevel: widget.permission,
-                                    ));
 
-                                Navigator.pop(context);
-                              } catch (e) {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      SingleActionDialog(
-                                    context: context,
-                                    dialogText:
-                                        'Error occured while adding the member as ${widget.permission}',
-                                  ),
-                                );
-                              }
-                            },
+                          return MemberPreviewSelect(
+                            profile: data,
+                            onSelect: widget.onSelect,
+                            onDeselect: widget.onDeselect,
+                            isSelected:
+                                widget.selectedMembers.contains(data.address),
                           );
                         },
                       );

@@ -5,10 +5,10 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
-import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_search.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
+import 'sphere_add_members.dart';
 
 class SphereOpenMembers extends StatefulWidget {
   const SphereOpenMembers({
@@ -83,14 +83,13 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
                         (widget.relationToGroup['member'] && _index == 1)))
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        builder: (BuildContext context) => SphereSearch(
-                          group: widget.group,
-                          permission: _index == 0 ? 'Admin' : 'Member',
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext context) => SphereAddMembers(
+                            group: widget.group,
+                            permission: _index == 0 ? 'Admin' : 'Member',
+                          ),
                         ),
                       );
                     },

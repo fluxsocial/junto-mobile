@@ -42,9 +42,6 @@ class CreateSphereState extends State<CreateSphere> {
   GlobalKey<FormState> _formKey;
 
   final List<String> _sphereMembers = <String>[];
-  final List<String> _tabs = <String>['Subscriptions', 'Connections'];
-  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
-      AsyncMemoizer<Map<String, dynamic>>();
 
   Future<void> _createSphere() async {
     JuntoLoader.showLoader(context);
@@ -111,12 +108,6 @@ class CreateSphereState extends State<CreateSphere> {
     sphereHandleController.dispose();
     sphereDescriptionController.dispose();
     super.dispose();
-  }
-
-  Future<Map<String, dynamic>> getUserRelationships() async {
-    return _memoizer.runOnce(
-      () => Provider.of<UserRepo>(context, listen: false).userRelations(),
-    );
   }
 
   void _validateSphereCreation() {
@@ -383,11 +374,9 @@ class CreateSphereState extends State<CreateSphere> {
                         imageFile: imageFile,
                       ),
                       CreateSpherePageTwo(
-                        future: getUserRelationships(),
                         addMember: sphereAddMember,
                         removeMember: _sphereRemoveMember,
                         selectedMembers: _sphereMembers,
-                        tabs: _tabs,
                       ),
                       _createSphereThree()
                     ],

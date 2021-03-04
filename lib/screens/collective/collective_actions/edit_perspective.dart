@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective_add_members.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
@@ -208,6 +209,7 @@ class EditPerspectiveState extends State<EditPerspective> {
                                     perspective: widget.perspective,
                                     refreshPerspectiveMembers:
                                         _refreshPerspectiveMembers,
+                                    perspectiveMembers: _perspectiveMembers,
                                   ),
                                 ),
                               );
@@ -310,10 +312,11 @@ class EditPerspectiveState extends State<EditPerspective> {
                     );
                   }
                   if (snapshot.hasData) {
-                    return ListView(
-                      children: snapshot.data
-                          .map(
-                            (UserProfile user) => MemberPreviewDeselect(
+                    if (snapshot.data.length > 0) {
+                      return ListView(
+                        children: snapshot.data
+                            .map(
+                              (UserProfile user) => MemberPreviewDeselect(
                                 profile: user,
                                 onDeselect: () {
                                   _removeMemberFromPerspective(
@@ -323,10 +326,17 @@ class EditPerspectiveState extends State<EditPerspective> {
                                         }
                                       ],
                                       widget.perspective.address);
-                                }),
-                          )
-                          .toList(),
-                    );
+                                },
+                              ),
+                            )
+                            .toList(),
+                      );
+                    } else {
+                      return FeedPlaceholder(
+                        placeholderText: 'No members added yet!',
+                        image: 'assets/images/junto-mobile__bench.png',
+                      );
+                    }
                   }
                   return Center(
                     child: JuntoProgressIndicator(),
