@@ -4,13 +4,10 @@ abstract class CircleEvent {
   const CircleEvent();
 }
 
-// ? Done
 class FetchMyCircle extends CircleEvent {}
 
-// ? Done
 class RefreshCircle extends CircleEvent {}
 
-// ? Done
 class UpdateCircle extends CircleEvent {
   final Group group;
 
@@ -19,7 +16,6 @@ class UpdateCircle extends CircleEvent {
   });
 }
 
-// ? Done
 class LeaveCircle extends CircleEvent {
   final String sphereAdress;
   final String userAddress;
@@ -30,7 +26,6 @@ class LeaveCircle extends CircleEvent {
   });
 }
 
-// ? Done
 class DeleteCircle extends CircleEvent {
   final String sphereAddress;
 
@@ -39,7 +34,6 @@ class DeleteCircle extends CircleEvent {
   });
 }
 
-// TODO: @fayeed load the creator & all the members, calling the event would reset the pagination to 0
 class LoadCircleMembers extends CircleEvent {
   final String sphereAddress;
 
@@ -48,7 +42,6 @@ class LoadCircleMembers extends CircleEvent {
   });
 }
 
-// TODO: @fayeed this wouldn't get the creator
 class LoadCircleMembersMore extends CircleEvent {
   final String sphereAddress;
 
@@ -57,7 +50,6 @@ class LoadCircleMembersMore extends CircleEvent {
   });
 }
 
-// TODO: @fayeed once added show a message to the user. Will also be used for adding facilitator
 class AddMemberToCircle extends CircleEvent {
   final String sphereAddress;
   final UserProfile user;
