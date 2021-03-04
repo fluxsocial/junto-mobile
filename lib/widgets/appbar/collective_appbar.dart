@@ -155,7 +155,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       ),
                       featureId: 'collective_filter_id',
                       title:
-                          'Click this icon to filter this perspective by channel (topic).',
+                          'Click this icon to filter this Community by channel (topic) or lists of people.',
                       isLastFeature: true,
                       child: const FilterDrawerButton(
                         collectiveScreen: true,
@@ -264,15 +264,17 @@ class _AppBarFeatureDiscoveryState extends State<AppBarFeatureDiscovery> {
       child: JuntoDescribedFeatureOverlay(
         icon: OverlayInfoIcon(),
         featureId: 'collective_info_id',
-        title: 'This is the Collective, where all public content is shown.',
+        title:
+            'This is the Collective community, the public space for everyone in Junto.',
         learnMore: true,
-        hasUpNext: true,
+        hasUpNext: false,
         upNextText: [
           "Transparent, human-centered algorithms that filter content to create feeds according to high activity (not based on your previous activity)",
         ],
         learnMoreText: [
-          "The Collective is a shared space that anyone on Junto can post into. Our hope is that people will discover meaningful content and relationships with those they may not know and help to maintain a positive culture.",
-          'You can view content in this layer through "Perspectives". Perspectives are feeds that show filtered content from the Collective. They display previews of content, where you open an expression to view its full scope, rather than see the expression and its captions, comments, and activity all at once.'
+          "The Collective is a shared space that anyone on Junto can post into.",
+          'Each community on Junto displays previews of content, where you open an expression to view its full scope, rather than see the expression and its captions, comments, and activity all at once.',
+          "You can filter the Collective communtiy by channel (topic) or by specific people. Create your own custom 'Lists' of people to organize your feeds."
         ],
         child: Container(
           height: 24,

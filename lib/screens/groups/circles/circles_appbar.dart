@@ -111,7 +111,11 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                               isLastFeature: true,
                               title:
                                   'Communities are groups you can create in Junto. We will open up Private groups soon.',
-                              learnMore: false,
+                              learnMore: true,
+                              learnMoreText: [
+                                'Communities are the building blocks of Junto. Every feed is essentially some form of community.',
+                                'The Collective community is a public space everyone on Junto is apart of. All other communities are either public or private groups created by yourself or other members.'
+                              ],
                               child: JuntoInfoIcon(),
                             ),
                           ),
