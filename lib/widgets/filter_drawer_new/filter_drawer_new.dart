@@ -42,14 +42,14 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
     textEditingController = TextEditingController()
       ..addListener(_onSearchChanged);
     pageViewController = PageController();
+
+    context.bloc<ChannelFilteringBloc>().add(FilterClear());
   }
 
   Future<void> _onSearchChanged() async {
-    if (textEditingController.value.text.length > 0) {
-      context
-          .bloc<ChannelFilteringBloc>()
-          .add(FilterQueryUpdated(textEditingController.text));
-    }
+    context
+        .bloc<ChannelFilteringBloc>()
+        .add(FilterQueryUpdated(textEditingController.text));
   }
 
   @override
@@ -75,9 +75,11 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
         final selectedSet = state.selectedChannel != null
             ? state.selectedChannel.map((e) => e.name).toList()
             : [];
-        filteredList = state.channels
-            .where((element) => !selectedSet.contains(element.name))
-            .toList();
+        filteredList = focusNode.hasFocus
+            ? state.channels
+                .where((element) => !selectedSet.contains(element.name))
+                .toList()
+            : [];
       }
       return Container(
         color: Colors.transparent,
