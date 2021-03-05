@@ -351,7 +351,7 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Relations',
+                            'Lists',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w700,

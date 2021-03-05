@@ -84,28 +84,16 @@ class AboutPerspectiveAppBar extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-              height: 38,
-              width: 38,
-              alignment: Alignment.centerLeft,
-              child: Icon(
-                Icons.keyboard_arrow_down,
-                size: 24,
-                color: Theme.of(context).primaryColorLight,
-              ),
-            ),
-          ),
           Text(
             perspective.name,
-            style: Theme.of(context).textTheme.subtitle1,
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w700,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
-          SizedBox(width: 38),
         ],
       ),
     );
@@ -149,7 +137,7 @@ class AboutPerspectiveDescription extends StatelessWidget {
   final PerspectiveModel perspective;
 
   String _aboutText() {
-    if (perspective.name == 'JUNTO') {
+    if (perspective.name == 'Collective') {
       return 'Expressions from everyone on Junto.';
     } else if (perspective.name == 'Connections') {
       return 'Expressions from people you are connected with.';
@@ -209,7 +197,7 @@ class AboutPerspectiveMembers extends StatelessWidget {
   final PerspectiveModel perspective;
 
   String _membersCountText() {
-    if (perspective.name == 'JUNTO' && perspective.isDefault == true) {
+    if (perspective.name == 'Collective' && perspective.isDefault == true) {
       return 'All Members';
     } else if (perspective.userCount == 1) {
       return '${perspective.userCount} Member';
@@ -222,7 +210,7 @@ class AboutPerspectiveMembers extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (perspective.name == 'JUNTO' && perspective.isDefault) {
+        if (perspective.name == 'Collective' && perspective.isDefault) {
           return;
         } else {
           Navigator.push(
@@ -261,7 +249,7 @@ class AboutPerspectiveMembers extends StatelessWidget {
             ),
             Icon(
               Icons.keyboard_arrow_right,
-              color: perspective.name == 'JUNTO' && perspective.isDefault
+              color: perspective.name == 'Collective' && perspective.isDefault
                   ? Colors.transparent
                   : Theme.of(context).primaryColorLight,
               size: 20,
