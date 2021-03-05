@@ -78,17 +78,9 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      // color: Colors.orange,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          // Testing out new appbar without logo
-                          // Container(
-                          //   height: 42,
-                          //   alignment: Alignment.bottomLeft,
-                          //   color: Colors.transparent,
-                          //   child: AppbarLogo(theme: theme),
-                          // ),
                           Text(
                             'Communities',
                             style: TextStyle(
