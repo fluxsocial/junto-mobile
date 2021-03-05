@@ -7,12 +7,15 @@ import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 
 void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
   final bloc = context.bloc<CollectiveBloc>();
-  final channels = context
-      .bloc<ChannelFilteringBloc>()
-      .state
-      .selectedChannel
-      .map((e) => e.name)
-      .toList();
+  final channels =
+      context.bloc<ChannelFilteringBloc>().state.selectedChannel != null
+          ? context
+              .bloc<ChannelFilteringBloc>()
+              .state
+              .selectedChannel
+              .map((e) => e.name)
+              .toList()
+          : <String>[];
 
   if (perspective.name == 'JUNTO') {
     bloc.add(
