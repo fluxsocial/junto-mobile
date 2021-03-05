@@ -8,7 +8,7 @@ abstract class CollectiveState with _$CollectiveState {
   factory CollectiveState.initial() = CollectiveInitial;
   factory CollectiveState.populated(List<ExpressionResponse> results,
       [bool loadingMore,
-      @Default('JUNTO') String name,
+      @Default('Collective') String name,
       bool availableMore]) = CollectivePopulated;
   factory CollectiveState.loading() = CollectiveLoading;
   factory CollectiveState.error() = CollectiveError;

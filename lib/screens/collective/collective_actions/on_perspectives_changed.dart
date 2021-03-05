@@ -17,7 +17,7 @@ void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
               .toList()
           : <String>[];
 
-  if (perspective.name == 'Collective' && perspective.address == null) {
+  if (perspective.name == 'Collective') {
     bloc.add(
       FetchCollective(
         ExpressionQueryParams(
