@@ -13,6 +13,7 @@ import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
 import 'circles_list_all.dart';
 import 'circles_requests.dart';
+import 'private_groups_placeholder.dart';
 import 'sphere_open/sphere_open.dart';
 
 // This screen displays the temporary page we'll display until groups are released
@@ -171,12 +172,8 @@ class _CircleMainState extends State<CircleMain> {
                       userProfile: widget._userProfile,
                       onGroupSelected: widget.onGroupSelected,
                     ),
+                    PrivateGroupsPlaceholder(),
                     CirclesRequests(),
-                    // Container(
-                    //   height: MediaQuery.of(context).size.height,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   color: Colors.orange,
-                    // )
                   ],
                 ),
               ),

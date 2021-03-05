@@ -172,11 +172,35 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                               bottom: 10,
                             ),
                             child: Text(
-                              'REQUESTS',
+                              'PRIVATE',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                                 color: widget.currentIndex == 1
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight,
+                                letterSpacing: .75,
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            widget.changePageView(2);
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.only(
+                              right: 15,
+                              top: 10,
+                              bottom: 10,
+                            ),
+                            child: Text(
+                              'REQUESTS',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: widget.currentIndex == 2
                                     ? Theme.of(context).primaryColorDark
                                     : Theme.of(context).primaryColorLight,
                                 letterSpacing: .75,
