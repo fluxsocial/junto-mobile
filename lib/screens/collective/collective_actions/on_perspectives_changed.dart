@@ -7,6 +7,12 @@ import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 
 void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
   final bloc = context.bloc<CollectiveBloc>();
+  final channels = context
+      .bloc<ChannelFilteringBloc>()
+      .state
+      .selectedChannel
+      .map((e) => e.name)
+      .toList();
 
   if (perspective.name == 'JUNTO') {
     bloc.add(
@@ -14,6 +20,7 @@ void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
         ExpressionQueryParams(
           contextType: ExpressionContextType.Collective,
           name: perspective.name,
+          channels: channels,
         ),
       ),
     );
@@ -25,6 +32,7 @@ void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
           dos: '0',
           context: perspective.address,
           name: perspective.name,
+          channels: channels,
         ),
       ),
     );
@@ -38,6 +46,7 @@ void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
           name: perspective.name.contains("'s Follow Perspective")
               ? 'Subscriptions'
               : perspective.name,
+          channels: channels,
         ),
       ),
     );

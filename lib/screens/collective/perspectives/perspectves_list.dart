@@ -42,8 +42,8 @@ class PerspectivesList extends StatelessWidget {
                     return PerspectiveItem(
                       perspective: perspective,
                       onTap: () {
-                        collectiveViewNav();
                         onPerspectivesChanged(perspective, context);
+                        Navigator.pop(context);
                       },
                     );
                   } else {
@@ -67,8 +67,9 @@ class PerspectivesList extends StatelessWidget {
                             print('perspective address is' +
                                 'perspective.address');
 
-                            collectiveViewNav();
                             onPerspectivesChanged(perspective, context);
+
+                            Navigator.pop(context);
                           },
                         ),
                       );
