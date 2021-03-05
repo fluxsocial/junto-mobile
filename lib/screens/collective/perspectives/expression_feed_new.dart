@@ -51,7 +51,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
               delegate: CollectiveAppBar(
                 expandedHeight: MediaQuery.of(context).size.height * .11 + 50,
                 appbarTitle:
-                    state is CollectivePopulated ? state.name : 'JUNTO',
+                    state is CollectivePopulated ? state.name : 'Collective',
                 collectiveViewNav: widget.goBack,
               ),
               pinned: false,

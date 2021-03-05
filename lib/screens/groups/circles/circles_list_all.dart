@@ -25,7 +25,7 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
   Widget build(BuildContext context) {
     final juntoPerspective = PerspectiveModel(
       address: null,
-      name: 'JUNTO',
+      name: 'Collective',
       about: null,
       creator: null,
       createdAt: null,

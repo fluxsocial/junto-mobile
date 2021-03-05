@@ -137,7 +137,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     if (name == null && state is CollectivePopulated) {
       name = (state as CollectivePopulated)?.name;
     }
-    return name ?? 'JUNTO';
+    return name ?? 'Collective';
   }
 
   Stream<CollectiveState> _mapFetchMoreCollectiveToState(
