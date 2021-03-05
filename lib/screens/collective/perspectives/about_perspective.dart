@@ -73,7 +73,7 @@ class AboutPerspectiveAppBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
-        vertical: 15,
+        vertical: 20,
       ),
       decoration: BoxDecoration(
         border: Border(
@@ -89,7 +89,7 @@ class AboutPerspectiveAppBar extends StatelessWidget {
           Text(
             perspective.name,
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 15,
               fontWeight: FontWeight.w700,
               color: Theme.of(context).primaryColor,
             ),
