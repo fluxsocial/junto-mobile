@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere_page_one.dart';
@@ -256,20 +254,6 @@ class CreateSphereState extends State<CreateSphere> {
                 ],
               ),
             ),
-          // GestureDetector(
-          //   onTap: () => Navigator.pop(context),
-          //   child: Container(
-          //     padding: const EdgeInsets.only(left: 5),
-          //     color: Colors.transparent,
-          //     width: 48,
-          //     alignment: Alignment.centerLeft,
-          //     child: Icon(
-          //       Icons.keyboard_arrow_down,
-          //       size: 28,
-          //       color: Theme.of(context).primaryColor,
-          //     ),
-          //   ),
-          // ),
           if (_currentIndex != 0)
             GestureDetector(
               onTap: () {
@@ -292,8 +276,7 @@ class CreateSphereState extends State<CreateSphere> {
                 ),
               ),
             ),
-
-          if (_currentIndex == 1)
+          if (_currentIndex == 2)
             Padding(
               padding: const EdgeInsets.only(
                 right: 10,
@@ -303,7 +286,7 @@ class CreateSphereState extends State<CreateSphere> {
                 title: 'Create',
               ),
             ),
-          if (_currentIndex != 1)
+          if (_currentIndex != 2)
             Padding(
               padding: const EdgeInsets.only(
                 right: 10,
