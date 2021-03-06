@@ -35,8 +35,7 @@ class GroupServiceCentralized implements GroupService {
 
   @override
   Future<Group> getGroup(String groupAddress) async {
-    final Response _serverResponse =
-        await client.get('/groups/$groupAddress');
+    final Response _serverResponse = await client.get('/groups/$groupAddress');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return Group.fromJson(_data);
@@ -57,6 +56,7 @@ class GroupServiceCentralized implements GroupService {
       String groupAddress, List<Map<String, dynamic>> users) async {
     final Response _serverResponse = await client
         .postWithoutEncoding('/groups/$groupAddress/members', body: users);
+
     JuntoHttp.handleResponse(_serverResponse);
   }
 
