@@ -102,37 +102,6 @@ class CircleActionItemsMember extends StatelessWidget {
                       ],
                     ),
                   ),
-                  ListTile(
-                    contentPadding: const EdgeInsets.all(0),
-                    onTap: () async {
-                      Navigator.pop(context);
-
-                      showModalBottomSheet(
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        builder: (BuildContext context) => SphereSearch(
-                          group: sphere,
-                          permission: 'Member',
-                        ),
-                      );
-                    },
-                    title: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.edit,
-                          size: 17,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        const SizedBox(width: 15),
-                        Text(
-                          'Invite Members',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ],
