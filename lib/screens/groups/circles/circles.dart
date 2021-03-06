@@ -173,7 +173,9 @@ class _CircleMainState extends State<CircleMain> {
                       onGroupSelected: widget.onGroupSelected,
                     ),
                     PrivateGroupsPlaceholder(),
-                    CirclesRequests(),
+                    CirclesRequests(
+                      onGroupSelected: widget.onGroupSelected,
+                    ),
                   ],
                 ),
               ),

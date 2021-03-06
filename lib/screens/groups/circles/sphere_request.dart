@@ -9,10 +9,15 @@ import 'package:junto_beta_mobile/screens/notifications/notifications_handler.da
 import 'package:provider/provider.dart';
 
 class SphereRequest extends StatelessWidget {
-  const SphereRequest({this.item, this.diameter = 38});
+  const SphereRequest({
+    this.item,
+    this.diameter = 38,
+    this.showGroup,
+  });
 
   final JuntoNotification item;
   final double diameter;
+  final Function(Group) showGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +27,7 @@ class SphereRequest extends StatelessWidget {
         return GestureDetector(
           onTap: () async {
             // display sphere
+            // showGroup(item.group);
           },
           child: Container(
             color: Theme.of(context).colorScheme.background,

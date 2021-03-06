@@ -10,9 +10,11 @@ import 'sphere_request.dart';
 class CirclesRequests extends StatelessWidget with ListDistinct {
   const CirclesRequests({
     this.userProfile,
+    this.onGroupSelected,
   });
 
   final UserData userProfile;
+  final Function(Group) onGroupSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,10 @@ class CirclesRequests extends StatelessWidget with ListDistinct {
                   itemBuilder: (context, index) {
                     final item = circleRequestNotifications[index];
                     if (circleRequestNotifications.length > 0) {
-                      return SphereRequest(item: item);
+                      return SphereRequest(
+                        item: item,
+                        showGroup: onGroupSelected,
+                      );
                     }
                     return const SizedBox();
                   },
