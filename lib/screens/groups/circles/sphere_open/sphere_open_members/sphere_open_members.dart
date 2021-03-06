@@ -28,18 +28,11 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
     with SingleTickerProviderStateMixin {
   final List<String> _tabs = <String>['Facilitators', 'Members'];
   TabController _tabController;
-  int _index;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: _tabs.length);
-
-    _tabController.addListener(() {
-      setState(() {
-        _index = _tabController.index;
-      });
-    });
   }
 
   @override
@@ -76,11 +69,10 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
                     ),
                   ),
                 ),
-                const SizedBox(width: 42),
                 if (widget.relationToGroup != null &&
                     ((widget.relationToGroup['creator'] ||
                             widget.relationToGroup['facilitator']) ||
-                        (widget.relationToGroup['member'] && _index == 1)))
+                        (widget.relationToGroup['member'])))
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -88,19 +80,18 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
                         CupertinoPageRoute<dynamic>(
                           builder: (BuildContext context) => SphereAddMembers(
                             group: widget.group,
-                            permission: _index == 0 ? 'Admin' : 'Member',
+                            permission: 'Member',
                           ),
                         ),
                       );
                     },
                     child: Container(
                       color: Colors.transparent,
-                      width: 22,
                       alignment: Alignment.centerLeft,
                       child: Icon(
                         CustomIcons.add,
                         color: Theme.of(context).primaryColorDark,
-                        size: 17,
+                        size: 24,
                       ),
                     ),
                   ),

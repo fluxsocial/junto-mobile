@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sp
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
 class SphereAddMembers extends StatefulWidget {
   final Group group;
@@ -74,7 +75,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                       ),
                       Container(
                         child: Text(
-                          'Invite Member',
+                          'Invite Members',
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                       ),
@@ -82,35 +83,57 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                         const SizedBox(width: 48)
                       else
                         GestureDetector(
-                          onTap: () {
-                            context.bloc<CircleBloc>().add(
-                                  AddMemberToCircle(
-                                    sphereAddress: widget.group.address,
-                                    user: _sphereMembers,
-                                    permissionLevel: widget.permission,
-                                  ),
-                                );
+                          onTap: () async {
+                            try {
+                              JuntoLoader.showLoader(context);
+                              context.bloc<CircleBloc>().add(
+                                    AddMemberToCircle(
+                                      sphereAddress: widget.group.address,
+                                      user: _sphereMembers,
+                                      permissionLevel: widget.permission,
+                                    ),
+                                  );
+                              JuntoLoader.hide();
 
-                            showDialog(
-                              context: context,
-                              child: SingleActionDialog(
+                              showDialog(
                                 context: context,
-                                dialogText: 'Invitation sent to members',
-                              ),
-                            );
+                                child: SingleActionDialog(
+                                  context: context,
+                                  dialogText: 'Your community invite was sent!',
+                                ),
+                              );
 
-                            setState(() {
-                              _sphereMembers = [];
-                            });
+                              setState(() {
+                                _sphereMembers = [];
+                              });
+                            } catch (e) {
+                              JuntoLoader.hide();
+                              showDialog(
+                                context: context,
+                                child: SingleActionDialog(
+                                  context: context,
+                                  dialogText:
+                                      'Sorry, something went wrong. Try again!',
+                                ),
+                              );
+                            }
                           },
                           child: Container(
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.only(right: 10),
-                            width: 48,
-                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                             child: Text(
                               'Add',
-                              style: Theme.of(context).textTheme.caption,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         )
