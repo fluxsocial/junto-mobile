@@ -11,7 +11,9 @@ import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
+import 'community_member_invite.dart';
 
 class SphereSearch extends StatefulWidget {
   const SphereSearch({
@@ -209,10 +211,11 @@ class __SearchBodyState extends State<_SearchBody> {
                         itemCount: state.results.length,
                         itemBuilder: (BuildContext context, int index) {
                           final UserProfile data = state.results[index];
-                          return MemberPreview(
+                          return CommunityMemberInvite(
                             profile: data,
                             onUserTap: () async {
                               try {
+                                JuntoLoader.showLoader(context);
                                 context
                                     .bloc<CircleBloc>()
                                     .add(AddMemberToCircle(
@@ -220,16 +223,19 @@ class __SearchBodyState extends State<_SearchBody> {
                                       user: [data],
                                       permissionLevel: widget.permission,
                                     ));
+                                JuntoLoader.hide();
 
                                 Navigator.pop(context);
                               } catch (e) {
+                                JuntoLoader.hide();
+
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
                                       SingleActionDialog(
                                     context: context,
                                     dialogText:
-                                        'Error occured while adding the member as ${widget.permission}',
+                                        'Something went wrong trying to add this member to this group.',
                                   ),
                                 );
                               }

@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/edit_group.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_search.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
@@ -63,6 +64,37 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                     const SizedBox(height: 10),
                     ListTile(
                       contentPadding: const EdgeInsets.all(0),
+                      onTap: () async {
+                        Navigator.pop(context);
+
+                        showModalBottomSheet(
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          builder: (BuildContext context) => SphereSearch(
+                            group: widget.sphere,
+                            permission: 'Member',
+                          ),
+                        );
+                      },
+                      title: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.edit,
+                            size: 17,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          const SizedBox(width: 15),
+                          Text(
+                            'Invite Members',
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                        ],
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: const EdgeInsets.all(0),
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push(
@@ -82,7 +114,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                           ),
                           const SizedBox(width: 15),
                           Text(
-                            'Edit Sphere',
+                            'Edit Community',
                             style: Theme.of(context).textTheme.headline5,
                           ),
                         ],
@@ -122,7 +154,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                             ),
                             const SizedBox(width: 15),
                             Text(
-                              'Delete Circle',
+                              'Delete Community',
                               style: Theme.of(context).textTheme.headline5,
                             ),
                           ],
