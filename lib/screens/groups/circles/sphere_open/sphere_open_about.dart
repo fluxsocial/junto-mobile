@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:readmore/readmore.dart';
 
-class SphereOpenAbout extends StatefulWidget {
+class SphereOpenAbout extends StatelessWidget {
   const SphereOpenAbout({
     this.group,
     this.circleCreator,
@@ -18,17 +18,6 @@ class SphereOpenAbout extends StatefulWidget {
   final Map<String, dynamic> relationToGroup;
 
   final Group group;
-  @override
-  State<StatefulWidget> createState() {
-    return SphereOpenAboutState();
-  }
-}
-
-class SphereOpenAboutState extends State<SphereOpenAbout> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +25,17 @@ class SphereOpenAboutState extends State<SphereOpenAbout> {
       physics: const ClampingScrollPhysics(),
       children: <Widget>[
         CircleBio(
-          group: widget.group,
+          group: group,
         ),
-        if (widget.members != null)
+        if (members != null)
           GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => SphereOpenMembers(
-                    group: widget.group,
-                    relationToGroup: widget.relationToGroup,
+                    group: group,
+                    relationToGroup: relationToGroup,
                   ),
                 ),
               );
@@ -69,19 +58,19 @@ class SphereOpenAboutState extends State<SphereOpenAbout> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   CircleMembers(
-                    members: widget.members,
+                    members: members,
                   ),
-                  if (widget.circleCreator != null)
+                  if (circleCreator != null)
                     CircleFacilitators(
-                      members: widget.members,
-                      circleCreator: widget.circleCreator,
+                      members: members,
+                      circleCreator: circleCreator,
                     ),
                   SeeAllMembers()
                 ],
               ),
             ),
           ),
-        if (widget.members == null) const SizedBox()
+        if (members == null) const SizedBox()
       ],
     );
   }

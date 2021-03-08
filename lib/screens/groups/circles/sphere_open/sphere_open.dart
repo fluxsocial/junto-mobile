@@ -110,6 +110,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           (element) => element.address == widget.group.address,
           orElse: () => widget.group,
         );
+
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
@@ -368,7 +369,7 @@ class ShowRelationshipWidget extends StatelessWidget {
     Widget actionItems;
 
     if (relationToGroup == null) {
-      relation = 'Member';
+      relation = 'Join';
     } else if (relationToGroup['creator'] || relationToGroup['facilitator']) {
       relation = relationToGroup['creator'] ? 'Creator' : 'Facilitator';
       actionItems = CircleActionItemsAdmin(
@@ -387,7 +388,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         goBack: goBack,
       );
     } else {
-      relation = 'Member';
+      relation = 'Join';
       actionItems = CircleActionItemsMember(
         sphere: circle,
         userProfile: userProfile,
@@ -396,6 +397,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         goBack: goBack,
       );
     }
+
     return GestureDetector(
       onTap: () {
         // Open panel for group action items
