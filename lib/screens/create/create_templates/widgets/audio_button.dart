@@ -47,7 +47,7 @@ class AudioButtonStack extends StatelessWidget {
                 await audio.startRecording(() {
                   showDialog(
                     context: context,
-                    child: SettingsPopup(
+                    builder: (context) => SettingsPopup(
                       buildContext: context,
                       // TODO: @Eric - Need to update the text
                       text: 'Access not granted to access recorder',

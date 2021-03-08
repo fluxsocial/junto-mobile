@@ -93,7 +93,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
 
                             showDialog(
                               context: context,
-                              child: SingleActionDialog(
+                              builder: (context) => SingleActionDialog(
                                 context: context,
                                 dialogText: 'Invitation sent to members',
                               ),

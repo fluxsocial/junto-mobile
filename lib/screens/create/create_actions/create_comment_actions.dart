@@ -567,7 +567,6 @@ class CreateCommentExpressionScaffoldState
                     createExpression: createExpression,
                     removeFocus: removeFocus,
                   ),
-                  resizeToAvoidBottomPadding: false,
                   resizeToAvoidBottomInset: false,
                   body: PageView(
                     controller: createPageController,

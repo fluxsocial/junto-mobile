@@ -75,7 +75,7 @@ class CreatePhotoState extends State<CreatePhoto>
         } else {
           showDialog(
             context: context,
-            child: SettingsPopup(
+            builder: (context) => SettingsPopup(
               buildContext: context,
               // TODO: @Eric - Need to update the text
               text: 'Access not granted to access gallery',
@@ -97,7 +97,7 @@ class CreatePhotoState extends State<CreatePhoto>
         } else {
           showDialog(
             context: context,
-            child: SettingsPopup(
+            builder: (context) => SettingsPopup(
               buildContext: context,
               // TODO: @Eric - Need to update the text
               text: 'Access not granted to access camera',

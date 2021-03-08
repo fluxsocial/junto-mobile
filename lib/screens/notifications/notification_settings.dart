@@ -29,7 +29,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
     if (!granted) {
       showDialog(
         context: context,
-        child: SettingsPopup(
+        builder: (context) => SettingsPopup(
           buildContext: context,
           // TODO: @Eric - Need to update the text
           text: 'Access not granted for notifications',
