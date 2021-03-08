@@ -27,7 +27,7 @@ class SphereRequest extends StatelessWidget {
         return GestureDetector(
           onTap: () async {
             // display sphere
-            // showGroup(item.group);
+            showGroup(item.group);
           },
           child: Container(
             color: Theme.of(context).colorScheme.background,
