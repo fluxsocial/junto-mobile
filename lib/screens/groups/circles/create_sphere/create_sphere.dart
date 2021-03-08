@@ -80,12 +80,21 @@ class CreateSphereState extends State<CreateSphere> {
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => SingleActionDialog(
-          dialogText: error.message,
-        ),
-      );
+      if (error.errorCode == 429) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+              dialogText:
+                  'You can only create three public communities on Junto.'),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: error.message,
+          ),
+        );
+      }
     }
   }
 
