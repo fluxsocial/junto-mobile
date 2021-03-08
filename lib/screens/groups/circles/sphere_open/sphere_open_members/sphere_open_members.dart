@@ -197,6 +197,7 @@ class CircleFacilitators extends StatelessWidget {
   final List<Users> users;
   @override
   Widget build(BuildContext context) {
+    print(users);
     // Circle Facilitators (Admins)
     return Column(
       children: <Widget>[
