@@ -127,7 +127,8 @@ class CircleMain extends StatefulWidget {
   _CircleMainState createState() => _CircleMainState();
 }
 
-class _CircleMainState extends State<CircleMain> {
+class _CircleMainState extends State<CircleMain>
+    with AutomaticKeepAliveClientMixin {
   PageController circlesPageController;
   int _currentIndex = 0;
 
@@ -185,4 +186,7 @@ class _CircleMainState extends State<CircleMain> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
