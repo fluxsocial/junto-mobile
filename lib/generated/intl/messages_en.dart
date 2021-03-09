@@ -134,6 +134,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "welcome_password_length": m2,
         "welcome_password_rules": MessageLookupByLibrary.simpleMessage(
             "Passwords must contain at least 1 number, 8 characters, and one uppercase letter."),
+        "reset_password_rules": MessageLookupByLibrary.simpleMessage(
+            "Passwords must contain at least 1 number, 8 characters, one uppercase letter and one special character."),
         "welcome_passwords_must_match":
             MessageLookupByLibrary.simpleMessage("Passwords must match."),
         "welcome_remove_photo":
