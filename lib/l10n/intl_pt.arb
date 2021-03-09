@@ -59,6 +59,7 @@
   "welcome_password_hint": "",
   "welcome_password_length": "",
   "welcome_password_rules": "",
+  "reset_password_rules": "",
   "welcome_passwords_must_match": "",
   "welcome_remove_photo": "",
   "welcome_reset_password": "",

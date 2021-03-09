@@ -624,6 +624,16 @@ class S {
     );
   }
 
+  /// `Passwords must contain at least 1 number, 8 characters, one uppercase letter and one special character.`
+  String get reset_password_rules {
+    return Intl.message(
+      'Passwords must contain at least 1 number, 8 characters, one uppercase letter and one special character.',
+      name: 'reset_password_rules',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Passwords must match.`
   String get welcome_passwords_must_match {
     return Intl.message(
