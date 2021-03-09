@@ -60,14 +60,14 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
   }
 
   bool _passwordCheck(String password) {
-    final String passwordRegEx = "(?=.*[A-Z])(?=.*[0-9])";
+    final String passwordRegEx = r"(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])";
     final exp = RegExp(passwordRegEx);
     bool match = exp.hasMatch(password);
     if (!match) {
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
-          dialogText: S.of(context).welcome_password_rules,
+          dialogText: S.of(context).reset_password_rules,
         ),
       );
       return false;
