@@ -68,7 +68,7 @@ class ExpressionServiceCentralized implements ExpressionService {
 
       // Temp fix with http client instead of dio
       final _serverResponseTwo = await http.put(
-        parseData['signed_url'],
+        Uri.parse(parseData['signed_url']),
         headers: newHeaders,
         body: fileAsBytes,
       );
