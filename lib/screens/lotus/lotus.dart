@@ -130,9 +130,7 @@ class _JuntoLotusState extends State<JuntoLotus> {
                                 const SizedBox(),
                                 Row(
                                   children: <Widget>[
-                                    NotificationsLunarIcon(
-                                      onGradientBackground: true,
-                                    ),
+                                    NotificationsLunarIcon(),
                                     GestureDetector(
                                       onTap: showTutorial,
                                       child: JuntoDescribedFeatureOverlay(
