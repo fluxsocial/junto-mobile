@@ -27,7 +27,6 @@ class MemberBadgeItem extends StatelessWidget {
       child: Image.asset(
         _buildBadge(),
         height: 28,
-        color: Theme.of(context).primaryColor,
       ),
     );
   }
