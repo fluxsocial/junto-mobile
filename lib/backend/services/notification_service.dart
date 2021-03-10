@@ -12,7 +12,7 @@ class NotificationServiceImpl implements NotificationService {
   NotificationServiceImpl(this.httpClient);
 
   final JuntoHttp httpClient;
-  final FirebaseMessaging _messaging = FirebaseMessaging();
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   @override
   Future<JuntoNotificationResults> getJuntoNotifications(
@@ -47,7 +47,8 @@ class NotificationServiceImpl implements NotificationService {
   @override
   Future<bool> requestPermissions() async {
     try {
-      return await _messaging.requestNotificationPermissions();
+      final settings = await _messaging.requestPermission();
+      return settings.authorizationStatus == AuthorizationStatus.authorized;
     } catch (e) {
       return false;
     }

@@ -489,13 +489,13 @@ class CreatePhotoState extends State<CreatePhoto>
                                 final channel = trigger == '#';
 
                                 if (!channel) {
-                                  context.bloc<SearchBloc>().add(SearchingEvent(
+                                  context.read<SearchBloc>().add(SearchingEvent(
                                         value,
                                         QueryUserBy.BOTH,
                                       ));
                                 } else {
                                   context
-                                      .bloc<SearchBloc>()
+                                      .read<SearchBloc>()
                                       .add(SearchingChannelEvent(value));
                                 }
                               } else {

@@ -93,7 +93,7 @@ class _EditCircleState extends State<EditCircle> {
     );
 
     try {
-      context.bloc<CircleBloc>().add(UpdateCircle(group: updatedGroup));
+      context.read<CircleBloc>().add(UpdateCircle(group: updatedGroup));
       JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (e, s) {

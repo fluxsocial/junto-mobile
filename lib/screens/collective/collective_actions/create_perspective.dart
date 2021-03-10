@@ -96,7 +96,7 @@ class CreatePerspectivePageState extends State<CreatePerspectivePage> {
               currentIndex: _currentIndex,
               onNextTap: _canCreatePerspective,
               onCreateTap: () {
-                context.bloc<PerspectivesBloc>().add(
+                context.read<PerspectivesBloc>().add(
                       CreatePerspective(
                         _nameController.text.trim(),
                         _aboutController.text.trim(),

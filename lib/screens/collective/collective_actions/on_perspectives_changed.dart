@@ -6,7 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 
 void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
-  final bloc = context.bloc<CollectiveBloc>();
+  final bloc = context.read<CollectiveBloc>();
 
   if (perspective.name == 'JUNTO') {
     bloc.add(
@@ -44,5 +44,5 @@ void onPerspectivesChanged(PerspectiveModel perspective, BuildContext context) {
   }
   // set current perspective
   bloc.setCurrentPerspective(perspective);
-  context.bloc<ChannelFilteringBloc>().add(FilterClear());
+  context.read<ChannelFilteringBloc>().add(FilterClear());
 }

@@ -42,10 +42,10 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
     _conController = TextEditingController();
 
     context
-        .bloc<RelationBloc>()
+        .read<RelationBloc>()
         .add(FetchRealtionship(RelationContext.following, ''));
     context
-        .bloc<RelationBloc>()
+        .read<RelationBloc>()
         .add(FetchRealtionship(RelationContext.connections, ''));
   }
 
@@ -116,7 +116,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                       hintText: 'Search',
                       textEditingController: _subController,
                       onTextChange: (val) {
-                        context.bloc<RelationBloc>().add(
+                        context.read<RelationBloc>().add(
                             FetchRealtionship(RelationContext.following, val));
                       },
                     ),
@@ -149,7 +149,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                                   state.followingResultCount >
                                       _followingMembers.length) {
                                 context
-                                    .bloc<RelationBloc>()
+                                    .read<RelationBloc>()
                                     .add(FetchMoreRelationship(
                                       RelationContext.following,
                                       _subController.value.text,
@@ -197,7 +197,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                       hintText: 'Search',
                       textEditingController: _conController,
                       onTextChange: (val) {
-                        context.bloc<RelationBloc>().add(FetchRealtionship(
+                        context.read<RelationBloc>().add(FetchRealtionship(
                             RelationContext.connections, val));
                       },
                     ),
@@ -232,7 +232,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                                     state.connctionResultCount >
                                         _connectionsMembers.length) {
                                   context
-                                      .bloc<RelationBloc>()
+                                      .read<RelationBloc>()
                                       .add(FetchMoreRelationship(
                                         RelationContext.connections,
                                         _conController.value.text,

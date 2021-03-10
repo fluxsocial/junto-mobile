@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
@@ -51,6 +52,7 @@ class Backend {
     try {
       final dbService = HiveCache();
       await dbService.init();
+      await Firebase.initializeApp();
       final themesProvider = JuntoThemesProvider();
       final imageHandler = DeviceImageHandler();
       final authService = CognitoClient();

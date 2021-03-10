@@ -126,15 +126,12 @@ class HomePageContentState extends State<HomePageContent>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
-    final messaging = FirebaseMessaging();
-    messaging.configure(
-      onLaunch: (_) {
-        logger.logDebug('Launch message $_');
-      },
-      onMessage: (_) {
-        logger.logDebug('message $_');
-      },
-    );
+    FirebaseMessaging.onMessageOpenedApp.listen((_) {
+      logger.logDebug('Launch message $_');
+    });
+    FirebaseMessaging.onMessage.listen((_) {
+      logger.logDebug('message $_');
+    });
   }
 
   @override
@@ -149,7 +146,7 @@ class HomePageContentState extends State<HomePageContent>
     final appRepo = Provider.of<AppRepo>(context);
 
     try {
-      context.bloc<NotificationSettingBloc>().add(FetchNotificationSetting());
+      context.read<NotificationSettingBloc>().add(FetchNotificationSetting());
 
       final _isFirst = await appRepo.isFirstLaunch();
       if (_isFirst) {
@@ -175,7 +172,7 @@ class HomePageContentState extends State<HomePageContent>
         await Provider.of<UserDataProvider>(context, listen: false).userProfile;
 
     if (userProfile == null || userProfile.user.address == null) {
-      await context.bloc<AuthBloc>().add(RefreshUser());
+      await context.read<AuthBloc>().add(RefreshUser());
     }
     if (state == AppLifecycleState.resumed) {
       logger.logInfo('checking server version');
@@ -184,7 +181,7 @@ class HomePageContentState extends State<HomePageContent>
   }
 
   void _checkServerVersion() {
-    context.bloc<AppBloc>().add(CheckServerVersion());
+    context.read<AppBloc>().add(CheckServerVersion());
   }
 
   @override

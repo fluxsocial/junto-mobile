@@ -22,7 +22,7 @@ class _SubscriptionsState extends State<Subscriptions> {
   void initState() {
     super.initState();
     context
-        .bloc<RelationBloc>()
+        .read<RelationBloc>()
         .add(FetchRealtionship(RelationContext.following, ''));
   }
 
@@ -42,7 +42,7 @@ class _SubscriptionsState extends State<Subscriptions> {
               textEditingController: _textEditingController,
               onTextChange: (val) {
                 context
-                    .bloc<RelationBloc>()
+                    .read<RelationBloc>()
                     .add(FetchRealtionship(RelationContext.following, val));
               },
             ),
@@ -71,7 +71,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                             state.followingResultCount >
                                 _followingMembers.length) {
                           context
-                              .bloc<RelationBloc>()
+                              .read<RelationBloc>()
                               .add(FetchMoreRelationship(
                                 RelationContext.following,
                                 _textEditingController.value.text,

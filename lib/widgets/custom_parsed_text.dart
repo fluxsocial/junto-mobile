@@ -73,7 +73,7 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
                           ? state.selectedChannel
                               .indexWhere((element) => element.name == name)
                           : -1;
-                      context.bloc<ChannelFilteringBloc>().add(
+                      context.read<ChannelFilteringBloc>().add(
                             FilterSelected(
                               [
                                 if (state.selectedChannel != null)

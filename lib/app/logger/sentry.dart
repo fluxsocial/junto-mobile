@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sentry/sentry.dart';
 
-final SentryClient _sentry = SentryClient(dsn: kSentryDSN);
+final SentryClient _sentry = SentryClient(SentryOptions(dsn: kSentryDSN));
 
 bool get isInDebugMode {
   return !kReleaseMode;
@@ -26,10 +26,10 @@ Future<void> reportError(dynamic error, dynamic stackTrace) async {
 
   final systemVersion = Platform.operatingSystemVersion;
   final version = await PackageInfo.fromPlatform();
-  final response = await _sentry.capture(
-    event: Event(
+  final response = await _sentry.captureEvent(
+    SentryEvent(
       release: version.buildNumber,
-      message: error.toString(),
+      message: Message(error.toString()),
       environment: Platform.isAndroid ? 'Android' : 'iOS',
       stackTrace: stackTrace,
       exception: error,
@@ -42,10 +42,10 @@ Future<void> reportError(dynamic error, dynamic stackTrace) async {
     ),
   );
 
-  if (response.isSuccessful) {
-    logger.logInfo('Success! Event ID: ${response.eventId}');
+  if (response != null) {
+    logger.logInfo('Success! Event ID: ${response}');
   } else {
-    logger.logInfo('Failed to report to Sentry.io: ${response.error}');
+    logger.logInfo('Failed to report to Sentry.io: ${response}');
   }
 }
 

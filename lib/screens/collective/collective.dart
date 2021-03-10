@@ -46,7 +46,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   void initializeBloc() {
-    context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+    context.read<PerspectivesBloc>().add(FetchPerspectives());
   }
 
   @override

@@ -37,7 +37,7 @@ class JuntoDrawer extends StatefulWidget {
 class _JuntoDrawerState extends State<JuntoDrawer> {
   void _onLogOut() {
     // Sends logout event
-    context.bloc<AuthBloc>().add(LogoutEvent(manualLogout: true));
+    context.read<AuthBloc>().add(LogoutEvent(manualLogout: true));
 
     Navigator.of(context).pushReplacement(
       FadeRoute(child: HomePage(), name: "HomePage"),

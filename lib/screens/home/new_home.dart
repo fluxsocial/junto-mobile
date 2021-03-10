@@ -44,7 +44,7 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    context.bloc<CircleBloc>().add(FetchMyCircle());
+    context.read<CircleBloc>().add(FetchMyCircle());
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<AppRepo>(context, listen: false).initHome(widget.screen);

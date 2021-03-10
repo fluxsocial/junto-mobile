@@ -77,7 +77,7 @@ class CreateSphereState extends State<CreateSphere> {
     try {
       final response = await Provider.of<GroupRepo>(context, listen: false)
           .createSphere(sphere);
-      context.bloc<CircleBloc>().add(CreateCircleEvent(response));
+      context.read<CircleBloc>().add(CreateCircleEvent(response));
       JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {

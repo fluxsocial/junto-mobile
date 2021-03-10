@@ -30,7 +30,7 @@ class _CircleRefreshState extends State<CircleRefresh> {
         offsetToArmed: 70,
         onRefresh: () async {
           await context.repository<NotificationsHandler>().fetchNotifications();
-          await context.bloc<CircleBloc>().add(RefreshCircle());
+          await context.read<CircleBloc>().add(RefreshCircle());
 
           return refreshCompleter.future;
         },

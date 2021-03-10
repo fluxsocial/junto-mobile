@@ -83,7 +83,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                       else
                         GestureDetector(
                           onTap: () {
-                            context.bloc<CircleBloc>().add(
+                            context.read<CircleBloc>().add(
                                   AddMemberToCircle(
                                     sphereAddress: widget.group.address,
                                     user: _sphereMembers,

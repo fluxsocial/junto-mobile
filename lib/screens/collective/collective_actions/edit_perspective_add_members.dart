@@ -40,10 +40,10 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
   void initState() {
     super.initState();
     context
-        .bloc<RelationBloc>()
+        .read<RelationBloc>()
         .add(FetchRealtionship(RelationContext.following, ''));
     context
-        .bloc<RelationBloc>()
+        .read<RelationBloc>()
         .add(FetchRealtionship(RelationContext.connections, ''));
   }
 
@@ -185,7 +185,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                                 state.followingResultCount >
                                     _followingMembers.length) {
                               context
-                                  .bloc<RelationBloc>()
+                                  .read<RelationBloc>()
                                   .add(FetchMoreRelationship(
                                     RelationContext.following,
                                     '',
@@ -237,7 +237,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                                 state.connctionResultCount >
                                     _connectionsMembers.length) {
                               context
-                                  .bloc<RelationBloc>()
+                                  .read<RelationBloc>()
                                   .add(FetchMoreRelationship(
                                     RelationContext.connections,
                                     '',
