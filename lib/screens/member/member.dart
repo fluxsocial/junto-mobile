@@ -44,7 +44,6 @@ class _JuntoMemberState extends State<JuntoMember>
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> _tabs = [
     'Collective',
-    'Feedback',
   ];
   UserData _memberProfile;
   String _userAddress;
@@ -206,16 +205,6 @@ class _JuntoMemberState extends State<JuntoMember>
                             rootExpressions: true,
                             subExpressions: false,
                             communityCenterFeedback: false,
-                          ),
-                        ),
-                        UserExpressProvider(
-                          address: widget.profile.address,
-                          child: UserExpressions(
-                            privacy: 'Public',
-                            userProfile: widget.profile,
-                            rootExpressions: true,
-                            subExpressions: false,
-                            communityCenterFeedback: true,
                           ),
                         ),
                       ],
