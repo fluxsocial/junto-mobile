@@ -6,7 +6,8 @@ version: 1.0.2+1
 publish_to: none
 
 environment:
-  sdk: ">=2.7.0-dev <3.0.0"
+  # Update this later to v2.12.
+  sdk: '>=2.10.0 <3.0.0'
   flutter: ">=1.20.0 <2.0.0"
 
 dependencies:
@@ -18,7 +19,7 @@ dependencies:
   shared_preferences: 2.0.3
   cupertino_icons: 1.0.2
   provider: 5.0.0
-  sentry: 3.0.1
+  sentry: 4.1.0-nullsafety.0
   flutter_cache_manager: 3.0.0-nullsafety.1
   cached_network_image: 3.0.0-nullsafety
   flutter_spinkit: 5.0.0
@@ -30,7 +31,7 @@ dependencies:
   equatable: 2.0.0
   json_serializable: 4.0.2
   freezed_annotation: 0.14.0
-  flutter_sound: 7.7.0+1
+  flutter_sound: 8.0.0+2
   dio: 4.0.0-beta6
   url_launcher: 6.0.2
   feature_discovery: 0.13.0+2
@@ -57,31 +58,41 @@ dependencies:
       ref: master
   contacts_service: ^0.5.0-nullsafety.0
   permission_handler: ^6.0.1
-  clipboard: ^0.1.2+8
+  clipboard: ^0.1.3
   readmore: ^1.0.0
   firebase_messaging: 9.0.0
   firebase_core: 1.0.0
   flutter_fadein: ^1.1.1
   app_settings: 4.1.0
   share: 2.0.0
+  collection: ^1.15.0-nullsafety.4
 
 dev_dependencies:
   test: any
   build_runner: 1.11.5
   hive_generator: 1.0.0
   freezed: 0.14.0+1
-  effective_dart: 1.2.3
+  effective_dart: 1.3.1
 dependency_overrides:
   dartx: 0.6.0
-  characters: 1.0.0
-  path: 1.7.0
+  characters: 1.1.0
+  path: 1.8.0
+  crypto: 3.0.0
+  shared_preferences: 2.0.3
+  provider: 5.0.0
+  path_provider: 2.0.1
+  flutter_spinkit: 5.0.0
+  uuid: ^3.0.0
+  file: ^6.1.0
+  plugin_platform_interface: 2.0.0
+  synchronized: 3.0.0
   # Pending https://github.com/agnostech/flutter_amplify/pull/20
   flutter_aws_amplify_cognito:
     # path: ../flutter_amplify/flutter_aws_amplify_cognito
     git:
       url: https://github.com/fayeed/flutter_amplify.git
       path: flutter_aws_amplify_cognito
-      ref: 6138dcc84aa4d0628f69794b0a5989482410cd95
+      ref: 35e8cdad0717801aea14f5957fe69e3365f8a0b8
 
 flutter:
   uses-material-design: true
