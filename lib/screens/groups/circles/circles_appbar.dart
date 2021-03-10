@@ -6,9 +6,9 @@ import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/global_search_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere.dart';
 import 'package:provider/provider.dart';
@@ -96,23 +96,25 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
+                          GlobalSearchIcon(),
                           NotificationsLunarIcon(),
-                          GestureDetector(
-                            onTap: showTutorial,
-                            child: JuntoDescribedFeatureOverlay(
-                              icon: OverlayInfoIcon(),
-                              featureId: 'groups_info_id',
-                              isLastFeature: false,
-                              title:
-                                  'Communities are groups you can create in Junto. We will open up Private groups soon.',
-                              learnMore: true,
-                              learnMoreText: [
-                                'Communities are the building blocks of Junto. Every feed is essentially some form of community.',
-                                'The Collective community is a public space everyone on Junto is apart of. All other communities are either public or private groups created by yourself or other members.'
-                              ],
-                              child: JuntoInfoIcon(),
-                            ),
-                          ),
+
+                          // GestureDetector(
+                          //   onTap: showTutorial,
+                          //   child: JuntoDescribedFeatureOverlay(
+                          //     icon: OverlayInfoIcon(),
+                          //     featureId: 'groups_info_id',
+                          //     isLastFeature: false,
+                          //     title:
+                          //         'Communities are groups you can create in Junto. We will open up Private groups soon.',
+                          //     learnMore: true,
+                          //     learnMoreText: [
+                          //       'Communities are the building blocks of Junto. Every feed is essentially some form of community.',
+                          //       'The Collective community is a public space everyone on Junto is apart of. All other communities are either public or private groups created by yourself or other members.'
+                          //     ],
+                          //     child: JuntoInfoIcon(),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
