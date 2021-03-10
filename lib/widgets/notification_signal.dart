@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class NotificationSignal extends StatelessWidget {
   const NotificationSignal({
     this.top,
     this.right,
+    this.onGradientBackground,
   });
 
   final double top;
   final double right;
+  final bool onGradientBackground;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,9 @@ class NotificationSignal extends StatelessWidget {
           height: 7,
           width: 7,
           decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            color: onGradientBackground
+                ? JuntoPalette().juntoWhite(theme: theme)
+                : Theme.of(context).accentColor,
             borderRadius: BorderRadius.circular(100),
           ),
         ),

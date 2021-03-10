@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/widgets/appbar/global_search_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
@@ -58,6 +59,7 @@ class DenAppbar extends SliverPersistentHeaderDelegate {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
+                GlobalSearchIcon(),
                 NotificationsLunarIcon(),
               ],
             )
