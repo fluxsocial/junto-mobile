@@ -159,7 +159,7 @@ class _CircleMainState extends State<CircleMain>
       body: BlocBuilder<CircleBloc, CircleState>(
         builder: (context, state) {
           return Container(
-            margin: const EdgeInsets.only(bottom: 70),
+            margin: const EdgeInsets.only(bottom: 75),
             child: Column(
               children: [
                 Expanded(

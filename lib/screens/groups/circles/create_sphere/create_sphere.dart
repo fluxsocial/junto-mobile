@@ -104,7 +104,7 @@ class CreateSphereState extends State<CreateSphere> {
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
               dialogText:
-                  'For now, you can only create five public communities on Junto. Let us know if you would like this to change!'),
+                  "For now, you can only create five public communities on Junto. Let us know if you'd like this to change!"),
         );
       } else {
         showDialog(
