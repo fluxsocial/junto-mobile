@@ -104,21 +104,13 @@ class CreateSphereState extends State<CreateSphere> {
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
               dialogText:
-                  'You can only create three public communities on Junto.'),
-        );
-      } else if (error.response.statusCode == 400) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => SingleActionDialog(
-            dialogText:
-                'This community username is already taken. Try another one!',
-          ),
+                  'For now, you can only create five public communities on Junto. Let us know if you would like this to change!'),
         );
       } else {
         showDialog(
           context: context,
           builder: (BuildContext context) => SingleActionDialog(
-            dialogText: 'Sorry, something went wrong. Try again.',
+            dialogText: error.response.data['error'].toString(),
           ),
         );
       }
