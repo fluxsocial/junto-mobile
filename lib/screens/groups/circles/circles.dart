@@ -158,29 +158,32 @@ class _CircleMainState extends State<CircleMain>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BlocBuilder<CircleBloc, CircleState>(
         builder: (context, state) {
-          return Column(
-            children: [
-              Expanded(
-                child: PageView(
-                  controller: circlesPageController,
-                  onPageChanged: (int index) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  children: [
-                    CirclesListAll(
-                      userProfile: widget._userProfile,
-                      onGroupSelected: widget.onGroupSelected,
-                    ),
-                    PrivateGroupsPlaceholder(),
-                    CirclesRequests(
-                      onGroupSelected: widget.onGroupSelected,
-                    ),
-                  ],
+          return Container(
+            margin: const EdgeInsets.only(bottom: 70),
+            child: Column(
+              children: [
+                Expanded(
+                  child: PageView(
+                    controller: circlesPageController,
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    children: [
+                      CirclesListAll(
+                        userProfile: widget._userProfile,
+                        onGroupSelected: widget.onGroupSelected,
+                      ),
+                      PrivateGroupsPlaceholder(),
+                      CirclesRequests(
+                        onGroupSelected: widget.onGroupSelected,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
