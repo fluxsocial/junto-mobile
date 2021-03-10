@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
@@ -8,6 +8,12 @@ import 'package:junto_beta_mobile/widgets/notification_signal.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsLunarIcon extends StatelessWidget {
+  const NotificationsLunarIcon({
+    Key key,
+    this.onGradientBackground = false,
+  }) : super(key: key);
+
+  final bool onGradientBackground;
   @override
   Widget build(BuildContext context) {
     return Consumer2<NotificationsHandler, JuntoThemesProvider>(
@@ -35,13 +41,16 @@ class NotificationsLunarIcon extends StatelessWidget {
                   child: Icon(
                     Icons.notifications_outlined,
                     size: 24,
-                    color: Theme.of(context).primaryColor,
+                    color: onGradientBackground
+                        ? JuntoPalette().juntoWhite(theme: theme)
+                        : Theme.of(context).primaryColor,
                   ),
                 ),
                 if (data.unreadNotifications)
                   NotificationSignal(
                     top: 2,
                     right: 7,
+                    onGradientBackground: onGradientBackground,
                   ),
               ],
             ),

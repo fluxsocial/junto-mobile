@@ -95,21 +95,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             },
                           ),
                         JuntoDrawerItem(
-                          icon: Icons.search,
-                          title: 'Search',
-                          theme: theme,
-                          onTap: () {
-                            // open search
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) =>
-                                    GlobalSearch(),
-                              ),
-                            );
-                          },
-                        ),
-                        JuntoDrawerItem(
                           icon: CustomIcons.infinity,
                           iconSize: 9,
                           title: S.of(context).menu_relations,
