@@ -1,6 +1,7 @@
 import 'dart:io';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -62,8 +63,8 @@ class CreateSphereState extends State<CreateSphere> {
 
     // create sphere body
     final SphereModel sphere = SphereModel(
-      name: sphereName,
-      description: sphereDescription,
+      name: sphereName.toLowerCase().trim(),
+      description: sphereDescription.trim(),
       facilitators: <String>[],
       photo: sphereImageKey,
       members: _sphereMembers,
@@ -95,6 +96,32 @@ class CreateSphereState extends State<CreateSphere> {
           ),
         );
       }
+    } on DioError catch (error) {
+      JuntoLoader.hide();
+
+      if (error.response.statusCode == 429) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+              dialogText:
+                  'You can only create three public communities on Junto.'),
+        );
+      } else if (error.response.statusCode == 400) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText:
+                'This community username is already taken. Try another one!',
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: 'Sorry, something went wrong. Try again.',
+          ),
+        );
+      }
     }
   }
 
@@ -122,6 +149,18 @@ class CreateSphereState extends State<CreateSphere> {
       if (FocusScope.of(context).hasFocus) {
         FocusScope.of(context).unfocus();
       }
+
+      final exp = RegExp("^[a-z0-9_]+\$");
+      if (!exp.hasMatch(sphereHandle.toLowerCase().trim())) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: S.of(context).welcome_username_requirements,
+          ),
+        );
+        return;
+      }
+
       createSphereController.nextPage(
         curve: Curves.easeIn,
         duration: const Duration(milliseconds: 300),
