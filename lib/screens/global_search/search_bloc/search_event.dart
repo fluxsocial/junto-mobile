@@ -1,5 +1,4 @@
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -19,5 +18,8 @@ class SearchingChannelEvent extends SearchEvent {
 }
 
 class FetchMoreSearchResEvent extends SearchEvent {
-  FetchMoreSearchResEvent();
+  FetchMoreSearchResEvent(this.query, this.username);
+
+  final String query;
+  final QueryUserBy username;
 }
