@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:dio/dio.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
@@ -227,6 +227,8 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         members: members,
         creator: creator,
       );
+    } on DioError catch (e, s) {
+      print(e.response.data);
     } catch (e, s) {
       logger.logException(e, s);
       // yield CircleError();
