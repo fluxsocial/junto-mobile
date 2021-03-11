@@ -43,149 +43,149 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(45),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          brightness: Theme.of(context).brightness,
-          elevation: 0,
-          titleSpacing: 0,
-          title: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    color: Colors.transparent,
-                    width: 42,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      CustomIcons.back,
-                      color: Theme.of(context).primaryColorDark,
-                      size: 17,
-                    ),
-                  ),
-                ),
-                if (widget.relationToGroup != null &&
-                    ((widget.relationToGroup['creator'] ||
-                            widget.relationToGroup['facilitator']) ||
-                        (widget.relationToGroup['member'])))
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<dynamic>(
-                          builder: (BuildContext context) => SphereAddMembers(
-                            group: widget.group,
-                            permission: 'Member',
+    return BlocBuilder<CircleBloc, CircleState>(
+      builder: (context, state) {
+        if (state is CircleLoaded) {
+          return Scaffold(
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(45),
+                child: AppBar(
+                  automaticallyImplyLeading: false,
+                  brightness: Theme.of(context).brightness,
+                  elevation: 0,
+                  titleSpacing: 0,
+                  title: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            color: Colors.transparent,
+                            width: 42,
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              CustomIcons.back,
+                              color: Theme.of(context).primaryColorDark,
+                              size: 17,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        CustomIcons.add,
-                        color: Theme.of(context).primaryColorDark,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(.75),
-            child: Container(
-              height: .75,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    width: .75,
-                    color: Theme.of(context).dividerColor,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      body: BlocBuilder<CircleBloc, CircleState>(
-        builder: (context, state) {
-          if (state is CircleLoaded) {
-            return DefaultTabController(
-              length: _tabs.length,
-              child: NestedScrollView(
-                physics: const ClampingScrollPhysics(),
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverPersistentHeader(
-                      delegate: JuntoAppBarDelegate(
-                        TabBar(
-                          controller: _tabController,
-                          labelPadding: const EdgeInsets.all(0),
-                          isScrollable: true,
-                          labelColor: Theme.of(context).primaryColorDark,
-                          unselectedLabelColor:
-                              Theme.of(context).primaryColorLight,
-                          labelStyle: Theme.of(context).textTheme.subtitle1,
-                          indicatorWeight: 0.0001,
-                          tabs: <Widget>[
-                            for (String name in _tabs)
-                              Container(
-                                color: Colors.transparent,
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                  right: 20,
-                                ),
-                                child: Text(
-                                  name.toUpperCase(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
+                        if (widget.relationToGroup != null &&
+                            ((widget.relationToGroup['creator'] ||
+                                    widget.relationToGroup['facilitator']) ||
+                                (widget.relationToGroup['member'])))
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute<dynamic>(
+                                  builder: (BuildContext context) =>
+                                      SphereAddMembers(
+                                    group: widget.group,
+                                    permission: 'Member',
+                                    members: state.members,
                                   ),
                                 ),
+                              );
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              alignment: Alignment.centerLeft,
+                              child: Icon(
+                                CustomIcons.add,
+                                color: Theme.of(context).primaryColorDark,
+                                size: 24,
                               ),
-                          ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(.75),
+                    child: Container(
+                      height: .75,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: .75,
+                            color: Theme.of(context).dividerColor,
+                          ),
                         ),
                       ),
-                      pinned: true,
                     ),
-                  ];
-                },
-                body: TabBarView(
-                  controller: _tabController,
-                  children: <Widget>[
-                    // Circle Facilitators
-                    CircleFacilitators(
-                        creator: state.creator?.user,
-                        users: state.members ?? []),
-                    // All Circle Members
-                    CircleMembers(
-                        creator: state.creator?.user,
-                        users: state.members ?? []),
-                  ],
+                  ),
                 ),
               ),
-            );
-          }
-
-          return Expanded(
-            child: Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50),
-                child: JuntoProgressIndicator(),
-              ),
+              body: DefaultTabController(
+                length: _tabs.length,
+                child: NestedScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      SliverPersistentHeader(
+                        delegate: JuntoAppBarDelegate(
+                          TabBar(
+                            controller: _tabController,
+                            labelPadding: const EdgeInsets.all(0),
+                            isScrollable: true,
+                            labelColor: Theme.of(context).primaryColorDark,
+                            unselectedLabelColor:
+                                Theme.of(context).primaryColorLight,
+                            labelStyle: Theme.of(context).textTheme.subtitle1,
+                            indicatorWeight: 0.0001,
+                            tabs: <Widget>[
+                              for (String name in _tabs)
+                                Container(
+                                  color: Colors.transparent,
+                                  padding: const EdgeInsets.only(
+                                    top: 10,
+                                    bottom: 10,
+                                    right: 20,
+                                  ),
+                                  child: Text(
+                                    name.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        pinned: true,
+                      ),
+                    ];
+                  },
+                  body: TabBarView(
+                    controller: _tabController,
+                    children: <Widget>[
+                      // Circle Facilitators
+                      CircleFacilitators(
+                          creator: state.creator?.user,
+                          users: state.members ?? []),
+                      // All Circle Members
+                      CircleMembers(
+                          creator: state.creator?.user,
+                          users: state.members ?? []),
+                    ],
+                  ),
+                ),
+              ));
+        }
+        return Expanded(
+          child: Center(
+            child: Transform.translate(
+              offset: const Offset(0.0, -50),
+              child: JuntoProgressIndicator(),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -197,7 +197,6 @@ class CircleFacilitators extends StatelessWidget {
   final List<Users> users;
   @override
   Widget build(BuildContext context) {
-    print(users);
     // Circle Facilitators (Admins)
     return Column(
       children: <Widget>[

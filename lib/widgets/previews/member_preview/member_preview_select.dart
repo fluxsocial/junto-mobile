@@ -12,7 +12,7 @@ class MemberPreviewSelect extends StatefulWidget {
   }) : super(key: key);
 
   final UserProfile profile;
-  final ValueChanged<UserProfile> onSelect;
+  final onSelect;
   final ValueChanged<UserProfile> onDeselect;
   final bool isSelected;
 
@@ -111,11 +111,13 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
                         )
                       : GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _isSelected = true;
-                            });
-
-                            widget.onSelect(widget.profile);
+                            bool canContinue;
+                            canContinue = widget.onSelect(widget.profile);
+                            if (canContinue) {
+                              setState(() {
+                                _isSelected = true;
+                              });
+                            }
                           },
                           child: Container(
                             height: 28,

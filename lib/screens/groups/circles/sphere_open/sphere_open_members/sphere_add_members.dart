@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -10,11 +11,12 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 class SphereAddMembers extends StatefulWidget {
   final Group group;
   final String permission;
-
+  final List<Users> members;
   const SphereAddMembers({
     Key key,
     this.group,
     this.permission,
+    this.members,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,35 @@ class SphereAddMembers extends StatefulWidget {
 class _SphereAddMembersState extends State<SphereAddMembers> {
   List<UserProfile> _sphereMembers = <UserProfile>[];
 
-  void _sphereAddMember(UserProfile member) {
+  bool _sphereAddMember(UserProfile member) {
+    final List<String> groupMembers = [];
+    widget.members.forEach(
+      (groupMember) {
+        groupMembers.add(groupMember.user.address);
+      },
+    );
+    if (groupMembers.contains(member.address)) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          context: context,
+          dialogText: 'This member is already a part of this group.',
+        ),
+      );
+      return false;
+    }
+
+    if (member.address == widget.group.creator) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          context: context,
+          dialogText: 'This member is already a part of this group',
+        ),
+      );
+
+      return false;
+    }
     setState(() {
       final contain =
           _sphereMembers.where((element) => element.address == member.address);
@@ -32,6 +62,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
         _sphereMembers.add(member);
       }
     });
+    return true;
   }
 
   void _sphereRemoveMember(UserProfile member) {
@@ -106,6 +137,8 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                               setState(() {
                                 _sphereMembers = [];
                               });
+                            } on DioError catch (e) {
+                              print(e.response.data);
                             } catch (e) {
                               JuntoLoader.hide();
                               showDialog(
