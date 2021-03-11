@@ -5,11 +5,9 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_connection_notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/accept_pack_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/comment_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/connection_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/community_request_notification.dart';
-import 'package:junto_beta_mobile/screens/notifications/notification_types/pack_request_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/mention_notification.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -77,48 +75,44 @@ class NotificationTile extends StatelessWidget {
         } catch (error) {
           JuntoLoader.hide();
         }
-      } else {
-        if (item.notificationType == NotificationType.GroupJoinRequest) {
-          Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => JuntoMember(profile: item.creator),
-            ),
-          );
-        } else {
-          Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => JuntoMember(profile: item.user),
-            ),
-          );
-        }
+      } else if (item.notificationType != NotificationType.GroupJoinRequest) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => JuntoMember(profile: item.user),
+          ),
+        );
       }
     }
 
     if (item.notificationType != NotificationType.NewPackJoin) {
-      return GestureDetector(
-        onTap: () {
-          navigateTo(context);
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: item.unread == true
-                ? Theme.of(context).dividerColor.withOpacity(.3)
-                : Theme.of(context).backgroundColor,
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).dividerColor,
-                width: .75,
+      if (item.notificationType == NotificationType.GroupJoinRequest &&
+          item.group.groupType == 'Pack') {
+        return SizedBox();
+      } else {
+        return GestureDetector(
+          onTap: () {
+            navigateTo(context);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: item.unread == true
+                  ? Theme.of(context).dividerColor.withOpacity(.3)
+                  : Theme.of(context).backgroundColor,
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
               ),
             ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            child: content,
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 15,
-          ),
-          child: content ?? const SizedBox(),
-        ),
-      );
+        );
+      }
     } else {
       return SizedBox();
     }
