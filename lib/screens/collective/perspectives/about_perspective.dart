@@ -138,7 +138,7 @@ class AboutPerspectiveDescription extends StatelessWidget {
 
   String _aboutText() {
     if (perspective.name == 'Collective') {
-      return 'Expressions from everyone on Junto.';
+      return 'The Collective is the shared space of Junto that anyone can post into.';
     } else if (perspective.name == 'Connections') {
       return 'Expressions from people you are connected with.';
     } else if (perspective.name == 'Subscriptions') {
