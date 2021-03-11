@@ -262,80 +262,86 @@ class CreateSphereState extends State<CreateSphere> {
       height: 60,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).dividerColor,
-            width: .75,
-          ),
-        ),
+        borderRadius: BorderRadius.circular(100),
       ),
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          if (_currentIndex == 0)
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Row(
-                children: [
-                  Icon(
-                    CustomIcons.newcollective,
-                    size: 28,
-                    color: Theme.of(context).primaryColor,
+        children: [
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              if (_currentIndex == 0)
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Row(
+                    children: [
+                      Icon(
+                        CustomIcons.newcollective,
+                        size: 28,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        'Create',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 5),
-                  Text(
-                    'Create',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
+                ),
+              if (_currentIndex != 0)
+                GestureDetector(
+                  onTap: () {
+                    createSphereController.previousPage(
+                      curve: Curves.easeIn,
+                      duration: const Duration(
+                        milliseconds: 300,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    color: Colors.transparent,
+                    width: 60,
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      CustomIcons.back,
+                      size: 17,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   ),
-                ],
-              ),
-            ),
-          if (_currentIndex != 0)
-            GestureDetector(
-              onTap: () {
-                createSphereController.previousPage(
-                  curve: Curves.easeIn,
-                  duration: const Duration(
-                    milliseconds: 300,
-                  ),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.only(left: 10),
-                color: Colors.transparent,
-                width: 60,
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  CustomIcons.back,
-                  size: 17,
-                  color: Theme.of(context).primaryColorDark,
                 ),
-              ),
-            ),
-          if (_currentIndex == 2)
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 10,
-              ),
-              child: CreateCommunityButton(
-                cta: _createSphere,
-                title: 'Create',
-              ),
-            ),
-          if (_currentIndex != 2)
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 10,
-              ),
-              child: CreateCommunityButton(
-                cta: _onNextPress,
-                title: 'Next',
-              ),
-            ),
+              if (_currentIndex == 2)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 10,
+                  ),
+                  child: CreateCommunityButton(
+                    cta: _createSphere,
+                    title: 'Create',
+                  ),
+                ),
+              if (_currentIndex != 2)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 10,
+                  ),
+                  child: CreateCommunityButton(
+                    cta: _onNextPress,
+                    title: 'Next',
+                  ),
+                ),
+            ],
+          ),
+          Container(
+            height: .75,
+            width: MediaQuery.of(context).size.width,
+            color: Theme.of(context).dividerColor,
+          ),
         ],
       ),
     );
