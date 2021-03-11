@@ -42,7 +42,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
     Key key,
-    this.expressionContext,
+    this.expressionContext = ExpressionContext.Collective,
     this.group,
   }) : super(key: key);
 
@@ -60,7 +60,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   UserData userData;
   String socialContextAddress;
   ExpressionType currentExpressionType = ExpressionType.none;
-  ExpressionContext expressionContext = ExpressionContext.Collective;
+  ExpressionContext expressionContext;
   bool chooseContextVisibility = false;
   PageController createPageController;
   int _currentIndex = 0;
@@ -99,9 +99,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
     selectExpressionContext(widget.expressionContext);
 
-    if (widget.group != null) {
-      setSelectedGroup(widget.group);
-    }
+    setSelectedGroup(widget.group);
 
     createPageController = PageController(initialPage: 0, keepPage: true);
 
@@ -412,10 +410,19 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   }
 
   void setSelectedGroup(Group group) {
-    setState(() {
-      socialContextAddress = group.address;
-      selectedGroup = group;
-    });
+    if (group == null || group == Group()) {
+      setState(() {
+        expressionContext = ExpressionContext.Collective;
+        socialContextAddress = null;
+        selectedGroup = Group();
+      });
+    } else {
+      setState(() {
+        expressionContext = ExpressionContext.Group;
+        socialContextAddress = group.address;
+        selectedGroup = group;
+      });
+    }
   }
 
   void togglePageView(int page) {
