@@ -105,7 +105,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       widget.group.address,
       _userAddress,
     );
-
+    print(_relationToGroup);
     setState(() {
       relationToGroup = _relationToGroup;
     });

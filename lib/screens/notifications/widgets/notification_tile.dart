@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/screens/notifications/notification_types/commu
 import 'package:junto_beta_mobile/screens/notifications/notification_types/subscribed_notification.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_types/mention_notification.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open.dart';
 import 'package:provider/provider.dart';
 
 class NotificationTile extends StatelessWidget {
@@ -80,6 +81,18 @@ class NotificationTile extends StatelessWidget {
           context,
           CupertinoPageRoute(
             builder: (context) => JuntoMember(profile: item.user),
+          ),
+        );
+      } else if (item.notificationType == NotificationType.GroupJoinRequest &&
+          item.group.groupType == 'Sphere') {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => SphereOpen(
+                group: item.group,
+                goBack: () {
+                  Navigator.pop(context);
+                }),
           ),
         );
       }
