@@ -135,6 +135,7 @@ class _SphereSearchState extends State<SphereSearch> {
           username: _searchByUsername,
           group: widget.group,
           permission: widget.permission,
+          query: query,
         ),
       ),
     );
@@ -147,10 +148,12 @@ class _SearchBody extends StatefulWidget {
     this.username,
     this.group,
     this.permission,
+    this.query,
   }) : super(key: key);
   final ValueNotifier<bool> username;
   final Group group;
   final String permission;
+  final String query;
 
   @override
   __SearchBodyState createState() => __SearchBodyState();
@@ -174,6 +177,7 @@ class __SearchBodyState extends State<_SearchBody> {
   }
 
   void _fetchMore() {
+    print('test: called');
     if (_controller.hasClients) {
       final ScrollDirection direction =
           _controller.position.userScrollDirection;
@@ -182,7 +186,9 @@ class __SearchBodyState extends State<_SearchBody> {
       double percent = (pixels / maxExtent) * 100;
       if (percent.roundToDouble() == 60 &&
           direction == ScrollDirection.reverse) {
-        context.bloc<SearchBloc>().add(FetchMoreSearchResEvent());
+        context
+            .bloc<SearchBloc>()
+            .add(FetchMoreSearchResEvent(widget.query, QueryUserBy.BOTH));
       }
     }
   }
