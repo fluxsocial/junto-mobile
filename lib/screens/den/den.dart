@@ -36,7 +36,6 @@ class JuntoDenState extends State<JuntoDen>
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   final List<String> _tabs = [
     'Collective',
-    'Feedback',
     'Replies',
   ];
 
@@ -109,16 +108,6 @@ class JuntoDenState extends State<JuntoDen>
                 rootExpressions: true,
                 subExpressions: false,
                 communityCenterFeedback: false,
-              ),
-            ),
-            UserExpressProvider(
-              address: user.user.address,
-              child: UserExpressions(
-                privacy: 'Public',
-                userProfile: user.user,
-                rootExpressions: true,
-                subExpressions: false,
-                communityCenterFeedback: true,
               ),
             ),
             UserExpressProvider(

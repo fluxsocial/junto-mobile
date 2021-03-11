@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -5,15 +6,17 @@ import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sp
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
 class SphereAddMembers extends StatefulWidget {
   final Group group;
   final String permission;
-
+  final List<Users> members;
   const SphereAddMembers({
     Key key,
     this.group,
     this.permission,
+    this.members,
   }) : super(key: key);
 
   @override
@@ -23,7 +26,35 @@ class SphereAddMembers extends StatefulWidget {
 class _SphereAddMembersState extends State<SphereAddMembers> {
   List<UserProfile> _sphereMembers = <UserProfile>[];
 
-  void _sphereAddMember(UserProfile member) {
+  bool _sphereAddMember(UserProfile member) {
+    final List<String> groupMembers = [];
+    widget.members.forEach(
+      (groupMember) {
+        groupMembers.add(groupMember.user.address);
+      },
+    );
+    if (groupMembers.contains(member.address)) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          context: context,
+          dialogText: 'This member is already a part of this group.',
+        ),
+      );
+      return false;
+    }
+
+    if (member.address == widget.group.creator) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          context: context,
+          dialogText: 'This member is already a part of this group',
+        ),
+      );
+
+      return false;
+    }
     setState(() {
       final contain =
           _sphereMembers.where((element) => element.address == member.address);
@@ -31,6 +62,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
         _sphereMembers.add(member);
       }
     });
+    return true;
   }
 
   void _sphereRemoveMember(UserProfile member) {
@@ -74,7 +106,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                       ),
                       Container(
                         child: Text(
-                          'Invite Member',
+                          'Invite Members',
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                       ),
@@ -82,35 +114,59 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                         const SizedBox(width: 48)
                       else
                         GestureDetector(
-                          onTap: () {
-                            context.read<CircleBloc>().add(
-                                  AddMemberToCircle(
-                                    sphereAddress: widget.group.address,
-                                    user: _sphereMembers,
-                                    permissionLevel: widget.permission,
-                                  ),
-                                );
+                          onTap: () async {
+                            try {
+                              JuntoLoader.showLoader(context);
+                              context.read<CircleBloc>().add(
+                                    AddMemberToCircle(
+                                      sphereAddress: widget.group.address,
+                                      user: _sphereMembers,
+                                      permissionLevel: widget.permission,
+                                    ),
+                                  );
+                              JuntoLoader.hide();
 
-                            showDialog(
-                              context: context,
-                              builder: (context) => SingleActionDialog(
+                              showDialog(
                                 context: context,
-                                dialogText: 'Invitation sent to members',
-                              ),
-                            );
+                                builder: (context) => SingleActionDialog(
+                                  context: context,
+                                  dialogText: 'Your community invite was sent!',
+                                ),
+                              );
 
-                            setState(() {
-                              _sphereMembers = [];
-                            });
+                              setState(() {
+                                _sphereMembers = [];
+                              });
+                            } on DioError catch (e) {
+                              print(e.response.data);
+                            } catch (e) {
+                              JuntoLoader.hide();
+                              showDialog(
+                                context: context,
+                                builder: (context) => SingleActionDialog(
+                                  context: context,
+                                  dialogText:
+                                      'Sorry, something went wrong. Try again!',
+                                ),
+                              );
+                            }
                           },
                           child: Container(
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.only(right: 10),
-                            width: 48,
-                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                             child: Text(
                               'Add',
-                              style: Theme.of(context).textTheme.caption,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         )

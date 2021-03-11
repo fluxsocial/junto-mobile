@@ -6,9 +6,8 @@ import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
-import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/global_search_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere.dart';
 import 'package:provider/provider.dart';
@@ -78,17 +77,9 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      // color: Colors.orange,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          // Testing out new appbar without logo
-                          // Container(
-                          //   height: 42,
-                          //   alignment: Alignment.bottomLeft,
-                          //   color: Colors.transparent,
-                          //   child: AppbarLogo(theme: theme),
-                          // ),
                           Text(
                             'Communities',
                             style: TextStyle(
@@ -104,23 +95,8 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
+                          GlobalSearchIcon(),
                           NotificationsLunarIcon(),
-                          GestureDetector(
-                            onTap: showTutorial,
-                            child: JuntoDescribedFeatureOverlay(
-                              icon: OverlayInfoIcon(),
-                              featureId: 'groups_info_id',
-                              isLastFeature: false,
-                              title:
-                                  'Communities are groups you can create in Junto. We will open up Private groups soon.',
-                              learnMore: true,
-                              learnMoreText: [
-                                'Communities are the building blocks of Junto. Every feed is essentially some form of community.',
-                                'The Collective community is a public space everyone on Junto is apart of. All other communities are either public or private groups created by yourself or other members.'
-                              ],
-                              child: JuntoInfoIcon(),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -180,11 +156,35 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                               bottom: 10,
                             ),
                             child: Text(
-                              'REQUESTS',
+                              'PRIVATE',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                                 color: widget.currentIndex == 1
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight,
+                                letterSpacing: .75,
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            widget.changePageView(2);
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.only(
+                              right: 15,
+                              top: 10,
+                              bottom: 10,
+                            ),
+                            child: Text(
+                              'REQUESTS',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: widget.currentIndex == 2
                                     ? Theme.of(context).primaryColorDark
                                     : Theme.of(context).primaryColorLight,
                                 letterSpacing: .75,

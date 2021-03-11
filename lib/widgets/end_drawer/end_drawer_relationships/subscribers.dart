@@ -15,7 +15,8 @@ class Subscribers extends StatefulWidget {
   _SubscribersState createState() => _SubscribersState();
 }
 
-class _SubscribersState extends State<Subscribers> {
+class _SubscribersState extends State<Subscribers>
+    with AutomaticKeepAliveClientMixin {
   TextEditingController _textEditingController;
 
   @override
@@ -108,4 +109,7 @@ class _SubscribersState extends State<Subscribers> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

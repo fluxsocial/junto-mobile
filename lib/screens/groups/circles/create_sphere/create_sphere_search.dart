@@ -132,6 +132,7 @@ class _CreateSphereSearchState extends State<CreateSphereSearch> {
           onSelect: widget.onSelect,
           onDeselect: widget.onDeselect,
           selectedMembers: widget.selectedMembers,
+          query: query,
         ),
       ),
     );
@@ -144,11 +145,13 @@ class _SearchBody extends StatefulWidget {
     this.onSelect,
     this.onDeselect,
     this.selectedMembers,
+    this.query,
   }) : super(key: key);
 
   final ValueChanged<UserProfile> onSelect;
   final ValueChanged<UserProfile> onDeselect;
   final List<String> selectedMembers;
+  final String query;
 
   @override
   __SearchBodyState createState() => __SearchBodyState();
@@ -178,9 +181,12 @@ class __SearchBodyState extends State<_SearchBody> {
       final double pixels = _controller.position.pixels;
       final double maxExtent = _controller.position.maxScrollExtent;
       double percent = (pixels / maxExtent) * 100;
+      // print('test: what 1 ${percent.roundToDouble()} | $direction');
       if (percent.roundToDouble() == 60 &&
           direction == ScrollDirection.reverse) {
-        context.read<SearchBloc>().add(FetchMoreSearchResEvent());
+        context
+            .read<SearchBloc>()
+            .add(FetchMoreSearchResEvent(widget.query, QueryUserBy.BOTH));
       }
     }
   }

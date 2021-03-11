@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/notifications/widgets/notification_placeholder.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
@@ -10,9 +11,11 @@ import 'sphere_request.dart';
 class CirclesRequests extends StatelessWidget with ListDistinct {
   const CirclesRequests({
     this.userProfile,
+    this.onGroupSelected,
   });
 
   final UserData userProfile;
+  final Function(Group) onGroupSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +36,25 @@ class CirclesRequests extends StatelessWidget with ListDistinct {
                 }
               });
 
-              if (notifications.length > 0) {
+              if (circleRequestNotifications.length > 0) {
                 return ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   itemCount: circleRequestNotifications.length,
                   itemBuilder: (context, index) {
                     final item = circleRequestNotifications[index];
                     if (circleRequestNotifications.length > 0) {
-                      return SphereRequest(item: item);
+                      return SphereRequest(
+                        item: item,
+                        showGroup: onGroupSelected,
+                      );
                     }
-                    return const SizedBox();
                   },
                 );
               } else {
                 // Add placeholder for no group join requests yet
-                return SizedBox();
+                return Center(
+                  child: NotificationPlaceholder(),
+                );
               }
             },
           ),

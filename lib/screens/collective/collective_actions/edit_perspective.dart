@@ -141,7 +141,7 @@ class EditPerspectiveState extends State<EditPerspective> {
                         child: Icon(CustomIcons.back, size: 20),
                       ),
                     ),
-                    Text(_currentIndex == 0 ? 'Edit Perspective' : 'Members',
+                    Text(_currentIndex == 0 ? 'Edit List' : 'Members',
                         style: Theme.of(context).textTheme.subtitle1),
                     _currentIndex == 0
                         ? GestureDetector(

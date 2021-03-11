@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,13 +15,16 @@ import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/circle_action_items_admin.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/member/circle_action_items_member.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/circle_open_expressions/circle_open_expressions.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -46,7 +50,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   UserData _userProfile;
   double _flexibleHeightSpace;
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
-  final ValueNotifier<bool> shouldRefresh = ValueNotifier<bool>(true);
   Map<String, dynamic> relationToGroup;
   Future<QueryResults<ExpressionResponse>> getExpressions;
   UserProfile circleCreator;
@@ -90,6 +93,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     _loadRelationship();
   }
 
+  loadCircleMembers() {
+    context.bloc<CircleBloc>().add(
+          LoadCircleMembers(sphereAddress: widget.group.address),
+        );
+  }
+
   Future<void> _loadRelationship() async {
     final Map<String, dynamic> _relationToGroup =
         await Provider.of<GroupRepo>(context, listen: false).getRelationToGroup(
@@ -106,8 +115,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   Widget build(BuildContext context) {
     return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
       if (state is CircleLoaded) {
-        final group = state.groups
-            .firstWhere((element) => element.address == widget.group.address);
+        final group = state.groups.firstWhere(
+          (element) => element.address == widget.group.address,
+          orElse: () => widget.group,
+        );
+
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
@@ -182,6 +194,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                   JoinCircleWidget(
                                     groupAddress: group.address,
                                     userProfile: _userProfile.user,
+                                    loadRelationship: _loadRelationship,
+                                    loadCircleMembers: loadCircleMembers,
                                   )
                                 else
                                   ShowRelationshipWidget(
@@ -302,19 +316,42 @@ class CircleBackgroundPlaceholder extends StatelessWidget {
 }
 
 class JoinCircleWidget extends StatelessWidget {
-  const JoinCircleWidget({this.groupAddress, this.userProfile});
+  const JoinCircleWidget({
+    this.groupAddress,
+    this.userProfile,
+    this.loadRelationship,
+    this.loadCircleMembers,
+  });
 
   final String groupAddress;
   final UserProfile userProfile;
+  final loadRelationship;
+  final loadCircleMembers;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Provider.of<GroupRepo>(context, listen: false).addGroupMember(
-          groupAddress,
-          <UserProfile>[userProfile],
-          'Member',
-        );
+      onTap: () async {
+        try {
+          JuntoLoader.showLoader(context);
+          // Accept request
+          await Provider.of<GroupRepo>(context, listen: false)
+              .respondToGroupRequest(
+            groupAddress,
+            true,
+          );
+          await loadCircleMembers();
+          await loadRelationship();
+          JuntoLoader.hide();
+        } on DioError catch (e) {
+          JuntoLoader.hide();
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => SingleActionDialog(
+              context: context,
+              dialogText: 'Sorry, something went wrong. Please try again!',
+            ),
+          );
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(
@@ -366,7 +403,7 @@ class ShowRelationshipWidget extends StatelessWidget {
     Widget actionItems;
 
     if (relationToGroup == null) {
-      relation = 'Member';
+      relation = 'Join';
     } else if (relationToGroup['creator'] || relationToGroup['facilitator']) {
       relation = relationToGroup['creator'] ? 'Creator' : 'Facilitator';
       actionItems = CircleActionItemsAdmin(
@@ -385,7 +422,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         goBack: goBack,
       );
     } else {
-      relation = 'Member';
+      relation = 'Join';
       actionItems = CircleActionItemsMember(
         sphere: circle,
         userProfile: userProfile,
@@ -394,6 +431,7 @@ class ShowRelationshipWidget extends StatelessWidget {
         goBack: goBack,
       );
     }
+
     return GestureDetector(
       onTap: () {
         // Open panel for group action items

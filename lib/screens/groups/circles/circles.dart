@@ -13,6 +13,7 @@ import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
 import 'circles_list_all.dart';
 import 'circles_requests.dart';
+import 'private_groups_placeholder.dart';
 import 'sphere_open/sphere_open.dart';
 
 // This screen displays the temporary page we'll display until groups are released
@@ -126,7 +127,8 @@ class CircleMain extends StatefulWidget {
   _CircleMainState createState() => _CircleMainState();
 }
 
-class _CircleMainState extends State<CircleMain> {
+class _CircleMainState extends State<CircleMain>
+    with AutomaticKeepAliveClientMixin {
   PageController circlesPageController;
   int _currentIndex = 0;
 
@@ -156,34 +158,38 @@ class _CircleMainState extends State<CircleMain> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: BlocBuilder<CircleBloc, CircleState>(
         builder: (context, state) {
-          return Column(
-            children: [
-              Expanded(
-                child: PageView(
-                  controller: circlesPageController,
-                  onPageChanged: (int index) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  children: [
-                    CirclesListAll(
-                      userProfile: widget._userProfile,
-                      onGroupSelected: widget.onGroupSelected,
-                    ),
-                    CirclesRequests(),
-                    // Container(
-                    //   height: MediaQuery.of(context).size.height,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   color: Colors.orange,
-                    // )
-                  ],
+          return Container(
+            margin: const EdgeInsets.only(bottom: 75),
+            child: Column(
+              children: [
+                Expanded(
+                  child: PageView(
+                    controller: circlesPageController,
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    children: [
+                      CirclesListAll(
+                        userProfile: widget._userProfile,
+                        onGroupSelected: widget.onGroupSelected,
+                      ),
+                      PrivateGroupsPlaceholder(),
+                      CirclesRequests(
+                        onGroupSelected: widget.onGroupSelected,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

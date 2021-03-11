@@ -21,9 +21,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Stream<SearchEvent> events,
     TransitionFunction<SearchEvent, SearchState> transitionFn,
   ) {
-    final nonDebounceStream = events.where((event) => event is! SearchingEvent);
+    final nonDebounceStream = events.where((event) => event is! SearchEvent);
     final debounceStream = events
-        .where((event) => event is SearchingEvent)
+        .where((event) => event is SearchEvent)
         .debounceTime(const Duration(milliseconds: 600));
     return super.transformEvents(
         MergeStream([nonDebounceStream, debounceStream]), transitionFn);
@@ -89,9 +89,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Stream<SearchState> _mapFetchMoreEventToState(
       FetchMoreSearchResEvent incomingEvent) async* {
-    yield LoadingSearchState();
-    final event = incomingEvent as SearchingEvent;
-    if (event.query != null && event.query.isNotEmpty) {
+    final results = state as LoadedSearchState;
+    final event = incomingEvent;
+    if (event.query != null &&
+        event.query.isNotEmpty &&
+        results.results.length == 50) {
       try {
         currentPos += 50;
         final result = await _getUsers(
@@ -99,15 +101,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
         if (result.results.isNotEmpty) {
           yield LoadedSearchState(result.results);
-        } else {
-          yield EmptySearchState();
         }
       } catch (error, stack) {
         logger.logException(error, stack);
         yield ErrorSearchState("Error searching");
       }
     }
-    yield ErrorSearchState("Please enter a search term");
   }
 
   Future<QueryResults<UserProfile>> _getUsers(

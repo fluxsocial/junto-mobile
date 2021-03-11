@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/edit_group.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_search.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
@@ -82,7 +83,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                           ),
                           const SizedBox(width: 15),
                           Text(
-                            'Edit Sphere',
+                            'Edit Community',
                             style: Theme.of(context).textTheme.headline5,
                           ),
                         ],
@@ -122,7 +123,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                             ),
                             const SizedBox(width: 15),
                             Text(
-                              'Delete Circle',
+                              'Delete Community',
                               style: Theme.of(context).textTheme.headline5,
                             ),
                           ],

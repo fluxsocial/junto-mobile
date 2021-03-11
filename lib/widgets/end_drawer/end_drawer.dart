@@ -25,6 +25,7 @@ import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
 import 'junto_center.dart';
 import 'junto_contacts.dart';
+import 'junto_invite.dart';
 import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
@@ -94,21 +95,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             },
                           ),
                         JuntoDrawerItem(
-                          icon: Icons.search,
-                          title: 'Search',
-                          theme: theme,
-                          onTap: () {
-                            // open search
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) =>
-                                    GlobalSearch(),
-                              ),
-                            );
-                          },
-                        ),
-                        JuntoDrawerItem(
                           icon: CustomIcons.infinity,
                           iconSize: 9,
                           title: S.of(context).menu_relations,
@@ -154,7 +140,8 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               context,
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
-                                  return JuntoContacts();
+                                  // return JuntoContacts();
+                                  return JuntoInvite();
                                 },
                               ),
                             );

@@ -33,6 +33,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
   TextEditingController _textEditingController;
 
   String get query => _textEditingController.value.text;
+  String searchType = 'members';
 
   @override
   void initState() {
@@ -64,23 +65,24 @@ class _GlobalSearchState extends State<GlobalSearch> {
           QueryUserBy.BOTH,
         )),
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: <Widget>[Container()],
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(.75),
-            child: Container(
-              height: .75,
-              color: Theme.of(context).dividerColor,
-            ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(
+            50,
           ),
-          brightness: Theme.of(context).brightness,
-          elevation: 0,
-          titleSpacing: 0.0,
-          title: Container(
+          child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
+            height: MediaQuery.of(context).size.height * .1,
+            alignment: Alignment.bottomCenter,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
+              ),
+            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
@@ -133,19 +135,61 @@ class _GlobalSearchState extends State<GlobalSearch> {
                     );
                   }),
                 ),
+                // TO DO: Fayeed - add support for searching by specific group
+                // Container(
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         padding: const EdgeInsets.symmetric(
+                //           horizontal: 10,
+                //           vertical: 5,
+                //         ),
+                //         decoration: BoxDecoration(
+                //           color: Theme.of(context).colorScheme.primary,
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //         child: Icon(
+                //           Icons.people,
+                //           color: Colors.white,
+                //           size: 20,
+                //         ),
+                //       ),
+                //       Container(
+                //         padding: const EdgeInsets.symmetric(
+                //           horizontal: 10,
+                //           vertical: 5,
+                //         ),
+                //         decoration: BoxDecoration(
+                //           color: Theme.of(context).dividerColor,
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //         child: Icon(
+                //           CustomIcons.newcollective,
+                //           size: 20,
+                //           color: Theme.of(context).primaryColor,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
         ),
-        body: _SearchBody(username: _searchByUsername),
+        body: _SearchBody(username: _searchByUsername, query: query),
       ),
     );
   }
 }
 
 class _SearchBody extends StatefulWidget {
-  const _SearchBody({Key key, this.username}) : super(key: key);
+  const _SearchBody({
+    Key key,
+    this.username,
+    this.query,
+  }) : super(key: key);
   final ValueNotifier<bool> username;
+  final String query;
 
   @override
   __SearchBodyState createState() => __SearchBodyState();
@@ -169,6 +213,7 @@ class __SearchBodyState extends State<_SearchBody> {
   }
 
   void _fetchMore() {
+    print('test: waht');
     if (_controller.hasClients) {
       final ScrollDirection direction =
           _controller.position.userScrollDirection;
@@ -177,7 +222,9 @@ class __SearchBodyState extends State<_SearchBody> {
       double percent = (pixels / maxExtent) * 100;
       if (percent.roundToDouble() == 60 &&
           direction == ScrollDirection.reverse) {
-        context.read<SearchBloc>().add(FetchMoreSearchResEvent());
+        context
+            .read<SearchBloc>()
+            .add(FetchMoreSearchResEvent(widget.query, QueryUserBy.BOTH));
       }
     }
   }

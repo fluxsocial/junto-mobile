@@ -14,7 +14,8 @@ class Connections extends StatefulWidget {
   _ConnectionsState createState() => _ConnectionsState();
 }
 
-class _ConnectionsState extends State<Connections> {
+class _ConnectionsState extends State<Connections>
+    with AutomaticKeepAliveClientMixin {
   TextEditingController _textEditingController;
 
   @override
@@ -109,4 +110,7 @@ class _ConnectionsState extends State<Connections> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
