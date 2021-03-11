@@ -94,7 +94,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   loadCircleMembers() {
-    context.bloc<CircleBloc>().add(
+    context.read<CircleBloc>().add(
           LoadCircleMembers(sphereAddress: widget.group.address),
         );
   }
