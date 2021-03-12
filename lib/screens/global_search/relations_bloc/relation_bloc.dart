@@ -69,33 +69,35 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
         _connections = currentState.connections;
       }
 
-      if (event.context == RelationContext.follower) {
-        currentFollowerPos = 0;
-        final results = await userRepo.getFollowers(
-          userDataProvider.userAddress,
-          event.query,
-          currentFollowerPos.toString(),
-        );
-        _followers = results['users'];
-        followerResultCount = results['result_count'];
-      } else if (event.context == RelationContext.following) {
-        currentFollowingPos = 0;
-        final results = await userRepo.getFollowingUsers(
-          userDataProvider.userAddress,
-          event.query,
-          currentFollowingPos.toString(),
-        );
-        _following = results['users'];
-        followingResultCount = results['result_count'];
-      } else if (event.context == RelationContext.connections) {
-        currentFollowerPos = 0;
-        final results = await userRepo.connectedUsers(
-          userDataProvider.userAddress,
-          event.query,
-          currentConnectionsPos.toString(),
-        );
-        _connections = results['users'];
-        connectionResultCount = results['result_count'];
+      for (var context in event.context) {
+        if (context == RelationContext.follower) {
+          currentFollowerPos = 0;
+          final results = await userRepo.getFollowers(
+            userDataProvider.userAddress,
+            event.query,
+            currentFollowerPos.toString(),
+          );
+          _followers = results['users'];
+          followerResultCount = results['result_count'];
+        } else if (context == RelationContext.following) {
+          currentFollowingPos = 0;
+          final results = await userRepo.getFollowingUsers(
+            userDataProvider.userAddress,
+            event.query,
+            currentFollowingPos.toString(),
+          );
+          _following = results['users'];
+          followingResultCount = results['result_count'];
+        } else if (context == RelationContext.connections) {
+          currentFollowerPos = 0;
+          final results = await userRepo.connectedUsers(
+            userDataProvider.userAddress,
+            event.query,
+            currentConnectionsPos.toString(),
+          );
+          _connections = results['users'];
+          connectionResultCount = results['result_count'];
+        }
       }
 
       yield RelationLoadedState(

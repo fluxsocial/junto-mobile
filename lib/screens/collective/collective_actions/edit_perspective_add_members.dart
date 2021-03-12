@@ -39,12 +39,10 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
   @override
   void initState() {
     super.initState();
-    context
-        .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.following, ''));
-    context
-        .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.connections, ''));
+    context.bloc<RelationBloc>().add(
+          FetchRealtionship(
+              [RelationContext.following, RelationContext.connections], ''),
+        );
   }
 
   Future<void> addMembersToPerspective() async {

@@ -41,12 +41,8 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
     _subController = TextEditingController();
     _conController = TextEditingController();
 
-    context
-        .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.following, ''));
-    context
-        .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.connections, ''));
+    context.bloc<RelationBloc>().add(FetchRealtionship(
+        [RelationContext.following, RelationContext.connections], ''));
   }
 
   @override
@@ -116,8 +112,8 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                       hintText: 'Search',
                       textEditingController: _subController,
                       onTextChange: (val) {
-                        context.bloc<RelationBloc>().add(
-                            FetchRealtionship(RelationContext.following, val));
+                        context.bloc<RelationBloc>().add(FetchRealtionship(
+                            [RelationContext.following], val));
                       },
                     ),
                   ),
@@ -198,7 +194,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
                       textEditingController: _conController,
                       onTextChange: (val) {
                         context.bloc<RelationBloc>().add(FetchRealtionship(
-                            RelationContext.connections, val));
+                            [RelationContext.connections], val));
                       },
                     ),
                   ),
