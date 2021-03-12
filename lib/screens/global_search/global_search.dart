@@ -213,7 +213,6 @@ class __SearchBodyState extends State<_SearchBody> {
   }
 
   void _fetchMore() {
-    print('test: waht');
     if (_controller.hasClients) {
       final ScrollDirection direction =
           _controller.position.userScrollDirection;
