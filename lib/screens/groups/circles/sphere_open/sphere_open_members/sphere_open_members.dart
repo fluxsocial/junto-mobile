@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
@@ -8,6 +9,7 @@ import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
+
 import 'sphere_add_members.dart';
 
 class SphereOpenMembers extends StatefulWidget {
@@ -170,8 +172,10 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
                           users: state.members ?? []),
                       // All Circle Members
                       CircleMembers(
-                          creator: state.creator?.user,
-                          users: state.members ?? []),
+                        creator: state.creator?.user,
+                        users: state.members ?? [],
+                        group: widget.group,
+                      ),
                     ],
                   ),
                 ),
@@ -227,11 +231,54 @@ class CircleFacilitators extends StatelessWidget {
   }
 }
 
-class CircleMembers extends StatelessWidget {
-  const CircleMembers({this.creator, this.users});
+class CircleMembers extends StatefulWidget {
+  const CircleMembers({
+    this.creator,
+    this.users,
+    this.group,
+  });
 
   final UserProfile creator;
   final List<Users> users;
+  final Group group;
+
+  @override
+  _CircleMembersState createState() => _CircleMembersState();
+}
+
+class _CircleMembersState extends State<CircleMembers> {
+  ScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+    _controller.addListener(_fetchMore);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.removeListener(_fetchMore);
+    _controller.dispose();
+  }
+
+  void _fetchMore() {
+    if (_controller.hasClients) {
+      final ScrollDirection direction =
+          _controller.position.userScrollDirection;
+      final double pixels = _controller.position.pixels;
+      final double maxExtent = _controller.position.maxScrollExtent;
+      double percent = (pixels / maxExtent) * 100;
+      if (percent.roundToDouble() == 60 &&
+          direction == ScrollDirection.reverse) {
+        context
+            .bloc<CircleBloc>()
+            .add(LoadCircleMembersMore(sphereAddress: widget.group.address));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // All Circle Members
@@ -239,16 +286,18 @@ class CircleMembers extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: ListView(
+            controller: _controller,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             children: [
-              if (creator != null) MemberPreview(profile: creator),
+              if (widget.creator != null)
+                MemberPreview(profile: widget.creator),
               ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: users.length,
+                  itemCount: widget.users.length,
                   itemBuilder: (BuildContext context, int index) {
                     return MemberPreview(
-                      profile: users[index].user,
+                      profile: widget.users[index].user,
                     );
                   }),
             ],
