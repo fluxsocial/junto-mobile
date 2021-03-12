@@ -11,11 +11,15 @@ class SphereOpenAbout extends StatelessWidget {
     this.circleCreator,
     this.members = const <Users>[],
     this.relationToGroup,
+    this.totalMembers,
+    this.totalFacilitators,
   });
 
   final UserProfile circleCreator;
   final List<Users> members;
   final Map<String, dynamic> relationToGroup;
+  final int totalMembers;
+  final int totalFacilitators;
 
   final Group group;
 
@@ -59,6 +63,7 @@ class SphereOpenAbout extends StatelessWidget {
                 children: <Widget>[
                   CircleMembers(
                     members: members,
+                    totalMembers: totalMembers,
                   ),
                   if (circleCreator != null)
                     CircleFacilitators(
@@ -132,8 +137,12 @@ class CircleBio extends StatelessWidget {
 class CircleMembers extends StatelessWidget {
   const CircleMembers({
     this.members,
+    this.totalMembers = 0,
   });
+
   final List<Users> members;
+  final int totalMembers;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -142,7 +151,7 @@ class CircleMembers extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: Text(
-            'Members (${(members.length + 1).toString()})',
+            'Members (${totalMembers ?? 0})',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
