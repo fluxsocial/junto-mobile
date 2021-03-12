@@ -311,7 +311,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
               cursorWidth: 2,
               maxLines: null,
               style: Theme.of(context).textTheme.caption,
-              maxLength: 80,
+              maxLength: 22,
               textInputAction: TextInputAction.done,
             ),
           ),
