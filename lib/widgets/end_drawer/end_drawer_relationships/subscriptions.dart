@@ -20,14 +20,6 @@ class _SubscriptionsState extends State<Subscriptions>
   TextEditingController _textEditingController;
 
   @override
-  void initState() {
-    super.initState();
-    context
-        .bloc<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.following, ''));
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
@@ -44,7 +36,7 @@ class _SubscriptionsState extends State<Subscriptions>
               onTextChange: (val) {
                 context
                     .bloc<RelationBloc>()
-                    .add(FetchRealtionship(RelationContext.following, val));
+                    .add(FetchRealtionship([RelationContext.following], val));
               },
             ),
           ),

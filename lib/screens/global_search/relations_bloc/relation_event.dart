@@ -6,7 +6,7 @@ enum RelationContext { following, follower, connections }
 abstract class RelationEvent {}
 
 class FetchRealtionship extends RelationEvent {
-  final RelationContext context;
+  final List<RelationContext> context;
   final String query;
 
   FetchRealtionship(this.context, this.query);
