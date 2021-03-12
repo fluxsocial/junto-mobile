@@ -71,7 +71,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     yield LoadingSearchState();
     if (event.query != null && event.query.isNotEmpty) {
       try {
+        currentPos = 0;
         final result = await _getUsers(event.query, null, null, event.username);
+
+        lastTimeStamp = result.lastTimestamp;
 
         if (result.results.isNotEmpty) {
           yield LoadedSearchState(result.results);
@@ -93,18 +96,19 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     final event = incomingEvent;
     if (event.query != null &&
         event.query.isNotEmpty &&
-        results.results.length == 50) {
+        results.results.length % 50 == 0) {
       try {
         currentPos += 50;
         final result = await _getUsers(
             event.query, currentPos, lastTimeStamp, event.username);
 
+        lastTimeStamp = result.lastTimestamp;
+
         if (result.results.isNotEmpty) {
-          yield LoadedSearchState(result.results);
+          yield LoadedSearchState([...results.results, ...result.results]);
         }
       } catch (error, stack) {
         logger.logException(error, stack);
-        yield ErrorSearchState("Error searching");
       }
     }
   }
