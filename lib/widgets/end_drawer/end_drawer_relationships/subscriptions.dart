@@ -91,10 +91,8 @@ class _SubscriptionsState extends State<Subscriptions>
                   }
                 }
 
-                return Expanded(
-                  child: Center(
-                    child: JuntoProgressIndicator(),
-                  ),
+                return Center(
+                  child: JuntoProgressIndicator(),
                 );
               },
             ),
