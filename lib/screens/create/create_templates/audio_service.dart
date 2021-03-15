@@ -23,7 +23,17 @@ class AudioService with ChangeNotifier {
   AudioService() {
     _audioPlayer = FlutterSoundPlayer();
 
-    _audioPlayer.openAudioSession().then((value) {
+    _audioPlayer
+        .openAudioSession(
+      device: AudioDevice.earPiece,
+      audioFlags: allowBlueToothA2DP |
+          allowBlueTooth |
+          allowAirPlay |
+          allowEarPiece |
+          allowHeadset |
+          outputToSpeaker,
+    )
+        .then((value) {
       _audioPlayer.setSubscriptionDuration(Duration(seconds: 1)).then((v) {
         _mPlayerIsInited = true;
         notifyListeners();
