@@ -283,7 +283,7 @@ class CreateSphereState extends State<CreateSphere> {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        'Create',
+                        'Create Community',
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
