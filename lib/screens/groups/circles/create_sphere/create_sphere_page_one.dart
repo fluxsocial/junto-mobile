@@ -304,7 +304,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                   null,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Username*',
+                hintText: 'Handle*',
                 hintStyle: Theme.of(context).textTheme.caption,
               ),
               cursorColor: Theme.of(context).primaryColorDark,
