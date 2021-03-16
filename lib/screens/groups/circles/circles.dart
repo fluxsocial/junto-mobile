@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed_new.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 
 import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
@@ -165,10 +166,16 @@ class _CircleMainState extends State<CircleMain>
                 Expanded(
                   child: PageView(
                     controller: circlesPageController,
-                    onPageChanged: (int index) {
+                    onPageChanged: (int index) async {
                       setState(() {
                         _currentIndex = index;
                       });
+
+                      if (index == 2) {
+                        Provider.of<NotificationsHandler>(context,
+                                listen: false)
+                            .fetchNotifications();
+                      }
                     },
                     children: [
                       CirclesListAll(
