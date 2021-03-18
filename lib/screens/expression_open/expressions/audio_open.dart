@@ -8,16 +8,21 @@ import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 import 'package:provider/provider.dart';
 
-class AudioOpen extends StatelessWidget {
+class AudioOpen extends StatefulWidget {
   AudioOpen(this.expression);
 
   final ExpressionResponse expression;
 
+  @override
+  _AudioOpenState createState() => _AudioOpenState();
+}
+
+class _AudioOpenState extends State<AudioOpen> {
   Widget _displayAudioOpen() {
-    final audioTitle = expression.expressionData.title.trim();
-    final audioGradients = expression.expressionData.gradient;
-    final audioPhoto = expression.expressionData.photo;
-    final audioCaption = expression.expressionData.caption.trim();
+    final audioTitle = widget.expression.expressionData.title.trim();
+    final audioGradients = widget.expression.expressionData.gradient;
+    final audioPhoto = widget.expression.expressionData.photo;
+    final audioCaption = widget.expression.expressionData.caption.trim();
     if (audioGradients.isEmpty && audioPhoto.isEmpty) {
       return AudioOpenDefault(
         title: audioTitle,
@@ -44,15 +49,20 @@ class AudioOpen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final audioRecording = widget.expression.expressionData.audio;
+      Provider.of<AudioService>(context, listen: false)
+        ..initializeFromWeb(audioRecording);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final audioRecording = expression.expressionData.audio;
-    return ChangeNotifierProvider<AudioService>(
-      create: (context) => AudioService()..initializeFromWeb(audioRecording),
-      lazy: false,
-      child: Consumer<AudioService>(builder: (context, audio, child) {
-        return _displayAudioOpen();
-      }),
-    );
+    return Consumer<AudioService>(builder: (context, audio, child) {
+      return _displayAudioOpen();
+    });
   }
 }
 

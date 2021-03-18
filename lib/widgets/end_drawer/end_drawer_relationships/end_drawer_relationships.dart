@@ -13,12 +13,13 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pe
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscriptions.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/subscribers.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/connections.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pack_members.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
 
 class JuntoRelationships extends StatefulWidget {
   const JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
@@ -40,8 +41,18 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
     'SUBSCRIPTIONS',
     'SUBSCRIBERS',
     'CONNECTIONS',
-    'MY PACK',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    context.bloc<RelationBloc>().add(FetchRealtionship([
+          RelationContext.following,
+          RelationContext.connections,
+          RelationContext.follower
+        ], ''));
+  }
 
   Future<void> getUserRelationships() async {
     final dynamic userRelations =
@@ -80,6 +91,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
@@ -188,7 +200,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                           '"Subscriptions" are people you have added to your Subscriptions perspective (not mutual)',
                           '"Subscribers" are people who have added you to their Subscriptions perspective (not mutual)',
                           '"Connections" are your first degree friendships. Choosing to connect with someone is like friending them (mutual).',
-                          'Your "Pack" is your closest group of friends (not mutual). Visit the tutorial in your Pack feed for more information.'
                         ],
                         child: JuntoInfoIcon(),
                       ),
@@ -214,59 +225,62 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
           ),
         ),
       ),
-      body: DefaultTabController(
-        length: _tabs.length,
-        child: NestedScrollView(
-          physics: const ClampingScrollPhysics(),
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverPersistentHeader(
-                delegate: JuntoAppBarDelegate(
-                  TabBar(
-                    labelPadding: const EdgeInsets.all(0),
-                    isScrollable: true,
-                    labelColor: Theme.of(context).primaryColorDark,
-                    unselectedLabelColor: Theme.of(context).primaryColorLight,
-                    labelStyle: Theme.of(context).textTheme.subtitle1,
-                    indicatorWeight: 0.0001,
-                    tabs: <Widget>[
-                      for (String name in _tabs)
-                        Container(
-                          margin: const EdgeInsets.only(right: 20),
-                          color: Theme.of(context).colorScheme.background,
-                          child: Tab(
-                            child: Text(
-                              name,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
+      body: BlocBuilder<RelationBloc, RelationState>(
+        builder: (context, state) {
+          return DefaultTabController(
+            length: _tabs.length,
+            child: NestedScrollView(
+              physics: const ClampingScrollPhysics(),
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverPersistentHeader(
+                    delegate: JuntoAppBarDelegate(
+                      TabBar(
+                        labelPadding: const EdgeInsets.all(0),
+                        isScrollable: true,
+                        labelColor: Theme.of(context).primaryColorDark,
+                        unselectedLabelColor:
+                            Theme.of(context).primaryColorLight,
+                        labelStyle: Theme.of(context).textTheme.subtitle1,
+                        indicatorWeight: 0.0001,
+                        tabs: <Widget>[
+                          for (String name in _tabs)
+                            Container(
+                              margin: const EdgeInsets.only(right: 20),
+                              color: Theme.of(context).colorScheme.background,
+                              child: Tab(
+                                child: Text(
+                                  name,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                    ],
+                        ],
+                      ),
+                    ),
+                    pinned: true,
                   ),
-                ),
-                pinned: true,
+                ];
+              },
+              body: TabBarView(
+                children: <Widget>[
+                  // subscriptions
+                  Subscriptions(),
+
+                  // subscribers
+                  Subscribers(),
+
+                  // connections
+                  Connections(),
+                ],
               ),
-            ];
-          },
-          body: TabBarView(
-            children: <Widget>[
-              // subscriptions
-              Subscriptions(),
-
-              // subscribers
-              Subscribers(),
-
-              // connections
-              Connections(),
-
-              // pack members
-              PackMembers(userAddress: widget.userAddress),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

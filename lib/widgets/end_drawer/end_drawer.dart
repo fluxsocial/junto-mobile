@@ -1,17 +1,17 @@
-import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
-import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
@@ -19,31 +19,29 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/en
 import 'package:junto_beta_mobile/widgets/end_drawer/junto_account.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
 import 'junto_center.dart';
 import 'junto_contacts.dart';
-// import 'junto_invite.dart';
+import 'junto_invite.dart';
 import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
+  const JuntoDrawer();
+
   @override
   _JuntoDrawerState createState() => _JuntoDrawerState();
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
   void _onLogOut() {
-    // Dismiss the dialog
-    Navigator.of(context).pop();
     // Sends logout event
-    context.bloc<AuthBloc>().add(LogoutEvent());
+    context.bloc<AuthBloc>().add(LogoutEvent(manualLogout: true));
 
-    Timer(
-      Duration(milliseconds: 0),
-      () => Navigator.of(context).pushAndRemoveUntil(
-        FadeRoute(child: Welcome(), name: "Welcome"),
-        (route) => route.settings.name == "Welcome",
-      ),
+    Navigator.of(context).pushReplacement(
+      FadeRoute(child: HomePage(), name: "HomePage"),
     );
   }
 
@@ -89,13 +87,11 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             ),
                             title: S.of(context).menu_my_den,
                             theme: theme,
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                FadeRoute<void>(
-                                  child: JuntoDen(),
-                                  name: 'JuntoCollective',
-                                ),
-                              );
+                            onTap: () async {
+                              JuntoFilterDrawer.of(context).toggleRightMenu();
+
+                              await Provider.of<AppRepo>(context, listen: false)
+                                  .changeScreen(screen: Screen.den);
                             },
                           ),
                         JuntoDrawerItem(
@@ -136,28 +132,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                           },
                         ),
                         JuntoDrawerItem(
-                          icon: Padding(
-                            padding: const EdgeInsets.only(right: 32),
-                            child: Image.asset(
-                              'assets/images/junto-mobile__sprout.png',
-                              height: 20,
-                              color: JuntoPalette().juntoWhite(theme: theme),
-                            ),
-                          ),
-                          title: 'Center',
-                          theme: theme,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) {
-                                  return JuntoCommunityCenter();
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        JuntoDrawerItem(
                           icon: Icons.mail_outline,
                           title: 'Invite',
                           theme: theme,
@@ -166,38 +140,13 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               context,
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) {
-                                  return JuntoContacts();
+                                  // return JuntoContacts();
+                                  return JuntoInvite();
                                 },
                               ),
                             );
                           },
                         ),
-
-                        // To Do: Eric
-                        // JuntoDrawerItem(
-                        //   icon: Container(
-                        //     width: 60,
-                        //     alignment: Alignment.centerLeft,
-                        //     child: Icon(
-                        //       Icons.book,
-                        //       color: Colors.white,
-                        //       size: 24,
-                        //     ),
-                        //   ),
-                        //   title: 'Resources',
-                        // theme: theme,
-                        //
-                        //   onTap: () async {
-                        //     await Navigator.push(
-                        //       context,
-                        //       CupertinoPageRoute<dynamic>(
-                        //         builder: (BuildContext context) {
-                        //           return JuntoResources();
-                        //         },
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
                       ],
                     ),
                     Column(

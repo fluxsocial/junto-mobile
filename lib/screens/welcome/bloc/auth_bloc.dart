@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserRepo userRepo;
   final UserDataProvider userDataProvider;
   final OnBoardingRepo onBoardingRepo;
+  final NotificationRepo notificationRepo;
 
   AuthBloc(
     this.http,
@@ -24,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.userDataProvider,
     this.userRepo,
     this.onBoardingRepo,
+    this.notificationRepo,
   ) : super(AuthState.loading()) {
     _getLoggedIn();
     _httpCallback();
@@ -37,7 +39,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _getLoggedIn() async {
     final result = await authRepo.isLoggedIn();
-    if (result == true) {
+
+    if (result == true && userDataProvider.userAddress != null) {
       add(LoggedInEvent());
     } else {
       add(LogoutEvent());
@@ -80,6 +83,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'User profile picture updated, updating the user profile');
         userData = userData.copyWith(user: profile);
       }
+      userData = userData.copyWith(
+        user: userData.user.copyWith(
+          birthday: event.birthday,
+        ),
+      );
       await userDataProvider.updateUser(userData);
       await userDataProvider.initialize();
       await onBoardingRepo.loadTutorialState();
@@ -110,12 +118,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield AuthState.unauthenticated(loading: true);
     try {
       final address = await authRepo.loginUser(event.username, event.password);
-
       if (address != null) {
         final user = await userRepo.getUser(address);
         await userDataProvider.updateUser(user);
         await userDataProvider.initialize();
-
         yield AuthState.authenticated();
       } else {
         yield AuthState.unauthenticated(
@@ -129,11 +135,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           error: true,
           errorMessage: 'Sorry, we have some problems signing you in');
     } on PlatformException catch (_) {
+      print('err');
       add(LogoutEvent());
       yield AuthState.unauthenticated();
     } on DioError catch (error) {
-      print(error.response.statusMessage);
-      print(error.response.data);
+      print(error);
       yield AuthState.unauthenticated();
     } catch (error) {
       logger.logException(error);
@@ -144,6 +150,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapLogout(LogoutEvent event) async* {
     yield AuthState.loading();
     try {
+      if (event.manualLogout) {
+        final token = await notificationRepo.getFCMToken();
+        await notificationRepo.unRegisterDevice(token);
+      }
       await _clearUserInformation();
       yield AuthState.unauthenticated();
     } on JuntoException catch (error) {
@@ -184,6 +194,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             error: true,
             errorMessage: 'Please re-enter your login credentials');
       }
+    } on DioError catch (error) {
+      logger.logDebug(error.message);
+      await _clearUserInformation();
+      yield AuthState.unauthenticated();
     } on JuntoException catch (error) {
       logger.logDebug(error.message);
       await _clearUserInformation();

@@ -14,17 +14,25 @@ class FilterDrawerTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Color(0xff444444),
-            width: .75,
+            color: Theme.of(context).primaryColorLight,
+            width: .5,
           ),
         ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: Icon(
+              Icons.search,
+              color: Theme.of(context).primaryColorLight,
+              size: 24,
+            ),
+          ),
           Expanded(
             child: TextField(
               controller: textEditingController,
@@ -34,20 +42,14 @@ class FilterDrawerTextField extends StatelessWidget {
                 contentPadding: const EdgeInsets.all(0),
                 border: InputBorder.none,
                 counter: Container(),
-                hintText: 'Filter by channel',
-                hintStyle: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xff999999),
-                ),
               ),
-              cursorColor: Colors.white,
+              cursorColor: Theme.of(context).primaryColor,
               cursorWidth: 1,
               maxLines: 1,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Colors.white,
+                color: Theme.of(context).primaryColor,
               ),
               maxLength: 80,
               textInputAction: TextInputAction.done,
@@ -60,7 +62,7 @@ class FilterDrawerTextField extends StatelessWidget {
               child: Icon(
                 CustomIcons.cancel,
                 size: 24,
-                color: const Color(0xff999999),
+                color: Theme.of(context).primaryColorLight,
               ),
             ),
           )

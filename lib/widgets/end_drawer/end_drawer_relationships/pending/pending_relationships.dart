@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending/pending_pack_members.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending/pending_connections.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +26,7 @@ class PendingRelationships extends StatefulWidget {
 }
 
 class PendingRelationshipsState extends State<PendingRelationships> {
-  final List<String> _tabs = <String>['CONNECTION REQUESTS', 'PACK REQUESTS'];
+  final List<String> _tabs = <String>['CONNECTION REQUESTS'];
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -122,7 +121,6 @@ class PendingRelationshipsState extends State<PendingRelationships> {
             },
             body: TabBarView(children: <Widget>[
               PendingConnections(),
-              PendingPackMembers(),
             ]),
           ),
         ),

@@ -4,22 +4,23 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_context.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/link_open.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/widgets/comments/comments_list.dart';
 import 'package:junto_beta_mobile/widgets/comments/bottom_comment_bar.dart';
+import 'package:junto_beta_mobile/widgets/comments/comments_list.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/custom_refresh.dart';
 import 'package:provider/provider.dart';
 
-import 'parent_expression/expression_open_parent.dart';
 import 'expressions/audio_open.dart';
+import 'parent_expression/expression_open_parent.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen({
@@ -61,19 +62,19 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     commentController = TextEditingController();
     _scrollController = ScrollController();
     _focusNode = FocusNode();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
     futureComments = Provider.of<ExpressionRepo>(context, listen: false)
         .getExpressionsComments(widget.expression.address);
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     commentController.dispose();
+    _scrollController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -160,91 +161,108 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.expression.commentThread.isNotEmpty) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        curve: Curves.easeOut,
-        duration: const Duration(milliseconds: 300),
-      );
-    }
-    return FeatureDiscovery(
-      child: Stack(
-        children: <Widget>[
-          Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(50.0),
-              child: ExpressionOpenAppbar(expression: widget.expression),
-            ),
-            backgroundColor: Theme.of(context).backgroundColor,
-            body: Column(
+    return ChangeNotifierProvider<AudioService>(
+      create: (context) => AudioService(),
+      lazy: false,
+      child: Consumer<AudioService>(
+        builder: (context, audio, child) {
+          return FeatureDiscovery(
+            child: Stack(
               children: <Widget>[
-                Expanded(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onVerticalDragDown: _onDragDown,
-                    child: CustomRefresh(
-                      refresh: _refreshComments,
-                      child: ListView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        controller: _scrollController,
-                        children: <Widget>[
-                          if (widget.expression.commentThread != null)
-                            ...widget.expression.commentThread
-                                .map((e) => ExpressionOpenParent(parent: e))
-                                .toList(),
-                          // Expression Top
-                          ExpressionOpenTop(
-                            expression: widget.expression,
-                            deleteExpression: widget.deleteExpression,
+                Scaffold(
+                  appBar: PreferredSize(
+                    preferredSize: const Size.fromHeight(50.0),
+                    child: ExpressionOpenAppbar(expression: widget.expression),
+                  ),
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  body: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onVerticalDragDown: _onDragDown,
+                          child: CustomRefresh(
+                            refresh: _refreshComments,
+                            child: ListView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              controller: _scrollController,
+                              children: <Widget>[
+                                if (widget.expression.commentThread != null)
+                                  ...widget.expression.commentThread
+                                      .map((e) =>
+                                          ExpressionOpenParent(parent: e))
+                                      .toList(),
+                                // Expression Top
+                                ExpressionOpenTop(
+                                  expression: widget.expression,
+                                  deleteExpression: widget.deleteExpression,
+                                ),
+                                // Expression Body
+                                _buildExpression(),
+                                // Expression Open Bottom
+                                ExpressionOpenBottom(
+                                  widget.expression,
+                                  toggleExpressionContext,
+                                ),
+                                // List of comments
+                                CommentsList(
+                                  commentsVisible: commentsVisible,
+                                  expression: [
+                                    if (widget.expression.commentThread != null)
+                                      ...widget.expression.commentThread,
+                                    widget.expression
+                                  ],
+                                  futureComments: futureComments,
+                                  showComments: _showComments,
+                                  stopPlayback: () {
+                                    audio.pausePlayback();
+                                  },
+                                  loadPreviousExpressionComments: () {
+                                    final address = widget.expression.address;
+                                    futureComments =
+                                        Provider.of<ExpressionRepo>(context,
+                                                listen: false)
+                                            .getExpressionsComments(address);
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                          // Expression Body
-                          _buildExpression(),
-                          // Expression Open Bottom
-                          ExpressionOpenBottom(
-                            widget.expression,
-                            toggleExpressionContext,
-                          ),
-                          // List of comments
-                          CommentsList(
-                            commentsVisible: commentsVisible,
-                            expression: [
-                              if (widget.expression.commentThread != null)
-                                ...widget.expression.commentThread,
-                              widget.expression
-                            ],
-                            futureComments: futureComments,
-                            showComments: _showComments,
-                          ),
-                        ],
+                        ),
                       ),
+                      // Reply Widget
+                      BottomCommentBar(
+                        expression: widget.expression,
+                        expressionAddress: widget.expression.address,
+                        openComments: _openComments,
+                        refreshComments: _refreshComments,
+                        scrollToBottom: _scrollToBottom,
+                        focusNode: _focusNode,
+                        stopPlayback: () {
+                          if (audio.isPlaying) {
+                            audio.pausePlayback();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                // Expression Context
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: expressionContextVisible ? 1.0 : 0.0,
+                  child: Visibility(
+                    visible: expressionContextVisible,
+                    child: ExpressionOpenContext(
+                      channels: widget.expression.channels,
+                      toggleExpressionContext: toggleExpressionContext,
                     ),
                   ),
                 ),
-                // Reply Widget
-                BottomCommentBar(
-                  expression: widget.expression,
-                  expressionAddress: widget.expression.address,
-                  openComments: _openComments,
-                  refreshComments: _refreshComments,
-                  scrollToBottom: _scrollToBottom,
-                  focusNode: _focusNode,
-                ),
               ],
             ),
-          ),
-          // Expression Context
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 200),
-            opacity: expressionContextVisible ? 1.0 : 0.0,
-            child: Visibility(
-              visible: expressionContextVisible,
-              child: ExpressionOpenContext(
-                channels: widget.expression.channels,
-                toggleExpressionContext: toggleExpressionContext,
-              ),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

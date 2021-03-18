@@ -12,6 +12,8 @@ class CommentsList extends StatelessWidget {
     this.userAddress,
     this.futureComments,
     this.showComments,
+    this.loadPreviousExpressionComments,
+    this.stopPlayback,
   });
 
   final bool commentsVisible;
@@ -19,6 +21,8 @@ class CommentsList extends StatelessWidget {
   final String userAddress;
   final Future<QueryResults<Comment>> futureComments;
   final Function showComments;
+  final VoidCallback loadPreviousExpressionComments;
+  final VoidCallback stopPlayback;
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +89,9 @@ class CommentsList extends StatelessWidget {
                         comment: snapshot.data.results[index],
                         parent: expression,
                         userAddress: userAddress,
+                        loadPreviousExpressionComments:
+                            loadPreviousExpressionComments,
+                        stopPlayback: stopPlayback,
                       );
                     },
                   ),

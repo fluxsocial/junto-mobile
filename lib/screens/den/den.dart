@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
@@ -18,9 +17,6 @@ import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar_name.dart';
 
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
-import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +36,6 @@ class JuntoDenState extends State<JuntoDen>
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   final List<String> _tabs = [
     'Collective',
-    'Feedback',
     'Replies',
   ];
 
@@ -120,16 +115,6 @@ class JuntoDenState extends State<JuntoDen>
               child: UserExpressions(
                 privacy: 'Public',
                 userProfile: user.user,
-                rootExpressions: true,
-                subExpressions: false,
-                communityCenterFeedback: true,
-              ),
-            ),
-            UserExpressProvider(
-              address: user.user.address,
-              child: UserExpressions(
-                privacy: 'Public',
-                userProfile: user.user,
                 rootExpressions: false,
                 subExpressions: true,
                 communityCenterFeedback: false,
@@ -154,26 +139,13 @@ class JuntoDenState extends State<JuntoDen>
                       context,
                       FadeRoute(
                         child: HomePageContent(),
-                        name: "/",
                       ),
                     ) ??
                     false;
               },
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
-                body: JuntoFilterDrawer(
-                  leftDrawer: const FilterDrawerContent(
-                    ExpressionContextType.Collective,
-                  ),
-                  rightMenu: JuntoDrawer(),
-                  scaffold: Scaffold(
-                    floatingActionButton: BottomNav(),
-                    // DenActionButton(isVisible: _isVisible, user: user),
-                    floatingActionButtonLocation:
-                        FloatingActionButtonLocation.centerDocked,
-                    body: _buildBody(user.userProfile),
-                  ),
-                ),
+                body: _buildBody(user.userProfile),
               ),
             ),
           ),
@@ -198,29 +170,42 @@ class UserExpressProvider extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<DenBloc>(
-            create: (context) => DenBloc(
-                  Provider.of<UserRepo>(context, listen: false),
-                  Provider.of<UserDataProvider>(context, listen: false),
-                  Provider.of<ExpressionRepo>(context, listen: false),
-                )),
-        BlocProvider<ChannelFilteringBloc>(
-          create: (ctx) => ChannelFilteringBloc(
-            RepositoryProvider.of<SearchRepo>(ctx),
-            (value) => BlocProvider.of<DenBloc>(ctx).add(
-              LoadDen(
-                address,
-                {
-                  'rootExpressions': true,
-                  'subExpressions': false,
-                  'communityFeedback': false,
-                },
-                channels: value != null ? [value.name] : null,
-              ),
-            ),
+          create: (context) => DenBloc(
+            Provider.of<UserRepo>(context, listen: false),
+            Provider.of<UserDataProvider>(context, listen: false),
+            Provider.of<ExpressionRepo>(context, listen: false),
           ),
         ),
       ],
-      child: child,
+      child: BlocListener<ChannelFilteringBloc, ChannelFilteringState>(
+        listener: (context, state) {
+          final channels = state.selectedChannel != null
+              ? state.selectedChannel.map((e) => e.name).toList()
+              : null;
+          Map<String, dynamic> _param = {
+            'rootExpressions': true,
+            'subExpressions': false,
+            'communityFeedback': false,
+          };
+
+          channels.forEach(
+            (String channel) {
+              _param.putIfAbsent(
+                'channel${(channels.indexOf(channel) + 1).toString()}',
+                () => channel,
+              );
+            },
+          );
+          BlocProvider.of<DenBloc>(context).add(
+            LoadDen(
+              address,
+              _param,
+              channels: channels,
+            ),
+          );
+        },
+        child: child,
+      ),
     );
   }
 }
@@ -246,9 +231,7 @@ class DenActionButton extends StatelessWidget {
           child: child,
         );
       },
-      child: BottomNav(
-        source: Screen.den,
-      ),
+      child: BottomNav(),
     );
   }
 }

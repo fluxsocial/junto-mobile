@@ -1,22 +1,29 @@
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
 
 class EditPerspectiveAddMembers extends StatefulWidget {
-  const EditPerspectiveAddMembers(
-      {this.perspective, this.refreshPerspectiveMembers});
+  const EditPerspectiveAddMembers({
+    this.perspective,
+    this.refreshPerspectiveMembers,
+    this.perspectiveMembers,
+  });
 
   final PerspectiveModel perspective;
   final Function refreshPerspectiveMembers;
+  final List<UserProfile> perspectiveMembers;
 
   @override
   State<StatefulWidget> createState() {
@@ -29,13 +36,13 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
   final List<String> _perspectiveMembers = <String>[];
 
-  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
-      AsyncMemoizer<Map<String, dynamic>>();
-
-  Future<Map<String, dynamic>> getUserRelationships() async {
-    return _memoizer.runOnce(
-      () => Provider.of<UserRepo>(context, listen: false).userRelations(),
-    );
+  @override
+  void initState() {
+    super.initState();
+    context.bloc<RelationBloc>().add(
+          FetchRealtionship(
+              [RelationContext.following, RelationContext.connections], ''),
+        );
   }
 
   Future<void> addMembersToPerspective() async {
@@ -146,69 +153,131 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                 ),
               ];
             },
-            body: FutureBuilder<Map<String, dynamic>>(
-              future: getUserRelationships(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                if (snapshot.hasData) {
+            body: BlocBuilder<RelationBloc, RelationState>(
+              builder: (context, state) {
+                if (state is RelationLoadedState) {
+                  final memberList =
+                      widget.perspectiveMembers.map((e) => e.address).toList();
+
                   // get list of connections
                   final List<UserProfile> _connectionsMembers =
-                      snapshot.data['connections']['results'];
+                      state.connections;
+                  final _filteredConnectionsMembers = _connectionsMembers.where(
+                      (element) => !memberList.contains(element.address));
 
                   // get list of following
-                  final List<UserProfile> _followingMembers =
-                      snapshot.data['following']['results'];
+                  final List<UserProfile> _followingMembers = state.following;
+                  final _filteredFollowingMembers = _followingMembers.where(
+                      (element) => !memberList.contains(element.address));
                   return TabBarView(
                     children: <Widget>[
                       // subscriptions
-                      ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        children: _followingMembers
-                            .map(
-                              (dynamic connection) => MemberPreviewSelect(
-                                profile: connection,
-                                onSelect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.add(user.address);
-                                  });
-                                },
-                                onDeselect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.remove(user.address);
-                                  });
-                                },
-                                isSelected: _perspectiveMembers
-                                    .contains(connection.address),
-                              ),
-                            )
-                            .toList(),
-                      ),
+                      if (_filteredFollowingMembers.length > 0)
+                        NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification notification) {
+                            final metrics = notification.metrics;
+                            double scrollPercent =
+                                (metrics.pixels / metrics.maxScrollExtent) *
+                                    100;
+                            if (scrollPercent.roundToDouble() == 60.0 &&
+                                state.followingResultCount >
+                                    _followingMembers.length) {
+                              context
+                                  .bloc<RelationBloc>()
+                                  .add(FetchMoreRelationship(
+                                    RelationContext.following,
+                                    '',
+                                  ));
+                              return true;
+                            }
+                            return false;
+                          },
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            children: _filteredFollowingMembers
+                                .map(
+                                  (dynamic connection) => MemberPreviewSelect(
+                                    profile: connection,
+                                    onSelect: (UserProfile user) {
+                                      setState(() {
+                                        _perspectiveMembers.add(user.address);
+                                      });
+                                    },
+                                    onDeselect: (UserProfile user) {
+                                      setState(() {
+                                        _perspectiveMembers
+                                            .remove(user.address);
+                                      });
+                                    },
+                                    isSelected: _perspectiveMembers
+                                        .contains(connection.address),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        )
+                      else
+                        FeedPlaceholder(
+                          placeholderText: memberList.length > 0
+                              ? 'No more subscriptions to add'
+                              : 'No subscriptions yet!',
+                          image: 'assets/images/junto-mobile__bench.png',
+                        ),
                       // connections
-                      ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        children: _connectionsMembers
-                            .map(
-                              (dynamic connection) => MemberPreviewSelect(
-                                profile: connection,
-                                onSelect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.add(user.address);
-                                  });
-                                },
-                                onDeselect: (UserProfile user) {
-                                  setState(() {
-                                    _perspectiveMembers.remove(user.address);
-                                  });
-                                },
-                                isSelected: _perspectiveMembers
-                                    .contains(connection.address),
-                              ),
-                            )
-                            .toList(),
-                      ),
+                      if (_filteredConnectionsMembers.length > 0)
+                        NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification notification) {
+                            final metrics = notification.metrics;
+                            double scrollPercent =
+                                (metrics.pixels / metrics.maxScrollExtent) *
+                                    100;
+                            if (scrollPercent.roundToDouble() == 60.0 &&
+                                state.connctionResultCount >
+                                    _connectionsMembers.length) {
+                              context
+                                  .bloc<RelationBloc>()
+                                  .add(FetchMoreRelationship(
+                                    RelationContext.connections,
+                                    '',
+                                  ));
+                              return true;
+                            }
+                            return false;
+                          },
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            children: _filteredConnectionsMembers
+                                .map(
+                                  (dynamic connection) => MemberPreviewSelect(
+                                    profile: connection,
+                                    onSelect: (UserProfile user) {
+                                      setState(() {
+                                        _perspectiveMembers.add(user.address);
+                                      });
+                                    },
+                                    onDeselect: (UserProfile user) {
+                                      setState(() {
+                                        _perspectiveMembers
+                                            .remove(user.address);
+                                      });
+                                    },
+                                    isSelected: _perspectiveMembers
+                                        .contains(connection.address),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        )
+                      else
+                        FeedPlaceholder(
+                          placeholderText: memberList.length > 0
+                              ? 'No more connections to add'
+                              : 'No connections yet!',
+                          image: 'assets/images/junto-mobile__bench.png',
+                        ),
                     ],
                   );
-                } else if (snapshot.hasError) {
+                } else if (state is RelationErrorState) {
                   return TabBarView(
                     children: <Widget>[
                       Center(

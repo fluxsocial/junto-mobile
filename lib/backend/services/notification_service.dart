@@ -61,6 +61,19 @@ class NotificationServiceImpl implements NotificationService {
       });
       return;
     } catch (e) {
+      print(e);
+      return;
+    }
+  }
+
+  @override
+  Future<void> unRegisterDevice(final String fcmToken) async {
+    try {
+      await httpClient.postWithoutEncoding('/notifications/deregister', body: {
+        'device_token': fcmToken,
+      });
+      return;
+    } catch (e) {
       return;
     }
   }

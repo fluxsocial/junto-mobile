@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
@@ -23,6 +24,7 @@ class AudioReview extends StatefulWidget {
     this.titleController,
     this.captionController,
     this.captionFocus,
+    this.titleFocus,
     this.mentionKey,
   });
   final File audioPhotoBackground;
@@ -30,6 +32,7 @@ class AudioReview extends StatefulWidget {
   final TextEditingController titleController;
   final TextEditingController captionController;
   final FocusNode captionFocus;
+  final FocusNode titleFocus;
   final GlobalKey<FlutterMentionsState> mentionKey;
 
   @override
@@ -53,7 +56,10 @@ class _AudioReviewState extends State<AudioReview>
       final channel = trigger == '#';
 
       if (!channel) {
-        context.bloc<SearchBloc>().add(SearchingEvent(value, true));
+        context.bloc<SearchBloc>().add(SearchingEvent(
+              value,
+              QueryUserBy.BOTH,
+            ));
       } else {
         context.bloc<SearchBloc>().add(SearchingChannelEvent(value));
       }
@@ -213,6 +219,7 @@ class _AudioReviewState extends State<AudioReview>
         titleController: widget.titleController,
         captionController: widget.captionController,
         captionFocus: widget.captionFocus,
+        titleFocus: widget.titleFocus,
         toggleSearch: toggleSearch,
         completeMentionList: completeMentionList,
         completeChannelList: completeChannelList,
@@ -226,6 +233,7 @@ class _AudioReviewState extends State<AudioReview>
         titleController: widget.titleController,
         captionController: widget.captionController,
         audioPhotoBackground: widget.audioPhotoBackground,
+        titleFocus: widget.titleFocus,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
         completeMentionList: completeMentionList,
@@ -240,6 +248,7 @@ class _AudioReviewState extends State<AudioReview>
         titleController: widget.titleController,
         captionController: widget.captionController,
         audioGradientValues: widget.audioGradientValues,
+        titleFocus: widget.titleFocus,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
         completeMentionList: completeMentionList,
@@ -252,6 +261,7 @@ class _AudioReviewState extends State<AudioReview>
       return AudioReviewDefault(
         captionController: widget.captionController,
         titleController: widget.titleController,
+        titleFocus: widget.titleFocus,
         captionFocus: widget.captionFocus,
         toggleSearch: toggleSearch,
         completeMentionList: completeMentionList,
@@ -269,6 +279,7 @@ class AudioReviewDefault extends StatelessWidget {
     this.titleController,
     this.captionController,
     this.captionFocus,
+    this.titleFocus,
     this.toggleSearch,
     this.completeMentionList,
     this.mentionKey,
@@ -280,6 +291,7 @@ class AudioReviewDefault extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController captionController;
   final FocusNode captionFocus;
+  final FocusNode titleFocus;
   final Function(bool) toggleSearch;
   final List<Map<String, dynamic>> completeMentionList;
   final List<Map<String, dynamic>> completeChannelList;
@@ -294,6 +306,7 @@ class AudioReviewDefault extends StatelessWidget {
         AudioReviewBody(
           hasBackground: false,
           titleController: titleController,
+          titleFocus: titleFocus,
         ),
         AudioCaption(
           captionController: captionController,
@@ -315,6 +328,7 @@ class AudioReviewWithGradient extends StatelessWidget {
     this.titleController,
     this.captionController,
     this.captionFocus,
+    this.titleFocus,
     this.audioGradientValues,
     this.toggleSearch,
     this.completeMentionList,
@@ -327,6 +341,7 @@ class AudioReviewWithGradient extends StatelessWidget {
   final TextEditingController titleController;
   final TextEditingController captionController;
   final FocusNode captionFocus;
+  final FocusNode titleFocus;
   final List<String> audioGradientValues;
   final Function(bool) toggleSearch;
   final List<Map<String, dynamic>> completeMentionList;
@@ -354,6 +369,7 @@ class AudioReviewWithGradient extends StatelessWidget {
           child: AudioReviewBody(
             hasBackground: true,
             titleController: titleController,
+            titleFocus: titleFocus,
           ),
         ),
         AudioCaption(
@@ -376,6 +392,7 @@ class AudioReviewWithPhoto extends StatelessWidget {
     this.titleController,
     this.captionController,
     this.captionFocus,
+    this.titleFocus,
     this.audioPhotoBackground,
     this.toggleSearch,
     this.completeMentionList,
@@ -388,6 +405,8 @@ class AudioReviewWithPhoto extends StatelessWidget {
   final titleController;
   final TextEditingController captionController;
   final FocusNode captionFocus;
+  final FocusNode titleFocus;
+
   final File audioPhotoBackground;
   final Function(bool) toggleSearch;
   final List<Map<String, dynamic>> completeMentionList;
@@ -416,6 +435,7 @@ class AudioReviewWithPhoto extends StatelessWidget {
             child: AudioTitle(
               titleController: titleController,
               hasBackground: true,
+              titleFocus: titleFocus,
             ),
           ),
           Positioned(
@@ -451,9 +471,11 @@ class AudioReviewBody extends StatelessWidget {
   AudioReviewBody({
     this.titleController,
     this.hasBackground,
+    this.titleFocus,
   });
   final TextEditingController titleController;
   final bool hasBackground;
+  final FocusNode titleFocus;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -466,6 +488,7 @@ class AudioReviewBody extends StatelessWidget {
           AudioTitle(
             titleController: titleController,
             hasBackground: hasBackground,
+            titleFocus: titleFocus,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -484,10 +507,12 @@ class AudioTitle extends StatelessWidget {
     Key key,
     @required this.titleController,
     @required this.hasBackground,
+    @required this.titleFocus,
   }) : super(key: key);
 
   final TextEditingController titleController;
   final bool hasBackground;
+  final FocusNode titleFocus;
 
   @override
   Widget build(BuildContext context) {
@@ -499,6 +524,7 @@ class AudioTitle extends StatelessWidget {
       child: TextField(
         controller: titleController,
         autofocus: false,
+        focusNode: titleFocus,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(0),
           hintMaxLines: 25,

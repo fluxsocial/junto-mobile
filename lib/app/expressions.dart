@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'custom_icons.dart';
 
-enum ExpressionType { dynamic, shortform, photo, event, audio, link }
+enum ExpressionType { dynamic, shortform, photo, event, audio, link, none }
 
 extension ExpressionIcon on ExpressionType {
   IconData icon() {

@@ -46,7 +46,7 @@ class SignUpArrows extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 20),
-            if (currentIndex != 5)
+            if (currentIndex != 6)
               GestureDetector(
                 onTap: onTap,
                 child: Container(

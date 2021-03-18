@@ -21,9 +21,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Stream<SearchEvent> events,
     TransitionFunction<SearchEvent, SearchState> transitionFn,
   ) {
-    final nonDebounceStream = events.where((event) => event is! SearchingEvent);
+    final nonDebounceStream = events.where((event) => event is! SearchEvent);
     final debounceStream = events
-        .where((event) => event is SearchingEvent)
+        .where((event) => event is SearchEvent)
         .debounceTime(const Duration(milliseconds: 600));
     return super.transformEvents(
         MergeStream([nonDebounceStream, debounceStream]), transitionFn);
@@ -71,7 +71,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     yield LoadingSearchState();
     if (event.query != null && event.query.isNotEmpty) {
       try {
+        currentPos = 0;
         final result = await _getUsers(event.query, null, null, event.username);
+
+        lastTimeStamp = result.lastTimestamp;
 
         if (result.results.isNotEmpty) {
           yield LoadedSearchState(result.results);
@@ -89,29 +92,33 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Stream<SearchState> _mapFetchMoreEventToState(
       FetchMoreSearchResEvent incomingEvent) async* {
-    yield LoadingSearchState();
-    final event = incomingEvent as SearchingEvent;
-    if (event.query != null && event.query.isNotEmpty) {
+    final results = state as LoadedSearchState;
+    final event = incomingEvent;
+    if (event.query != null &&
+        event.query.isNotEmpty &&
+        results.results.length % 50 == 0) {
       try {
         currentPos += 50;
         final result = await _getUsers(
             event.query, currentPos, lastTimeStamp, event.username);
 
+        lastTimeStamp = result.lastTimestamp;
+
         if (result.results.isNotEmpty) {
-          yield LoadedSearchState(result.results);
-        } else {
-          yield EmptySearchState();
+          yield LoadedSearchState([...results.results, ...result.results]);
         }
       } catch (error, stack) {
         logger.logException(error, stack);
-        yield ErrorSearchState("Error searching");
       }
     }
-    yield ErrorSearchState("Please enter a search term");
   }
 
-  Future<QueryResults<UserProfile>> _getUsers(String query,
-      [int pos, String time, bool username = true]) async {
+  Future<QueryResults<UserProfile>> _getUsers(
+    String query, [
+    int pos,
+    String time,
+    QueryUserBy username = QueryUserBy.USERNAME,
+  ]) async {
     final result = await searchRepo.searchMembers(query,
         paginationPosition: pos, lastTimeStamp: time, username: username);
     lastTimeStamp = result.lastTimestamp;

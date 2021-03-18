@@ -2,7 +2,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/backend.dart'; 
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_name.dart';

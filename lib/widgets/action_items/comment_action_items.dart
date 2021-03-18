@@ -15,11 +15,13 @@ class CommentActionItems extends StatelessWidget {
     this.comment,
     this.userAddress,
     this.source,
+    this.loadPreviousExpressionComments,
   });
 
   final Comment comment;
   final String userAddress;
   final String source;
+  final VoidCallback loadPreviousExpressionComments;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +88,8 @@ class CommentActionItems extends StatelessWidget {
             try {
               await Provider.of<ExpressionRepo>(context, listen: false)
                   .deleteExpression(comment.address);
+
+              loadPreviousExpressionComments();
 
               JuntoLoader.hide();
               Navigator.pop(context);

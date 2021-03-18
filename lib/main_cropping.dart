@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(CroppingApp());
 
@@ -31,29 +34,44 @@ class _HomeState extends State<Home> {
 
   Future<void> _onPickPressed() async {
     final imagePicker = ImagePicker();
-    final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
-    final File image = File(pickedImage.path);
-    if (image == null) {
-      setState(() => imageFile = null);
-      return;
+    final permission =
+        Platform.isAndroid ? Permission.storage : Permission.photos;
+    if (await permission.request().isGranted) {
+      final pickedImage =
+          await imagePicker.getImage(source: ImageSource.gallery);
+      final File image = File(pickedImage.path);
+      if (image == null) {
+        setState(() => imageFile = null);
+        return;
+      }
+      final File cropped = await ImageCroppingDialog.show(context, image,
+          aspectRatios: <String>[
+            '1:1',
+            '2:3',
+            '3:2',
+            '3:4',
+            '4:3',
+            '4:5',
+            '5:4',
+            '9:16',
+            '16:9'
+          ]);
+      if (cropped == null) {
+        setState(() => imageFile = null);
+        return;
+      }
+      setState(() => imageFile = cropped);
+    } else {
+      showDialog(
+        context: context,
+        child: SettingsPopup(
+          buildContext: context,
+          // TODO: @Eric - Need to update the text
+          text: 'Access not granted to access gallery',
+          onTap: AppSettings.openAppSettings,
+        ),
+      );
     }
-    final File cropped = await ImageCroppingDialog.show(context, image,
-        aspectRatios: <String>[
-          '1:1',
-          '2:3',
-          '3:2',
-          '3:4',
-          '4:3',
-          '4:5',
-          '5:4',
-          '9:16',
-          '16:9'
-        ]);
-    if (cropped == null) {
-      setState(() => imageFile = null);
-      return;
-    }
-    setState(() => imageFile = cropped);
   }
 
   @override

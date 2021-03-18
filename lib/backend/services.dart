@@ -10,11 +10,13 @@ import 'package:junto_beta_mobile/models/notification_query.dart';
 part 'services_auth.dart';
 part 'services_user.dart';
 
+enum QueryUserBy { USERNAME, FULLNAME, BOTH }
+
 abstract class SearchService {
   /// Returns a [QueryResults] contains a list of [UserProfile] matching the [query]
   Future<QueryResults<UserProfile>> searchMembers(
     String query, {
-    bool username = false,
+    QueryUserBy username = QueryUserBy.FULLNAME,
     int paginationPosition,
     String lastTimeStamp,
   });
@@ -165,6 +167,8 @@ abstract class NotificationService {
   Future<bool> requestPermissions();
 
   Future<void> registerDevice(final String fcmToken);
+
+  Future<void> unRegisterDevice(final String fcmToken);
 
   Future<void> manageNotifications(NotificationPrefsModel options);
 

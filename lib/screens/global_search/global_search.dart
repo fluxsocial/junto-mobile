@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
@@ -32,6 +33,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
   TextEditingController _textEditingController;
 
   String get query => _textEditingController.value.text;
+  String searchType = 'members';
 
   @override
   void initState() {
@@ -48,7 +50,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
   void onTextChange(String query, BuildContext context) {
     if (mounted) {
       context.bloc<SearchBloc>().add(
-            SearchingEvent(query, _searchByUsername.value),
+            SearchingEvent(query, QueryUserBy.BOTH),
           );
     }
   }
@@ -58,25 +60,29 @@ class _GlobalSearchState extends State<GlobalSearch> {
     return BlocProvider(
       create: (BuildContext context) => SearchBloc(
         Provider.of<SearchRepo>(context, listen: false),
-      )..add(SearchingEvent("", _searchByUsername.value)),
+      )..add(SearchingEvent(
+          "",
+          QueryUserBy.BOTH,
+        )),
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: <Widget>[Container()],
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(.75),
-            child: Container(
-              height: .75,
-              color: Theme.of(context).dividerColor,
-            ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(
+            50,
           ),
-          brightness: Theme.of(context).brightness,
-          elevation: 0,
-          titleSpacing: 0.0,
-          title: Container(
+          child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
+            height: MediaQuery.of(context).size.height * .1,
+            alignment: Alignment.bottomCenter,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
+              ),
+            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
@@ -129,19 +135,61 @@ class _GlobalSearchState extends State<GlobalSearch> {
                     );
                   }),
                 ),
+                // TO DO: Fayeed - add support for searching by specific group
+                // Container(
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         padding: const EdgeInsets.symmetric(
+                //           horizontal: 10,
+                //           vertical: 5,
+                //         ),
+                //         decoration: BoxDecoration(
+                //           color: Theme.of(context).colorScheme.primary,
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //         child: Icon(
+                //           Icons.people,
+                //           color: Colors.white,
+                //           size: 20,
+                //         ),
+                //       ),
+                //       Container(
+                //         padding: const EdgeInsets.symmetric(
+                //           horizontal: 10,
+                //           vertical: 5,
+                //         ),
+                //         decoration: BoxDecoration(
+                //           color: Theme.of(context).dividerColor,
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //         child: Icon(
+                //           CustomIcons.newcollective,
+                //           size: 20,
+                //           color: Theme.of(context).primaryColor,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
         ),
-        body: _SearchBody(username: _searchByUsername),
+        body: _SearchBody(username: _searchByUsername, query: query),
       ),
     );
   }
 }
 
 class _SearchBody extends StatefulWidget {
-  const _SearchBody({Key key, this.username}) : super(key: key);
+  const _SearchBody({
+    Key key,
+    this.username,
+    this.query,
+  }) : super(key: key);
   final ValueNotifier<bool> username;
+  final String query;
 
   @override
   __SearchBodyState createState() => __SearchBodyState();
@@ -173,7 +221,9 @@ class __SearchBodyState extends State<_SearchBody> {
       double percent = (pixels / maxExtent) * 100;
       if (percent.roundToDouble() == 60 &&
           direction == ScrollDirection.reverse) {
-        context.bloc<SearchBloc>().add(FetchMoreSearchResEvent());
+        context
+            .bloc<SearchBloc>()
+            .add(FetchMoreSearchResEvent(widget.query, QueryUserBy.BOTH));
       }
     }
   }
@@ -181,90 +231,45 @@ class __SearchBodyState extends State<_SearchBody> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
-                  ),
-                ),
-              ),
-              child: ValueListenableBuilder<bool>(
-                  valueListenable: widget.username,
-                  builder: (context, value, _) {
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Transform.scale(
-                          scale: .8,
-                          child: Switch.adaptive(
-                            activeColor: Theme.of(context).primaryColor,
-                            value: value,
-                            onChanged: (bool value) => setState(
-                              () => widget.username.value = value,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          value ? 'by username' : 'by full name',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColorLight,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
+      child: Column(
+        children: [
+          Expanded(
+            child: BlocBuilder<SearchBloc, SearchState>(
+              builder: (BuildContext context, SearchState state) {
+                if (state is LoadingSearchState) {
+                  return JuntoProgressIndicator();
+                }
+                if (state is LoadedSearchState) {
+                  return ListView.builder(
+                    controller: _controller,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 0,
+                      horizontal: 15,
+                    ),
+                    itemCount: state.results.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final UserProfile data = state.results[index];
+                      return MemberPreview(profile: data);
+                    },
+                  );
+                }
+                if (state is EmptySearchState || state is InitialSearchState) {
+                  return SizedBox();
+                }
+                if (state is ErrorSearchState) {
+                  return Center(
+                    child: Transform.translate(
+                      offset: const Offset(0.0, -50),
+                      child: Text('Hmm, something is up...'),
+                    ),
+                  );
+                }
+                return Container();
+              },
             ),
-            Expanded(
-              child: BlocBuilder<SearchBloc, SearchState>(
-                builder: (BuildContext context, SearchState state) {
-                  if (state is LoadingSearchState) {
-                    return JuntoProgressIndicator();
-                  }
-                  if (state is LoadedSearchState) {
-                    return ListView.builder(
-                      controller: _controller,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 15,
-                      ),
-                      itemCount: state.results.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final UserProfile data = state.results[index];
-                        return MemberPreview(profile: data);
-                      },
-                    );
-                  }
-                  if (state is EmptySearchState ||
-                      state is InitialSearchState) {
-                    return SizedBox();
-                  }
-                  if (state is ErrorSearchState) {
-                    return Center(
-                      child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child: Text('Hmm, something is up...'),
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

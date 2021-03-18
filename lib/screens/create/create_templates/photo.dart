@@ -1,34 +1,36 @@
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_comment_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/bloc.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
-  const CreatePhoto({Key key, this.address, this.expressionContext})
-      : super(key: key);
+  const CreatePhoto({
+    Key key,
+    this.toggleExpressionSheetVisibility,
+    @required this.captionFocus,
+  }) : super(key: key);
 
-  final ExpressionContext expressionContext;
-  final String address;
+  final Function toggleExpressionSheetVisibility;
+  final FocusNode captionFocus;
 
   @override
   State<StatefulWidget> createState() {
@@ -37,12 +39,11 @@ class CreatePhoto extends StatefulWidget {
 }
 
 // State for CreatePhoto class
-class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
+class CreatePhotoState extends State<CreatePhoto>
+    with CreateExpressionHelpers, AutomaticKeepAliveClientMixin {
   File preCroppedFile;
   File imageFile;
   ImageSource imageSource;
-  FocusNode _captionFocus;
-  bool _showBottomNav = true;
   GlobalKey<FlutterMentionsState> mentionKey =
       GlobalKey<FlutterMentionsState>();
   bool _showList = false;
@@ -59,25 +60,51 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       final imagePicker = ImagePicker();
       File image;
       if (source == ImageSource.gallery) {
-        final pickedImage = await imagePicker.getImage(
-          source: ImageSource.gallery,
-          imageQuality: 70,
-        );
-        image = File(pickedImage.path);
+        final permission =
+            Platform.isAndroid ? Permission.storage : Permission.photos;
+        if (await permission.request().isGranted) {
+          final pickedImage = await imagePicker.getImage(
+            source: ImageSource.gallery,
+            imageQuality: 70,
+          );
+          image = File(pickedImage.path);
 
-        setState(() {
-          imageSource = ImageSource.gallery;
-        });
+          setState(() {
+            imageSource = ImageSource.gallery;
+          });
+        } else {
+          showDialog(
+            context: context,
+            child: SettingsPopup(
+              buildContext: context,
+              // TODO: @Eric - Need to update the text
+              text: 'Access not granted to access gallery',
+              onTap: AppSettings.openAppSettings,
+            ),
+          );
+        }
       } else if (source == ImageSource.camera) {
-        final pickedImage = await imagePicker.getImage(
-          source: ImageSource.camera,
-          imageQuality: 70,
-        );
-        image = File(pickedImage.path);
+        if (await Permission.camera.request().isGranted) {
+          final pickedImage = await imagePicker.getImage(
+            source: ImageSource.camera,
+            imageQuality: 70,
+          );
+          image = File(pickedImage.path);
 
-        setState(() {
-          imageSource = ImageSource.camera;
-        });
+          setState(() {
+            imageSource = ImageSource.camera;
+          });
+        } else {
+          showDialog(
+            context: context,
+            child: SettingsPopup(
+              buildContext: context,
+              // TODO: @Eric - Need to update the text
+              text: 'Access not granted to access camera',
+              onTap: AppSettings.openAppSettings,
+            ),
+          );
+        }
       }
 
       if (image == null) {
@@ -116,7 +143,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       setState(() {
         imageFile = cropped;
       });
-      _toggleBottomNav(false);
+      widget.toggleExpressionSheetVisibility(visibility: false);
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -140,95 +167,35 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       return;
     }
     setState(() => imageFile = cropped);
-    _toggleBottomNav(false);
   }
 
   /// Creates a [PhotoFormExpression] from the given data entered
   /// by the user.
   Map<String, dynamic> createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
-    final mentions = getMentionUserId(markupText);
-    final channels = getChannelsId(markupText);
 
     return <String, dynamic>{
       'image': imageFile,
       'caption': markupText.trim(),
+    };
+  }
+
+  Map<String, List<String>> getMentionsAndChannels() {
+    final markupText = mentionKey.currentState.controller.markupText;
+    final mentions = getMentionUserId(markupText);
+    final channels = getChannelsId(markupText);
+    return <String, List<String>>{
       'mentions': mentions,
       'channels': channels,
     };
   }
 
-  bool _expressionHasData() {
+  bool expressionHasData() {
     if (imageFile != null) {
       return true;
     } else {
       return false;
     }
-  }
-
-  void _onNext() {
-    if (_expressionHasData() == true) {
-      final Map<String, dynamic> expression = createExpression();
-
-      if (expression['channels'].length > 5) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => SingleActionDialog(
-            context: context,
-            dialogText:
-                'You can only add five channels. Please reduce the number of channels you have before continuing.',
-          ),
-        );
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute<dynamic>(
-            builder: (BuildContext context) {
-              if (widget.expressionContext == ExpressionContext.Comment) {
-                return CreateCommentActions(
-                  expression: expression,
-                  address: widget.address,
-                  expressionType: ExpressionType.photo,
-                );
-              } else {
-                return CreateActions(
-                  expressionType: ExpressionType.photo,
-                  address: widget.address,
-                  expressionContext: widget.expressionContext,
-                  expression: expression,
-                  mentions: expression['mentions'],
-                  channels: expression['channels'],
-                );
-              }
-            },
-          ),
-        );
-      }
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Please add a photo.',
-        ),
-      );
-      return;
-    }
-  }
-
-  void _toggleBottomNav(bool value) {
-    setState(() {
-      _showBottomNav = value;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void toggleSearch(bool value) {
@@ -241,46 +208,159 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (BuildContext context) {
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
       },
-      child: CreateExpressionScaffold(
-        expressionType: ExpressionType.photo,
-        onNext: _onNext,
-        showBottomNav: _showBottomNav,
-        expressionHasData: _expressionHasData,
-        child: Expanded(
-          child: Container(
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  Expanded(
-                    child: imageFile == null
-                        ? Container(
-                            color: Colors.transparent,
-                            width: MediaQuery.of(context).size.width,
-                            child: GestureDetector(
-                              onTap: () {
-                                _onPickPressed(source: ImageSource.gallery);
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(
-                                    CustomIcons.add,
-                                    size: 75,
-                                  ),
-                                ],
+      child: Expanded(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: imageFile == null
+                    ? Container(
+                        color: Colors.transparent,
+                        width: MediaQuery.of(context).size.width,
+                        child: GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
                               ),
-                            ),
-                          )
-                        : _captionPhoto(),
-                  ),
-                  if (imageFile == null) _uploadPhotoOptions()
-                ],
+                              builder: (BuildContext context) => Container(
+                                color: Colors.transparent,
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .36,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                height: 5,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .1,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .dividerColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 10),
+                                          ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            onTap: () async {
+                                              Navigator.pop(context);
+                                              _onPickPressed(
+                                                source: ImageSource.gallery,
+                                              );
+                                            },
+                                            title: Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.photo_library,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  size: 17,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  'Library',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5
+                                                      .copyWith(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            onTap: () async {
+                                              Navigator.pop(context);
+                                              _onPickPressed(
+                                                source: ImageSource.camera,
+                                              );
+                                            },
+                                            title: Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.photo_library,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  size: 17,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  'Camera',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5
+                                                      .copyWith(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                CustomIcons.add,
+                                size: 75,
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : _captionPhoto(),
               ),
-            ),
+              // if (imageFile == null) _uploadPhotoOptions()
+            ],
           ),
         ),
       ),
@@ -289,7 +369,6 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
 
   Widget _uploadPhotoOptions() {
     return Container(
-      margin: const EdgeInsets.only(bottom: 100),
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
@@ -404,15 +483,16 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                           ),
                           child: FlutterMentions(
                             key: mentionKey,
-                            focusNode: _captionFocus,
+                            focusNode: widget.captionFocus,
                             onSearchChanged: (String trigger, String value) {
                               if (value.isNotEmpty && _showList) {
                                 final channel = trigger == '#';
 
                                 if (!channel) {
-                                  context
-                                      .bloc<SearchBloc>()
-                                      .add(SearchingEvent(value, true));
+                                  context.bloc<SearchBloc>().add(SearchingEvent(
+                                        value,
+                                        QueryUserBy.BOTH,
+                                      ));
                                 } else {
                                   context
                                       .bloc<SearchBloc>()
@@ -457,11 +537,21 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
                       children: <Widget>[
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              imageFile = null;
-                            });
-                            _onPickPressed(source: imageSource);
-                            _toggleBottomNav(true);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => ConfirmDialog(
+                                confirmationText:
+                                    'Are you sure you want to leave this screen? Your expression will not be saved.',
+                                confirm: () {
+                                  setState(() {
+                                    imageFile = null;
+                                  });
+                                  widget.toggleExpressionSheetVisibility(
+                                      visibility: true);
+                                  _onPickPressed(source: imageSource);
+                                },
+                              ),
+                            );
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * .5,
@@ -544,4 +634,7 @@ class CreatePhotoState extends State<CreatePhoto> with CreateExpressionHelpers {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -20,6 +20,8 @@ class CommentPreview extends StatelessWidget with MemberValidation {
     @required this.comment,
     @required this.parent,
     @required this.userAddress,
+    @required this.loadPreviousExpressionComments,
+    this.stopPlayback,
   }) : super(key: key);
 
   /// comment
@@ -31,11 +33,15 @@ class CommentPreview extends StatelessWidget with MemberValidation {
   // address of user
   final String userAddress;
 
+  final VoidCallback loadPreviousExpressionComments;
+  final VoidCallback stopPlayback;
+
   @override
   Widget build(BuildContext context) {
     final String replyText = comment.comments == 1 ? 'reply' : 'replies';
     return GestureDetector(
       onTap: () {
+        stopPlayback();
         Navigator.push(
           context,
           CupertinoPageRoute<dynamic>(
@@ -45,7 +51,9 @@ class CommentPreview extends StatelessWidget with MemberValidation {
               parent: parent,
             ),
           ),
-        );
+        ).then((value) {
+          loadPreviousExpressionComments();
+        });
       },
       child: Container(
         padding: const EdgeInsets.only(bottom: 20),
@@ -93,6 +101,8 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                             comment: comment,
                             userAddress: userAddress,
                             source: 'preview',
+                            loadPreviousExpressionComments:
+                                loadPreviousExpressionComments,
                           ),
                         ),
                       );

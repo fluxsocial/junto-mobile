@@ -13,12 +13,10 @@ class BottomNav extends StatelessWidget {
   const BottomNav({
     this.address,
     this.expressionContext = ExpressionContext.Collective,
-    this.source,
   });
 
   final String address;
   final ExpressionContext expressionContext;
-  final Screen source;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,6 @@ class BottomNav extends StatelessWidget {
                   context,
                   FadeRoute(
                     child: HomePageContent(),
-                    name: "/",
                   ),
                 );
               },

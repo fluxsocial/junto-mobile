@@ -44,7 +44,6 @@ class _JuntoMemberState extends State<JuntoMember>
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> _tabs = [
     'Collective',
-    'Feedback',
   ];
   UserData _memberProfile;
   String _userAddress;
@@ -72,12 +71,20 @@ class _JuntoMemberState extends State<JuntoMember>
       privateDen: null,
       publicDen: null,
     );
+    print('junto member address is ' + widget.profile.address);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    getUserInformation();
+    if (isConnected == null &&
+        isFollowed == null &&
+        isFollowing == null &&
+        hasPendingConnection == null &&
+        hasPendingPackRequest == null &&
+        isPackMember == null) {
+      getUserInformation();
+    }
   }
 
   Future<void> getUserInformation() async {
@@ -198,16 +205,6 @@ class _JuntoMemberState extends State<JuntoMember>
                             rootExpressions: true,
                             subExpressions: false,
                             communityCenterFeedback: false,
-                          ),
-                        ),
-                        UserExpressProvider(
-                          address: widget.profile.address,
-                          child: UserExpressions(
-                            privacy: 'Public',
-                            userProfile: widget.profile,
-                            rootExpressions: true,
-                            subExpressions: false,
-                            communityCenterFeedback: true,
                           ),
                         ),
                       ],

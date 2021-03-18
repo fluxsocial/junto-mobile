@@ -1,5 +1,7 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.dart';
+import 'package:junto_beta_mobile/widgets/settings_popup.dart';
 import 'package:provider/provider.dart';
 
 class AudioButton extends StatelessWidget {
@@ -42,7 +44,17 @@ class AudioButtonStack extends StatelessWidget {
               if (audio.isRecording) {
                 await audio.stopRecording();
               } else {
-                await audio.startRecording();
+                await audio.startRecording(() {
+                  showDialog(
+                    context: context,
+                    child: SettingsPopup(
+                      buildContext: context,
+                      // TODO: @Eric - Need to update the text
+                      text: 'Access not granted to access recorder',
+                      onTap: AppSettings.openSoundSettings,
+                    ),
+                  );
+                });
               }
             },
             child: child,

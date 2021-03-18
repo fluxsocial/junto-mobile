@@ -17,7 +17,7 @@ class _$CollectiveStateTearOff {
   }
 
   CollectivePopulated populated(List<ExpressionResponse> results,
-      [bool loadingMore, String name = 'JUNTO', bool availableMore]) {
+      [bool loadingMore, String name = 'Collective', bool availableMore]) {
     return CollectivePopulated(
       results,
       loadingMore,
@@ -231,7 +231,7 @@ class _$CollectivePopulatedCopyWithImpl<$Res>
 
 class _$CollectivePopulated implements CollectivePopulated {
   _$CollectivePopulated(this.results,
-      [this.loadingMore, this.name = 'JUNTO', this.availableMore])
+      [this.loadingMore, this.name = 'Collective', this.availableMore])
       : assert(results != null),
         assert(name != null);
 
@@ -239,7 +239,7 @@ class _$CollectivePopulated implements CollectivePopulated {
   final List<ExpressionResponse> results;
   @override
   final bool loadingMore;
-  @JsonKey(defaultValue: 'JUNTO')
+  @JsonKey(defaultValue: 'Collective')
   @override
   final String name;
   @override

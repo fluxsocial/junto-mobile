@@ -15,6 +15,16 @@ class PerspectivesList extends StatelessWidget {
   final Function collectiveViewNav;
   @override
   Widget build(BuildContext context) {
+    final juntoPerspective = PerspectiveModel(
+      address: null,
+      name: 'Collective',
+      about: null,
+      creator: null,
+      createdAt: null,
+      isDefault: true,
+      userCount: null,
+      users: null,
+    );
     return BlocBuilder<PerspectivesBloc, PerspectivesState>(
       builder: (context, state) {
         if (state is PerspectivesError) {
@@ -29,21 +39,34 @@ class PerspectivesList extends StatelessWidget {
           return Center(child: JuntoProgressIndicator());
         }
         if (state is PerspectivesFetched) {
-          return Column(
+          print(state.perspectives);
+          return ListView(
+            shrinkWrap: true,
             children: <Widget>[
+              PerspectiveItem(
+                perspective: juntoPerspective,
+                onTap: () {
+                  onPerspectivesChanged(
+                    juntoPerspective,
+                    context,
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+
               // display Subscriptions perspective first
               ListView(
                 padding: const EdgeInsets.all(0),
                 shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
+                physics: ClampingScrollPhysics(),
                 children:
                     state.perspectives.map((PerspectiveModel perspective) {
                   if (perspective.isDefault == true) {
                     return PerspectiveItem(
                       perspective: perspective,
                       onTap: () {
-                        collectiveViewNav();
                         onPerspectivesChanged(perspective, context);
+                        Navigator.pop(context);
                       },
                     );
                   } else {
@@ -64,8 +87,12 @@ class PerspectivesList extends StatelessWidget {
                         child: PerspectiveItem(
                           perspective: perspective,
                           onTap: () {
-                            collectiveViewNav();
+                            print('perspective address is' +
+                                'perspective.address');
+
                             onPerspectivesChanged(perspective, context);
+
+                            Navigator.pop(context);
                           },
                         ),
                       );
@@ -78,6 +105,7 @@ class PerspectivesList extends StatelessWidget {
             ],
           );
         }
+        print('hello');
         return Container();
       },
     );

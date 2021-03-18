@@ -8,7 +8,10 @@ import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
+import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
+import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
 
 class BlocProviders extends StatelessWidget {
   final Widget child;
@@ -30,6 +33,12 @@ class BlocProviders extends StatelessWidget {
             ctx.repository<UserDataProvider>(),
             ctx.repository<UserRepo>(),
             ctx.repository<OnBoardingRepo>(),
+            ctx.repository<NotificationRepo>(),
+          ),
+        ),
+        BlocProvider<NotificationSettingBloc>(
+          create: (context) => NotificationSettingBloc(
+            context.repository<NotificationRepo>(),
           ),
         ),
         BlocProvider<PerspectivesBloc>(
@@ -45,16 +54,32 @@ class BlocProviders extends StatelessWidget {
         BlocProvider<AppBloc>(
           create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context)),
         ),
+        BlocProvider<RelationBloc>(
+          create: (ctx) => RelationBloc(
+              ctx.repository<UserRepo>(), ctx.repository<UserDataProvider>()),
+        ),
+        BlocProvider<CircleBloc>(
+          create: (ctx) => CircleBloc(
+            RepositoryProvider.of<GroupRepo>(context),
+            RepositoryProvider.of<UserRepo>(context),
+            RepositoryProvider.of<UserDataProvider>(context),
+            RepositoryProvider.of<NotificationRepo>(context),
+          ),
+        ),
         BlocProvider<ChannelFilteringBloc>(
           create: (ctx) => ChannelFilteringBloc(
             RepositoryProvider.of<SearchRepo>(ctx),
-            (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
-              FetchCollective(
-                ExpressionQueryParams(
-                  channels: value != null ? [value.name] : null,
+            (value) {
+              BlocProvider.of<CollectiveBloc>(ctx).add(
+                FetchCollective(
+                  ExpressionQueryParams(
+                    channels: value != null
+                        ? value.map((e) => e.name).toList()
+                        : null,
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
       ],

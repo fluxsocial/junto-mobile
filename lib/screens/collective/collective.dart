@@ -3,13 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
-import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -79,45 +74,28 @@ class JuntoCollectiveState extends State<JuntoCollective>
   Widget build(BuildContext context) {
     return FeatureDiscovery(
       child: Scaffold(
+        key: _juntoCollectiveKey,
         resizeToAvoidBottomInset: false,
-        body: JuntoFilterDrawer(
-          leftDrawer: _currentIndex == 1
-              ? FilterDrawerContent(ExpressionContextType.Collective)
-              : null,
-          rightMenu: JuntoDrawer(),
-          swipeLeftDrawer: false,
-          scaffold: NotificationListener<ScrollUpdateNotification>(
-            onNotification: (value) => hideOrShowFab(value, _isFabVisible),
-            child: Scaffold(
-              key: _juntoCollectiveKey,
-              body: PageView(
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: (int index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                  Provider.of<AppRepo>(context, listen: false)
-                      .setCollectivePageIndex(index);
-                },
-                controller: _pageController,
-                children: <Widget>[
-                  JuntoPerspectives(
-                    collectiveViewNav: _collectiveViewNav,
-                  ),
-                  Scaffold(
-                    floatingActionButton: CollectiveActionButton(
-                      isVisible: _isFabVisible,
-                    ),
-                    floatingActionButtonLocation:
-                        FloatingActionButtonLocation.centerDocked,
-                    body: ExpressionFeed(
-                      collectiveViewNav: _collectiveViewNav,
-                    ),
-                  ),
-                ],
+        body: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          onPageChanged: (int index) {
+            setState(() {
+              _currentIndex = index;
+            });
+            Provider.of<AppRepo>(context, listen: false)
+                .setCollectivePageIndex(index);
+          },
+          controller: _pageController,
+          children: <Widget>[
+            JuntoPerspectives(
+              collectiveViewNav: _collectiveViewNav,
+            ),
+            Scaffold(
+              body: ExpressionFeed(
+                collectiveViewNav: _collectiveViewNav,
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

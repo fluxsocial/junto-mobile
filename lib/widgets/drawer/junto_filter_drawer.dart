@@ -45,7 +45,7 @@ class JuntoFilterDrawer extends StatefulWidget {
     this.borderRadius = 0,
     this.onTapClose = false,
     this.swipe = true,
-    this.swipeLeftDrawer = true,
+    this.swipeLeftDrawer = false,
     this.duration,
     this.animationType = InnerDrawerAnimation.static,
     this.innerDrawerCallback,

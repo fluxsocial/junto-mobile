@@ -15,7 +15,7 @@ class PacksActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
-      valueListenable: _isVisible,
+      valueListenable: _isVisible, 
       builder: (BuildContext context, bool visible, Widget child) {
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 300),
@@ -25,7 +25,6 @@ class PacksActionButtons extends StatelessWidget {
       },
       child: BottomNav(
         expressionContext: ExpressionContext.Group,
-        source: Screen.packs,
       ),
     );
   }

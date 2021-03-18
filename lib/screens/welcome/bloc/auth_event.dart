@@ -7,12 +7,19 @@ import 'package:meta/meta.dart';
 abstract class AuthEvent {}
 
 class SignUpEvent extends AuthEvent {
-  SignUpEvent(this.details, this.profilePicture, this.username, this.password);
+  SignUpEvent({
+    this.details,
+    this.profilePicture,
+    this.username,
+    this.password,
+    this.birthday,
+  });
 
   final UserRegistrationDetails details;
   final File profilePicture;
   final String username;
   final String password;
+  final String birthday;
 }
 
 class AcceptAgreements extends AuthEvent {}
@@ -29,6 +36,10 @@ class LoginEvent extends AuthEvent {
 /// re-opening, etc..
 class LoggedInEvent extends AuthEvent {}
 
-class LogoutEvent extends AuthEvent {}
+class LogoutEvent extends AuthEvent {
+  final bool manualLogout;
+
+  LogoutEvent({this.manualLogout = false});
+}
 
 class RefreshUser extends AuthEvent {}

@@ -8,7 +8,7 @@ class NotificationSignal extends StatelessWidget {
   const NotificationSignal({
     this.top,
     this.right,
-    this.onGradientBackground = false,
+    this.onGradientBackground,
   });
 
   final double top;

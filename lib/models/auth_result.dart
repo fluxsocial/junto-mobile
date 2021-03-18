@@ -106,12 +106,14 @@ class UserRegistrationDetails {
     @required this.backgroundPhoto,
     @required this.gender,
     @required this.website,
+    @required this.birthday,
   });
 
   factory UserRegistrationDetails.initial(
     String email,
     String username,
     String name,
+    String birthday,
   ) {
     return UserRegistrationDetails(
       username: username,
@@ -123,6 +125,7 @@ class UserRegistrationDetails {
       bio: '',
       backgroundPhoto: '',
       profileImage: [],
+      birthday: birthday,
     );
   }
 
@@ -135,6 +138,7 @@ class UserRegistrationDetails {
   final String backgroundPhoto;
   final List<String> gender;
   final List<String> website;
+  final String birthday;
 
   bool get isComplete => username != null && name != null;
 
@@ -149,6 +153,7 @@ class UserRegistrationDetails {
       'background_photo': backgroundPhoto,
       'gender': gender,
       'website': website,
+      'birthday': birthday,
     };
   }
 }

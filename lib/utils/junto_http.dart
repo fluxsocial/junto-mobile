@@ -158,6 +158,8 @@ class HeaderInterceptors extends Interceptor {
           .putIfAbsent("content-type", () => 'application/json; charset=utf-8');
       final key = await _getAuthKey();
       options.headers.putIfAbsent("Authorization", () => key);
+      // TODO: @fayeed - add brotli compression back 'br, gzip'
+      options.headers.putIfAbsent('Accept-Encoding', () => 'gzip');
     }
     return SynchronousFuture(options);
   }
@@ -179,10 +181,10 @@ class LoggerInterceptor extends Interceptor {
   Future onError(DioError err) {
     if (kDebugMode) {
       final response = err.response;
-      print('Endpoint: ${response.request.baseUrl}${response.request.path} '
-          'Query Params: ${response.request.queryParameters}'
-          ' Body: ${response.request.data}'
-          ' Status Code: ${response.statusCode}');
+      print('Endpoint: ${response?.request?.baseUrl}${response?.request?.path} '
+          'Query Params: ${response?.request?.queryParameters}'
+          ' Body: ${response?.request?.data}'
+          ' Status Code: ${response?.statusCode}');
     }
     return super.onError(err);
   }

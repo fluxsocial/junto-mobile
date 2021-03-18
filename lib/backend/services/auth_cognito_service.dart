@@ -198,6 +198,7 @@ class CognitoClient extends AuthenticationService {
       }
     } on PlatformException catch (e, s) {
       logger.logException(e, s);
+
       if (e.details != null && e.details is String) {
         final details = e.details as String;
         if (details.contains('UsernameExistsException') ||

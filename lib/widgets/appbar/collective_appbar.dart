@@ -2,18 +2,21 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/about_perspective.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
+import 'global_search_icon.dart';
+import 'lists_drawer.dart';
 import 'notifications_lunar_icon.dart';
 
 typedef SwitchColumnView = Future<void> Function(ExpressionFeedLayout layout);
@@ -51,7 +54,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               Expanded(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -69,7 +71,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         onTap: collectiveViewNav,
                         child: Container(
                           alignment: Alignment.bottomLeft,
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 10, bottom: 10),
                           color: Colors.transparent,
                           height: 38,
                           width: 38,
@@ -87,7 +89,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       Expanded(
                         child: Container(
                           color: Colors.transparent,
-                          padding: const EdgeInsets.only(left: 38),
+                          padding: const EdgeInsets.only(left: 45, bottom: 5),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -100,8 +102,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
+                                      isScrollControlled: true,
                                       builder: (BuildContext context) =>
-                                          AboutPerspective(),
+                                          ListsDrawer(),
                                     );
                                   },
                                   child: Container(
@@ -109,11 +112,29 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 10,
                                     ),
-                                    child: Text(
-                                      appbarTitle ?? 'JUNTO',
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                      textAlign: TextAlign.center,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          'c/junto',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          context
+                                              .bloc<CollectiveBloc>()
+                                              .currentPerspective
+                                              .name,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -122,21 +143,15 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                           ),
                         ),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            color: Colors.transparent,
-                            alignment: Alignment.bottomRight,
-                            width: 38,
-                            child: NotificationsLunarIcon(),
-                          ),
-                          Container(
-                            color: Colors.transparent,
-                            width: 38,
-                            child: AppBarFeatureDiscovery(),
-                          ),
-                        ],
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            GlobalSearchIcon(),
+                            NotificationsLunarIcon(),
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -147,17 +162,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    JuntoDescribedFeatureOverlay(
-                      icon: Image.asset(
-                        'assets/images/junto-mobile__filter.png',
-                        height: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      featureId: 'collective_filter_id',
-                      title:
-                          'Click this icon to filter this perspective by channel (topic).',
-                      isLastFeature: true,
-                      child: const FilterDrawerButton(),
+                    FilterDrawerButton(
+                      collectiveScreen: true,
                     ),
                     Row(
                       children: <Widget>[
@@ -262,15 +268,17 @@ class _AppBarFeatureDiscoveryState extends State<AppBarFeatureDiscovery> {
       child: JuntoDescribedFeatureOverlay(
         icon: OverlayInfoIcon(),
         featureId: 'collective_info_id',
-        title: 'This is the Collective, where all public content is shown.',
+        title:
+            'This is the Collective community, the public space for everyone in Junto.',
         learnMore: true,
-        hasUpNext: true,
+        hasUpNext: false,
         upNextText: [
           "Transparent, human-centered algorithms that filter content to create feeds according to high activity (not based on your previous activity)",
         ],
         learnMoreText: [
-          "The Collective is a shared space that anyone on Junto can post into. Our hope is that people will discover meaningful content and relationships with those they may not know and help to maintain a positive culture.",
-          'You can view content in this layer through "Perspectives". Perspectives are feeds that show filtered content from the Collective. They display previews of content, where you open an expression to view its full scope, rather than see the expression and its captions, comments, and activity all at once.'
+          "The Collective is a shared space that anyone on Junto can post into.",
+          'Each community on Junto displays previews of content, where you open an expression to view its full scope, rather than see the expression and its captions, comments, and activity all at once.',
+          "You can filter the Collective communtiy by channel (topic) or by specific people. Create your own custom 'Lists' of people to organize your feeds."
         ],
         child: Container(
           height: 24,
