@@ -5,12 +5,13 @@ import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/auth_result.dart';
 
+import '../../aws_config.dart';
+
 class CognitoClient extends AuthenticationService {
   Amplify amplifyInstance = Amplify();
   aws.AmplifyAuthCognito auth;
 
   CognitoClient() {
-    _initialize();
     _initializeCongnito();
   }
 
@@ -19,7 +20,8 @@ class CognitoClient extends AuthenticationService {
       auth = aws.AmplifyAuthCognito();
       amplifyInstance.addPlugin(authPlugins: [auth]);
 
-      // await amplifyInstance.configure();
+      await amplifyInstance.configure(AwsConfig);
+      await _initialize();
     } catch (e, s) {
       logger.logException(e, s);
     }
@@ -147,17 +149,20 @@ class CognitoClient extends AuthenticationService {
   @override
   Future<SignInResult> loginUser(SignInData details) async {
     try {
+      print('test: 1');
       aws.SignInResult result = await Amplify.Auth.signIn(
-        username: details.username,
-        password: details.password,
-      );
+          username: details.username, password: details.password);
+
+      print('test: 2 ${result.isSignedIn}');
 
       if (result != null && result.isSignedIn) {
+        print('test: 5 ${result.isSignedIn}');
         return SignInResult(true);
       }
 
       return SignInResult.signedOut();
     } on PlatformException catch (e, s) {
+      print('test');
       logger.logException(e, s);
       if (e.details != null && e.details is String) {
         if (e.details.contains("There is already a user which is signed in.")) {
@@ -172,6 +177,7 @@ class CognitoClient extends AuthenticationService {
       }
       return SignInResult.signedOut();
     } catch (e) {
+      print('test: ${e.toString()}');
       return SignInResult.signedOut();
     }
   }
@@ -188,14 +194,8 @@ class CognitoClient extends AuthenticationService {
         options: aws.CognitoSignUpOptions(userAttributes: userAttributes),
       );
 
-      if (!result.isSignUpComplete) {
-        logger.logInfo('Verification code sent to user');
-        return SignUpResult(true, false);
-      } else {
-        logger.logError(
-            'Problem with sending verification code to the user: ${result.nextStep.codeDeliveryDetails} ${result.nextStep.additionalInfo}');
-        return SignUpResult(false, false);
-      }
+      logger.logInfo('Verification code sent to user');
+      return SignUpResult(true, false);
     } on PlatformException catch (e, s) {
       logger.logException(e, s);
 
@@ -262,6 +262,7 @@ class CognitoClient extends AuthenticationService {
   Future<SignInResult> isLoggedIn() async {
     try {
       final currentUser = await Amplify.Auth.getCurrentUser();
+      print('test: 3 ${currentUser}');
 
       if (currentUser != null) {
         return SignInResult(true);
@@ -269,6 +270,7 @@ class CognitoClient extends AuthenticationService {
 
       return SignInResult.signedOut();
     } catch (e, s) {
+      print('test: 4 ${e.cause}');
       logger.logException(e, s);
       return SignInResult.signedOut();
     }

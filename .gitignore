@@ -103,3 +103,4 @@ lib/api_prod.dart
 /android/app/src/profile/google-services.json
 /android/app/src/debug/google-services.json
 /android/app/google-services.json
+/lib/aws_config.dart
