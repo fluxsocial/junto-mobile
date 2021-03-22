@@ -348,12 +348,18 @@ class UserServiceCentralized implements UserService {
   @override
   Future<Map<String, dynamic>> connectedUsers(String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) async {
+    final _param = <String, String>{
+      'pagination_position': paginationPos ?? '0',
+      'filter': query,
+    };
+
+    if (lastTimeStamp != null && lastTimeStamp.isNotEmpty) {
+      _param.putIfAbsent('last_timestamp', () => lastTimeStamp);
+    }
+
     final Response _serverResponse = await client.get(
       '/users/$userAddress/connections',
-      queryParams: <String, String>{
-        'pagination_position': paginationPos ?? '0',
-        'filter': query,
-      },
+      queryParams: _param,
     );
     final Map<String, dynamic> _results =
         await JuntoHttp.handleResponse(_serverResponse);
@@ -403,13 +409,18 @@ class UserServiceCentralized implements UserService {
   @override
   Future<Map<String, dynamic>> getFollowers(String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) async {
+    final _param = <String, String>{
+      'pagination_position': paginationPos ?? '0',
+      'filter': query,
+    };
+
+    if (lastTimeStamp != null && lastTimeStamp.isNotEmpty) {
+      _param.putIfAbsent('last_timestamp', () => lastTimeStamp);
+    }
+
     final Response _serverResponse = await client.get(
       '/users/$userAddress/followers',
-      queryParams: <String, String>{
-        'pagination_position': paginationPos ?? '0',
-        'last_timestamp': '2021-02-24T05:53:33.347Z',
-        'filter': query
-      },
+      queryParams: _param,
     );
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
@@ -427,12 +438,18 @@ class UserServiceCentralized implements UserService {
   Future<Map<String, dynamic>> getFollowingUsers(
       String userAddress, String query,
       [String paginationPos, String lastTimeStamp]) async {
+    final _param = <String, String>{
+      'pagination_position': paginationPos ?? '0',
+      'filter': query,
+    };
+
+    if (lastTimeStamp != null && lastTimeStamp.isNotEmpty) {
+      _param.putIfAbsent('last_timestamp', () => lastTimeStamp);
+    }
+
     final Response _serverResponse = await client.get(
       '/users/$userAddress/following',
-      queryParams: <String, String>{
-        'pagination_position': paginationPos ?? '0',
-        'filter': query
-      },
+      queryParams: _param,
     );
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
