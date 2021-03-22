@@ -247,63 +247,59 @@ class CircleMembers extends StatefulWidget {
 }
 
 class _CircleMembersState extends State<CircleMembers> {
-  ScrollController _controller;
+  double position = 0.0;
+
+  double sensitivityFactor = 20.0;
 
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
-    _controller.addListener(_fetchMore);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.removeListener(_fetchMore);
-    _controller.dispose();
-  }
-
-  void _fetchMore() {
-    if (_controller.hasClients) {
-      final ScrollDirection direction =
-          _controller.position.userScrollDirection;
-      final double pixels = _controller.position.pixels;
-      final double maxExtent = _controller.position.maxScrollExtent;
-      double percent = (pixels / maxExtent) * 100;
-      if (percent.roundToDouble() == 60 &&
-          direction == ScrollDirection.reverse) {
-        context
-            .bloc<CircleBloc>()
-            .add(LoadCircleMembersMore(sphereAddress: widget.group.address));
-      }
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     // All Circle Members
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: ListView(
-            controller: _controller,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            children: [
-              if (widget.creator != null)
-                MemberPreview(profile: widget.creator),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.users.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return MemberPreview(
-                      profile: widget.users[index].user,
-                    );
-                  }),
-            ],
-          ),
-        )
-      ],
+    final list = [
+      if (widget.creator != null) widget.creator,
+      ...widget.users.map((e) => e.user).toList()
+    ];
+
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification notification) {
+        final metrics = notification.metrics;
+        double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
+
+        if (notification.metrics.pixels - position >= sensitivityFactor) {
+          position = notification.metrics.pixels;
+          if (scrollPercent.toInt() == 80) {
+            context.bloc<CircleBloc>().add(
+                LoadCircleMembersMore(sphereAddress: widget.group.address));
+
+            return true;
+          }
+        }
+
+        if (position - notification.metrics.pixels >= sensitivityFactor) {
+          position = notification.metrics.pixels;
+        }
+
+        return false;
+      },
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return MemberPreview(
+            profile: list[index],
+          );
+        },
+      ),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'circle_event.dart';
 part 'circle_state.dart';
@@ -30,6 +31,20 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
   UserData creator;
   int currentMemberPage = 0;
   String currentMemberTimeStamp;
+
+  @override
+  Stream<Transition<CircleEvent, CircleState>> transformEvents(
+    Stream<CircleEvent> events,
+    TransitionFunction<CircleEvent, CircleState> transitionFn,
+  ) {
+    final nonDebounceStream =
+        events.where((event) => event is! LoadCircleMembersMore);
+    final debounceStream = events
+        .where((event) => event is LoadCircleMembersMore)
+        .debounceTime(const Duration(milliseconds: 600));
+    return super.transformEvents(
+        MergeStream([nonDebounceStream, debounceStream]), transitionFn);
+  }
 
   @override
   Stream<CircleState> mapEventToState(
