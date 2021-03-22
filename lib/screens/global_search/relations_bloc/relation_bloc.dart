@@ -33,9 +33,9 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
     TransitionFunction<RelationEvent, RelationState> transitionFn,
   ) {
     final nonDebounceStream =
-        events.where((event) => event is! FetchRealtionship);
+        events.where((event) => event is! FetchMoreRelationship);
     final debounceStream = events
-        .where((event) => event is FetchRealtionship)
+        .where((event) => event is FetchMoreRelationship)
         .debounceTime(const Duration(milliseconds: 600));
     return super.transformEvents(
         MergeStream([nonDebounceStream, debounceStream]), transitionFn);
