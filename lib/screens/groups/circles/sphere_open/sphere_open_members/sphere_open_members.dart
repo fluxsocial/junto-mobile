@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -168,13 +169,17 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
                     children: <Widget>[
                       // Circle Facilitators
                       CircleFacilitators(
-                          creator: state.creator?.user,
-                          users: state.members ?? []),
+                        creator: state.creator?.user,
+                        users: state.members ?? [],
+                        group: widget.group,
+                        relationToGroup: widget.relationToGroup,
+                      ),
                       // All Circle Members
                       CircleMembers(
                         creator: state.creator?.user,
                         users: state.members ?? [],
                         group: widget.group,
+                        relationToGroup: widget.relationToGroup,
                       ),
                     ],
                   ),
@@ -195,13 +200,23 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
 }
 
 class CircleFacilitators extends StatelessWidget {
-  const CircleFacilitators({this.creator, this.users});
+  const CircleFacilitators({
+    this.creator,
+    this.users,
+    this.relationToGroup,
+    this.group,
+  });
 
   final UserProfile creator;
   final List<Users> users;
+  final Map<String, dynamic> relationToGroup;
+  final Group group;
+
   @override
   Widget build(BuildContext context) {
     // Circle Facilitators (Admins)
+    final isCreator = relationToGroup != null && relationToGroup['creator'];
+
     return Column(
       children: <Widget>[
         Expanded(
@@ -215,8 +230,46 @@ class CircleFacilitators extends StatelessWidget {
                 itemCount: users.length,
                 itemBuilder: (BuildContext context, int index) {
                   if (users[index].permissionLevel == 'Admin') {
-                    return MemberPreview(
-                      profile: users[index].user,
+                    return Slidable(
+                      actionPane: SlidableBehindActionPane(),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: MemberPreview(
+                          profile: users[index].user,
+                        ),
+                      ),
+                      actionExtentRatio: 0.20,
+                      secondaryActions: [
+                        if (isCreator)
+                          IconSlideAction(
+                            caption: 'Facilitator',
+                            color: Colors.indigo,
+                            icon: Icons.supervisor_account_sharp,
+                            onTap: () {
+                              context.bloc<CircleBloc>().add(
+                                    AddMemberToCircle(
+                                      sphereAddress: group.address,
+                                      user: [users[index].user],
+                                      permissionLevel: 'Admin',
+                                    ),
+                                  );
+                            },
+                          ),
+                        if (isCreator)
+                          IconSlideAction(
+                            caption: 'Remove',
+                            color: Colors.red,
+                            icon: Icons.remove_circle,
+                            onTap: () {
+                              context.bloc<CircleBloc>().add(
+                                    RemoveMemberFromCircle(
+                                      sphereAdress: group.address,
+                                      userAddress: users[index].user.address,
+                                    ),
+                                  );
+                            },
+                          ),
+                      ],
                     );
                   } else {
                     return const SizedBox();
@@ -236,11 +289,13 @@ class CircleMembers extends StatefulWidget {
     this.creator,
     this.users,
     this.group,
+    this.relationToGroup,
   });
 
   final UserProfile creator;
   final List<Users> users;
   final Group group;
+  final Map<String, dynamic> relationToGroup;
 
   @override
   _CircleMembersState createState() => _CircleMembersState();
@@ -264,9 +319,16 @@ class _CircleMembersState extends State<CircleMembers> {
   @override
   Widget build(BuildContext context) {
     // All Circle Members
+    final showSlide = widget.relationToGroup != null &&
+        (widget.relationToGroup['creator'] ||
+            widget.relationToGroup['facilitator']);
+    final isCreator =
+        widget.relationToGroup != null && widget.relationToGroup['creator'];
+
     final list = [
-      if (widget.creator != null) widget.creator,
-      ...widget.users.map((e) => e.user).toList()
+      if (widget.creator != null)
+        Users(user: widget.creator, permissionLevel: 'Admin'),
+      ...widget.users
     ];
 
     return NotificationListener<ScrollNotification>(
@@ -291,12 +353,51 @@ class _CircleMembersState extends State<CircleMembers> {
         return false;
       },
       child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
         physics: NeverScrollableScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return MemberPreview(
-            profile: list[index],
+          return Slidable(
+            actionPane: SlidableBehindActionPane(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: MemberPreview(
+                profile: list[index].user,
+              ),
+            ),
+            actionExtentRatio: 0.20,
+            secondaryActions: [
+              if (showSlide &&
+                  list[index].permissionLevel != 'Admin' &&
+                  isCreator)
+                IconSlideAction(
+                  caption: 'Facilitator',
+                  color: Colors.indigo,
+                  icon: Icons.supervisor_account_sharp,
+                  onTap: () {
+                    context.bloc<CircleBloc>().add(
+                          AddMemberToCircle(
+                            sphereAddress: widget.group.address,
+                            user: [list[index].user],
+                            permissionLevel: 'Admin',
+                          ),
+                        );
+                  },
+                ),
+              if (showSlide && list[index].permissionLevel != 'Admin')
+                IconSlideAction(
+                  caption: 'Remove',
+                  color: Colors.red,
+                  icon: Icons.remove_circle,
+                  onTap: () {
+                    context.bloc<CircleBloc>().add(
+                          RemoveMemberFromCircle(
+                            sphereAdress: widget.group.address,
+                            userAddress: list[index].user.address,
+                          ),
+                        );
+                  },
+                ),
+            ],
           );
         },
       ),
