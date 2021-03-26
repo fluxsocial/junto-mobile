@@ -149,7 +149,7 @@ class HomePageContentState extends State<HomePageContent>
     final appRepo = Provider.of<AppRepo>(context);
 
     try {
-      context.bloc<NotificationSettingBloc>().add(FetchNotificationSetting());
+      // context.bloc<NotificationSettingBloc>().add(FetchNotificationSetting());
 
       final _isFirst = await appRepo.isFirstLaunch();
       if (_isFirst) {
