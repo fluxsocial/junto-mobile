@@ -217,69 +217,62 @@ class CircleFacilitators extends StatelessWidget {
     // Circle Facilitators (Admins)
     final isCreator = relationToGroup != null && relationToGroup['creator'];
 
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            children: [
-              if (creator != null) MemberPreview(profile: creator),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: users.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (users[index].permissionLevel == 'Admin') {
-                    return Slidable(
-                      actionPane: SlidableBehindActionPane(),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: MemberPreview(
-                          profile: users[index].user,
-                        ),
-                      ),
-                      actionExtentRatio: 0.20,
-                      secondaryActions: [
-                        if (isCreator)
-                          IconSlideAction(
-                            caption: 'Facilitator',
-                            color: Colors.indigo,
-                            icon: Icons.supervisor_account_sharp,
-                            onTap: () {
-                              context.bloc<CircleBloc>().add(
-                                    AddMemberToCircle(
-                                      sphereAddress: group.address,
-                                      user: [users[index].user],
-                                      permissionLevel: 'Admin',
-                                    ),
-                                  );
-                            },
-                          ),
-                        if (isCreator)
-                          IconSlideAction(
-                            caption: 'Remove',
-                            color: Colors.red,
-                            icon: Icons.remove_circle,
-                            onTap: () {
-                              context.bloc<CircleBloc>().add(
-                                    RemoveMemberFromCircle(
-                                      sphereAdress: group.address,
-                                      userAddress: users[index].user.address,
-                                    ),
-                                  );
-                            },
-                          ),
-                      ],
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                },
+    final list = [
+      if (creator != null) Users(user: creator, permissionLevel: 'Admin'),
+      ...users
+    ];
+
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: list.length,
+      itemBuilder: (BuildContext context, int index) {
+        if (list[index].permissionLevel == 'Admin') {
+          return Slidable(
+            actionPane: SlidableBehindActionPane(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: MemberPreview(
+                profile: list[index].user,
               ),
+            ),
+            actionExtentRatio: 0.20,
+            secondaryActions: [
+              if (isCreator && creator.address != list[index].user.address)
+                IconSlideAction(
+                  caption: 'Member',
+                  color: Colors.indigo,
+                  icon: Icons.supervisor_account_sharp,
+                  onTap: () {
+                    context.bloc<CircleBloc>().add(
+                          UpdateMembersPermission(
+                            sphereAdress: group.address,
+                            user: list[index].user,
+                            permissionLevel: 'Member',
+                          ),
+                        );
+                  },
+                ),
+              if (isCreator && creator.address != list[index].user.address)
+                IconSlideAction(
+                  caption: 'Remove',
+                  color: Colors.red,
+                  icon: Icons.remove_circle,
+                  onTap: () {
+                    context.bloc<CircleBloc>().add(
+                          RemoveMemberFromCircle(
+                            sphereAdress: group.address,
+                            userAddress: list[index].user.address,
+                          ),
+                        );
+                  },
+                ),
             ],
-          ),
-        )
-      ],
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
     );
   }
 }
@@ -375,9 +368,9 @@ class _CircleMembersState extends State<CircleMembers> {
                   icon: Icons.supervisor_account_sharp,
                   onTap: () {
                     context.bloc<CircleBloc>().add(
-                          AddMemberToCircle(
-                            sphereAddress: widget.group.address,
-                            user: [list[index].user],
+                          UpdateMembersPermission(
+                            sphereAdress: widget.group.address,
+                            user: list[index].user,
                             permissionLevel: 'Admin',
                           ),
                         );

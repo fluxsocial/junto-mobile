@@ -70,6 +70,8 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       yield* _mapRemoveMemberFromCircleToState(event);
     } else if (event is CreateCircleEvent) {
       yield* _mapCreateCircleToState(event);
+    } else if (event is UpdateMembersPermission) {
+      yield* _mapUpdateMemberPermissionToState(event);
     }
   }
 
@@ -216,6 +218,38 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       await groupRepo.removeGroupMember(event.sphereAdress, event.userAddress);
 
       members = members.where((e) => e.user.address != event.userAddress);
+
+      yield CircleLoaded(
+        groups: groups,
+        groupJoinNotifications: notifications,
+        members: members,
+        creator: creator,
+      );
+    } catch (e, s) {
+      logger.logException(e, s);
+      yield CircleError();
+    }
+  }
+
+  Stream<CircleState> _mapUpdateMemberPermissionToState(
+      UpdateMembersPermission event) async* {
+    try {
+      await groupRepo.removeGroupMember(event.sphereAdress, event.user.address);
+
+      await groupRepo.addGroupMember(
+        event.sphereAdress,
+        [event.user],
+        event.permissionLevel,
+      );
+
+      members = members
+          .map((e) => e.user.address == event.user.address
+              ? Users(
+                  permissionLevel: event.permissionLevel,
+                  user: e.user,
+                )
+              : e)
+          .toList();
 
       yield CircleLoaded(
         groups: groups,
