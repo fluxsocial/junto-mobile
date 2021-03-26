@@ -144,9 +144,10 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
                 if (snapshot.currentScreen == Screen.den) {
                   await Provider.of<AppRepo>(context, listen: false)
                       .changeScreen(screen: Screen.groups);
+                  return false;
                 }
 
-                return false;
+                return true;
               },
               child: JuntoFilterDrawer(
                 leftDrawer: null,
