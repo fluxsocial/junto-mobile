@@ -7,6 +7,9 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 
 mixin AddUserToList<T> {
   List<T> placeUser(T data, List<T> list) {
@@ -182,13 +185,10 @@ mixin MemberValidation {
   /// they are the host (logged in) user or not.
   Future<void> showUserDen(BuildContext context, UserProfile profile) async {
     if (await isHostUser(profile)) {
-      Navigator.push(
-        context,
-        CupertinoPageRoute<dynamic>(
-          settings: RouteSettings(name: 'JuntoCollective'),
-          builder: (BuildContext context) => JuntoDen(),
-        ),
-      );
+      Navigator.pop(context);
+      Provider.of<AppRepo>(context, listen: false)
+          .changeScreen(screen: Screen.den);
+
       return;
     }
     Navigator.push(
