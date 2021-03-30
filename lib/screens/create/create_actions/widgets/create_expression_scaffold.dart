@@ -660,7 +660,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       }
     } catch (error) {
       print('test: $error');
-      // JuntoLoader.hide();
+      JuntoLoader.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) => const SingleActionDialog(
