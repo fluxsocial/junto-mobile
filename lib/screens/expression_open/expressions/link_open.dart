@@ -57,24 +57,40 @@ class LinkOpen extends StatelessWidget {
                 await launch(expression.expressionData.url);
               }
             },
-            child: OEmbedWidget(
-              data: expression.expressionData.data,
-              expanded: false,
-              theme: EmbedlyThemeData(
-                brightness: Theme.of(context).brightness,
-                backgroundColor: Theme.of(context).backgroundColor,
-                headingText: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColor,
-                ),
-                subheadingText: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).primaryColor,
-                ),
-                elevation: 0.0,
-              ),
+            child: Column(
+              children: [
+                if (expression.expressionData.data != null)
+                  OEmbedWidget(
+                    data: expression.expressionData.data,
+                    expanded: false,
+                    theme: EmbedlyThemeData(
+                      brightness: Theme.of(context).brightness,
+                      backgroundColor: Theme.of(context).backgroundColor,
+                      headingText: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      subheadingText: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      elevation: 0.0,
+                    ),
+                  )
+                else
+                  Container(
+                    child: Text(
+                      expression.expressionData.url,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 17,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ],
