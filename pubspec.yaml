@@ -66,6 +66,10 @@ dependencies:
   app_settings: 4.1.0
   share: 2.0.0
   collection: ^1.15.0-nullsafety.4
+  flutter_richtext:
+    git:
+      url: https://github.com/fayeed/rich_text_editor
+      ref: package-updates
 
 dev_dependencies:
   test: any
@@ -86,6 +90,8 @@ dependency_overrides:
   file: ^6.1.0
   plugin_platform_interface: 2.0.0
   synchronized: 3.0.0
+  linkify: 4.0.0
+  http: 0.13.0
   # Pending https://github.com/agnostech/flutter_amplify/pull/20
   flutter_aws_amplify_cognito:
     # path: ../flutter_amplify/flutter_aws_amplify_cognito
