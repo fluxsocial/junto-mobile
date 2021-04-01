@@ -422,3 +422,65 @@ TextSpan computeTextSpan(AttributionStyleBuilder styleBuilder,
           style: styleBuilder({}),
         );
 }
+
+/// Creates `TextStyles` for the standard `Editor`.
+TextStyle defaultRichtextStyleBuilder(Set<dynamic> attributions) {
+  TextStyle newStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 13,
+    height: 1.4,
+  );
+
+  for (final attribution in attributions) {
+    if (attribution is! String) {
+      continue;
+    }
+
+    switch (attribution) {
+      case 'header1':
+        newStyle = newStyle.copyWith(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          height: 1.0,
+        );
+        break;
+      case 'header2':
+        newStyle = newStyle.copyWith(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: const Color(0xFF888888),
+          height: 1.0,
+        );
+        break;
+      case 'blockquote':
+        newStyle = newStyle.copyWith(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          height: 1.4,
+          color: Colors.grey,
+        );
+        break;
+      case 'bold':
+        newStyle = newStyle.copyWith(
+          fontWeight: FontWeight.bold,
+        );
+        break;
+      case 'italics':
+        newStyle = newStyle.copyWith(
+          fontStyle: FontStyle.italic,
+        );
+        break;
+      case 'strikethrough':
+        newStyle = newStyle.copyWith(
+          decoration: TextDecoration.lineThrough,
+        );
+        break;
+      case 'underline':
+        newStyle = newStyle.copyWith(
+          decoration: TextDecoration.underline,
+        );
+        break;
+    }
+  }
+  return newStyle;
+}
