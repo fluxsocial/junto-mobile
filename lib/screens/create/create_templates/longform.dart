@@ -458,7 +458,6 @@ class CreateLongformState extends State<CreateLongform>
                       componentBuilders: [firstParagraphHintComponentBuilder],
                     ),
                   ),
-                  // TODO: need to implement onClick for mentions
                   if (showSuggestions &&
                       widget.captionFocus.hasFocus &&
                       listType == ListType.mention)
@@ -469,13 +468,43 @@ class CreateLongformState extends State<CreateLongform>
                       child: MentionsSearchList(
                         userList: users,
                         onMentionAdd: (index) {
-                          mentionKey.currentState.addMention(users[index]);
-
                           if (addedmentions.indexWhere((element) =>
                                   element['id'] == users[index]['id']) ==
                               -1) {
                             addedmentions = [...addedmentions, users[index]];
                           }
+
+                          final strToadd = users[index]['display']
+                              .toString()
+                              .replaceFirst(
+                                  searchValue.replaceFirst('@', ''), '');
+                          final position =
+                              _composer.selection.extent.nodePosition.offset +
+                                  strToadd.length;
+                          var pos = TextPosition(
+                              offset: _composer
+                                  .selection.extent.nodePosition.offset);
+                          _docEditor.executeCommand(InsertTextCommand(
+                            documentPosition: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: pos,
+                            ),
+                            textToInsert: strToadd,
+                            attributions: {},
+                          ));
+
+                          _composer.selection = _composer.selection.copyWith(
+                            base: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: TextPosition(offset: position),
+                            ),
+                            extent: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: TextPosition(offset: position),
+                            ),
+                          );
+
+                          _composer.notifyListeners();
 
                           setState(() {
                             _showList = false;
@@ -484,7 +513,6 @@ class CreateLongformState extends State<CreateLongform>
                         },
                       ),
                     ),
-                  // TODO: need to implement onClick for channels
                   if (showSuggestions &&
                       widget.captionFocus.hasFocus &&
                       listType == ListType.channels)
@@ -495,13 +523,43 @@ class CreateLongformState extends State<CreateLongform>
                       child: ChannelsSearchList(
                         channels: channels,
                         onChannelAdd: (index) {
-                          mentionKey.currentState.addMention(channels[index]);
-
                           if (addedChannels.indexWhere((element) =>
                                   element['id'] == channels[index]['id']) ==
                               -1) {
                             addedChannels = [...addedChannels, channels[index]];
                           }
+
+                          final strToadd = channels[index]['display']
+                              .toString()
+                              .replaceFirst(
+                                  searchValue.replaceFirst('@', ''), '');
+                          final position =
+                              _composer.selection.extent.nodePosition.offset +
+                                  strToadd.length;
+                          var pos = TextPosition(
+                              offset: _composer
+                                  .selection.extent.nodePosition.offset);
+                          _docEditor.executeCommand(InsertTextCommand(
+                            documentPosition: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: pos,
+                            ),
+                            textToInsert: strToadd,
+                            attributions: {},
+                          ));
+
+                          _composer.selection = _composer.selection.copyWith(
+                            base: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: TextPosition(offset: position),
+                            ),
+                            extent: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: TextPosition(offset: position),
+                            ),
+                          );
+
+                          _composer.notifyListeners();
 
                           setState(() {
                             _showList = false;
