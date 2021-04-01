@@ -70,6 +70,7 @@ dependencies:
     git:
       url: https://github.com/fayeed/rich_text_editor
       ref: package-updates
+  keyboard_actions: 3.4.0
 
 dev_dependencies:
   test: any
@@ -77,6 +78,7 @@ dev_dependencies:
   hive_generator: 1.0.0
   freezed: 0.14.0+1
   effective_dart: 1.3.1
+  
 dependency_overrides:
   dartx: 0.6.0
   characters: 1.1.0
