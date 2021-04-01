@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/create/create_templates/widgets/custom
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:provider/provider.dart';
 
 class CreateLongform extends StatefulWidget {
@@ -41,7 +42,7 @@ class CreateLongformState extends State<CreateLongform>
   ListType listType = ListType.empty;
 
   // richtext editor
-  Document _doc;
+  MutableDocument _doc;
   DocumentEditor _docEditor;
   DocumentComposer _composer;
   String _pattern = '';
@@ -68,6 +69,17 @@ class CreateLongformState extends State<CreateLongform>
     _docEditor = DocumentEditor(document: _doc);
     _composer = DocumentComposer();
     _docEditor.document.addListener(suggestionListerner);
+  }
+
+  void toggleAttributions(String attributions) {
+    final selection = _composer.selection;
+
+    _docEditor.executeCommand(ToggleTextAttributionsCommand(
+      documentSelection: selection,
+      attributions: {attributions},
+    ));
+
+    _composer.notifyListeners();
   }
 
   Future<QueryResults<UserProfile>> _getUsers(
@@ -337,7 +349,7 @@ class CreateLongformState extends State<CreateLongform>
       key: componentContext.componentKey,
       pattern: _pattern,
       text: node.text,
-      textStyleBuilder: componentContext.extensions[textStylesExtensionKey],
+      textStyleBuilder: defaultRichtextStyleBuilder,
       metadata: (componentContext.documentNode as TextNode).metadata,
       textAlign: textAlign,
       textSelection: textSelection,
@@ -404,6 +416,65 @@ class CreateLongformState extends State<CreateLongform>
     }
   }
 
+  void addList({bool ordered = true}) {
+    final nodeId = _composer.selection.base.nodeId;
+    final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
+
+    final list = ordered
+        ? ListItemNode.ordered(
+            id: DocumentEditor.createNodeId(), text: AttributedText(text: ''))
+        : ListItemNode.unordered(
+            id: DocumentEditor.createNodeId(), text: AttributedText(text: ''));
+
+    _doc.nodes.insert(index + 1, list);
+
+    _doc.notifyListeners();
+  }
+
+  void addHorizontalRule() {
+    final nodeId = _composer.selection.base.nodeId;
+    // _docEditor.executeCommand(SplitListItemCommand(nodeId: nodeId));
+    final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
+
+    _doc.nodes.insert(
+        index + 1, HorizontalRuleNode(id: DocumentEditor.createNodeId()));
+
+    _doc.notifyListeners();
+  }
+
+  void addImage() {
+    final nodeId = _composer.selection.base.nodeId;
+    // _docEditor.executeCommand(SplitListItemCommand(nodeId: nodeId));
+    final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
+
+    _doc.nodes.insert(
+        index + 1, ImageNode(id: DocumentEditor.createNodeId(), imageUrl: ''));
+
+    _doc.notifyListeners();
+  }
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+        keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+        keyboardBarColor: Colors.grey[200],
+        actions: [
+          KeyboardActionsItem(
+            focusNode: widget.captionFocus,
+            displayArrows: false,
+            displayDoneButton: false,
+            displayActionBar: false,
+            footerBuilder: (context) {
+              return MyCustomBarWidget(
+                toggleAttributions: toggleAttributions,
+                addList: addList,
+                addHorizontalRule: addHorizontalRule,
+                addImage: addImage,
+              );
+            },
+          ),
+        ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -443,19 +514,29 @@ class CreateLongformState extends State<CreateLongform>
             Expanded(
               child: Stack(
                 children: [
-                  Container(
-                    height: 600,
-                    width: 500,
-                    child: Editor.custom(
-                      editor: _docEditor,
-                      composer: _composer,
-                      focusNode: widget.captionFocus,
-                      maxWidth: 600,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 56,
-                        horizontal: 24,
+                  KeyboardActions(
+                    config: _buildConfig(context),
+                    child: Container(
+                      height: 400,
+                      width: 500,
+                      child: Editor.custom(
+                        editor: _docEditor,
+                        composer: _composer,
+                        focusNode: widget.captionFocus,
+                        maxWidth: 600,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 56,
+                          horizontal: 24,
+                        ),
+                        componentBuilders: [
+                          firstParagraphHintComponentBuilder,
+                          unorderedListItemBuilder,
+                          orderedListItemBuilder,
+                          horizontalRuleBuilder,
+                          imageBuilder,
+                          unknownComponentBuilder,
+                        ],
                       ),
-                      componentBuilders: [firstParagraphHintComponentBuilder],
                     ),
                   ),
                   if (showSuggestions &&
@@ -579,4 +660,94 @@ class CreateLongformState extends State<CreateLongform>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class MyCustomBarWidget extends StatelessWidget implements PreferredSizeWidget {
+  const MyCustomBarWidget({
+    Key key,
+    this.toggleAttributions,
+    this.addList,
+    this.addHorizontalRule,
+    this.addImage,
+  }) : super(key: key);
+
+  final Function(String) toggleAttributions;
+  final Function({bool ordered}) addList;
+  final Function addHorizontalRule;
+  final Function addImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: [
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.format_bold),
+              onPressed: () => toggleAttributions('bold')),
+        ),
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.format_italic),
+              onPressed: () => toggleAttributions('italics')),
+        ),
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.format_strikethrough),
+              onPressed: () => toggleAttributions('strikethrough')),
+        ),
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.format_quote),
+              onPressed: () => toggleAttributions('blockquote')),
+        ),
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.format_underline),
+              onPressed: () => toggleAttributions('underline')),
+        ),
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.format_list_bulleted),
+              onPressed: () => addList(ordered: false)),
+        ),
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.format_list_numbered),
+              onPressed: () => addList(ordered: true)),
+        ),
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.horizontal_rule),
+              onPressed: addHorizontalRule),
+        ),
+        Transform.scale(
+          scale: 0.8,
+          child: IconButton(
+              padding: EdgeInsets.all(2.0),
+              icon: Icon(Icons.image),
+              onPressed: addHorizontalRule),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(60);
 }
