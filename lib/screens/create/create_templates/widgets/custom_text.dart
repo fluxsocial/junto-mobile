@@ -439,16 +439,22 @@ TextStyle defaultRichtextStyleBuilder(Set<dynamic> attributions) {
     switch (attribution) {
       case 'header1':
         newStyle = newStyle.copyWith(
-          fontSize: 24,
+          fontSize: 32,
           fontWeight: FontWeight.bold,
           height: 1.0,
         );
         break;
       case 'header2':
         newStyle = newStyle.copyWith(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          height: 1.0,
+        );
+        break;
+      case 'header3':
+        newStyle = newStyle.copyWith(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: const Color(0xFF888888),
           height: 1.0,
         );
         break;
