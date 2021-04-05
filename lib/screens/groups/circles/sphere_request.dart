@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
 class SphereRequest extends StatelessWidget {
   const SphereRequest({
@@ -90,6 +91,7 @@ class SphereRequest extends StatelessWidget {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () async {
+                                JuntoLoader.showLoader(context);
                                 // Accept request
                                 await Provider.of<GroupRepo>(context,
                                         listen: false)
@@ -101,6 +103,8 @@ class SphereRequest extends StatelessWidget {
                                         listen: false)
                                     .fetchNotifications();
                                 context.read<CircleBloc>().add(FetchMyCircle());
+
+                                JuntoLoader.hide();
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -123,6 +127,7 @@ class SphereRequest extends StatelessWidget {
                             const SizedBox(width: 10),
                             GestureDetector(
                               onTap: () async {
+                                JuntoLoader.showLoader(context);
                                 // Decline request
                                 await Provider.of<GroupRepo>(context,
                                         listen: false)
@@ -134,6 +139,7 @@ class SphereRequest extends StatelessWidget {
                                         listen: false)
                                     .fetchNotifications();
                                 context.read<CircleBloc>().add(FetchMyCircle());
+                                JuntoLoader.hide();
                               },
                               child: Container(
                                 decoration: BoxDecoration(

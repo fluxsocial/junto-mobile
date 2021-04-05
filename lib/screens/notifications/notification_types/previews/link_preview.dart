@@ -15,8 +15,12 @@ class NotificationLinkPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final String title = item.sourceExpression.expressionData['title'];
     final String caption = item.sourceExpression.expressionData['caption'];
-    final OEmbedResponse embedlyResponse =
-        OEmbedResponse.fromMap(item.sourceExpression.expressionData['data']);
+    final String url = item.sourceExpression.expressionData['url'];
+    final OEmbedResponse embedlyResponse = item
+                .sourceExpression.expressionData['data'] !=
+            null
+        ? OEmbedResponse.fromMap(item.sourceExpression.expressionData['data'])
+        : null;
 
     return Container(
       width: MediaQuery.of(context).size.width - 68,
@@ -65,25 +69,37 @@ class NotificationLinkPreview extends StatelessWidget {
                     fontSize: 17,
                   )),
             ),
-          OEmbedWidget(
-            data: embedlyResponse,
-            expanded: false,
-            theme: EmbedlyThemeData(
-              brightness: Theme.of(context).brightness,
-              backgroundColor: Theme.of(context).backgroundColor,
-              headingText: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).primaryColor,
+          if (embedlyResponse != null)
+            OEmbedWidget(
+              data: embedlyResponse,
+              expanded: false,
+              theme: EmbedlyThemeData(
+                brightness: Theme.of(context).brightness,
+                backgroundColor: Theme.of(context).backgroundColor,
+                headingText: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                ),
+                subheadingText: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor,
+                ),
+                elevation: 0.0,
               ),
-              subheadingText: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).primaryColor,
+            )
+          else
+            Container(
+              child: Text(
+                url,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 17,
+                  decoration: TextDecoration.underline,
+                ),
               ),
-              elevation: 0.0,
             ),
-          ),
         ],
       ),
     );

@@ -20,7 +20,6 @@ import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
@@ -105,7 +104,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       widget.group.address,
       _userAddress,
     );
-
+    print(_relationToGroup);
     setState(() {
       relationToGroup = _relationToGroup;
     });
@@ -138,6 +137,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     circleCreator: state.creator?.user,
                     members: state.members,
                     relationToGroup: relationToGroup,
+                    totalFacilitators: state.totalFacilitators,
+                    totalMembers: state.totalMembers,
                   ),
                   if (group.address != null) CircleOpenExpressions(),
                 ],

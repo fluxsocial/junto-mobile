@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'circle_event.dart';
 part 'circle_state.dart';
@@ -28,6 +29,22 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
   List<Group> groups;
   List<Group> notifications;
   UserData creator;
+  int currentMemberPage = 0;
+  String currentMemberTimeStamp;
+
+  @override
+  Stream<Transition<CircleEvent, CircleState>> transformEvents(
+    Stream<CircleEvent> events,
+    TransitionFunction<CircleEvent, CircleState> transitionFn,
+  ) {
+    final nonDebounceStream =
+        events.where((event) => event is! LoadCircleMembersMore);
+    final debounceStream = events
+        .where((event) => event is LoadCircleMembersMore)
+        .debounceTime(const Duration(milliseconds: 600));
+    return super.transformEvents(
+        MergeStream([nonDebounceStream, debounceStream]), transitionFn);
+  }
 
   @override
   Stream<CircleState> mapEventToState(
@@ -240,6 +257,8 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
     try {
       members = [];
 
+      currentMemberPage = 0;
+
       yield CircleLoaded(
         groups: groups,
         groupJoinNotifications: notifications,
@@ -247,9 +266,13 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       );
 
       final result = await groupRepo.getGroupMembers(
-          event.sphereAddress, ExpressionQueryParams(paginationPosition: '0'));
+          event.sphereAddress, ExpressionQueryParams());
+
+      final groupResult = await groupRepo.getGroup(event.sphereAddress);
 
       members = result.results;
+
+      currentMemberTimeStamp = result.lastTimestamp;
 
       final activeGroup =
           groups.indexWhere((e) => e.address == event.sphereAddress);
@@ -268,6 +291,8 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         groupJoinNotifications: notifications,
         members: members,
         creator: creator,
+        totalMembers: groupResult.members,
+        totalFacilitators: groupResult.facilitators,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -278,20 +303,31 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
   Stream<CircleState> _mapLoadCircleMembersMoreToState(
       LoadCircleMembersMore event) async* {
     try {
-      final result = await groupRepo.getGroupMembers(
-          event.sphereAddress, ExpressionQueryParams(paginationPosition: '0'));
+      final results = state as CircleLoaded;
+      if (results.members.length % 50 == 0) {
+        currentMemberPage += 50;
+        final result = await groupRepo.getGroupMembers(
+            event.sphereAddress,
+            ExpressionQueryParams(
+              paginationPosition: currentMemberPage.toString(),
+              lastTimestamp: currentMemberTimeStamp,
+            ));
 
-      members = [...members, ...result.results];
+        currentMemberTimeStamp = result.lastTimestamp;
 
-      yield CircleLoaded(
-        groups: groups,
-        groupJoinNotifications: notifications,
-        members: members,
-        creator: creator,
-      );
+        members = [...members, ...result.results];
+
+        yield CircleLoaded(
+          groups: groups,
+          groupJoinNotifications: notifications,
+          members: members,
+          creator: creator,
+          totalMembers: results.totalMembers,
+          totalFacilitators: results.totalFacilitators,
+        );
+      }
     } catch (e, s) {
       logger.logException(e, s);
-      yield CircleError();
     }
   }
 

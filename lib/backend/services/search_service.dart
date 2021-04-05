@@ -22,8 +22,13 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
     String lastTimeStamp,
   }) async {
     final Map<String, String> _queryParam = <String, String>{
-      'pagination_position': paginationPosition.toString()
+      'pagination_position': paginationPosition.toString(),
     };
+
+    if (lastTimeStamp != null) {
+      _queryParam.putIfAbsent('last_timestamp', () => lastTimeStamp);
+    }
+
     if (username == QueryUserBy.USERNAME) {
       _queryParam.putIfAbsent('username', () => query);
     } else if (username == QueryUserBy.FULLNAME) {

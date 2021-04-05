@@ -15,6 +15,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
+import 'global_search_icon.dart';
 import 'lists_drawer.dart';
 import 'notifications_lunar_icon.dart';
 
@@ -53,7 +54,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               Expanded(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  // padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -89,7 +89,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       Expanded(
                         child: Container(
                           color: Colors.transparent,
-                          padding: const EdgeInsets.only(left: 38, bottom: 5),
+                          padding: const EdgeInsets.only(left: 45, bottom: 5),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -148,17 +148,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            Container(
-                              color: Colors.transparent,
-                              alignment: Alignment.bottomRight,
-                              width: 38,
-                              child: NotificationsLunarIcon(),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              width: 38,
-                              child: AppBarFeatureDiscovery(),
-                            ),
+                            GlobalSearchIcon(),
+                            NotificationsLunarIcon(),
                           ],
                         ),
                       )
@@ -171,19 +162,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    JuntoDescribedFeatureOverlay(
-                      icon: Image.asset(
-                        'assets/images/junto-mobile__filter.png',
-                        height: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      featureId: 'collective_filter_id',
-                      title:
-                          'Click this icon to filter this Community by channel (topic) or lists of people.',
-                      isLastFeature: true,
-                      child: const FilterDrawerButton(
-                        collectiveScreen: true,
-                      ),
+                    FilterDrawerButton(
+                      collectiveScreen: true,
                     ),
                     Row(
                       children: <Widget>[

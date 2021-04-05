@@ -21,14 +21,18 @@ class CircleError extends CircleState {
 /// State containing groups data
 class CircleLoaded extends CircleState {
   CircleLoaded({
+    this.totalMembers,
     this.groups,
     this.groupJoinNotifications,
     this.members,
     this.creator,
+    this.totalFacilitators,
   });
 
   final List<Group> groups;
   final List<Group> groupJoinNotifications;
   final List<Users> members;
   final UserData creator;
+  final int totalMembers;
+  final int totalFacilitators;
 }

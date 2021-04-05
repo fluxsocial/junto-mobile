@@ -123,11 +123,10 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                               ),
                               // Member Badges
                               if (widget.profile.badges != null &&
-                                  appConfig.flavor == Flavor.dev)
-                                if (widget.profile.badges.isNotEmpty)
-                                  MemberBadgesRow(
-                                    badges: widget.profile.badges,
-                                  ),
+                                  widget.profile.badges.isNotEmpty)
+                                MemberBadgesRow(
+                                  badges: widget.profile.badges,
+                                ),
                             ]),
                         if (widget.profile.gender[0] != '' &&
                             widget.profile.location[0] != '' &&

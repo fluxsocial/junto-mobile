@@ -124,7 +124,7 @@ class AppRepo extends ChangeNotifier {
   Future<void> setFirstLaunch() async {
     try {
       _appBox = await Hive.box(HiveBoxes.kAppBox);
-      await _appBox.put(HiveKeys.kFirstLaunch, true);
+      await _appBox.put(HiveKeys.kFirstLaunch, false);
     } catch (e) {
       logger.logDebug("Unable to set first launch");
     }

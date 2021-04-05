@@ -33,7 +33,7 @@ class JuntoInvite extends StatelessWidget {
                       const SizedBox(height: 40),
                       JuntoLogoOutline(),
                       JuntoInviteText(
-                        "We envision Junto to grow through the creation of each individual's closest relationships. Right now, you can invite three people per week.",
+                        "We envision Junto to grow through the creation of each individual's closest relationships. Right now, you can invite one person a day to Junto.",
                       ),
                       JuntoInviteText(
                         "You can also support our open source development by copying the link in the top right and sharing our ongoing Indiegogo campaign! Those who contribute will get instant access to the private beta.",
@@ -81,7 +81,7 @@ class JuntoInvite extends StatelessWidget {
                           builder: (BuildContext context) => SingleActionDialog(
                             context: context,
                             dialogText:
-                                "It looks like you've already invited someone in the past 24 hours. Please wait until ${nextInvite.month}/${nextInvite.day}/${nextInvite.year} at ${nextInvite.hour}:${nextInvite.minute} ${nextInvite.timeZoneName}.",
+                                "It looks like you've already invited someone in the past 24 hours. Try again soon!",
                           ),
                         );
                       }

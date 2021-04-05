@@ -23,7 +23,9 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
   int followingResultCount = 0;
   int followerResultCount = 0;
   int connectionResultCount = 0;
-  String lastTimestamp;
+  String followingLastTimestamp;
+  String followersLastTimestamp;
+  String connectionsLastTimestamp;
 
   @override
   Stream<Transition<RelationEvent, RelationState>> transformEvents(
@@ -31,9 +33,9 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
     TransitionFunction<RelationEvent, RelationState> transitionFn,
   ) {
     final nonDebounceStream =
-        events.where((event) => event is! FetchRealtionship);
+        events.where((event) => event is! FetchMoreRelationship);
     final debounceStream = events
-        .where((event) => event is FetchRealtionship)
+        .where((event) => event is FetchMoreRelationship)
         .debounceTime(const Duration(milliseconds: 600));
     return super.transformEvents(
         MergeStream([nonDebounceStream, debounceStream]), transitionFn);
@@ -69,33 +71,35 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
         _connections = currentState.connections;
       }
 
-      if (event.context == RelationContext.follower) {
-        currentFollowerPos = 0;
-        final results = await userRepo.getFollowers(
-          userDataProvider.userAddress,
-          event.query,
-          currentFollowerPos.toString(),
-        );
-        _followers = results['users'];
-        followerResultCount = results['result_count'];
-      } else if (event.context == RelationContext.following) {
-        currentFollowingPos = 0;
-        final results = await userRepo.getFollowingUsers(
-          userDataProvider.userAddress,
-          event.query,
-          currentFollowingPos.toString(),
-        );
-        _following = results['users'];
-        followingResultCount = results['result_count'];
-      } else if (event.context == RelationContext.connections) {
-        currentFollowerPos = 0;
-        final results = await userRepo.connectedUsers(
-          userDataProvider.userAddress,
-          event.query,
-          currentConnectionsPos.toString(),
-        );
-        _connections = results['users'];
-        connectionResultCount = results['result_count'];
+      for (var context in event.context) {
+        if (context == RelationContext.follower) {
+          currentFollowerPos = 0;
+          final results = await userRepo.getFollowers(
+            userDataProvider.userAddress,
+            event.query,
+            currentFollowerPos.toString(),
+          );
+          _followers = results['users'];
+          followersLastTimestamp = results['last_timestamp'];
+        } else if (context == RelationContext.following) {
+          currentFollowingPos = 0;
+          final results = await userRepo.getFollowingUsers(
+            userDataProvider.userAddress,
+            event.query,
+            currentFollowingPos.toString(),
+          );
+          _following = results['users'];
+          followingLastTimestamp = results['last_timestamp'];
+        } else if (context == RelationContext.connections) {
+          currentConnectionsPos = 0;
+          final results = await userRepo.connectedUsers(
+            userDataProvider.userAddress,
+            event.query,
+            currentConnectionsPos.toString(),
+          );
+          _connections = results['users'];
+          connectionsLastTimestamp = results['last_timestamp'];
+        }
       }
 
       yield RelationLoadedState(
@@ -118,30 +122,39 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
       List<UserProfile> _followers = [];
       List<UserProfile> _following = [];
       List<UserProfile> _connections = [];
-      if (event.context == RelationContext.follower) {
-        currentFollowerPos += 15;
+      if (event.context == RelationContext.follower &&
+          _followers.length % 50 == 0) {
+        currentFollowerPos += 50;
         final results = await userRepo.getFollowers(
           userDataProvider.userAddress,
           event.query,
           currentFollowerPos.toString(),
+          followersLastTimestamp,
         );
         _followers = results['users'];
-      } else if (event.context == RelationContext.following) {
-        currentFollowingPos += 15;
+        followersLastTimestamp = results['last_timestamp'];
+      } else if (event.context == RelationContext.following &&
+          _following.length % 50 == 0) {
+        currentFollowingPos += 50;
         final results = await userRepo.getFollowingUsers(
           userDataProvider.userAddress,
           event.query,
           currentFollowingPos.toString(),
+          followingLastTimestamp,
         );
         _following = results['users'];
-      } else if (event.context == RelationContext.connections) {
-        currentFollowerPos += 15;
+        followingLastTimestamp = results['last_timestamp'];
+      } else if (event.context == RelationContext.connections &&
+          _connections.length % 50 == 0) {
+        currentConnectionsPos += 50;
         final results = await userRepo.connectedUsers(
           userDataProvider.userAddress,
           event.query,
           currentConnectionsPos.toString(),
+          connectionsLastTimestamp,
         );
         _connections = results['users'];
+        connectionsLastTimestamp = results['last_timestamp'];
       }
       final currentState = state as RelationLoadedState;
 
@@ -155,7 +168,6 @@ class RelationBloc extends Bloc<RelationEvent, RelationState> {
       );
     } catch (error, stack) {
       logger.logException(error, stack);
-      yield RelationErrorState('Error while fetching relationships');
     }
   }
 

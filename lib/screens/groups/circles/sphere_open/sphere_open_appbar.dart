@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/global_search_icon.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
   const SphereOpenAppbar({
@@ -23,7 +25,6 @@ class SphereOpenAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -40,6 +41,9 @@ class SphereOpenAppbar extends StatelessWidget {
                 color: Colors.transparent,
                 height: 38,
                 width: 38,
+                padding: const EdgeInsets.only(
+                  left: 10,
+                ),
                 child: Icon(
                   CustomIcons.back,
                   size: 17,
@@ -47,25 +51,34 @@ class SphereOpenAppbar extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              child: Text(
-                'c/${group.groupData.sphereHandle}',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {},
+            Expanded(
               child: Container(
-                width: 38,
                 color: Colors.transparent,
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  CustomIcons.newmoon,
-                  size: 20,
-                  color: Theme.of(context).primaryColor,
+                padding: const EdgeInsets.only(left: 45),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
+                      child: Text(
+                        'c/${group.groupData.sphereHandle}',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+            Container(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  GlobalSearchIcon(),
+                  NotificationsLunarIcon(),
+                ],
+              ),
+            )
           ],
         ),
       ),

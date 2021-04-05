@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
@@ -8,6 +9,7 @@ import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
+
 import 'sphere_add_members.dart';
 
 class SphereOpenMembers extends StatefulWidget {
@@ -170,8 +172,10 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
                           users: state.members ?? []),
                       // All Circle Members
                       CircleMembers(
-                          creator: state.creator?.user,
-                          users: state.members ?? []),
+                        creator: state.creator?.user,
+                        users: state.members ?? [],
+                        group: widget.group,
+                      ),
                     ],
                   ),
                 ),
@@ -227,34 +231,75 @@ class CircleFacilitators extends StatelessWidget {
   }
 }
 
-class CircleMembers extends StatelessWidget {
-  const CircleMembers({this.creator, this.users});
+class CircleMembers extends StatefulWidget {
+  const CircleMembers({
+    this.creator,
+    this.users,
+    this.group,
+  });
 
   final UserProfile creator;
   final List<Users> users;
+  final Group group;
+
+  @override
+  _CircleMembersState createState() => _CircleMembersState();
+}
+
+class _CircleMembersState extends State<CircleMembers> {
+  double position = 0.0;
+
+  double sensitivityFactor = 20.0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // All Circle Members
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            children: [
-              if (creator != null) MemberPreview(profile: creator),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: users.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return MemberPreview(
-                      profile: users[index].user,
-                    );
-                  }),
-            ],
-          ),
-        )
-      ],
+    final list = [
+      if (widget.creator != null) widget.creator,
+      ...widget.users.map((e) => e.user).toList()
+    ];
+
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification notification) {
+        final metrics = notification.metrics;
+        double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
+
+        if (notification.metrics.pixels - position >= sensitivityFactor) {
+          position = notification.metrics.pixels;
+          if (scrollPercent.toInt() == 80) {
+            context.bloc<CircleBloc>().add(
+                LoadCircleMembersMore(sphereAddress: widget.group.address));
+
+            return true;
+          }
+        }
+
+        if (position - notification.metrics.pixels >= sensitivityFactor) {
+          position = notification.metrics.pixels;
+        }
+
+        return false;
+      },
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return MemberPreview(
+            profile: list[index],
+          );
+        },
+      ),
     );
   }
 }
