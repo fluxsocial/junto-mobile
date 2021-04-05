@@ -8,6 +8,62 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "14.0.0"
+  amplify_analytics_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_analytics_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
+  amplify_api_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_api_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
+  amplify_auth_cognito:
+    dependency: "direct main"
+    description:
+      name: amplify_auth_cognito
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
+  amplify_auth_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_auth_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
+  amplify_core:
+    dependency: transitive
+    description:
+      name: amplify_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
+  amplify_datastore_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_datastore_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
+  amplify_flutter:
+    dependency: "direct main"
+    description:
+      name: amplify_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
+  amplify_storage_plugin_interface:
+    dependency: transitive
+    description:
+      name: amplify_storage_plugin_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   analyzer:
     dependency: transitive
     description:
@@ -253,6 +309,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.4"
+  date_time_format:
+    dependency: transitive
+    description:
+      name: date_time_format
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1+1"
   dio:
     dependency: "direct main"
     description:

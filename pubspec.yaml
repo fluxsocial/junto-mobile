@@ -66,6 +66,8 @@ dependencies:
   app_settings: 4.1.0
   share: 2.0.0
   collection: ^1.15.0-nullsafety.4
+  amplify_flutter: 0.1.1
+  amplify_auth_cognito: 0.1.1
 
 dev_dependencies:
   test: any
