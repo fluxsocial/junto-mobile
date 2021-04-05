@@ -47,7 +47,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
   void initState() {
     super.initState();
 
-    context.bloc<RelationBloc>().add(FetchRealtionship([
+    context.read<RelationBloc>().add(FetchRealtionship([
           RelationContext.following,
           RelationContext.connections,
           RelationContext.follower
