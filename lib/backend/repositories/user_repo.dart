@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -57,7 +57,7 @@ class UserRepo {
   }
 
   Future<List<PerspectiveModel>> getUserPerspective(String userAddress) async {
-    if (await DataConnectionChecker().hasConnection) {
+    if (await InternetConnectionChecker().hasConnection) {
       final results = await userService.getUserPerspective(userAddress);
       db.insertPerspectives(results);
       return results;
@@ -80,7 +80,7 @@ class UserRepo {
     assert(userAddress != null && userAddress.isNotEmpty);
     DBBoxes cacheBox;
 
-    if (await DataConnectionChecker().hasConnection) {
+    if (await InternetConnectionChecker().hasConnection) {
       cachedDenExpressions = await userService.getUsersExpressions(
         userAddress,
         paginationPos,

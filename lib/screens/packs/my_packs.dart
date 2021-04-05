@@ -44,7 +44,7 @@ class MyPacks extends StatelessWidget {
                       child: CustomRefresh(
                     refresh: () async {
                       await context
-                          .repository<NotificationsHandler>()
+                          .read<NotificationsHandler>()
                           .fetchNotifications();
 
                       await context.read<GroupBloc>().add(RefreshPack());
