@@ -68,8 +68,8 @@ dependencies:
   collection: ^1.15.0-nullsafety.4
   flutter_richtext:
     git:
-      url: https://github.com/fayeed/rich_text_editor
-      ref: package-updates
+      url: https://github.com/superlistapp/super_editor
+      ref: markdown-serialization
   keyboard_actions: 3.4.0
 
 dev_dependencies:

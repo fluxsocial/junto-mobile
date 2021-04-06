@@ -35,7 +35,7 @@ packages:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.0"
+    version: "2.0.0"
   asn1lib:
     dependency: transitive
     description:
@@ -210,7 +210,7 @@ packages:
       name: coverage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.2"
+    version: "0.15.2"
   crypto:
     dependency: "direct overridden"
     description:
@@ -460,9 +460,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: package-updates
-      resolved-ref: a60b441930ec46c23cf1e0b26f80396b1ef83184
-      url: "https://github.com/fayeed/rich_text_editor"
+      ref: markdown-serialization
+      resolved-ref: "3c64cc8377bdb59923b0dba88eacaf80f9463cf7"
+      url: "https://github.com/superlistapp/super_editor"
     source: git
     version: "0.1.0"
   flutter_sound:
@@ -666,6 +666,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.4"
+  markdown:
+    dependency: transitive
+    description:
+      name: markdown
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   matcher:
     dependency: transitive
     description:

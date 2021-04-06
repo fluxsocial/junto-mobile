@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:provider/provider.dart';
+import './widgets/richtext_editor_toolbar.dart';
 
 class CreateLongform extends StatefulWidget {
   const CreateLongform({
@@ -80,6 +81,29 @@ class CreateLongformState extends State<CreateLongform>
     ));
 
     _composer.notifyListeners();
+  }
+
+  void toggleBlocktype(String blockType) {
+    final node = _doc.getNode(_composer.selection.base) as ParagraphNode;
+
+    final nodes = _doc.nodes.map((e) {
+      if (e.id == node.id) {
+        var meta = {'blockType': blockType};
+
+        if (node.metadata['blockType'] == blockType) {
+          meta = {};
+        }
+        return ParagraphNode(id: node.id, text: node.text, metadata: meta);
+      }
+
+      return e;
+    }).toList();
+
+    setState(() {
+      _doc = MutableDocument(nodes: nodes);
+      _doc.notifyListeners();
+      _composer.notifyListeners();
+    });
   }
 
   Future<QueryResults<UserProfile>> _getUsers(
@@ -314,8 +338,6 @@ class CreateLongformState extends State<CreateLongform>
         break;
     }
 
-    var children = <InlineSpan>[];
-
     final paragraphNode = componentContext.documentNode;
     if (paragraphNode is! ParagraphNode) {
       return null;
@@ -323,34 +345,14 @@ class CreateLongformState extends State<CreateLongform>
 
     final node = paragraphNode as ParagraphNode;
 
-    final text = node.text.text;
-
-    if (_pattern == null || _pattern == '()') {
-      children.add(TextSpan(text: text));
-    } else {
-      text.splitMapJoin(
-        RegExp('$_pattern'),
-        onMatch: (Match match) {
-          children.add(
-            TextSpan(
-              text: match[0],
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          );
-        },
-        onNonMatch: (String text) {
-          children.add(TextSpan(text: text));
-          return '';
-        },
-      );
-    }
-
     return CustomTextComponent(
       key: componentContext.componentKey,
       pattern: _pattern,
       text: node.text,
       textStyleBuilder: defaultRichtextStyleBuilder,
-      metadata: (componentContext.documentNode as TextNode).metadata,
+      metadata: (_doc.nodes.firstWhere((element) => element.id == node.id)
+              as ParagraphNode)
+          .metadata,
       textAlign: textAlign,
       textSelection: textSelection,
       selectionColor: (componentContext.extensions[selectionStylesExtensionKey]
@@ -399,6 +401,109 @@ class CreateLongformState extends State<CreateLongform>
       return true;
     }
     return false;
+  }
+
+  String serializeDocumentToMarkdown(Document doc) {
+    List<Map<String, dynamic>> buffer = [];
+
+    for (int i = 0; i < doc.nodes.length; ++i) {
+      final node = doc.nodes[i];
+
+      if (node is HorizontalRuleNode) {
+        buffer.add({'id': node.id, 'type': 'horizontal-rule'});
+      } else if (node is ListItemNode) {
+        final indent = node.indent + 1;
+        final symbol = node.type == ListItemType.unordered ? '*' : '1.';
+
+        buffer.add({
+          'id': node.id,
+          'type': 'list-item',
+          'indent': indent,
+          'symbol': symbol,
+          'text': node.text.toMarkdown(),
+        });
+
+        final nodeBelow = i < doc.nodes.length - 1 ? doc.nodes[i + 1] : null;
+        // if (nodeBelow is! ListItemNode || nodeBelow.type != node.type) {
+        //   // This list item is the last item in the list. Add an extra
+        //   // blank line after it.
+        //   buffer.add({
+        //     'id': node.id,
+        //     'type': 'empty',
+        //   });
+        // }
+      } else if (node is ParagraphNode) {
+        final metadata = node.metadata;
+
+        switch (metadata['blockType']) {
+          case 'header1':
+            buffer.add({
+              'id': node.id,
+              'type': 'header1',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+          case 'header2':
+            buffer.add({
+              'id': node.id,
+              'type': 'header2',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+          case 'header3':
+            buffer.add({
+              'id': node.id,
+              'type': 'header3',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+          case 'header4':
+            buffer.add({
+              'id': node.id,
+              'type': 'header4',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+          case 'header5':
+            buffer.add({
+              'id': node.id,
+              'type': 'header5',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+          case 'header6':
+            buffer.add({
+              'id': node.id,
+              'type': 'header6',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+          case 'blockquote':
+            buffer.add({
+              'id': node.id,
+              'type': 'quote',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+          case 'code':
+            buffer.add({
+              'id': node.id,
+              'type': 'code',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+          default:
+            buffer.add({
+              'id': node.id,
+              'type': 'paragraph',
+              'text': node.text.toMarkdown(),
+            });
+            break;
+        }
+      }
+    }
+
+    return buffer.toString();
   }
 
   @override
@@ -464,8 +569,9 @@ class CreateLongformState extends State<CreateLongform>
             displayDoneButton: false,
             displayActionBar: false,
             footerBuilder: (context) {
-              return MyCustomBarWidget(
+              return RichTextEditorToolbar(
                 toggleAttributions: toggleAttributions,
+                toggleBlocktype: toggleBlocktype,
                 addList: addList,
                 addHorizontalRule: addHorizontalRule,
                 addImage: addImage,
@@ -522,7 +628,7 @@ class CreateLongformState extends State<CreateLongform>
                       child: Editor.custom(
                         editor: _docEditor,
                         composer: _composer,
-                        focusNode: widget.captionFocus,
+                        // focusNode: widget.captionFocus,
                         maxWidth: 600,
                         padding: const EdgeInsets.symmetric(
                           vertical: 56,
@@ -662,122 +768,68 @@ class CreateLongformState extends State<CreateLongform>
   bool get wantKeepAlive => true;
 }
 
-class MyCustomBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  const MyCustomBarWidget({
-    Key key,
-    this.toggleAttributions,
-    this.addList,
-    this.addHorizontalRule,
-    this.addImage,
-  }) : super(key: key);
+extension on AttributedText {
+  /// Serializes style attributions into markdown syntax in a repeatable
+  /// order such that opening and closing styles match each other on
+  /// the opening and closing ends of a span.
+  static String _sortAndSerializeAttributions(
+      Set<dynamic> attributions, AttributionVisitEvent event) {
+    const startOrder = ['code', 'bold', 'italics', 'strikethrough'];
 
-  final Function(String) toggleAttributions;
-  final Function({bool ordered}) addList;
-  final Function addHorizontalRule;
-  final Function addImage;
+    final buffer = StringBuffer();
+    final encodingOrder =
+        event == AttributionVisitEvent.start ? startOrder : startOrder.reversed;
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      scrollDirection: Axis.horizontal,
-      children: [
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.format_bold),
-            onPressed: () => toggleAttributions('bold'),
-          ),
-        ),
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.format_italic),
-            onPressed: () => toggleAttributions('italics'),
-          ),
-        ),
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.format_strikethrough),
-            onPressed: () => toggleAttributions('strikethrough'),
-          ),
-        ),
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.format_quote),
-            onPressed: () => toggleAttributions('blockquote'),
-          ),
-        ),
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.format_underline),
-            onPressed: () => toggleAttributions('underline'),
-          ),
-        ),
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.format_list_bulleted),
-            onPressed: () => addList(ordered: false),
-          ),
-        ),
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.format_list_numbered),
-            onPressed: () => addList(ordered: true),
-          ),
-        ),
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.horizontal_rule),
-            onPressed: addHorizontalRule,
-          ),
-        ),
-        Transform.scale(
-          scale: 0.8,
-          child: IconButton(
-            padding: EdgeInsets.all(2.0),
-            icon: Icon(Icons.image),
-            onPressed: addHorizontalRule,
-          ),
-        ),
-        TextButton(
-          onPressed: () => toggleAttributions('header1'),
-          child: Text(
-            'H1',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        TextButton(
-          onPressed: () => toggleAttributions('header2'),
-          child: Text(
-            'H2',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        TextButton(
-          onPressed: () => toggleAttributions('header3'),
-          child: Text(
-            'H3',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-      ],
-    );
+    for (final markdownStyleAttribution in encodingOrder) {
+      if (attributions.contains(markdownStyleAttribution)) {
+        buffer.write(_encodeMarkdownStyle(markdownStyleAttribution));
+      }
+    }
+
+    return buffer.toString();
   }
 
-  @override
-  Size get preferredSize => Size.fromHeight(60);
+  static String _encodeMarkdownStyle(dynamic attribution) {
+    if (attribution is! String) {
+      return '';
+    }
+
+    switch (attribution) {
+      case 'code':
+        return '`';
+      case 'bold':
+        return '**';
+      case 'italics':
+        return '*';
+      case 'strikethrough':
+        return '~';
+      default:
+        return '';
+    }
+  }
+
+  String toMarkdown() {
+    final buffer = StringBuffer();
+    int spanStart = 0;
+
+    visitAttributions((fullText, index, attributions, event) {
+      final markdownStyles = _sortAndSerializeAttributions(attributions, event);
+
+      switch (event) {
+        case AttributionVisitEvent.start:
+          spanStart = index;
+          buffer.write(markdownStyles);
+          break;
+        case AttributionVisitEvent.end:
+          // +1 on end index because this visitor has inclusive indices
+          // whereas substring() expects an exclusive ending index.
+          buffer
+            ..write(fullText.text.substring(spanStart, index + 1))
+            ..write(markdownStyles);
+          break;
+      }
+    });
+
+    return buffer.toString();
+  }
 }
