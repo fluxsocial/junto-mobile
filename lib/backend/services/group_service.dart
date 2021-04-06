@@ -134,4 +134,18 @@ class GroupServiceCentralized implements GroupService {
     );
     JuntoHttp.handleResponse(_serverResponse);
   }
+
+  @override
+  Future<Map<String, dynamic>> getPublicGroups(
+      Map<String, String> params) async {
+    final Response response = await client.get(
+      '/groups',
+      queryParams: params,
+    );
+
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+
+    return _responseMap;
+  }
 }

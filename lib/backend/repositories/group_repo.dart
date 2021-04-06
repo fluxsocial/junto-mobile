@@ -33,6 +33,10 @@ class GroupRepo {
     return _userService.getUserGroups(userAddress);
   }
 
+  Future<Map<String, dynamic>> getPublicGroups(Map<String, String> params) {
+    return _groupService.getPublicGroups(params);
+  }
+
   Future<void> addGroupMember(
       String groupAddress, List<UserProfile> userProfile, String perms) {
     final List<Map<String, dynamic>> _users = <Map<String, dynamic>>[];
