@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed_new.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:provider/provider.dart';
 
 import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
 import 'circles_list_all.dart';
 import 'circles_requests.dart';
 import 'private_groups_placeholder.dart';
+import 'public_circles.dart';
 import 'sphere_open/sphere_open.dart';
 
 // This screen displays the temporary page we'll display until groups are released
@@ -208,6 +209,10 @@ class _CircleMainState extends State<CircleMain>
                         }
                       },
                       children: [
+                        PublicCircles(
+                          userProfile: widget._userProfile,
+                          onGroupSelected: widget.onGroupSelected,
+                        ),
                         CirclesListAll(
                           userProfile: widget._userProfile,
                           onGroupSelected: widget.onGroupSelected,
