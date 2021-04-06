@@ -35,7 +35,6 @@ class CirclesState extends State<Circles>
     with ListDistinct, TickerProviderStateMixin {
   PageController circlesPageController;
   UserData _userProfile;
-  int _currentIndex = 0;
   // Group activeGroup;
 
   @override
@@ -50,7 +49,6 @@ class CirclesState extends State<Circles>
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
     final groupsPageIndex =
         Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
-    _currentIndex = groupsPageIndex;
     circlesPageController = PageController(initialPage: groupsPageIndex);
   }
 
@@ -79,9 +77,6 @@ class CirclesState extends State<Circles>
             controller: circlesPageController,
             physics: NeverScrollableScrollPhysics(),
             onPageChanged: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
               Provider.of<AppRepo>(context, listen: false)
                   .setGroupsPageIndex(index);
             },

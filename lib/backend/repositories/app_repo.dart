@@ -52,6 +52,18 @@ class AppRepo extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> reset() async {
+    _packsPageIndex = 0;
+    _groupPageIndex = 0;
+    _collectivePageIndex = 0;
+    group = null;
+    expressionContext = null;
+    showCreateScreen = false;
+    latestScreen = null;
+    currentScreen = null;
+    notifyListeners();
+  }
+
   Future<void> changeScreen({
     Screen screen,
     ExpressionContext newExpressionContext,
@@ -72,7 +84,6 @@ class AppRepo extends ChangeNotifier {
     }
 
     notifyListeners();
-    print(showCreateScreen);
   }
 
   Future<void> closeCreate() async {

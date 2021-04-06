@@ -24,6 +24,8 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/backend/services/hive_service.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 
 class NewHome extends StatefulWidget {
   const NewHome({this.screen = Screen.groups});
@@ -127,6 +129,10 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
         print(state);
         if (state is AuthUnauthenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
+            Provider.of<HiveCache>(context).wipe();
+            Provider.of<JuntoThemesProvider>(context).reset();
+            Provider.of<AppRepo>(context).reset();
+
             Navigator.of(context).pushAndRemoveUntil(
               PageRouteBuilder(
                 pageBuilder: (context, anim1, anim2) => HomePage(),
