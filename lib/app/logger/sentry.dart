@@ -29,7 +29,7 @@ Future<void> reportError(dynamic error, dynamic stackTrace) async {
   final response = await _sentry.captureEvent(
     SentryEvent(
       release: version.buildNumber,
-      message: Message(error.toString()),
+      message: SentryMessage(error.toString()),
       environment: Platform.isAndroid ? 'Android' : 'iOS',
       stackTrace: stackTrace,
       exception: error,
