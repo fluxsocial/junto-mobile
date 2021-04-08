@@ -25,10 +25,6 @@ class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
         children: <Widget>[
           GestureDetector(
             onTap: () async {
-              if (await isHostUser(expression.creator)) {
-                Navigator.pop(context);
-              }
-
               showUserDen(context, expression.creator);
             },
             child: Container(
