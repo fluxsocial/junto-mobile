@@ -18,8 +18,16 @@ class CommunityMemberInvite extends StatelessWidget with MemberValidation {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          onUserTap != null ? onUserTap() : showUserDen(context, profile),
+      onTap: () async {
+        if (onUserTap != null) {
+          onUserTap();
+        } else {
+          if (await isHostUser(profile)) {
+            Navigator.pop(context);
+          }
+          showUserDen(context, profile);
+        }
+      },
       child: Container(
         color: Theme.of(context).colorScheme.background,
         child: Row(

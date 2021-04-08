@@ -68,7 +68,13 @@ class ExpressionOpenParent extends StatelessWidget with MemberValidation {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () => showUserDen(context, parent.creator),
+                      onTap: () async {
+                        if (await isHostUser(parent.creator)) {
+                          Navigator.pop(context);
+                        }
+
+                        showUserDen(context, parent.creator);
+                      },
                       child: Container(
                         color: Colors.transparent,
                         padding: const EdgeInsets.only(left: 10),

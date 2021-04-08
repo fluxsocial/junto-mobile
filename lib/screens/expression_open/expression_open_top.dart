@@ -23,7 +23,13 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           GestureDetector(
-            onTap: () => showUserDen(context, expression.creator),
+            onTap: () async {
+              if (await isHostUser(expression.creator)) {
+                Navigator.pop(context);
+              }
+
+              showUserDen(context, expression.creator);
+            },
             child: Container(
               color: Colors.transparent,
               child: Row(children: <Widget>[
