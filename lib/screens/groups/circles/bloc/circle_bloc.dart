@@ -379,8 +379,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       final result = await groupRepo.getPublicGroups({
         'pagination_position': currentPublicGroupsPage.toString(),
         'query': event.query,
-        'aplhanum': event.aplhanum.toString(),
-        'size': event.size.toString(),
+        'sorting': 'GroupSize',
       });
 
       final results = result['results'];
@@ -388,7 +387,9 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       publicGroups =
           results.map((e) => Group.fromJson(e)).toList().cast<Group>();
 
-      remainingPublicGroupCount = result['remaining_count'];
+      remainingPublicGroupCount = event.query.length > 0
+          ? result['result_count']
+          : result['remaining_count'];
 
       yield CircleLoaded(
         groups: groups,
@@ -399,21 +400,22 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       );
     } catch (e, s) {
       logger.logException(e, s);
-      yield CircleError();
     }
   }
 
   Stream<CircleState> _mapFetchMorePublicGroupsToState(
       FetchMorePublicCircle event) async* {
     try {
-      if (remainingPublicGroupCount != 0) {
+      final loadmore = event.query.length > 0
+          ? remainingPublicGroupCount == 50
+          : remainingPublicGroupCount != 0;
+      if (loadmore) {
         currentPublicGroupsPage += 1;
 
         final result = await groupRepo.getPublicGroups({
           'pagination_position': currentPublicGroupsPage.toString(),
           'query': event.query,
-          'aplhanum': event.aplhanum.toString(),
-          'size': event.size.toString(),
+          'sorting': 'GroupSize',
         });
 
         final results = result['results'];
@@ -423,7 +425,9 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
           ...results.map((e) => Group.fromJson(e)).toList().cast<Group>()
         ];
 
-        remainingPublicGroupCount = result['remaining_count'];
+        remainingPublicGroupCount = event.query.length > 0
+            ? result['result_count']
+            : result['remaining_count'];
 
         yield CircleLoaded(
           groups: groups,

@@ -138,10 +138,24 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<Map<String, dynamic>> getPublicGroups(
       Map<String, String> params) async {
-    final Response response = await client.get(
-      '/groups',
-      queryParams: params,
-    );
+    Response response;
+
+    if (params['query'].length > 0) {
+      params.putIfAbsent('handle', () => params['query']);
+      params.remove('sorting');
+      params.remove('query');
+
+      response = await client.get(
+        '/search/groups',
+        queryParams: params,
+      );
+    } else {
+      params.remove('query');
+      response = await client.get(
+        '/groups',
+        queryParams: params,
+      );
+    }
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
