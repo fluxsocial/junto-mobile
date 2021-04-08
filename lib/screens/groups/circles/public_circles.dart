@@ -121,12 +121,10 @@ class _PublicCirclesState extends State<PublicCircles> {
               ],
             );
           }
-          return Expanded(
-            child: Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50),
-                child: JuntoProgressIndicator(),
-              ),
+          return Center(
+            child: Transform.translate(
+              offset: const Offset(0.0, -50),
+              child: JuntoProgressIndicator(),
             ),
           );
         },
