@@ -25,7 +25,7 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
           GestureDetector(
             onTap: () async {
               if (await isHostUser(expression.creator)) {
-                Navigator.pop(context);
+                Navigator.popUntil(context, (route) => route.isFirst);
               }
 
               showUserDen(context, expression.creator);

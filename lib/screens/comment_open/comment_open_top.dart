@@ -30,7 +30,7 @@ class CommentOpenTop extends StatelessWidget with MemberValidation {
           GestureDetector(
             onTap: () async {
               if (await isHostUser(comment.creator)) {
-                Navigator.pop(context);
+                Navigator.popUntil(context, (route) => route.isFirst);
               }
 
               showUserDen(context, comment.creator);
