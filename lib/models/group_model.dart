@@ -34,6 +34,7 @@ class Group {
                 photo: json['photo'],
                 name: json['name'],
                 sphereHandle: json['handle'],
+                description: json['description'],
               ),
       );
 
