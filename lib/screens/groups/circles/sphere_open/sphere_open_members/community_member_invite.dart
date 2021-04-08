@@ -23,7 +23,7 @@ class CommunityMemberInvite extends StatelessWidget with MemberValidation {
           onUserTap();
         } else {
           if (await isHostUser(profile)) {
-            Navigator.pop(context);
+            Navigator.popUntil(context, (route) => route.isFirst);
           }
           showUserDen(context, profile);
         }

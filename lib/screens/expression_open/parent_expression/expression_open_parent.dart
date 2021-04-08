@@ -70,7 +70,7 @@ class ExpressionOpenParent extends StatelessWidget with MemberValidation {
                     GestureDetector(
                       onTap: () async {
                         if (await isHostUser(parent.creator)) {
-                          Navigator.pop(context);
+                          Navigator.popUntil(context, (route) => route.isFirst);
                         }
 
                         showUserDen(context, parent.creator);
