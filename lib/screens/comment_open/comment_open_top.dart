@@ -28,7 +28,13 @@ class CommentOpenTop extends StatelessWidget with MemberValidation {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           GestureDetector(
-            onTap: () => showUserDen(context, comment.creator),
+            onTap: () async {
+              if (await isHostUser(comment.creator)) {
+                Navigator.pop(context);
+              }
+
+              showUserDen(context, comment.creator);
+            },
             child: Container(
               color: Colors.transparent,
               child: Row(children: <Widget>[

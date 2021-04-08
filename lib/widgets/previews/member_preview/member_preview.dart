@@ -18,11 +18,13 @@ class MemberPreview extends StatelessWidget with MemberValidation {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         if (onUserTap != null) {
           onUserTap();
         } else {
-          Navigator.pop(context);
+          if (await isHostUser(profile)) {
+            Navigator.pop(context);
+          }
           showUserDen(context, profile);
         }
       },
