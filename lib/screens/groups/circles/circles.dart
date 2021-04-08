@@ -204,15 +204,14 @@ class _CircleMainState extends State<CircleMain>
                         }
                       },
                       children: [
-                        PublicCircles(
-                          userProfile: widget._userProfile,
-                          onGroupSelected: widget.onGroupSelected,
-                        ),
                         CirclesListAll(
                           userProfile: widget._userProfile,
                           onGroupSelected: widget.onGroupSelected,
                         ),
-                        PrivateGroupsPlaceholder(),
+                        PublicCircles(
+                          userProfile: widget._userProfile,
+                          onGroupSelected: widget.onGroupSelected,
+                        ),
                         CirclesRequests(
                           onGroupSelected: widget.onGroupSelected,
                         ),
