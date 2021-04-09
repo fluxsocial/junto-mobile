@@ -62,6 +62,7 @@ class NotificationServiceImpl implements NotificationService {
       });
       return;
     } catch (e) {
+      print(e);
       return;
     }
   }

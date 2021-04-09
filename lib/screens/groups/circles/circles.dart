@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed_new.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 
 import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
@@ -53,57 +54,72 @@ class CirclesState extends State<Circles>
     circlesPageController = PageController(initialPage: groupsPageIndex);
   }
 
+  bool onWillPop() {
+    if (circlesPageController.page.round() == 0) {
+      return true;
+    } else {
+      circlesPageController.previousPage(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: JuntoFilterDrawer(
-        leftDrawer: null,
-        rightMenu: null,
-        swipe: false,
-        scaffold: PageView(
-          controller: circlesPageController,
-          physics: NeverScrollableScrollPhysics(),
-          onPageChanged: (int index) {
-            setState(() {
-              _currentIndex = index;
-            });
-            Provider.of<AppRepo>(context, listen: false)
-                .setGroupsPageIndex(index);
-          },
-          children: [
-            CircleMain(
-              userProfile: _userProfile,
-              widget: widget,
-              onGroupSelected: (Group group) async {
-                circlesPageController.animateToPage(
-                  1,
-                  duration: Duration(milliseconds: 250),
-                  curve: Curves.easeIn,
-                );
-                await Provider.of<AppRepo>(context, listen: false)
-                    .setActiveGroup(group);
-              },
-            ),
-            if (widget.group != null && widget.group.address == null)
-              Scaffold(body: ExpressionFeed(goBack: () {
-                circlesPageController.animateToPage(
-                  0,
-                  duration: Duration(milliseconds: 250),
-                  curve: Curves.easeIn,
-                );
-              }))
-            else
-              SphereOpen(
-                group: widget.group,
-                goBack: () {
+      body: WillPopScope(
+        onWillPop: () => Future.sync(onWillPop),
+        child: JuntoFilterDrawer(
+          leftDrawer: null,
+          rightMenu: null,
+          swipe: false,
+          scaffold: PageView(
+            controller: circlesPageController,
+            physics: NeverScrollableScrollPhysics(),
+            onPageChanged: (int index) {
+              setState(() {
+                _currentIndex = index;
+              });
+              Provider.of<AppRepo>(context, listen: false)
+                  .setGroupsPageIndex(index);
+            },
+            children: [
+              CircleMain(
+                userProfile: _userProfile,
+                widget: widget,
+                onGroupSelected: (Group group) async {
+                  circlesPageController.animateToPage(
+                    1,
+                    duration: Duration(milliseconds: 250),
+                    curve: Curves.easeIn,
+                  );
+                  await Provider.of<AppRepo>(context, listen: false)
+                      .setActiveGroup(group);
+                },
+              ),
+              if (widget.group != null && widget.group.address == null)
+                Scaffold(body: ExpressionFeed(goBack: () {
                   circlesPageController.animateToPage(
                     0,
                     duration: Duration(milliseconds: 250),
                     curve: Curves.easeIn,
                   );
-                },
-              )
-          ],
+                }))
+              else
+                SphereOpen(
+                  group: widget.group,
+                  goBack: () {
+                    circlesPageController.animateToPage(
+                      0,
+                      duration: Duration(milliseconds: 250),
+                      curve: Curves.easeIn,
+                    );
+                  },
+                )
+            ],
+          ),
         ),
       ),
     );
@@ -143,6 +159,19 @@ class _CircleMainState extends State<CircleMain>
         duration: Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
+  bool onWillPop() {
+    if (circlesPageController.page.round() ==
+        circlesPageController.initialPage) {
+      return false;
+    } else {
+      circlesPageController.previousPage(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,36 +185,45 @@ class _CircleMainState extends State<CircleMain>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: BlocBuilder<CircleBloc, CircleState>(
-        builder: (context, state) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: 75),
-            child: Column(
-              children: [
-                Expanded(
-                  child: PageView(
-                    controller: circlesPageController,
-                    onPageChanged: (int index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                    children: [
-                      CirclesListAll(
-                        userProfile: widget._userProfile,
-                        onGroupSelected: widget.onGroupSelected,
-                      ),
-                      PrivateGroupsPlaceholder(),
-                      CirclesRequests(
-                        onGroupSelected: widget.onGroupSelected,
-                      ),
-                    ],
+      body: WillPopScope(
+        onWillPop: () => Future.sync(onWillPop),
+        child: BlocBuilder<CircleBloc, CircleState>(
+          builder: (context, state) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 75),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: PageView(
+                      controller: circlesPageController,
+                      onPageChanged: (int index) async {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+
+                        if (index == 2) {
+                          Provider.of<NotificationsHandler>(context,
+                                  listen: false)
+                              .fetchNotifications();
+                        }
+                      },
+                      children: [
+                        CirclesListAll(
+                          userProfile: widget._userProfile,
+                          onGroupSelected: widget.onGroupSelected,
+                        ),
+                        PrivateGroupsPlaceholder(),
+                        CirclesRequests(
+                          onGroupSelected: widget.onGroupSelected,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

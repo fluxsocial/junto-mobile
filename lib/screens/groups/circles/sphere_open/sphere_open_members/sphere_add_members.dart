@@ -49,7 +49,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
           context: context,
-          dialogText: 'This member is already a part of this group',
+          dialogText: 'This member is already a part of this group.',
         ),
       );
 

@@ -19,14 +19,6 @@ class _ConnectionsState extends State<Connections>
   TextEditingController _textEditingController;
 
   @override
-  void initState() {
-    super.initState();
-    context
-        .read<RelationBloc>()
-        .add(FetchRealtionship(RelationContext.connections, ''));
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
@@ -43,7 +35,7 @@ class _ConnectionsState extends State<Connections>
               onTextChange: (val) {
                 context
                     .read<RelationBloc>()
-                    .add(FetchRealtionship(RelationContext.connections, val));
+                    .add(FetchRealtionship([RelationContext.connections], val));
               },
             ),
           ),

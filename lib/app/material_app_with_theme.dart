@@ -146,13 +146,13 @@ class HomePageContentState extends State<HomePageContent>
     final appRepo = Provider.of<AppRepo>(context);
 
     try {
-      context.read<NotificationSettingBloc>().add(FetchNotificationSetting());
+      // context.read<NotificationSettingBloc>().add(FetchNotificationSetting());
 
       final _isFirst = await appRepo.isFirstLaunch();
       if (_isFirst) {
         final token = await notificationRepo.getFCMToken();
         await notificationRepo.requestPermissions();
-        // await notificationRepo.registerDevice(token);
+        await notificationRepo.registerDevice(token);
         // await notificationRepo
         //     .manageNotifications(NotificationPrefsModel.enabled());
         await appRepo.setFirstLaunch();

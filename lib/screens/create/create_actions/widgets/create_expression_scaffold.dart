@@ -42,7 +42,7 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 class CreateExpressionScaffold extends StatefulWidget {
   CreateExpressionScaffold({
     Key key,
-    this.expressionContext,
+    this.expressionContext = ExpressionContext.Collective,
     this.group,
   }) : super(key: key);
 
@@ -60,7 +60,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   UserData userData;
   String socialContextAddress;
   ExpressionType currentExpressionType = ExpressionType.none;
-  ExpressionContext expressionContext = ExpressionContext.Collective;
+  ExpressionContext expressionContext;
   bool chooseContextVisibility = false;
   PageController createPageController;
   int _currentIndex = 0;
@@ -99,9 +99,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
     selectExpressionContext(widget.expressionContext);
 
-    if (widget.group != null) {
-      setSelectedGroup(widget.group);
-    }
+    setSelectedGroup(widget.group);
 
     createPageController = PageController(initialPage: 0, keepPage: true);
 
@@ -412,10 +410,19 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   }
 
   void setSelectedGroup(Group group) {
-    setState(() {
-      socialContextAddress = group.address;
-      selectedGroup = group;
-    });
+    if (group == null || group == Group()) {
+      setState(() {
+        expressionContext = ExpressionContext.Collective;
+        socialContextAddress = null;
+        selectedGroup = Group();
+      });
+    } else {
+      setState(() {
+        expressionContext = ExpressionContext.Group;
+        socialContextAddress = group.address;
+        selectedGroup = group;
+      });
+    }
   }
 
   void togglePageView(int page) {
@@ -653,7 +660,7 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       }
     } catch (error) {
       print('test: $error');
-      // JuntoLoader.hide();
+      JuntoLoader.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) => const SingleActionDialog(
@@ -704,60 +711,37 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                     removeFocus: removeFocus,
                   ),
                   resizeToAvoidBottomInset: false,
-                  body: PageView(
-                    controller: createPageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
+                  body: WillPopScope(
+                    onWillPop: () async {
+                      _expressionHasData(
+                        function: () async {
+                          await Provider.of<AppRepo>(context, listen: false)
+                              .closeCreate();
+                        },
+                        actionType: 'leaveExpression',
+                      );
+                      return false;
                     },
-                    children: [
-                      // Create Screen 1 - Make Content
-                      Stack(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).size.height * .1,
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                CreateTopBar(
-                                  profilePicture: userData.user.profilePicture,
-                                  toggleSocialContextVisibility:
-                                      toggleSocialContextVisibility,
-                                  currentExpressionContext: expressionContext,
-                                  selectedGroup: selectedGroup,
-                                ),
-                                _buildExpressionType(),
-                              ],
-                            ),
-                          ),
-                          if (showExpressionSheet)
-                            if (!_audioService.playBackAvailable)
-                              ChooseExpressionSheet(
-                                currentExpressionType: currentExpressionType,
-                                chooseExpressionType: chooseExpressionType,
-                              ),
-                          if (dynamicCaptionFocusNode.hasFocus)
-                            RemoveFocusWidget(
-                                focusNode: dynamicCaptionFocusNode)
-                        ],
-                      ),
-
-                      // Create Screen 2 - Review Content
-                      // We show a sized box when PageView index is 0 so we don't display a review screen
-                      // that is not consistent with the expression type, which causes an error
-                      if (_currentIndex == 0)
-                        SizedBox()
-                      else
-                        Column(
+                    child: PageView(
+                      controller: createPageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      onPageChanged: (int index) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                      children: [
+                        // Create Screen 1 - Make Content
+                        Stack(
                           children: [
-                            Expanded(
-                              child: ListView(
-                                children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.only(
+                                bottom: MediaQuery.of(context).size.height * .1,
+                              ),
+                              child: Column(
+                                children: <Widget>[
                                   CreateTopBar(
                                     profilePicture:
                                         userData.user.profilePicture,
@@ -766,13 +750,50 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                                     currentExpressionContext: expressionContext,
                                     selectedGroup: selectedGroup,
                                   ),
-                                  _buildReview(),
+                                  _buildExpressionType(),
                                 ],
                               ),
                             ),
+                            if (showExpressionSheet)
+                              if (!_audioService.playBackAvailable)
+                                ChooseExpressionSheet(
+                                  currentExpressionType: currentExpressionType,
+                                  chooseExpressionType: chooseExpressionType,
+                                ),
+                            if (dynamicCaptionFocusNode.hasFocus)
+                              RemoveFocusWidget(
+                                  focusNode: dynamicCaptionFocusNode)
                           ],
                         ),
-                    ],
+
+                        // Create Screen 2 - Review Content
+                        // We show a sized box when PageView index is 0 so we don't display a review screen
+                        // that is not consistent with the expression type, which causes an error
+                        if (_currentIndex == 0)
+                          SizedBox()
+                        else
+                          Column(
+                            children: [
+                              Expanded(
+                                child: ListView(
+                                  children: [
+                                    CreateTopBar(
+                                      profilePicture:
+                                          userData.user.profilePicture,
+                                      toggleSocialContextVisibility:
+                                          toggleSocialContextVisibility,
+                                      currentExpressionContext:
+                                          expressionContext,
+                                      selectedGroup: selectedGroup,
+                                    ),
+                                    _buildReview(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
                 ),
                 if (chooseContextVisibility)
