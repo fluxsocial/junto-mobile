@@ -10,6 +10,8 @@ import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:provider/provider.dart';
+
+import './widgets/hint_text.dart';
 import './widgets/richtext_editor_toolbar.dart';
 
 class CreateLongform extends StatefulWidget {
@@ -63,7 +65,7 @@ class CreateLongformState extends State<CreateLongform>
       ParagraphNode(
         id: DocumentEditor.createNodeId(),
         text: AttributedText(
-          text: 'Example Document',
+          text: '',
         ),
       ),
     ]);
@@ -86,24 +88,20 @@ class CreateLongformState extends State<CreateLongform>
   void toggleBlocktype(String blockType) {
     final node = _doc.getNode(_composer.selection.base) as ParagraphNode;
 
-    final nodes = _doc.nodes.map((e) {
-      if (e.id == node.id) {
-        var meta = {'blockType': blockType};
+    final nodeIndex = _doc.nodes.indexWhere((e) => e.id == node.id);
 
-        if (node.metadata['blockType'] == blockType) {
-          meta = {};
-        }
-        return ParagraphNode(id: node.id, text: node.text, metadata: meta);
-      }
+    var meta = {'blockType': blockType};
 
-      return e;
-    }).toList();
+    if (node.metadata['blockType'] == blockType) {
+      meta = {};
+    }
+    final modifiedNode =
+        ParagraphNode(id: node.id, text: node.text, metadata: meta);
 
-    setState(() {
-      _doc = MutableDocument(nodes: nodes);
-      _doc.notifyListeners();
-      _composer.notifyListeners();
-    });
+    _doc.deleteNodeAt(nodeIndex);
+    _doc.insertNodeAt(nodeIndex, modifiedNode);
+    _doc.notifyListeners();
+    _composer.notifyListeners();
   }
 
   Future<QueryResults<UserProfile>> _getUsers(
@@ -176,6 +174,7 @@ class CreateLongformState extends State<CreateLongform>
   }
 
   void suggestionListerner() async {
+    print('test: ${serializeDocumentToMarkdown(_doc)}');
     final node = _doc.getNode(_composer.selection.base);
 
     if (node.runtimeType == ParagraphNode) {
@@ -296,7 +295,12 @@ class CreateLongformState extends State<CreateLongform>
             });
           }
         } else {
-          searchValue = '';
+          setState(() {
+            users = [];
+            channels = [];
+            listType = ListType.empty;
+            _showList = false;
+          });
         }
       }
     }
@@ -369,7 +373,7 @@ class CreateLongformState extends State<CreateLongform>
   /// Creates a [LongFormExpression] from the given data entered
   /// by the user.
   LongFormExpression createExpression() {
-    final markupText = mentionKey.currentState.controller.markupText;
+    final markupText = serializeDocumentToMarkdown(_doc);
 
     return LongFormExpression(
       title: _titleController.value.text.trim(),
@@ -382,11 +386,13 @@ class CreateLongformState extends State<CreateLongform>
     final mentions = getMentionUserId(expression.body);
     final channels = getChannelsId(expression.body);
 
+    print(expression.body);
+
     return {'mentions': mentions, 'channels': channels};
   }
 
   bool expressionHasData() {
-    final body = mentionKey.currentState.controller.text.trim();
+    final body = serializeDocumentToMarkdown(_doc);
     final title = _titleController.value.text.trim();
     // Body cannot be empty if the title is also empty
     if (title.isEmpty) {
@@ -420,7 +426,7 @@ class CreateLongformState extends State<CreateLongform>
           'type': 'list-item',
           'indent': indent,
           'symbol': symbol,
-          'text': node.text.toMarkdown(),
+          'text': node.text.toMarkdown(_pattern, data),
         });
 
         final nodeBelow = i < doc.nodes.length - 1 ? doc.nodes[i + 1] : null;
@@ -440,63 +446,63 @@ class CreateLongformState extends State<CreateLongform>
             buffer.add({
               'id': node.id,
               'type': 'header1',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
           case 'header2':
             buffer.add({
               'id': node.id,
               'type': 'header2',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
           case 'header3':
             buffer.add({
               'id': node.id,
               'type': 'header3',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
           case 'header4':
             buffer.add({
               'id': node.id,
               'type': 'header4',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
           case 'header5':
             buffer.add({
               'id': node.id,
               'type': 'header5',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
           case 'header6':
             buffer.add({
               'id': node.id,
               'type': 'header6',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
           case 'blockquote':
             buffer.add({
               'id': node.id,
               'type': 'quote',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
           case 'code':
             buffer.add({
               'id': node.id,
               'type': 'code',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
           default:
             buffer.add({
               'id': node.id,
               'type': 'paragraph',
-              'text': node.text.toMarkdown(),
+              'text': node.text.toMarkdown(_pattern, data),
             });
             break;
         }
@@ -522,18 +528,20 @@ class CreateLongformState extends State<CreateLongform>
   }
 
   void addList({bool ordered = true}) {
-    final nodeId = _composer.selection.base.nodeId;
-    final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
-
-    final list = ordered
-        ? ListItemNode.ordered(
-            id: DocumentEditor.createNodeId(), text: AttributedText(text: ''))
-        : ListItemNode.unordered(
-            id: DocumentEditor.createNodeId(), text: AttributedText(text: ''));
-
-    _doc.nodes.insert(index + 1, list);
-
-    _doc.notifyListeners();
+    try {
+      final nodeId = _composer.selection.base.nodeId;
+      final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
+      final list = ordered
+          ? ListItemNode.ordered(
+              id: DocumentEditor.createNodeId(), text: AttributedText(text: ''))
+          : ListItemNode.unordered(
+              id: DocumentEditor.createNodeId(),
+              text: AttributedText(text: ''));
+      _doc.nodes.insert(index + 1, list);
+      _doc.notifyListeners();
+    } catch (e) {
+      print('test: $e');
+    }
   }
 
   void addHorizontalRule() {
@@ -631,10 +639,12 @@ class CreateLongformState extends State<CreateLongform>
                         focusNode: widget.captionFocus,
                         maxWidth: 600,
                         padding: const EdgeInsets.symmetric(
-                          vertical: 56,
-                          horizontal: 24,
+                          vertical: 8,
+                          horizontal: 12,
                         ),
                         componentBuilders: [
+                          titleHintBuilder,
+                          firstParagraphHintBuilder,
                           firstParagraphHintComponentBuilder,
                           unorderedListItemBuilder,
                           orderedListItemBuilder,
@@ -719,7 +729,7 @@ class CreateLongformState extends State<CreateLongform>
                           final strToadd = channels[index]['display']
                               .toString()
                               .replaceFirst(
-                                  searchValue.replaceFirst('@', ''), '');
+                                  searchValue.replaceFirst('#', ''), '');
                           final position =
                               _composer.selection.extent.nodePosition.offset +
                                   strToadd.length;
@@ -774,7 +784,13 @@ extension on AttributedText {
   /// the opening and closing ends of a span.
   static String _sortAndSerializeAttributions(
       Set<dynamic> attributions, AttributionVisitEvent event) {
-    const startOrder = ['code', 'bold', 'italics', 'strikethrough'];
+    const startOrder = [
+      'code',
+      'bold',
+      'italics',
+      'strikethrough',
+      'underline'
+    ];
 
     final buffer = StringBuffer();
     final encodingOrder =
@@ -802,13 +818,15 @@ extension on AttributedText {
       case 'italics':
         return '*';
       case 'strikethrough':
+        return '~~';
+      case 'underline':
         return '~';
       default:
         return '';
     }
   }
 
-  String toMarkdown() {
+  String toMarkdown(String pattern, Map<String, Annotation> mapping) {
     final buffer = StringBuffer();
     int spanStart = 0;
 
@@ -823,9 +841,23 @@ extension on AttributedText {
         case AttributionVisitEvent.end:
           // +1 on end index because this visitor has inclusive indices
           // whereas substring() expects an exclusive ending index.
-          buffer
-            ..write(fullText.text.substring(spanStart, index + 1))
-            ..write(markdownStyles);
+          //
+          final bufferText = fullText.text.substring(spanStart, index + 1);
+          final mentionText =
+              bufferText.replaceAllMapped(RegExp(pattern), (Match match) {
+            final mention = mapping[match[0]] ??
+                mapping[mapping.keys.firstWhere((element) {
+                  final reg = RegExp(element);
+
+                  return reg.hasMatch(match[0]);
+                })];
+
+            return mention.trigger == '@'
+                ? '[@${mention.display}:${mention.id}]'
+                : '#${mention.display}';
+          });
+
+          buffer..write(mentionText)..write(markdownStyles);
           break;
       }
     });
