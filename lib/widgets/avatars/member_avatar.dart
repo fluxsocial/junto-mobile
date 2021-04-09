@@ -10,7 +10,7 @@ class MemberAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return profilePicture.isNotEmpty &
+    return profilePicture.isNotEmpty &&
             profilePicture.first.toString().isNotEmpty
         ? Container(
             child: ClipOval(
