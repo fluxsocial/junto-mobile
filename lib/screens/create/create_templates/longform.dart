@@ -628,7 +628,7 @@ class CreateLongformState extends State<CreateLongform>
                       child: Editor.custom(
                         editor: _docEditor,
                         composer: _composer,
-                        // focusNode: widget.captionFocus,
+                        focusNode: widget.captionFocus,
                         maxWidth: 600,
                         padding: const EdgeInsets.symmetric(
                           vertical: 56,

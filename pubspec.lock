@@ -460,8 +460,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: markdown-serialization
-      resolved-ref: "3c64cc8377bdb59923b0dba88eacaf80f9463cf7"
+      ref: main
+      resolved-ref: "773e0b10ddbf152b5f2fef1c8bfb39081b85a109"
       url: "https://github.com/superlistapp/super_editor"
     source: git
     version: "0.1.0"

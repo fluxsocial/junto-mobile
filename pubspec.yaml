@@ -69,7 +69,7 @@ dependencies:
   flutter_richtext:
     git:
       url: https://github.com/superlistapp/super_editor
-      ref: markdown-serialization
+      ref: main
   keyboard_actions: 3.4.0
 
 dev_dependencies:
