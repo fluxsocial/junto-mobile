@@ -50,7 +50,7 @@ class DynamicPreview extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     final String expressionBody = expression.expressionData.body.trim();
 
-    List<dynamic> richtext;
+    List<dynamic> richtext = [];
 
     try {
       richtext = jsonDecode(expressionBody);
