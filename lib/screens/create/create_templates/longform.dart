@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:flutter_richtext/flutter_richtext.dart';
@@ -174,7 +176,6 @@ class CreateLongformState extends State<CreateLongform>
   }
 
   void suggestionListerner() async {
-    print('test: ${serializeDocumentToMarkdown(_doc)}');
     final node = _doc.getNode(_composer.selection.base);
 
     if (node.runtimeType == ParagraphNode) {
@@ -509,7 +510,7 @@ class CreateLongformState extends State<CreateLongform>
       }
     }
 
-    return buffer.toString();
+    return jsonEncode(buffer);
   }
 
   @override
@@ -546,11 +547,14 @@ class CreateLongformState extends State<CreateLongform>
 
   void addHorizontalRule() {
     final nodeId = _composer.selection.base.nodeId;
-    // _docEditor.executeCommand(SplitListItemCommand(nodeId: nodeId));
     final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
 
     _doc.nodes.insert(
         index + 1, HorizontalRuleNode(id: DocumentEditor.createNodeId()));
+    _doc.nodes.insert(
+        index + 2,
+        ParagraphNode(
+            id: DocumentEditor.createNodeId(), text: AttributedText(text: '')));
 
     _doc.notifyListeners();
   }
@@ -798,14 +802,15 @@ extension on AttributedText {
 
     for (final markdownStyleAttribution in encodingOrder) {
       if (attributions.contains(markdownStyleAttribution)) {
-        buffer.write(_encodeMarkdownStyle(markdownStyleAttribution));
+        buffer.write(_encodeMarkdownStyle(markdownStyleAttribution, event));
       }
     }
 
     return buffer.toString();
   }
 
-  static String _encodeMarkdownStyle(dynamic attribution) {
+  static String _encodeMarkdownStyle(
+      dynamic attribution, AttributionVisitEvent event) {
     if (attribution is! String) {
       return '';
     }
@@ -814,13 +819,13 @@ extension on AttributedText {
       case 'code':
         return '`';
       case 'bold':
-        return '**';
+        return event == AttributionVisitEvent.start ? '<b>' : '</b>';
       case 'italics':
-        return '*';
+        return event == AttributionVisitEvent.start ? '<i>' : '</i>';
       case 'strikethrough':
-        return '~~';
+        return event == AttributionVisitEvent.start ? '<strike>' : '</strike>';
       case 'underline':
-        return '~';
+        return event == AttributionVisitEvent.start ? '<u>' : '</u>';
       default:
         return '';
     }
@@ -853,8 +858,8 @@ extension on AttributedText {
                 })];
 
             return mention.trigger == '@'
-                ? '[@${mention.display}:${mention.id}]'
-                : '#${mention.display}';
+                ? '<mention>[@${mention.display}:${mention.id}]</mention>'
+                : '<channel>#${mention.display}</channel>';
           });
 
           buffer..write(mentionText)..write(markdownStyles);
