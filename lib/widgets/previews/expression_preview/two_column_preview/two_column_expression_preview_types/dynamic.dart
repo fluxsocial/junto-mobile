@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/richtext.dart';
 import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
 
 class DynamicPreview extends StatelessWidget {
@@ -46,26 +49,43 @@ class DynamicPreview extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     final String expressionBody = expression.expressionData.body.trim();
-    if (expressionBody.isNotEmpty) {
-      return CustomParsedText(
-        expressionBody,
-        maxLines: 7,
-        disableOnMentiontap: true,
-        overflow: TextOverflow.ellipsis,
-        defaultTextStyle: TextStyle(
-          height: 1.5,
-          color: Theme.of(context).primaryColor,
-          fontSize: 17,
-        ),
-        mentionTextStyle: TextStyle(
-          color: Theme.of(context).primaryColorDark,
-          fontSize: 17,
-          height: 1.5,
-          fontWeight: FontWeight.w700,
-        ),
-      );
+
+    List<dynamic> richtext;
+
+    try {
+      richtext = jsonDecode(expressionBody);
+    } catch (error) {
+      print('test: $error');
+    }
+
+    if (richtext.isEmpty) {
+      if (expressionBody.isNotEmpty) {
+        return CustomParsedText(
+          expressionBody,
+          maxLines: 7,
+          disableOnMentiontap: true,
+          overflow: TextOverflow.ellipsis,
+          defaultTextStyle: TextStyle(
+            height: 1.5,
+            color: Theme.of(context).primaryColor,
+            fontSize: 17,
+          ),
+          mentionTextStyle: TextStyle(
+            color: Theme.of(context).primaryColorDark,
+            fontSize: 17,
+            height: 1.5,
+            fontWeight: FontWeight.w700,
+          ),
+        );
+      } else {
+        return const SizedBox();
+      }
     } else {
-      return const SizedBox();
+      return Richtext(
+        data: richtext,
+        disableOnMentiontap: true,
+        open: false,
+      );
     }
   }
 }
