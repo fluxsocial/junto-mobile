@@ -39,25 +39,11 @@ class JuntoBottomBar extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 15),
       child: Row(
         children: [
-          // Expanded(
-          //   child: GestureDetector(
-          //     onTap: () => changeScreen(context, Screen.collective),
-          //     child: Container(
-          //       color: Colors.transparent,
-          //       height: 60,
-          //       child: Icon(
-          //         CustomIcons.newcollective,
-          //         size: 33,
-          //         color: currentScreen == Screen.collective
-          //             ? Theme.of(context).primaryColorDark
-          //             : Theme.of(context).primaryColorLight,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: GestureDetector(
-              onTap: () => changeScreen(context, Screen.groups),
+              onTap: () async {
+                changeScreen(context, Screen.groups);
+              },
               child: Container(
                 height: 60,
                 color: Colors.transparent,
@@ -87,22 +73,6 @@ class JuntoBottomBar extends StatelessWidget {
               ),
             ),
           ),
-          // Expanded(
-          //   child: GestureDetector(
-          //     onTap: () => changeScreen(context, Screen.packs),
-          //     child: Container(
-          //       height: 60,
-          //       color: Colors.transparent,
-          //       child: Icon(
-          //         CustomIcons.newpacks,
-          //         size: 33,
-          //         color: currentScreen == Screen.packs
-          //             ? Theme.of(context).primaryColorDark
-          //             : Theme.of(context).primaryColorLight,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: GestureDetector(
               onTap: () => JuntoFilterDrawer.of(context).toggleRightMenu(),
