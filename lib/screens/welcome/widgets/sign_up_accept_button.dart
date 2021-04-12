@@ -26,7 +26,6 @@ class AcceptButton extends StatelessWidget {
     UserDataProvider user,
   ) async {
     final String communityCenterAddress = kCommunityCenterAddress;
-    final String updatesAddress = kUpdatesAddress;
     try {
       if (pageView == 0) {
         nextPage();
@@ -34,11 +33,6 @@ class AcceptButton extends StatelessWidget {
         // Add member to community center on sign up
         await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
             communityCenterAddress, [user.userProfile.user], 'Member');
-        if (appConfig.flavor == Flavor.prod) {
-          // Add member to updates on sign up if they are in production
-          await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
-              updatesAddress, [user.userProfile.user], 'Member');
-        }
 
         // accept agreements
         await BlocProvider.of<AuthBloc>(context).add(AcceptAgreements());
