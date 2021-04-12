@@ -490,7 +490,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
+      ref: "773e0b10ddbf152b5f2fef1c8bfb39081b85a109"
       resolved-ref: "773e0b10ddbf152b5f2fef1c8bfb39081b85a109"
       url: "https://github.com/superlistapp/super_editor"
     source: git

@@ -74,7 +74,7 @@ dependencies:
   flutter_richtext:
     git:
       url: https://github.com/superlistapp/super_editor
-      ref: main
+      ref: 773e0b10ddbf152b5f2fef1c8bfb39081b85a109
   keyboard_actions: 3.4.0
   collection: ^1.15.0
   flutter_html: 1.3.0
