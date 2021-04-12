@@ -14,7 +14,6 @@ import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
 import 'circles_list_all.dart';
 import 'circles_requests.dart';
-import 'private_groups_placeholder.dart';
 import 'public_circles.dart';
 import 'sphere_open/sphere_open.dart';
 
