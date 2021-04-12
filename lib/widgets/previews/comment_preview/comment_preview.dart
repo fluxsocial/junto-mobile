@@ -70,6 +70,10 @@ class CommentPreview extends StatelessWidget with MemberValidation {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () async {
+                      if (await isHostUser(comment.creator)) {
+                        Navigator.popUntil(context, (route) => route.isFirst);
+                      }
+
                       showUserDen(context, comment.creator);
                     },
                     child: Container(
