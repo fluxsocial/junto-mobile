@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/remove_focus_widget.dart';
 import 'package:provider/provider.dart';
 
 class CreateLongform extends StatefulWidget {
@@ -189,56 +190,77 @@ class CreateLongformState extends State<CreateLongform>
                   Expanded(
                     child: Stack(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: FlutterMentions(
-                            key: mentionKey,
-                            suggestionPosition: SuggestionPosition.Bottom,
-                            minLines: 1,
-                            maxLines: 20,
-                            keyboardAppearance: Theme.of(context).brightness,
-                            cursorWidth: 2,
-                            focusNode: widget.captionFocus,
-                            textInputAction: TextInputAction.newline,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption
-                                .copyWith(fontSize: 17),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Write here...',
-                            ),
-                            onSearchChanged: (String trigger, String value) {
-                              if (value.isNotEmpty && _showList) {
-                                final channel = trigger == '#';
+                        Column(
+                          children: [
+                            Expanded(
+                              child: ListView(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: FlutterMentions(
+                                      key: mentionKey,
+                                      suggestionPosition:
+                                          SuggestionPosition.Bottom,
+                                      minLines: 1,
+                                      maxLines: 20,
+                                      keyboardAppearance:
+                                          Theme.of(context).brightness,
+                                      cursorWidth: 2,
+                                      focusNode: widget.captionFocus,
+                                      textInputAction: TextInputAction.newline,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption
+                                          .copyWith(fontSize: 17),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Write here...',
+                                      ),
+                                      onSearchChanged:
+                                          (String trigger, String value) {
+                                        if (value.isNotEmpty && _showList) {
+                                          final channel = trigger == '#';
 
-                                if (!channel) {
-                                  context.bloc<SearchBloc>().add(SearchingEvent(
-                                        value,
-                                        QueryUserBy.BOTH,
-                                      ));
-                                } else {
-                                  context
-                                      .bloc<SearchBloc>()
-                                      .add(SearchingChannelEvent(value));
-                                }
-                              } else {
-                                setState(() {
-                                  users = [];
-                                  channels = [];
-                                  listType = ListType.empty;
-                                  _showList = false;
-                                });
-                              }
-                            },
-                            onSuggestionVisibleChanged: toggleSearch,
-                            hideSuggestionList: true,
-                            mentions: getMention(
-                              context,
-                              [...addedmentions, ...completeUserList],
-                              [...addedChannels, ...completeChannelsList],
+                                          if (!channel) {
+                                            context
+                                                .bloc<SearchBloc>()
+                                                .add(SearchingEvent(
+                                                  value,
+                                                  QueryUserBy.BOTH,
+                                                ));
+                                          } else {
+                                            context.bloc<SearchBloc>().add(
+                                                SearchingChannelEvent(value));
+                                          }
+                                        } else {
+                                          setState(() {
+                                            users = [];
+                                            channels = [];
+                                            listType = ListType.empty;
+                                            _showList = false;
+                                          });
+                                        }
+                                      },
+                                      onSuggestionVisibleChanged: toggleSearch,
+                                      hideSuggestionList: true,
+                                      mentions: getMention(
+                                        context,
+                                        [...addedmentions, ...completeUserList],
+                                        [
+                                          ...addedChannels,
+                                          ...completeChannelsList
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                            if (widget.captionFocus.hasFocus)
+                              RemoveFocusWidget(
+                                  focusNode: widget.captionFocus)
+                          ],
                         ),
                         if (_showList &&
                             widget.captionFocus.hasFocus &&
