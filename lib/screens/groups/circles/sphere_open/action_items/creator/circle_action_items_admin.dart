@@ -100,7 +100,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                               buildContext: context,
                               confirm: () {
                                 try {
-                                  context.bloc<CircleBloc>().add(DeleteCircle(
+                                  context.read<CircleBloc>().add(DeleteCircle(
                                         sphereAddress: widget.sphere.address,
                                       ));
 
@@ -140,7 +140,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                               buildContext: context,
                               confirm: () {
                                 try {
-                                  context.bloc<CircleBloc>().add(LeaveCircle(
+                                  context.read<CircleBloc>().add(LeaveCircle(
                                         sphereAdress: widget.sphere.address,
                                         userAddress: widget.userProfile.address,
                                       ));

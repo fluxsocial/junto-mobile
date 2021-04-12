@@ -34,7 +34,7 @@ class PackMembersState extends State<PackMembers> {
   Future<void> getPackMembers(BuildContext _context) async {
     final userData = await Provider.of<UserRepo>(context, listen: false)
         .getUser(widget.userAddress);
-    _context.bloc<PackBloc>().add(FetchPacks(group: userData.pack.address));
+    _context.read<PackBloc>().add(FetchPacks(group: userData.pack.address));
   }
 
   @override
@@ -66,7 +66,7 @@ class PackMembersState extends State<PackMembers> {
                               (metrics.pixels / metrics.maxScrollExtent) * 100;
                           if (scrollPercent.roundToDouble() == 60.0) {
                             context
-                                .bloc<PackBloc>()
+                                .read<PackBloc>()
                                 .add(FetchMorePacksMembers());
                             return true;
                           }

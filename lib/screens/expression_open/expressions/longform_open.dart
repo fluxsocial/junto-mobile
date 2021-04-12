@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/custom_parsed_text.dart';
+import './richtext.dart';
 
 class LongformOpen extends StatelessWidget {
   const LongformOpen(this.longformExpression);
@@ -15,6 +18,14 @@ class LongformOpen extends StatelessWidget {
 
     final String longformTitle = _expression.title.trim();
     final String longformBody = _expression.body.trim();
+
+    List<dynamic> richtext;
+
+    try {
+      richtext = jsonDecode(longformBody);
+    } catch (error) {
+      print('test: $error');
+    }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -35,26 +46,29 @@ class LongformOpen extends StatelessWidget {
                   ),
                 )
               : const SizedBox(),
-          longformBody != ''
-              ? Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: CustomParsedText(
-                    longformBody,
-                    defaultTextStyle: TextStyle(
-                      height: 1.5,
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 17,
+          if (richtext == null)
+            longformBody != ''
+                ? Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: CustomParsedText(
+                      longformBody,
+                      defaultTextStyle: TextStyle(
+                        height: 1.5,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17,
+                      ),
+                      mentionTextStyle: TextStyle(
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 17,
+                        height: 1.5,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    mentionTextStyle: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontSize: 17,
-                      height: 1.5,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                )
-              : const SizedBox(),
+                  )
+                : const SizedBox()
+          else
+            Richtext(data: richtext),
         ],
       ),
     );

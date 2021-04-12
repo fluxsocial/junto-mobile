@@ -31,7 +31,7 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
 
   Future<void> _onSearchChanged() async {
     context
-        .bloc<ChannelFilteringBloc>()
+        .read<ChannelFilteringBloc>()
         .add(FilterQueryUpdated(textEditingController.text));
   }
 
@@ -77,7 +77,7 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
                           .map((e) => SelectedChannelChip(
                               channel: e.name,
                               onTap: () {
-                                context.bloc<ChannelFilteringBloc>().add(
+                                context.read<ChannelFilteringBloc>().add(
                                       FilterSelected(
                                         state.selectedChannel
                                             .where((element) =>
@@ -100,7 +100,7 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
                         if (item != null) {
                           return InkWell(
                             onTap: () {
-                              context.bloc<ChannelFilteringBloc>().add(
+                              context.read<ChannelFilteringBloc>().add(
                                       FilterSelected([
                                     if (state.selectedChannel != null)
                                       ...state.selectedChannel,
@@ -124,7 +124,7 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
           ),
           ResetFilterButton(
             onTap: () =>
-                context.bloc<ChannelFilteringBloc>().add(FilterReset()),
+                context.read<ChannelFilteringBloc>().add(FilterReset()),
           ),
         ],
       );

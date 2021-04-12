@@ -63,7 +63,7 @@ class CreateAudioState extends State<CreateAudio>
         } else {
           showDialog(
             context: context,
-            child: SettingsPopup(
+            builder: (context) => SettingsPopup(
               buildContext: context,
               // TODO: @Eric - Need to update the text
               text: 'Access not granted to access camera',
@@ -79,7 +79,7 @@ class CreateAudioState extends State<CreateAudio>
         } else {
           showDialog(
             context: context,
-            child: SettingsPopup(
+            builder: (context) => SettingsPopup(
               buildContext: context,
               // TODO: @Eric - Need to update the text
               text: 'Access not granted to access gallery',
@@ -93,7 +93,7 @@ class CreateAudioState extends State<CreateAudio>
         } else {
           showDialog(
             context: context,
-            child: SettingsPopup(
+            builder: (context) => SettingsPopup(
               buildContext: context,
               // TODO: @Eric - Need to update the text
               text: 'Access not granted to access camera',

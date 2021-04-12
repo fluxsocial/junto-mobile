@@ -29,22 +29,22 @@ class BlocProviders extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (ctx) => AuthBloc(
             backend.client,
-            ctx.repository<AuthRepo>(),
-            ctx.repository<UserDataProvider>(),
-            ctx.repository<UserRepo>(),
-            ctx.repository<OnBoardingRepo>(),
-            ctx.repository<NotificationRepo>(),
+            ctx.read<AuthRepo>(),
+            ctx.read<UserDataProvider>(),
+            ctx.read<UserRepo>(),
+            ctx.read<OnBoardingRepo>(),
+            ctx.read<NotificationRepo>(),
           ),
         ),
         BlocProvider<NotificationSettingBloc>(
           create: (context) => NotificationSettingBloc(
-            context.repository<NotificationRepo>(),
+            context.read<NotificationRepo>(),
           ),
         ),
         BlocProvider<PerspectivesBloc>(
           create: (ctx) => PerspectivesBloc(
-            ctx.repository<UserRepo>(),
-            ctx.repository<UserDataProvider>(),
+            ctx.read<UserRepo>(),
+            ctx.read<UserDataProvider>(),
           ),
         ),
         BlocProvider<CollectiveBloc>(
@@ -55,8 +55,8 @@ class BlocProviders extends StatelessWidget {
           create: (ctx) => AppBloc(RepositoryProvider.of<AppRepo>(context)),
         ),
         BlocProvider<RelationBloc>(
-          create: (ctx) => RelationBloc(
-              ctx.repository<UserRepo>(), ctx.repository<UserDataProvider>()),
+          create: (ctx) =>
+              RelationBloc(ctx.read<UserRepo>(), ctx.read<UserDataProvider>()),
         ),
         BlocProvider<CircleBloc>(
           create: (ctx) => CircleBloc(

@@ -70,10 +70,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
 
     context
-        .bloc<CircleBloc>()
+        .read<CircleBloc>()
         .add(LoadCircleMembers(sphereAddress: widget.group.address));
 
-    context.bloc<CollectiveBloc>().add(
+    context.read<CollectiveBloc>().add(
           FetchCollective(
             ExpressionQueryParams(
               context: widget.group.address,
@@ -93,7 +93,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   loadCircleMembers() {
-    context.bloc<CircleBloc>().add(
+    context.read<CircleBloc>().add(
           LoadCircleMembers(sphereAddress: widget.group.address),
         );
   }

@@ -97,7 +97,7 @@ class JuntoContactsState extends State<JuntoContacts> {
       Timer(Duration(milliseconds: 500), () {
         showDialog(
           context: context,
-          child: SettingsPopup(
+          builder: (context) => SettingsPopup(
             buildContext: context,
             // TODO: @Eric - Need to update the text
             text: 'Access not granted to access contacts',
@@ -119,8 +119,7 @@ class JuntoContactsState extends State<JuntoContacts> {
       setState(() {
         contactsPermission = permissionStatus[Permission.contacts];
       });
-      return permissionStatus[Permission.contacts] ??
-          PermissionStatus.undetermined;
+      return permissionStatus[Permission.contacts] ?? PermissionStatus.limited;
     } else {
       setState(() {
         contactsPermission = permission;
@@ -248,7 +247,7 @@ class JuntoContactsState extends State<JuntoContacts> {
 
 class JuntoContactsList extends StatelessWidget {
   const JuntoContactsList({
-    this.contactsPermission = PermissionStatus.undetermined,
+    this.contactsPermission = PermissionStatus.limited,
     this.filteredContacts,
     this.userProfile,
     this.selectedNumbers,

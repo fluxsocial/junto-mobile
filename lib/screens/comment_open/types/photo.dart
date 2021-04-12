@@ -30,7 +30,7 @@ class PhotoOpen extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: photoExpression.expressionData.thumbnail600,
                       fit: BoxFit.cover,
-                      cacheManager: CustomCacheManager(),
+                      cacheManager: CustomCacheManager.instance,
                     ),
                   );
                 },

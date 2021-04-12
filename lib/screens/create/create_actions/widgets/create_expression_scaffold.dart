@@ -710,7 +710,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                     createExpression: createExpression,
                     removeFocus: removeFocus,
                   ),
-                  resizeToAvoidBottomPadding: false,
                   resizeToAvoidBottomInset: false,
                   body: WillPopScope(
                     onWillPop: () async {

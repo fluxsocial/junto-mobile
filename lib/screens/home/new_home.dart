@@ -45,7 +45,7 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    context.bloc<CircleBloc>().add(FetchMyCircle());
+    context.read<CircleBloc>().add(FetchMyCircle());
 
     context.bloc<CircleBloc>().add(FetchPublicCircle());
 

@@ -75,7 +75,7 @@ class CreatePhotoState extends State<CreatePhoto>
         } else {
           showDialog(
             context: context,
-            child: SettingsPopup(
+            builder: (context) => SettingsPopup(
               buildContext: context,
               // TODO: @Eric - Need to update the text
               text: 'Access not granted to access gallery',
@@ -97,7 +97,7 @@ class CreatePhotoState extends State<CreatePhoto>
         } else {
           showDialog(
             context: context,
-            child: SettingsPopup(
+            builder: (context) => SettingsPopup(
               buildContext: context,
               // TODO: @Eric - Need to update the text
               text: 'Access not granted to access camera',
@@ -489,13 +489,13 @@ class CreatePhotoState extends State<CreatePhoto>
                                 final channel = trigger == '#';
 
                                 if (!channel) {
-                                  context.bloc<SearchBloc>().add(SearchingEvent(
+                                  context.read<SearchBloc>().add(SearchingEvent(
                                         value,
                                         QueryUserBy.BOTH,
                                       ));
                                 } else {
                                   context
-                                      .bloc<SearchBloc>()
+                                      .read<SearchBloc>()
                                       .add(SearchingChannelEvent(value));
                                 }
                               } else {

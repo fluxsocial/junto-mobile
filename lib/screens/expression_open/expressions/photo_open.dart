@@ -31,7 +31,7 @@ class PhotoOpen extends StatelessWidget {
                     child: CachedNetworkImage(
                         imageUrl: photoExpression.thumbnailSmall,
                         fit: BoxFit.cover,
-                        cacheManager: CustomCacheManager(),
+                        cacheManager: CustomCacheManager.instance,
                         placeholder: (BuildContext context, String _) {
                           return Container(
                             width: MediaQuery.of(context).size.width,

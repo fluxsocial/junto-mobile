@@ -143,7 +143,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   void _postCreateAction() {
     Widget child;
     if (_expressionContext == ExpressionContext.Collective) {
-      context.bloc<CollectiveBloc>().add(RefreshCollective());
+      context.read<CollectiveBloc>().add(RefreshCollective());
       child = JuntoCollective();
     } else if (_expressionContext == ExpressionContext.Group &&
         _currentExpressionContext == 'Circles') {
@@ -159,7 +159,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         tabPos: 1,
       );
     } else {
-      context.bloc<CollectiveBloc>().add(
+      context.read<CollectiveBloc>().add(
             RefreshCollective(),
           );
       child = JuntoCollective();

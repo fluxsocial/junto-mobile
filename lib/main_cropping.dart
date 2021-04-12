@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
     } else {
       showDialog(
         context: context,
-        child: SettingsPopup(
+        builder: (context) => SettingsPopup(
           buildContext: context,
           // TODO: @Eric - Need to update the text
           text: 'Access not granted to access gallery',

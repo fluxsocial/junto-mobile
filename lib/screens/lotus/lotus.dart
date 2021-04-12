@@ -91,7 +91,7 @@ class _JuntoLotusState extends State<JuntoLotus> {
   }
 
   void initializeBloc() {
-    context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+    context.read<PerspectivesBloc>().add(FetchPerspectives());
   }
 
   @override

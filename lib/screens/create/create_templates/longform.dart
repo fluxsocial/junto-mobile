@@ -1,16 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
+import 'package:flutter_richtext/flutter_richtext.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
-import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
-import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/widgets/custom_text.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:provider/provider.dart';
+
+import './widgets/hint_text.dart';
+import './widgets/richtext_editor_toolbar.dart';
 
 class CreateLongform extends StatefulWidget {
   const CreateLongform({
@@ -42,16 +46,335 @@ class CreateLongformState extends State<CreateLongform>
   List<Map<String, dynamic>> completeChannelsList = [];
   ListType listType = ListType.empty;
 
+  // richtext editor
+  MutableDocument _doc;
+  DocumentEditor _docEditor;
+  DocumentComposer _composer;
+  String _pattern = '';
+  bool showSuggestions = false;
+  String searchValue = '';
+  int searchPos = -1;
+  List<LengthMap> _lengthMap = <LengthMap>[];
+  Map<String, Annotation> data;
+
   @override
   void initState() {
     super.initState();
+    data = mapToAnotation();
+    _pattern = "(${data.keys.map((key) => RegExp.escape(key)).join('|')})";
     _titleController = TextEditingController();
+    _doc = MutableDocument(nodes: [
+      ParagraphNode(
+        id: DocumentEditor.createNodeId(),
+        text: AttributedText(
+          text: '',
+        ),
+      ),
+    ]);
+    _docEditor = DocumentEditor(document: _doc);
+    _composer = DocumentComposer();
+    _docEditor.document.addListener(suggestionListerner);
+  }
+
+  void toggleAttributions(String attributions) {
+    final selection = _composer.selection;
+
+    _docEditor.executeCommand(ToggleTextAttributionsCommand(
+      documentSelection: selection,
+      attributions: {attributions},
+    ));
+
+    _composer.notifyListeners();
+  }
+
+  void toggleBlocktype(String blockType) {
+    final node = _doc.getNode(_composer.selection.base) as ParagraphNode;
+
+    final nodeIndex = _doc.nodes.indexWhere((e) => e.id == node.id);
+
+    var meta = {'blockType': blockType};
+
+    if (node.metadata['blockType'] == blockType) {
+      meta = {};
+    }
+    final modifiedNode =
+        ParagraphNode(id: node.id, text: node.text, metadata: meta);
+
+    _doc.deleteNodeAt(nodeIndex);
+    _doc.insertNodeAt(nodeIndex, modifiedNode);
+    _doc.notifyListeners();
+    _composer.notifyListeners();
+  }
+
+  Future<QueryResults<UserProfile>> _getUsers(
+    String query, [
+    int pos,
+    String time,
+    QueryUserBy username = QueryUserBy.USERNAME,
+  ]) async {
+    final result = await Provider.of<SearchRepo>(context, listen: false)
+        .searchMembers(query,
+            paginationPosition: pos, lastTimeStamp: time, username: username);
+    return result;
+  }
+
+  Future<QueryResults<Channel>> _getChannels(String query,
+      [int paginationPosition = 0, DateTime time]) async {
+    final result = await Provider.of<SearchRepo>(context, listen: false)
+        .searchChannel(query,
+            paginationPosition: paginationPosition, lastTimeStamp: time);
+    return result;
+  }
+
+  Map<String, Annotation> mapToAnotation() {
+    final data = <String, Annotation>{};
+
+    List<Mention> mentions = [
+      Mention(trigger: '@', data: [...completeUserList, ...addedmentions]),
+      Mention(
+          trigger: '#',
+          data: [...completeChannelsList, ...addedChannels],
+          matchAll: true)
+    ];
+
+    // Loop over all the mention items and generate a suggestions matching list
+    mentions.forEach((element) {
+      // if matchAll is set to true add a general regex patteren to match with
+      if (element.matchAll) {
+        data['${element.trigger}([A-Za-z0-9])*'] = Annotation(
+          style: element.style,
+          id: null,
+          display: null,
+          trigger: element.trigger,
+          disableMarkup: element.disableMarkup,
+          markupBuilder: element.markupBuilder,
+        );
+      }
+
+      element.data.forEach(
+        (e) => data["${element.trigger}${e['display']}"] = e['style'] != null
+            ? Annotation(
+                style: e['style'],
+                id: e['id'],
+                display: e['display'],
+                trigger: element.trigger,
+                disableMarkup: element.disableMarkup,
+                markupBuilder: element.markupBuilder,
+              )
+            : Annotation(
+                style: element.style,
+                id: e['id'],
+                display: e['display'],
+                trigger: element.trigger,
+                disableMarkup: element.disableMarkup,
+                markupBuilder: element.markupBuilder,
+              ),
+      );
+    });
+
+    return data;
+  }
+
+  void suggestionListerner() async {
+    final node = _doc.getNode(_composer.selection.base);
+
+    if (node.runtimeType == ParagraphNode) {
+      final _node = node as ParagraphNode;
+
+      final _textPosition =
+          _composer.selection.base.nodePosition as TextPosition;
+
+      final cursorPos = _textPosition.offset + 1;
+
+      if (cursorPos >= 0) {
+        var _pos = 0;
+
+        _lengthMap = <LengthMap>[];
+
+        // split on each word and generate a list with start & end position of each word.
+        _node.text.text.split(RegExp(r'(\s)')).forEach((element) {
+          _lengthMap.add(
+              LengthMap(str: element, start: _pos, end: _pos + element.length));
+
+          _pos = _pos + element.length + 1;
+        });
+
+        final val = _lengthMap.indexWhere((element) {
+          final _pattern = '@|#';
+
+          return element.end == cursorPos &&
+              element.str.toLowerCase().contains(RegExp(_pattern));
+        });
+
+        showSuggestions = val != -1;
+
+        if (val != -1) {
+          searchValue = _lengthMap[val].str;
+          searchPos = _node.text.text.indexOf(_pattern);
+
+          final channel = searchValue[0] == '#';
+          final value = searchValue.replaceAll(RegExp(r'@|#'), '');
+          if (value.isNotEmpty && showSuggestions) {
+            if (!channel) {
+              final result =
+                  await _getUsers(value, null, null, QueryUserBy.BOTH);
+
+              final eq = DeepCollectionEquality.unordered().equals;
+
+              final _users = result.results.where((element) {
+                return addedmentions
+                        .indexWhere((e) => element.address == e['id']) ==
+                    -1;
+              }).map((e) {
+                return ({
+                  'id': e.address,
+                  'display': e.username,
+                  'full_name': e.name,
+                  'photo':
+                      e.profilePicture.isNotEmpty ? e.profilePicture[0] : '',
+                  'bio': e.bio,
+                  'backgroundPhoto': e.backgroundPhoto,
+                });
+              }).toList();
+
+              final isEqual = eq(users, _users);
+
+              if (!isEqual) {
+                setState(() {
+                  users = _users;
+
+                  listType = ListType.mention;
+
+                  completeUserList =
+                      generateFinalList(completeUserList, _users);
+                });
+              }
+            } else {
+              final result = await _getChannels(value);
+
+              final eq = DeepCollectionEquality.unordered().equals;
+
+              final _channels = result.results.where((element) {
+                return addedChannels
+                        .indexWhere((e) => element.name == e['id']) ==
+                    -1;
+              }).map((e) {
+                return ({
+                  'id': e.name,
+                  'display': e.name,
+                });
+              }).toList();
+
+              final isEqual = eq(channels, _channels);
+
+              if (!isEqual) {
+                setState(() {
+                  channels = _channels;
+
+                  listType = ListType.channels;
+
+                  completeChannelsList =
+                      generateFinalList(completeChannelsList, _channels);
+                });
+              }
+            }
+
+            data = mapToAnotation();
+            _pattern = "(${data.keys.map(RegExp.escape).join('|')})";
+
+            setState(() {
+              showSuggestions = val != -1;
+              searchValue = _lengthMap[val].str;
+              searchPos = _node.text.text.indexOf(_pattern);
+            });
+          } else {
+            setState(() {
+              users = [];
+              channels = [];
+              listType = ListType.empty;
+              _showList = false;
+            });
+          }
+        } else {
+          setState(() {
+            users = [];
+            channels = [];
+            listType = ListType.empty;
+            _showList = false;
+          });
+        }
+      }
+    }
+  }
+
+  Widget firstParagraphHintComponentBuilder(ComponentContext componentContext) {
+    if (componentContext.documentNode is! ParagraphNode) {
+      return null;
+    }
+
+    final textSelection = componentContext.nodeSelection == null ||
+            componentContext.nodeSelection.nodeSelection is! TextSelection
+        ? null
+        : componentContext.nodeSelection.nodeSelection as TextSelection;
+    if (componentContext.nodeSelection != null &&
+        componentContext.nodeSelection.nodeSelection is! TextSelection) {}
+    final showCaret = componentContext.nodeSelection != null
+        ? componentContext.nodeSelection.isExtent
+        : false;
+    final highlightWhenEmpty = componentContext.nodeSelection == null
+        ? false
+        : componentContext.nodeSelection.highlightWhenEmpty;
+
+    TextAlign textAlign = TextAlign.left;
+    final textAlignName =
+        (componentContext.documentNode as TextNode).metadata['textAlign'];
+    switch (textAlignName) {
+      case 'left':
+        textAlign = TextAlign.left;
+        break;
+      case 'center':
+        textAlign = TextAlign.center;
+        break;
+      case 'right':
+        textAlign = TextAlign.right;
+        break;
+      case 'justify':
+        textAlign = TextAlign.justify;
+        break;
+    }
+
+    final paragraphNode = componentContext.documentNode;
+    if (paragraphNode is! ParagraphNode) {
+      return null;
+    }
+
+    final node = paragraphNode as ParagraphNode;
+
+    return CustomTextComponent(
+      key: componentContext.componentKey,
+      pattern: _pattern,
+      text: node.text,
+      textStyleBuilder: defaultRichtextStyleBuilder,
+      metadata: (_doc.nodes.firstWhere((element) => element.id == node.id)
+              as ParagraphNode)
+          .metadata,
+      textAlign: textAlign,
+      textSelection: textSelection,
+      selectionColor: (componentContext.extensions[selectionStylesExtensionKey]
+              as SelectionStyle)
+          .selectionColor,
+      showCaret: showCaret,
+      caretColor: (componentContext.extensions[selectionStylesExtensionKey]
+              as SelectionStyle)
+          .textCaretColor,
+      highlightWhenEmpty: highlightWhenEmpty,
+    );
   }
 
   /// Creates a [LongFormExpression] from the given data entered
   /// by the user.
   LongFormExpression createExpression() {
-    final markupText = mentionKey.currentState.controller.markupText;
+    final markupText = serializeDocumentToMarkdown(_doc);
 
     return LongFormExpression(
       title: _titleController.value.text.trim(),
@@ -64,11 +387,13 @@ class CreateLongformState extends State<CreateLongform>
     final mentions = getMentionUserId(expression.body);
     final channels = getChannelsId(expression.body);
 
+    print(expression.body);
+
     return {'mentions': mentions, 'channels': channels};
   }
 
   bool expressionHasData() {
-    final body = mentionKey.currentState.controller.text.trim();
+    final body = serializeDocumentToMarkdown(_doc);
     final title = _titleController.value.text.trim();
     // Body cannot be empty if the title is also empty
     if (title.isEmpty) {
@@ -85,10 +410,114 @@ class CreateLongformState extends State<CreateLongform>
     return false;
   }
 
+  String serializeDocumentToMarkdown(Document doc) {
+    List<Map<String, dynamic>> buffer = [];
+
+    for (int i = 0; i < doc.nodes.length; ++i) {
+      final node = doc.nodes[i];
+
+      if (node is HorizontalRuleNode) {
+        buffer.add({'id': node.id, 'type': 'horizontal-rule'});
+      } else if (node is ListItemNode) {
+        final indent = node.indent + 1;
+        final symbol = node.type == ListItemType.unordered ? '*' : '1.';
+
+        buffer.add({
+          'id': node.id,
+          'type': 'list-item',
+          'indent': indent,
+          'symbol': symbol,
+          'text': node.text.toMarkdown(_pattern, data),
+        });
+
+        final nodeBelow = i < doc.nodes.length - 1 ? doc.nodes[i + 1] : null;
+        // if (nodeBelow is! ListItemNode || nodeBelow.type != node.type) {
+        //   // This list item is the last item in the list. Add an extra
+        //   // blank line after it.
+        //   buffer.add({
+        //     'id': node.id,
+        //     'type': 'empty',
+        //   });
+        // }
+      } else if (node is ParagraphNode) {
+        final metadata = node.metadata;
+
+        switch (metadata['blockType']) {
+          case 'header1':
+            buffer.add({
+              'id': node.id,
+              'type': 'header1',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+          case 'header2':
+            buffer.add({
+              'id': node.id,
+              'type': 'header2',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+          case 'header3':
+            buffer.add({
+              'id': node.id,
+              'type': 'header3',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+          case 'header4':
+            buffer.add({
+              'id': node.id,
+              'type': 'header4',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+          case 'header5':
+            buffer.add({
+              'id': node.id,
+              'type': 'header5',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+          case 'header6':
+            buffer.add({
+              'id': node.id,
+              'type': 'header6',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+          case 'blockquote':
+            buffer.add({
+              'id': node.id,
+              'type': 'quote',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+          case 'code':
+            buffer.add({
+              'id': node.id,
+              'type': 'code',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+          default:
+            buffer.add({
+              'id': node.id,
+              'type': 'paragraph',
+              'text': node.text.toMarkdown(_pattern, data),
+            });
+            break;
+        }
+      }
+    }
+
+    return jsonEncode(buffer);
+  }
+
   @override
   void dispose() {
     super.dispose();
     _titleController.dispose();
+    _docEditor.document.removeListener(suggestionListerner);
   }
 
   void toggleSearch(bool value) {
@@ -99,213 +528,251 @@ class CreateLongformState extends State<CreateLongform>
     }
   }
 
+  void addList({bool ordered = true}) {
+    try {
+      final nodeId = _composer.selection.base.nodeId;
+      final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
+      final list = ordered
+          ? ListItemNode.ordered(
+              id: DocumentEditor.createNodeId(), text: AttributedText(text: ''))
+          : ListItemNode.unordered(
+              id: DocumentEditor.createNodeId(),
+              text: AttributedText(text: ''));
+      _doc.nodes.insert(index + 1, list);
+      _doc.notifyListeners();
+    } catch (e) {
+      print('test: $e');
+    }
+  }
+
+  void addHorizontalRule() {
+    final nodeId = _composer.selection.base.nodeId;
+    final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
+
+    _doc.nodes.insert(
+        index + 1, HorizontalRuleNode(id: DocumentEditor.createNodeId()));
+    _doc.nodes.insert(
+        index + 2,
+        ParagraphNode(
+            id: DocumentEditor.createNodeId(), text: AttributedText(text: '')));
+
+    _doc.notifyListeners();
+  }
+
+  void addImage() {
+    final nodeId = _composer.selection.base.nodeId;
+    // _docEditor.executeCommand(SplitListItemCommand(nodeId: nodeId));
+    final index = _doc.nodes.indexWhere((element) => element.id == nodeId);
+
+    _doc.nodes.insert(
+        index + 1, ImageNode(id: DocumentEditor.createNodeId(), imageUrl: ''));
+
+    _doc.notifyListeners();
+  }
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+        keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+        keyboardBarColor: Colors.grey[200],
+        actions: [
+          KeyboardActionsItem(
+            focusNode: widget.captionFocus,
+            displayArrows: false,
+            displayDoneButton: false,
+            displayActionBar: false,
+            footerBuilder: (context) {
+              return RichTextEditorToolbar(
+                toggleAttributions: toggleAttributions,
+                toggleBlocktype: toggleBlocktype,
+                addList: addList,
+                addHorizontalRule: addHorizontalRule,
+                addImage: addImage,
+              );
+            },
+          ),
+        ]);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
-      },
-      child: Container(
-        child: BlocConsumer<SearchBloc, SearchState>(
-          buildWhen: (prev, cur) {
-            return !(cur is LoadingSearchState ||
-                cur is LoadingSearchChannelState);
-          },
-          listener: (context, state) {
-            if (!(state is LoadingSearchState) && (state is SearchUserState)) {
-              final eq = DeepCollectionEquality.unordered().equals;
-
-              final _users = getUserList(state, []);
-
-              final isEqual = eq(users, _users);
-
-              if (!isEqual) {
-                setState(() {
-                  users = _users;
-
-                  listType = ListType.mention;
-
-                  completeUserList =
-                      generateFinalList(completeUserList, _users);
-                });
-              }
-            }
-
-            if (!(state is LoadingSearchChannelState) &&
-                (state is SearchChannelState)) {
-              final eq = DeepCollectionEquality.unordered().equals;
-
-              final _channels = getChannelsList(state, []);
-
-              final isEqual = eq(channels, _channels);
-
-              if (!isEqual) {
-                setState(() {
-                  channels = _channels;
-
-                  listType = ListType.channels;
-
-                  completeChannelsList =
-                      generateFinalList(completeChannelsList, _channels);
-                });
-              }
-            }
-          },
-          builder: (context, state) {
-            return Expanded(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: TextField(
-                      focusNode: widget.titleFocus,
-                      buildCounter: (
-                        BuildContext context, {
-                        int currentLength,
-                        int maxLength,
-                        bool isFocused,
-                      }) =>
-                          null,
-                      controller: _titleController,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Title',
-                        hintStyle:
-                            Theme.of(context).textTheme.headline6.copyWith(
-                                  color: Theme.of(context).primaryColorLight,
-                                ),
+    return Container(
+      child: Expanded(
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: TextField(
+                focusNode: widget.titleFocus,
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
+                controller: _titleController,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Title',
+                  hintStyle: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Theme.of(context).primaryColorLight,
                       ),
-                      cursorColor: Theme.of(context).primaryColor,
-                      cursorWidth: 2,
-                      maxLines: null,
-                      maxLength: 140,
-                      style: Theme.of(context).textTheme.headline6,
-                      keyboardAppearance: Theme.of(context).brightness,
-                      textCapitalization: TextCapitalization.sentences,
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: FlutterMentions(
-                            key: mentionKey,
-                            suggestionPosition: SuggestionPosition.Bottom,
-                            minLines: 1,
-                            maxLines: 20,
-                            keyboardAppearance: Theme.of(context).brightness,
-                            cursorWidth: 2,
-                            focusNode: widget.captionFocus,
-                            textInputAction: TextInputAction.newline,
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption
-                                .copyWith(fontSize: 17),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Write here...',
-                            ),
-                            onSearchChanged: (String trigger, String value) {
-                              if (value.isNotEmpty && _showList) {
-                                final channel = trigger == '#';
-
-                                if (!channel) {
-                                  context.bloc<SearchBloc>().add(SearchingEvent(
-                                        value,
-                                        QueryUserBy.BOTH,
-                                      ));
-                                } else {
-                                  context
-                                      .bloc<SearchBloc>()
-                                      .add(SearchingChannelEvent(value));
-                                }
-                              } else {
-                                setState(() {
-                                  users = [];
-                                  channels = [];
-                                  listType = ListType.empty;
-                                  _showList = false;
-                                });
-                              }
-                            },
-                            onSuggestionVisibleChanged: toggleSearch,
-                            hideSuggestionList: true,
-                            mentions: getMention(
-                              context,
-                              [...addedmentions, ...completeUserList],
-                              [...addedChannels, ...completeChannelsList],
-                            ),
-                          ),
+                ),
+                cursorColor: Theme.of(context).primaryColor,
+                cursorWidth: 2,
+                maxLines: null,
+                maxLength: 140,
+                style: Theme.of(context).textTheme.headline6,
+                keyboardAppearance: Theme.of(context).brightness,
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.text,
+              ),
+            ),
+            Expanded(
+              child: Stack(
+                children: [
+                  KeyboardActions(
+                    config: _buildConfig(context),
+                    child: Container(
+                      height: 400,
+                      width: 500,
+                      child: Editor.custom(
+                        editor: _docEditor,
+                        composer: _composer,
+                        focusNode: widget.captionFocus,
+                        maxWidth: 600,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 12,
                         ),
-                        if (_showList &&
-                            widget.captionFocus.hasFocus &&
-                            listType == ListType.mention)
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            left: 0,
-                            child: MentionsSearchList(
-                              userList: users,
-                              onMentionAdd: (index) {
-                                mentionKey.currentState
-                                    .addMention(users[index]);
-
-                                if (addedmentions.indexWhere((element) =>
-                                        element['id'] == users[index]['id']) ==
-                                    -1) {
-                                  addedmentions = [
-                                    ...addedmentions,
-                                    users[index]
-                                  ];
-                                }
-
-                                setState(() {
-                                  _showList = false;
-                                  users = [];
-                                });
-                              },
-                            ),
-                          ),
-                        if (_showList &&
-                            widget.captionFocus.hasFocus &&
-                            listType == ListType.channels)
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            left: 0,
-                            child: ChannelsSearchList(
-                              channels: channels,
-                              onChannelAdd: (index) {
-                                mentionKey.currentState
-                                    .addMention(channels[index]);
-
-                                if (addedChannels.indexWhere((element) =>
-                                        element['id'] ==
-                                        channels[index]['id']) ==
-                                    -1) {
-                                  addedChannels = [
-                                    ...addedChannels,
-                                    channels[index]
-                                  ];
-                                }
-
-                                setState(() {
-                                  _showList = false;
-                                  channels = [];
-                                });
-                              },
-                            ),
-                          ),
-                      ],
+                        componentBuilders: [
+                          titleHintBuilder,
+                          firstParagraphHintBuilder,
+                          firstParagraphHintComponentBuilder,
+                          unorderedListItemBuilder,
+                          orderedListItemBuilder,
+                          horizontalRuleBuilder,
+                          imageBuilder,
+                          unknownComponentBuilder,
+                        ],
+                      ),
                     ),
                   ),
+                  if (showSuggestions &&
+                      widget.captionFocus.hasFocus &&
+                      listType == ListType.mention)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                      child: MentionsSearchList(
+                        userList: users,
+                        onMentionAdd: (index) {
+                          if (addedmentions.indexWhere((element) =>
+                                  element['id'] == users[index]['id']) ==
+                              -1) {
+                            addedmentions = [...addedmentions, users[index]];
+                          }
+
+                          final strToadd = users[index]['display']
+                              .toString()
+                              .replaceFirst(
+                                  searchValue.replaceFirst('@', ''), '');
+                          final position =
+                              _composer.selection.extent.nodePosition.offset +
+                                  strToadd.length;
+                          var pos = TextPosition(
+                              offset: _composer
+                                  .selection.extent.nodePosition.offset);
+                          _docEditor.executeCommand(InsertTextCommand(
+                            documentPosition: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: pos,
+                            ),
+                            textToInsert: strToadd,
+                            attributions: {},
+                          ));
+
+                          _composer.selection = _composer.selection.copyWith(
+                            base: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: TextPosition(offset: position),
+                            ),
+                            extent: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: TextPosition(offset: position),
+                            ),
+                          );
+
+                          _composer.notifyListeners();
+
+                          setState(() {
+                            _showList = false;
+                            users = [];
+                          });
+                        },
+                      ),
+                    ),
+                  if (showSuggestions &&
+                      widget.captionFocus.hasFocus &&
+                      listType == ListType.channels)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      left: 0,
+                      child: ChannelsSearchList(
+                        channels: channels,
+                        onChannelAdd: (index) {
+                          if (addedChannels.indexWhere((element) =>
+                                  element['id'] == channels[index]['id']) ==
+                              -1) {
+                            addedChannels = [...addedChannels, channels[index]];
+                          }
+
+                          final strToadd = channels[index]['display']
+                              .toString()
+                              .replaceFirst(
+                                  searchValue.replaceFirst('#', ''), '');
+                          final position =
+                              _composer.selection.extent.nodePosition.offset +
+                                  strToadd.length;
+                          var pos = TextPosition(
+                              offset: _composer
+                                  .selection.extent.nodePosition.offset);
+                          _docEditor.executeCommand(InsertTextCommand(
+                            documentPosition: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: pos,
+                            ),
+                            textToInsert: strToadd,
+                            attributions: {},
+                          ));
+
+                          _composer.selection = _composer.selection.copyWith(
+                            base: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: TextPosition(offset: position),
+                            ),
+                            extent: DocumentPosition(
+                              nodeId: _composer.selection.base.nodeId,
+                              nodePosition: TextPosition(offset: position),
+                            ),
+                          );
+
+                          _composer.notifyListeners();
+
+                          setState(() {
+                            _showList = false;
+                            channels = [];
+                          });
+                        },
+                      ),
+                    ),
                 ],
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
@@ -313,4 +780,93 @@ class CreateLongformState extends State<CreateLongform>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+extension on AttributedText {
+  /// Serializes style attributions into markdown syntax in a repeatable
+  /// order such that opening and closing styles match each other on
+  /// the opening and closing ends of a span.
+  static String _sortAndSerializeAttributions(
+      Set<dynamic> attributions, AttributionVisitEvent event) {
+    const startOrder = [
+      'code',
+      'bold',
+      'italics',
+      'strikethrough',
+      'underline'
+    ];
+
+    final buffer = StringBuffer();
+    final encodingOrder =
+        event == AttributionVisitEvent.start ? startOrder : startOrder.reversed;
+
+    for (final markdownStyleAttribution in encodingOrder) {
+      if (attributions.contains(markdownStyleAttribution)) {
+        buffer.write(_encodeMarkdownStyle(markdownStyleAttribution, event));
+      }
+    }
+
+    return buffer.toString();
+  }
+
+  static String _encodeMarkdownStyle(
+      dynamic attribution, AttributionVisitEvent event) {
+    if (attribution is! String) {
+      return '';
+    }
+
+    switch (attribution) {
+      case 'code':
+        return '`';
+      case 'bold':
+        return event == AttributionVisitEvent.start ? '<b>' : '</b>';
+      case 'italics':
+        return event == AttributionVisitEvent.start ? '<i>' : '</i>';
+      case 'strikethrough':
+        return event == AttributionVisitEvent.start ? '<strike>' : '</strike>';
+      case 'underline':
+        return event == AttributionVisitEvent.start ? '<u>' : '</u>';
+      default:
+        return '';
+    }
+  }
+
+  String toMarkdown(String pattern, Map<String, Annotation> mapping) {
+    final buffer = StringBuffer();
+    int spanStart = 0;
+
+    visitAttributions((fullText, index, attributions, event) {
+      final markdownStyles = _sortAndSerializeAttributions(attributions, event);
+
+      switch (event) {
+        case AttributionVisitEvent.start:
+          spanStart = index;
+          buffer.write(markdownStyles);
+          break;
+        case AttributionVisitEvent.end:
+          // +1 on end index because this visitor has inclusive indices
+          // whereas substring() expects an exclusive ending index.
+          //
+          final bufferText = fullText.text.substring(spanStart, index + 1);
+          final mentionText =
+              bufferText.replaceAllMapped(RegExp(pattern), (Match match) {
+            final mention = mapping[match[0]] ??
+                mapping[mapping.keys.firstWhere((element) {
+                  final reg = RegExp(element);
+
+                  return reg.hasMatch(match[0]);
+                })];
+
+            return mention.trigger == '@'
+                ? '<mention>[@${mention.display}:${mention.id}]</mention>'
+                : '<channel>#${mention.display}</channel>';
+          });
+
+          buffer..write(mentionText)..write(markdownStyles);
+          break;
+      }
+    });
+
+    return buffer.toString();
+  }
 }

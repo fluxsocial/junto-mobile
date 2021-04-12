@@ -93,7 +93,7 @@ class _EditCircleState extends State<EditCircle> {
     );
 
     try {
-      context.bloc<CircleBloc>().add(UpdateCircle(group: updatedGroup));
+      context.read<CircleBloc>().add(UpdateCircle(group: updatedGroup));
       JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (e, s) {
@@ -133,7 +133,7 @@ class _EditCircleState extends State<EditCircle> {
     } else {
       showDialog(
         context: context,
-        child: SettingsPopup(
+        builder: (context) => SettingsPopup(
           buildContext: context,
           // TODO: @Eric - Need to update the text
           text: 'Access not granted to access gallery',

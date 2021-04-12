@@ -40,7 +40,7 @@ class AudioService with ChangeNotifier {
       });
     });
 
-    _audioPlayer.onProgress.listen((event) {
+    _audioPlayer.onProgress?.listen((event) {
       _currentPosition = event.position;
       _duration = event.duration;
       notifyListeners();

@@ -33,7 +33,7 @@ class MyPacks extends StatelessWidget {
     return Consumer<UserDataProvider>(
       builder: (context, data, child) {
         return Column(
-          children: <Widget>[ 
+          children: <Widget>[
             BlocBuilder<GroupBloc, GroupBlocState>(
               builder: (context, state) {
                 if (state is GroupLoading) {
@@ -44,10 +44,10 @@ class MyPacks extends StatelessWidget {
                       child: CustomRefresh(
                     refresh: () async {
                       await context
-                          .repository<NotificationsHandler>()
+                          .read<NotificationsHandler>()
                           .fetchNotifications();
 
-                      await context.bloc<GroupBloc>().add(RefreshPack());
+                      await context.read<GroupBloc>().add(RefreshPack());
                     },
                     child: ListView(
                       physics: AlwaysScrollableScrollPhysics(),
@@ -58,7 +58,7 @@ class MyPacks extends StatelessWidget {
                             onTap: () {
                               packsViewNav();
                               context
-                                  .bloc<PackBloc>()
+                                  .read<PackBloc>()
                                   .add(FetchPacks(group: group.address));
                             },
                             child: PackPreview(
