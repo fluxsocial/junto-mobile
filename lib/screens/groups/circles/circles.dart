@@ -45,11 +45,19 @@ class CirclesState extends State<Circles>
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
+    Provider.of<AppRepo>(context, listen: true).addListener(() async {
+      final groupsPageIndex =
+          await Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
+      if (groupsPageIndex != circlesPageController.page) {
+        circlesPageController.animateToPage(
+          groupsPageIndex,
+          duration: Duration(milliseconds: 250),
+          curve: Curves.ease,
+        );
+      }
+    });
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
-    final groupsPageIndex =
-        Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
-    circlesPageController = PageController(initialPage: groupsPageIndex);
+    super.didChangeDependencies();
   }
 
   bool onWillPop() {
