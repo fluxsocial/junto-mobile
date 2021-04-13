@@ -334,12 +334,9 @@ class JoinCircleWidget extends StatelessWidget {
       onTap: () async {
         try {
           JuntoLoader.showLoader(context);
-          // Accept request
+
           await Provider.of<GroupRepo>(context, listen: false)
-              .respondToGroupRequest(
-            groupAddress,
-            true,
-          );
+              .addGroupMember(groupAddress, [userProfile], 'Member');
           await loadCircleMembers();
           await loadRelationship();
           JuntoLoader.hide();
