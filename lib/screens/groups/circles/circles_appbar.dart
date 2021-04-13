@@ -184,7 +184,7 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
-                                color: widget.currentIndex == 3
+                                color: widget.currentIndex == 2
                                     ? Theme.of(context).primaryColorDark
                                     : Theme.of(context).primaryColorLight,
                                 letterSpacing: .75,

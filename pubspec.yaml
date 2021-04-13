@@ -49,10 +49,6 @@ dependencies:
   email_validator: ^1.0.5
   flutter_mentions: ^1.0.10
   flutter_parsed_text: ^1.2.5
-  embedly_preview:
-    git:
-      url: https://github.com/juntofoundation/embedly-preview.git
-      ref: master
   contacts_service: ^0.4.6
   permission_handler: ^5.0.1+1
   clipboard: ^0.1.2+8
@@ -62,6 +58,10 @@ dependencies:
   flutter_fadein: ^1.1.1
   app_settings: 4.0.4
   share: 0.6.5+4
+  embedly_preview:
+    git:
+      url: https://github.com/juntofoundation/embedly-preview.git
+      ref: master  
 
 dev_dependencies:
   test: any
