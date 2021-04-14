@@ -10,7 +10,6 @@ import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/mentions/channel_search_list.dart';
 import 'package:junto_beta_mobile/widgets/mentions/mentions_search_list.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/remove_focus_widget.dart';
 import 'package:provider/provider.dart';
 
 class CreateLongform extends StatefulWidget {
@@ -19,10 +18,8 @@ class CreateLongform extends StatefulWidget {
     this.captionFocus,
     this.titleFocus,
   }) : super(key: key);
-
   final FocusNode captionFocus;
   final FocusNode titleFocus;
-
   @override
   State<StatefulWidget> createState() {
     return CreateLongformState();
@@ -42,7 +39,6 @@ class CreateLongformState extends State<CreateLongform>
   List<Map<String, dynamic>> channels = [];
   List<Map<String, dynamic>> completeChannelsList = [];
   ListType listType = ListType.empty;
-
   @override
   void initState() {
     super.initState();
@@ -53,7 +49,6 @@ class CreateLongformState extends State<CreateLongform>
   /// by the user.
   LongFormExpression createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
-
     return LongFormExpression(
       title: _titleController.value.text.trim(),
       body: markupText.trim(),
@@ -64,7 +59,6 @@ class CreateLongformState extends State<CreateLongform>
     final LongFormExpression expression = createExpression();
     final mentions = getMentionUserId(expression.body);
     final channels = getChannelsId(expression.body);
-
     return {'mentions': mentions, 'channels': channels};
   }
 
@@ -115,37 +109,26 @@ class CreateLongformState extends State<CreateLongform>
           listener: (context, state) {
             if (!(state is LoadingSearchState) && (state is SearchUserState)) {
               final eq = DeepCollectionEquality.unordered().equals;
-
               final _users = getUserList(state, []);
-
               final isEqual = eq(users, _users);
-
               if (!isEqual) {
                 setState(() {
                   users = _users;
-
                   listType = ListType.mention;
-
                   completeUserList =
                       generateFinalList(completeUserList, _users);
                 });
               }
             }
-
             if (!(state is LoadingSearchChannelState) &&
                 (state is SearchChannelState)) {
               final eq = DeepCollectionEquality.unordered().equals;
-
               final _channels = getChannelsList(state, []);
-
               final isEqual = eq(channels, _channels);
-
               if (!isEqual) {
                 setState(() {
                   channels = _channels;
-
                   listType = ListType.channels;
-
                   completeChannelsList =
                       generateFinalList(completeChannelsList, _channels);
                 });
@@ -190,77 +173,55 @@ class CreateLongformState extends State<CreateLongform>
                   Expanded(
                     child: Stack(
                       children: [
-                        Column(
-                          children: [
-                            Expanded(
-                              child: ListView(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: FlutterMentions(
-                                      key: mentionKey,
-                                      suggestionPosition:
-                                          SuggestionPosition.Bottom,
-                                      minLines: 1,
-                                      maxLines: 20,
-                                      keyboardAppearance:
-                                          Theme.of(context).brightness,
-                                      cursorWidth: 2,
-                                      focusNode: widget.captionFocus,
-                                      textInputAction: TextInputAction.newline,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .caption
-                                          .copyWith(fontSize: 17),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Write here...',
-                                      ),
-                                      onSearchChanged:
-                                          (String trigger, String value) {
-                                        if (value.isNotEmpty && _showList) {
-                                          final channel = trigger == '#';
-
-                                          if (!channel) {
-                                            context
-                                                .bloc<SearchBloc>()
-                                                .add(SearchingEvent(
-                                                  value,
-                                                  QueryUserBy.BOTH,
-                                                ));
-                                          } else {
-                                            context.bloc<SearchBloc>().add(
-                                                SearchingChannelEvent(value));
-                                          }
-                                        } else {
-                                          setState(() {
-                                            users = [];
-                                            channels = [];
-                                            listType = ListType.empty;
-                                            _showList = false;
-                                          });
-                                        }
-                                      },
-                                      onSuggestionVisibleChanged: toggleSearch,
-                                      hideSuggestionList: true,
-                                      mentions: getMention(
-                                        context,
-                                        [...addedmentions, ...completeUserList],
-                                        [
-                                          ...addedChannels,
-                                          ...completeChannelsList
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: FlutterMentions(
+                            key: mentionKey,
+                            suggestionPosition: SuggestionPosition.Bottom,
+                            minLines: 1,
+                            maxLines: 20,
+                            keyboardAppearance: Theme.of(context).brightness,
+                            cursorWidth: 2,
+                            focusNode: widget.captionFocus,
+                            textInputAction: TextInputAction.newline,
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption
+                                .copyWith(fontSize: 17),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Write here...',
                             ),
-                            if (widget.captionFocus.hasFocus)
-                              RemoveFocusWidget(
-                                  focusNode: widget.captionFocus)
-                          ],
+                            onSearchChanged: (String trigger, String value) {
+                              if (value.isNotEmpty && _showList) {
+                                final channel = trigger == '#';
+                                if (!channel) {
+                                  context.bloc<SearchBloc>().add(SearchingEvent(
+                                        value,
+                                        QueryUserBy.BOTH,
+                                      ));
+                                } else {
+                                  context
+                                      .bloc<SearchBloc>()
+                                      .add(SearchingChannelEvent(value));
+                                }
+                              } else {
+                                setState(() {
+                                  users = [];
+                                  channels = [];
+                                  listType = ListType.empty;
+                                  _showList = false;
+                                });
+                              }
+                            },
+                            onSuggestionVisibleChanged: toggleSearch,
+                            hideSuggestionList: true,
+                            mentions: getMention(
+                              context,
+                              [...addedmentions, ...completeUserList],
+                              [...addedChannels, ...completeChannelsList],
+                            ),
+                          ),
                         ),
                         if (_showList &&
                             widget.captionFocus.hasFocus &&
@@ -274,7 +235,6 @@ class CreateLongformState extends State<CreateLongform>
                               onMentionAdd: (index) {
                                 mentionKey.currentState
                                     .addMention(users[index]);
-
                                 if (addedmentions.indexWhere((element) =>
                                         element['id'] == users[index]['id']) ==
                                     -1) {
@@ -283,7 +243,6 @@ class CreateLongformState extends State<CreateLongform>
                                     users[index]
                                   ];
                                 }
-
                                 setState(() {
                                   _showList = false;
                                   users = [];
@@ -303,7 +262,6 @@ class CreateLongformState extends State<CreateLongform>
                               onChannelAdd: (index) {
                                 mentionKey.currentState
                                     .addMention(channels[index]);
-
                                 if (addedChannels.indexWhere((element) =>
                                         element['id'] ==
                                         channels[index]['id']) ==
@@ -313,7 +271,6 @@ class CreateLongformState extends State<CreateLongform>
                                     channels[index]
                                   ];
                                 }
-
                                 setState(() {
                                   _showList = false;
                                   channels = [];
