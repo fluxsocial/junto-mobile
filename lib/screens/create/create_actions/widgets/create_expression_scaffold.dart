@@ -469,9 +469,11 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         default:
           break;
       }
+
       setState(() {
         expression = expressionInProgress;
         channels = mentionsAndChannels['channels'];
+        mentions = mentionsAndChannels['mentions'];
       });
     }
     if (channels.length > 5) {
@@ -551,6 +553,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
   Future<void> createExpression() async {
     ExpressionModel expressionModel;
+
+    print('test: 1010 $mentions');
 
     try {
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
