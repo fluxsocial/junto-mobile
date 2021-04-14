@@ -399,6 +399,8 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         creator: creator,
         publicGroups: publicGroups,
       );
+    } on DioError catch (e) {
+      print(e.message);
     } catch (e, s) {
       logger.logException(e, s);
     }
