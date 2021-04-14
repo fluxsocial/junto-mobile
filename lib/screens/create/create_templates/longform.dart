@@ -4,6 +4,7 @@ import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/remove_focus_widget.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
@@ -223,6 +224,8 @@ class CreateLongformState extends State<CreateLongform>
                             ),
                           ),
                         ),
+                        if (widget.captionFocus.hasFocus)
+                          RemoveFocusWidget(focusNode: widget.captionFocus),
                         if (_showList &&
                             widget.captionFocus.hasFocus &&
                             listType == ListType.mention)
