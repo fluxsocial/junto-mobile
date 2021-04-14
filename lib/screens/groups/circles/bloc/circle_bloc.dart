@@ -386,7 +386,6 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
 
       publicGroups =
           results.map((e) => Group.fromJson(e)).toList().cast<Group>();
-      print(publicGroups);
 
       remainingPublicGroupCount = event.query.length > 0
           ? result['result_count']
@@ -413,7 +412,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
           ? remainingPublicGroupCount == 50
           : remainingPublicGroupCount != 0;
       if (loadmore) {
-        currentPublicGroupsPage += 1;
+        currentPublicGroupsPage += 50;
 
         final result = await groupRepo.getPublicGroups({
           'pagination_position': currentPublicGroupsPage.toString(),
