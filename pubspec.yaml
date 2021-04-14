@@ -61,7 +61,7 @@ dependencies:
   embedly_preview:
     git:
       url: https://github.com/juntofoundation/embedly-preview.git
-      ref: master  
+      ref: 2582858a1ad92481897cb052d5db3c2d35f6f074  
 
 dev_dependencies:
   test: any

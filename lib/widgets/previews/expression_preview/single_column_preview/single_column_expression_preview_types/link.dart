@@ -60,7 +60,7 @@ class LinkPreview extends StatelessWidget {
           if (expression.expressionData.data != null)
             OEmbedWidget(
               data: expression.expressionData.data,
-              expanded: true,
+              expanded: false,
               theme: EmbedlyThemeData(
                 brightness: Theme.of(context).brightness,
                 backgroundColor: Theme.of(context).backgroundColor,
