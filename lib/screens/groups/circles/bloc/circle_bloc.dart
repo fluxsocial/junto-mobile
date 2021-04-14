@@ -303,13 +303,25 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
 
       currentMemberTimeStamp = result.lastTimestamp;
 
-      final activeGroup =
-          groups.indexWhere((e) => e.address == event.sphereAddress);
+      var activeGroup = -1;
+      var isPublic = false;
+
+      activeGroup = groups.indexWhere((e) => e.address == event.sphereAddress);
+
+      if (activeGroup == -1) {
+        activeGroup =
+            publicGroups.indexWhere((e) => e.address == event.sphereAddress);
+        isPublic = true;
+      }
 
       if (activeGroup != -1) {
-        final group = groups[activeGroup];
+        final group =
+            !isPublic ? groups[activeGroup] : publicGroups[activeGroup];
+
         if (group.creator.runtimeType == String) {
           creator = await userRepo.getUser(group.creator);
+        } else if (isPublic) {
+          creator = await userRepo.getUser(groupResult.creator['address']);
         } else {
           creator = await userRepo.getUser(group.creator['address']);
         }
