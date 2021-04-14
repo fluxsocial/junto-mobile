@@ -54,10 +54,6 @@ class JuntoInviteAppBar extends StatelessWidget {
                     userProfile: userProfile,
                   ),
                 );
-                // Share.share(
-                //   "Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f",
-                //   subject: 'Check Junto out!',
-                // );
               },
               child: Container(
                 width: 42,
@@ -121,7 +117,7 @@ class JuntoBetaInviteDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              'Feel free to share our Indiegogo campaign with your friends! Those who contribute will get instant access to our private beta. ',
+              "Feel free to use this link to our private beta in case you'd like to email your friends instead!'",
               textAlign: TextAlign.center,
               overflow: TextOverflow.fade,
               style: TextStyle(
@@ -133,7 +129,7 @@ class JuntoBetaInviteDialog extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Share.share(
-                  "https://www.indiegogo.com/projects/junto-a-new-breed-of-social-media--2#/",
+                  "https://junto.typeform.com/to/k7BUVK8f",
                   subject: 'Check out the Junto beta!',
                 );
               },
