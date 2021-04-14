@@ -42,9 +42,11 @@ class JuntoBottomBar extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () async {
-                final i = await Provider.of<AppRepo>(context, listen: false)
-                    .groupsPageIndex;
-                if (i == 1) {
+                final appRepo =
+                    await Provider.of<AppRepo>(context, listen: false);
+
+                if (appRepo.groupsPageIndex == 1 &&
+                    appRepo.currentScreen == Screen.groups) {
                   Provider.of<AppRepo>(context, listen: false)
                       .setGroupsPageIndex(0);
                 } else {

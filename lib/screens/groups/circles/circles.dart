@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/screens/notifications/notifications_handler.da
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 
 import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
@@ -32,7 +33,7 @@ class Circles extends StatefulWidget {
 }
 
 class CirclesState extends State<Circles>
-    with ListDistinct, TickerProviderStateMixin {
+    with ListDistinct, TickerProviderStateMixin, WidgetsBindingObserver {
   PageController circlesPageController;
   UserData _userProfile;
   // Group activeGroup;
@@ -40,24 +41,37 @@ class CirclesState extends State<Circles>
   @override
   void initState() {
     super.initState();
+
     circlesPageController = PageController(initialPage: 0);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppRepo>(context, listen: false).addListener(() async {
+        setupListener();
+      });
+    });
   }
 
   @override
-  void didChangeDependencies() {
-    Provider.of<AppRepo>(context, listen: true).addListener(() async {
-      final groupsPageIndex =
-          await Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
-      if (groupsPageIndex != circlesPageController.page) {
-        circlesPageController.animateToPage(
-          groupsPageIndex,
-          duration: Duration(milliseconds: 250),
-          curve: Curves.ease,
-        );
-      }
-    });
+  void didChangeDependencies() async {
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
+
+    final groupsPageIndex =
+        await Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
+    circlesPageController.jumpToPage(groupsPageIndex);
+
     super.didChangeDependencies();
+  }
+
+  void setupListener() async {
+    final groupsPageIndex =
+        await Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
+    if (groupsPageIndex != circlesPageController.page) {
+      circlesPageController.animateToPage(
+        groupsPageIndex,
+        duration: Duration(milliseconds: 250),
+        curve: Curves.ease,
+      );
+    }
   }
 
   bool onWillPop() {
