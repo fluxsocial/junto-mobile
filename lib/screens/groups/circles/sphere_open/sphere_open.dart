@@ -10,10 +10,13 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
-import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
+// import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_about.dart';
+import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_consolidated.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/creator/circle_action_items_admin.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/action_items/member/circle_action_items_member.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/circle_open_expressions/circle_open_expressions.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
@@ -24,6 +27,7 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'sphere_open_delegate.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -48,7 +52,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   String _userAddress;
   UserData _userProfile;
   double _flexibleHeightSpace;
-  final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
+  final List<String> _tabs = <String>['PUBLIC'];
   Map<String, dynamic> relationToGroup;
   Future<QueryResults<ExpressionResponse>> getExpressions;
   UserProfile circleCreator;
@@ -132,7 +136,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: NestedScrollView(
               body: TabBarView(
                 children: <Widget>[
-                  SphereOpenAbout(
+                  SphereOpenConsolidated(
                     group: group,
                     circleCreator: state.creator?.user,
                     members: state.members,
@@ -140,7 +144,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     totalFacilitators: state.totalFacilitators,
                     totalMembers: state.totalMembers,
                   ),
-                  if (group.address != null) CircleOpenExpressions(),
                 ],
               ),
               physics: const ClampingScrollPhysics(),
@@ -221,34 +224,34 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   ),
                   SliverPersistentHeader(
                     pinned: true,
-                    delegate: JuntoAppBarDelegate(
+                    delegate: SphereOpenDelegate(
                       TabBar(
-                        labelPadding: const EdgeInsets.all(0),
-                        isScrollable: true,
-                        labelColor: Theme.of(context).primaryColorDark,
-                        unselectedLabelColor:
-                            Theme.of(context).primaryColorLight,
-                        labelStyle: Theme.of(context).textTheme.subtitle1,
-                        indicatorWeight: 0.0001,
-                        tabs: <Widget>[
-                          for (String name in _tabs)
+                          isScrollable: true,
+                          labelPadding: const EdgeInsets.all(0),
+                          labelColor: Colors.transparent,
+                          unselectedLabelColor: Colors.transparent,
+                          indicatorWeight: 0.0001,
+                          tabs: [
                             Container(
-                              margin: const EdgeInsets.only(right: 20),
-                              color: Theme.of(context).colorScheme.background,
-                              child: Tab(
-                                child: Text(
-                                  name,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).backgroundColor,
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Theme.of(context).dividerColor,
+                                    width: .5,
                                   ),
                                 ),
                               ),
+                              child: FilterColumnRow(
+                                twoColumnView:
+                                    Provider.of<AppRepo>(context, listen: false)
+                                        .twoColumnLayout,
+                              ),
                             ),
-                        ],
-                      ),
+                          ]),
                     ),
-                  )
+                  ),
                 ];
               },
             ),
