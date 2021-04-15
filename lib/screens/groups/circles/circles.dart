@@ -33,10 +33,13 @@ class Circles extends StatefulWidget {
 }
 
 class CirclesState extends State<Circles>
-    with ListDistinct, TickerProviderStateMixin, WidgetsBindingObserver {
+    with
+        ListDistinct,
+        TickerProviderStateMixin,
+        WidgetsBindingObserver,
+        AutomaticKeepAliveClientMixin {
   PageController circlesPageController;
   UserData _userProfile;
-  // Group activeGroup;
 
   @override
   void initState() {
@@ -53,19 +56,21 @@ class CirclesState extends State<Circles>
 
   @override
   void didChangeDependencies() async {
-    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
-
-    final groupsPageIndex =
-        await Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
-    circlesPageController.jumpToPage(groupsPageIndex);
-
     super.didChangeDependencies();
+    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    circlesPageController.dispose();
   }
 
   void setupListener() async {
     final groupsPageIndex =
         await Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
-    if (groupsPageIndex != circlesPageController.page) {
+
+    if (groupsPageIndex != circlesPageController.page.toInt()) {
       circlesPageController.animateToPage(
         groupsPageIndex,
         duration: Duration(milliseconds: 250),
@@ -88,6 +93,7 @@ class CirclesState extends State<Circles>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: WillPopScope(
         onWillPop: () => Future.sync(onWillPop),
@@ -141,6 +147,9 @@ class CirclesState extends State<Circles>
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class CircleMain extends StatefulWidget {
@@ -191,6 +200,7 @@ class _CircleMainState extends State<CircleMain>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
