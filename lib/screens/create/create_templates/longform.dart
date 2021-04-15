@@ -175,7 +175,11 @@ class CreateLongformState extends State<CreateLongform>
                     child: Stack(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                            bottom: 50,
+                          ),
                           child: FlutterMentions(
                             key: mentionKey,
                             suggestionPosition: SuggestionPosition.Bottom,
