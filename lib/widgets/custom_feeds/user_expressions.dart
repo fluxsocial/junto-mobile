@@ -104,6 +104,7 @@ class _UserExpressionsState extends State<UserExpressions>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<DenBloc, DenState>(
       builder: (BuildContext context, DenState state) {
         final canFetchMore =
