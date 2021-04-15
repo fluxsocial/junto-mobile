@@ -72,7 +72,7 @@ class NotificationLinkPreview extends StatelessWidget {
           if (embedlyResponse != null)
             OEmbedWidget(
               data: embedlyResponse,
-              expanded: false,
+              expanded: true,
               theme: EmbedlyThemeData(
                 brightness: Theme.of(context).brightness,
                 backgroundColor: Theme.of(context).backgroundColor,
