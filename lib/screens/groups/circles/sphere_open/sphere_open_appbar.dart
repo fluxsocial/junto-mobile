@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/global_invite_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/global_search_icon.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
@@ -28,45 +29,42 @@ class SphereOpenAppbar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                if (onBack != null) {
-                  onBack();
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-              child: Container(
-                alignment: Alignment.centerLeft,
-                color: Colors.transparent,
-                height: 38,
-                width: 38,
-                padding: const EdgeInsets.only(
-                  left: 10,
-                ),
-                child: Icon(
-                  CustomIcons.back,
-                  size: 17,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                color: Colors.transparent,
-                padding: const EdgeInsets.only(left: 45),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        'c/${group.groupData.sphereHandle}',
-                        style: Theme.of(context).textTheme.subtitle1,
+            Container(
+              color: Colors.transparent,
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      if (onBack != null) {
+                        onBack();
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.bottomLeft,
+                      color: Colors.transparent,
+                      height: 38,
+                      width: 38,
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        bottom: 2.5,
+                      ),
+                      child: Icon(
+                        CustomIcons.back,
+                        size: 17,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Text(
+                    'c/${group.groupData.sphereHandle}',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                ],
               ),
             ),
             Container(
@@ -74,6 +72,7 @@ class SphereOpenAppbar extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
+                  GlobalInviteIcon(),
                   GlobalSearchIcon(),
                   NotificationsLunarIcon(),
                 ],
