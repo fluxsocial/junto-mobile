@@ -40,10 +40,13 @@ class NewHome extends StatefulWidget {
 class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   UserData _userData;
   UserDataProvider userProvider;
+  PageController _pageController;
 
   @override
   void initState() {
     super.initState();
+
+    _pageController = PageController(initialPage: 0);
 
     context.bloc<CircleBloc>().add(FetchMyCircle());
 
@@ -51,12 +54,23 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<AppRepo>(context, listen: false).initHome(widget.screen);
+      Provider.of<AppRepo>(context, listen: false).addListener(() async {
+        setupListener();
+      });
       fetchNotifications();
     });
   }
 
+  void setupListener() async {
+    final currentScreen =
+        await Provider.of<AppRepo>(context, listen: false).currentScreen;
+    if (currentScreen != Screen.create) {
+      _pageController.jumpToPage(currentScreen == Screen.groups ? 0 : 1);
+    }
+  }
+
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     userProvider = Provider.of<UserDataProvider>(context, listen: false);
     getUserInformation();
@@ -163,7 +177,19 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
                 swipeLeftDrawer: false,
                 scaffold: Stack(
                   children: [
-                    showScreen(snapshot.currentScreen, snapshot.group),
+                    PageView(
+                      controller: _pageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        FeatureDiscovery(
+                          child: Circles(
+                            group: snapshot.group,
+                          ),
+                        ),
+                        JuntoDen(),
+                      ],
+                    ),
+                    // showScreen(snapshot.currentScreen, snapshot.group),
                     if (snapshot.showCreateScreen)
                       FadeIn(
                         duration: Duration(milliseconds: 300),
