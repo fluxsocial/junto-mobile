@@ -25,6 +25,7 @@ class AudioService with ChangeNotifier {
 
     _audioPlayer
         .openAudioSession(
+      focus: AudioFocus.requestFocusAndKeepOthers,
       device: AudioDevice.earPiece,
       audioFlags: allowBlueToothA2DP |
           allowBlueTooth |
