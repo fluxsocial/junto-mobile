@@ -63,7 +63,7 @@ class CreateSphereState extends State<CreateSphere> {
 
     // create sphere body
     final SphereModel sphere = SphereModel(
-      name: sphereName.toLowerCase().trim(),
+      name: sphereName.trim(),
       description: sphereDescription.trim(),
       facilitators: <String>[],
       photo: sphereImageKey,
