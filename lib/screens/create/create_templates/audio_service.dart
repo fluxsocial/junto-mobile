@@ -25,7 +25,6 @@ class AudioService with ChangeNotifier {
 
     _audioPlayer
         .openAudioSession(
-      focus: AudioFocus.requestFocusAndKeepOthers,
       device: AudioDevice.earPiece,
       audioFlags: allowBlueToothA2DP |
           allowBlueTooth |
@@ -83,6 +82,10 @@ class AudioService with ChangeNotifier {
   void stopRecording() async {
     await _recorder.stop();
     _currentPosition = Duration.zero;
+  }
+
+  void changeAudioFocus(AudioFocus focus) {
+    _audioPlayer.setAudioFocus(focus: focus);
   }
 
   void resetRecording() async {
