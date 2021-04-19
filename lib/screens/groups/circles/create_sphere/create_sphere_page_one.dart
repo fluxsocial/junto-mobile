@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/settings_popup.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class CreateSpherePageOne extends StatefulWidget {
   const CreateSpherePageOne({
@@ -31,6 +32,9 @@ class CreateSpherePageOne extends StatefulWidget {
 
 class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
   File get imageFile => widget.imageFile.value;
+  final ScrollController _scrollController = ScrollController();
+  final FocusNode _handleFocus = FocusNode();
+  final FocusNode _bioFocus = FocusNode();
 
   Future<void> _onPickPressed() async {
     final imagePicker = ImagePicker();
@@ -159,60 +163,16 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
   Widget build(BuildContext context) {
     return Form(
       key: widget.formKey,
-      child: ListView(
-        children: <Widget>[
-          if (imageFile == null)
-            GestureDetector(
-              onTap: _onPickPressed,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor,
-                      width: .75,
-                    ),
-                  ),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.photo_library,
-                      size: 24,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      'Photo',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          if (imageFile != null)
-            Column(children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: (MediaQuery.of(context).size.width / 3) * 2,
-                color: Theme.of(context).dividerColor,
-                child: Image.file(
-                  imageFile,
-                  fit: BoxFit.cover,
-                ),
-              ),
+      child: KeyboardAvoider(
+        autoScroll: true,
+        child: ListView(
+          controller: _scrollController,
+          children: <Widget>[
+            if (imageFile == null)
               GestureDetector(
-                onTap: _openChangePhotoModal,
+                onTap: _onPickPressed,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 15,
-                    horizontal: 10,
-                  ),
                   decoration: BoxDecoration(
-                    color: Colors.transparent,
                     border: Border(
                       bottom: BorderSide(
                         color: Theme.of(context).dividerColor,
@@ -220,136 +180,192 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                       ),
                     ),
                   ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.photo_library,
-                            size: 24,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Change photo',
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                        ],
-                      ),
+                    children: [
                       Icon(
-                        Icons.keyboard_arrow_right,
-                        color: Theme.of(context).primaryColorLight,
-                      )
+                        Icons.photo_library,
+                        size: 24,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Photo',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
                     ],
                   ),
                 ),
               ),
-            ]),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
+            if (imageFile != null)
+              Column(children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: (MediaQuery.of(context).size.width / 3) * 2,
                   color: Theme.of(context).dividerColor,
-                  width: .75,
+                  child: Image.file(
+                    imageFile,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _openChangePhotoModal,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: .75,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.photo_library,
+                              size: 24,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Change photo',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                          ],
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Theme.of(context).primaryColorLight,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
-            ),
-            width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              validator: Validator.validateNonEmpty,
-              controller: widget.sphereNameController,
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Name*',
-                hintStyle: Theme.of(context).textTheme.caption,
+              width: MediaQuery.of(context).size.width,
+              child: TextFormField(
+                validator: Validator.validateNonEmpty,
+                controller: widget.sphereNameController,
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).requestFocus(_handleFocus);
+                },
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Name*',
+                  hintStyle: Theme.of(context).textTheme.caption,
+                ),
+                cursorColor: JuntoPalette.juntoGrey,
+                cursorWidth: 2,
+                maxLines: null,
+                maxLength: 140,
+                style: Theme.of(context).textTheme.caption,
+                textInputAction: TextInputAction.done,
               ),
-              cursorColor: JuntoPalette.juntoGrey,
-              cursorWidth: 2,
-              maxLines: null,
-              maxLength: 140,
-              style: Theme.of(context).textTheme.caption,
-              textInputAction: TextInputAction.done,
             ),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: .75,
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
-            ),
-            child: TextFormField(
-              validator: Validator.validateNonEmpty,
-              controller: widget.sphereHandleController,
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Handle*',
-                hintStyle: Theme.of(context).textTheme.caption,
+              child: TextFormField(
+                validator: Validator.validateNonEmpty,
+                controller: widget.sphereHandleController,
+                focusNode: _handleFocus,
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).requestFocus(_bioFocus);
+                },
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Handle*',
+                  hintStyle: Theme.of(context).textTheme.caption,
+                ),
+                cursorColor: Theme.of(context).primaryColorDark,
+                cursorWidth: 2,
+                maxLines: null,
+                style: Theme.of(context).textTheme.caption,
+                maxLength: 22,
+                textInputAction: TextInputAction.done,
               ),
-              cursorColor: Theme.of(context).primaryColorDark,
-              cursorWidth: 2,
-              maxLines: null,
-              style: Theme.of(context).textTheme.caption,
-              maxLength: 22,
-              textInputAction: TextInputAction.done,
             ),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: .75,
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
-            ),
-            child: TextFormField(
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              validator: Validator.validateNonEmpty,
-              controller: widget.sphereDescriptionController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Bio*',
-                hintStyle: Theme.of(context).textTheme.caption,
+              child: TextFormField(
+                buildCounter: (
+                  BuildContext context, {
+                  int currentLength,
+                  int maxLength,
+                  bool isFocused,
+                }) =>
+                    null,
+                validator: Validator.validateNonEmpty,
+                focusNode: _bioFocus,
+                controller: widget.sphereDescriptionController,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Bio*',
+                  hintStyle: Theme.of(context).textTheme.caption,
+                ),
+                cursorColor: Theme.of(context).primaryColorDark,
+                cursorWidth: 2,
+                maxLines: null,
+                style: Theme.of(context).textTheme.caption,
+                maxLength: 1000,
+                textInputAction: TextInputAction.done,
               ),
-              cursorColor: Theme.of(context).primaryColorDark,
-              cursorWidth: 2,
-              maxLines: null,
-              style: Theme.of(context).textTheme.caption,
-              maxLength: 1000,
-              textInputAction: TextInputAction.done,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
