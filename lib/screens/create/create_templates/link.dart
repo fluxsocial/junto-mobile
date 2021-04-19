@@ -82,11 +82,9 @@ class CreateLinkFormState extends State<CreateLinkForm>
     final text = _urlController.value.text.toLowerCase().trim();
     if (text.startsWith('http://') || text.startsWith('https://')) {
       return true;
-    } else if (text.startsWith('www.')) {
+    } else {
       _urlController.value = TextEditingValue(text: 'https://$text');
       return true;
-    } else {
-      return false;
     }
   }
 
@@ -96,7 +94,7 @@ class CreateLinkFormState extends State<CreateLinkForm>
     if (expression.caption.isNotEmpty ||
         expression.title.isNotEmpty ||
         expression.url.isNotEmpty) {
-      return true;
+      return validate();
     }
     return false;
   }

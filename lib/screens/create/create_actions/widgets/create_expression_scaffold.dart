@@ -554,8 +554,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
   Future<void> createExpression() async {
     ExpressionModel expressionModel;
 
-    print('test: 1010 $mentions');
-
     try {
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
 
