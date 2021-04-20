@@ -154,7 +154,6 @@ class CircleBio extends StatelessWidget {
   final Group group;
   @override
   Widget build(BuildContext context) {
-    print('test: ${group.groupData.description}');
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
