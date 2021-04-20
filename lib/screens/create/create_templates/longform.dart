@@ -4,6 +4,7 @@ import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/remove_focus_widget.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_event.dart';
 import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_state.dart';
@@ -18,10 +19,8 @@ class CreateLongform extends StatefulWidget {
     this.captionFocus,
     this.titleFocus,
   }) : super(key: key);
-
   final FocusNode captionFocus;
   final FocusNode titleFocus;
-
   @override
   State<StatefulWidget> createState() {
     return CreateLongformState();
@@ -41,7 +40,6 @@ class CreateLongformState extends State<CreateLongform>
   List<Map<String, dynamic>> channels = [];
   List<Map<String, dynamic>> completeChannelsList = [];
   ListType listType = ListType.empty;
-
   @override
   void initState() {
     super.initState();
@@ -52,7 +50,6 @@ class CreateLongformState extends State<CreateLongform>
   /// by the user.
   LongFormExpression createExpression() {
     final markupText = mentionKey.currentState.controller.markupText;
-
     return LongFormExpression(
       title: _titleController.value.text.trim(),
       body: markupText.trim(),
@@ -63,7 +60,6 @@ class CreateLongformState extends State<CreateLongform>
     final LongFormExpression expression = createExpression();
     final mentions = getMentionUserId(expression.body);
     final channels = getChannelsId(expression.body);
-
     return {'mentions': mentions, 'channels': channels};
   }
 
@@ -101,6 +97,7 @@ class CreateLongformState extends State<CreateLongform>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (BuildContext context) {
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));
@@ -114,37 +111,26 @@ class CreateLongformState extends State<CreateLongform>
           listener: (context, state) {
             if (!(state is LoadingSearchState) && (state is SearchUserState)) {
               final eq = DeepCollectionEquality.unordered().equals;
-
               final _users = getUserList(state, []);
-
               final isEqual = eq(users, _users);
-
               if (!isEqual) {
                 setState(() {
                   users = _users;
-
                   listType = ListType.mention;
-
                   completeUserList =
                       generateFinalList(completeUserList, _users);
                 });
               }
             }
-
             if (!(state is LoadingSearchChannelState) &&
                 (state is SearchChannelState)) {
               final eq = DeepCollectionEquality.unordered().equals;
-
               final _channels = getChannelsList(state, []);
-
               final isEqual = eq(channels, _channels);
-
               if (!isEqual) {
                 setState(() {
                   channels = _channels;
-
                   listType = ListType.channels;
-
                   completeChannelsList =
                       generateFinalList(completeChannelsList, _channels);
                 });
@@ -190,7 +176,11 @@ class CreateLongformState extends State<CreateLongform>
                     child: Stack(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                            bottom: 50,
+                          ),
                           child: FlutterMentions(
                             key: mentionKey,
                             suggestionPosition: SuggestionPosition.Bottom,
@@ -211,7 +201,6 @@ class CreateLongformState extends State<CreateLongform>
                             onSearchChanged: (String trigger, String value) {
                               if (value.isNotEmpty && _showList) {
                                 final channel = trigger == '#';
-
                                 if (!channel) {
                                   context.read<SearchBloc>().add(SearchingEvent(
                                         value,
@@ -240,6 +229,8 @@ class CreateLongformState extends State<CreateLongform>
                             ),
                           ),
                         ),
+                        if (widget.captionFocus.hasFocus)
+                          RemoveFocusWidget(focusNode: widget.captionFocus),
                         if (_showList &&
                             widget.captionFocus.hasFocus &&
                             listType == ListType.mention)
@@ -252,7 +243,6 @@ class CreateLongformState extends State<CreateLongform>
                               onMentionAdd: (index) {
                                 mentionKey.currentState
                                     .addMention(users[index]);
-
                                 if (addedmentions.indexWhere((element) =>
                                         element['id'] == users[index]['id']) ==
                                     -1) {
@@ -261,7 +251,6 @@ class CreateLongformState extends State<CreateLongform>
                                     users[index]
                                   ];
                                 }
-
                                 setState(() {
                                   _showList = false;
                                   users = [];
@@ -281,7 +270,6 @@ class CreateLongformState extends State<CreateLongform>
                               onChannelAdd: (index) {
                                 mentionKey.currentState
                                     .addMention(channels[index]);
-
                                 if (addedChannels.indexWhere((element) =>
                                         element['id'] ==
                                         channels[index]['id']) ==
@@ -291,7 +279,6 @@ class CreateLongformState extends State<CreateLongform>
                                     channels[index]
                                   ];
                                 }
-
                                 setState(() {
                                   _showList = false;
                                   channels = [];

@@ -2,14 +2,12 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_context_overlay.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/choose_expression_sheet.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/remove_focus_widget.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
@@ -471,9 +469,11 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
         default:
           break;
       }
+
       setState(() {
         expression = expressionInProgress;
         channels = mentionsAndChannels['channels'];
+        mentions = mentionsAndChannels['mentions'];
       });
     }
     if (channels.length > 5) {
@@ -553,6 +553,8 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
 
   Future<void> createExpression() async {
     ExpressionModel expressionModel;
+
+    print('test: 1010 $mentions');
 
     try {
       final repository = Provider.of<ExpressionRepo>(context, listen: false);
@@ -737,9 +739,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                             Container(
                               height: MediaQuery.of(context).size.height,
                               width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.only(
-                                bottom: MediaQuery.of(context).size.height * .1,
-                              ),
                               child: Column(
                                 children: <Widget>[
                                   CreateTopBar(
@@ -760,9 +759,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
                                   currentExpressionType: currentExpressionType,
                                   chooseExpressionType: chooseExpressionType,
                                 ),
-                            if (dynamicCaptionFocusNode.hasFocus)
-                              RemoveFocusWidget(
-                                  focusNode: dynamicCaptionFocusNode)
                           ],
                         ),
 

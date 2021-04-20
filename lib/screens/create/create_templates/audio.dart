@@ -214,6 +214,7 @@ class CreateAudioState extends State<CreateAudio>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<AudioService>(
       builder: (context, audio, child) {
         return Expanded(

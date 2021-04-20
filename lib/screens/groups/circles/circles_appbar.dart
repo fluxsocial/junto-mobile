@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
+import 'package:junto_beta_mobile/widgets/appbar/global_invite_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/global_search_icon.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere.dart';
@@ -95,6 +96,7 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
+                          GlobalInviteIcon(),
                           GlobalSearchIcon(),
                           NotificationsLunarIcon(),
                         ],
@@ -132,7 +134,7 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                               bottom: 10,
                             ),
                             child: Text(
-                              'PUBLIC',
+                              'MY',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -156,7 +158,7 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                               bottom: 10,
                             ),
                             child: Text(
-                              'PRIVATE',
+                              'DISCOVER',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,

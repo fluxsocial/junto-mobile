@@ -65,20 +65,21 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                           );
                         },
                       ),
-                      ...state.groups.map((group) {
-                        return GestureDetector(
-                          onTap: () {
-                            onGroupSelected(group);
+                      if (state.groups != null)
+                        ...state.groups.map((group) {
+                          return GestureDetector(
+                            onTap: () {
+                              onGroupSelected(group);
 
-                            context
-                                .read<ChannelFilteringBloc>()
-                                .add(FilterClear());
-                          },
-                          child: CirclePreview(
-                            group: group,
-                          ),
-                        );
-                      }).toList(),
+                              context
+                                  .read<ChannelFilteringBloc>()
+                                  .add(FilterClear());
+                            },
+                            child: CirclePreview(
+                              group: group,
+                            ),
+                          );
+                        }).toList(),
                     ],
                   ));
                 }

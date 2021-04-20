@@ -21,6 +21,7 @@ class _SubscriptionsState extends State<Subscriptions>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       child: Column(
         children: [

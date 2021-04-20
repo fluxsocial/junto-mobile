@@ -190,10 +190,10 @@ class JuntoContactsState extends State<JuntoContacts> {
                 String uri;
                 if (Platform.isIOS) {
                   uri = Uri.encodeFull(
-                      "sms:${numbers.join(',')}&body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${_userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
+                      "sms:${numbers.join(',')}&body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their private beta - you can connect with me @${_userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
                 } else if (Platform.isAndroid) {
                   uri = Uri.encodeFull(
-                      "sms:${numbers.join(',')}?body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their closed alpha - you can connect with me @${_userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
+                      "sms:${numbers.join(',')}?body=Hey! I started using this more authentic and nonprofit social media platform called Junto. Here's an invite to their private beta - you can connect with me @${_userProfile.user.username}. https://junto.typeform.com/to/k7BUVK8f");
                 }
 
                 if (await canLaunch(uri)) {

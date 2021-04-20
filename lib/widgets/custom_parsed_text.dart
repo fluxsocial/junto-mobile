@@ -58,6 +58,10 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
                     final userData =
                         await Provider.of<UserRepo>(context, listen: false)
                             .getUser(url);
+                    if (await isHostUser(userData.user)) {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    }
+
                     await showUserDen(context, userData.user);
                   }
                 : null,

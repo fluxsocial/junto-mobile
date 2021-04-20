@@ -27,9 +27,12 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
 
   List<Users> members;
   List<Group> groups;
+  List<Group> publicGroups;
   List<Group> notifications;
   UserData creator;
   int currentMemberPage = 0;
+  int currentPublicGroupsPage = 0;
+  int remainingPublicGroupCount = 0;
   String currentMemberTimeStamp;
 
   @override
@@ -37,10 +40,11 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
     Stream<CircleEvent> events,
     TransitionFunction<CircleEvent, CircleState> transitionFn,
   ) {
-    final nonDebounceStream =
-        events.where((event) => event is! LoadCircleMembersMore);
+    final nonDebounceStream = events.where((event) =>
+        event is! LoadCircleMembersMore && event is! FetchMorePublicCircle);
     final debounceStream = events
-        .where((event) => event is LoadCircleMembersMore)
+        .where((event) =>
+            event is LoadCircleMembersMore || event is FetchMorePublicCircle)
         .debounceTime(const Duration(milliseconds: 600));
     return super.transformEvents(
         MergeStream([nonDebounceStream, debounceStream]), transitionFn);
@@ -70,6 +74,10 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
       yield* _mapRemoveMemberFromCircleToState(event);
     } else if (event is CreateCircleEvent) {
       yield* _mapCreateCircleToState(event);
+    } else if (event is FetchPublicCircle) {
+      yield* _mapFetchPublicGroupsToState(event);
+    } else if (event is FetchMorePublicCircle) {
+      yield* _mapFetchMorePublicGroupsToState(event);
     }
   }
 
@@ -94,6 +102,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         groupJoinNotifications: notifications,
         members: members,
         creator: creator,
+        publicGroups: publicGroups,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -118,9 +127,16 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
             .toList();
         notifications = unFilteredNotifications.map((e) => e.group).toList();
         yield CircleLoaded(
-            groups: groups, groupJoinNotifications: notifications);
+          groups: groups,
+          groupJoinNotifications: notifications,
+          publicGroups: publicGroups,
+        );
       } else {
-        yield CircleLoaded(groups: groups, groupJoinNotifications: []);
+        yield CircleLoaded(
+          groups: groups,
+          groupJoinNotifications: [],
+          publicGroups: publicGroups,
+        );
       }
     } on JuntoException catch (error) {
       yield CircleError(error.message);
@@ -145,9 +161,16 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
             .toList();
         notifications = unFilteredNotifications.map((e) => e.group).toList();
         yield CircleLoaded(
-            groups: groups, groupJoinNotifications: notifications);
+          groups: groups,
+          groupJoinNotifications: notifications,
+          publicGroups: publicGroups,
+        );
       } else {
-        yield CircleLoaded(groups: groups, groupJoinNotifications: []);
+        yield CircleLoaded(
+          groups: groups,
+          groupJoinNotifications: [],
+          publicGroups: publicGroups,
+        );
       }
     } on JuntoException catch (error) {
       yield CircleError(error.message);
@@ -169,6 +192,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         groupJoinNotifications: notifications,
         members: members,
         creator: creator,
+        publicGroups: publicGroups,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -187,6 +211,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         groupJoinNotifications: notifications,
         members: members,
         creator: creator,
+        publicGroups: publicGroups,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -203,6 +228,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         groupJoinNotifications: notifications,
         members: members,
         creator: creator,
+        publicGroups: publicGroups,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -222,6 +248,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         groupJoinNotifications: notifications,
         members: members,
         creator: creator,
+        publicGroups: publicGroups,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -243,6 +270,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         groupJoinNotifications: notifications,
         members: members,
         creator: creator,
+        publicGroups: publicGroups,
       );
     } on DioError catch (e, s) {
       print(e.response.data);
@@ -263,6 +291,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         groups: groups,
         groupJoinNotifications: notifications,
         members: members,
+        publicGroups: publicGroups,
       );
 
       final result = await groupRepo.getGroupMembers(
@@ -274,13 +303,25 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
 
       currentMemberTimeStamp = result.lastTimestamp;
 
-      final activeGroup =
-          groups.indexWhere((e) => e.address == event.sphereAddress);
+      var activeGroup = -1;
+      var isPublic = false;
+
+      activeGroup = groups.indexWhere((e) => e.address == event.sphereAddress);
+
+      if (activeGroup == -1) {
+        activeGroup =
+            publicGroups.indexWhere((e) => e.address == event.sphereAddress);
+        isPublic = true;
+      }
 
       if (activeGroup != -1) {
-        final group = groups[activeGroup];
+        final group =
+            !isPublic ? groups[activeGroup] : publicGroups[activeGroup];
+
         if (group.creator.runtimeType == String) {
           creator = await userRepo.getUser(group.creator);
+        } else if (isPublic) {
+          creator = await userRepo.getUser(groupResult.creator['address']);
         } else {
           creator = await userRepo.getUser(group.creator['address']);
         }
@@ -293,6 +334,7 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
         creator: creator,
         totalMembers: groupResult.members,
         totalFacilitators: groupResult.facilitators,
+        publicGroups: publicGroups,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -324,6 +366,89 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
           creator: creator,
           totalMembers: results.totalMembers,
           totalFacilitators: results.totalFacilitators,
+          publicGroups: publicGroups,
+        );
+      }
+    } catch (e, s) {
+      logger.logException(e, s);
+    }
+  }
+
+  Stream<CircleState> _mapFetchPublicGroupsToState(
+      FetchPublicCircle event) async* {
+    try {
+      publicGroups = [];
+
+      currentPublicGroupsPage = 0;
+
+      yield CircleLoaded(
+        groups: groups,
+        groupJoinNotifications: notifications,
+        members: members,
+        publicGroups: publicGroups,
+      );
+
+      final result = await groupRepo.getPublicGroups({
+        'pagination_position': currentPublicGroupsPage.toString(),
+        'query': event.query,
+        'sorting': 'GroupSize',
+      });
+
+      final results = result['results'];
+
+      publicGroups =
+          results.map((e) => Group.fromJson(e)).toList().cast<Group>();
+
+      remainingPublicGroupCount = event.query.length > 0
+          ? result['result_count']
+          : result['remaining_count'];
+
+      yield CircleLoaded(
+        groups: groups,
+        groupJoinNotifications: notifications,
+        members: members,
+        creator: creator,
+        publicGroups: publicGroups,
+      );
+    } on DioError catch (e) {
+      print(e.message);
+    } catch (e, s) {
+      logger.logException(e, s);
+    }
+  }
+
+  Stream<CircleState> _mapFetchMorePublicGroupsToState(
+      FetchMorePublicCircle event) async* {
+    try {
+      final loadmore = event.query.length > 0
+          ? remainingPublicGroupCount == 50
+          : remainingPublicGroupCount != 0;
+      if (loadmore) {
+        currentPublicGroupsPage += 50;
+
+        final result = await groupRepo.getPublicGroups({
+          'pagination_position': currentPublicGroupsPage.toString(),
+          'query': event.query,
+          'sorting': 'GroupSize',
+        });
+
+        final results = result['results'];
+
+        publicGroups = [
+          ...publicGroups,
+          ...results.map((e) => Group.fromJson(e)).toList().cast<Group>()
+        ];
+
+        remainingPublicGroupCount = event.query.length > 0
+            ? result['result_count']
+            : result['remaining_count'];
+
+        yield CircleLoaded(
+          groups: groups,
+          groupJoinNotifications: notifications,
+          members: members,
+          creator: creator,
+          publicGroups: publicGroups,
         );
       }
     } catch (e, s) {

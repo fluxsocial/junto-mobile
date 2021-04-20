@@ -20,6 +20,7 @@ class _ConnectionsState extends State<Connections>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       child: Column(
         children: [

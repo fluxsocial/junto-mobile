@@ -185,7 +185,6 @@ mixin MemberValidation {
   /// they are the host (logged in) user or not.
   Future<void> showUserDen(BuildContext context, UserProfile profile) async {
     if (await isHostUser(profile)) {
-      Navigator.pop(context);
       Provider.of<AppRepo>(context, listen: false)
           .changeScreen(screen: Screen.den);
 

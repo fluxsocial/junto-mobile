@@ -4,6 +4,30 @@ abstract class CircleEvent {
   const CircleEvent();
 }
 
+class FetchPublicCircle extends CircleEvent {
+  final String query;
+  final bool aplhanum;
+  final bool size;
+
+  FetchPublicCircle({
+    this.query = '',
+    this.aplhanum = true,
+    this.size = true,
+  });
+}
+
+class FetchMorePublicCircle extends CircleEvent {
+  final String query;
+  final bool aplhanum;
+  final bool size;
+
+  FetchMorePublicCircle({
+    this.query = '',
+    this.aplhanum = true,
+    this.size = true,
+  });
+}
+
 class FetchMyCircle extends CircleEvent {}
 
 class RefreshCircle extends CircleEvent {}

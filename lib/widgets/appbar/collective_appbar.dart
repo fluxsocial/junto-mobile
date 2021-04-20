@@ -15,6 +15,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:provider/provider.dart';
+import 'global_invite_icon.dart';
 import 'global_search_icon.dart';
 import 'lists_drawer.dart';
 import 'notifications_lunar_icon.dart';
@@ -67,87 +68,82 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      GestureDetector(
-                        onTap: collectiveViewNav,
-                        child: Container(
-                          alignment: Alignment.bottomLeft,
-                          padding: const EdgeInsets.only(left: 10, bottom: 10),
-                          color: Colors.transparent,
-                          height: 38,
-                          width: 38,
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                CustomIcons.back,
-                                size: 17,
-                                color: Theme.of(context).primaryColor,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: collectiveViewNav,
+                            child: Container(
+                              alignment: Alignment.bottomLeft,
+                              padding:
+                                  const EdgeInsets.only(left: 10, bottom: 10),
+                              color: Colors.transparent,
+                              height: 38,
+                              width: 38,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    CustomIcons.back,
+                                    size: 17,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.only(left: 45, bottom: 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Flexible(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      isScrollControlled: true,
-                                      builder: (BuildContext context) =>
-                                          ListsDrawer(),
-                                    );
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          'c/junto',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        Text(
-                                          context
-                                              .read<CollectiveBloc>()
-                                              .currentPerspective
-                                              .name,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                          ),
-                                        ),
-                                      ],
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                isScrollControlled: true,
+                                builder: (BuildContext context) =>
+                                    ListsDrawer(),
+                              );
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              padding: const EdgeInsets.only(
+                                left: 10,
+                                bottom: 5,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'c/junto',
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    context
+                                        .read<CollectiveBloc>()
+                                        .currentPerspective
+                                        .name,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                       Container(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
+                            GlobalInviteIcon(),
                             GlobalSearchIcon(),
                             NotificationsLunarIcon(),
                           ],

@@ -61,10 +61,12 @@ class Backend {
       );
       final userService = UserServiceCentralized(client);
       final expressionService = ExpressionServiceCentralized(client);
+      final appRepo = AppRepo(AppServiceImpl(client));
       final authRepo = AuthRepo(
         authService,
         onLogout: () async {
           await themesProvider.reset();
+          await appRepo.reset();
           await dbService.wipe();
         },
       );
@@ -72,7 +74,6 @@ class Backend {
       final searchService = SearchServiceCentralized(client);
       final notificationService = NotificationServiceImpl(client);
       final notificationRepo = NotificationRepo(notificationService, dbService);
-      final appRepo = AppRepo(AppServiceImpl(client));
       final userRepo =
           UserRepo(userService, notificationRepo, dbService, expressionService);
       final dataProvider = UserDataProvider(appRepo, userRepo);

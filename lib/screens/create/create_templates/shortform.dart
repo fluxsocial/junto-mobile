@@ -114,6 +114,7 @@ class CreateShortformState extends State<CreateShortform>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (BuildContext context) {
         return SearchBloc(Provider.of<SearchRepo>(context, listen: false));

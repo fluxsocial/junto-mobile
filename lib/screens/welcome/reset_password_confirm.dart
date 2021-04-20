@@ -98,8 +98,8 @@ class _ResetPasswordConfirmState extends State<ResetPasswordConfirm> {
             await Provider.of<AuthRepo>(context, listen: false).resetPassword(
           ResetPasswordData(
             widget.usernameController.value.text.trim(),
-            _newPassword.text,
-            _verificationCode.text,
+            _newPassword.text.trim(),
+            _verificationCode.text.trim(),
           ),
         );
         JuntoLoader.hide();

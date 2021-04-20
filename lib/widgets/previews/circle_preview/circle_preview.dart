@@ -93,9 +93,13 @@ class CirclePreview extends StatelessWidget {
                   Text('c/${group.groupData.sphereHandle}',
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.subtitle1),
-                  Text(group.groupData.name,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyText1)
+                  Text(
+                    group.groupData.description,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )
                 ],
               ),
             ),
