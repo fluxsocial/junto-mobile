@@ -60,7 +60,6 @@ class _EditCircleState extends State<EditCircle> {
   }
 
   Future<void> _updateGroup() async {
-    print('test: 1');
     JuntoLoader.showLoader(context);
 
     final String name = _nameController.text;
@@ -69,9 +68,8 @@ class _EditCircleState extends State<EditCircle> {
     // check if user uploaded profile pictures
     if (groupPicture != null && groupPicture.isNotEmpty) {
       try {
-        final String key =
-            await Provider.of<ExpressionRepo>(context, listen: false)
-                .createPhoto(
+        _photoKey = await Provider.of<ExpressionRepo>(context, listen: false)
+            .createPhoto(
           false,
           '.png',
           groupPicture[0],
