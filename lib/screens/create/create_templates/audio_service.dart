@@ -25,7 +25,8 @@ class AudioService with ChangeNotifier {
 
     _audioPlayer
         .openAudioSession(
-      device: AudioDevice.earPiece,
+      focus: AudioFocus.abandonFocus,
+      device: AudioDevice.blueTooth,
       audioFlags: allowBlueToothA2DP |
           allowBlueTooth |
           allowAirPlay |
@@ -129,6 +130,7 @@ class AudioService with ChangeNotifier {
 
   void playRecording() async {
     _isPlaying = true;
+    _audioPlayer.setAudioFocus(focus: AudioFocus.requestFocusAndStopOthers);
     if (_audioPlayer.isStopped) {
       await _audioPlayer.setVolume(1.0);
       await _audioPlayer.startPlayer(
@@ -148,6 +150,7 @@ class AudioService with ChangeNotifier {
 
   void stopPlayback() async {
     if (_audioPlayer != null) {
+      _audioPlayer.setAudioFocus(focus: AudioFocus.abandonFocus);
       await _audioPlayer.stopPlayer();
     }
     _currentPosition = Duration.zero;
@@ -156,6 +159,7 @@ class AudioService with ChangeNotifier {
   }
 
   void pausePlayback() async {
+    _audioPlayer.setAudioFocus(focus: AudioFocus.abandonFocus);
     await _audioPlayer.pausePlayer();
     _isPlaying = false;
     notifyListeners();
