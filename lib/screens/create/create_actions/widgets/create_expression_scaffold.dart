@@ -630,7 +630,6 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
       // Close creation screen
       await Provider.of<AppRepo>(context, listen: false).closeCreate();
     } on DioError catch (error) {
-      print('test: ${error.message}');
       JuntoLoader.hide();
 
       // Handle max number of posts/day error
@@ -640,6 +639,14 @@ class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
           builder: (BuildContext context) => const SingleActionDialog(
             dialogText:
                 'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
+          ),
+        );
+      } else if (error.response.statusCode == 403) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText:
+                'You need to be part of this community to be able to post.',
           ),
         );
       } else if (error.response.data
