@@ -28,7 +28,7 @@ class LinkPreview extends StatelessWidget {
           if (comment.expressionData.title.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 5),
-              child: Text(
+              child: SelectableText(
                 comment.expressionData.title,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
@@ -73,7 +73,7 @@ class LinkPreview extends StatelessWidget {
             )
           else
             Container(
-              child: Text(
+              child: SelectableText(
                 comment.expressionData.url,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,

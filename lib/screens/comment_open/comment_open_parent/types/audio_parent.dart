@@ -64,10 +64,9 @@ class AudioParentTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
-      child: Text(
+      child: SelectableText(
         title,
         maxLines: 3,
-        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w700,

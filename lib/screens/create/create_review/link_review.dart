@@ -19,7 +19,7 @@ class CreateLinkFormReview extends StatelessWidget {
           if (expression.title.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 5),
-              child: Text(
+              child: SelectableText(
                 expression.title,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
@@ -53,7 +53,7 @@ class CreateLinkFormReview extends StatelessWidget {
               }
             },
             child: Container(
-              child: Text(
+              child: SelectableText(
                 expression.url,
                 style: TextStyle(
                   fontSize: 17,

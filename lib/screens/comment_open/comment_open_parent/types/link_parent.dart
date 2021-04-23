@@ -21,7 +21,7 @@ class LinkParent extends StatelessWidget {
           if (expression.expressionData.title.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 5),
-              child: Text(
+              child: SelectableText(
                 expression.expressionData.title,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
@@ -70,7 +70,7 @@ class LinkParent extends StatelessWidget {
             )
           else
             Container(
-              child: Text(
+              child: SelectableText(
                 expression.expressionData.url,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,

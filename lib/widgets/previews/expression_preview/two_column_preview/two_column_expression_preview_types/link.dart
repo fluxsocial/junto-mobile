@@ -40,6 +40,7 @@ class LinkPreview extends StatelessWidget {
                 expression.expressionData.caption,
                 maxLines: 3,
                 disableOnMentiontap: true,
+                selectable: false,
                 overflow: TextOverflow.ellipsis,
                 defaultTextStyle: TextStyle(
                   height: 1.5,
