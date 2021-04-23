@@ -51,7 +51,6 @@ class AudioPreview extends StatelessWidget {
             ),
             child: CustomParsedText(
               audioCaption,
-              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               defaultTextStyle: Theme.of(context).textTheme.caption,
               mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(

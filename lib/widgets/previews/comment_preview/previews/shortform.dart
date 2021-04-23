@@ -40,7 +40,6 @@ class ShortformPreview extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
       child: CustomParsedText(
         shortformBody,
-        maxLines: null,
         alignment: TextAlign.center,
         defaultTextStyle: TextStyle(
           fontSize: 20,

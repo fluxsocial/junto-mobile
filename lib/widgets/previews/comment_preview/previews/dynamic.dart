@@ -56,7 +56,6 @@ class DynamicPreview extends StatelessWidget {
     if (commentBody.isNotEmpty) {
       return CustomParsedText(
         commentBody,
-        maxLines: null,
         overflow: TextOverflow.ellipsis,
         defaultTextStyle: Theme.of(context).textTheme.caption,
         mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(

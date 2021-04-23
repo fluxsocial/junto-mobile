@@ -30,6 +30,7 @@ class ShortformParent extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: CustomParsedText(
         _body,
+        selectable: false,
         defaultTextStyle: TextStyle(
           fontSize: 17.0,
           fontWeight: FontWeight.w700,
@@ -44,7 +45,6 @@ class ShortformParent extends StatelessWidget {
               ? Color(0xff333333)
               : Colors.white,
         ),
-        maxLines: 3,
         overflow: TextOverflow.ellipsis,
         alignment: TextAlign.center,
       ),

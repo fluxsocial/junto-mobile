@@ -54,20 +54,23 @@ class NotificationLinkPreview extends StatelessWidget {
           if (caption.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 15),
-              child: CustomParsedText(caption,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  defaultTextStyle: TextStyle(
-                    height: 1.5,
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 17,
-                  ),
-                  mentionTextStyle: TextStyle(
-                    height: 1.5,
-                    color: Theme.of(context).primaryColorDark,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 17,
-                  )),
+              child: CustomParsedText(
+                caption,
+                maxLines: 3,
+                selectable: false,
+                overflow: TextOverflow.ellipsis,
+                defaultTextStyle: TextStyle(
+                  height: 1.5,
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 17,
+                ),
+                mentionTextStyle: TextStyle(
+                  height: 1.5,
+                  color: Theme.of(context).primaryColorDark,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 17,
+                ),
+              ),
             ),
           if (embedlyResponse != null)
             OEmbedWidget(

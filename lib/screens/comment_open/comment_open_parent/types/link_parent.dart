@@ -35,6 +35,7 @@ class LinkParent extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 5),
               child: CustomParsedText(
                 expression.expressionData.caption,
+                selectable: false,
                 defaultTextStyle: TextStyle(
                   height: 1.5,
                   color: Theme.of(context).primaryColor,
