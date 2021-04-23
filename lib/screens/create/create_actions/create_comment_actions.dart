@@ -584,9 +584,6 @@ class CreateCommentExpressionScaffoldState
                           Container(
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).size.height * .1,
-                            ),
                             child: Column(
                               children: <Widget>[
                                 CreateTopBar(
@@ -605,9 +602,6 @@ class CreateCommentExpressionScaffoldState
                                 currentExpressionType: currentExpressionType,
                                 chooseExpressionType: chooseExpressionType,
                               ),
-                          if (dynamicCaptionFocusNode.hasFocus)
-                            RemoveFocusWidget(
-                                focusNode: dynamicCaptionFocusNode)
                         ],
                       ),
 
