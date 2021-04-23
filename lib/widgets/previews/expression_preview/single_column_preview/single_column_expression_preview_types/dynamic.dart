@@ -51,6 +51,7 @@ class DynamicPreview extends StatelessWidget {
         expressionBody,
         maxLines: 7,
         disableOnMentiontap: true,
+        selectable: false,
         overflow: TextOverflow.ellipsis,
         defaultTextStyle: TextStyle(
           height: 1.5,

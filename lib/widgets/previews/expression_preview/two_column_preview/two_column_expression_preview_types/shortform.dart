@@ -46,6 +46,7 @@ class ShortformPreview extends StatelessWidget {
           shortformBody,
           maxLines: 7,
           disableOnMentiontap: true,
+          selectable: false,
           alignment: TextAlign.center,
           defaultTextStyle: TextStyle(
             fontSize: 18,

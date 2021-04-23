@@ -192,7 +192,7 @@ class AudioTitle extends StatelessWidget {
         horizontal: 10,
       ),
       margin: const EdgeInsets.only(bottom: 15),
-      child: Text(
+      child: SelectableText(
         title,
         style: TextStyle(
           color: hasBackground ? Colors.white : Theme.of(context).primaryColor,
@@ -218,7 +218,7 @@ class AudioCaption extends StatelessWidget with CreateExpressionHelpers {
       builder: (context, state) {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Text(
+          child: SelectableText(
             caption,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
