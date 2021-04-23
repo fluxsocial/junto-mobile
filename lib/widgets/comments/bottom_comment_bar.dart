@@ -255,8 +255,12 @@ class BottomCommentBarState extends State<BottomCommentBar>
                               isScrollControlled: true,
                               builder: (context) {
                                 return Padding(
-                                  padding: EdgeInsets.fromLTRB(0,
-                                      AppBar().preferredSize.height / 2, 0, 0),
+                                  padding: EdgeInsets.fromLTRB(
+                                    0,
+                                    AppBar().preferredSize.height / 2,
+                                    0,
+                                    MediaQuery.of(context).viewInsets.bottom,
+                                  ),
                                   child: FadeIn(
                                     duration: Duration(milliseconds: 300),
                                     child: FeatureDiscovery(
