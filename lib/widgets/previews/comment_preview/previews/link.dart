@@ -42,7 +42,6 @@ class LinkPreview extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 15),
               child: CustomParsedText(
                 comment.expressionData.caption,
-                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 defaultTextStyle: Theme.of(context).textTheme.caption,
                 mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(

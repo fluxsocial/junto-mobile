@@ -42,6 +42,7 @@ class DynamicParent extends StatelessWidget {
           if (expression.expressionData.body.isNotEmpty)
             CustomParsedText(
               expression.expressionData.body,
+              selectable: false,
               defaultTextStyle: TextStyle(
                 height: 1.5,
                 color: Theme.of(context).primaryColor,

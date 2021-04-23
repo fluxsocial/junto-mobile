@@ -44,7 +44,6 @@ class ShortformParent extends StatelessWidget {
               ? Color(0xff333333)
               : Colors.white,
         ),
-        maxLines: 3,
         overflow: TextOverflow.ellipsis,
         alignment: TextAlign.center,
       ),
