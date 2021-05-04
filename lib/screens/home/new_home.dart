@@ -48,9 +48,9 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
 
     _pageController = PageController(initialPage: 0);
 
-    context.bloc<CircleBloc>().add(FetchMyCircle());
+    context.read<CircleBloc>().add(FetchMyCircle());
 
-    context.bloc<CircleBloc>().add(FetchPublicCircle());
+    context.read<CircleBloc>().add(FetchPublicCircle());
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<AppRepo>(context, listen: false).initHome(widget.screen);

@@ -177,9 +177,8 @@ class EditPerspectiveState extends State<EditPerspective> {
                                         widget.perspective.address,
                                         updatedPerspective);
                                 JuntoLoader.hide();
-                                //TODO: edit in bloc
                                 context
-                                    .bloc<PerspectivesBloc>()
+                                    .read<PerspectivesBloc>()
                                     .add(FetchPerspectives());
                                 Navigator.pop(context);
                               }

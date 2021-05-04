@@ -29,7 +29,7 @@ class PendingPackMembers extends StatelessWidget {
                 userProfile: item.creator,
                 pack: item.group,
                 refreshGroups: () async {
-                  await context.bloc<GroupBloc>().add(
+                  await context.read<GroupBloc>().add(
                         FetchMyPack(),
                       );
                 },

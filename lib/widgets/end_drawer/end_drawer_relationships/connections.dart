@@ -35,7 +35,7 @@ class _ConnectionsState extends State<Connections>
               textEditingController: _textEditingController,
               onTextChange: (val) {
                 context
-                    .bloc<RelationBloc>()
+                    .read<RelationBloc>()
                     .add(FetchRealtionship([RelationContext.connections], val));
               },
             ),
@@ -66,7 +66,7 @@ class _ConnectionsState extends State<Connections>
                             state.connctionResultCount >
                                 _connectionsMembers.length) {
                           context
-                              .bloc<RelationBloc>()
+                              .read<RelationBloc>()
                               .add(FetchMoreRelationship(
                                 RelationContext.connections,
                                 _textEditingController.value.text,

@@ -122,7 +122,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                                   ),
                                   Text(
                                     context
-                                        .bloc<CollectiveBloc>()
+                                        .read<CollectiveBloc>()
                                         .currentPerspective
                                         .name,
                                     style: TextStyle(

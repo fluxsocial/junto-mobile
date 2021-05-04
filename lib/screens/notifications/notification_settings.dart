@@ -29,7 +29,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
     if (!granted) {
       showDialog(
         context: context,
-        child: SettingsPopup(
+        builder: (context) => SettingsPopup(
           buildContext: context,
           // TODO: @Eric - Need to update the text
           text: 'Access not granted for notifications',
@@ -105,7 +105,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     final notifs = data.copyWith(comment: val);
 
                     context
-                        .bloc<NotificationSettingBloc>()
+                        .read<NotificationSettingBloc>()
                         .add(UpdateNotificationSetting(options: notifs));
                   },
                 ),
@@ -116,7 +116,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     final notifs = data.copyWith(connection: val);
 
                     context
-                        .bloc<NotificationSettingBloc>()
+                        .read<NotificationSettingBloc>()
                         .add(UpdateNotificationSetting(options: notifs));
                   },
                 ),
@@ -127,7 +127,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     final notifs = data.copyWith(connectionRequest: val);
 
                     context
-                        .bloc<NotificationSettingBloc>()
+                        .read<NotificationSettingBloc>()
                         .add(UpdateNotificationSetting(options: notifs));
                   },
                 ),
@@ -138,7 +138,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     final notifs = data.copyWith(general: val);
 
                     context
-                        .bloc<NotificationSettingBloc>()
+                        .read<NotificationSettingBloc>()
                         .add(UpdateNotificationSetting(options: notifs));
                   },
                 ),
@@ -149,7 +149,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     final notifs = data.copyWith(groupJoinRequest: val);
 
                     context
-                        .bloc<NotificationSettingBloc>()
+                        .read<NotificationSettingBloc>()
                         .add(UpdateNotificationSetting(options: notifs));
                   },
                 ),
@@ -160,7 +160,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     final notifs = data.copyWith(mention: val);
 
                     context
-                        .bloc<NotificationSettingBloc>()
+                        .read<NotificationSettingBloc>()
                         .add(UpdateNotificationSetting(options: notifs));
                   },
                 ),
@@ -171,7 +171,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     final notifs = data.copyWith(packRelation: val);
 
                     context
-                        .bloc<NotificationSettingBloc>()
+                        .read<NotificationSettingBloc>()
                         .add(UpdateNotificationSetting(options: notifs));
                   },
                 ),
@@ -182,7 +182,7 @@ class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
                     final notifs = data.copyWith(subscribe: val);
 
                     context
-                        .bloc<NotificationSettingBloc>()
+                        .read<NotificationSettingBloc>()
                         .add(UpdateNotificationSetting(options: notifs));
                   },
                 ),

@@ -17,7 +17,7 @@ class AboutPerspective extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final perspective = incomingPerspective == null
-        ? context.bloc<CollectiveBloc>().currentPerspective
+        ? context.read<CollectiveBloc>().currentPerspective
         : incomingPerspective;
 
     return Container(
@@ -325,7 +325,7 @@ class AboutPerspectiveDelete extends StatelessWidget {
             confirmationText:
                 'Are you sure you want to delete this perspective?',
             confirm: () {
-              context.bloc<PerspectivesBloc>().add(
+              context.read<PerspectivesBloc>().add(
                     RemovePerspective(perspective),
                   );
               Navigator.pop(context);

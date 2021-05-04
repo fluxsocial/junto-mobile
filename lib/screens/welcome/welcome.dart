@@ -142,7 +142,7 @@ class WelcomeState extends State<Welcome> {
       UserRegistrationDetails details = UserRegistrationDetails.initial(
           email, username, name, '${birthday}Z');
 
-      context.bloc<AuthBloc>().add(SignUpEvent(
+      context.read<AuthBloc>().add(SignUpEvent(
             details: details,
             profilePicture: profilePicture.file.value,
             username: username,

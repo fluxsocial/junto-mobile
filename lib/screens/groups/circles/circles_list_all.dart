@@ -72,7 +72,7 @@ class CirclesListAll extends StatelessWidget with ListDistinct {
                               onGroupSelected(group);
 
                               context
-                                  .bloc<ChannelFilteringBloc>()
+                                  .read<ChannelFilteringBloc>()
                                   .add(FilterClear());
                             },
                             child: CirclePreview(

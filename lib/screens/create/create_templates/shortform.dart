@@ -240,13 +240,13 @@ class CreateShortformState extends State<CreateShortform>
 
                                         if (!channel) {
                                           context
-                                              .bloc<SearchBloc>()
+                                              .read<SearchBloc>()
                                               .add(SearchingEvent(
                                                 value,
                                                 QueryUserBy.BOTH,
                                               ));
                                         } else {
-                                          context.bloc<SearchBloc>().add(
+                                          context.read<SearchBloc>().add(
                                               SearchingChannelEvent(value));
                                         }
                                       } else {

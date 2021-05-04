@@ -14,7 +14,7 @@ class SimpleBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(Cubit bloc, Object error, StackTrace stacktrace) {
+  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
     logger.logException(error, stacktrace, 'Unhandled error in bloc $bloc');
   }

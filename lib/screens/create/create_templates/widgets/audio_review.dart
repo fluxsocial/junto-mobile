@@ -56,12 +56,12 @@ class _AudioReviewState extends State<AudioReview>
       final channel = trigger == '#';
 
       if (!channel) {
-        context.bloc<SearchBloc>().add(SearchingEvent(
+        context.read<SearchBloc>().add(SearchingEvent(
               value,
               QueryUserBy.BOTH,
             ));
       } else {
-        context.bloc<SearchBloc>().add(SearchingChannelEvent(value));
+        context.read<SearchBloc>().add(SearchingChannelEvent(value));
       }
     } else {
       setState(() {

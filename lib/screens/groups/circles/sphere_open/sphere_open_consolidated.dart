@@ -36,7 +36,7 @@ class SphereOpenConsolidated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _removeExpression(ExpressionResponse expression) {
-      final bloc = context.bloc<CollectiveBloc>();
+      final bloc = context.read<CollectiveBloc>();
       bloc.add(DeleteCollective(expression.address));
     }
 
@@ -122,7 +122,7 @@ class SphereOpenConsolidated extends StatelessWidget {
                         SliverToBoxAdapter(
                           child: FetchMoreButton(
                             onPressed: () {
-                              context.bloc<CollectiveBloc>().add(
+                              context.read<CollectiveBloc>().add(
                                     FetchMoreCollective(),
                                   );
                             },

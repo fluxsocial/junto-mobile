@@ -29,8 +29,8 @@ class _CollectiveFeedRefreshState extends State<CollectiveFeedRefresh> {
       child: CustomRefreshIndicator(
         offsetToArmed: 70,
         onRefresh: () async {
-          await context.repository<NotificationsHandler>().fetchNotifications();
-          await context.bloc<CollectiveBloc>().add(RefreshCollective());
+          await context.read<NotificationsHandler>().fetchNotifications();
+          await context.read<CollectiveBloc>().add(RefreshCollective());
 
           return refreshCompleter.future;
         },

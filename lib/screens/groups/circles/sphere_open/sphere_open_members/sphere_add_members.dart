@@ -117,7 +117,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                           onTap: () async {
                             try {
                               JuntoLoader.showLoader(context);
-                              context.bloc<CircleBloc>().add(
+                              context.read<CircleBloc>().add(
                                     AddMemberToCircle(
                                       sphereAddress: widget.group.address,
                                       user: _sphereMembers,
@@ -128,7 +128,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
 
                               showDialog(
                                 context: context,
-                                child: SingleActionDialog(
+                                builder: (context) => SingleActionDialog(
                                   context: context,
                                   dialogText: 'Your community invite was sent!',
                                 ),
@@ -143,7 +143,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                               JuntoLoader.hide();
                               showDialog(
                                 context: context,
-                                child: SingleActionDialog(
+                                builder: (context) => SingleActionDialog(
                                   context: context,
                                   dialogText:
                                       'Sorry, something went wrong. Try again!',

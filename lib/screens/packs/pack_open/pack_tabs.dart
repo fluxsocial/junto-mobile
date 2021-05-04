@@ -20,7 +20,7 @@ class PackTabs extends StatelessWidget {
   final UserDataProvider user;
 
   Future<void> _fetchMore(BuildContext context) async {
-    await context.bloc<PackBloc>().add(RefreshPacks());
+    await context.read<PackBloc>().add(RefreshPacks());
     return refreshCompleter.future;
   }
 

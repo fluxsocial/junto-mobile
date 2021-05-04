@@ -173,7 +173,7 @@ class AudioPreviewWithPhoto extends StatelessWidget {
           ),
           image: CachedNetworkImageProvider(
             photo,
-            cacheManager: CustomCacheManager(),
+            cacheManager: CustomCacheManager.instance,
           ),
           fit: BoxFit.cover,
         ),

@@ -51,7 +51,7 @@ class UserExpressions extends StatefulWidget {
 class _UserExpressionsState extends State<UserExpressions>
     with AutomaticKeepAliveClientMixin {
   void deleteDenExpression(ExpressionResponse expression) {
-    context.bloc<DenBloc>().add(DeleteDenExpression(expression.address));
+    context.read<DenBloc>().add(DeleteDenExpression(expression.address));
   }
 
   @override
@@ -94,7 +94,7 @@ class _UserExpressionsState extends State<UserExpressions>
       };
     }
 
-    context.bloc<DenBloc>().add(
+    context.read<DenBloc>().add(
           LoadDen(
             widget.userProfile.address,
             _params,
@@ -116,7 +116,7 @@ class _UserExpressionsState extends State<UserExpressions>
 
         return UserCustomRefresh(
           refresh: () async {
-            await context.bloc<DenBloc>().add(
+            await context.read<DenBloc>().add(
                   RefreshDen(),
                 );
           },
@@ -171,7 +171,7 @@ class _UserExpressionsState extends State<UserExpressions>
                   SliverToBoxAdapter(
                     child: FetchMoreButton(
                       onPressed: () {
-                        context.bloc<DenBloc>().add(LoadMoreDen());
+                        context.read<DenBloc>().add(LoadMoreDen());
                       },
                     ),
                   )

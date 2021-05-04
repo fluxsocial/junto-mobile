@@ -36,7 +36,7 @@ class _SubscribersState extends State<Subscribers>
               textEditingController: _textEditingController,
               onTextChange: (val) {
                 context
-                    .bloc<RelationBloc>()
+                    .read<RelationBloc>()
                     .add(FetchRealtionship([RelationContext.follower], val));
               },
             ),
@@ -65,7 +65,7 @@ class _SubscribersState extends State<Subscribers>
                             state.followerResultCount >
                                 _followerMembers.length) {
                           context
-                              .bloc<RelationBloc>()
+                              .read<RelationBloc>()
                               .add(FetchMoreRelationship(
                                 RelationContext.follower,
                                 _textEditingController.value.text,

@@ -48,12 +48,12 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
       ..addListener(_onSearchChanged);
     pageViewController = PageController();
 
-    context.bloc<ChannelFilteringBloc>().add(FilterClear());
+    context.read<ChannelFilteringBloc>().add(FilterClear());
   }
 
   Future<void> _onSearchChanged() async {
     context
-        .bloc<ChannelFilteringBloc>()
+        .read<ChannelFilteringBloc>()
         .add(FilterQueryUpdated(textEditingController.text));
   }
 
@@ -265,7 +265,7 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                                                     channel: e.name,
                                                     onTap: () {
                                                       context
-                                                          .bloc<
+                                                          .read<
                                                               ChannelFilteringBloc>()
                                                           .add(
                                                             FilterSelected(
@@ -298,7 +298,7 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                                               return InkWell(
                                                 onTap: () {
                                                   context
-                                                      .bloc<
+                                                      .read<
                                                           ChannelFilteringBloc>()
                                                       .add(FilterSelected(
                                                         [
@@ -338,7 +338,7 @@ class FilterDrawerNewState extends State<FilterDrawerNew> {
                           child: FilterResetButton(
                             onTap: () {
                               context
-                                  .bloc<ChannelFilteringBloc>()
+                                  .read<ChannelFilteringBloc>()
                                   .add(FilterReset());
                             },
                           ),
