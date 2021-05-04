@@ -87,6 +87,18 @@ class AddMemberToCircle extends CircleEvent {
   });
 }
 
+class UpdateMembersPermission extends CircleEvent {
+  final String sphereAdress;
+  final UserProfile user;
+  final String permissionLevel;
+
+  UpdateMembersPermission({
+    this.sphereAdress,
+    this.user,
+    this.permissionLevel,
+  });
+}
+
 class RemoveMemberFromCircle extends CircleEvent {
   final String sphereAdress;
   final String userAddress;

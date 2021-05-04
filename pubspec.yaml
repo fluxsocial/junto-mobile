@@ -52,6 +52,7 @@ dependencies:
   image: 3.0.2
   expandable: 5.0.1
   flutter_aws_amplify_cognito: ^1.0.0+7
+  flutter_slidable: 0.5.7
   corsac_jwt: 
     git:
       url: https://github.com/Jjagg/jwt

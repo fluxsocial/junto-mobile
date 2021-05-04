@@ -445,6 +445,14 @@ packages:
       name: flutter_portal
       url: "https://pub.dartlang.org"
     source: hosted
+    version: "0.3.0"
+  flutter_slidable:
+    dependency: "direct main"
+    description:
+      name: flutter_slidable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.7"
     version: "0.4.0-nullsafety.0"
   flutter_sound:
     dependency: "direct main"

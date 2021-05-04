@@ -226,7 +226,7 @@ class __SearchBodyState extends State<_SearchBody> {
                                     .add(AddMemberToCircle(
                                       sphereAddress: widget.group.address,
                                       user: [data],
-                                      permissionLevel: widget.permission,
+                                      permissionLevel: 'Member',
                                     ));
                                 JuntoLoader.hide();
 

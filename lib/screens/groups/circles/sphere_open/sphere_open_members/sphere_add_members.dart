@@ -121,7 +121,7 @@ class _SphereAddMembersState extends State<SphereAddMembers> {
                                     AddMemberToCircle(
                                       sphereAddress: widget.group.address,
                                       user: _sphereMembers,
-                                      permissionLevel: widget.permission,
+                                      permissionLevel: 'Member',
                                     ),
                                   );
                               JuntoLoader.hide();
