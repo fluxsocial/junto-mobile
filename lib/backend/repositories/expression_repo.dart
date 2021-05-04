@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/services/image_handler.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -154,7 +154,7 @@ class ExpressionRepo {
 
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
-    if (await DataConnectionChecker().hasConnection) {
+    if (await InternetConnectionChecker().hasConnection) {
       cachedResults = await _expressionService.getCollectiveExpressions(params);
       await db.insertExpressions(
           cachedResults.results, DBBoxes.collectiveExpressions);
@@ -172,7 +172,7 @@ class ExpressionRepo {
   Future<QueryResults<ExpressionResponse>> getPackExpressions(
     Map<String, String> params,
   ) async {
-    if (await DataConnectionChecker().hasConnection) {
+    if (await InternetConnectionChecker().hasConnection) {
       packCachedResults =
           await _expressionService.getCollectiveExpressions(params);
       await db.insertExpressions(

@@ -58,7 +58,7 @@ class _SphereSearchState extends State<SphereSearch> {
 
   void onTextChange(String query, BuildContext context) {
     if (mounted) {
-      context.bloc<SearchBloc>().add(
+      context.read<SearchBloc>().add(
             SearchingEvent(query, QueryUserBy.BOTH),
           );
     }
@@ -186,7 +186,7 @@ class __SearchBodyState extends State<_SearchBody> {
       if (percent.roundToDouble() == 60 &&
           direction == ScrollDirection.reverse) {
         context
-            .bloc<SearchBloc>()
+            .read<SearchBloc>()
             .add(FetchMoreSearchResEvent(widget.query, QueryUserBy.BOTH));
       }
     }
@@ -222,7 +222,7 @@ class __SearchBodyState extends State<_SearchBody> {
                               try {
                                 JuntoLoader.showLoader(context);
                                 context
-                                    .bloc<CircleBloc>()
+                                    .read<CircleBloc>()
                                     .add(AddMemberToCircle(
                                       sphereAddress: widget.group.address,
                                       user: [data],

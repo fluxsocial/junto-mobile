@@ -35,7 +35,7 @@ class _PublicCirclesState extends State<PublicCircles> {
   Widget build(BuildContext context) {
     return CustomRefresh(
       refresh: () {
-        context.bloc<CircleBloc>().add(FetchPublicCircle());
+        context.read<CircleBloc>().add(FetchPublicCircle());
       },
       child: BlocBuilder<CircleBloc, CircleState>(
         builder: (context, state) {
@@ -66,7 +66,7 @@ class _PublicCirclesState extends State<PublicCircles> {
                     textEditingController: _subController,
                     onTextChange: (val) {
                       context
-                          .bloc<CircleBloc>()
+                          .read<CircleBloc>()
                           .add(FetchPublicCircle(query: val));
                     },
                   ),
@@ -83,7 +83,7 @@ class _PublicCirclesState extends State<PublicCircles> {
                         position = notification.metrics.pixels;
                         if (scrollPercent.toInt() >= 80) {
                           context
-                              .bloc<CircleBloc>()
+                              .read<CircleBloc>()
                               .add(FetchMorePublicCircle());
 
                           return true;
@@ -107,7 +107,7 @@ class _PublicCirclesState extends State<PublicCircles> {
                             widget.onGroupSelected(group);
 
                             context
-                                .bloc<ChannelFilteringBloc>()
+                                .read<ChannelFilteringBloc>()
                                 .add(FilterClear());
                           },
                           child: CirclePreview(

@@ -202,13 +202,13 @@ class CreateLongformState extends State<CreateLongform>
                               if (value.isNotEmpty && _showList) {
                                 final channel = trigger == '#';
                                 if (!channel) {
-                                  context.bloc<SearchBloc>().add(SearchingEvent(
+                                  context.read<SearchBloc>().add(SearchingEvent(
                                         value,
                                         QueryUserBy.BOTH,
                                       ));
                                 } else {
                                   context
-                                      .bloc<SearchBloc>()
+                                      .read<SearchBloc>()
                                       .add(SearchingChannelEvent(value));
                                 }
                               } else {

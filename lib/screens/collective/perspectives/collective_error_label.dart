@@ -17,7 +17,7 @@ class CollectiveErrorLabel extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         onPressed: () =>
-            context.bloc<CollectiveBloc>().add(RefreshCollective()),
+            context.read<CollectiveBloc>().add(RefreshCollective()),
       ),
     );
   }

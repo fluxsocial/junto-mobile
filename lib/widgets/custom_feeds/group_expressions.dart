@@ -34,7 +34,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
   bool get isPrivate => widget.privacy != 'Public';
 
   void _fetchMore() {
-    context.bloc<PackBloc>().add(FetchMorePacks());
+    context.read<PackBloc>().add(FetchMorePacks());
   }
 
   @override
@@ -71,7 +71,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                         data: _results,
                         useSliver: true,
                         deleteExpression: (expression) {
-                          context.bloc<PackBloc>().add(
+                          context.read<PackBloc>().add(
                                 DeletePackExpression(expression.address),
                               );
                         },
@@ -83,7 +83,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                         data: _results,
                         privacyLayer: widget.privacy,
                         deleteExpression: (expression) {
-                          context.bloc<PackBloc>().add(
+                          context.read<PackBloc>().add(
                                 DeletePackExpression(expression.address),
                               );
                         },

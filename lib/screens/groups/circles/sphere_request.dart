@@ -102,7 +102,7 @@ class SphereRequest extends StatelessWidget {
                                 await Provider.of<NotificationsHandler>(context,
                                         listen: false)
                                     .fetchNotifications();
-                                context.bloc<CircleBloc>().add(FetchMyCircle());
+                                context.read<CircleBloc>().add(FetchMyCircle());
 
                                 JuntoLoader.hide();
                               },
@@ -138,7 +138,7 @@ class SphereRequest extends StatelessWidget {
                                 await Provider.of<NotificationsHandler>(context,
                                         listen: false)
                                     .fetchNotifications();
-                                context.bloc<CircleBloc>().add(FetchMyCircle());
+                                context.read<CircleBloc>().add(FetchMyCircle());
                                 JuntoLoader.hide();
                               },
                               child: Container(

@@ -72,7 +72,7 @@ class CircleActionItemsMember extends StatelessWidget {
                           buildContext: context,
                           confirm: () {
                             try {
-                              context.bloc<CircleBloc>().add(
+                              context.read<CircleBloc>().add(
                                     LeaveCircle(
                                       sphereAdress: sphere.address,
                                       userAddress: userProfile.address,

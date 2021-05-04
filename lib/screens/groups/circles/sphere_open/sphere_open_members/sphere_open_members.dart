@@ -277,7 +277,7 @@ class _CircleMembersState extends State<CircleMembers> {
         if (notification.metrics.pixels - position >= sensitivityFactor) {
           position = notification.metrics.pixels;
           if (scrollPercent.toInt() == 80) {
-            context.bloc<CircleBloc>().add(
+            context.read<CircleBloc>().add(
                 LoadCircleMembersMore(sphereAddress: widget.group.address));
 
             return true;
