@@ -234,8 +234,6 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
   Stream<CircleState> _mapUpdateMemberPermissionToState(
       UpdateMembersPermission event) async* {
     try {
-      await groupRepo.removeGroupMember(event.sphereAdress, event.user.address);
-
       await groupRepo.addGroupMember(
         event.sphereAdress,
         [event.user],
