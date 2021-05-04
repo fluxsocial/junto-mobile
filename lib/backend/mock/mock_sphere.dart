@@ -89,4 +89,9 @@ class MockSphere with ChangeNotifier implements GroupService {
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
   }
+
+  @override
+  Future<Map<String, dynamic>> getPublicGroups(Map<String, dynamic> params) {
+    throw Future<void>.delayed(const Duration(milliseconds: 200));
+  }
 }

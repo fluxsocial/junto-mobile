@@ -24,7 +24,9 @@ class ExpressionPreviewBottom extends StatelessWidget with MemberValidation {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           GestureDetector(
-            onTap: () => showUserDen(context, expression.creator),
+            onTap: () async {
+              showUserDen(context, expression.creator);
+            },
             child: Container(
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * .5 - 40,

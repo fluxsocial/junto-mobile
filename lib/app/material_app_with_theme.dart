@@ -13,8 +13,6 @@ import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
-import 'package:junto_beta_mobile/screens/home/new_home.dart';
-import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/notifications/notification_navigation_observer.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
@@ -23,6 +21,7 @@ import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/services/hive_service.dart';
 
 class MaterialAppWithTheme extends StatelessWidget {
   @override
@@ -87,6 +86,10 @@ class HomePage extends StatelessWidget {
             if ((state.error != null && !state.error) &&
                 !(ModalRoute.of(context).isFirst &&
                     ModalRoute.of(context).isCurrent)) {
+              Provider.of<HiveCache>(context).wipe();
+              Provider.of<JuntoThemesProvider>(context).reset();
+              Provider.of<AppRepo>(context).reset();
+
               Navigator.of(context).pushAndRemoveUntil(
                 PageRouteBuilder(
                   pageBuilder: (context, anim1, anim2) => HomePage(),
@@ -149,7 +152,7 @@ class HomePageContentState extends State<HomePageContent>
     final appRepo = Provider.of<AppRepo>(context);
 
     try {
-      context.bloc<NotificationSettingBloc>().add(FetchNotificationSetting());
+      // context.bloc<NotificationSettingBloc>().add(FetchNotificationSetting());
 
       final _isFirst = await appRepo.isFirstLaunch();
       if (_isFirst) {

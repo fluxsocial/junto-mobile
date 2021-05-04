@@ -38,6 +38,7 @@ class NotificationDynamicPreview extends StatelessWidget {
           if (body.isNotEmpty)
             CustomParsedText(
               body,
+              selectable: false,
               defaultTextStyle: TextStyle(
                 fontSize: 15,
                 color: Theme.of(context).primaryColor,

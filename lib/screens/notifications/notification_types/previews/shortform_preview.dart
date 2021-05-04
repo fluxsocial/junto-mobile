@@ -32,6 +32,7 @@ class NotificationShortformPreview extends StatelessWidget {
       ),
       child: CustomParsedText(
         sourceExpression.expressionData['body'],
+        selectable: false,
         defaultTextStyle: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w700,

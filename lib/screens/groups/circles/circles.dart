@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed_new.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 
 import 'bloc/circle_bloc.dart';
 import 'circles_appbar.dart';
 import 'circles_list_all.dart';
 import 'circles_requests.dart';
-import 'private_groups_placeholder.dart';
+import 'public_circles.dart';
 import 'sphere_open/sphere_open.dart';
 
 // This screen displays the temporary page we'll display until groups are released
@@ -32,26 +33,50 @@ class Circles extends StatefulWidget {
 }
 
 class CirclesState extends State<Circles>
-    with ListDistinct, TickerProviderStateMixin {
+    with
+        ListDistinct,
+        TickerProviderStateMixin,
+        WidgetsBindingObserver,
+        AutomaticKeepAliveClientMixin {
   PageController circlesPageController;
   UserData _userProfile;
-  int _currentIndex = 0;
-  // Group activeGroup;
 
   @override
   void initState() {
     super.initState();
+
     circlesPageController = PageController(initialPage: 0);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AppRepo>(context, listen: false).addListener(() async {
+        setupListener();
+      });
+    });
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     _userProfile = Provider.of<UserDataProvider>(context).userProfile;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    circlesPageController.dispose();
+  }
+
+  void setupListener() async {
     final groupsPageIndex =
-        Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
-    _currentIndex = groupsPageIndex;
-    circlesPageController = PageController(initialPage: groupsPageIndex);
+        await Provider.of<AppRepo>(context, listen: false).groupsPageIndex;
+
+    if (groupsPageIndex != circlesPageController.page.toInt()) {
+      circlesPageController.animateToPage(
+        groupsPageIndex,
+        duration: Duration(milliseconds: 250),
+        curve: Curves.ease,
+      );
+    }
   }
 
   bool onWillPop() {
@@ -68,6 +93,7 @@ class CirclesState extends State<Circles>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: WillPopScope(
         onWillPop: () => Future.sync(onWillPop),
@@ -79,9 +105,6 @@ class CirclesState extends State<Circles>
             controller: circlesPageController,
             physics: NeverScrollableScrollPhysics(),
             onPageChanged: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
               Provider.of<AppRepo>(context, listen: false)
                   .setGroupsPageIndex(index);
             },
@@ -124,6 +147,9 @@ class CirclesState extends State<Circles>
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class CircleMain extends StatefulWidget {
@@ -174,6 +200,7 @@ class _CircleMainState extends State<CircleMain>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
@@ -212,7 +239,10 @@ class _CircleMainState extends State<CircleMain>
                           userProfile: widget._userProfile,
                           onGroupSelected: widget.onGroupSelected,
                         ),
-                        PrivateGroupsPlaceholder(),
+                        PublicCircles(
+                          userProfile: widget._userProfile,
+                          onGroupSelected: widget.onGroupSelected,
+                        ),
                         CirclesRequests(
                           onGroupSelected: widget.onGroupSelected,
                         ),

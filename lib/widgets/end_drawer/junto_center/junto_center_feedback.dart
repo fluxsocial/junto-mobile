@@ -56,6 +56,7 @@ class JuntoCommunityCenterFeedbackState
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<AppRepo>(builder: (context, AppRepo appRepo, _) {
       return FutureBuilder<QueryResults<ExpressionResponse>>(
         future: getExpressions,

@@ -194,7 +194,7 @@ class LinkFormExpression {
       title: json['title'],
       caption: json['caption'],
       url: json['url'],
-      data: OEmbedResponse.fromMap(json['data']),
+      data: json['data'] != null ? OEmbedResponse.fromMap(json['data']) : null,
     );
   }
 

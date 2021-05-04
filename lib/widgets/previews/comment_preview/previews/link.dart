@@ -28,7 +28,7 @@ class LinkPreview extends StatelessWidget {
           if (comment.expressionData.title.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: 5),
-              child: Text(
+              child: SelectableText(
                 comment.expressionData.title,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
@@ -42,7 +42,6 @@ class LinkPreview extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 15),
               child: CustomParsedText(
                 comment.expressionData.caption,
-                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 defaultTextStyle: Theme.of(context).textTheme.caption,
                 mentionTextStyle: Theme.of(context).textTheme.caption.copyWith(
@@ -51,25 +50,37 @@ class LinkPreview extends StatelessWidget {
                     ),
               ),
             ),
-          OEmbedWidget(
-            data: comment.expressionData.data,
-            expanded: false,
-            theme: EmbedlyThemeData(
-              brightness: Theme.of(context).brightness,
-              backgroundColor: Theme.of(context).backgroundColor,
-              headingText: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).primaryColor,
+          if (comment.expressionData.data != null)
+            OEmbedWidget(
+              data: comment.expressionData.data,
+              expanded: true,
+              theme: EmbedlyThemeData(
+                brightness: Theme.of(context).brightness,
+                backgroundColor: Theme.of(context).backgroundColor,
+                headingText: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                ),
+                subheadingText: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).primaryColor,
+                ),
+                elevation: 0.0,
               ),
-              subheadingText: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).primaryColor,
+            )
+          else
+            Container(
+              child: SelectableText(
+                comment.expressionData.url,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 17,
+                  decoration: TextDecoration.underline,
+                ),
               ),
-              elevation: 0.0,
             ),
-          ),
         ],
       ),
     );

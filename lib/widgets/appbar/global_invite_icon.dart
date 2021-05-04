@@ -1,98 +1,42 @@
-import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 
-class JuntoInviteAppBar extends StatelessWidget {
-  final UserData userProfile;
+class GlobalInviteIcon extends StatelessWidget {
+  const GlobalInviteIcon({this.community});
 
-  const JuntoInviteAppBar({Key key, this.userProfile}) : super(key: key);
-
+  final dynamic community;
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: Theme.of(context).backgroundColor,
-      iconTheme: IconThemeData(
-        color: Theme.of(context).primaryColor,
-      ),
-      elevation: 0,
-      titleSpacing: 0,
-      brightness: Theme.of(context).brightness,
-      title: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: 42,
-                height: 42,
-                alignment: Alignment.centerLeft,
-                color: Colors.transparent,
-                child: Icon(
-                  CustomIcons.back,
-                  color: Theme.of(context).primaryColorDark,
-                  size: 17,
-                ),
-              ),
-            ),
-            Text(
-              'Invite',
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            GestureDetector(
-              onTap: () async {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => JuntoBetaInviteDialog(
-                    context: context,
-                    userProfile: userProfile,
-                  ),
-                );
-              },
-              child: Container(
-                width: 42,
-                child: Image.asset(
-                  'assets/images/junto-mobile__external-link.png',
-                  height: 17,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.75),
-        child: Container(
-          height: .75,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).dividerColor,
-                width: .75,
-              ),
-            ),
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => GlobalInviteDialog(
+            context: context,
           ),
+        );
+      },
+      child: Container(
+        alignment: Alignment.bottomLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        height: 50,
+        child: Icon(
+          Icons.mail_outline,
+          color: Theme.of(context).primaryColor,
+          size: 24,
         ),
       ),
     );
   }
 }
 
-class JuntoBetaInviteDialog extends StatelessWidget {
-  const JuntoBetaInviteDialog({
+class GlobalInviteDialog extends StatelessWidget {
+  const GlobalInviteDialog({
     this.context,
-    this.userProfile,
   });
 
   final BuildContext context;
-  final UserData userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +61,7 @@ class JuntoBetaInviteDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "Feel free to use this link to our private beta in case you'd like to email your friends instead!'",
+              "Feel free to share this link to our private beta with friends you'd like to invite to your communities!",
               textAlign: TextAlign.center,
               overflow: TextOverflow.fade,
               style: TextStyle(

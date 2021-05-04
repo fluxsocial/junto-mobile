@@ -26,9 +26,16 @@ class Group {
         groupType: json['group_type'],
         members: json['members'],
         facilitators: json['facilitators'],
-        groupData: json['group_type'] == 'Sphere'
-            ? GroupDataSphere.fromJson(json['group_data'])
-            : GroupDataPack.fromJson(json['group_data']),
+        groupData: json['group_type'] != null
+            ? json['group_type'] == 'Sphere'
+                ? GroupDataSphere.fromJson(json['group_data'])
+                : GroupDataPack.fromJson(json['group_data'])
+            : GroupDataSphere(
+                photo: json['photo'],
+                name: json['name'],
+                sphereHandle: json['handle'],
+                description: json['description'],
+              ),
       );
 
   /// Address of the group on the server

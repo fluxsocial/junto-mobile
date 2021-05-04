@@ -24,6 +24,8 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/backend/services/hive_service.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 
 class NewHome extends StatefulWidget {
   const NewHome({this.screen = Screen.groups});
@@ -38,21 +40,37 @@ class NewHome extends StatefulWidget {
 class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
   UserData _userData;
   UserDataProvider userProvider;
+  PageController _pageController;
 
   @override
   void initState() {
     super.initState();
 
+    _pageController = PageController(initialPage: 0);
+
     context.bloc<CircleBloc>().add(FetchMyCircle());
+
+    context.bloc<CircleBloc>().add(FetchPublicCircle());
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<AppRepo>(context, listen: false).initHome(widget.screen);
+      Provider.of<AppRepo>(context, listen: false).addListener(() async {
+        setupListener();
+      });
       fetchNotifications();
     });
   }
 
+  void setupListener() async {
+    final currentScreen =
+        await Provider.of<AppRepo>(context, listen: false).currentScreen;
+    if (currentScreen != Screen.create) {
+      _pageController.jumpToPage(currentScreen == Screen.groups ? 0 : 1);
+    }
+  }
+
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     userProvider = Provider.of<UserDataProvider>(context, listen: false);
     getUserInformation();
@@ -127,6 +145,10 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
         print(state);
         if (state is AuthUnauthenticated) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
+            Provider.of<HiveCache>(context).wipe();
+            Provider.of<JuntoThemesProvider>(context).reset();
+            Provider.of<AppRepo>(context).reset();
+
             Navigator.of(context).pushAndRemoveUntil(
               PageRouteBuilder(
                 pageBuilder: (context, anim1, anim2) => HomePage(),
@@ -144,9 +166,10 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
                 if (snapshot.currentScreen == Screen.den) {
                   await Provider.of<AppRepo>(context, listen: false)
                       .changeScreen(screen: Screen.groups);
+                  return false;
                 }
 
-                return false;
+                return true;
               },
               child: JuntoFilterDrawer(
                 leftDrawer: null,
@@ -154,7 +177,19 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
                 swipeLeftDrawer: false,
                 scaffold: Stack(
                   children: [
-                    showScreen(snapshot.currentScreen, snapshot.group),
+                    PageView(
+                      controller: _pageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        FeatureDiscovery(
+                          child: Circles(
+                            group: snapshot.group,
+                          ),
+                        ),
+                        JuntoDen(),
+                      ],
+                    ),
+                    // showScreen(snapshot.currentScreen, snapshot.group),
                     if (snapshot.showCreateScreen)
                       FadeIn(
                         duration: Duration(milliseconds: 300),

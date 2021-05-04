@@ -19,6 +19,7 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
   final TextOverflow overflow;
   final TextAlign alignment;
   final bool disableOnMentiontap;
+  final bool selectable;
 
   const CustomParsedText(
     this.text, {
@@ -29,6 +30,7 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
     this.overflow = TextOverflow.visible,
     this.alignment = TextAlign.start,
     this.disableOnMentiontap = false,
+    this.selectable = true,
   }) : super(key: key);
 
   @override
@@ -41,6 +43,7 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
         overflow: overflow,
         alignment: alignment,
         style: defaultTextStyle,
+        selectable: selectable,
         parse: [
           MatchText(
             pattern: r"\[(@[^:]+):([^\]]+)\]",
@@ -58,6 +61,10 @@ class CustomParsedText extends StatelessWidget with MemberValidation {
                     final userData =
                         await Provider.of<UserRepo>(context, listen: false)
                             .getUser(url);
+                    if (await isHostUser(userData.user)) {
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    }
+
                     await showUserDen(context, userData.user);
                   }
                 : null,

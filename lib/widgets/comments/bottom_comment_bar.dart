@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
@@ -96,6 +97,17 @@ class BottomCommentBarState extends State<BottomCommentBar>
         await Future.delayed(Duration(milliseconds: 100));
 
         widget.scrollToBottom();
+      } on DioError catch (error) {
+        print(error.message);
+        print(error.response.statusMessage);
+        print(error.response.statusCode);
+        JuntoLoader.hide();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Hmm, something went wrong.',
+          ),
+        );
       } catch (error) {
         debugPrint('Error posting comment $error');
         JuntoLoader.hide();
@@ -243,8 +255,12 @@ class BottomCommentBarState extends State<BottomCommentBar>
                               isScrollControlled: true,
                               builder: (context) {
                                 return Padding(
-                                  padding: EdgeInsets.fromLTRB(0,
-                                      AppBar().preferredSize.height / 2, 0, 0),
+                                  padding: EdgeInsets.fromLTRB(
+                                    0,
+                                    AppBar().preferredSize.height / 2,
+                                    0,
+                                    MediaQuery.of(context).viewInsets.bottom,
+                                  ),
                                   child: FadeIn(
                                     duration: Duration(milliseconds: 300),
                                     child: FeatureDiscovery(

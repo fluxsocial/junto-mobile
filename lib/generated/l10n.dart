@@ -877,7 +877,7 @@ class S {
   /// `Username`
   String get welcome_username_hint_sign_in {
     return Intl.message(
-      'Username',
+      'Username/Email',
       name: 'welcome_username_hint_sign_in',
       desc: '',
       args: [],

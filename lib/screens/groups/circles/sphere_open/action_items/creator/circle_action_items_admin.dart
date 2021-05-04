@@ -110,7 +110,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                                 }
                               },
                               confirmationText:
-                                  'Are you sure you want to delete this circle?',
+                                  'Are you sure you want to delete this community?',
                             ),
                           );
                         },
@@ -151,7 +151,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                                 }
                               },
                               confirmationText:
-                                  'Are you sure you want to leave this circle?',
+                                  'Are you sure you want to leave this community?',
                             ),
                           );
                         },
@@ -164,7 +164,7 @@ class _CircleActionItemsAdminState extends State<CircleActionItemsAdmin> {
                             ),
                             const SizedBox(width: 15),
                             Text(
-                              'Leave Circle',
+                              'Leave Community',
                               style: Theme.of(context).textTheme.headline5,
                             ),
                           ],

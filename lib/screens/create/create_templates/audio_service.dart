@@ -84,6 +84,10 @@ class AudioService with ChangeNotifier {
     _currentPosition = Duration.zero;
   }
 
+  void changeAudioFocus(AudioFocus focus) {
+    _audioPlayer.setAudioFocus(focus: focus);
+  }
+
   void resetRecording() async {
     stopPlayback();
     _recording = null;

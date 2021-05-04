@@ -27,6 +27,7 @@ class CircleLoaded extends CircleState {
     this.members,
     this.creator,
     this.totalFacilitators,
+    this.publicGroups,
   });
 
   final List<Group> groups;
@@ -35,4 +36,5 @@ class CircleLoaded extends CircleState {
   final UserData creator;
   final int totalMembers;
   final int totalFacilitators;
+  final List<Group> publicGroups;
 }

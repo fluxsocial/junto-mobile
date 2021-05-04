@@ -148,7 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "welcome_username_hint":
             MessageLookupByLibrary.simpleMessage("Choose a unique username"),
         "welcome_username_hint_sign_in":
-            MessageLookupByLibrary.simpleMessage("Username"),
+            MessageLookupByLibrary.simpleMessage("Username/Email"),
         "welcome_username_ill_go":
             MessageLookupByLibrary.simpleMessage("I\'ll go by..."),
         "welcome_username_label":

@@ -53,7 +53,6 @@ class DynamicParent extends StatelessWidget {
                 height: 1.5,
                 fontWeight: FontWeight.w700,
               ),
-              maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
         ],

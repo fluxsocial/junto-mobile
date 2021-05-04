@@ -130,6 +130,9 @@ abstract class GroupService {
   /// Returns a [Group] for the given address
   Future<Group> getGroup(String groupAddress);
 
+  /// Returns a [Group] for the given address
+  Future<Map<String, dynamic>> getPublicGroups(Map<String, String> params);
+
   Future<Map<String, dynamic>> getRelationToGroup(
       String groupAddress, String userAddress);
 

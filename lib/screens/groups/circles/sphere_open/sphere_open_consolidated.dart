@@ -4,9 +4,19 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_open_members.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:readmore/readmore.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/collective_populated_list.dart';
+import 'package:junto_beta_mobile/widgets/custom_refresh/collective_feed_refresh.dart';
+import 'package:junto_beta_mobile/widgets/fetch_more.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SphereOpenAbout extends StatelessWidget {
-  const SphereOpenAbout({
+// Widget that consolidates About and Expression Feed of a community
+class SphereOpenConsolidated extends StatelessWidget {
+  const SphereOpenConsolidated({
     this.group,
     this.circleCreator,
     this.members = const <Users>[],
@@ -25,58 +35,116 @@ class SphereOpenAbout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const ClampingScrollPhysics(),
-      children: <Widget>[
-        CircleBio(
-          group: group,
-        ),
-        if (members != null)
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute<dynamic>(
-                  builder: (BuildContext context) => SphereOpenMembers(
-                    group: group,
-                    relationToGroup: relationToGroup,
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .5,
-                  ),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  CircleMembers(
-                    members: members,
-                    totalMembers: totalMembers,
-                  ),
-                  if (circleCreator != null)
-                    CircleFacilitators(
-                      members: members,
-                      circleCreator: circleCreator,
+    void _removeExpression(ExpressionResponse expression) {
+      final bloc = context.bloc<CollectiveBloc>();
+      bloc.add(DeleteCollective(expression.address));
+    }
+
+    return CollectiveFeedRefresh(
+      child: ListView(
+        children: <Widget>[
+          CircleBio(
+            group: group,
+          ),
+          if (members != null)
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute<dynamic>(
+                    builder: (BuildContext context) => SphereOpenMembers(
+                      group: group,
+                      relationToGroup: relationToGroup,
                     ),
-                  SeeAllMembers()
-                ],
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: .5,
+                    ),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    CircleMembers(
+                      members: members,
+                      totalMembers: totalMembers,
+                    ),
+                    if (circleCreator != null)
+                      CircleFacilitators(
+                        members: members,
+                        circleCreator: circleCreator,
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
-        if (members == null) const SizedBox()
-      ],
+          if (members == null) const SizedBox(),
+          Consumer<AppRepo>(builder: (context, AppRepo appRepo, _) {
+            return BlocBuilder<CollectiveBloc, CollectiveState>(
+              builder: (context, state) {
+                final canFetch = state is CollectivePopulated &&
+                    (state.availableMore && !state.loadingMore);
+
+                if (state is CollectiveError) {
+                  return JuntoErrorWidget(
+                    errorMessage: 'Hmm, something went wrong',
+                  );
+                } else if (state is CollectivePopulated) {
+                  return CustomScrollView(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    slivers: <Widget>[
+                      // Empty SliverToBoxAdaptor is necessary, otherwise switching
+                      //  between single and two column layouts creates an issue.
+                      const SliverToBoxAdapter(),
+                      if (state is CollectivePopulated)
+                        CollectivePopulatedList(
+                          state,
+                          deleteExpression: _removeExpression,
+                        ),
+                      if (state is CollectivePopulated &&
+                          state.loadingMore == true)
+                        JuntoProgressIndicator(),
+                      if (state is CollectiveLoading) JuntoProgressIndicator(),
+                      if (canFetch)
+                        // pagination
+                        SliverToBoxAdapter(
+                          child: FetchMoreButton(
+                            onPressed: () {
+                              context.bloc<CollectiveBloc>().add(
+                                    FetchMoreCollective(),
+                                  );
+                            },
+                          ),
+                        ),
+                    ],
+                  );
+                }
+
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  alignment: Alignment.center,
+                  child: Transform.translate(
+                    offset: Offset(0.0, -50),
+                    child: JuntoProgressIndicator(),
+                  ),
+                );
+              },
+            );
+          })
+        ],
+      ),
     );
   }
 }

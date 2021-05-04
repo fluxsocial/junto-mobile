@@ -79,7 +79,7 @@ class AudioOpenTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
       ),
-      child: Text(
+      child: SelectableText(
         title,
         style: TextStyle(
           fontSize: 20,
