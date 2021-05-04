@@ -244,7 +244,7 @@ class CircleFacilitators extends StatelessWidget {
                   color: Colors.indigo,
                   icon: Icons.supervisor_account_sharp,
                   onTap: () {
-                    context.bloc<CircleBloc>().add(
+                    context.read<CircleBloc>().add(
                           UpdateMembersPermission(
                             sphereAdress: group.address,
                             user: list[index].user,
@@ -259,7 +259,7 @@ class CircleFacilitators extends StatelessWidget {
                   color: Colors.red,
                   icon: Icons.remove_circle,
                   onTap: () {
-                    context.bloc<CircleBloc>().add(
+                    context.read<CircleBloc>().add(
                           RemoveMemberFromCircle(
                             sphereAdress: group.address,
                             userAddress: list[index].user.address,
@@ -367,7 +367,7 @@ class _CircleMembersState extends State<CircleMembers> {
                   color: Colors.indigo,
                   icon: Icons.supervisor_account_sharp,
                   onTap: () {
-                    context.bloc<CircleBloc>().add(
+                    context.read<CircleBloc>().add(
                           UpdateMembersPermission(
                             sphereAdress: widget.group.address,
                             user: list[index].user,
@@ -382,7 +382,7 @@ class _CircleMembersState extends State<CircleMembers> {
                   color: Colors.red,
                   icon: Icons.remove_circle,
                   onTap: () {
-                    context.bloc<CircleBloc>().add(
+                    context.read<CircleBloc>().add(
                           RemoveMemberFromCircle(
                             sphereAdress: widget.group.address,
                             userAddress: list[index].user.address,
