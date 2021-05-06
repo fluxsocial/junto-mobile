@@ -5,12 +5,12 @@ import 'package:junto_beta_mobile/widgets/image_wrapper.dart';
 class MemberAvatar extends StatelessWidget {
   const MemberAvatar({this.profilePicture, this.diameter});
 
-  final List<dynamic> profilePicture;
+  final List<String> profilePicture;
   final double diameter;
 
   @override
   Widget build(BuildContext context) {
-    return profilePicture.isNotEmpty
+    return profilePicture.isNotEmpty && profilePicture[0].isNotEmpty
         ? Container(
             child: ClipOval(
               child: ImageWrapper(

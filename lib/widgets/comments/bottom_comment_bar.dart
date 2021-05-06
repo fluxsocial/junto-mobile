@@ -74,10 +74,14 @@ class BottomCommentBarState extends State<BottomCommentBar>
             .postCommentExpression(
           widget.expressionAddress,
           'LongForm',
-          LongFormExpression(
-            title: '',
-            body: markupText.trim(),
-          ).toJson(),
+          {
+            ...LongFormExpression(
+              title: '',
+              body: markupText.trim(),
+            ).toJson(),
+            'mentions': mentions,
+            'channels': channels
+          },
         );
         commentController.clear();
         JuntoLoader.hide();
@@ -259,7 +263,7 @@ class BottomCommentBarState extends State<BottomCommentBar>
                                     0,
                                     AppBar().preferredSize.height / 2,
                                     0,
-                                    MediaQuery.of(context).viewInsets.bottom,
+                                    0,
                                   ),
                                   child: FadeIn(
                                     duration: Duration(milliseconds: 300),

@@ -6,9 +6,9 @@ import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/choose_expression_sheet.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/remove_focus_widget.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
@@ -61,8 +61,8 @@ class CreateCommentExpressionScaffoldState
   PageController createPageController;
   int _currentIndex = 0;
   dynamic expression;
-  List<String> channels;
-  List<String> mentions;
+  List<String> channels = [];
+  List<String> mentions = [];
   Group selectedGroup;
   bool showExpressionSheet = true;
   AudioService _audioService;
@@ -75,6 +75,7 @@ class CreateCommentExpressionScaffoldState
       GlobalKey<CreateLinkFormState>();
   final GlobalKey<CreatePhotoState> _photoKey = GlobalKey<CreatePhotoState>();
   final GlobalKey<CreateAudioState> _audioKey = GlobalKey<CreateAudioState>();
+  final GlobalKey<CreateEventState> _eventKey = GlobalKey<CreateEventState>();
 
   final FocusNode dynamicCaptionFocusNode = FocusNode();
   final FocusNode dynamicTitleFocusNode = FocusNode();
@@ -376,6 +377,10 @@ class CreateCommentExpressionScaffoldState
               _audioKey.currentState.createExpression(_audioService);
           mentionsAndChannels = _audioKey.currentState.getMentionsAndChannels();
           break;
+        case ExpressionType.event:
+          expressionInProgress = _eventKey.currentState.createExpression();
+          mentionsAndChannels = {'mentions': [], 'channels': []};
+          break;
 
         case ExpressionType.none:
           break;
@@ -385,7 +390,9 @@ class CreateCommentExpressionScaffoldState
       }
       setState(() {
         expression = expressionInProgress;
+        print('test: 2 $mentionsAndChannels');
         channels = mentionsAndChannels['channels'];
+        mentions = mentionsAndChannels['mentions'];
       });
     }
     if (channels.length > 5) {
@@ -472,8 +479,15 @@ class CreateCommentExpressionScaffoldState
       JuntoLoader.showLoader(context);
 
       await Provider.of<ExpressionRepo>(context, listen: false)
-          .postCommentExpression(widget.commentAddress, expressionModel.type,
-              expressionModel.expressionData);
+          .postCommentExpression(
+        widget.commentAddress,
+        expressionModel.type,
+        {
+          ...expressionModel.expressionData,
+          'mentions': mentions,
+          'channels': channels,
+        },
+      );
       JuntoLoader.hide();
 
       // Show user feedback that expression was created
@@ -568,68 +582,81 @@ class CreateCommentExpressionScaffoldState
                     removeFocus: removeFocus,
                   ),
                   resizeToAvoidBottomInset: false,
-                  body: PageView(
-                    controller: createPageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
+                  body: WillPopScope(
+                    onWillPop: () async {
+                      _expressionHasData(
+                        function: () async {
+                          await Navigator.pop(context);
+                        },
+                        actionType: 'leaveExpression',
+                      );
+                      return false;
                     },
-                    children: [
-                      // Create Screen 1 - Make Content
-                      Stack(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              children: <Widget>[
-                                CreateTopBar(
-                                  profilePicture: userData.user.profilePicture,
-                                  currentExpressionContext: expressionContext,
-                                  selectedGroup: selectedGroup,
-                                  hideContextSelector: true,
-                                ),
-                                _buildExpressionType(),
-                              ],
-                            ),
-                          ),
-                          if (showExpressionSheet)
-                            if (!_audioService.playBackAvailable)
-                              ChooseExpressionSheet(
-                                currentExpressionType: currentExpressionType,
-                                chooseExpressionType: chooseExpressionType,
-                              ),
-                        ],
-                      ),
-
-                      // Create Screen 2 - Review Content
-                      // We show a sized box when PageView index is 0 so we don't display a review screen
-                      // that is not consistent with the expression type, which causes an error
-                      if (_currentIndex == 0)
-                        SizedBox()
-                      else
-                        Column(
+                    child: PageView(
+                      controller: createPageController,
+                      physics: NeverScrollableScrollPhysics(),
+                      onPageChanged: (int index) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                      children: [
+                        // Create Screen 1 - Make Content
+                        Stack(
                           children: [
-                            Expanded(
-                              child: ListView(
-                                children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                children: <Widget>[
                                   CreateTopBar(
                                     profilePicture:
                                         userData.user.profilePicture,
-                                    toggleSocialContextVisibility: () {},
                                     currentExpressionContext: expressionContext,
                                     selectedGroup: selectedGroup,
                                     hideContextSelector: true,
                                   ),
-                                  _buildReview(),
+                                  _buildExpressionType(),
                                 ],
                               ),
                             ),
+                            if (showExpressionSheet)
+                              if (!_audioService.playBackAvailable)
+                                ChooseExpressionSheet(
+                                  currentExpressionType: currentExpressionType,
+                                  chooseExpressionType: chooseExpressionType,
+                                ),
                           ],
                         ),
-                    ],
+
+                        // Create Screen 2 - Review Content
+                        // We show a sized box when PageView index is 0 so we don't display a review screen
+                        // that is not consistent with the expression type, which causes an error
+                        if (_currentIndex == 0)
+                          SizedBox()
+                        else
+                          Column(
+                            children: [
+                              Expanded(
+                                child: ListView(
+                                  children: [
+                                    CreateTopBar(
+                                      profilePicture:
+                                          userData.user.profilePicture,
+                                      toggleSocialContextVisibility: () {},
+                                      currentExpressionContext:
+                                          expressionContext,
+                                      selectedGroup: selectedGroup,
+                                      hideContextSelector: true,
+                                    ),
+                                    _buildReview(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ],
