@@ -164,7 +164,8 @@ class ExpressionServiceCentralized implements ExpressionService {
       'target_expression': expressionAddress,
       'type': type,
       'expression_data': data,
-      'channels': <String>[]
+      'channels': data['channels'],
+      'mentions': data['mentions']
     };
     final Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/comments',

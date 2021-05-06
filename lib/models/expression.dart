@@ -75,7 +75,7 @@ class ExpressionModel {
       expressionData: expressionData ?? this.expressionData,
       context: context ?? this.context,
       channels: channels ?? this.channels,
-      mentions: mentions ?? this.mentions,
+      mentions: mentions ?? mentions,
     );
   }
 }
