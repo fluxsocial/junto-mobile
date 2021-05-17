@@ -34,6 +34,10 @@
 	<string>We'd like to access your microphone to let you record expressions.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We'd like to access your photo library to let you select images.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This helps us manage your audio so we can keep the app running while other audio is playing</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This helps us manage your audio so we can keep the app running while other audio is playing</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
