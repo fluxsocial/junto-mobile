@@ -349,55 +349,49 @@ class _CircleMembersState extends State<CircleMembers> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: MemberPreview(
-              profile: list[index].user,
+          return Slidable(
+            actionPane: SlidableBehindActionPane(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: MemberPreview(
+                profile: list[index].user,
+              ),
             ),
+            actionExtentRatio: 0.20,
+            secondaryActions: [
+              if (showSlide &&
+                  list[index].permissionLevel == 'Member' &&
+                  isCreator)
+                IconSlideAction(
+                  caption: 'Facilitator',
+                  color: Colors.indigo,
+                  icon: Icons.supervisor_account_sharp,
+                  onTap: () {
+                    context.read<CircleBloc>().add(
+                          UpdateMembersPermission(
+                            sphereAdress: widget.group.address,
+                            user: list[index].user,
+                            permissionLevel: 'Admin',
+                          ),
+                        );
+                  },
+                ),
+              if (showSlide && list[index].permissionLevel != 'Admin')
+                IconSlideAction(
+                  caption: 'Remove',
+                  color: Colors.red,
+                  icon: Icons.remove_circle,
+                  onTap: () {
+                    context.read<CircleBloc>().add(
+                          RemoveMemberFromCircle(
+                            sphereAdress: widget.group.address,
+                            userAddress: list[index].user.address,
+                          ),
+                        );
+                  },
+                ),
+            ],
           );
-          // return Slidable(
-          //   actionPane: SlidableBehindActionPane(),
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(horizontal: 10),
-          //     child: MemberPreview(
-          //       profile: list[index].user,
-          //     ),
-          //   ),
-          //   actionExtentRatio: 0.20,
-          //   secondaryActions: [
-          //     if (showSlide &&
-          //         list[index].permissionLevel != 'Admin' &&
-          //         isCreator)
-          //       IconSlideAction(
-          //         caption: 'Facilitator',
-          //         color: Colors.indigo,
-          //         icon: Icons.supervisor_account_sharp,
-          //         onTap: () {
-          //           context.read<CircleBloc>().add(
-          //                 UpdateMembersPermission(
-          //                   sphereAdress: widget.group.address,
-          //                   user: list[index].user,
-          //                   permissionLevel: 'Admin',
-          //                 ),
-          //               );
-          //         },
-          //       ),
-          //     if (showSlide && list[index].permissionLevel != 'Admin')
-          //       IconSlideAction(
-          //         caption: 'Remove',
-          //         color: Colors.red,
-          //         icon: Icons.remove_circle,
-          //         onTap: () {
-          //           context.read<CircleBloc>().add(
-          //                 RemoveMemberFromCircle(
-          //                   sphereAdress: widget.group.address,
-          //                   userAddress: list[index].user.address,
-          //                 ),
-          //               );
-          //         },
-          //       ),
-          //   ],
-          // );
         },
       ),
     );
