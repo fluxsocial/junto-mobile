@@ -243,7 +243,8 @@ class CircleBloc extends Bloc<CircleEvent, CircleState> {
     try {
       await groupRepo.removeGroupMember(event.sphereAdress, event.userAddress);
 
-      members = members.where((e) => e.user.address != event.userAddress);
+      members =
+          members.where((e) => e.user.address != event.userAddress).toList();
 
       yield CircleLoaded(
         groups: groups,
