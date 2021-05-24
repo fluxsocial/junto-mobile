@@ -230,11 +230,21 @@ class CircleFacilitators extends StatelessWidget {
         if (list[index].permissionLevel == 'Admin') {
           return Slidable(
             actionPane: SlidableBehindActionPane(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: MemberPreview(
-                profile: list[index].user,
-              ),
+            child: Builder(
+              builder: (context) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: MemberPreview(
+                    profile: list[index].user,
+                    showMore: isCreator &&
+                        creator.address != list[index].user.address,
+                    onShowMore: () {
+                      Slidable.of(context)
+                          .open(actionType: SlideActionType.secondary);
+                    },
+                  ),
+                );
+              },
             ),
             actionExtentRatio: 0.20,
             secondaryActions: [
@@ -352,11 +362,23 @@ class _CircleMembersState extends State<CircleMembers> {
         itemBuilder: (BuildContext context, int index) {
           return Slidable(
             actionPane: SlidableBehindActionPane(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: MemberPreview(
-                profile: list[index].user,
-              ),
+            child: Builder(
+              builder: (context) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: MemberPreview(
+                    profile: list[index].user,
+                    showMore: (isCreator &&
+                            widget.creator.address !=
+                                list[index].user.address) ||
+                        (list[index].permissionLevel == 'Member' && showSlide),
+                    onShowMore: () {
+                      Slidable.of(context)
+                          .open(actionType: SlideActionType.secondary);
+                    },
+                  ),
+                );
+              },
             ),
             actionExtentRatio: 0.20,
             secondaryActions: [
