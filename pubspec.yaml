@@ -59,7 +59,7 @@ dependencies:
       ref: nnbd
   flutter_linkify: 5.0.2
   email_validator: ^2.0.1
-  flutter_mentions: ^2.0.0-nullsafety
+  flutter_mentions: ^2.0.1
   flutter_parsed_text: ^2.1.0
   embedly_preview:
     git:
