@@ -72,7 +72,14 @@ class MemberPreview extends StatelessWidget with MemberValidation {
               ),
             ),
             if (showMore)
-              IconButton(onPressed: onShowMore, icon: Icon(Icons.more_vert))
+              IconButton(
+                onPressed: onShowMore,
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Theme.of(context).primaryColor,
+                  size: 20,
+                ),
+              )
           ],
         ),
       ),
