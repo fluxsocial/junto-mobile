@@ -315,6 +315,7 @@ class _CircleMembersState extends State<CircleMembers> {
     final showSlide = widget.relationToGroup != null &&
         (widget.relationToGroup['creator'] ||
             widget.relationToGroup['facilitator']);
+
     final isCreator =
         widget.relationToGroup != null && widget.relationToGroup['creator'];
 
@@ -359,9 +360,24 @@ class _CircleMembersState extends State<CircleMembers> {
             ),
             actionExtentRatio: 0.20,
             secondaryActions: [
-              if (showSlide &&
-                  list[index].permissionLevel == 'Member' &&
-                  isCreator)
+              if (isCreator &&
+                  widget.creator.address != list[index].user.address &&
+                  list[index].permissionLevel == 'Admin')
+                IconSlideAction(
+                  caption: 'Member',
+                  color: Colors.indigo,
+                  icon: Icons.supervisor_account_sharp,
+                  onTap: () {
+                    context.read<CircleBloc>().add(
+                          UpdateMembersPermission(
+                            sphereAdress: widget.group.address,
+                            user: list[index].user,
+                            permissionLevel: 'Member',
+                          ),
+                        );
+                  },
+                ),
+              if (showSlide && list[index].permissionLevel == 'Member')
                 IconSlideAction(
                   caption: 'Facilitator',
                   color: Colors.indigo,
@@ -376,7 +392,9 @@ class _CircleMembersState extends State<CircleMembers> {
                         );
                   },
                 ),
-              if (showSlide && list[index].permissionLevel != 'Admin')
+              if ((isCreator &&
+                      widget.creator.address != list[index].user.address) ||
+                  (showSlide && list[index].permissionLevel != 'Admin'))
                 IconSlideAction(
                   caption: 'Remove',
                   color: Colors.red,
