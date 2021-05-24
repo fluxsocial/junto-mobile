@@ -9,11 +9,18 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 /// If this value is not specified and left null, the user will be redirected to
 /// the user "Den".
 class MemberPreview extends StatelessWidget with MemberValidation {
-  const MemberPreview({Key key, this.profile, this.onUserTap})
-      : super(key: key);
+  const MemberPreview({
+    Key key,
+    this.profile,
+    this.onUserTap,
+    this.showMore = false,
+    this.onShowMore,
+  }) : super(key: key);
 
   final UserProfile profile;
   final VoidCallback onUserTap;
+  final bool showMore;
+  final Function onShowMore;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +70,9 @@ class MemberPreview extends StatelessWidget with MemberValidation {
                   ],
                 ),
               ),
-            )
+            ),
+            if (showMore)
+              IconButton(onPressed: onShowMore, icon: Icon(Icons.more_vert))
           ],
         ),
       ),
