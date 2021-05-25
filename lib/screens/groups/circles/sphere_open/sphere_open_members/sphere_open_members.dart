@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
@@ -254,13 +255,23 @@ class CircleFacilitators extends StatelessWidget {
                   color: Colors.indigo,
                   icon: Icons.supervisor_account_sharp,
                   onTap: () {
-                    context.read<CircleBloc>().add(
-                          UpdateMembersPermission(
-                            sphereAdress: group.address,
-                            user: list[index].user,
-                            permissionLevel: 'Member',
-                          ),
-                        );
+                    // @eric - Need to update the copy here
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ConfirmDialog(
+                        confirmationText:
+                            "Are you sure you want to downgrade this facilitator?",
+                        confirm: () {
+                          context.read<CircleBloc>().add(
+                                UpdateMembersPermission(
+                                  sphereAdress: group.address,
+                                  user: list[index].user,
+                                  permissionLevel: 'Member',
+                                ),
+                              );
+                        },
+                      ),
+                    );
                   },
                 ),
               if (isCreator && creator.address != list[index].user.address)
@@ -269,12 +280,22 @@ class CircleFacilitators extends StatelessWidget {
                   color: Colors.red,
                   icon: Icons.remove_circle,
                   onTap: () {
-                    context.read<CircleBloc>().add(
-                          RemoveMemberFromCircle(
-                            sphereAdress: group.address,
-                            userAddress: list[index].user.address,
-                          ),
-                        );
+                    // @eric - Need to update the copy here
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ConfirmDialog(
+                        confirmationText:
+                            "Are you sure you want to remove this member",
+                        confirm: () {
+                          context.read<CircleBloc>().add(
+                                RemoveMemberFromCircle(
+                                  sphereAdress: group.address,
+                                  userAddress: list[index].user.address,
+                                ),
+                              );
+                        },
+                      ),
+                    );
                   },
                 ),
             ],
@@ -390,13 +411,23 @@ class _CircleMembersState extends State<CircleMembers> {
                   color: Colors.indigo,
                   icon: Icons.supervisor_account_sharp,
                   onTap: () {
-                    context.read<CircleBloc>().add(
-                          UpdateMembersPermission(
-                            sphereAdress: widget.group.address,
-                            user: list[index].user,
-                            permissionLevel: 'Member',
-                          ),
-                        );
+                    // @eric - Need to update the copy here
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ConfirmDialog(
+                        confirmationText:
+                            "Are you sure you want to downgrade this facilitator?",
+                        confirm: () {
+                          context.read<CircleBloc>().add(
+                                UpdateMembersPermission(
+                                  sphereAdress: widget.group.address,
+                                  user: list[index].user,
+                                  permissionLevel: 'Member',
+                                ),
+                              );
+                        },
+                      ),
+                    );
                   },
                 ),
               if (showSlide && list[index].permissionLevel == 'Member')
@@ -405,13 +436,23 @@ class _CircleMembersState extends State<CircleMembers> {
                   color: Colors.indigo,
                   icon: Icons.supervisor_account_sharp,
                   onTap: () {
-                    context.read<CircleBloc>().add(
-                          UpdateMembersPermission(
-                            sphereAdress: widget.group.address,
-                            user: list[index].user,
-                            permissionLevel: 'Admin',
-                          ),
-                        );
+                    // @eric - Need to update the copy here
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ConfirmDialog(
+                        confirmationText:
+                            "Are you sure you want to upgrade this member a facilitator?",
+                        confirm: () {
+                          context.read<CircleBloc>().add(
+                                UpdateMembersPermission(
+                                  sphereAdress: widget.group.address,
+                                  user: list[index].user,
+                                  permissionLevel: 'Admin',
+                                ),
+                              );
+                        },
+                      ),
+                    );
                   },
                 ),
               if ((isCreator &&
@@ -422,12 +463,22 @@ class _CircleMembersState extends State<CircleMembers> {
                   color: Colors.red,
                   icon: Icons.remove_circle,
                   onTap: () {
-                    context.read<CircleBloc>().add(
-                          RemoveMemberFromCircle(
-                            sphereAdress: widget.group.address,
-                            userAddress: list[index].user.address,
-                          ),
-                        );
+                    // @eric - Need to update the copy here
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ConfirmDialog(
+                        confirmationText:
+                            "Are you sure you want to remove this member",
+                        confirm: () {
+                          context.read<CircleBloc>().add(
+                                RemoveMemberFromCircle(
+                                  sphereAdress: widget.group.address,
+                                  userAddress: list[index].user.address,
+                                ),
+                              );
+                        },
+                      ),
+                    );
                   },
                 ),
             ],
