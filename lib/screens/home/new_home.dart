@@ -83,6 +83,10 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
 
   Future<void> getUserInformation() async {
     _userData = userProvider.userProfile;
+
+    await userProvider.getUserInformation();
+
+    _userData = userProvider.userProfile;
   }
 
   Widget showScreen(Screen currentScreen, Group group) {

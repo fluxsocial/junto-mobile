@@ -39,16 +39,30 @@ class UserDataProvider extends ChangeNotifier {
       logger.logInfo('Fetching user information');
       final box = await Hive.box(HiveBoxes.kAppBox);
       final userData = await box.get(HiveKeys.kUserData);
-      if (userData != null && userData.isNotEmpty) {
+      final lastFetched = await box.get(HiveKeys.kUserLastFetched);
+      final currentTime = DateTime.now();
+
+      if (userData != null &&
+          userData.isNotEmpty &&
+          currentTime.difference(lastFetched).inHours < 1) {
         final decodedUserData = jsonDecode(userData);
         userProfile = UserData.fromJson(decodedUserData);
         userAddress = userProfile.user.address;
         notifyListeners();
       } else {
-        userProfile = await userRepository.getUser(userAddress);
-        if (userProfile == null || userProfile.user.address == null) {
+        if (userAddress == null && userData != null && userData.isNotEmpty) {
+          final decodedUserData = jsonDecode(userData);
+          userProfile = UserData.fromJson(decodedUserData);
           userAddress = userProfile.user.address;
           notifyListeners();
+        }
+
+        userProfile = await userRepository.getUser(userAddress);
+
+        if (userProfile != null || userProfile.user.address == null) {
+          userAddress = userProfile.user.address;
+          notifyListeners();
+          await box.put(HiveKeys.kUserLastFetched, currentTime);
         }
       }
     } on DioError catch (e) {
@@ -63,8 +77,11 @@ class UserDataProvider extends ChangeNotifier {
     try {
       final box = await Hive.box(HiveBoxes.kAppBox);
       final userData = jsonEncode(user);
+      final lastDate = DateTime.now();
+
       await box.put(HiveKeys.kUserData, userData);
       await box.put(HiveKeys.kUserId, user.user.address);
+      await box.put(HiveKeys.kUserLastFetched, lastDate);
     } catch (e) {
       logger.logException(e);
     }
