@@ -79,6 +79,7 @@ class SphereOpenConsolidated extends StatelessWidget {
                     CircleMembers(
                       members: members,
                       totalMembers: totalMembers,
+                      totalFacilitators: totalFacilitators,
                     ),
                     if (circleCreator != null)
                       CircleFacilitators(
@@ -207,10 +208,12 @@ class CircleMembers extends StatelessWidget {
   const CircleMembers({
     this.members,
     this.totalMembers = 0,
+    this.totalFacilitators = 0,
   });
 
   final List<Users> members;
   final int totalMembers;
+  final int totalFacilitators;
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +223,7 @@ class CircleMembers extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: Text(
-            'Members (${totalMembers ?? 0})',
+            'Members (${(totalMembers ?? 0) + (totalFacilitators ?? 0) + 1})',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
