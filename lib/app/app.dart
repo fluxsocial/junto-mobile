@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories/create_circle_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
@@ -40,6 +41,8 @@ class JuntoApp extends StatelessWidget {
         Provider<LocalCache>.value(value: backend.db),
         Provider<OnBoardingRepo>.value(value: backend.onBoardingRepo),
         ChangeNotifierProvider<AppRepo>.value(value: backend.appRepo),
+        ChangeNotifierProvider<CreateCircleRepo>.value(
+            value: backend.createCircleRepo),
         ChangeNotifierProvider(
           create: (_) => NotificationsHandler(backend.notificationRepo),
           lazy: false,
