@@ -25,7 +25,8 @@ class CreateSpherePageTwo extends StatefulWidget {
   _CreateSpherePageTwoState createState() => _CreateSpherePageTwoState();
 }
 
-class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
+class _CreateSpherePageTwoState extends State<CreateSpherePageTwo>
+    with AutomaticKeepAliveClientMixin {
   TextEditingController _subController;
   TextEditingController _conController;
   final List<String> _tabs = <String>[
@@ -55,6 +56,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DefaultTabController(
       length: _tabs.length,
       child: NestedScrollView(
@@ -275,4 +277,7 @@ class _CreateSpherePageTwoState extends State<CreateSpherePageTwo> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
