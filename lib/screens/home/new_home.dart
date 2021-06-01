@@ -161,58 +161,68 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
 
         return Consumer<AppRepo>(builder: (context, snapshot, _) {
           return Scaffold(
-            body: WillPopScope(
-              onWillPop: () async {
-                if (snapshot.currentScreen == Screen.den) {
-                  await Provider.of<AppRepo>(context, listen: false)
-                      .changeScreen(screen: Screen.groups);
-                  return false;
-                }
+            body: Stack(
+              children: [
+                SafeArea(
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: WillPopScope(
+                      onWillPop: () async {
+                        if (snapshot.currentScreen == Screen.den) {
+                          await Provider.of<AppRepo>(context, listen: false)
+                              .changeScreen(screen: Screen.groups);
+                          return false;
+                        }
 
-                return true;
-              },
-              child: JuntoFilterDrawer(
-                leftDrawer: null,
-                rightMenu: JuntoDrawer(),
-                swipeLeftDrawer: false,
-                scaffold: Stack(
-                  children: [
-                    PageView(
-                      controller: _pageController,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        FeatureDiscovery(
-                          child: Circles(
-                            group: snapshot.group,
-                          ),
+                        return true;
+                      },
+                      child: JuntoFilterDrawer(
+                        leftDrawer: null,
+                        rightMenu: JuntoDrawer(),
+                        swipeLeftDrawer: false,
+                        scaffold: Stack(
+                          children: [
+                            PageView(
+                              controller: _pageController,
+                              physics: NeverScrollableScrollPhysics(),
+                              children: [
+                                FeatureDiscovery(
+                                  child: Circles(
+                                    group: snapshot.group,
+                                  ),
+                                ),
+                                JuntoDen(),
+                              ],
+                            ),
+                            // showScreen(snapshot.currentScreen, snapshot.group),
+                            if (snapshot.showCreateScreen)
+                              FadeIn(
+                                duration: Duration(milliseconds: 300),
+                                child: FeatureDiscovery(
+                                  child: CreateExpressionScaffold(
+                                    expressionContext:
+                                        snapshot.expressionContext,
+                                    group: snapshot.group,
+                                  ),
+                                ),
+                              ),
+                            if (snapshot.currentScreen != Screen.create)
+                              Positioned(
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                child: JuntoBottomBar(
+                                  userData: _userData,
+                                  currentScreen: snapshot.currentScreen,
+                                ),
+                              ),
+                          ],
                         ),
-                        JuntoDen(),
-                      ],
+                      ),
                     ),
-                    // showScreen(snapshot.currentScreen, snapshot.group),
-                    if (snapshot.showCreateScreen)
-                      FadeIn(
-                        duration: Duration(milliseconds: 300),
-                        child: FeatureDiscovery(
-                          child: CreateExpressionScaffold(
-                            expressionContext: snapshot.expressionContext,
-                            group: snapshot.group,
-                          ),
-                        ),
-                      ),
-                    if (snapshot.currentScreen != Screen.create)
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: JuntoBottomBar(
-                          userData: _userData,
-                          currentScreen: snapshot.currentScreen,
-                        ),
-                      ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           );
         });

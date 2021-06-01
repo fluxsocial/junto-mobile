@@ -204,7 +204,7 @@ class _CircleMainState extends State<CircleMain>
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
-          MediaQuery.of(context).size.height * .1 + 50,
+          MediaQuery.of(context).size.height * .1 + 30,
         ),
         child: CirclesAppbar(
           changePageView: changePageView,
