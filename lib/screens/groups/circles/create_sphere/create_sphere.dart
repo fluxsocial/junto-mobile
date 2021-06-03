@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/repositories/create_circle_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -115,15 +116,42 @@ class CreateSphereState extends State<CreateSphere> {
         );
       }
     }
+
+    Provider.of<CreateCircleRepo>(context, listen: false).clear();
   }
 
   @override
   void initState() {
     super.initState();
-    createSphereController = PageController();
-    sphereNameController = TextEditingController();
-    sphereHandleController = TextEditingController();
-    sphereDescriptionController = TextEditingController();
+    final circle = Provider.of<CreateCircleRepo>(context, listen: false);
+    createSphereController = PageController(initialPage: 0);
+    sphereNameController = TextEditingController(text: circle.sphereName);
+    sphereHandleController = TextEditingController(text: circle.sphereHandle);
+    sphereDescriptionController =
+        TextEditingController(text: circle.sphereDescription);
+    imageFile.value = circle.imageFile.value;
+
+    createSphereController.addListener(() {
+      Provider.of<CreateCircleRepo>(context, listen: false)
+          .setPageIndex(createSphereController.page.toInt());
+    });
+    sphereNameController.addListener(() {
+      Provider.of<CreateCircleRepo>(context, listen: false)
+          .setSphereName(sphereNameController.value.text);
+    });
+    sphereHandleController.addListener(() {
+      Provider.of<CreateCircleRepo>(context, listen: false)
+          .setSphereHandle(sphereHandleController.value.text);
+    });
+    sphereDescriptionController.addListener(() {
+      Provider.of<CreateCircleRepo>(context, listen: false)
+          .setSphereDescription(sphereDescriptionController.value.text);
+    });
+    imageFile.addListener(() {
+      Provider.of<CreateCircleRepo>(context, listen: false)
+          .setImage(imageFile.value);
+    });
+
     _formKey = GlobalKey<FormState>();
   }
 
@@ -366,54 +394,58 @@ class CreateSphereState extends State<CreateSphere> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CircleBloc, CircleState>(
-      builder: (context, state) {
-        return Container(
-          color: Colors.transparent,
-          child: Container(
-            height: MediaQuery.of(context).size.height * .9,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildAppBar(),
-                Expanded(
-                  child: PageView(
-                    controller: createSphereController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    onPageChanged: (int index) {
-                      setState(() {
-                        print(index);
-                        _currentIndex = index;
-                      });
-                    },
-                    children: <Widget>[
-                      CreateSpherePageOne(
-                        formKey: _formKey,
-                        sphereDescriptionController:
-                            sphereDescriptionController,
-                        sphereHandleController: sphereHandleController,
-                        sphereNameController: sphereNameController,
-                        imageFile: imageFile,
-                      ),
-                      CreateSpherePageTwo(
-                        addMember: sphereAddMember,
-                        removeMember: _sphereRemoveMember,
-                        selectedMembers: _sphereMembers,
-                      ),
-                      _createSphereThree()
-                    ],
+    return Consumer<CreateCircleRepo>(
+      builder: (context, circle, child) {
+        return BlocBuilder<CircleBloc, CircleState>(
+          builder: (context, state) {
+            return Container(
+              color: Colors.transparent,
+              child: Container(
+                height: MediaQuery.of(context).size.height * .9,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
                   ),
-                )
-              ],
-            ),
-          ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildAppBar(),
+                    Expanded(
+                      child: PageView(
+                        controller: createSphereController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onPageChanged: (int index) {
+                          setState(() {
+                            print(index);
+                            _currentIndex = index;
+                          });
+                        },
+                        children: <Widget>[
+                          CreateSpherePageOne(
+                            formKey: _formKey,
+                            sphereDescriptionController:
+                                sphereDescriptionController,
+                            sphereHandleController: sphereHandleController,
+                            sphereNameController: sphereNameController,
+                            imageFile: imageFile,
+                          ),
+                          CreateSpherePageTwo(
+                            addMember: sphereAddMember,
+                            removeMember: _sphereRemoveMember,
+                            selectedMembers: _sphereMembers,
+                          ),
+                          _createSphereThree()
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );

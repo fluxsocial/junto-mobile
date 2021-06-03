@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/utils/form_validation.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/settings_popup.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class CreateSpherePageOne extends StatefulWidget {
   const CreateSpherePageOne({
@@ -30,7 +28,8 @@ class CreateSpherePageOne extends StatefulWidget {
   _CreateSpherePageOneState createState() => _CreateSpherePageOneState();
 }
 
-class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
+class _CreateSpherePageOneState extends State<CreateSpherePageOne>
+    with AutomaticKeepAliveClientMixin {
   File get imageFile => widget.imageFile.value;
   final ScrollController _scrollController = ScrollController();
   final FocusNode _handleFocus = FocusNode();
@@ -161,10 +160,11 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: widget.formKey,
-      child: KeyboardAvoider(
-        autoScroll: true,
+    super.build(context);
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: Form(
+        key: widget.formKey,
         child: ListView(
           controller: _scrollController,
           children: <Widget>[
@@ -369,4 +369,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/backend/mock/mock_sphere.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_user.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories/create_circle_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
@@ -45,6 +46,7 @@ class Backend {
     this.themesProvider,
     this.onBoardingRepo,
     this.dataProvider,
+    this.createCircleRepo,
   });
 
   // ignore: missing_return
@@ -62,6 +64,7 @@ class Backend {
       final userService = UserServiceCentralized(client);
       final expressionService = ExpressionServiceCentralized(client);
       final appRepo = AppRepo(AppServiceImpl(client));
+      final createCircleRepo = CreateCircleRepo();
       final authRepo = AuthRepo(
         authService,
         onLogout: () async {
@@ -92,6 +95,7 @@ class Backend {
         dataProvider: dataProvider,
         onBoardingRepo: OnBoardingRepo(dataProvider),
         client: client,
+        createCircleRepo: createCircleRepo,
       );
     } catch (e, s) {
       logger.logException(e, s);
@@ -128,6 +132,7 @@ class Backend {
   final ExpressionRepo expressionRepo;
   final NotificationRepo notificationRepo;
   final AppRepo appRepo;
+  final CreateCircleRepo createCircleRepo;
   final LocalCache db;
   final ThemesProvider themesProvider;
   final OnBoardingRepo onBoardingRepo;
