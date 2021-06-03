@@ -68,7 +68,7 @@ class SphereOpenAppbar extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(bottom: 25),
+              padding: const EdgeInsets.only(bottom: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
