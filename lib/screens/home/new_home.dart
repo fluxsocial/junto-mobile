@@ -4,13 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
 
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/circles.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
-import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_bar/junto_bottom_bar.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
@@ -112,25 +110,6 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
           width: MediaQuery.of(context).size.width,
           color: Theme.of(context).backgroundColor,
         );
-    }
-
-    return child;
-  }
-
-  Widget showLeftDrawer(Screen currentScreen) {
-    Widget child;
-
-    switch (currentScreen) {
-      case Screen.collective:
-      case Screen.den:
-        child = FilterDrawerContent(ExpressionContextType.Collective);
-        break;
-      case Screen.groups:
-      case Screen.packs:
-        child = FilterDrawerContent(ExpressionContextType.Group);
-        break;
-      default:
-        child = FilterDrawerContent(ExpressionContextType.Collective);
     }
 
     return child;

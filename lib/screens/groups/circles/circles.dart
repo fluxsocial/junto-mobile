@@ -97,52 +97,47 @@ class CirclesState extends State<Circles>
     return Scaffold(
       body: WillPopScope(
         onWillPop: () => Future.sync(onWillPop),
-        child: JuntoFilterDrawer(
-          leftDrawer: null,
-          rightMenu: null,
-          swipe: false,
-          scaffold: PageView(
-            controller: circlesPageController,
-            physics: NeverScrollableScrollPhysics(),
-            onPageChanged: (int index) {
-              Provider.of<AppRepo>(context, listen: false)
-                  .setGroupsPageIndex(index);
-            },
-            children: [
-              CircleMain(
-                userProfile: _userProfile,
-                widget: widget,
-                onGroupSelected: (Group group) async {
-                  circlesPageController.animateToPage(
-                    1,
-                    duration: Duration(milliseconds: 250),
-                    curve: Curves.easeIn,
-                  );
-                  await Provider.of<AppRepo>(context, listen: false)
-                      .setActiveGroup(group);
-                },
-              ),
-              if (widget.group != null && widget.group.address == null)
-                Scaffold(body: ExpressionFeed(goBack: () {
+        child: PageView(
+          controller: circlesPageController,
+          physics: NeverScrollableScrollPhysics(),
+          onPageChanged: (int index) {
+            Provider.of<AppRepo>(context, listen: false)
+                .setGroupsPageIndex(index);
+          },
+          children: [
+            CircleMain(
+              userProfile: _userProfile,
+              widget: widget,
+              onGroupSelected: (Group group) async {
+                circlesPageController.animateToPage(
+                  1,
+                  duration: Duration(milliseconds: 250),
+                  curve: Curves.easeIn,
+                );
+                await Provider.of<AppRepo>(context, listen: false)
+                    .setActiveGroup(group);
+              },
+            ),
+            if (widget.group != null && widget.group.address == null)
+              Scaffold(body: ExpressionFeed(goBack: () {
+                circlesPageController.animateToPage(
+                  0,
+                  duration: Duration(milliseconds: 250),
+                  curve: Curves.easeIn,
+                );
+              }))
+            else
+              SphereOpen(
+                group: widget.group,
+                goBack: () {
                   circlesPageController.animateToPage(
                     0,
                     duration: Duration(milliseconds: 250),
                     curve: Curves.easeIn,
                   );
-                }))
-              else
-                SphereOpen(
-                  group: widget.group,
-                  goBack: () {
-                    circlesPageController.animateToPage(
-                      0,
-                      duration: Duration(milliseconds: 250),
-                      curve: Curves.easeIn,
-                    );
-                  },
-                )
-            ],
-          ),
+                },
+              )
+          ],
         ),
       ),
     );

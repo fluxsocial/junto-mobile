@@ -10,20 +10,19 @@ import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/generated/l10n.dart';
+import 'package:junto_beta_mobile/screens/account/junto_account.dart';
+import 'package:junto_beta_mobile/screens/invite/junto_contacts.dart';
+import 'package:junto_beta_mobile/screens/relationships/end_drawer_relationships.dart';
+import 'package:junto_beta_mobile/screens/theme/junto_themes_page.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/auth_event.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/background/background_theme.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/junto_account.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/app_version_label.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-
-import 'junto_contacts.dart';
-import 'junto_themes_page.dart';
 
 class JuntoDrawer extends StatefulWidget {
   const JuntoDrawer();

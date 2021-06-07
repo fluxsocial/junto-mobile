@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/relationships/error_widget.dart';
+import 'package:junto_beta_mobile/screens/relationships/relationship_request.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/placeholders/feed_placeholder.dart';
 import 'package:provider/provider.dart';
 
