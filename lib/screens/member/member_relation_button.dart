@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/theme/custom_icons.dart';
 
 class MemberRelationButton extends StatelessWidget {
   const MemberRelationButton({this.toggleMemberRelationships});

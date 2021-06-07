@@ -24,7 +24,7 @@ import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services/hive_service.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/theme/themes_provider.dart';
 
 class NewHome extends StatefulWidget {
   const NewHome({this.screen = Screen.groups});

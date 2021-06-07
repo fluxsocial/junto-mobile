@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'custom_icons.dart';
+import 'theme/custom_icons.dart';
 
 enum ExpressionType { dynamic, shortform, photo, event, audio, link, none }
 

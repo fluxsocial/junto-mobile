@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/theme/themes_provider.dart';
 
 class JuntoPalette {
   Color juntoWhite({JuntoThemesProvider theme}) {

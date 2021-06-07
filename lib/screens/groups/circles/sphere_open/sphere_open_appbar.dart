@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/theme/custom_icons.dart';
+import 'package:junto_beta_mobile/app/theme/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/global_invite_icon.dart';

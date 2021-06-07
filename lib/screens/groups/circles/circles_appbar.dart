@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dar
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/global_invite_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/global_search_icon.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/theme/themes_provider.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/create_sphere/create_sphere.dart';
 import 'package:provider/provider.dart';
 

@@ -3,7 +3,7 @@ import 'package:junto_beta_mobile/generated/l10n.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/theme/themes_provider.dart';
 
 import 'package:provider/provider.dart';
 

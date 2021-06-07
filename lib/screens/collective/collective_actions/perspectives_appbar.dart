@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/appbar_logo.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:junto_beta_mobile/app/theme/themes_provider.dart';
 import 'package:provider/provider.dart';
 
 class PerspectivesAppBar extends StatefulWidget {

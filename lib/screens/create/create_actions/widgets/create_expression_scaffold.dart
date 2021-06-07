@@ -27,7 +27,7 @@ import 'package:junto_beta_mobile/screens/global_search/bloc/search_bloc.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/theme/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';

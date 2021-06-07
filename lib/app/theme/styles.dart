@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/theme/palette.dart';
 
 class JuntoStyles with ChangeNotifier {
   JuntoStyles(this.theme);

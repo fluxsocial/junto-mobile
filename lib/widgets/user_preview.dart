@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/theme/palette.dart';
+import 'package:junto_beta_mobile/app/theme/styles.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class UserPreview extends StatelessWidget {

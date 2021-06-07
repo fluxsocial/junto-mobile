@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/theme/custom_icons.dart';
+import 'package:junto_beta_mobile/app/theme/palette.dart';
 
 class CommentOpenAppbar extends StatelessWidget {
   @override

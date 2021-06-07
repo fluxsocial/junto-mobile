@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
-import 'package:junto_beta_mobile/app/themes.dart';
+import 'package:junto_beta_mobile/app/theme/themes.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
 import 'package:vibration/vibration.dart';
 

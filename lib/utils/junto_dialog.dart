@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/theme/styles.dart';
 
 class JuntoDialog {
   static void showJuntoDialog(
