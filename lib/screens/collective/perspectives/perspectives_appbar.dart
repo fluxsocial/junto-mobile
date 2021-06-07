@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
 import 'package:junto_beta_mobile/hive_keys.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/create/create_perspective.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/described_feature_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/information_icon.dart';
 import 'package:junto_beta_mobile/widgets/tutorial/overlay_info_icon.dart';

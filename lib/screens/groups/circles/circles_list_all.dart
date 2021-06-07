@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/widgets/custom_refresh/circle_refresh.dart';
 import 'package:junto_beta_mobile/widgets/previews/circle_preview/circle_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/circle_preview/collective_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/on_perspectives_changed.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/on_perspectives_changed.dart';
 
 import 'bloc/circle_bloc.dart';
 

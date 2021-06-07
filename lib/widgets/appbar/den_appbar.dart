@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/screens/collective/expression_feed.dart';
 import 'package:junto_beta_mobile/widgets/appbar/global_invite_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/global_search_icon.dart';
 import 'package:junto_beta_mobile/widgets/appbar/notifications_lunar_icon.dart';

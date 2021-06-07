@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/on_perspectives_changed.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/on_perspectives_changed.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_item.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/perspectives_appbar.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives_appbar.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
 
 import 'package:feature_discovery/feature_discovery.dart';

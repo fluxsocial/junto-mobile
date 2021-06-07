@@ -1,5 +1,4 @@
 export 'app_model.dart';
-export 'collective.dart';
 export 'den_model.dart';
 export 'emoji_model.dart';
 export 'expression.dart';

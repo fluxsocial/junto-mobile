@@ -7,7 +7,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:junto_beta_mobile/widgets/drawer/widgets/widgets.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectves_list.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/create/create_perspective.dart';
 import './filter_reset_button.dart';
 
 class FilterDrawerNew extends StatefulWidget {

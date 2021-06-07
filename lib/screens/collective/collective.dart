@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/screens/collective/expression_feed.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
-import 'collective_actions/perspectives.dart';
+import 'perspectives/perspectives.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -91,7 +91,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
             ),
             Scaffold(
               body: ExpressionFeed(
-                collectiveViewNav: _collectiveViewNav,
+                goBack: _collectiveViewNav,
               ),
             ),
           ],

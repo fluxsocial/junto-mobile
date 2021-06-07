@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_populated_list.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/collective_populated_list.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/collective_feed_refresh.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

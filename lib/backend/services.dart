@@ -37,19 +37,6 @@ abstract class SearchService {
   });
 }
 
-abstract class CollectiveService {
-  /// Creates a collection with the given arguments.
-  Future<Collective> createCollection(String name, String privacy,
-      [String parent]);
-
-  /// Returns the [CollectionResponse] for the given [collectionAddress]
-  Future<CollectionResponse> getCollection(String collectionAddress);
-
-  /// Adds the given [expressionAddress] to the collective [collectionAddress]
-  Future<void> postCollectiveExpression(
-      String collectionAddress, String expressionAddress);
-}
-
 /// Interface which defines the roles and functionality of the
 /// CollectiveProvider.
 abstract class ExpressionService {

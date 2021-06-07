@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/edit/edit_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_members.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_populated_list.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/collective_populated_list.dart';
 import 'package:junto_beta_mobile/widgets/custom_refresh/collective_feed_refresh.dart';
 import 'package:junto_beta_mobile/widgets/fetch_more.dart';
 
@@ -49,7 +49,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
             // set to false and floating set to true
             SliverPersistentHeader(
               delegate: CollectiveAppBar(
-                expandedHeight: MediaQuery.of(context).size.height * .11 + 20,
+                expandedHeight: MediaQuery.of(context).size.height * .1 + 50,
                 appbarTitle:
                     state is CollectivePopulated ? state.name : 'Collective',
                 collectiveViewNav: widget.goBack,

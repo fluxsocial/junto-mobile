@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/theme/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/perspective_body.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/perspective_body.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
@@ -359,4 +359,8 @@ class _Header extends StatelessWidget {
       pinned: true,
     );
   }
+}
+
+class SelectedUsers extends ChangeNotifier {
+  List<UserProfile> selection = <UserProfile>[];
 }

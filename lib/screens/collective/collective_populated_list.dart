@@ -29,7 +29,7 @@ class CollectivePopulatedList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (state.results.length == 0) {
+    if (state.results.isEmpty) {
       return SliverToBoxAdapter(
         child: FeedPlaceholder(
           placeholderText: _placeholderText(),

@@ -117,6 +117,7 @@ class Backend {
       dataProvider: null,
       themesProvider: MockedThemesProvider(),
       onBoardingRepo: null,
+      client: null,
     );
   }
 

@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/edit/edit_perspective.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 
 part 'perspectives_event.dart';
