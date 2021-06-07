@@ -15,8 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_bar/junto_bottom_bar.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
-import 'package:junto_beta_mobile/screens/packs/packs.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_expression_scaffold.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications_handler.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
@@ -101,11 +100,6 @@ class NewHomeState extends State<NewHome> with SingleTickerProviderStateMixin {
           child: Circles(
             group: group,
           ),
-        );
-        break;
-      case Screen.packs:
-        child = JuntoPacks(
-          initialGroup: _userData.pack.address,
         );
         break;
 

@@ -31,7 +31,7 @@ class AppBloc extends Bloc<AppBlocEvent, AppBlocState> {
         yield UnsupportedState();
       }
     } catch (e) {
-      print("App Bloc Error" + e);
+      print('App Bloc Error $e');
       yield UnsupportedState();
     }
   }

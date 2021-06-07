@@ -16,7 +16,6 @@ import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/app_service.dart';
 import 'package:junto_beta_mobile/backend/services/auth_cognito_service.dart';
-import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
 import 'package:junto_beta_mobile/backend/services/expression_service.dart';
 import 'package:junto_beta_mobile/backend/services/group_service.dart';
 import 'package:junto_beta_mobile/backend/services/hive_service.dart';
@@ -37,7 +36,6 @@ class Backend {
     this.searchRepo,
     this.authRepo,
     this.userRepo,
-    this.collectiveProvider,
     this.groupsProvider,
     this.expressionRepo,
     this.notificationRepo,
@@ -84,7 +82,6 @@ class Backend {
         searchRepo: SearchRepo(searchService),
         authRepo: authRepo,
         userRepo: userRepo,
-        collectiveProvider: CollectiveProviderCentralized(client),
         groupsProvider: GroupRepo(groupService, userService),
         expressionRepo:
             ExpressionRepo(expressionService, dbService, imageHandler),
@@ -112,7 +109,6 @@ class Backend {
     return Backend._(
       authRepo: AuthRepo(authService, onLogout: () {}),
       userRepo: UserRepo(userService, null, null, expressionService),
-      collectiveProvider: null,
       groupsProvider: GroupRepo(groupService, userService),
       expressionRepo: ExpressionRepo(expressionService, null, imageHandler),
       searchRepo: SearchRepo(searchService),
@@ -127,7 +123,6 @@ class Backend {
   final SearchRepo searchRepo;
   final AuthRepo authRepo;
   final UserRepo userRepo;
-  final CollectiveService collectiveProvider;
   final GroupRepo groupsProvider;
   final ExpressionRepo expressionRepo;
   final NotificationRepo notificationRepo;

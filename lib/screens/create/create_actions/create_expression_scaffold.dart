@@ -3,25 +3,29 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_app_bar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_top_bar.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_context_overlay.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/choose_expression_sheet.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/link.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/audio.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/longform_review.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/shortform_review.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/photo_review.dart';
 import 'package:junto_beta_mobile/screens/create/create_review/link_review.dart';
+import 'package:junto_beta_mobile/screens/create/create_review/event_review.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/global_search/search_bloc/search_bloc.dart';
+import 'package:junto_beta_mobile/screens/global_search/bloc/bloc.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -33,36 +37,34 @@ import 'package:junto_beta_mobile/screens/create/create_templates/audio_service.
 import 'package:junto_beta_mobile/screens/create/create_review/audio_review.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
-class CreateCommentExpressionScaffold extends StatefulWidget {
-  CreateCommentExpressionScaffold({
+class CreateExpressionScaffold extends StatefulWidget {
+  CreateExpressionScaffold({
     Key key,
-    this.expressionContext,
+    this.expressionContext = ExpressionContext.Collective,
     this.group,
-    this.commentAddress,
   }) : super(key: key);
 
   final ExpressionContext expressionContext;
   final Group group;
-  final String commentAddress;
 
   @override
   State<StatefulWidget> createState() {
-    return CreateCommentExpressionScaffoldState();
+    return CreateExpressionScaffoldState();
   }
 }
 
-class CreateCommentExpressionScaffoldState
-    extends State<CreateCommentExpressionScaffold>
+class CreateExpressionScaffoldState extends State<CreateExpressionScaffold>
     with CreateExpressionHelpers {
   UserData userData;
   String socialContextAddress;
   ExpressionType currentExpressionType = ExpressionType.none;
-  ExpressionContext expressionContext = ExpressionContext.Collective;
+  ExpressionContext expressionContext;
+  bool chooseContextVisibility = false;
   PageController createPageController;
   int _currentIndex = 0;
   dynamic expression;
-  List<String> channels = [];
-  List<String> mentions = [];
+  List<String> channels;
+  List<String> mentions;
   Group selectedGroup;
   bool showExpressionSheet = true;
   AudioService _audioService;
@@ -85,10 +87,17 @@ class CreateCommentExpressionScaffoldState
   final FocusNode photoCaptionFocusNode = FocusNode();
   final FocusNode audioCaptionFocusNode = FocusNode();
   final FocusNode audioTitleFocusNode = FocusNode();
+  final FocusNode eventNameFocusNode = FocusNode();
+  final FocusNode eventLocationFocusNode = FocusNode();
+  final FocusNode eventDetailsFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
+
+    selectExpressionContext(widget.expressionContext);
+
+    setSelectedGroup(widget.group);
 
     createPageController = PageController(initialPage: 0, keepPage: true);
 
@@ -110,6 +119,18 @@ class CreateCommentExpressionScaffoldState
 
     linkUrlFocusNode.addListener(() {
       _toggleExpressionSheetVisibility(focusNode: linkUrlFocusNode);
+    });
+
+    eventNameFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: eventNameFocusNode);
+    });
+
+    eventLocationFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: eventLocationFocusNode);
+    });
+
+    eventDetailsFocusNode.addListener(() {
+      _toggleExpressionSheetVisibility(focusNode: eventDetailsFocusNode);
     });
   }
 
@@ -162,6 +183,15 @@ class CreateCommentExpressionScaffoldState
         );
 
         break;
+      case ExpressionType.event:
+        child = CreateEvent(
+          key: _eventKey,
+          detailsFocusNode: eventDetailsFocusNode,
+          locationFocusNode: eventLocationFocusNode,
+          nameFocusNode: eventNameFocusNode,
+        );
+
+        break;
 
       case ExpressionType.none:
         child = SizedBox();
@@ -197,6 +227,12 @@ class CreateCommentExpressionScaffoldState
       case ExpressionType.audio:
         audioCaptionFocusNode.unfocus();
         audioTitleFocusNode.unfocus();
+        break;
+
+      case ExpressionType.event:
+        eventDetailsFocusNode.unfocus();
+        eventLocationFocusNode.unfocus();
+        eventNameFocusNode.unfocus();
         break;
 
       case ExpressionType.none:
@@ -257,6 +293,10 @@ class CreateCommentExpressionScaffoldState
         expressionHasData =
             _audioKey.currentState.expressionHasData(_audioService);
         validationText = 'Record some audio before continuing.';
+        break;
+      case ExpressionType.event:
+        expressionHasData = _eventKey.currentState.expressionHasData();
+        validationText = 'Make sure text fields are blank.';
         break;
 
       default:
@@ -321,6 +361,10 @@ class CreateCommentExpressionScaffoldState
         child = CreateAudioReview(expression: expression);
         break;
 
+      case ExpressionType.event:
+        child = CreateEventReview(expression: expression);
+        break;
+
       case ExpressionType.none:
         child = SizedBox();
         break;
@@ -341,6 +385,42 @@ class CreateCommentExpressionScaffoldState
       },
       actionType: 'leaveExpression',
     );
+  }
+
+  void toggleSocialContextVisibility(bool value) {
+    setState(() {
+      chooseContextVisibility = value;
+    });
+  }
+
+  void selectExpressionContext(ExpressionContext newExpressionContext) {
+    if (newExpressionContext == ExpressionContext.Collective) {
+      setState(() {
+        expressionContext = newExpressionContext;
+        socialContextAddress = null;
+        selectedGroup = Group();
+      });
+    } else if (newExpressionContext == ExpressionContext.Group) {
+      setState(() {
+        expressionContext = newExpressionContext;
+      });
+    }
+  }
+
+  void setSelectedGroup(Group group) {
+    if (group == null || group == Group()) {
+      setState(() {
+        expressionContext = ExpressionContext.Collective;
+        socialContextAddress = null;
+        selectedGroup = Group();
+      });
+    } else {
+      setState(() {
+        expressionContext = ExpressionContext.Group;
+        socialContextAddress = group.address;
+        selectedGroup = group;
+      });
+    }
   }
 
   void togglePageView(int page) {
@@ -377,6 +457,7 @@ class CreateCommentExpressionScaffoldState
               _audioKey.currentState.createExpression(_audioService);
           mentionsAndChannels = _audioKey.currentState.getMentionsAndChannels();
           break;
+
         case ExpressionType.event:
           expressionInProgress = _eventKey.currentState.createExpression();
           mentionsAndChannels = {'mentions': [], 'channels': []};
@@ -388,9 +469,9 @@ class CreateCommentExpressionScaffoldState
         default:
           break;
       }
+
       setState(() {
         expression = expressionInProgress;
-        print('test: 2 $mentionsAndChannels');
         channels = mentionsAndChannels['channels'];
         mentions = mentionsAndChannels['mentions'];
       });
@@ -445,6 +526,31 @@ class CreateCommentExpressionScaffoldState
     );
   }
 
+  Future<ExpressionModel> getEventExpression(ExpressionRepo repository) async {
+    final image = expression['photo'];
+
+    final photoKeys = await repository.createPhotoThumbnails(image);
+
+    return ExpressionModel(
+      type: currentExpressionType.modelName(),
+      expressionData: EventFormExpression(
+        title: expression['title'],
+        description: expression['description'],
+        location: expression['location'],
+        facilitators: expression['facilitators'],
+        members: expression['members'],
+        startTime: expression['startTime'],
+        endTime: expression['endTime'],
+        photo: photoKeys.keyPhoto,
+        thumbnail300: photoKeys.key300,
+        thumbnail600: photoKeys.key600,
+      ).toJson(),
+      context: expressionContext,
+      channels: channels,
+      mentions: mentions,
+    );
+  }
+
   Future<void> createExpression() async {
     ExpressionModel expressionModel;
 
@@ -463,6 +569,12 @@ class CreateCommentExpressionScaffoldState
           JuntoLoader.hide();
           break;
 
+        case ExpressionType.event:
+          JuntoLoader.showLoader(context, color: Colors.white54);
+          expressionModel = await getEventExpression(repository);
+          JuntoLoader.hide();
+          break;
+
         default:
           expressionModel = ExpressionModel(
             type: currentExpressionType.modelName(),
@@ -477,16 +589,11 @@ class CreateCommentExpressionScaffoldState
 
       // Create expression
       JuntoLoader.showLoader(context);
-
       await Provider.of<ExpressionRepo>(context, listen: false)
-          .postCommentExpression(
-        widget.commentAddress,
-        expressionModel.type,
-        {
-          ...expressionModel.expressionData,
-          'mentions': mentions,
-          'channels': channels,
-        },
+          .createExpression(
+        expressionModel,
+        expressionContext,
+        socialContextAddress,
       );
       JuntoLoader.hide();
 
@@ -501,7 +608,27 @@ class CreateCommentExpressionScaffoldState
         message: 'Expression Created!',
       );
 
-      Navigator.pop(context);
+      Screen screen;
+
+      // Change screen to social context of expression created
+      switch (expressionContext) {
+        case ExpressionContext.Collective:
+          screen = Screen.groups;
+          break;
+        case ExpressionContext.Group:
+          screen = Screen.groups;
+          break;
+        default:
+          screen = Screen.groups;
+          break;
+      }
+      await Provider.of<AppRepo>(context, listen: false).changeScreen(
+        screen: screen,
+        newExpressionContext: expressionContext,
+        newGroup: widget.group,
+      );
+      // Close creation screen
+      await Provider.of<AppRepo>(context, listen: false).closeCreate();
     } on DioError catch (error) {
       JuntoLoader.hide();
 
@@ -512,6 +639,14 @@ class CreateCommentExpressionScaffoldState
           builder: (BuildContext context) => const SingleActionDialog(
             dialogText:
                 'You can only post to the Collective 5 times every 24 hours. Please try again soon.',
+          ),
+        );
+      } else if (error.response.statusCode == 403) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText:
+                'You need to be part of this community to be able to post.',
           ),
         );
       } else if (error.response.data
@@ -572,8 +707,9 @@ class CreateCommentExpressionScaffoldState
               children: [
                 Scaffold(
                   appBar: CreateAppBar(
-                    closeCreate: () {
-                      Navigator.pop(context);
+                    closeCreate: () async {
+                      await Provider.of<AppRepo>(context, listen: false)
+                          .closeCreate();
                     },
                     expressionHasData: _expressionHasData,
                     togglePageView: togglePageView,
@@ -586,7 +722,8 @@ class CreateCommentExpressionScaffoldState
                     onWillPop: () async {
                       _expressionHasData(
                         function: () async {
-                          await Navigator.pop(context);
+                          await Provider.of<AppRepo>(context, listen: false)
+                              .closeCreate();
                         },
                         actionType: 'leaveExpression',
                       );
@@ -612,9 +749,10 @@ class CreateCommentExpressionScaffoldState
                                   CreateTopBar(
                                     profilePicture:
                                         userData.user.profilePicture,
+                                    toggleSocialContextVisibility:
+                                        toggleSocialContextVisibility,
                                     currentExpressionContext: expressionContext,
                                     selectedGroup: selectedGroup,
-                                    hideContextSelector: true,
                                   ),
                                   _buildExpressionType(),
                                 ],
@@ -643,11 +781,11 @@ class CreateCommentExpressionScaffoldState
                                     CreateTopBar(
                                       profilePicture:
                                           userData.user.profilePicture,
-                                      toggleSocialContextVisibility: () {},
+                                      toggleSocialContextVisibility:
+                                          toggleSocialContextVisibility,
                                       currentExpressionContext:
                                           expressionContext,
                                       selectedGroup: selectedGroup,
-                                      hideContextSelector: true,
                                     ),
                                     _buildReview(),
                                   ],
@@ -659,6 +797,15 @@ class CreateCommentExpressionScaffoldState
                     ),
                   ),
                 ),
+                if (chooseContextVisibility)
+                  CreateContextOverlay(
+                    currentExpressionContext: expressionContext,
+                    selectExpressionContext: selectExpressionContext,
+                    toggleSocialContextVisibility:
+                        toggleSocialContextVisibility,
+                    selectedGroup: selectedGroup,
+                    setSelectedGroup: setSelectedGroup,
+                  ),
               ],
             ),
           );

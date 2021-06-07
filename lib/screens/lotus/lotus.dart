@@ -50,14 +50,8 @@ class _JuntoLotusState extends State<JuntoLotus> {
   void _navigateTo(Screen screen) async {
     Widget child;
     switch (screen) {
-      case Screen.collective:
-        child = NewHome(screen: Screen.collective);
-        break;
       case Screen.groups:
         child = NewHome(screen: Screen.groups);
-        break;
-      case Screen.packs:
-        child = NewHome(screen: Screen.packs);
         break;
       case Screen.create:
         child = NewHome(screen: Screen.create);

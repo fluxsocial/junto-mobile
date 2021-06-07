@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/app/bloc/app_bloc.dart';
+import 'package:junto_beta_mobile/app/bloc/app/app_bloc.dart';
+import 'package:junto_beta_mobile/app/bloc/filters/channel_filtering_bloc.dart';
+import 'package:junto_beta_mobile/app/bloc/relations/relation_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/onboarding_repo.dart';
-import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/bloc/circle_bloc.dart';
 import 'package:junto_beta_mobile/screens/notifications/bloc/notification_bloc.dart';
 import 'package:junto_beta_mobile/screens/welcome/bloc/bloc.dart';
-import 'package:junto_beta_mobile/screens/global_search/relations_bloc/relation_bloc.dart';
 
 class BlocProviders extends StatelessWidget {
   final Widget child;
   final Backend backend;
+
   const BlocProviders({
     Key key,
     @required this.backend,

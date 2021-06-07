@@ -7,7 +7,6 @@ import 'package:feature_discovery/feature_discovery.dart';
 import 'package:junto_beta_mobile/app/community_center_addresses.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
-import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -16,12 +15,10 @@ import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
-import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/junto_center.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/circles.dart';
@@ -149,14 +146,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         _currentExpressionContext == 'Circles') {
       child = FeatureDiscovery(
         child: Circles(),
-      );
-    } else if (_expressionContext == ExpressionContext.Group &&
-        widget.address != communityCenterAddress) {
-      child = JuntoPacks(initialGroup: _address);
-    } else if (_expressionContext == ExpressionContext.Group &&
-        widget.address == communityCenterAddress) {
-      child = JuntoCommunityCenter(
-        tabPos: 1,
       );
     } else {
       context.read<CollectiveBloc>().add(

@@ -10,12 +10,16 @@ import 'package:junto_beta_mobile/utils/bloc_delegate.dart';
 
 Future<void> mainApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
   await Hive.initFlutter();
+
   Bloc.observer = SimpleBlocObserver();
+
   final Backend backend = await Backend.init();
 
   runLoggedApp(JuntoApp(backend: backend));
