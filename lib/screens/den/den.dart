@@ -1,16 +1,20 @@
+import 'dart:async';
+
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:junto_beta_mobile/app/logger/logger.dart';
 import 'package:junto_beta_mobile/app/material_app_with_theme.dart';
-import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/bloc/den_bloc.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/url_dialog.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar/tab_bar_name.dart';
@@ -19,6 +23,7 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -49,6 +54,44 @@ class JuntoDenState extends State<JuntoDen>
       initialIndex: 0,
       length: _tabs.length,
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      configureDenOpened();
+    });
+  }
+
+  Future<void> configureDenOpened() async {
+    try {
+      final appRepo = Provider.of<AppRepo>(context, listen: false);
+      final isOpened = await appRepo.isDenOpened();
+      print('test: $isOpened');
+      if (!isOpened) {
+        Timer(Duration(seconds: 1), () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => UrlDialog(
+              context: context,
+              text: "Fill out this form for if you were a crowdfunder",
+              urlText: "Fill form",
+              onTap: () async {
+                // TODO: need to update the url
+                final url = "https://junto.typeform.com/";
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+            ),
+          );
+        });
+        await appRepo.setDenOpened();
+        return;
+      } else {
+        return;
+      }
+    } catch (e) {
+      print('test: $e');
+      logger.logException(e, null, "Error configuring notifications");
+    }
   }
 
   @override

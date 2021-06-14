@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_progress_indicator.dart';
 import 'package:junto_beta_mobile/screens/groups/circles/sphere_open/sphere_open_members/sphere_open_members.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:readmore/readmore.dart';
@@ -116,10 +117,8 @@ class SphereOpenConsolidated extends StatelessWidget {
                         ),
                       if (state is CollectivePopulated &&
                           state.loadingMore == true)
-                        JuntoProgressIndicator(),
-                      if (state is CollectiveLoading) JuntoProgressIndicator(),
+                        ExpressionProgressIndicator(),
                       if (canFetch)
-                        // pagination
                         SliverToBoxAdapter(
                           child: FetchMoreButton(
                             onPressed: () {

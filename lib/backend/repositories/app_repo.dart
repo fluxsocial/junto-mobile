@@ -142,6 +142,28 @@ class AppRepo extends ChangeNotifier {
     return;
   }
 
+  Future<bool> isDenOpened() async {
+    final _appBox = await Hive.box(HiveBoxes.kAppBox);
+    final bool _result = _appBox.get(HiveKeys.kDenOpened);
+
+    if (_result != null) {
+      return _result;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> setDenOpened() async {
+    try {
+      final _appBox = await Hive.box(HiveBoxes.kAppBox);
+      await _appBox.put(HiveKeys.kDenOpened, true);
+    } catch (e) {
+      logger.logDebug("Unable to set the den opened");
+    }
+
+    return;
+  }
+
   void setCollectivePageIndex(int index) {
     _collectivePageIndex = index;
     notifyListeners();
