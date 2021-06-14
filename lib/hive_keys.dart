@@ -20,6 +20,7 @@ class HiveKeys {
   static const kRelationsTutorial = "show-relation-tutorial";
   static const kGroupTutorial = "show-group-tutorial";
   static const kUserLastFetched = "user-last-fetched";
+  static const kDenOpened = 'user-filled-form';
 }
 
 /// Class containing the name of the different "boxes" used by the application.
