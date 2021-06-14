@@ -159,9 +159,14 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                                 urlText: "Share Feedback",
                                 onTap: () async {
                                   // TODO: need to update the url
-                                  final url = "https://junto.typeform.com/";
-                                  if (await canLaunch(url)) {
-                                    await launch(url);
+                                  final Uri _emailLaunchUri = Uri(
+                                    scheme: 'mailto',
+                                    path: 'hi@junto.support',
+                                    queryParameters: {'subject': 'Feedback:'},
+                                  );
+                                  if (await canLaunch(
+                                      _emailLaunchUri.toString())) {
+                                    await launch(_emailLaunchUri.toString());
                                   }
                                 },
                               ),
