@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -20,9 +19,11 @@ class CommentOpenParent extends StatelessWidget with MemberValidation {
   const CommentOpenParent({
     @required this.comment,
     @required this.parent,
+    @required this.onTap,
   });
   final Comment comment;
   final dynamic parent;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -145,23 +146,7 @@ class CommentOpenParent extends StatelessWidget with MemberValidation {
                 const SizedBox(width: 32.5),
                 Flexible(
                   child: GestureDetector(
-                    onTap: () async {
-                      var sourceExpression = await Provider.of<ExpressionRepo>(
-                              context,
-                              listen: false)
-                          .getExpression(parent.address);
-
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => ExpressionOpen(
-                            commentsVisible: true,
-                            deleteExpression: (_) {},
-                            expression: sourceExpression,
-                          ),
-                        ),
-                      );
-                    },
+                    onTap: onTap,
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border(
