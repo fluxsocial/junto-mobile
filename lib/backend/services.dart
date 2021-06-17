@@ -169,7 +169,7 @@ abstract class NotificationService {
 
   Future<bool> requestPermissions();
 
-  Future<void> registerDevice(final String fcmToken);
+  Future<bool> registerDevice(final String fcmToken);
 
   Future<void> unRegisterDevice(final String fcmToken);
 
