@@ -173,7 +173,9 @@ class CommentOpenState extends State<CommentOpen> {
                         futureComments: futureComments,
                         showComments: _showComments,
                         stopPlayback: () {
-                          audio.pausePlayback();
+                          if (audio.isPlaying) {
+                            audio.pausePlayback();
+                          }
                         },
                         loadPreviousExpressionComments: () {
                           setState(() {
