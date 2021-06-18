@@ -55,15 +55,16 @@ class NotificationServiceImpl implements NotificationService {
   }
 
   @override
-  Future<void> registerDevice(final String fcmToken) async {
+  Future<bool> registerDevice(final String fcmToken) async {
     try {
       await httpClient.postWithoutEncoding('/notifications/register', body: {
         'device_token': fcmToken,
       });
-      return;
+
+      return true;
     } catch (e) {
       print(e);
-      return;
+      return false;
     }
   }
 

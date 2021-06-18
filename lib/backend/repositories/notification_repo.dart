@@ -97,7 +97,7 @@ class NotificationRepo {
 
   Future<bool> requestPermissions() => service.requestPermissions();
 
-  Future<void> registerDevice(final String fcmToken) =>
+  Future<bool> registerDevice(final String fcmToken) =>
       service.registerDevice(fcmToken);
 
   Future<void> manageNotifications(NotificationPrefsModel options) =>
@@ -106,5 +106,6 @@ class NotificationRepo {
   Future<NotificationPrefsModel> getNotificationsPrefs() =>
       service.getNotificationsPrefs();
 
-  Future<void> unRegisterDevice(String token)=> service.unRegisterDevice(token);
+  Future<void> unRegisterDevice(String token) =>
+      service.unRegisterDevice(token);
 }
