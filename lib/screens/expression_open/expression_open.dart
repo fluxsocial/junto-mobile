@@ -215,7 +215,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                   futureComments: futureComments,
                                   showComments: _showComments,
                                   stopPlayback: () {
-                                    audio.pausePlayback();
+                                    if (audio.isPlaying) {
+                                      audio.pausePlayback();
+                                    }
                                   },
                                   loadPreviousExpressionComments: () {
                                     final address = widget.expression.address;

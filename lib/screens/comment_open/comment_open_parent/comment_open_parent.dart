@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -20,9 +19,11 @@ class CommentOpenParent extends StatelessWidget with MemberValidation {
   const CommentOpenParent({
     @required this.comment,
     @required this.parent,
+    @required this.onTap,
   });
   final Comment comment;
   final dynamic parent;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -59,109 +60,94 @@ class CommentOpenParent extends StatelessWidget with MemberValidation {
       UserDataProvider user,
       Widget child,
     ) {
-      return Container(
-        padding: const EdgeInsets.only(
-          top: 10,
-        ),
-        margin: const EdgeInsets.only(bottom: 10),
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () async {
-                        if (await isHostUser(parent.creator)) {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                        }
+      return InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.only(
+            top: 10,
+          ),
+          margin: const EdgeInsets.only(bottom: 10),
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () async {
+                          if (await isHostUser(parent.creator)) {
+                            Navigator.popUntil(
+                                context, (route) => route.isFirst);
+                          }
 
-                        showUserDen(context, parent.creator);
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Row(
-                          children: <Widget>[
-                            MemberAvatar(
-                              profilePicture: parent.creator.profilePicture,
-                              diameter: 45,
-                            ),
-                            const SizedBox(width: 10),
-                            // profile name and handle
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    parent.creator.username,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                  Text(
-                                    parent.creator.name,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ],
+                          showUserDen(context, parent.creator);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Row(
+                            children: <Widget>[
+                              MemberAvatar(
+                                profilePicture: parent.creator.profilePicture,
+                                diameter: 45,
                               ),
+                              const SizedBox(width: 10),
+                              // profile name and handle
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      parent.creator.username,
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                    Text(
+                                      parent.creator.name,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          ],
+                            builder: (BuildContext context) =>
+                                CommentParentActionItems(
+                              parent: parent,
+                              userAddress: user.userAddress,
+                              source: 'open',
+                            ),
+                          );
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.all(5),
+                          alignment: Alignment.centerRight,
+                          child: Icon(
+                            CustomIcons.morevertical,
+                            color: Theme.of(context).primaryColor,
+                            size: 20,
+                          ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          builder: (BuildContext context) =>
-                              CommentParentActionItems(
-                            parent: parent,
-                            userAddress: user.userAddress,
-                            source: 'open',
-                          ),
-                        );
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.all(5),
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          CustomIcons.morevertical,
-                          color: Theme.of(context).primaryColor,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ]),
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(width: 32.5),
-                Flexible(
-                  child: GestureDetector(
-                    onTap: () async {
-                      var sourceExpression = await Provider.of<ExpressionRepo>(
-                              context,
-                              listen: false)
-                          .getExpression(parent.address);
-
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => ExpressionOpen(
-                            commentsVisible: true,
-                            deleteExpression: (_) {},
-                            expression: sourceExpression,
-                          ),
-                        ),
-                      );
-                    },
+                    ]),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(width: 32.5),
+                  Flexible(
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border(
@@ -178,10 +164,10 @@ class CommentOpenParent extends StatelessWidget with MemberValidation {
                       child: _buildBody(),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       );
     });

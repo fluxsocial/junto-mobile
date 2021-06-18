@@ -149,9 +149,22 @@ class CommentOpenState extends State<CommentOpen> {
                     children: <Widget>[
                       // Comment Parent
                       ...widget.parent
+                          .asMap()
+                          .entries
                           .map((e) => CommentOpenParent(
                                 comment: widget.comment,
-                                parent: e,
+                                parent: e.value,
+                                onTap: () {
+                                  var index = e.key;
+                                  var total = widget.parent.length + 1;
+                                  Navigator.popUntil(context, (route) {
+                                    total -= 1;
+                                    if (index == total) {
+                                      return true;
+                                    }
+                                    return false;
+                                  });
+                                },
                               ))
                           .toList(),
                       // Comment Open Top
@@ -173,7 +186,9 @@ class CommentOpenState extends State<CommentOpen> {
                         futureComments: futureComments,
                         showComments: _showComments,
                         stopPlayback: () {
-                          audio.pausePlayback();
+                          if (audio.isPlaying) {
+                            audio.pausePlayback();
+                          }
                         },
                         loadPreviousExpressionComments: () {
                           setState(() {
