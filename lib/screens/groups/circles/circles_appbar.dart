@@ -58,6 +58,7 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
           child: Column(
             children: <Widget>[
               Container(
+                height: MediaQuery.of(context).size.height * .1,
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.only(
                   left: 10,

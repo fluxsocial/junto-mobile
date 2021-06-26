@@ -49,7 +49,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
             // set to false and floating set to true
             SliverPersistentHeader(
               delegate: CollectiveAppBar(
-                expandedHeight: MediaQuery.of(context).size.height * .11 + 20,
+                expandedHeight: MediaQuery.of(context).size.height * .11 + 50,
                 appbarTitle:
                     state is CollectivePopulated ? state.name : 'Collective',
                 collectiveViewNav: widget.goBack,

@@ -261,7 +261,7 @@ class BottomCommentBarState extends State<BottomCommentBar>
                                 return Padding(
                                   padding: EdgeInsets.fromLTRB(
                                     0,
-                                    AppBar().preferredSize.height,
+                                    AppBar().preferredSize.height / 2,
                                     0,
                                     0,
                                   ),

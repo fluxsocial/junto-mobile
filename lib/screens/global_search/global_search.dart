@@ -66,113 +66,113 @@ class _GlobalSearchState extends State<GlobalSearch> {
         )),
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: SafeArea(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              height: MediaQuery.of(context).size.height * .1,
-              alignment: Alignment.bottomCenter,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
-                  ),
+          preferredSize: Size.fromHeight(
+            50,
+          ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            height: MediaQuery.of(context).size.height * .1,
+            alignment: Alignment.bottomCenter,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
                 ),
               ),
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      alignment: Alignment.centerLeft,
-                      height: 48,
-                      width: 38,
-                      child: Icon(
-                        CustomIcons.back,
-                        size: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
+            ),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerLeft,
+                    height: 48,
+                    width: 38,
+                    child: Icon(
+                      CustomIcons.back,
+                      size: 17,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  Expanded(
-                    child: Builder(builder: (context) {
-                      return TextField(
-                        controller: _textEditingController,
-                        onChanged: (val) => onTextChange(val, context),
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(0.0),
-                          hintText: 'search members',
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).primaryColorLight,
-                          ),
-                        ),
-                        cursorColor: Theme.of(context).primaryColor,
-                        cursorWidth: 1,
-                        maxLines: 1,
-                        style: TextStyle(
+                ),
+                Expanded(
+                  child: Builder(builder: (context) {
+                    return TextField(
+                      controller: _textEditingController,
+                      onChanged: (val) => onTextChange(val, context),
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(0.0),
+                        hintText: 'search members',
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).primaryColorLight,
                         ),
-                        maxLength: 80,
-                        textInputAction: TextInputAction.search,
-                      );
-                    }),
-                  ),
-                  // TO DO: Fayeed - add support for searching by specific group
-                  // Container(
-                  //   child: Row(
-                  //     children: [
-                  //       Container(
-                  //         padding: const EdgeInsets.symmetric(
-                  //           horizontal: 10,
-                  //           vertical: 5,
-                  //         ),
-                  //         decoration: BoxDecoration(
-                  //           color: Theme.of(context).colorScheme.primary,
-                  //           borderRadius: BorderRadius.circular(5),
-                  //         ),
-                  //         child: Icon(
-                  //           Icons.people,
-                  //           color: Colors.white,
-                  //           size: 20,
-                  //         ),
-                  //       ),
-                  //       Container(
-                  //         padding: const EdgeInsets.symmetric(
-                  //           horizontal: 10,
-                  //           vertical: 5,
-                  //         ),
-                  //         decoration: BoxDecoration(
-                  //           color: Theme.of(context).dividerColor,
-                  //           borderRadius: BorderRadius.circular(5),
-                  //         ),
-                  //         child: Icon(
-                  //           CustomIcons.newcollective,
-                  //           size: 20,
-                  //           color: Theme.of(context).primaryColor,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                ],
-              ),
+                      ),
+                      cursorColor: Theme.of(context).primaryColor,
+                      cursorWidth: 1,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      maxLength: 80,
+                      textInputAction: TextInputAction.search,
+                    );
+                  }),
+                ),
+                // TO DO: Fayeed - add support for searching by specific group
+                // Container(
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         padding: const EdgeInsets.symmetric(
+                //           horizontal: 10,
+                //           vertical: 5,
+                //         ),
+                //         decoration: BoxDecoration(
+                //           color: Theme.of(context).colorScheme.primary,
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //         child: Icon(
+                //           Icons.people,
+                //           color: Colors.white,
+                //           size: 20,
+                //         ),
+                //       ),
+                //       Container(
+                //         padding: const EdgeInsets.symmetric(
+                //           horizontal: 10,
+                //           vertical: 5,
+                //         ),
+                //         decoration: BoxDecoration(
+                //           color: Theme.of(context).dividerColor,
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //         child: Icon(
+                //           CustomIcons.newcollective,
+                //           size: 20,
+                //           color: Theme.of(context).primaryColor,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+              ],
             ),
           ),
         ),
