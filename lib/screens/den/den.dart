@@ -71,11 +71,10 @@ class JuntoDenState extends State<JuntoDen>
             context: context,
             builder: (BuildContext context) => UrlDialog(
               context: context,
-              text: "Fill out this form for if you were a crowdfunder",
+              text: "Please fill out this form if you were a crowdfunder so you can get your badge!!",
               urlText: "Fill form",
               onTap: () async {
-                // TODO: need to update the url
-                final url = "https://junto.typeform.com/";
+                final url = "https://junto.typeform.com/to/VtrbgNIh";
                 if (await canLaunch(url)) {
                   await launch(url);
                 }
