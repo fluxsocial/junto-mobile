@@ -16,7 +16,7 @@ class GlobalSearchIcon extends StatelessWidget {
       },
       child: Container(
         color: Colors.transparent,
-        height: 40,
+        height: 50,
         alignment: Alignment.bottomLeft,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Icon(

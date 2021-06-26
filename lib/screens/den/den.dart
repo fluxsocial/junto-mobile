@@ -112,7 +112,7 @@ class JuntoDenState extends State<JuntoDen>
           return <Widget>[
             SliverPersistentHeader(
               delegate: DenAppbar(
-                expandedHeight: MediaQuery.of(context).size.height * .06,
+                expandedHeight: MediaQuery.of(context).size.height * .1,
                 heading: user.user.username,
               ),
               floating: true,

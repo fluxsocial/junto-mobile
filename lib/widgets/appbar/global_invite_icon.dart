@@ -20,7 +20,7 @@ class GlobalInviteIcon extends StatelessWidget {
       child: Container(
         alignment: Alignment.bottomLeft,
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        height: 40,
+        height: 50,
         child: Icon(
           Icons.mail_outline,
           color: Theme.of(context).primaryColor,

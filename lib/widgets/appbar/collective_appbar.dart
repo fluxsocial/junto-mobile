@@ -75,15 +75,20 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                           GestureDetector(
                             onTap: collectiveViewNav,
                             child: Container(
-                              alignment: Alignment.center,
+                              alignment: Alignment.bottomLeft,
                               padding:
-                                  const EdgeInsets.only(left: 10, bottom: 0),
+                                  const EdgeInsets.only(left: 10, bottom: 10),
                               color: Colors.transparent,
+                              height: 38,
                               width: 38,
-                              child: Icon(
-                                CustomIcons.back,
-                                size: 17,
-                                color: Theme.of(context).primaryColor,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    CustomIcons.back,
+                                    size: 17,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ],
                               ),
                             ),
                           ),

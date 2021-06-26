@@ -1,5 +1,3 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
 
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -38,7 +36,7 @@ class JuntoBottomBar extends StatelessWidget {
         ),
       ),
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(bottom: Platform.isAndroid ? 0 : 15),
+      padding: const EdgeInsets.only(bottom: 15),
       child: Row(
         children: [
           Expanded(
