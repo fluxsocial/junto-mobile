@@ -568,98 +568,91 @@ class CreateCommentExpressionScaffoldState
               return SearchBloc(
                   Provider.of<SearchRepo>(context, listen: false));
             },
-            child: Stack(
-              children: [
-                Scaffold(
-                  appBar: CreateAppBar(
-                    closeCreate: () {
-                      Navigator.pop(context);
+            child: Scaffold(
+              appBar: CreateAppBar(
+                closeCreate: () {
+                  Navigator.pop(context);
+                },
+                expressionHasData: _expressionHasData,
+                togglePageView: togglePageView,
+                currentIndex: _currentIndex,
+                createExpression: createExpression,
+                removeFocus: removeFocus,
+              ),
+              resizeToAvoidBottomInset: false,
+              body: WillPopScope(
+                onWillPop: () async {
+                  _expressionHasData(
+                    function: () async {
+                      await Navigator.pop(context);
                     },
-                    expressionHasData: _expressionHasData,
-                    togglePageView: togglePageView,
-                    currentIndex: _currentIndex,
-                    createExpression: createExpression,
-                    removeFocus: removeFocus,
-                  ),
-                  resizeToAvoidBottomInset: false,
-                  body: WillPopScope(
-                    onWillPop: () async {
-                      _expressionHasData(
-                        function: () async {
-                          await Navigator.pop(context);
-                        },
-                        actionType: 'leaveExpression',
-                      );
-                      return false;
-                    },
-                    child: PageView(
-                      controller: createPageController,
-                      physics: NeverScrollableScrollPhysics(),
-                      onPageChanged: (int index) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      },
+                    actionType: 'leaveExpression',
+                  );
+                  return false;
+                },
+                child: PageView(
+                  controller: createPageController,
+                  physics: NeverScrollableScrollPhysics(),
+                  onPageChanged: (int index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  children: [
+                    // Create Screen 1 - Make Content
+                    Stack(
                       children: [
-                        // Create Screen 1 - Make Content
-                        Stack(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                children: <Widget>[
-                                  CreateTopBar(
-                                    profilePicture:
-                                        userData.user.profilePicture,
-                                    currentExpressionContext: expressionContext,
-                                    selectedGroup: selectedGroup,
-                                    hideContextSelector: true,
-                                  ),
-                                  _buildExpressionType(),
-                                ],
+                        Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: <Widget>[
+                              CreateTopBar(
+                                profilePicture: userData.user.profilePicture,
+                                currentExpressionContext: expressionContext,
+                                selectedGroup: selectedGroup,
+                                hideContextSelector: true,
                               ),
-                            ),
-                            if (showExpressionSheet)
-                              if (!_audioService.playBackAvailable)
-                                ChooseExpressionSheet(
-                                  currentExpressionType: currentExpressionType,
-                                  chooseExpressionType: chooseExpressionType,
-                                ),
-                          ],
-                        ),
-
-                        // Create Screen 2 - Review Content
-                        // We show a sized box when PageView index is 0 so we don't display a review screen
-                        // that is not consistent with the expression type, which causes an error
-                        if (_currentIndex == 0)
-                          SizedBox()
-                        else
-                          Column(
-                            children: [
-                              Expanded(
-                                child: ListView(
-                                  children: [
-                                    CreateTopBar(
-                                      profilePicture:
-                                          userData.user.profilePicture,
-                                      toggleSocialContextVisibility: () {},
-                                      currentExpressionContext:
-                                          expressionContext,
-                                      selectedGroup: selectedGroup,
-                                      hideContextSelector: true,
-                                    ),
-                                    _buildReview(),
-                                  ],
-                                ),
-                              ),
+                              _buildExpressionType(),
                             ],
                           ),
+                        ),
+                        if (showExpressionSheet)
+                          if (!_audioService.playBackAvailable)
+                            ChooseExpressionSheet(
+                              currentExpressionType: currentExpressionType,
+                              chooseExpressionType: chooseExpressionType,
+                            ),
                       ],
                     ),
-                  ),
+
+                    // Create Screen 2 - Review Content
+                    // We show a sized box when PageView index is 0 so we don't display a review screen
+                    // that is not consistent with the expression type, which causes an error
+                    if (_currentIndex == 0)
+                      SizedBox()
+                    else
+                      Column(
+                        children: [
+                          Expanded(
+                            child: ListView(
+                              children: [
+                                CreateTopBar(
+                                  profilePicture: userData.user.profilePicture,
+                                  toggleSocialContextVisibility: () {},
+                                  currentExpressionContext: expressionContext,
+                                  selectedGroup: selectedGroup,
+                                  hideContextSelector: true,
+                                ),
+                                _buildReview(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
-              ],
+              ),
             ),
           );
         }),

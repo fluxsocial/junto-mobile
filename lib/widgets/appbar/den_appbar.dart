@@ -25,12 +25,9 @@ class DenAppbar extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
       return Container(
-        height: MediaQuery.of(context).size.height * .1,
         width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.only(
-          left: 10,
-          bottom: 10,
-        ),
+        padding: EdgeInsets.only(
+            left: 10, bottom: 0, top: MediaQuery.of(context).viewPadding.top),
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -42,7 +39,7 @@ class DenAppbar extends SliverPersistentHeaderDelegate {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
               color: Colors.transparent,

@@ -125,7 +125,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
         return Scaffold(
           appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(45),
+            preferredSize: const Size.fromHeight(50),
             child: SphereOpenAppbar(
               group: group,
               onBack: widget.goBack,

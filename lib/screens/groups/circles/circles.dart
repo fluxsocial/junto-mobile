@@ -204,7 +204,7 @@ class _CircleMainState extends State<CircleMain>
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
-          MediaQuery.of(context).size.height * .1 + 50,
+          102,
         ),
         child: CirclesAppbar(
           changePageView: changePageView,
@@ -217,7 +217,7 @@ class _CircleMainState extends State<CircleMain>
         child: BlocBuilder<CircleBloc, CircleState>(
           builder: (context, state) {
             return Container(
-              margin: const EdgeInsets.only(bottom: 75),
+              margin: const EdgeInsets.only(bottom: 60),
               child: Column(
                 children: [
                   Expanded(

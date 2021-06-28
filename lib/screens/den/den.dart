@@ -71,7 +71,8 @@ class JuntoDenState extends State<JuntoDen>
             context: context,
             builder: (BuildContext context) => UrlDialog(
               context: context,
-              text: "Please fill out this form if you were a crowdfunder so you can get your badge!!",
+              text:
+                  "Please fill out this form if you were a crowdfunder so you can get your badge!!",
               urlText: "Fill form",
               onTap: () async {
                 final url = "https://junto.typeform.com/to/VtrbgNIh";
@@ -111,7 +112,7 @@ class JuntoDenState extends State<JuntoDen>
           return <Widget>[
             SliverPersistentHeader(
               delegate: DenAppbar(
-                expandedHeight: MediaQuery.of(context).size.height * .1,
+                expandedHeight: MediaQuery.of(context).viewPadding.top + 50,
                 heading: user.user.username,
               ),
               floating: true,
