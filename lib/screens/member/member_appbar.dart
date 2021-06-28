@@ -19,11 +19,10 @@ class MemberAppbar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      height: MediaQuery.of(context).size.height * .1,
+      height: MediaQuery.of(context).viewPadding.top + 50,
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.only(
-        bottom: 10,
-      ),
+      padding: EdgeInsets.only(
+          left: 0, bottom: 0, top: MediaQuery.of(context).viewPadding.top),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -35,17 +34,16 @@ class MemberAppbar extends SliverPersistentHeaderDelegate {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
               width: 42,
               color: Colors.transparent,
-              alignment: Alignment.bottomLeft,
+              alignment: Alignment.center,
               padding: const EdgeInsets.only(
                 left: 10,
-                bottom: 2.5,
               ),
               child: Icon(
                 CustomIcons.back,

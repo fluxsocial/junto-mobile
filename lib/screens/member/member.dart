@@ -164,7 +164,7 @@ class _JuntoMemberState extends State<JuntoMember>
                         SliverPersistentHeader(
                           delegate: MemberAppbar(
                             expandedHeight:
-                                MediaQuery.of(context).size.height * .1,
+                                MediaQuery.of(context).viewPadding.top + 50,
                             username: _memberProfile.user.username,
                           ),
                           floating: true,

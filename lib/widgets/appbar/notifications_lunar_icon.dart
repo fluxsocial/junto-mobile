@@ -30,9 +30,10 @@ class NotificationsLunarIcon extends StatelessWidget {
               );
             },
             child: Stack(
-              alignment: Alignment.bottomLeft,
+              alignment: Alignment.center,
               children: <Widget>[
                 Container(
+                  height: 50,
                   color: Colors.transparent,
                   padding: const EdgeInsets.only(
                     right: 10,
@@ -48,7 +49,7 @@ class NotificationsLunarIcon extends StatelessWidget {
                 ),
                 if (data.unreadNotifications)
                   NotificationSignal(
-                    top: 2,
+                    top: 12,
                     right: 7,
                     onGradientBackground: onGradientBackground,
                   ),

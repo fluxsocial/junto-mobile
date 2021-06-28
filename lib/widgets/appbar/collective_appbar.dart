@@ -40,6 +40,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
     return Consumer<UserDataProvider>(
       builder: (BuildContext context, UserDataProvider data, Widget child) {
         return Container(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             border: Border(
@@ -75,7 +76,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                           GestureDetector(
                             onTap: collectiveViewNav,
                             child: Container(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.center,
                               padding:
                                   const EdgeInsets.only(left: 10, bottom: 10),
                               color: Colors.transparent,
@@ -139,9 +140,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.only(bottom: 10),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             GlobalInviteIcon(),
                             GlobalSearchIcon(),

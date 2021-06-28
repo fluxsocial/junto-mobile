@@ -18,7 +18,7 @@ class GlobalInviteIcon extends StatelessWidget {
         );
       },
       child: Container(
-        alignment: Alignment.bottomLeft,
+        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         height: 50,
         child: Icon(

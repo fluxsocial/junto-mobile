@@ -36,7 +36,8 @@ class JuntoBottomBar extends StatelessWidget {
         ),
       ),
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.only(bottom: 15),
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewPadding.bottom),
       child: Row(
         children: [
           Expanded(

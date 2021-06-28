@@ -30,10 +30,10 @@ class SphereOpenAppbar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
+              height: 50,
               color: Colors.transparent,
-              padding: const EdgeInsets.only(bottom: 10),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   GestureDetector(
@@ -45,7 +45,7 @@ class SphereOpenAppbar extends StatelessWidget {
                       }
                     },
                     child: Container(
-                      alignment: Alignment.bottomLeft,
+                      alignment: Alignment.center,
                       color: Colors.transparent,
                       height: 38,
                       width: 38,
@@ -60,15 +60,17 @@ class SphereOpenAppbar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(
-                    'c/${group.groupData.sphereHandle}',
-                    style: Theme.of(context).textTheme.subtitle1,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      'c/${group.groupData.sphereHandle}',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
                   ),
                 ],
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(bottom: 25),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[

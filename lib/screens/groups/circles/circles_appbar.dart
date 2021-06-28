@@ -54,15 +54,13 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
     return Consumer<JuntoThemesProvider>(builder: (context, theme, child) {
       return BlocBuilder<CircleBloc, CircleState>(builder: (context, state) {
         return Container(
-          height: MediaQuery.of(context).size.height * .1 + 50,
           child: Column(
             children: <Widget>[
               Container(
-                height: MediaQuery.of(context).size.height * .1,
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: 10,
-                  bottom: 10,
+                  top: MediaQuery.of(context).viewPadding.top,
                 ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
@@ -74,12 +72,12 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                   ),
                 ),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             'Communities',
@@ -130,8 +128,6 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                             color: Colors.transparent,
                             padding: const EdgeInsets.only(
                               right: 15,
-                              top: 10,
-                              bottom: 10,
                             ),
                             child: Text(
                               'MY',
@@ -154,8 +150,6 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                             color: Colors.transparent,
                             padding: const EdgeInsets.only(
                               right: 15,
-                              top: 10,
-                              bottom: 10,
                             ),
                             child: Text(
                               'DISCOVER',
@@ -178,8 +172,6 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                             color: Colors.transparent,
                             padding: const EdgeInsets.only(
                               right: 15,
-                              top: 10,
-                              bottom: 10,
                             ),
                             child: Text(
                               'REQUESTS',
