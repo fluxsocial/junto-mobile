@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -164,7 +165,8 @@ class _JuntoMemberState extends State<JuntoMember>
                         SliverPersistentHeader(
                           delegate: MemberAppbar(
                             expandedHeight:
-                                MediaQuery.of(context).viewPadding.top + 50,
+                                MediaQuery.of(context).viewPadding.top +
+                                    (Platform.isAndroid ? 50 : 40),
                             username: _memberProfile.user.username,
                           ),
                           floating: true,

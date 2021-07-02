@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
@@ -112,7 +113,8 @@ class JuntoDenState extends State<JuntoDen>
           return <Widget>[
             SliverPersistentHeader(
               delegate: DenAppbar(
-                expandedHeight: MediaQuery.of(context).viewPadding.top + 50,
+                expandedHeight: MediaQuery.of(context).viewPadding.top +
+                    (Platform.isAndroid ? 50 : 40),
                 heading: user.user.username,
               ),
               floating: true,

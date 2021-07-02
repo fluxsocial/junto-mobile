@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +51,8 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
             // set to false and floating set to true
             SliverPersistentHeader(
               delegate: CollectiveAppBar(
-                expandedHeight: MediaQuery.of(context).viewPadding.top + 100,
+                expandedHeight: MediaQuery.of(context).viewPadding.top +
+                    (Platform.isAndroid ? 100 : 90),
                 appbarTitle:
                     state is CollectivePopulated ? state.name : 'Collective',
                 collectiveViewNav: widget.goBack,

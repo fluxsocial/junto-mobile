@@ -40,7 +40,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
     return Consumer<UserDataProvider>(
       builder: (BuildContext context, UserDataProvider data, Widget child) {
         return Container(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
+          padding:
+              EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top - 10),
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             border: Border(
