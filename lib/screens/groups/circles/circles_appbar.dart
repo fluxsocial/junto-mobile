@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:feature_discovery/feature_discovery.dart';
@@ -60,7 +62,8 @@ class _CirclesAppbarState extends State<CirclesAppbar> {
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(
                   left: 10,
-                  top: MediaQuery.of(context).viewPadding.top,
+                  top: MediaQuery.of(context).viewPadding.top -
+                      (Platform.isIOS ? 10 : 0),
                 ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
